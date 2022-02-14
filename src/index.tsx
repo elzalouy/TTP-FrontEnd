@@ -7,13 +7,21 @@ import './i18n/i18n'
 import { Provider } from 'react-redux';
 import store,{persistor} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import themes from './themes';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-      </PersistGate>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={themes()}>
+        <CssBaseline />
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
