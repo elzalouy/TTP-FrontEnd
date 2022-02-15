@@ -1,9 +1,21 @@
-@import 'antd/dist/antd.css';
-@import url('/src/assets/css/antd-customize.css');
-@import url('/src/assets/css/style.css');
+/* @import "~antd/dist/antd.css"; */
+/* @import "antd/dist/antd.css"; */
+/* @import url("/src/assets/css/antd-customize.css");
+@import url("/src/assets/css/style.css"); */
+@font-face {
+  font-family: "Cairo";
+  src: url(assets/fonts/Cairo-Regular.ttf);
+}
 
+body {
+  margin: 0;
+  font-family: "Cairo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fcfcfc;
+}
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,15 +28,15 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -10,6 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import themes from './themes';
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -24,7 +26,7 @@ ReactDOM.render(
       </StyledEngineProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
