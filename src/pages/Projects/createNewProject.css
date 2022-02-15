@@ -169,14 +169,14 @@ table.allTask-table td.deleteTd {
 
 /* CUSTOM OF MUI FOR STEPPER */
 
-.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+.MuiStepIcon-root.Mui-active {
   color: #00acba !important;
 }
-.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+.MuiStepIcon-root.Mui-completed {
   color: #00acba !important;
 }
 
-.css-qivjh0-MuiStepLabel-label.Mui-active {
+.MuiStepLabel-label.Mui-active {
   color: #00acba !important;
   font-weight: bold !important;
 }

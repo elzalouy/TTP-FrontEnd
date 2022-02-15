@@ -5,11 +5,8 @@ import storage from "redux-persist/lib/storage";
 export const appReducer = combineReducers({});
 
 export const rootReducer = (state: any, action: any) => {
-  
-export const rootReducer = (state : any , action : any) => {
   // if (action.type === USER_LOGOUT) {
-      storage.removeItem('persist:root');
-      return appReducer(undefined, action);
+  storage.removeItem("persist:root");
+  return appReducer(undefined, action);
   // }
-
 };
