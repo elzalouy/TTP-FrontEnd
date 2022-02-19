@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import "./auth.css";
 import AuthBorder from "./authBorder";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 // import auth from "../../auth";
-const Login = (props) => {
-  const [Email, setEmail] = useState();
-  const [password, setPassword] = useState();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
+interface Props {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+
+const Login: React.FC<Props> = ({ history }) => {
+  const [Email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+
   return (
     <AuthBorder>
       <h3 className="login-text">Login to your account</h3>
@@ -43,7 +47,7 @@ const Login = (props) => {
               //   auth.login(() => {
               //     props.history.push("/cp");
               //   });
-              props.history.push("/projects");
+              history.push("/projects");
             }}
           >
             Login

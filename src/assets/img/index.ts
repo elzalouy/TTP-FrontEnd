@@ -8,6 +8,10 @@ const IMAGES = {
   logouticon: require("./logouticon.svg").default,
   closeicon: require("./closeicon.SVG").default,
   deleteicon: require("./deleteicon.svg").default,
+  tasksCheck: require("./tasksCheck.SVG").default,
+  plus: require("./Plus.svg").default,
+  filtericon: require("./filtericon.svg").default,
+  more: require("./more.SVG").default,
 };
 export default IMAGES;
 // import img from "../../assets"
