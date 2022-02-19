@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 
 import { ReactComponent as OverView } from './../../../assets/img/taskviewiconCopy.svg';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import IMAGES from './../../../assets/img/index';
+import IMAGES from './../../../assets/img';
 import { BurgerIcon, Logo } from "../../../coreUI/usable-elements/images";
 
 type Props = {};

@@ -6,6 +6,8 @@ import RestPassword from "./pages/AuthPage/rest";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import LoggedInContainer from "./layout";
+import departments from "./pages/Departments/departments";
+
 type Props = {};
 
 const App: React.FC<Props> = () => {
@@ -17,6 +19,7 @@ const App: React.FC<Props> = () => {
           <Route path="/ForgetPassword" component={Forget} />
           <Route path="/RestPassword" component={RestPassword} />
           <LoggedInContainer path="/Projects" component={Projects} />
+          <LoggedInContainer path="/Departments" component={departments} />
         </Switch>
       </BrowserRouter>
     </div>

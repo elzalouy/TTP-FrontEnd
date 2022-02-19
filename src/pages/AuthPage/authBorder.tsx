@@ -1,13 +1,18 @@
 import "./auth.css";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Person from "../../assets/img/person.png";
-const AuthBorder = (props) => {
+
+type Props = {
+  children: object;
+};
+
+const AuthBorder: React.FC<Props> = ({ children }) => {
   return (
     <div className="content">
       <div className="main-form">
         <div className="white-side">
           <img src={Ttp} alt="ttp" width="148" height="147" />
-          {props.children}
+          {children}
         </div>
         <div className="black">
           <img
