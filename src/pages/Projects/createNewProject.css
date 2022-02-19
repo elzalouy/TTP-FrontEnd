@@ -9,30 +9,6 @@
   margin-top: 37px;
 }
 
-.container-popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  /* width: calc(100vw - 230px); */
-  /* left: 230px; */
-  width: 100vw;
-  left: 0px;
-  top: 0;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  align-items: center;
-}
-
-.pop-up {
-  min-width: 70vw;
-  background-color: white;
-  min-height: 300px;
-  padding: 20px;
-  animation: zoomIn 0.3s;
-  max-height: 95vh;
-  overflow: auto;
-}
 .step2 {
   animation: filling 0.5s;
 }
@@ -89,6 +65,7 @@
 .cancelBtn {
   cursor: pointer;
   width: 200px;
+  max-width: 45%;
   height: 45px;
   background-color: #f4f4f4;
   color: black;
@@ -96,11 +73,13 @@
   border-radius: 5px;
   border: none;
   font-weight: bold;
+  margin: 10px 0;
 }
 
 .blackBtn {
   cursor: pointer;
   width: 200px;
+  max-width: 45%;
   height: 45px;
   background-color: black;
   color: #ffffff;
@@ -108,13 +87,15 @@
   border-radius: 5px;
   border: none;
   font-weight: bold;
+  margin: 10px 0;
 }
 
 .addTaskBtn {
   display: block;
-  margin: auto;
+  margin: 5px auto;
   cursor: pointer;
   width: 263px;
+  max-width: 80%;
   height: 45px;
   background-color: black;
   color: #ffffff;

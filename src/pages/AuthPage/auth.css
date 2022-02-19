@@ -1,73 +1,70 @@
 .content {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: 750px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  place-items: center;
+  width: 100%;
+  height: 100vh;
 }
-.main-form{
-    height: 80%;
-    background-color: #ffffff;
-    margin-top: 50px;
-    display: inline-flex;
-    overflow: hidden;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+.main-form {
+  min-height: 80%;
+  background-color: #ffffff;
+  display: inline-flex;
+  overflow: hidden;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .white-side {
-    width: 50%;
-    height: 100%;
-    padding: 20px;
+  width: 50%;
+  height: 100%;
+  padding: 20px;
 }
 .black {
-    width: 50%;
-    height: 100%;
-    padding: 20px;
-
-    background-color: black;
-    display: grid;
-    place-items: center;
-    color: aliceblue;
-    text-align: center;
+  width: 50%;
+  padding: 20px;
+  background-color: black;
+  display: grid;
+  place-items: center;
+  color: aliceblue;
+  text-align: center;
 }
 
 .f-inputs {
-    display: block;
-    margin-top: 10px;
+  display: block;
+  margin-top: 10px;
 }
 
-.btn-auth{
-    width: 102%;
-    height: 11%;
-    background-color: black;
-    color: #ffffff;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
+.btn-auth {
+  width: 102%;
+  height: 11%;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
 }
 
-
-.input-auth{
-    width: 96%;
-    height: 11%;
-    font-size: initial;
-    padding: 11px;
-    margin-bottom: 3%; 
-    border-radius: 5px;
-    border: solid .5px;
-    border-color: #B4B6C4;
-    color: #B4B6C4;
+.input-auth {
+  width: 96%;
+  height: 11%;
+  font-size: initial;
+  padding: 11px;
+  margin-bottom: 3%;
+  border-radius: 5px;
+  border: solid 0.5px;
+  border-color: #b4b6c4;
+  color: #b4b6c4;
 }
-.login-text{
-   margin-bottom: 9%; 
+.login-text {
+  margin-bottom: 9%;
 }
-.person-img{
-    margin-top: 70px;
+.person-img {
+  margin-top: 70px;
 }
-.f-inputs{
-    width: 100%;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    margin-top: 10px;
+.f-inputs {
+  width: 100%;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 10px;
 }
