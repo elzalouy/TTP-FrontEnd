@@ -7,6 +7,7 @@ import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
 import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
+import projectManagers from "./pages/ProjectManagers/projectManagers";
 import Projects from "./pages/Projects/projects";
 
 type Props = {};
@@ -22,6 +23,10 @@ const App: React.FC<Props> = () => {
           <LoggedInContainer path="/Projects" component={Projects} />
           <LoggedInContainer path="/Departments" component={departments} />
           <LoggedInContainer path="/Clients" component={clients} />
+          <LoggedInContainer
+            path="/ProjectManagers"
+            component={projectManagers}
+          />
         </Switch>
       </BrowserRouter>
     </div>
