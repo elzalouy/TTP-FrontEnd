@@ -19,49 +19,50 @@ const CreateNewClient: React.FC<Props> = () => {
         }}
       >
         <img src={IMAGES.plus} alt="add" />
-        <Typography style={{ fontWeight: "normal" }}>
-          Create new client
-        </Typography>
+        <Typography>Create new client</Typography>
       </Box>
+
       <PopUp show={Show} widthSize="30vw">
-        <Box>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
-            onClick={() => {
-              setShow("none");
-            }}
+        <Box sx={{ paddingLeft: "15px" }}>
+          <Box>
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+              onClick={() => {
+                setShow("none");
+              }}
+            />
+          </Box>
+
+          <Typography className="new-client-title">Add new client</Typography>
+          <Box style={{ marginBottom: "20px", marginTop: "20px" }}>
+            <img src={IMAGES.imgupload} alt="" />
+          </Box>
+          <label className="label-client">Client Name</label>
+          <input
+            className="input-client"
+            type="text"
+            placeholder="Ex: Ahmad Ali"
           />
-        </Box>
 
-        <Typography className="new-client-title">Add new Client</Typography>
-        <Box style={{ marginBottom: "20px", marginTop: "20px" }}>
-          <img src={IMAGES.imgupload} alt="" />
-        </Box>
-        <label className="label-client">Client Name</label>
-        <input
-          className="input-client"
-          type="text"
-          placeholder="Ex: Ahmad Ali"
-        />
+          <br />
 
-        <br />
-
-        <Box className="controllers">
-          <button
-            className="cancelBtn"
-            onClick={() => {
-              setShow("none");
-            }}
-          >
-            Cancel
-          </button>
-          <button className="blackBtn" onClick={() => {}}>
-            Done
-          </button>
+          <Box className="controllers">
+            <button
+              className="cancelBtn"
+              onClick={() => {
+                setShow("none");
+              }}
+            >
+              Cancel
+            </button>
+            <button className="blackBtn" onClick={() => {}}>
+              Done
+            </button>
+          </Box>
         </Box>
       </PopUp>
     </>

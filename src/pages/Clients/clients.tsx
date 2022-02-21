@@ -1,4 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
 import { Box, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
@@ -43,66 +42,77 @@ const clients: React.FC<Props> = () => {
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
     },
   }));
 
   return (
-    <Box className="clients-page">
-      <Typography variant="h2" style={{ margin: "10px 0" }}>
-        Clients
-      </Typography>
-      <Box className="clients-settings">
-        <Box className="filter-icon">
-          <img src={IMAGES.sortout} alt="sortout" />
-        </Box>
-        <Box className="select-wrap">
-          <label>Sort By:</label>
-          <select className="select-filter" name="color">
-            <option value="Done">A To Z</option>
-            <option value="In progress">In progress</option>
-            <option value="To do">To do</option>
-          </select>
-        </Box>
-        <Box className="select-wrap">
-          <label>Date:</label>
-          <select className="select-filter" name="color">
-            <option value="All">Oldest To Newest</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </Box>
+    <Box className="clients-page" sx={{ width: "100%" }}>
+      <Box sx={{ paddingTop: "50px" }}>
+        <Typography
+          variant="h2"
+          style={{
+            margin: "10px 0",
+            paddingBottom: "20px",
+          }}
+        >
+          Clients
+        </Typography>
+        <Box className="clients-settings">
+          <Box className="filter-icon">
+            <img src={IMAGES.sortout} alt="sortout" />
+          </Box>
+          <Box className="clients-option">
+            <label>Sort By:</label>
+            <select className="select-filter" name="color">
+              <option value="A to Z">A to Z</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+          </Box>
+          <Box className="clients-option">
+            <label>Date:</label>
+            <select
+              style={{ paddingRight: "10px" }}
+              className="select-filter"
+              name="color"
+            >
+              <option value="Oldest to Newest">Oldest to Newest</option>
+              <option value="option 2">Option 2</option>
+              <option value="option 3">Option 3</option>
+            </select>
+          </Box>
 
-        <Box className="select-wrap">
-          <Box
-            sx={{ width: 300, mb: 0 }}
-            style={{ backgroundColor: "#fafafa" }}
-          >
-            <Search style={{ backgroundColor: "#fff", borderRadius: "10px" }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+          <Box>
+            <Box
+              sx={{ width: 280, mb: 0 }}
+              style={{ backgroundColor: "#fafafa" }}
+            >
+              <Search
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: "10px",
+                }}
+              >
+                <SearchIconWrapper>
+                  <img src={IMAGES.search} alt="" />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box className="all-clients">
-        <ClientCard />
-        <ClientCard />
-        <ClientCard />
-        <ClientCard />
-        <ClientCard />
+        <Box className="all-clients">
+          <ClientCard />
+          <ClientCard />
+          <ClientCard />
+          <ClientCard />
+          <ClientCard />
 
-        <CreateNewClient />
+          <CreateNewClient />
+        </Box>
       </Box>
     </Box>
   );

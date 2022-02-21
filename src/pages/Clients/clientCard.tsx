@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import IMAGES from "../../assets/img/index";
@@ -11,71 +11,90 @@ const clientCard: React.FC<Props> = () => {
         <Box className="cl-card-header">
           <Stack
             direction="row"
-            marginLeft="20px"
+            marginLeft="12px"
+            marginTop="12px"
             justifyContent="flex-start"
             alignItems="center"
           >
             <Box>
-              <img src={IMAGES.clients} alt="more" />
+              <img src={IMAGES.avatarClients} alt="avatar" />
             </Box>
             <Box
               style={{
                 marginLeft: "10px",
                 color: "#783DBD",
-                fontWeight: "normal",
               }}
             >
-              <Typography>Client Name</Typography>
-              <Typography variant="h6" style={{ color: "#808191" }}>
+              <Typography sx={{ fontWeight: "bold" }}>Client Name</Typography>
+              <Typography
+                variant="body2"
+                style={{ color: "#808191", fontSize: "12px" }}
+              >
                 12, Nov 2021
               </Typography>
             </Box>
           </Stack>
-          <Typography>
-            <img src={IMAGES.more} alt="more" />
+          <Typography style={{ padding: "12px" }}>
+            <img src={IMAGES.moreClient} alt="more" />
           </Typography>
         </Box>
 
-        <Box className="counter-container">
-          <Box className="InProgress" style={{ textAlign: "center" }}>
+        <Grid container className="counter-container">
+          <Grid
+            item
+            xs={4}
+            className="InProgress"
+            style={{ textAlign: "center" }}
+          >
             <Typography
-              style={{ color: "#808191", fontWeight: "normal" }}
+              sx={{ fontSize: 11 }}
+              variant="caption"
+              style={{ color: "#808191" }}
               className="counter-title"
             >
-              In Progress
+              In Progress Task
             </Typography>
-            <Typography>02</Typography>
-          </Box>
+            <Typography sx={{ fontWeight: "bold" }}>02</Typography>
+          </Grid>
 
           <hr
             style={{ color: "#B9B9B9", fontWeight: "normal" }}
             className="hrVertical"
           />
-          <Box className="InProgress" style={{ textAlign: "center" }}>
+          <Grid
+            item
+            xs={4.5}
+            className="InProgress"
+            style={{ textAlign: "center" }}
+          >
             <Typography
-              style={{ color: "#808191", fontWeight: "normal" }}
+              sx={{ fontSize: 11 }}
+              variant="caption"
+              style={{ color: "#808191" }}
               className="counter-title"
             >
-              In Progress
+              In Progress Project
             </Typography>
-            <Typography>02</Typography>
-          </Box>
+            <Typography sx={{ fontWeight: "bold" }}>02</Typography>
+          </Grid>
 
           <hr
             style={{ color: "#B9B9B9", fontWeight: "normal" }}
             className="hrVertical"
           />
 
-          <Box className="Done" style={{ textAlign: "center" }}>
+          <Grid item xs={3.5} className="Done" style={{ textAlign: "center" }}>
             <Typography
-              style={{ color: "#808191", fontWeight: "normal" }}
+              sx={{ fontSize: 11 }}
+              variant="caption"
+              style={{ color: "#808191" }}
               className="counter-title"
             >
               Done Project
             </Typography>
-            <Typography>10</Typography>
-          </Box>
-        </Box>
+            <Typography sx={{ fontWeight: "bold" }}>10</Typography>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
