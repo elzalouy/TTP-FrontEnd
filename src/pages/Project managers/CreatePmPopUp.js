@@ -1,5 +1,8 @@
 import React, { useState, useRef } from "react";
 import "./Pmcard.css";
+import Box from "@mui/material/Box";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+
 const CreatePmPopUp = (props) => {
   const [pm, setPm] = useState({
     img: "",
@@ -12,8 +15,6 @@ const CreatePmPopUp = (props) => {
   const onChange = (e) => {
     setPm({ ...pm, [e.target.name]: e.target.value });
   };
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,10 +32,29 @@ const CreatePmPopUp = (props) => {
         </span>
       </div>
       <form className="form-inputs">
-        <div className="img-border" onClick={onClick}>
-          <div className="add-img" >
-            +
-          </div>
+        <Box
+          alignItems="center"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "80px",
+            height: "80px",
+            border: 0.2,
+            borderStyle: "dashed",
+            borderColor: "#b4b6c4",
+            cursor: "pointer",
+            borderRadius: 1,
+            mb: 2,
+          }}
+          onClick={onClick}
+        >
+          <AddBoxOutlinedIcon
+              
+            sx={{
+              color: "#b4b6c4",
+            }}
+          ></AddBoxOutlinedIcon>
           <input
             type="file"
             ref={fileInput}
@@ -43,7 +63,7 @@ const CreatePmPopUp = (props) => {
             onChange={onChange}
             hidden
           />
-        </div>
+        </Box>
         <p className="file-name">{pm.img}</p>
         <label className="label">Project manager name</label>
         <div className="f-inputs">

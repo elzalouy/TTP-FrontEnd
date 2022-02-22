@@ -62,7 +62,7 @@ const Category = () => {
               py: 1,
               px: 2,
               border: 1,
-              borderRadius: "8px",
+              borderRadius: "16px",
               borderColor: "#e2e2ea",
             }}
           >
