@@ -44,7 +44,7 @@ const CreateCategoryPopUp = (props) => {
             className="input-auth"
             type="text"
             name="mainCategory"
-            placeholder="Category name"
+            placeholder="Ex: Al-shaqran"
             value={mainCategory}
             onChange={onMainChange}
           />
@@ -65,17 +65,20 @@ const CreateCategoryPopUp = (props) => {
           </div>
         </div>
         <div className="subcategories">
-          {subCategories.map((subcategory) => (
-            <div
-              className="subcategory"
-              key={subcategory}
-              onClick={() => {
-                removeSubCategory(subcategory);
-              }}
-            >
-              {subcategory}
-            </div>
-          ))}
+          {subCategories &&
+            subCategories.map((subcategory) => (
+              <div className="subcategory" key={subcategory}>
+                {subcategory}
+                <span
+                  className="remove-category"
+                  onClick={() => {
+                    removeSubCategory(subcategory);
+                  }}
+                >
+                  x
+                </span>
+              </div>
+            ))}
         </div>
         <div className="popup-btn">
           <button className="btn-cancel" onClick={props.handleClose}>
