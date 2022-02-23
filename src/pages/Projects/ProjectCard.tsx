@@ -51,9 +51,9 @@ const ProjectCard: React.FC<Props> = ({ status }) => {
       color: "black",
       backgroundColor:
         status === "In progress" ? borderColor[0] : borderColor[1],
+      font: "normal normal normal 14px/35px Cairo",
     },
     tbody: {
-      height: 50,
       backgroundColor: status === "In progress" ? "#FBF5E2" : "#E1F3F5",
     },
     tcellLeft: {
@@ -77,6 +77,8 @@ const ProjectCard: React.FC<Props> = ({ status }) => {
 
       borderTopRightRadius: "10px",
       borderBottomRightRadius: "10px",
+      fontWeight: 600,
+      fontSize: "26px",
       color: "#707683",
     },
     tcellCenter: {
@@ -88,8 +90,6 @@ const ProjectCard: React.FC<Props> = ({ status }) => {
       color: "#707683",
     },
     tcellCenterTask: {
-      textAlign: "center",
-      alignItems: "center",
       borderBottom:
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
 
@@ -192,8 +192,12 @@ const ProjectCard: React.FC<Props> = ({ status }) => {
                     {project.startDate}
                   </TableCell>
                   <TableCell className={classes.tcellCenterTask} align="right">
-                    <CheckCircleOutlinedIcon></CheckCircleOutlinedIcon>
-                    {project.tasks}
+                    <h3>
+                      <CheckCircleOutlinedIcon
+                        sx={{ color: "#707683" }}
+                      ></CheckCircleOutlinedIcon>
+                      {project.tasks}
+                    </h3>
                   </TableCell>
                   <TableCell className={classes.tcellCenter} align="right">
                     {project.teamName}
