@@ -88,13 +88,13 @@ const CreateNewProject: React.FC<Props> = () => {
           }}
           sx={{
             backgroundColor: "#E8E8E8",
-            border: "3px solid #9FA1AB",
+            border: "2px solid #9FA1AB",
             borderRadius: "10px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
-            py: 0.9,
+            py: 0.6,
           }}
         >
           <AddBoxOutlinedIcon sx={{ color: "black" }}></AddBoxOutlinedIcon>
