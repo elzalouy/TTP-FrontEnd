@@ -9,6 +9,7 @@ import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
 import projectManagers from "./pages/ProjectManagers/projectManagers";
 import Projects from "./pages/Projects/projects";
+import tasks from "./pages/Tasks/tasks";
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const App: React.FC<Props> = () => {
             path="/ProjectManagers"
             component={projectManagers}
           />
+          <LoggedInContainer path="/Tasks" component={tasks} />
         </Switch>
       </BrowserRouter>
     </div>

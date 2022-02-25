@@ -22,6 +22,7 @@ const IMAGES = {
   more: require("./more.SVG").default,
   avatarClients: require("./avatarClients.svg").default,
   search: require("./search.svg").default,
+  progressCircles: require("./progressCircles.svg").default,
   moreClient: require("./moreClient.svg").default,
 };
 export default IMAGES;
