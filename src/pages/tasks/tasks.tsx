@@ -237,6 +237,11 @@ const tasks: React.FC<Props> = () => {
           disableColumnSelector
         />
       </div>
+
+      <div className="loading-card">
+        <img src={IMAGES.smallLoading} alt="loading" />
+        <p>Loading more</p>
+      </div>
     </div>
   );
 };
