@@ -11,7 +11,7 @@ import * as React from "react";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../components/SearchBox";
 import DeleteTask from "./DeleteTask";
-import "./tasks.css";
+import "./TasksListView.css";
 const cellsData = [
   {
     id: 1,

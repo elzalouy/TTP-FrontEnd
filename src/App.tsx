@@ -7,7 +7,7 @@ import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
 import departments from "./pages/Departments/departments";
 import Projects from "./pages/Projects/projects";
-import tasks from "./pages/Tasks/tasks";
+import TasksListView from "./pages/TasksListView/TasksListView";
 
 type Props = {};
 
@@ -21,7 +21,7 @@ const App: React.FC<Props> = () => {
           <Route path="/RestPassword" component={RestPassword} />
           <LoggedInContainer path="/Projects" component={Projects} />
           <LoggedInContainer path="/Departments" component={departments} />
-          <LoggedInContainer path="/Tasks" component={tasks} />
+          <LoggedInContainer path="/Tasks" component={TasksListView} />
         </Switch>
       </BrowserRouter>
     </div>
