@@ -1,0 +1,76 @@
+.done-task {
+  border-radius: 20px;
+  background-color: #e1f3f5;
+  min-height: 400px;
+  margin-right: 20px;
+}
+.not-clear-task {
+  border-radius: 20px;
+  background-color: #f7f0e7;
+  min-height: 400px;
+  margin-right: 20px;
+}
+.canceled-task {
+  border-radius: 20px;
+  background-color: #f7e6e7;
+  min-height: 400px;
+}
+.not-clear-header {
+  background-color: #f0ddc3;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.done-header {
+  background-color: #b4e5e9;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.canceled-header {
+  background-color: #f1cbcc;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.done-border {
+  border: #00aaba4b solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.not-clear-border {
+  border: #d2903456 solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.canceled-border {
+  border: #d2343441 solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.task-broad-settings {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+/* filters */
+.task-option {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0 10px 0 10px;
+  background-color: #ffffff;
+}
+
+.task-option label {
+  width: inherit;
+  color: #777;
+  padding: 2px 8px 0;
+}
