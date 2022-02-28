@@ -3,12 +3,12 @@ import { Box } from "@mui/system";
 import React from "react";
 import IMAGES from "../../assets/img";
 import DragField from "./DragField";
-import "./taskViewBroad.css";
+import "./taskViewBoard.css";
 
 type Props = {};
-const taskViewBroad: React.FC<Props> = () => {
+const taskViewBoard: React.FC<Props> = () => {
   return (
-    <Box className="clients-page" sx={{ width: "100%" }}>
+    <Box className="task-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "50px", marginBottom: "20px" }}>
         <Stack
           direction="row"
@@ -54,4 +54,4 @@ const taskViewBroad: React.FC<Props> = () => {
   );
 };
 
-export default taskViewBroad;
+export default taskViewBoard;

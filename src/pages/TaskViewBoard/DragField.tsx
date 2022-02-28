@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../assets/img";
 import TaskCard from "./taskCard";
 import { taskDataCanceled, taskDataDone, taskDataNotClear } from "./taskData";
-import "./taskViewBroad.css";
+import "./taskViewBoard.css";
 const columnsUsed = {
   [uuidv4()]: {
     name: "Done",
