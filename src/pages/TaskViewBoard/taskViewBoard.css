@@ -79,3 +79,15 @@
   color: #777;
   padding: 2px 8px 0;
 }
+.add-new-task {
+  cursor: pointer;
+  border: #9fa1ab solid 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #e8e8e8;
+  margin: 0 10px 10px 10px;
+  min-height: 50px;
+  font-weight: bold;
+}

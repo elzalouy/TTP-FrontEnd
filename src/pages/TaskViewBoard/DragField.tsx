@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../assets/img";
+import CreateNewTask from "./CreateNewTask";
 import TaskCard from "./taskCard";
 import { taskDataCanceled, taskDataDone, taskDataNotClear } from "./taskData";
 import "./taskViewBoard.css";
@@ -14,6 +15,7 @@ const columnsUsed = {
     header: "done-header",
     body: "done-task",
     border: "done-border",
+    NewTask: <CreateNewTask />,
   },
   [uuidv4()]: {
     name: "Not clear",
@@ -118,6 +120,7 @@ const DragField: React.FC<Props> = () => {
                         </Box>
                       );
                     })}
+                    {column.NewTask}
                     {provided.placeholder}
                   </Grid>
                 );
