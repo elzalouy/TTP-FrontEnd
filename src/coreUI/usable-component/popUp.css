@@ -16,8 +16,8 @@
 .pop-up {
   width: 50vw;
   background-color: white;
-  min-height: 300px;
-  max-height: 95vh;
+  min-height: 100px;
+
   padding: 20px;
   animation: zoomIn 0.3s;
   overflow: auto;

@@ -2,12 +2,12 @@ import "./slider.css";
 import React, { useState } from "react";
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-
+import { Link, NavLink } from "react-router-dom";
 import { ReactComponent as OverView } from './../../../assets/img/taskviewiconCopy.svg';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import IMAGES from './../../../assets/img';
 import { BurgerIcon, Logo } from "../../../coreUI/usable-elements/images";
-
+//inbox active 
 type Props = {};
 
 const Sidebar: React.FC<Props> = () => {
@@ -35,52 +35,75 @@ const Sidebar: React.FC<Props> = () => {
             </div>
             <ul className="features-list">
                 <li className="features-item">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.Overviewicon} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Overview</Typography>}
-                    <span className="tooltip">Overview</span>
+                    <NavLink to="/Overview" activeClassName=" active">
+
+                        <img style={{ marginRight: "15px" }} src={IMAGES.Overviewicon} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Overview</Typography>}
+                        <span className="tooltip">Overview</span>
+                    </NavLink>
                 </li>
                 <li className="features-item">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.projectsicon} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Projects</Typography>}
-                </li>
-                <li className={`features-item inbox active ${toggle && 'active-toggel-width'}`}>
-                    <img style={{ marginRight: "15px" }} src={IMAGES.departments} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Departments</Typography>}
+                    <NavLink to="/Projects" activeClassName="active">
+                        <img style={{ marginRight: "15px" }} src={IMAGES.projectsicon} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Projects</Typography>}
+                    </NavLink>
                 </li>
                 <li className="features-item">
-                    <PersonOutlineIcon color="disabled" />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Project managers</Typography>}
+                    <NavLink to="/Departments" activeClassName=" active">
+                        <img style={{ marginRight: "15px" }} src={IMAGES.departments} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Departments</Typography>}
+                    </NavLink>
                 </li>
                 <li className="features-item">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.clients} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Clients</Typography>}
+                    <NavLink to="/ProjectManagers" activeClassName="active">
+
+                        <PersonOutlineIcon sx={{ color: "primary.light", marginRight: "15px" }} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Project managers</Typography>}
+                    </NavLink>
                 </li>
                 <li className="features-item">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.tasks} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Tasks</Typography>}
+                    <NavLink to="/Clients" activeClassName="active">
+
+                        <img style={{ marginRight: "15px" }} src={IMAGES.clients} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Clients</Typography>}
+                    </NavLink>
                 </li>
                 <li className="features-item">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.categories} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Category</Typography>}
+                    <NavLink to="/Tasks" activeClassName=" active">
+
+                        <img style={{ marginRight: "15px" }} src={IMAGES.tasks} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Tasks</Typography>}
+                    </NavLink>
+                </li>
+                <li className="features-item">
+                    <NavLink to="/Category" activeClassName=" active">
+
+                        <img style={{ marginRight: "15px" }} src={IMAGES.categories} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Category</Typography>}
+                    </NavLink>
                 </li>
                 <Divider variant="middle" />
                 <li className="align-item">
                     <i className="bx bx-message-square-error features-item-icon"></i>
                     {!toggle && <Typography fontSize={'11px'} color='primary.light' variant="subtitle1" component="span">
                         Insights</Typography>}
+
                 </li>
                 <li className="features-item spam">
-                    <img style={{ marginRight: "15px" }} src={IMAGES.notification} />
-                    {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
-                        Notifications</Typography>}
-                    <span className="tooltip">Notifications</span>
+                    <NavLink to="/Notifications" activeClassName="inbox active">
+
+                        <img style={{ marginRight: "15px", color: 'primary.light' }} src={IMAGES.notification} />
+                        {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
+                            Notifications</Typography>}
+                        <span className="tooltip">Notifications</span>
+                    </NavLink>
                 </li>
             </ul>
             <div className="user-information">
