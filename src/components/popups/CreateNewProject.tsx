@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./createNewProject.css";
-import IMAGES from ".././../assets/img/index";
+import "./popups-style.css";
+import IMAGES from "../../assets/img/index";
 import PopUp from "../../coreUI/usable-component/popUp";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -8,6 +8,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
 type Props = {};
+
 interface taskData {
   taskName: string;
   department: string;
@@ -16,7 +17,9 @@ interface taskData {
   Description: string;
   SubCategory: string;
   AttachCard: string;
+  files: any;
 }
+
 const CreateNewProject: React.FC<Props> = () => {
   const [currentStep, setcurrentStep] = useState(0);
   const [Show, setShow] = useState<string>("none");
@@ -28,22 +31,23 @@ const CreateNewProject: React.FC<Props> = () => {
     Description: "",
     SubCategory: "",
     AttachCard: "",
+    files: [],
   });
+
   const [AllTasks, setAllTasks] = useState<taskData[]>([]);
   const steps = ["Project", "Tasks"];
 
-  console.log(Task);
   return (
     <div>
       <button
-        className="btn-pm"
+        className="black-btn"
         onClick={() => {
           setShow("flex");
         }}
       >
         Create new Project
       </button>
-      <PopUp show={Show}>
+      <PopUp show={Show} minWidthSize="50vw">
         <div>
           <img
             className="closeIcon"
@@ -72,19 +76,19 @@ const CreateNewProject: React.FC<Props> = () => {
           <div>
             <div className="inputs-grid">
               <div>
-                <label className="label-project">Project title</label>
-                <br />{" "}
+                <label className="popup-label">Project title</label>
+
                 <input
-                  className="input-project"
+                  className="popup-input"
                   type="text"
                   placeholder="Project name"
                 />
               </div>
 
               <div>
-                <label className="label-project">Client name</label>
-                <br />
-                <select className="select-project">
+                <label className="popup-label">Client name</label>
+
+                <select className="popup-select">
                   <option value="0">Ahmed</option>
                   <option value="1">option 2 </option>
                   <option value="2">option 3</option>
@@ -92,15 +96,15 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Deadline date</label>
-                <br />
-                <input className="input-project" type="date" />
+                <label className="popup-label">Deadline date</label>
+
+                <input className="popup-input" type="date" />
               </div>
 
               <div>
-                <label className="label-project">Project manager</label>
-                <br />
-                <select className="select-project">
+                <label className="popup-label">Project manager</label>
+
+                <select className="popup-select">
                   <option value="0">Abdullah</option>
                   <option value="1">option 2 </option>
                   <option value="2">option 3 </option>
@@ -108,18 +112,19 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Description</label>
-                <br />
+                <label className="popup-label">Description</label>
+
                 <textarea
-                  className="textarea-project"
-                  rows={3}
+                  maxLength={75}
+                  className="popup-textarea"
+                  rows={4}
                   placeholder="Write about your project"
                 />
               </div>
             </div>
             <div className="controllers">
               <button
-                className="cancelBtn"
+                className="controllers-cancel"
                 onClick={() => {
                   setcurrentStep(0);
                   setShow("none");
@@ -128,7 +133,7 @@ const CreateNewProject: React.FC<Props> = () => {
                 Cancel
               </button>
               <button
-                className="blackBtn"
+                className="controllers-done"
                 onClick={() => {
                   setcurrentStep(1);
                 }}
@@ -142,10 +147,10 @@ const CreateNewProject: React.FC<Props> = () => {
           <div className="step2">
             <div className="inputs-grid">
               <div>
-                <label className="label-project">Task name</label>
-                <br />
+                <label className="popup-label">Task name</label>
+
                 <input
-                  className="input-project"
+                  className="popup-input"
                   type="text"
                   placeholder="Task name"
                   value={Task.taskName}
@@ -157,10 +162,10 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Department name</label>
-                <br />
+                <label className="popup-label">Department name</label>
+
                 <select
-                  className="select-project"
+                  className="popup-select"
                   onChange={(e) => {
                     Task.department = e.target.value;
                     setTask({ ...Task });
@@ -173,10 +178,10 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Deadline date</label>
-                <br />
+                <label className="popup-label">Deadline date</label>
+
                 <input
-                  className="input-project"
+                  className="popup-input"
                   type="date"
                   value={Task.deadline}
                   onChange={(e) => {
@@ -186,10 +191,10 @@ const CreateNewProject: React.FC<Props> = () => {
                 />
               </div>
               <div>
-                <label className="label-project">Category</label>
-                <br />
+                <label className="popup-label">Category</label>
+
                 <select
-                  className="select-project"
+                  className="popup-select"
                   onChange={(e) => {
                     Task.Category = e.target.value;
                     setTask({ ...Task });
@@ -202,11 +207,12 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Description</label>
-                <br />
+                <label className="popup-label">Description</label>
+
                 <textarea
-                  className="textarea-project"
-                  rows={3}
+                  maxLength={75}
+                  className="popup-textarea"
+                  rows={4}
                   placeholder="Write about your task"
                   value={Task.Description}
                   onChange={(e) => {
@@ -217,10 +223,10 @@ const CreateNewProject: React.FC<Props> = () => {
               </div>
 
               <div>
-                <label className="label-project">Sub category</label>
-                <br />
+                <label className="popup-label">Sub category</label>
+
                 <select
-                  className="select-project"
+                  className="popup-select"
                   onChange={(e) => {
                     Task.SubCategory = e.target.value;
                     setTask({ ...Task });
@@ -231,11 +237,10 @@ const CreateNewProject: React.FC<Props> = () => {
                   <option value="2">option</option>
                 </select>
 
-                <br />
-                <label className="label-project">Attach card</label>
-                <br />
+                <label className="popup-label">Attach card</label>
+
                 <select
-                  className="select-project"
+                  className="popup-select"
                   onChange={(e) => {
                     Task.AttachCard = e.target.value;
                     setTask({ ...Task });
@@ -247,9 +252,52 @@ const CreateNewProject: React.FC<Props> = () => {
                 </select>
               </div>
             </div>
-            <div className="files">
-              <input type="file" />
+
+            <div className="row-wrap">
+              <div className="upload-btn-wrapper">
+                <button className="btnFile">
+                  <img src={IMAGES.fileicon} alt="Upload" /> {Task.files.length}
+                </button>
+                <input
+                  type="file"
+                  multiple
+                  className="custom-file-input"
+                  onChange={(e) => {
+                    console.log(e.target.files);
+                    const files = (e.target as HTMLInputElement).files;
+                    if (files == null) Task.files = [];
+                    else if (files.length != null) {
+                      Task.files = files;
+                    }
+
+                    setTask({ ...Task });
+                  }}
+                />
+              </div>
+
+              {Array.from(Task.files).map((el: any, i) => {
+                return (
+                  <div key={i} className="added-file">
+                    <p className="title-added-file">{el.name}</p>
+                    <img
+                      src={IMAGES.closeicon}
+                      alt="close"
+                      width="9"
+                      height="9"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        let newFileList = Array.from(Task.files);
+                        newFileList.splice(i, 1);
+                        Task.files = newFileList;
+                        setTask({ ...Task });
+                        console.log(Task);
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
+
             <div>
               <button
                 type="submit"
@@ -264,6 +312,7 @@ const CreateNewProject: React.FC<Props> = () => {
                     Description: "",
                     SubCategory: "",
                     AttachCard: "",
+                    files: [],
                   });
                 }}
               >
@@ -312,7 +361,7 @@ const CreateNewProject: React.FC<Props> = () => {
             </div>
             <div className="controllers">
               <button
-                className="cancelBtn"
+                className="controllers-cancel"
                 onClick={() => {
                   setcurrentStep(0);
                   setShow("none");
@@ -320,7 +369,7 @@ const CreateNewProject: React.FC<Props> = () => {
               >
                 Cancel
               </button>
-              <button className="blackBtn">Done</button>
+              <button className="controllers-done">Done</button>
             </div>
           </div>
         ) : null}

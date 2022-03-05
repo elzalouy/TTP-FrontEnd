@@ -1,27 +1,27 @@
 import React from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
-import "./CreateNewDepartment.css";
 import { useState } from "react";
+import "./popups-style.css";
 
 type Props = {};
 
-const CreateNewDepartment: React.FC<Props> = () => {
+const EditDepartment: React.FC<Props> = () => {
   const [Show, setShow] = useState("none");
   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]);
   return (
     <>
-      <div
-        className="add-new-dep"
+      <button
+        className="black-btn"
         onClick={() => {
           setShow("flex");
         }}
       >
-        <img src={IMAGES.plus} alt="add" />
-        <p>Create new department</p>
-      </div>
-      <PopUp show={Show} widthSize="30vw">
+        Edit department
+      </button>
+
+      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
         <div>
           <img
             className="closeIcon"
@@ -35,26 +35,26 @@ const CreateNewDepartment: React.FC<Props> = () => {
           />
         </div>
 
-        <p className="new-department-title">Create new department</p>
+        <p className="popup-title">Edit department</p>
 
-        <label className="label-department">Department name</label>
+        <label className="popup-label">Department name</label>
         <input
-          className="input-department"
+          className="popup-input"
           type="text"
           placeholder="Department name"
         />
 
-        <label className="label-department">Color</label>
-        <select className="select-department">
+        <label className="popup-label">Color</label>
+        <select className="popup-select">
           <option value="#FFFFFF">#FFFFFF</option>
           <option value="1">option 2 </option>
           <option value="2">option 3</option>
         </select>
 
-        <label className="label-department">Teams</label>
+        <label className="popup-label">Teams</label>
         <div className="add-teams-section">
           <select
-            className="select-department"
+            className="popup-select"
             onChange={(e) => {
               setData(e.target.value);
             }}
@@ -83,7 +83,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
                   alt="close"
                   width="9px"
                   height="9px"
-                  className="close-badge"
+                  className="pointer"
                   onClick={() => {
                     Names.splice(index, 1);
                     setNames([...Names]);
@@ -97,14 +97,14 @@ const CreateNewDepartment: React.FC<Props> = () => {
 
         <div className="controllers">
           <button
-            className="cancelBtn"
+            className="controllers-cancel"
             onClick={() => {
               setShow("none");
             }}
           >
             Cancel
           </button>
-          <button className="blackBtn" onClick={() => {}}>
+          <button className="controllers-done" onClick={() => {}}>
             Done
           </button>
         </div>
@@ -113,4 +113,4 @@ const CreateNewDepartment: React.FC<Props> = () => {
   );
 };
 
-export default CreateNewDepartment;
+export default EditDepartment;

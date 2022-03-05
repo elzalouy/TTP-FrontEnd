@@ -1,5 +1,5 @@
 import React from "react";
-import "./AddNewTeam.css";
+import "./popups-style.css";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
@@ -19,7 +19,7 @@ const AddNewTeam: React.FC<Props> = () => {
   return (
     <>
       <button
-        className="add-new-team-btn"
+        className="black-btn ml-auto"
         onClick={() => {
           setShow("flex");
         }}
@@ -27,7 +27,7 @@ const AddNewTeam: React.FC<Props> = () => {
         Add new team
       </button>
 
-      <PopUp show={Show} widthSize="30vw">
+      <PopUp show={Show} minWidthSize="30vw" >
         <div>
           <img
             className="closeIcon"
@@ -41,11 +41,11 @@ const AddNewTeam: React.FC<Props> = () => {
           />
         </div>
 
-        <p className="add-new-team-title">Add new team</p>
+        <p className="popup-title">Add new team</p>
 
-        <label className="label-department">Team name</label>
+        <label className="popup-label">Team name</label>
         <input
-          className="input-department"
+          className="popup-input"
           type="text"
           placeholder="EX: Al-shaqran"
           onChange={(e) => {
@@ -55,9 +55,9 @@ const AddNewTeam: React.FC<Props> = () => {
           value={Team.name}
         />
 
-        <label className="label-department">Department</label>
+        <label className="popup-label">Department</label>
         <select
-          className="select-department"
+          className="popup-select"
           onChange={(e) => {
             Team.department = e.target.value;
             setTeam({ ...Team });
@@ -87,7 +87,6 @@ const AddNewTeam: React.FC<Props> = () => {
           {AllTeam.map((el, index) => {
             return (
               <tr>
-                {/* {console.log(el.name)} */}
                 <td>{el.name}</td>
                 <td>Ust ID</td>
                 <td>
@@ -107,14 +106,14 @@ const AddNewTeam: React.FC<Props> = () => {
 
         <div className="controllers">
           <button
-            className="cancelBtn"
+            className="controllers-cancel"
             onClick={() => {
               setShow("none");
             }}
           >
             Cancel
           </button>
-          <button className="blackBtn" onClick={() => {}}>
+          <button className="controllers-done" onClick={() => {}}>
             Done
           </button>
         </div>
