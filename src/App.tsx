@@ -27,12 +27,12 @@ const App: React.FC<Props> = () => {
           {/* <Route path="/ProjectManagers" component={ProjectManagers} /> */}
           {/* <Route path="/Departments" component={departments} /> */}
           <Route path="/Tasks" component={tasks} />
-          <Route path="/AllPopsPage" component={AllPopsPage} />
-          <LoggedInContainer path="/Projects" component={Projects} />
-          <LoggedInContainer path="/Departments" component={departments} />
-          <LoggedInContainer path="/taskViewBoard" component={taskViewBoard} />
+          <Route path="/AllPopsPage" component={AllPopsPage} />  
+          <LoggedInContainer path="/Projects" component={Projects} /> 
+          <LoggedInContainer path="/Departments" component={departments} /> 
+          <LoggedInContainer path="/taskViewBoard" component={taskViewBoard} /> 
           <LoggedInContainer path="/clients" component={clients} />
-          <LoggedInContainer
+          <LoggedInContainer 
             path="/projectManagers"
             component={ProjectManagers}
           />

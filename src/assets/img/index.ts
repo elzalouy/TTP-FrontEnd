@@ -28,18 +28,18 @@ const IMAGES = {
   imgupload: require("./imgupload.svg").default,
   more: require("./more.SVG").default,
   serachicon: require("./serachicon.SVG").default,
-  smallLoading: require("./smallLoading.SVG").default,
-  fileicon: require("./fileicon.SVG").default,
-  edit: require("./edit.SVG").default,
-  avatarClients: require("./avatarClients.svg").default,
-  search: require("./search.svg").default,
-  scheduleOrange: require("./scheduleOrange.svg").default,
+  smallLoading: require("./smallLoading.SVG").default, 
+  fileicon: require("./fileicon.SVG").default, 
+  edit: require("./edit.SVG").default, 
+  avatarClients: require("./avatarClients.svg").default, 
+  search: require("./search.svg").default, 
+  scheduleOrange: require("./scheduleOrange.svg").default, 
   arrow: require("./arrow.svg").default,
   taskFilter: require("./taskFilter.svg").default,
   arrowHeader: require("./arrowHeader.svg").default,
   moreClient: require("./moreClient.svg").default,
 };
-export default IMAGES;
+export default IMAGES; 
 // import img from "../../assets"
 // import Ttp from "../../assets/img/ttp_logo.png"
 // import avatar from "../../assets/img/avatar.SVG"
