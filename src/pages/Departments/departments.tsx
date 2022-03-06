@@ -40,7 +40,7 @@ const departments: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
+      
         <CreateNewTeam />
       </div>
       <div className="all-departments">
