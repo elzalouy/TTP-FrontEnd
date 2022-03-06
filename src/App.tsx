@@ -36,10 +36,13 @@ const App: React.FC<Props> = () => {
             path="/projectManagers"
             component={ProjectManagers}
           />
-        </Switch>
+        </Switch>  
       </BrowserRouter>
-    </div>
+    </div> 
   );
 };
 
 export default App;
+
+
+
