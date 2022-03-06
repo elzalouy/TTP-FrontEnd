@@ -21,7 +21,6 @@
 .department-Card {
   background-color: #e1edf6;
   border-radius: 20px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.10196078431372549);
   padding: 10px;
 }
 
@@ -39,7 +38,7 @@
   color: #0079bf;
 }
 
-.tasks-count > img {
+.tasks-count>img {
   margin-right: 5px;
 }
 
@@ -85,6 +84,7 @@
   flex: 1;
   padding: 2%;
 }
+
 .Done {
   flex: 1;
   padding: 2%;
@@ -115,7 +115,7 @@
   border-radius: 10px;
   margin: 10px;
   padding: 0;
-  width: 200px;
+  min-width: 150px;
   background-color: #ffffff;
 }
 

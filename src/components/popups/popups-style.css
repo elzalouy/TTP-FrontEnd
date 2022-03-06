@@ -1,0 +1,348 @@
+.black-btn {
+  cursor: pointer;
+  /* margin-left: auto; */
+  background-color: black;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  height: 35px;
+  padding: 5px 10px;
+  font-weight: 600;
+}
+
+.controllers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.controllers-cancel {
+  cursor: pointer;
+  width: 200px;
+  max-width: 45%;
+  height: 45px;
+  background-color: #f4f4f4;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.controllers-done {
+  cursor: pointer;
+  width: 200px;
+  max-width: 45%;
+  height: 45px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.controllers-delete {
+  cursor: pointer;
+  width: 200px;
+  max-width: 45%;
+  height: 45px;
+  background-color: #ff1a1a;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.popup-title {
+  color: #30bcc7;
+  font-weight: 600;
+}
+
+.popup-label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px 0 !important;
+}
+
+.popup-input {
+  width: 100%;
+  font-size: initial;
+  padding: 11px;
+  border-radius: 5px;
+  border: solid 0.5px;
+  border-color: #b4b6c4;
+  color: #b4b6c4;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.closeIcon {
+  float: right;
+  cursor: pointer;
+}
+
+.popup-select {
+  width: 100%;
+  padding: 11px;
+  border: solid 0.5px #b4b6c4;
+  border-radius: 5px;
+  color: #1f1f1f;
+  margin-top: 5px;
+}
+
+.addTaskBtn {
+  display: block;
+  margin: 5px auto;
+  cursor: pointer;
+  width: 263px;
+  max-width: 80%;
+  height: 45px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btnFile {
+  border: 0;
+  color: white;
+  background-color: #00acba;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.custom-file-input {
+  cursor: pointer;
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.row-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.added-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f5;
+  color: #92929d;
+  margin: 0 5px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.title-added-file {
+  padding: 0 5px;
+}
+
+.separator {
+  width: 100%;
+  margin-top: 5px;
+  border: 0.5px solid #ebeff2;
+}
+
+.warning-text {
+  margin: 20px 10px;
+}
+
+.margin-cover {
+  margin: 5px 10px;
+}
+
+.orange-btn {
+  background-color: #ffc500;
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100px;
+  margin: 5px 0 0 5px;
+}
+
+.add-teams-section {
+  width: 100%;
+  display: flex;
+}
+
+.names-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.team-name-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  margin: 5px;
+  min-width: 50px;
+  padding: 5px;
+}
+
+.name-of-badge {
+  padding: 0 10px 0 0;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.popup-textarea {
+  width: 100%;
+  font-size: initial;
+  padding: 11px;
+  border-radius: 5px;
+  border: solid 0.5px;
+  border-color: #b4b6c4;
+  color: #b4b6c4;
+  margin: 0;
+  margin-top: 5px;
+  font-family: "Cairo", sans-serif;
+}
+
+table.allTask-table {
+  margin: 15px 0;
+  width: 100%;
+  background-color: #fcfcfc;
+  border: 0px !important;
+  color: rgb(83, 83, 83);
+}
+
+table.allTask-table,
+tr {
+  border-style: solid;
+  border-collapse: collapse;
+}
+tr {
+  border: 0px solid;
+  border-bottom: 1px solid rgb(197, 197, 197);
+}
+
+table.allTask-table th {
+  text-align: left;
+}
+table.allTask-table td.deleteTd {
+  text-align: center;
+}
+
+/* CUSTOM OF MUI FOR STEPPER */
+
+.MuiStepIcon-root.Mui-active {
+  color: #00acba !important;
+}
+.MuiStepIcon-root.Mui-completed {
+  color: #00acba !important;
+}
+
+.MuiStepLabel-label.Mui-active {
+  color: #00acba !important;
+  font-weight: bold !important;
+}
+
+.step2 {
+  animation: filling 0.5s;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.add-team-btn {
+  background-color: #ffc500;
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* TABLE ADD NEW TEAM */
+table.allTeam-table {
+  margin: 15px 0;
+  width: 100%;
+  background-color: #fcfcfc;
+  border: 0px !important;
+  color: rgb(83, 83, 83);
+}
+
+table.allTeam-table,
+tr {
+  border-style: solid;
+  border-collapse: collapse;
+}
+tr {
+  border: 0px solid;
+  border-bottom: 1px solid rgb(197, 197, 197);
+  height: 35px;
+}
+
+table.allTeam-table th {
+  text-align: left;
+}
+table.allTeam-table td.deleteTd {
+  text-align: center;
+}
+
+.add-new-dep {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #ededed;
+}
+
+.add-new-dep > img {
+  width: 22px;
+  height: 22px;
+}
+
+.add-new-dep > p {
+  padding: 5px;
+  font-weight: 600;
+}
+
+@keyframes filling {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
