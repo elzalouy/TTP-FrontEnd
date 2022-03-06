@@ -22,7 +22,7 @@ const App: React.FC<Props> = () => {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/ForgetPassword" component={Forget} />
-          <Route path="/RestPassword" component={RestPassword} />
+          <Route path="/RestPassword" component={RestPassword} /> 
           {/* <Route path="/Projects" component={Projects} /> */}
           {/* <Route path="/ProjectManagers" component={ProjectManagers} /> */}
           {/* <Route path="/Departments" component={departments} /> */}
