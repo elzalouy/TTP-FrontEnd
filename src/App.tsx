@@ -5,10 +5,9 @@ import LoggedInContainer from "./layout";
 import Forget from "./pages/AuthPage/forget";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
-import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
-import projectManagers from "./pages/ProjectManagers/projectManagers";
 import Projects from "./pages/Projects/projects";
+import taskViewBoard from "./pages/TaskViewBoard/taskViewBoard";
 
 type Props = {};
 
@@ -22,11 +21,7 @@ const App: React.FC<Props> = () => {
           <Route path="/RestPassword" component={RestPassword} />
           <LoggedInContainer path="/Projects" component={Projects} />
           <LoggedInContainer path="/Departments" component={departments} />
-          <LoggedInContainer path="/Clients" component={clients} />
-          <LoggedInContainer
-            path="/ProjectManagers"
-            component={projectManagers}
-          />
+          <LoggedInContainer path="/taskViewBoard" component={taskViewBoard} />
         </Switch>
       </BrowserRouter>
     </div>

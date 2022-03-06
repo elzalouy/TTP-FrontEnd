@@ -1,0 +1,97 @@
+.task-card {
+  border-radius: 20px;
+  padding: 10px;
+  margin: 0;
+}
+
+.task-card-header-done {
+  text-decoration: line-through;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.task-card-header-not-clear {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.task-card-header-canceled {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+.task-card-footer-done {
+  background-color: #b4e5e9;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-not-clear {
+  background-color: #f0ddc3;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-canceled {
+  background-color: #f1cbcc;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-timeline-done {
+  color: #ff974a;
+  font-weight: bold;
+  width: 100px;
+  background-color: #e4e9e3;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 10px 0px 0 0px;
+}
+.task-card-timeline-not-clear {
+  color: #0079bf;
+  width: 110px;
+  font-weight: bold;
+  background-color: #dae6ef;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 10px 0px 0 0px;
+}
+.task-card-timeline-canceled {
+  color: #d23434;
+  width: 80px;
+  font-weight: bold;
+  background-color: #f1cbcc;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 10px 0px 0 0px;
+}
+.onTime {
+  color: #00acba;
+  width: 90px;
+  font-weight: bold;
+  background-color: #b4e5e9;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 10px 0px 0 0px;
+}
+.aft-red {
+  color: #ff0000;
+  width: 110px;
+  font-weight: bold;
+  background-color: #e4dadc;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 10px 0px 0 0px;
+}
+.fileUpload {
+  color: #783dbd;
+  width: 120px;
+  font-weight: bold;
+  background-color: #d6e0ef;
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin: 0px 0px 0 5px;
+}
