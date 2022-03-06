@@ -22,27 +22,33 @@ const App: React.FC<Props> = () => {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/ForgetPassword" component={Forget} />
-          <Route path="/RestPassword" component={RestPassword} /> 
+          <Route path="/RestPassword" component={RestPassword} />
           {/* <Route path="/Projects" component={Projects} /> */}
           {/* <Route path="/ProjectManagers" component={ProjectManagers} /> */}
           {/* <Route path="/Departments" component={departments} /> */}
           <Route path="/Tasks" component={tasks} />
-          <Route path="/AllPopsPage" component={AllPopsPage} />  
-          <LoggedInContainer path="/Projects" component={Projects} /> 
-          <LoggedInContainer path="/Departments" component={departments} /> 
-          <LoggedInContainer path="/taskViewBoard" component={taskViewBoard} /> 
+          <Route path="/AllPopsPage" component={AllPopsPage} />
+          <LoggedInContainer path="/Projects" component={Projects} />
+          <LoggedInContainer path="/Departments" component={departments} />
+          <LoggedInContainer path="/taskViewBoard" component={taskViewBoard} />
           <LoggedInContainer path="/clients" component={clients} />
-          <LoggedInContainer 
+          <LoggedInContainer
             path="/projectManagers"
             component={ProjectManagers}
           />
-        </Switch>  
+        </Switch>
       </BrowserRouter>
-    </div> 
+    </div>
   );
 };
 
 export default App;
+
+
+
+
+
+
 
 
 
