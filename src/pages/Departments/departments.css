@@ -38,7 +38,7 @@
   color: #0079bf;
 }
 
-.tasks-count > img {
+.tasks-count>img {
   margin-right: 5px;
 }
 
@@ -84,6 +84,7 @@
   flex: 1;
   padding: 2%;
 }
+
 .Done {
   flex: 1;
   padding: 2%;
