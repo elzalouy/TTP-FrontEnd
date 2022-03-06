@@ -8,7 +8,7 @@ import RestPassword from "./pages/AuthPage/rest";
 import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
 import tasks from "./pages/tasks/tasks";
-import ProjectManagers from "./pages/projectManagers/projectManagers";
+import ProjectManagers from "./pages/ProjectManagers/projectManagers";
 import AllPopsPage from "./pages/AllPopsPage";
 import Projects from "./pages/Projects/projects";
 import taskViewBoard from "./pages/TaskViewBoard/taskViewBoard";
