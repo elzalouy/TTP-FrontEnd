@@ -1,5 +1,7 @@
 import React from "react";
 import IMAGES from "../../assets/img/index";
+// import AddNewTeam from "./AddNewTeam";
+// import CreateNewDepartment from "./CreateNewDepartment";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
 import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
