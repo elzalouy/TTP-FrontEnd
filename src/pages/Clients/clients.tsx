@@ -1,14 +1,46 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
-import IMAGES from "../../assets/img/index";
+import React, { useState, useEffect } from "react";
+import IMAGES from "../../assets/img";
 import SearchBox from "../../components/SearchBox";
-import ClientCard from "./clientCard";
 import "./clients.css";
 import CreateNewClient from "./CreateNewClient";
+import axios, { AxiosResponse } from 'axios';
+// import DeleteClient from './DeleteClient';
+import ClientCard from "./clientCard";
 
-type Props = {};
-const clients: React.FC<Props> = () => {
+
+type Props = {
+  id: string
+};
+
+export interface Client {
+  clientName: string,
+  image: string,
+  projectsId: string[],
+  createdAt: string,
+  _id: string
+}
+
+const Clients: React.FC<Props> = () => {
+  const [clients, setClients] = useState<Client[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const response: AxiosResponse = await axios.get('/api/getAllClients');
+      setClients(response.data);
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
+
+
     <Box className="clients-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "50px" }}>
         <Typography
@@ -56,16 +88,17 @@ const clients: React.FC<Props> = () => {
           </Box>
         </Box>
         <Box className="all-clients">
-          <ClientCard />
-          <ClientCard />
-          <ClientCard />
-          <ClientCard />
-          <ClientCard />
+          {clients.map((clientInfo: Client) => (
+            <>
+              <ClientCard client={clientInfo} />
 
+
+            </>
+          ))}
           <CreateNewClient />
         </Box>
       </Box>
     </Box>
   );
 };
-export default clients;
+export default Clients;

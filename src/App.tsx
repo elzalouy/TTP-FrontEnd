@@ -5,7 +5,7 @@ import LoggedInContainer from "./layout";
 import Forget from "./pages/AuthPage/forget";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
-import clients from "./pages/Clients/clients";
+import Clients from "./pages/Clients/Clients";
 import departments from "./pages/Departments/departments";
 import Projects from "./pages/Projects/projects";
 
@@ -21,7 +21,7 @@ const App: React.FC<Props> = () => {
           <Route path="/RestPassword" component={RestPassword} />
           <LoggedInContainer path="/Projects" component={Projects} />
           <LoggedInContainer path="/Departments" component={departments} />
-          <LoggedInContainer path="/Clients" component={clients} />
+          <LoggedInContainer path="/Clients" component={Clients} />
         </Switch>
       </BrowserRouter>
     </div>

@@ -1,11 +1,30 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
-import IMAGES from "../../assets/img/index";
+import React, { useState } from "react";
+import IMAGES from "../../assets/img";
+import { Client } from './Clients';
+import ClientDrop from './../../components/dropdowns/ClientDrop'
 
-type Props = {};
-const clientCard: React.FC<Props> = () => {
+interface IProps {
+  client: Client
+}
+
+const ClientCard: React.FC<IProps> = ({ client }) => {
+  const [tasksNumber, setTasksNumber] = useState(0);
+  const [inProgressProjects, setInProgressProjects] = useState(0);
+  const [doneProjects, setDoneProjects] = useState(0);
+
+  var t = new Date(client.createdAt);
+
+
+  var formatted =
+    (t.toString().split(' ')[0])
+    + ', ' + ('0' + t.getDate()).slice(-2)
+    + '/' + ('0' + (t.getMonth() + 1)).slice(-2)
+    + '/' + (t.getFullYear());
+
   return (
+
     <Box>
       <Box className="client-card">
         <Box className="cl-card-header">
@@ -17,7 +36,9 @@ const clientCard: React.FC<Props> = () => {
             alignItems="center"
           >
             <Box>
-              <img src={IMAGES.avatarClients} alt="avatar" />
+              {client.image.includes('') ? < img src={IMAGES.avatarClients} alt="avatar" /> : <img src={client.image} alt="avatar" />
+              }
+
             </Box>
             <Box
               style={{
@@ -25,17 +46,17 @@ const clientCard: React.FC<Props> = () => {
                 color: "#783DBD",
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>Client Name</Typography>
+              <Typography sx={{ fontWeight: "bold" }}>{client.clientName}</Typography>
               <Typography
                 variant="body2"
                 style={{ color: "#808191", fontSize: "12px" }}
               >
-                12, Nov 2021
+
               </Typography>
             </Box>
           </Stack>
           <Typography style={{ padding: "12px" }}>
-            <img src={IMAGES.moreClient} alt="more" />
+            <ClientDrop client={client} />
           </Typography>
         </Box>
 
@@ -54,7 +75,7 @@ const clientCard: React.FC<Props> = () => {
             >
               In Progress Task
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>02</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{tasksNumber}</Typography>
           </Grid>
 
           <hr
@@ -75,7 +96,7 @@ const clientCard: React.FC<Props> = () => {
             >
               In Progress Project
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>02</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{inProgressProjects}</Typography>
           </Grid>
 
           <hr
@@ -92,7 +113,7 @@ const clientCard: React.FC<Props> = () => {
             >
               Done Project
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>10</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{doneProjects}</Typography>
           </Grid>
         </Grid>
       </Box>
@@ -100,4 +121,4 @@ const clientCard: React.FC<Props> = () => {
   );
 };
 
-export default clientCard;
+export default ClientCard;
