@@ -1,5 +1,4 @@
 import React from "react";
-import CreateNewProject from "../../components/popups/CreateNewProject";
 import Sidebar from "../../layout/partials/Sidebar";
 // import CreateNewProject from "./createNewProject";
 import IMAGES from "../../assets/img/index";
@@ -8,10 +7,12 @@ import SearchBar from "../Category/SearchBar";
 import Box from "@mui/material/Box";
 import ProjectCard from "./ProjectCard";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
+import CreateNewProject from "../../components/popups/CreateNewProject";
 type Props = {};
 
 const projects: React.FC<Props> = () => {
   return (
+    <>
     <div className="departments-page">
       <h2 className="departments-title">Projects</h2>
       <div
@@ -89,6 +90,7 @@ const projects: React.FC<Props> = () => {
         </Box>
       </Box>
     </div>
+    </>
   );
 };
 

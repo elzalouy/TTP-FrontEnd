@@ -43,72 +43,17 @@ const CreateNewProject: React.FC<Props> = () => {
 
   return (
     <div>
-      <Box
-        id="project-container"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          borderRadius: "12px",
-          backgroundColor: "#F1F1F4",
-          p: 3,
-          mb: 5,
-          font: "normal normal 600 16px/30px Cairo",
-          color: "#505050",
+      <button
+        className="black-btn"
+        onClick={() => {
+          setShow("flex");
         }}
       >
-        <Box
-          id="project-header"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            mb: 1,
-          }}
-        >
-          Not started yet
-          {expanded ? (
-            <ArrowDropUpIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(false);
-              }}
-            ></ArrowDropUpIcon>
-          ) : (
-            <ArrowDropDownIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(true);
-              }}
-            ></ArrowDropDownIcon>
-          )}
-        </Box>
-
-        <Box
-          onClick={() => {
-            setShow("flex");
-          }}
-          sx={{
-            backgroundColor: "#E8E8E8",
-            border: "2px solid #9FA1AB",
-            borderRadius: "10px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-            py: 0.6,
-          }}
-        >
-          <AddBoxOutlinedIcon sx={{ color: "black" }}></AddBoxOutlinedIcon>
-          <h3 style={{ color: "black", fontWeight: "bold" }}>
-            Add new project
-          </h3>
-        </Box>
-      </Box>
-
-      <PopUp show={Show}>
+        Create new Project
+      </button>
+      <PopUp show={Show} 
+      // minWidthSize="50vw"
+      >
         <div>
           <img
             className="closeIcon"
