@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import IMAGES from "../../assets/img";
 import "./dropdowns-style.css";
-import { Client } from './../../pages/Clients/Clients';
+import { Client } from './../../pages/Clients/clients';
 import DeleteClient from './../popups/DeleteClient'
 import EditClient from './../popups/EditClient'
 
