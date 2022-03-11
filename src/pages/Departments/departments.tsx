@@ -1,9 +1,9 @@
 import React from "react";
 import IMAGES from "../../assets/img/index";
+import AddNewTeam from "./AddNewTeam";
+import CreateNewDepartment from "./CreateNewDepartment";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
-import CreateNewDepartment from "./CreateNewDepartment";
-import AddNewTeam from "./AddNewTeam";
 
 type Props = {};
 const departments: React.FC<Props> = () => {

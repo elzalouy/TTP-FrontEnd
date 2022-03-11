@@ -16,9 +16,16 @@ const IMAGES = {
   tasksCheck: require("./tasksCheck.SVG").default,
   plus: require("./Plus.svg").default,
   filtericon: require("./filtericon.svg").default,
+  editicon: require("./editicon.svg").default,
+  sortout: require("./sortout.svg").default,
+  imgupload: require("./imgupload.svg").default,
   more: require("./more.SVG").default,
   serachicon: require("./serachicon.SVG").default,
   smallLoading: require("./smallLoading.SVG").default,
+  avatarClients: require("./avatarClients.svg").default,
+  search: require("./search.svg").default,
+  progressCircles: require("./progressCircles.svg").default,
+  moreClient: require("./moreClient.svg").default,
 };
 export default IMAGES;
 // import img from "../../assets"
