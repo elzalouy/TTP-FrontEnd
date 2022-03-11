@@ -6,6 +6,9 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 type Props = {};
 
@@ -21,6 +24,7 @@ interface taskData {
 }
 
 const CreateNewProject: React.FC<Props> = () => {
+  const [expanded, setExpanded] = useState<boolean>(false);
   const [currentStep, setcurrentStep] = useState(0);
   const [Show, setShow] = useState<string>("none");
   const [Task, setTask] = useState<taskData>({
@@ -47,7 +51,9 @@ const CreateNewProject: React.FC<Props> = () => {
       >
         Create new Project
       </button>
-      <PopUp show={Show} minWidthSize="50vw">
+      <PopUp show={Show} 
+      // minWidthSize="50vw"
+      >
         <div>
           <img
             className="closeIcon"
