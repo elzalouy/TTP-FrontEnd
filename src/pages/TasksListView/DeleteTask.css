@@ -1,0 +1,36 @@
+.delete-title {
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+.controllers-dt {
+  display: flex;
+  justify-content: space-between;
+}
+.hr-dt {
+  color: #ebeff2;
+  text-align: center;
+  width: 100%;
+}
+.cancelBtn-dt {
+  cursor: pointer;
+  width: 130px;
+  height: 35px;
+  background-color: #f4f4f4;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+}
+
+.redBtn {
+  cursor: pointer;
+  width: 130px;
+  height: 35px;
+  background-color: #ff1a1a;
+  color: #ffffff;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+}

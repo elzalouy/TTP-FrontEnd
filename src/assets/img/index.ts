@@ -37,6 +37,9 @@ const IMAGES = {
   arrow: require("./arrow.svg").default,
   taskFilter: require("./taskFilter.svg").default,
   arrowHeader: require("./arrowHeader.svg").default,
+  // avatarClients: require("./avatarClients.svg").default,
+  // search: require("./search.svg").default,
+  progressCircles: require("./progressCircles.svg").default,
   moreClient: require("./moreClient.svg").default,
 };
 export default IMAGES; 
