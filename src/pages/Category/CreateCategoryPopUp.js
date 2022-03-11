@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Category.css";
 import "./../Project managers/Pmcard.css";
+import axios from 'axios';
 
 const CreateCategoryPopUp = (props) => {
   const [mainCategory, setMainCategory] = useState("");
+  const [errors, setErrors] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [subCategories, setsubCategories] = useState([]);
+
   const onMainChange = (e) => {
-    setMainCategory(...mainCategory, e.target.value);
+    setMainCategory(e.target.value);
   };
   const onSubChange = (e) => {
     setSubCategory(e.target.value);
@@ -25,12 +28,26 @@ const CreateCategoryPopUp = (props) => {
       subCategories.filter((element) => element !== subCategory)
     );
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const body = { category: mainCategory, subCategories: subCategories };
+
+    try {
+      const response = await axios.post('/api/createCategory', body, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      setErrors(error.message);
+      console.log(error.message);
+    }
   };
 
   return (
     <div className="Pm-popup">
+      <p style={{ color: 'red' }}>{errors}</p>
       <div className="popup-header">
         <h4>Add new category</h4>
         <span className="close-icon" onClick={props.handleClose}>
@@ -47,6 +64,7 @@ const CreateCategoryPopUp = (props) => {
             placeholder="Ex: Al-shaqran"
             value={mainCategory}
             onChange={onMainChange}
+            required
           />
         </div>
         <label className="label">Sub-Category</label>
