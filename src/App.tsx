@@ -1,28 +1,45 @@
-import "./App.css";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "./App.css";
+import LoggedInContainer from "./layout";
+import Forget from "./pages/AuthPage/forget";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
-import Departments from "./pages/Departments/departments";
+import departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
 import ProjectManagers from "./pages/Project managers/ProjectManagers";
+import Clients from "./pages/Clients/Clients";
+
+import Category from "./pages/Category/Category";
+import ProjectManagers from "./pages/Project managers/ProjectManagers";      
+import Clients from "./pages/Clients/Clients";
+import departments from "./pages/Departments/departments";
+import Projects from "./pages/Projects/projects";
+import Forget from "./pages/AuthPage/forget";
 
 type Props = {};
 
 const App: React.FC<Props> = () => {
   return (
-    <div>
+    <div className="main-container">
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/ForgetPassword" component={Forget} />
           <Route path="/RestPassword" component={RestPassword} />
-          <Route path="/Projects" component={Projects} />
-          <Route path="/Departments" component={Departments} />
-          <Route path="/Categories" component={Category} />
-          <Route path="/ProjectManagers" component={ProjectManagers} />
+          <LoggedInContainer path="/Categories" component={Category} />
+          <LoggedInContainer path="/ProjectManagers" component={ProjectManagers} />
+          <LoggedInContainer path="/Projects" component={Projects} />
+          <LoggedInContainer path="/Departments" component={departments} />
+          <LoggedInContainer path="/Clients" component={Clients} />
+
+          <LoggedInContainer path="/Categories" component={Category} />
+          <LoggedInContainer path="/ProjectManagers" component={ProjectManagers} />
+          <LoggedInContainer path="/Projects" component={Projects} />
+          <LoggedInContainer path="/Departments" component={departments} />
+          <LoggedInContainer path="/Clients" component={Clients} />
         </Switch>
       </BrowserRouter>
     </div>

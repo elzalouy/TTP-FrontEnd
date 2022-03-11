@@ -11,14 +11,34 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   align-items: center;
+  z-index: 2;
 }
 
 .pop-up {
-  width: 50vw;
   background-color: white;
-  min-height: 300px;
+  min-height: 200px;
   max-height: 95vh;
   padding: 20px;
   animation: zoomIn 0.3s;
   overflow: auto;
+}
+
+.small-pop-up {
+  min-width: 350px;
+  max-width: 95vw;
+  background-color: white;
+  min-height: 120px;
+  border-radius: 5px;
+  max-height: 95vh;
+  animation: zoomIn 0.3s;
+  overflow: auto;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

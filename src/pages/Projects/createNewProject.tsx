@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
-import IMAGES from ".././../assets/img/index";
+import IMAGES from ".././../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
