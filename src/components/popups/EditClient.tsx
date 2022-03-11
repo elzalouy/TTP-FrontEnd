@@ -3,7 +3,7 @@ import IMAGES from '../../assets/img';
 import PopUp from '../../coreUI/usable-component/popUp';
 import './popups-style.css';
 import axios from 'axios';
-import { Client } from './../../pages/Clients/Clients';
+import { Client } from './../../pages/Clients/clients';
 import { Box, Typography } from '@mui/material';
 
 type Props = {};
