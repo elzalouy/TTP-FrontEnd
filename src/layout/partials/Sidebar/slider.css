@@ -339,13 +339,13 @@
   background: #fff;
   border-radius: 10px;
   opacity: 1;
-  max-width: 200px;
+  max-width: 230px;
   min-height: 56px;
   display: flex;
   margin-left: 20px;
   padding-left: 15px;
   margin-bottom: 5px;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
 }
 .active-toggel-width {
