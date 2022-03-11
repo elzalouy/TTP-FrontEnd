@@ -8,10 +8,15 @@ import RestPassword from "./pages/AuthPage/rest";
 import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
 import tasks from "./pages/tasks/tasks";
-import ProjectManagers from "./pages/projectManagers/projectManagers";
+// import ProjectManagers from "./pages/projectManagers/projectManagers";
 import AllPopsPage from "./pages/AllPopsPage";
 import Projects from "./pages/Projects/projects";
 import taskViewBoard from "./pages/TaskViewBoard/taskViewBoard";
+// import Forget from "./pages/AuthPage/forget";
+// import Projects from "./pages/Projects/projects";
+import Departments from "./pages/Departments/departments";
+import Category from "./pages/Category/Category";
+import ProjectManagers from "./pages/Project managers/ProjectManagers";
 
 type Props = {};
 
