@@ -13,6 +13,7 @@ const IMAGES = {
   logouticon: require("./logouticon.svg").default,
   closeicon: require("./closeicon.SVG").default,
   deleteicon: require("./deleteicon.svg").default,
+  deleteicon2: require("./deleteicon2.SVG").default,
   tasksCheck: require("./tasksCheck.SVG").default,
   plus: require("./Plus.svg").default,
   filtericon: require("./filtericon.svg").default,
@@ -26,6 +27,8 @@ const IMAGES = {
   search: require("./search.svg").default,
   progressCircles: require("./progressCircles.svg").default,
   moreClient: require("./moreClient.svg").default,
+  fileicon: require("./fileicon.SVG").default,
+  edit: require("./edit.SVG").default,
 };
 export default IMAGES;
 // import img from "../../assets"

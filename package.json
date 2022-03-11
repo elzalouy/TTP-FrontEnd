@@ -11,10 +11,7 @@
     "@mui/material": "^5.4.1",
     "@mui/styled-engine-sc": "^5.4.2",
     "@mui/styles": "^5.4.1",
-<<<<<<< HEAD
-=======
-    "@mui/x-data-grid": "^5.5.1",
->>>>>>> origin/TTP-4_TTP-39
+    "@mui/x-data-grid": "^5.6.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

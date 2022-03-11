@@ -1,5 +1,6 @@
 import React from "react";
-import AddNewPM from "./addNewPM";
+// import AddNewPM from "./addNewPM";
+import CreateNewPM from "../../components/popups/CreateNewPM";
 
 type Props = {};
 const projectManagers: React.FC<Props> = () => {
@@ -8,7 +9,7 @@ const projectManagers: React.FC<Props> = () => {
       <br />
       <h1>PROJECT MANAGERS PAGE</h1>
       <br />
-      <AddNewPM />
+      <CreateNewPM />
     </div>
   );
 };

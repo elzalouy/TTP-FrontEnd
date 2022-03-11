@@ -1,12 +1,13 @@
 import React from "react";
 import Sidebar from "../../layout/partials/Sidebar";
-import CreateNewProject from "./createNewProject";
+// import CreateNewProject from "./createNewProject";
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
 import SearchBar from "../Category/SearchBar";
 import Box from "@mui/material/Box";
 import ProjectCard from "./ProjectCard";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
+import CreateNewProject from "../../components/popups/CreateNewProject";
 type Props = {};
 
 const projects: React.FC<Props> = () => {

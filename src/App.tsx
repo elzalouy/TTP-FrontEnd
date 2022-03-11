@@ -8,11 +8,14 @@ import RestPassword from "./pages/AuthPage/rest";
 import departments from "./pages/Departments/departments";
 // import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
-import ProjectManagers from "./pages/Project managers/ProjectManagers";
+// import ProjectManagers from "./pages/Project managers/ProjectManagers";
 import tasks from "./pages/tasks/tasks";
 // import ProjectManagers from "./pages/projectManagers/projectManagers";
 import Projects from "./pages/Projects/projects";
 import TasksListView from "./pages/TasksListView/TasksListView";
+// import tasks from "./pages/tasks/tasks";
+import ProjectManagers from "./pages/projectManagers/projectManagers";
+import AllPopsPage from "./pages/AllPopsPage";
 
 type Props = {};
 
@@ -35,6 +38,11 @@ const App: React.FC<Props> = () => {
           {/* <Route path="/Departments" component={departments} /> */}
           <Route path="/Tasks" component={tasks} />
           <LoggedInContainer path="/TasksList" component={TasksListView} />
+          {/* <Route path="/Projects" component={Projects} /> */}
+          {/* <Route path="/ProjectManagers" component={ProjectManagers} /> */}
+          {/* <Route path="/Departments" component={departments} /> */}
+          {/* <Route path="/Tasks" component={tasks} /> */}
+          <Route path="/AllPopsPage" component={AllPopsPage} />
         </Switch>
       </BrowserRouter>
     </div>
