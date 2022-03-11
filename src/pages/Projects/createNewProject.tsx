@@ -172,6 +172,7 @@ const CreateNewProject: React.FC<Props> = () => {
                 <label className="label-project">Description</label>
                 <br />
                 <textarea
+                  maxLength={75}
                   className="textarea-project"
                   rows={3}
                   placeholder="Write about your project"
@@ -266,6 +267,7 @@ const CreateNewProject: React.FC<Props> = () => {
                 <label className="label-project">Description</label>
                 <br />
                 <textarea
+                  maxLength={75}
                   className="textarea-project"
                   rows={3}
                   placeholder="Write about your task"

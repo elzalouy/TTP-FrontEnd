@@ -10,6 +10,8 @@ import departments from "./pages/Departments/departments";
 // import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
 import ProjectManagers from "./pages/Project managers/ProjectManagers";
+import tasks from "./pages/tasks/tasks";
+// import ProjectManagers from "./pages/projectManagers/projectManagers";
 
 type Props = {};
 
@@ -27,6 +29,10 @@ const App: React.FC<Props> = () => {
           {/* <Route path="/Departments" component={Departments} /> */}
           <Route path="/Categories" component={Category} />
           <Route path="/ProjectManagers" component={ProjectManagers} />
+          {/* <Route path="/Projects" component={Projects} /> */}
+          {/* <Route path="/ProjectManagers" component={ProjectManagers} /> */}
+          {/* <Route path="/Departments" component={departments} /> */}
+          <Route path="/Tasks" component={tasks} />
         </Switch>
       </BrowserRouter>
     </div>

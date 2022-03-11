@@ -17,6 +17,8 @@ const IMAGES = {
   plus: require("./Plus.svg").default,
   filtericon: require("./filtericon.svg").default,
   more: require("./more.SVG").default,
+  serachicon: require("./serachicon.SVG").default,
+  smallLoading: require("./smallLoading.SVG").default,
 };
 export default IMAGES;
 // import img from "../../assets"
