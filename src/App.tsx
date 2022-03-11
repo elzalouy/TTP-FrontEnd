@@ -14,7 +14,7 @@ import tasks from "./pages/tasks/tasks";
 import Projects from "./pages/Projects/projects";
 import TasksListView from "./pages/TasksListView/TasksListView";
 // import tasks from "./pages/tasks/tasks";
-import ProjectManagers from "./pages/projectManagers/projectManagers";
+import ProjectManagers from "./pages/projectManagers/ProjectManagers";
 import AllPopsPage from "./pages/AllPopsPage";
 
 type Props = {};

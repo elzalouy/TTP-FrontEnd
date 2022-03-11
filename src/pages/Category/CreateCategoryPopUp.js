@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Category.css";
-import "./../Project managers/Pmcard.css";
+import "./../projectManagers/Pmcard.css";
 import axios from 'axios';
 
 const CreateCategoryPopUp = (props) => {
