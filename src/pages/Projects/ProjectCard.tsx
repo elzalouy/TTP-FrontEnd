@@ -127,7 +127,6 @@ const ProjectCard: React.FC<Props> = ({ status }) => {
         }}
       >
         {status}
-
         {expanded ? (
           <ArrowDropUpIcon
             sx={{ cursor: "pointer" }}

@@ -1,6 +1,5 @@
 import React from "react";
-import Sidebar from "../../layout/partials/Sidebar";
-// import CreateNewProject from "./createNewProject";
+import CreateNewProject from "./createNewProject";
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
 import SearchBar from "../Category/SearchBar";
@@ -12,7 +11,6 @@ type Props = {};
 
 const projects: React.FC<Props> = () => {
   return (
-    <>
     <div className="departments-page">
       <h2 className="departments-title">Projects</h2>
       <div
@@ -90,7 +88,6 @@ const projects: React.FC<Props> = () => {
         </Box>
       </Box>
     </div>
-    </>
   );
 };
 
