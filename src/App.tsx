@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import LoggedInContainer from "./layout";
-import Forget from "./pages/AuthPage/forget";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
 import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
+import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
+import Departments from "./pages/Departments/departments";
+import Category from "./pages/Category/Category";
+import ProjectManagers from "./pages/Project managers/ProjectManagers";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { getAllClients } from "./store/Clients";
+import { useDispatch } from "react-redux";
+import { selectClients } from "./store/Clients/clients.selectors";
+import { getPMs } from "./store/PM";
+import { getAllDepartments } from "./store/Departments";
+import { getAllCategories } from "./store/Categories/categories.actions";
 
 type Props = {};
 
 const App: React.FC<Props> = () => {
+  const dispatch = useDispatch();
+  const clients = useAppSelector(selectClients);
+  useEffect(() => {
+    dispatch(getAllClients(null));
+    dispatch(getPMs(null));
+    dispatch(getAllDepartments(null));
+    dispatch(getAllCategories(null));
+  }, []);
   return (
     <div className="main-container">
       <BrowserRouter>
@@ -22,6 +40,10 @@ const App: React.FC<Props> = () => {
           <LoggedInContainer path="/Projects" component={Projects} />
           <LoggedInContainer path="/Departments" component={departments} />
           <LoggedInContainer path="/Clients" component={clients} />
+          <Route path="/Projects" component={Projects} />
+          <Route path="/Departments" component={Departments} />
+          <Route path="/Categories" component={Category} />
+          <Route path="/ProjectManagers" component={ProjectManagers} />
         </Switch>
       </BrowserRouter>
     </div>
