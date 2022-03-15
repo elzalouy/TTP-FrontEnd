@@ -1,5 +1,5 @@
 import React from "react";
-import CreateNewProject from "./createNewProject";
+import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
 import SearchBar from "../Category/SearchBar";

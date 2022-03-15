@@ -11,13 +11,13 @@ import Projects from "./pages/Projects/projects";
 import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
 import ProjectManagers from "./pages/Project managers/ProjectManagers";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { getAllClients } from "./store/Clients";
 import { useDispatch } from "react-redux";
-import { selectClients } from "./store/Clients/clients.selectors";
-import { getPMs } from "./store/PM";
-import { getAllDepartments } from "./store/Departments";
-import { getAllCategories } from "./store/Categories/categories.actions";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { getAllClients } from "./redux/Clients";
+import { selectClients } from "./redux/Clients/clients.selectors";
+import { getPMs } from "./redux/PM";
+import { getAllDepartments } from "./redux/Departments";
+import { getAllCategories } from "./redux/Categories";
 
 type Props = {};
 

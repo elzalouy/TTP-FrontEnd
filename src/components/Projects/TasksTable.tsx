@@ -1,7 +1,7 @@
 import * as React from "react";
 import IMAGES from "../../assets/img";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { ProjectsActions, selectNewProject, Task } from "../../store/Projects";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { ProjectsActions, selectNewProject, Task } from "../../redux/Projects";
 
 interface TasksProps {}
 
@@ -9,7 +9,7 @@ const Tasks: React.FC<TasksProps> = () => {
   const newProject = useAppSelector(selectNewProject);
   const dispatch = useAppDispatch();
   const onDeleteTask = (task: Task) => {
-    dispatch(ProjectsActions.onDeleteNewProjectT(task));
+    dispatch(ProjectsActions.onDeleteNewProjectTask(task));
   };
   return (
     <div>

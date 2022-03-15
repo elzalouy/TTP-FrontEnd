@@ -3,8 +3,8 @@ import "./createNewProject.css";
 import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { ProjectsActions, selectNewProject } from "../../store/Projects";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { ProjectsActions, selectNewProject } from "../../redux/Projects";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {

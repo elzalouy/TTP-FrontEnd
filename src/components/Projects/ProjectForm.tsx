@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { selectClientsNames } from "../../store/Clients/clients.selectors";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectPMs } from "../../store/PM";
-import { Project, ProjectsActions } from "../../store/Projects";
+import { selectClientsNames } from "../../redux/Clients/clients.selectors";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectPMs } from "../../redux/PM";
+import { Project, ProjectsActions } from "../../redux/Projects";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -61,7 +61,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 </option>
               ))
             ) : (
-              <option value="0">No clients</option>
+              <></>
             )}
           </select>
         </div>
@@ -84,7 +84,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             {PMs && PMs.length > 0 ? (
               PMs.map((item) => <option value={item._id}>{item.name}</option>)
             ) : (
-              <option value="0">No Project Managers</option>
+              <></>
             )}
           </select>
         </div>

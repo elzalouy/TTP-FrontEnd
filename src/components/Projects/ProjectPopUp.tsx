@@ -1,8 +1,8 @@
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import React, { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
-import { useAppSelector } from "../../store/hooks";
-import { selectNewProject } from "../../store/Projects";
+import { useAppSelector } from "../../redux/hooks";
+import { selectNewProject } from "../../redux/Projects";
 import IMAGES from ".././../assets/img/index";
 import TaskForm from "./TaskForm";
 import Tasks from "./TasksTable";
@@ -44,7 +44,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       )}
       {currentStep === 1 && (
         <>
-          <TaskForm />
+          <TaskForm setCurrentStep={setcurrentStep} setShow={setShow} />
           <Tasks />
         </>
       )}

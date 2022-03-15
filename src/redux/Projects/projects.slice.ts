@@ -1,5 +1,6 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { createProject } from "./projects.actions";
 import projectsState, { ProjectsInterface } from "./projects.state";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
@@ -11,11 +12,11 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onChangeNewProjectP: (state, action) => {
       state.newProject.project = action.payload;
     },
-    onChangeNewProjectT: (state, action) => {
+    onChangeNewProjectTask: (state, action) => {
       state.newProject.newTask = action.payload;
       state.newProject.tasks.push(action.payload);
     },
-    onDeleteNewProjectT: (state, action) => {
+    onDeleteNewProjectTask: (state, action) => {
       let tasks = [...state.newProject.tasks];
       tasks = tasks.filter(
         (item) =>
@@ -24,6 +25,17 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       );
       state.newProject.tasks = tasks;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(createProject.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createProject.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createProject.fulfilled, (state) => {
+      state.loading = false;
+    });
   },
 });
 export const selectNewProject = (state: RootState) => state.projects.newProject;
