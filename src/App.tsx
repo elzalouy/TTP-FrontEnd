@@ -8,20 +8,19 @@ import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
 // import tasks from "./pages/tasks/tasks";
 import AllPopsPage from "./pages/AllPopsPage";
-import clients from "./pages/Clients/clients";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
-import ProjectManagers from "./pages/Project managers/ProjectManagers";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { getAllClients } from "./store/Clients";
+import ProjectManagers from "./pages/projectManagers/ProjectManagers";
 import { useDispatch } from "react-redux";
-import { selectClients } from "./store/Clients/clients.selectors";
-import { getPMs } from "./store/PM";
-import { getAllDepartments } from "./store/Departments";
-import { getAllCategories } from "./store/Categories/categories.actions";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { getAllClients } from "./redux/Clients";
+import { selectClients } from "./redux/Clients/clients.selectors";
+import { getPMs } from "./redux/PM";
+import { getAllDepartments } from "./redux/Departments";
+import { getAllCategories } from "./redux/Categories";
 
 type Props = {};
 
@@ -56,12 +55,3 @@ const App: React.FC<Props> = () => {
 };
 
 export default App;
-
-
-
-
-
-
-
-
-

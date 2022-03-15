@@ -1,21 +1,33 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { categoriesActions } from "../../store/Categories";
+import { useDispatch } from "react-redux";
 import {
+  categoriesActions,
   selectAllCategories,
   selectSelectedCategory,
-} from "../../store/Categories/categories.selectores";
-import { selectAllDepartments } from "../../store/Departments";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { ProjectsActions } from "../../store/Projects";
+} from "../../redux/Categories";
+import { selectAllDepartments } from "../../redux/Departments";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  createProject,
+  ProjectsActions,
+  selectNewProject,
+} from "../../redux/Projects";
 
-interface TaskFormProps {}
+interface TaskFormProps {
+  setCurrentStep: any;
+  setShow: any;
+}
 
-const TaskForm: React.FC<TaskFormProps> = () => {
-  const dispatch = useAppDispatch();
+const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
+  const dispatch: Dispatch<any> = useAppDispatch();
+  const Dispatch = useDispatch();
+
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedCategory = useAppSelector(selectSelectedCategory);
+  const newProject = useAppSelector(selectNewProject);
   const { register, handleSubmit, watch } = useForm();
   React.useEffect(() => {
     let values = watch();
@@ -48,11 +60,21 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       file: data.file,
       description: data.description,
     };
-    dispatch(ProjectsActions.onChangeNewProjectT(newTask));
+    dispatch(ProjectsActions.onChangeNewProjectTask(newTask));
   };
 
-  const onCancel = () => {};
-  const onSaveProject = () => {};
+  const onCancel = () => {
+    setShow("none");
+    setCurrentStep(0);
+  };
+  const onSaveProject = () => {
+    console.log(newProject);
+    let project = { ...newProject.project, tasks: [...newProject.tasks] };
+    dispatch(createProject(project));
+    setShow("none");
+    setCurrentStep(0);
+    window.location.reload();
+  };
   return (
     <>
       <div className="step2">
@@ -77,10 +99,10 @@ const TaskForm: React.FC<TaskFormProps> = () => {
               >
                 {departments && departments.length > 0 ? (
                   departments.map((item) => (
-                    <option value={item._id}>{item.name}</option>
+                    <option value={item._id}>{item?.name}</option>
                   ))
                 ) : (
-                  <option value="0">No Departments</option>
+                  <></>
                 )}
               </select>
             </div>
@@ -107,9 +129,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     <option value={item.id}>{item.category}</option>
                   ))
                 ) : (
-                  <>
-                    <option value="0">No Categories</option>
-                  </>
+                  <></>
                 )}
               </select>
             </div>
@@ -126,14 +146,17 @@ const TaskForm: React.FC<TaskFormProps> = () => {
             <div>
               <label className="label-project">Sub category</label>
               <br />
-              <select className="select-project" {...register("subCategoryId")}>
+              <select
+                className="select-project"
+                {...register("subCategoryId", { required: true })}
+              >
                 {selectedCategory?.subCategories &&
                 selectedCategory?.subCategories.length > 0 ? (
                   selectedCategory.subCategories.map((item) => (
                     <option value={item}>{item}</option>
                   ))
                 ) : (
-                  <option value="Sub Category">No Sub Category</option>
+                  <></>
                 )}
               </select>
               <br />
