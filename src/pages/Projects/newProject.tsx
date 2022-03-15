@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ProjectsActions, selectNewProject } from "../../redux/Projects";
+import { ProjectsActions } from "../../redux/Projects";
+import { selectNewProject } from "../../redux/Projects/projects.selectors";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
@@ -19,9 +20,17 @@ const CreateNewProject: React.FC<Props> = () => {
   return (
     <div>
       <Box
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
+        id="project-container"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          borderRadius: "12px",
+          backgroundColor: "#F1F1F4",
+          p: 3,
+          mb: 5,
+          font: "normal normal 600 16px/30px Cairo",
+          color: "#505050",
         }}
       >
         <Box

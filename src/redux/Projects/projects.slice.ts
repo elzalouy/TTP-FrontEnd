@@ -38,6 +38,5 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
   },
 });
-export const selectNewProject = (state: RootState) => state.projects.newProject;
 export const ProjectsActions = projectsSlice.actions;
 export default projectsSlice.reducer;
