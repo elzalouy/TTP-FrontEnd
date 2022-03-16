@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import IMAGES from "../../assets/img";
-import { Client } from './Clients';
+import { Client } from './clients';
 import ClientDrop from './../../components/dropdowns/ClientDrop'
 
 interface IProps {

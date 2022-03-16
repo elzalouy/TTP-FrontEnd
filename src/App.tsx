@@ -11,7 +11,6 @@ import Category from "./pages/Category/Category";
 import ProjectManagers from "./pages/Project managers/ProjectManagers";
 import Clients from "./pages/Clients/clients";
 
-
 type Props = {};
 
 const App: React.FC<Props> = () => {

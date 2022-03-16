@@ -82,7 +82,7 @@ const Sidebar: React.FC<Props> = () => {
                     </NavLink>
                 </li>
                 <li className="features-item">
-                    <NavLink to="/Category" activeClassName=" active">
+                    <NavLink to="/Categories" activeClassName=" active">
 
                         <img style={{ marginRight: "15px" }} src={IMAGES.categories} />
                         {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">
