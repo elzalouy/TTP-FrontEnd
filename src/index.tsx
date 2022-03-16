@@ -1,27 +1,24 @@
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
-import './i18n/i18n'
-import { Provider } from 'react-redux';
-import store,{persistor} from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react'
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline, StyledEngineProvider } from '@mui/material';
-import themes from './themes';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "./reportWebVitals";
+import "./i18n/i18n";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
+import themes from "./themes";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={themes()}>
-        <CssBaseline />
-          <PersistGate loading={null} persistor={persistor}>
-            <App />
-          </PersistGate>
+          <CssBaseline />
+          {/* <PersistGate loading={null} persistor={persistor}> */}
+          <App />
+          {/* </PersistGate> */}
         </ThemeProvider>
       </StyledEngineProvider>
     </Provider>

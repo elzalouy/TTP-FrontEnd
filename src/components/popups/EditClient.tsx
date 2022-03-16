@@ -129,6 +129,7 @@ const EditClient: React.FC<IProps> = ({ client, updatePopup, show }) => {
 
           </Box>
         </form>
+
       </PopUp>
     </>
   );

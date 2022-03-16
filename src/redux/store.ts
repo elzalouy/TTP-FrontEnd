@@ -1,24 +1,18 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from 'redux-thunk';
-import {appReducer} from './reducers';
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-
-const initialState = {};
-
-const persistConfig = {
-  key: 'root',
-  storage,
-}
-const middleware = [thunk];
-const persistedReducer = persistReducer(persistConfig, appReducer)
-
-const store = createStore(
-  persistedReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-  );
-export const persistor = persistStore(store)
-
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import reduxThunk from "redux-thunk";
+import categoriesSlice from "./Categories/categories.slice";
+import clientsSlice from "./Clients/clients.slice";
+import departmentsSlice from "./Departments/departments.slice";
+import pmSlice from "./PM/pm.slice";
+import projectsSlice from "./Projects/projects.slice";
+const reducers = combineReducers({
+  projects: projectsSlice,
+  clients: clientsSlice,
+  PMs: pmSlice,
+  departments: departmentsSlice,
+  categories: categoriesSlice,
+});
+const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 export default store;

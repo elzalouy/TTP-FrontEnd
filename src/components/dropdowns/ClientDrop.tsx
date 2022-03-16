@@ -75,6 +75,7 @@ const ClientDrop: React.FC<IProps> = ({ client }) => {
       {deletePopup && <DeleteClient id={client._id} show={"flex"} deletePopup={() => closeDeletePopup()} />}
       {updatePopup && <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} />}
     </>
+
   );
 };
 export default ClientDrop;

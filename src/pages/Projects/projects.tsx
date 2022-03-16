@@ -1,16 +1,29 @@
 import React from "react";
+<<<<<<< HEAD
 import CreateNewProject from "./createNewProject";
+=======
+import CreateNewProject from "./newProject";
+>>>>>>> origin/development
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
 import SearchBar from "../Category/SearchBar";
 import Box from "@mui/material/Box";
 import ProjectCard from "./ProjectCard";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
-type Props = {};
+import { useAppSelector } from "../../redux/hooks";
+import {
+  selectDoneProjects,
+  selectInprogressProjects,
+} from "../../redux/Projects/projects.selectors";
 
-const projects: React.FC<Props> = () => {
+const Projects: React.FC = () => {
+  const inProgressProjects = useAppSelector(selectInprogressProjects);
+  const doneProjects = useAppSelector(selectDoneProjects);
   return (
+<<<<<<< HEAD
    <Box sx={{ width: "100%" }}>
+=======
+>>>>>>> origin/development
     <div className="departments-page">
       <h2 className="departments-title">Projects</h2>
       <div
@@ -68,8 +81,8 @@ const projects: React.FC<Props> = () => {
       </div>
       <Box sx={{ mt: 2, display: "flex", flexDirection: "column" }}>
         <CreateNewProject />
-        <ProjectCard status={"In progress"} />
-        <ProjectCard status={"Done"} />
+        <ProjectCard status={"In progress"} Projects={inProgressProjects} />
+        <ProjectCard status={"Done"} Projects={doneProjects} />
         <Box
           sx={{
             display: "flex",
@@ -88,8 +101,11 @@ const projects: React.FC<Props> = () => {
         </Box>
       </Box>
     </div>
+<<<<<<< HEAD
    </Box>
+=======
+>>>>>>> origin/development
   );
 };
 
-export default projects;
+export default Projects;

@@ -44,6 +44,8 @@ const DeleteClient: React.FC<Props> = ({ id, show, deletePopup }) => {
   };
   return (
     <>
+
+
       <SmallPopUp show={Show}>
         <p className="warning-text">
           Are you sure you want to delete this client?
@@ -58,6 +60,7 @@ const DeleteClient: React.FC<Props> = ({ id, show, deletePopup }) => {
               Cancel
             </button>
             <button className="controllers-delete" onClick={() => { handleDelete() }}>
+
               Delete
             </button>
           </div>

@@ -1,9 +1,11 @@
 import React from "react";
 import IMAGES from "../../assets/img/index";
-import AddNewTeam from "./AddNewTeam";
-import CreateNewDepartment from "./CreateNewDepartment";
+// import AddNewTeam from "./AddNewTeam";
+// import CreateNewDepartment from "./CreateNewDepartment";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
+import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
+import CreateNewTeam from "../../components/popups/CreateNewTeam";
 
 type Props = {};
 const departments: React.FC<Props> = () => {
@@ -38,8 +40,8 @@ const departments: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
-        <AddNewTeam />
+      
+        <CreateNewTeam />
       </div>
       <div className="all-departments">
         <DepartmentCard />

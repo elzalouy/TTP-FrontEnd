@@ -36,9 +36,9 @@
   align-items: center;
   margin: 10px 0;
   color: #0079bf;
-}
+}   
 
-.tasks-count > img {
+.tasks-count>img {
   margin-right: 5px;
 }
 
@@ -84,6 +84,7 @@
   flex: 1;
   padding: 2%;
 }
+
 .Done {
   flex: 1;
   padding: 2%;
@@ -114,7 +115,7 @@
   border-radius: 10px;
   margin: 10px;
   padding: 0;
-  width: 200px;
+  min-width: 150px;
   background-color: #ffffff;
 }
 

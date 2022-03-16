@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Category.css";
-import "./../Project managers/Pmcard.css";
-import axios from 'axios';
+import "./../projectManagers/Pmcard.css";
+import axios from "axios";
 
 const CreateCategoryPopUp = (props) => {
   const [mainCategory, setMainCategory] = useState("");
@@ -33,10 +33,10 @@ const CreateCategoryPopUp = (props) => {
     const body = { category: mainCategory, subCategories: subCategories };
 
     try {
-      const response = await axios.post('/api/createCategory', body, {
+      const response = await axios.post("/api/createCategory", body, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
       console.log(response.data);
     } catch (error) {
@@ -47,7 +47,7 @@ const CreateCategoryPopUp = (props) => {
 
   return (
     <div className="Pm-popup">
-      <p style={{ color: 'red' }}>{errors}</p>
+      <p style={{ color: "red" }}>{errors}</p>
       <div className="popup-header">
         <h4>Add new category</h4>
         <span className="close-icon" onClick={props.handleClose}>
