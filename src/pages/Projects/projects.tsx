@@ -32,14 +32,14 @@ const Projects: React.FC = () => {
         <div>
           <label>Sort by:</label>
           <select className="select-filter" name="color">
-            <option value="Due Datee">Due Date</option>
+            <option value="0">Due Date</option>
             <option value="In progress">In progress</option>
             <option value="To do">To do</option>
           </select>
         </div>
         <div>
           <label style={{ padding: 0 }}>Project manager:</label>
-          <select className="select-filter" style={{}} name="color">
+          <select className="select-filter" name="color">
             <option value="Nawaf m">Nawaf M</option>
             <option value="option 2">option 2</option>
             <option value="option 3">option 3</option>
@@ -54,6 +54,7 @@ const Projects: React.FC = () => {
           </select>
         </div>
         <div>
+          <label style={{ padding: 0 }}>Client Name:</label>
           <select className="select-filter" name="color">
             <option value="">Client name</option>
             <option value="option 2">option 2</option>
@@ -61,8 +62,8 @@ const Projects: React.FC = () => {
           </select>
         </div>
         <div>
+          <label style={{ padding: 0 }}>Status</label>
           <select className="select-filter" name="color">
-            <option value="">Status</option>
             <option value="option 2">option 2</option>
             <option value="option 3">option 3</option>
           </select>

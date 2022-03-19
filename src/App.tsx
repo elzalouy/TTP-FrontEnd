@@ -6,7 +6,7 @@ import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
 import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
-// import tasks from "./pages/tasks/tasks";
+import TasksBoardView from "./pages/TaskViewBoard/taskViewBoard";
 import AllPopsPage from "./pages/AllPopsPage";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
@@ -21,6 +21,7 @@ import { selectClients } from "./redux/Clients/clients.selectors";
 import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
+import { getAllProjects } from "./redux/Projects";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ const App: React.FC<Props> = () => {
     dispatch(getPMs(null));
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
+    dispatch(getAllProjects(null));
   }, []);
   return (
     <div className="main-container">
@@ -43,6 +45,7 @@ const App: React.FC<Props> = () => {
           <LoggedInContainer path="/Projects" component={Projects} />
           <Route path="/Tasks" component={tasks} />
           <LoggedInContainer path="/TasksList" component={TasksListView} />
+          <LoggedInContainer path="/TasksBoard" component={TasksBoardView} />
           <Route path="/AllPopsPage" component={AllPopsPage} />
           <LoggedInContainer path="/Clients" component={clients} />
           <Route path="/Departments" component={Departments} />

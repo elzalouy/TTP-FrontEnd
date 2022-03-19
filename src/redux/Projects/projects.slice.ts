@@ -1,6 +1,6 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { createProject } from "./projects.actions";
+import { createProject, getAllProjects } from "./projects.actions";
 import projectsState, { ProjectsInterface } from "./projects.state";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
@@ -33,8 +33,21 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createProject.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(createProject.fulfilled, (state) => {
+    builder.addCase(createProject.fulfilled, (state, action) => {
       state.loading = false;
+      state.newProject.project = action.payload;
+    });
+    builder.addCase(getAllProjects.rejected, (state) => {
+      state.loading = false;
+      state.projects = [];
+    });
+    builder.addCase(getAllProjects.pending, (state) => {
+      state.loading = true;
+      state.projects = [];
+    });
+    builder.addCase(getAllProjects.fulfilled, (state, action) => {
+      state.loading = false;
+      state.projects = action.payload;
     });
   },
 });

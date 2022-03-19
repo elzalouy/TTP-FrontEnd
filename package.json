@@ -2,7 +2,7 @@
   "name": "ttp-frontend",
   "version": "0.1.0",
   "engines": {
-    "node": "14.18.1"
+    "node": "16.14.0"
   },
   "private": true,
   "dependencies": {

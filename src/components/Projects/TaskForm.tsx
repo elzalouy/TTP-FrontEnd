@@ -10,7 +10,7 @@ import {
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  createProject,
+  createProjectTasks,
   ProjectsActions,
   selectNewProject,
 } from "../../redux/Projects";
@@ -68,12 +68,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
     setCurrentStep(0);
   };
   const onSaveProject = () => {
-    console.log(newProject);
-    let project = { ...newProject.project, tasks: [...newProject.tasks] };
-    dispatch(createProject(project));
+    let data = [...newProject.tasks];
+    dispatch(createProjectTasks(data));
     setShow("none");
     setCurrentStep(0);
-    window.location.reload();
   };
   return (
     <>
@@ -99,7 +97,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               >
                 {departments && departments.length > 0 ? (
                   departments.map((item) => (
-                    <option value={item._id}>{item?.name}</option>
+                    <option key={item._id} value={item._id}>
+                      {item?.name}
+                    </option>
                   ))
                 ) : (
                   <></>
@@ -120,13 +120,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             <div>
               <label className="label-project">Category</label>
               <br />
-              <select
-                className="select-project"
-                {...register("categoryId", { required: true })}
-              >
+              <select className="select-project" {...register("categoryId")}>
                 {categories && categories.length > 0 ? (
                   categories.map((item) => (
-                    <option value={item.id}>{item.category}</option>
+                    <option key={item?.id} value={item.id}>
+                      {item.category}
+                    </option>
                   ))
                 ) : (
                   <></>
@@ -146,14 +145,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             <div>
               <label className="label-project">Sub category</label>
               <br />
-              <select
-                className="select-project"
-                {...register("subCategoryId", { required: true })}
-              >
+              <select className="select-project" {...register("subCategoryId")}>
                 {selectedCategory?.subCategories &&
                 selectedCategory?.subCategories.length > 0 ? (
-                  selectedCategory.subCategories.map((item) => (
-                    <option value={item}>{item}</option>
+                  selectedCategory.subCategories.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
                   ))
                 ) : (
                   <></>

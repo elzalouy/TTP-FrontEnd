@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { selectPMs } from "../../redux/PM";
-import { Project, ProjectsActions } from "../../redux/Projects";
+import { createProject, Project, ProjectsActions } from "../../redux/Projects";
+import { useDispatch } from "react-redux";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -14,11 +15,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, handleSubmit } = useForm();
-  const dispatch = useAppDispatch();
+  const { register, watch } = useForm();
+  const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
-  const onsubmit = (data: any) => {
+  const onsubmit = () => {
+    let data = watch();
     let project: Project = {
       name: data?.name,
       projectManager: data?.projectManager,
@@ -28,14 +30,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectDeadline: data.deadline,
       startDate: new Date().toDateString(),
       completedDate: null,
-      projectStatus: "",
+      projectStatus: "deliver on time",
       clientId: data.clientId,
     };
-    dispatch(ProjectsActions.onChangeNewProjectP(project));
+    dispatch(createProject(project));
     setcurrentStep(1);
   };
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
+    <form>
       <div className="inputs-grid">
         <div>
           <label className="label-project">Project title</label>
@@ -56,7 +58,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           >
             {clients && clients.length > 0 ? (
               clients.map((item) => (
-                <option value={item.clientId?.toString()}>
+                <option key={item.clientId} value={item.clientId?.toString()}>
                   {item.clientName}
                 </option>
               ))
@@ -82,7 +84,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             {...register("projectManager", { required: true })}
           >
             {PMs && PMs.length > 0 ? (
-              PMs.map((item) => <option value={item._id}>{item.name}</option>)
+              PMs.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              ))
             ) : (
               <></>
             )}
@@ -109,7 +115,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         >
           Cancel
         </button>
-        <input className="blackBtn" type="submit" value="Next" />
+        <input
+          className="blackBtn"
+          type="button"
+          onClick={() => onsubmit()}
+          value="Next"
+        />
       </div>
     </form>
   );
