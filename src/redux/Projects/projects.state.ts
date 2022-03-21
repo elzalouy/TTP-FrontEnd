@@ -1,10 +1,12 @@
+import { Department } from "../Departments";
+
 export interface Task {
   id?: string;
   name: string;
   projectId: string;
   categoryId: string;
   subCategoryId: string;
-  teamId: string;
+  memberId: string;
   countNotClear?: any;
   countShared?: any;
   status?: string;
@@ -22,9 +24,9 @@ export interface Task {
   description: string;
 }
 export interface Project {
-  id?: string;
+  _id?: string;
   name: string;
-  projectManager: string;
+  projectManager: { _id: string; name: string } | null;
   teamsId?: any[];
   numberOfTasks?: any;
   numberOfFinshedTasks?: any;
@@ -42,6 +44,7 @@ export interface ProjectsInterface {
     project: Project;
     tasks: Task[];
     newTask: Task;
+    selectedDepartment: Department | null;
   };
 }
 
@@ -51,9 +54,9 @@ const PorjectsState: ProjectsInterface = {
   newProject: {
     showPopUp: "none",
     project: {
-      id: "",
+      _id: "",
       name: "",
-      projectManager: "",
+      projectManager: null,
       teamsId: [],
       numberOfTasks: 0,
       numberOfFinshedTasks: 0,
@@ -70,7 +73,7 @@ const PorjectsState: ProjectsInterface = {
       projectId: "",
       categoryId: "",
       subCategoryId: "",
-      teamId: "",
+      memberId: "",
       countNotClear: 0,
       countShared: 0,
       status: "",
@@ -87,6 +90,7 @@ const PorjectsState: ProjectsInterface = {
       file: undefined,
       description: "",
     },
+    selectedDepartment: null,
   },
 };
 export default PorjectsState;

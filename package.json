@@ -41,6 +41,7 @@
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-resources-to-backend": "^1.0.0",
     "moment": "^2.29.1",
+    "node-cron": "^3.0.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-color": "^2.19.3",

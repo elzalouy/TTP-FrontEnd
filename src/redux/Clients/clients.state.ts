@@ -1,5 +1,5 @@
 export interface Client {
-  _id: string | null;
+  _id: string;
   clientName: string;
   projectsId?: string[];
   image: string;

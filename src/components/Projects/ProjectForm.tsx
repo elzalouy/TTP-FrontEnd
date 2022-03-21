@@ -24,13 +24,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     let project: Project = {
       name: data?.name,
       projectManager: data?.projectManager,
-      teamsId: [],
       numberOfTasks: 0,
       numberOfFinshedTasks: 0,
       projectDeadline: data.deadline,
       startDate: new Date().toDateString(),
       completedDate: null,
-      projectStatus: "deliver on time",
+      projectStatus: "inProgress",
       clientId: data.clientId,
     };
     dispatch(createProject(project));

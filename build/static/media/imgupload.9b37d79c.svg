@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <g id="Form_Input" data-name="Form Input" fill="#fff" stroke="#b4b6c4" stroke-width="0.5" stroke-dasharray="6">
+    <rect width="100" height="100" rx="6" stroke="none"/>
+    <rect x="0.25" y="0.25" width="99.5" height="99.5" rx="5.75" fill="none"/>
+  </g>
+  <g id="Iconly_Light_Plus" data-name="Iconly/Light/Plus" transform="translate(37 37)">
+    <g id="Plus">
+      <path id="Line_185" d="M.476,0V9.524" transform="translate(12.524 8.226)" fill="none" stroke="#b4b6c4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+      <path id="Line_186" d="M9.533.476H0" transform="translate(8.233 12.512)" fill="none" stroke="#b4b6c4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+      <path id="Path" d="M19.091,0H6.909C2.662,0,0,3.006,0,7.261V18.739C0,22.994,2.65,26,6.909,26H19.091C23.35,26,26,22.994,26,18.739V7.261C26,3.006,23.35,0,19.091,0Z" fill="none" stroke="#b4b6c4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+    </g>
+  </g>
+</svg>
