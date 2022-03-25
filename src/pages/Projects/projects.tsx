@@ -48,7 +48,7 @@ const Projects: React.FC = () => {
             <select className="select-filter" name="color">
               {PMs &&
                 PMs.length > 0 &&
-                PMs.map((item) => (
+                PMs.map((item: any) => (
                   <option
                     {...register("projectManager")}
                     key={item._id}
@@ -63,7 +63,7 @@ const Projects: React.FC = () => {
             <label style={{ padding: 0 }}>Client Name:</label>
             <select className="select-filter" name="color">
               {clients?.length > 0 &&
-                clients.map((item) => (
+                clients.map((item: any) => (
                   <option
                     key={item._id}
                     {...register("client")}
