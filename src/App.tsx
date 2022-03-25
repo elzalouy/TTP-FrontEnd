@@ -7,7 +7,7 @@ import RestPassword from "./pages/AuthPage/rest";
 
 import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
-// import tasks from "./pages/tasks/tasks";
+import TasksBoardView from "./pages/TaskViewBoard/taskViewBoard";
 import AllPopsPage from "./pages/AllPopsPage";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
@@ -22,6 +22,10 @@ import { selectClients } from "./redux/Clients/clients.selectors";
 import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
+import { getAllProjects } from "./redux/Projects";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getAllMembers } from "./redux/techMember";
 
 type Props = {};
 
@@ -33,24 +37,66 @@ const App: React.FC<Props> = () => {
     dispatch(getPMs(null));
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
+    dispatch(getAllProjects(null));
+    dispatch(getAllMembers(null));
   }, []);
   return (
     <div className="main-container">
       <BrowserRouter>
+        <ToastContainer />
         <Switch>
-          <Route exact path="/" component={Login} />
-          <Route path="/ForgetPassword" component={Forget} />
-          <Route path="/RestPassword" component={RestPassword} />
-
-          <LoggedInContainer path="/Projects" component={Projects} />
-          <LoggedInContainer path="/Tasks" component={tasks} />
-          <LoggedInContainer path="/TasksList" component={TasksListView} />
-          <Route path="/AllPopsPage" component={AllPopsPage} />
-          <LoggedInContainer path="/Clients" component={Clients} />
-          <LoggedInContainer path="/Departments" component={departments} />
-          <LoggedInContainer path="/Categories" component={Category} />
-          <LoggedInContainer path="/ProjectManagers" component={ProjectManagers} />
-
+          <Route key="/path" exact path="/" component={Login} />
+          <Route
+            key="forgetPassword"
+            path="/ForgetPassword"
+            component={Forget}
+          />
+          <Route
+            key="/resetPassword"
+            path="/RestPassword"
+            component={RestPassword}
+          />
+          <LoggedInContainer
+            key="/projects"
+            path="/Projects"
+            component={Projects}
+          />
+          <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} />
+          <LoggedInContainer
+            path="/projects"
+            key="projects"
+            component={TasksListView}
+          />
+          <LoggedInContainer
+            key="/tasksBoard"
+            path="/TasksBoard"
+            component={TasksBoardView}
+          />
+          <LoggedInContainer
+            key="/tasksBoard"
+            path="/AllPopsPage"
+            component={AllPopsPage}
+          />
+          <LoggedInContainer
+            key="/clients"
+            path="/Clients"
+            component={Clients}
+          />
+          <LoggedInContainer
+            path="/Departments"
+            key="/departments"
+            component={departments}
+          />
+          <LoggedInContainer
+            path="/Categories"
+            key="/categories"
+            component={Category}
+          />
+          <LoggedInContainer
+            path="/ProjectManagers"
+            key="/projectManagers"
+            component={ProjectManagers}
+          />
         </Switch>
       </BrowserRouter>
     </div>

@@ -1,0 +1,42 @@
+.add-new-cli {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #ededed;
+}
+
+.add-new-cli>img {
+    width: 22px;
+    height: 22px;
+}
+
+.add-new-cli>p {
+    padding: 5px;
+    font-weight: 600;
+}
+
+.new-client-title {
+    color: #30bcc7;
+    font-weight: 600;
+}
+
+.label-client {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 !important;
+}
+
+.input-client {
+    width: 100%;
+    font-size: initial;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: solid 0.5px;
+    border-color: #b4b6c4;
+    color: #b4b6c4;
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}

@@ -2,6 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import {
   categoriesActions,
   selectAllCategories,
@@ -10,10 +11,15 @@ import {
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  createProject,
+  createProjectTask,
   ProjectsActions,
   selectNewProject,
+  selectSelectedDepartment,
 } from "../../redux/Projects";
+import {
+  getTechMembersByDeptId,
+  selectDepartmentMembers,
+} from "../../redux/techMember";
 
 interface TaskFormProps {
   setCurrentStep: any;
@@ -21,32 +27,45 @@ interface TaskFormProps {
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
-  const dispatch: Dispatch<any> = useAppDispatch();
+  const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
 
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
+  const selectedDepartment = useAppSelector(selectSelectedDepartment);
+  const depMembers = useAppSelector(selectDepartmentMembers);
   const { register, handleSubmit, watch } = useForm();
   React.useEffect(() => {
     let values = watch();
-    if (values?.categoryId !== selectedCategory?.id) {
-      let category = categories.find((item) => item.id === values.categoryId);
+    if (values?.categoryId !== selectedCategory?._id) {
+      let category = categories.find((item) => item._id === values.categoryId);
       dispatch(
         categoriesActions.setSelectedCategory(category ? category : null)
       );
     }
+    if (values.selectedDepartment !== selectedDepartment) {
+      dispatch(
+        ProjectsActions.onChangeSelectedDepartment(values.selectedDepartment)
+      );
+      dispatch(
+        getTechMembersByDeptId({ departmentId: values.selectedDepartment })
+      );
+    }
   }, [register]);
   const onSubmit = (data: any) => {
+    console.log(data.memberId);
+    let assignedTo = depMembers?.find((item) => item._id === data.memberId);
     let newTask = {
       name: data.name,
-      categoryId: data.categoryId,
-      subCategoryId: data.subCategoryId,
-      teamId: data.teamId,
+      categoryId: null,
+      subCategoryId: null,
+      memberId: data?.memberId,
+      projectId: newProject.project?._id,
       countNotClear: 0,
       countShared: 0,
-      status: "",
+      status: "inProgress",
       start: new Date().toUTCString(),
       deadline: data.deadline,
       deliveryDate: null,
@@ -54,13 +73,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
       turnoverTime: null,
       attachedFiles: null,
       attachedCard: null,
-      listId: null,
-      cardId: data.cardId,
-      boardId: null,
+      listId: assignedTo?.listId,
+      boardId: assignedTo?.boardId,
+      cardId: null,
       file: data.file,
       description: data.description,
     };
-    dispatch(ProjectsActions.onChangeNewProjectTask(newTask));
+    dispatch(createProjectTask(newTask));
   };
 
   const onCancel = () => {
@@ -68,9 +87,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
     setCurrentStep(0);
   };
   const onSaveProject = () => {
-    console.log(newProject);
-    let project = { ...newProject.project, tasks: [...newProject.tasks] };
-    dispatch(createProject(project));
+    toast("Project and Its Tasks have been saved.");
     setShow("none");
     setCurrentStep(0);
     window.location.reload();
@@ -95,11 +112,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               <br />
               <select
                 className="select-project"
-                {...register("teamId", { required: true })}
+                {...register("selectedDepartment", { required: true })}
               >
                 {departments && departments.length > 0 ? (
                   departments.map((item) => (
-                    <option value={item._id}>{item?.name}</option>
+                    <option key={item._id} value={item._id}>
+                      {item?.name}
+                    </option>
                   ))
                 ) : (
                   <></>
@@ -120,17 +139,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             <div>
               <label className="label-project">Category</label>
               <br />
-              <select
-                className="select-project"
-                {...register("categoryId", { required: true })}
-              >
-                {categories && categories.length > 0 ? (
+              <select className="select-project" {...register("categoryId")}>
+                {categories &&
+                  categories.length > 0 &&
                   categories.map((item) => (
-                    <option value={item.id}>{item.category}</option>
-                  ))
-                ) : (
-                  <></>
-                )}
+                    <option key={item?._id} value={item._id}>
+                      {item.category}
+                    </option>
+                  ))}
               </select>
             </div>
             <div>
@@ -146,29 +162,25 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             <div>
               <label className="label-project">Sub category</label>
               <br />
-              <select
-                className="select-project"
-                {...register("subCategoryId", { required: true })}
-              >
+              <select className="select-project" {...register("subCategoryId")}>
                 {selectedCategory?.subCategories &&
-                selectedCategory?.subCategories.length > 0 ? (
-                  selectedCategory.subCategories.map((item) => (
-                    <option value={item}>{item}</option>
-                  ))
-                ) : (
-                  <></>
-                )}
+                  selectedCategory?.subCategories.length > 0 &&
+                  selectedCategory.subCategories.map((item, index) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
               </select>
               <br />
-              <label className="label-project">Attach card</label>
+              <label className="label-project">Assign to Member</label>
               <br />
               <select
                 className="select-project"
-                {...register("cardId", { required: true })}
+                {...register("memberId", { required: true })}
               >
-                <option value="Sub Category">Sub Category</option>
-                <option value="1">option 2 </option>
-                <option value="2">option</option>
+                {depMembers?.map((item) => (
+                  <option value={item._id}>{item.name.toString()}</option>
+                ))}
               </select>
             </div>
           </div>

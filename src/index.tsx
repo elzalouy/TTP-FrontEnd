@@ -9,7 +9,6 @@ import store from "./redux/store";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import themes from "./themes";
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

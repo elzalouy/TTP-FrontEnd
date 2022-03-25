@@ -1,6 +1,10 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { createProject } from "./projects.actions";
+import {
+  createProject,
+  createProjectTask,
+  getAllProjects,
+} from "./projects.actions";
 import projectsState, { ProjectsInterface } from "./projects.state";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
@@ -15,6 +19,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onChangeNewProjectTask: (state, action) => {
       state.newProject.newTask = action.payload;
       state.newProject.tasks.push(action.payload);
+    },
+    onChangeSelectedDepartment: (state, action) => {
+      state.newProject.selectedDepartment = action.payload;
     },
     onDeleteNewProjectTask: (state, action) => {
       let tasks = [...state.newProject.tasks];
@@ -33,8 +40,31 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createProject.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(createProject.fulfilled, (state) => {
+    builder.addCase(createProject.fulfilled, (state, action) => {
       state.loading = false;
+      state.newProject.project = action.payload;
+    });
+    builder.addCase(getAllProjects.rejected, (state) => {
+      state.loading = false;
+      state.projects = [];
+    });
+    builder.addCase(getAllProjects.pending, (state) => {
+      state.loading = true;
+      state.projects = [];
+    });
+    builder.addCase(getAllProjects.fulfilled, (state, action) => {
+      state.loading = false;
+      state.projects = action.payload;
+    });
+    builder.addCase(createProjectTask.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createProjectTask.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createProjectTask.fulfilled, (state, action) => {
+      state.loading = false;
+      action.payload !== null && state.newProject.tasks.push(action.payload);
     });
   },
 });

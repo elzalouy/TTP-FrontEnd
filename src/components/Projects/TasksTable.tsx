@@ -2,11 +2,13 @@ import * as React from "react";
 import IMAGES from "../../assets/img";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject, Task } from "../../redux/Projects";
+import { selectAllMembers } from "../../redux/techMember";
 
 interface TasksProps {}
 
 const Tasks: React.FC<TasksProps> = () => {
   const newProject = useAppSelector(selectNewProject);
+  const deptMembers = useAppSelector(selectAllMembers);
   const dispatch = useAppDispatch();
   const onDeleteTask = (task: Task) => {
     dispatch(ProjectsActions.onDeleteNewProjectTask(task));
@@ -25,7 +27,7 @@ const Tasks: React.FC<TasksProps> = () => {
         <thead>
           <tr>
             <th>Task name</th>
-            <th>Team name</th>
+            <th>member name</th>
             <th>Category</th>
             <th>Deadline date</th>
             <th></th>
@@ -37,9 +39,13 @@ const Tasks: React.FC<TasksProps> = () => {
             newProject?.tasks?.map((task, index: any) => {
               return (
                 <tr key={index}>
-                  <td width={"30%"}>{task && task?.name.toString()}</td>
-                  <td width={"20%"}>{task && task?.teamId.toString()}</td>
-                  <td width={"20%"}>{task && task?.categoryId.toString()}</td>
+                  <td width={"30%"}>{task && task?.name}</td>
+                  <td width={"20%"}>
+                    {task &&
+                      deptMembers?.find((item) => item._id === task.memberId)
+                        ?.name}
+                  </td>
+                  <td width={"20%"}>{task && task?.categoryId}</td>
                   <td width={"20%"}>
                     {task && new Date(task?.deadline).toDateString()}
                   </td>
