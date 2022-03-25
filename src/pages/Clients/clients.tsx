@@ -4,21 +4,20 @@ import IMAGES from "../../assets/img";
 import SearchBox from "../../components/SearchBox";
 import "./clients.css";
 import CreateNewClient from "./CreateNewClient";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 // import DeleteClient from './DeleteClient';
 import ClientCard from "./clientCard";
 
-
 type Props = {
-  id: string
+  id: string;
 };
 
 export interface Client {
-  clientName: string,
-  image: string,
-  projectsId: string[],
-  createdAt: string,
-  _id: string
+  clientName: string;
+  image: string;
+  projectsId: string[];
+  createdAt: string;
+  _id: string;
 }
 
 const Clients: React.FC<Props> = () => {
@@ -26,21 +25,17 @@ const Clients: React.FC<Props> = () => {
 
   const fetchData = async () => {
     try {
-      const response: AxiosResponse = await axios.get('/api/getAllClients');
+      const response: AxiosResponse = await axios.get("/api/getAllClients");
       setClients(response.data);
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e);
     }
-
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
   return (
-
-
     <Box className="clients-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "50px" }}>
         <Typography
@@ -88,11 +83,9 @@ const Clients: React.FC<Props> = () => {
           </Box>
         </Box>
         <Box className="all-clients">
-          {clients.map((clientInfo: Client) => (
+          {clients?.map((clientInfo: Client) => (
             <>
               <ClientCard client={clientInfo} />
-
-
             </>
           ))}
           <CreateNewClient />
