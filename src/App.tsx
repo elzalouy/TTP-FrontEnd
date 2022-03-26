@@ -7,7 +7,7 @@ import RestPassword from "./pages/AuthPage/rest";
 
 import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
-import TasksBoardView from "./pages/TaskViewBoard/taskViewBoard";
+import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
 import AllPopsPage from "./pages/AllPopsPage";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";

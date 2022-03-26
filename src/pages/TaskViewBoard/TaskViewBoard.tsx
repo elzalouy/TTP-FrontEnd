@@ -24,7 +24,6 @@ const TaskViewBoard: React.FC = (props: any) => {
       })
     );
   }, []);
-  console.log(selectedProject.tasks);
   return (
     <Box className="task-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "50px", marginBottom: "20px" }}>
