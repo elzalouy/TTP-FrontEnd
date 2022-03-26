@@ -46,6 +46,11 @@ export interface ProjectsInterface {
     newTask: Task;
     selectedDepartment: Department | null;
   };
+  selectedProject: {
+    loading: boolean | null;
+    tasks: Task[] | null;
+    project: Project | null;
+  };
 }
 
 const PorjectsState: ProjectsInterface = {
@@ -91,6 +96,11 @@ const PorjectsState: ProjectsInterface = {
       description: "",
     },
     selectedDepartment: null,
+  },
+  selectedProject: {
+    loading: null,
+    tasks: null,
+    project: null,
   },
 };
 export default PorjectsState;

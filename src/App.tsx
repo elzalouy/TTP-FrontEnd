@@ -15,7 +15,7 @@ import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
 import ProjectManagers from "./pages/projectManagers/ProjectManagers";
 import { useDispatch } from "react-redux";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
 import { selectClients } from "./redux/Clients/clients.selectors";
 import { getPMs } from "./redux/PM";
@@ -68,7 +68,7 @@ const App: React.FC<Props> = () => {
           />
           <LoggedInContainer
             key="/tasksBoard"
-            path="/TasksBoard"
+            path="/TasksBoard/:id"
             component={TasksBoardView}
           />
           <Route

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
@@ -12,21 +12,30 @@ import {
   selectInprogressProjects,
   selectLateProjects,
   selectLoading,
-} from "../../redux/Projects/projects.selectors";
+  selectAllProjects,
+  filterProjects,
+} from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
 import { selectAllMembers } from "../../redux/techMember";
 import { selectClients } from "../../redux/Clients";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const Projects: React.FC = () => {
+  const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const lateProjects = useAppSelector(selectLateProjects);
+  const projects = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectPMs);
   const techMembers = useAppSelector(selectAllMembers);
   const clients = useAppSelector(selectClients);
-  const { register, watch } = useForm();
+  const { register, watch, control } = useForm();
+  const onHandleChange = (e: any) => {
+    let filter = watch();
+    dispatch(filterProjects(filter));
+  };
   return (
     <div className="departments-page">
       <h2 className="departments-title">Projects</h2>
@@ -43,44 +52,84 @@ const Projects: React.FC = () => {
         </div>
         <div>
           <label style={{ padding: 0 }}>Project manager:</label>
-          <select className="select-filter" name="color">
-            {PMs &&
-              PMs.length > 0 &&
-              PMs.map((item) => (
-                <option
-                  {...register("projectManager")}
-                  key={item._id}
-                  value={item._id}
-                >
-                  {item.name}{" "}
-                </option>
-              ))}
-          </select>
+          <Controller
+            name="projectManager"
+            control={control}
+            render={(props) => (
+              <select
+                {...props}
+                onChange={(e) => {
+                  props.field.onChange(e);
+                  onHandleChange(e);
+                }}
+                className="select-filter"
+              >
+                <option value={""}>select PM</option>
+                {PMs &&
+                  PMs.length > 0 &&
+                  PMs.map((item) => (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  ))}
+              </select>
+            )}
+          />
         </div>
         <div>
           <label style={{ padding: 0 }}>Client Name:</label>
-          <select className="select-filter" name="color">
-            {clients?.length > 0 &&
-              clients.map((item) => (
-                <option
-                  key={item._id}
-                  {...register("client")}
-                  value={item?._id}
-                >
-                  {item?.clientName}{" "}
-                </option>
-              ))}
-          </select>
+          <Controller
+            name="clientId"
+            control={control}
+            render={(props) => (
+              <select
+                {...props}
+                onChange={(e) => {
+                  props.field.onChange(e);
+                  onHandleChange(e);
+                }}
+                className="select-filter"
+              >
+                <option value={""}>select Client</option>
+                {clients?.length > 0 &&
+                  clients.map((item) => (
+                    <option key={item._id} value={item?._id}>
+                      {item?.clientName}
+                    </option>
+                  ))}
+              </select>
+            )}
+          />
         </div>
         <div>
           <label style={{ padding: 0 }}>Status</label>
-          <select className="select-filter" name="color">
-            <option value="delivered on time">delivered on time</option>
-            <option value="delivered before time">delivered before time</option>
-            <option value="delivered after time">delivered after time</option>
-            <option value="late">late</option>
-            <option value="inProgress">inProgress</option>
-          </select>
+          <Controller
+            name="projectStatus"
+            control={control}
+            render={(props) => (
+              <>
+                <select
+                  {...props}
+                  className="select-filter"
+                  onChange={(e) => {
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                >
+                  <option value={""}>select Client</option>
+                  <option value="delivered on time">delivered on time</option>
+                  <option value="delivered before time">
+                    delivered before time
+                  </option>
+                  <option value="delivered after time">
+                    delivered after time
+                  </option>
+                  <option value="late">late</option>
+                  <option value="inProgress">inProgress</option>
+                </select>
+              </>
+            )}
+          />
         </div>
         <div>
           <SearchBar />

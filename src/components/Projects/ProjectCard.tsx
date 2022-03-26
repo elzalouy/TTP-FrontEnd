@@ -13,6 +13,7 @@ import style from "./projectCardStyle";
 import { Project } from "../../redux/Projects";
 import { useAppSelector } from "../../redux/hooks";
 import { selectPMs } from "../../redux/PM";
+import { Link } from "react-router-dom";
 type Props = {
   status: string;
   Projects: Project[];
@@ -90,9 +91,6 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
               <TableCell sx={{ borderBottom: "none" }} align="right">
                 Tasks
               </TableCell>
-              {/* <TableCell sx={{ borderBottom: "none" }} align="right">
-                Team Name
-              </TableCell> */}
               <TableCell sx={{ borderBottom: "none" }} align="right">
                 Deadline Date
               </TableCell>
@@ -109,7 +107,13 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
           <TableBody>
             {expanded &&
               Projects.map((project) => (
-                <TableRow className={classes.tbody} key={project._id}>
+                <TableRow
+                  onClick={() =>
+                    window.location.replace(`/tasksBoard/${project._id}`)
+                  }
+                  className={classes.tbody}
+                  key={project._id}
+                >
                   <TableCell className={classes.tcellLeft}>
                     <h3>{project?.name}</h3>
                     <p>
@@ -136,9 +140,6 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
                       {project.numberOfTasks}
                     </h3>
                   </TableCell>
-                  {/* <TableCell className={classes.tcellCenter} align="right">
-                    missed
-                  </TableCell> */}
                   <TableCell className={classes.tcellCenter} align="right">
                     {new Date(project.projectDeadline).toLocaleDateString(
                       "en-US",

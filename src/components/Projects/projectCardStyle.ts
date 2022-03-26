@@ -33,6 +33,7 @@ const style = (status: string) => {
 
       borderTopLeftRadius: "10px",
       borderBottomLeftRadius: "10px",
+      cursor: "pointer",
     },
     tcellRight: {
       borderBottom:
@@ -41,7 +42,6 @@ const style = (status: string) => {
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
       borderTop:
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
-
       borderTopRightRadius: "10px",
       borderBottomRightRadius: "10px",
       fontWeight: 600,
@@ -51,10 +51,10 @@ const style = (status: string) => {
     tcellCenter: {
       borderBottom:
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
-
       borderTop:
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
       color: "#707683",
+      cursor: "pointer",
     },
     tcellCenterTask: {
       borderBottom:
@@ -64,6 +64,7 @@ const style = (status: string) => {
         status === "In progress" ? "3px solid #FFC500" : "2px solid #00ACBA",
       color: "#00ACBA",
       fontWeight: "bold",
+      cursor: "pointer",
     },
   }));
   return useStyles;
