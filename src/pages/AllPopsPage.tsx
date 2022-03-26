@@ -38,12 +38,12 @@ const AllPopsPage: React.FC<Props> = () => {
         <EditDepartment />
         <EditProject />
         <EditPM />
-        <EditClient />
+        {/* <EditClient /> */}
         <EditCategory />.
         <DeleteProject />
         <DeletePM />
         <DeleteDepartment />
-        <DeleteClient />
+        {/* <DeleteClient /> */}
         <br />
       </div>
       <div
@@ -57,7 +57,7 @@ const AllPopsPage: React.FC<Props> = () => {
         <TaskDrop />
         <ProjectDrop />
         <DepartmentDrop />
-        <ClientDrop />
+        {/* <ClientDrop /> */}
       </div>
     </div>
   );

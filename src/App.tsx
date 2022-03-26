@@ -4,6 +4,7 @@ import "./App.css";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
+
 import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/taskViewBoard";
@@ -11,8 +12,8 @@ import AllPopsPage from "./pages/AllPopsPage";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
-import Departments from "./pages/Departments/departments";
 import Category from "./pages/Category/Category";
+import Clients from "./pages/Clients/clients";
 import ProjectManagers from "./pages/projectManagers/ProjectManagers";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./redux/hooks";
@@ -60,10 +61,10 @@ const App: React.FC<Props> = () => {
             path="/Projects"
             component={Projects}
           />
-          <Route path="/Tasks" key="/tasks" component={tasks} />
+          <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} />
           <LoggedInContainer
-            path="/projects"
-            key="projects"
+            path="/tasksList"
+            key="tasksList"
             component={TasksListView}
           />
           <LoggedInContainer
@@ -71,7 +72,7 @@ const App: React.FC<Props> = () => {
             path="/TasksBoard/:id"
             component={TasksBoardView}
           />
-          <Route
+          <LoggedInContainer
             key="/tasksBoard"
             path="/AllPopsPage"
             component={AllPopsPage}
@@ -79,15 +80,19 @@ const App: React.FC<Props> = () => {
           <LoggedInContainer
             key="/clients"
             path="/Clients"
-            component={clients}
+            component={Clients}
           />
-          <Route
+          <LoggedInContainer
             path="/Departments"
             key="/departments"
-            component={Departments}
+            component={departments}
           />
-          <Route path="/Categories" key="/categories" component={Category} />
-          <Route
+          <LoggedInContainer
+            path="/Categories"
+            key="/categories"
+            component={Category}
+          />
+          <LoggedInContainer
             path="/ProjectManagers"
             key="/projectManagers"
             component={ProjectManagers}

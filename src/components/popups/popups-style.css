@@ -172,6 +172,7 @@
 
 .warning-text {
   margin: 20px 10px;
+  color: black;
 }
 
 .margin-cover {
@@ -231,7 +232,7 @@
   color: #b4b6c4;
   margin: 0;
   margin-top: 5px;
-  font-family: "Cairo", sans-serif;
+  font-family: 'Cairo', sans-serif;
 }
 
 table.allTask-table {

@@ -1,0 +1,52 @@
+.clients-page {
+    padding: 2%;
+    background-color: #fafafb;
+    min-height: 100vh;
+}
+
+.all-clients {
+    margin: 20px 0;
+    display: grid;
+    padding: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+    border: 2px solid #e2e2ea;
+    border-radius: 20px;
+}
+
+.client-card {
+    background-color: #efebf2;
+    border-radius: 20px;
+    padding-bottom: 10px;
+}
+
+.cl-card-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #0079bf;
+}
+
+.clients-settings {
+    display: flex;
+    align-items: center;
+}
+
+/* filters */
+.clients-option {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 35px;
+    border: 0;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 0 10px 0 10px;
+    background-color: #ffffff;
+}
+
+.clients-option label {
+    width: inherit;
+    color: #777;
+    padding: 2px 8px 0;
+}

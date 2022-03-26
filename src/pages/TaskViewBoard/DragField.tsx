@@ -26,6 +26,13 @@ const DragField: React.FC = () => {
       border: "canceled-border",
     },
     [uuidv4()]: {
+      name: "",
+      items: taskDataCanceled,
+      header: "canceled-header",
+      body: "canceled-task",
+      border: "canceled-border",
+    },
+    [uuidv4()]: {
       name: "Done",
       items: taskDataDone,
       header: "done-header",

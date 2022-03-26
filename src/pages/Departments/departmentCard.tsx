@@ -1,5 +1,5 @@
 import React from "react";
-import IMAGES from "../../assets/img/index";
+import IMAGES from "../../assets/img";
 
 type Props = {};
 const departmentCard: React.FC<Props> = () => {

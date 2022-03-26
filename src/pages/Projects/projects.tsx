@@ -131,44 +131,45 @@ const Projects: React.FC = () => {
             )}
           />
         </div>
-        <div>
           <SearchBar />
-        </div>
+        <Box
+          sx={{
+            mt: 2,
+            display: "inherit",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          {loading === false ? (
+            <>
+              <CreateNewProject />
+              <ProjectCard
+                status={"In progress"}
+                Projects={inProgressProjects}
+              />
+              <ProjectCard status={"Done"} Projects={doneProjects} />
+              <ProjectCard status={"Late"} Projects={lateProjects} />
+            </>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                borderRadius: "12px",
+                backgroundColor: "#F1F1F4",
+                p: 1,
+                cursor: "pointer",
+                font: "normal normal 600 16px/30px Cairo",
+                color: "#909090",
+              }}
+            >
+              <RotateRightIcon></RotateRightIcon> Loading More
+            </Box>
+          )}
+        </Box>
       </div>
-      <Box
-        sx={{
-          mt: 2,
-          display: "inherit",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        {loading === false ? (
-          <>
-            <CreateNewProject />
-            <ProjectCard status={"In progress"} Projects={inProgressProjects} />
-            <ProjectCard status={"Done"} Projects={doneProjects} />
-            <ProjectCard status={"Late"} Projects={lateProjects} />
-          </>
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              borderRadius: "12px",
-              backgroundColor: "#F1F1F4",
-              p: 1,
-              cursor: "pointer",
-              font: "normal normal 600 16px/30px Cairo",
-              color: "#909090",
-            }}
-          >
-            <RotateRightIcon></RotateRightIcon> Loading More
-          </Box>
-        )}
-      </Box>
     </div>
   );
 };
