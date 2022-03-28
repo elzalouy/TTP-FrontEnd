@@ -18,6 +18,7 @@ import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
 import {
+  filterTasks,
   getAllProjects,
   getAllTasks,
   selectAllProjects,
@@ -32,7 +33,6 @@ const Tasks: React.FC = (props: any) => {
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(selectClients);
   const techMembers = useAppSelector(selectAllMembers);
-
   const { register, watch, control } = useForm();
   React.useEffect(() => {
     dispatch(getAllClients(null));
@@ -43,28 +43,17 @@ const Tasks: React.FC = (props: any) => {
     dispatch(getAllMembers(null));
     dispatch(getAllTasks(null));
   }, []);
-  console.log(techMembers);
-  const onHandleChange = (e: any) => {};
+
+  const onHandleChange = (e: any) => {
+    let filter = watch();
+    dispatch(filterTasks(filter));
+  };
   return (
     <Box className="tasks-page" sx={{ backgroundColor: "#FAFAFB" }}>
       <Typography variant="h2" className="tsk-header">
         Tasks
       </Typography>
       <Box className="tasks-settings">
-        {/* <Box className="tasks-option">
-          <label>Date:</label>
-          <Controller
-            name="status"
-            control={control}
-            render={() => (
-              <select className="select-filter" name="color">
-                <option value="Due Date">Due Date</option>
-                <option value="In progress">In progress</option>
-                <option value="To do">To do</option>
-              </select>
-            )}
-          />
-        </Box> */}
         <Box className="tasks-option">
           <label>Status:</label>
           <Controller
@@ -75,70 +64,17 @@ const Tasks: React.FC = (props: any) => {
                 {...props}
                 style={{ width: "50px" }}
                 className="select-filter"
-                name="color"
                 onChange={(e) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
               >
                 <option value="">All</option>
-                <option value="InProgress">In progress</option>
-                <option value="delivered on time">Delivered on time</option>
+                <option value="inProgress">In progress</option>
+                <option value="delivered">Delivered on time</option>
                 <option value="late">Late</option>
                 <option value="not clear">Not clear</option>
                 <option value="cancled">Canceled</option>
-              </select>
-            )}
-          />
-        </Box>
-        <Box className="tasks-option">
-          <label style={{ width: "110px" }}>Project Manager:</label>
-          <Controller
-            name="projectManager"
-            control={control}
-            render={(props) => (
-              <select
-                {...props}
-                onChange={(e) => {
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                className="select-filter"
-                name="color"
-              >
-                <option value="">All</option>
-                {PMs &&
-                  PMs.length > 0 &&
-                  PMs.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item.name}
-                    </option>
-                  ))}
-              </select>
-            )}
-          />
-        </Box>
-        <Box className="tasks-option">
-          <label>Clients:</label>
-          <Controller
-            name="clientId"
-            control={control}
-            render={(props) => (
-              <select
-                {...props}
-                style={{ width: "50px" }}
-                className="select-filter"
-                name="color"
-                onChange={(e) => {
-                  onHandleChange(e);
-                  props.field.onChange(e);
-                }}
-              >
-                <option value="">All</option>
-                {clients &&
-                  clients.map((client) => (
-                    <option value={client._id}>{client.clientName}</option>
-                  ))}
               </select>
             )}
           />
@@ -152,16 +88,17 @@ const Tasks: React.FC = (props: any) => {
               <select
                 {...props}
                 onChange={(e) => {
-                  onHandleChange(e);
                   props.field.onChange(e);
+                  onHandleChange(e);
                 }}
                 style={{ width: "50px" }}
                 className="select-filter"
-                name="color"
               >
-                <option value="All">All</option>
-                <option value="In progress">In progress</option>
-                <option value="To do">To do</option>
+                <option value="">All</option>
+                {projects.projects &&
+                  projects.projects.map((item) => (
+                    <option value={item._id}>{item.name} </option>
+                  ))}
               </select>
             )}
           />
@@ -176,7 +113,6 @@ const Tasks: React.FC = (props: any) => {
                 {...props}
                 style={{ width: "50px" }}
                 className="select-filter"
-                name="color"
                 onChange={(e) => {
                   onHandleChange(e);
                   props.field.onChange(e);
@@ -268,17 +204,6 @@ const Tasks: React.FC = (props: any) => {
                     >
                       Project Name
                     </TableCell>
-                    {/* <TableCell
-                  style={{
-                    color: "#334D6E",
-                    width: "200px",
-                    margin: "0px",
-                    paddingRight: "15px",
-                    fontWeight: "bold",
-                  }}
-                  >
-                  Version
-                </TableCell> */}
                     <TableCell
                       style={{
                         color: "#334D6E",

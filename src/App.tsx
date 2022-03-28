@@ -72,11 +72,11 @@ const App: React.FC<Props> = () => {
             path="/TasksBoard/:id"
             component={TasksBoardView}
           />
-          <LoggedInContainer
+          {/* <LoggedInContainer
             key="/tasksBoard"
             path="/AllPopsPage"
             component={AllPopsPage}
-          />
+          /> */}
           <LoggedInContainer
             key="/clients"
             path="/Clients"

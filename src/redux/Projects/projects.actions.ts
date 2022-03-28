@@ -59,6 +59,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const getTasks = createAsyncThunk<any, any, any>(
   "projects/getProjectTasks",
   async (args, { rejectWithValue }) => {
@@ -71,6 +72,7 @@ export const getTasks = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const getProject = createAsyncThunk<any, any, any>(
   "prjects/getProject",
   async (args, { rejectWithValue }) => {
@@ -87,6 +89,18 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let tasks = await api.getTasks("");
+      return tasks.data;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const filterTasks = createAsyncThunk<any, any, any>(
+  "projects/filterTasks",
+  async (args, { rejectWithValue }) => {
+    try {
+      let tasks = await api.filterTasks(args);
       return tasks.data;
     } catch (error) {
       rejectWithValue(error);

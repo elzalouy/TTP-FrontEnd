@@ -4,6 +4,7 @@ import {
   createProject,
   createProjectTask,
   filterProjects,
+  filterTasks,
   getAllProjects,
   getAllTasks,
   getProject,
@@ -115,6 +116,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.allTasks = null;
     });
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
+      state.loading = false;
+      state.allTasks = action.payload;
+    });
+    builder.addCase(filterTasks.rejected, (state) => {
+      state.loading = false;
+      state.allTasks = [];
+    });
+    builder.addCase(filterTasks.pending, (state) => {
+      state.loading = true;
+      state.allTasks = null;
+    });
+    builder.addCase(filterTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.allTasks = action.payload;
     });

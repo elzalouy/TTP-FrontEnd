@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 const TaskViewBoard: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
+
   useEffect(() => {
     dispatch(getAllProjects(null));
     dispatch(

@@ -7,4 +7,5 @@ export default {
   createProject: (args: any) => api.post("createProject", args),
   createTask: (args: any) => api.post("createTask", args),
   getTasks: (args: any) => api.get(`getTasks${args}`),
+  filterTasks: (args: any) => api.post("filterTasks", args),
 };

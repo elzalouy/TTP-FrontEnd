@@ -65,7 +65,6 @@ const tasks: React.FC<Props> = () => {
       hideable: false,
     },
   ];
-
   const rows = [
     {
       id: 1,
@@ -160,7 +159,6 @@ const tasks: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
         <div className="select-wrap">
           <label>Project manager:</label>
           <select className="select-filter" name="color">
@@ -169,7 +167,6 @@ const tasks: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
         <div className="select-wrap">
           <label>Clients:</label>
           <select className="select-filter" name="color">
@@ -178,7 +175,6 @@ const tasks: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
         <div className="select-wrap">
           <label>Project:</label>
           <select className="select-filter" name="color">
@@ -187,7 +183,6 @@ const tasks: React.FC<Props> = () => {
             <option value="option 3">option 3</option>
           </select>
         </div>
-
         <div className="select-wrap">
           <label>Teams:</label>
           <select className="select-filter" name="color">
@@ -237,7 +232,6 @@ const tasks: React.FC<Props> = () => {
           disableColumnSelector
         />
       </div>
-
       <div className="loading-card">
         <img src={IMAGES.smallLoading} alt="loading" />
         <p>Loading more</p>
