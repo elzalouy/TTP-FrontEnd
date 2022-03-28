@@ -4,13 +4,14 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
 import { useAppSelector } from "../../redux/hooks";
+import DragField from "./DragField";
 import {
   getAllProjects,
   getTasks,
   selectSelectedProject,
 } from "../../redux/Projects";
-import DragField from "./DragField";
 import "./taskViewBoard.css";
+import { Link } from "react-router-dom";
 
 const TaskViewBoard: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -56,14 +57,14 @@ const TaskViewBoard: React.FC = (props: any) => {
               <option value="To do">To do</option>
             </select>
           </Box>
-          <Box className="task-option">
+          <Link to={`/TasksList`} className="task-option">
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>
               Task view List
             </span>
-          </Box>
+          </Link>
         </Box>
       </Box>
-      <DragField />
+      <DragField {...props} />
     </Box>
   );
 };

@@ -8,12 +8,12 @@ export interface TechMemberInterface {
   newBoardId?: string;
 }
 export interface TechMembersInterface {
-  techMembers: TechMemberInterface[] | null;
+  techMembers: TechMemberInterface[];
   loading: boolean | null;
   deptTechMembers: TechMemberInterface[] | null;
 }
 export const techMembersState: TechMembersInterface = {
   loading: null,
-  techMembers: null,
+  techMembers: [],
   deptTechMembers: null,
 };

@@ -19,7 +19,27 @@ export const selectLateProjects = (state: RootState) =>
   state?.projects?.projects?.filter((item) => item.projectStatus === "late");
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
-export const selectAllProjects = (state: RootState) =>
-  state?.projects?.projects;
+export const selectAllProjects = (state: RootState) => state?.projects;
 export const selectSelectedProject = (state: RootState) =>
   state?.projects.selectedProject;
+export const selectInProgressTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "inProgress"
+  );
+export const selectDoneTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "delivered on time"
+  );
+export const selectLateTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "late"
+  );
+export const selectNotClearTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "not clear"
+  );
+export const selectCancledTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "cancled"
+  );
+export const selectTasks = (state: RootState) => state.projects.allTasks;

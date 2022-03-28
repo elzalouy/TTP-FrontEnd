@@ -64,8 +64,30 @@ export const getTasks = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let tasks = await api.getTasks(args.url);
-      if (tasks?.ok) return { tasks: tasks?.data, projectId: args?.projectId };
+      if (tasks?.ok) return tasks?.data;
       else return [];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+export const getProject = createAsyncThunk<any, any, any>(
+  "prjects/getProject",
+  async (args, { rejectWithValue }) => {
+    try {
+      let projects: ApiResponse<any, any> = await api.httpGetProjectById(args);
+      return projects?.data[0];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+export const getAllTasks = createAsyncThunk<any, any, any>(
+  "projects/getAllTasks",
+  async (args, { rejectWithValue }) => {
+    try {
+      let tasks = await api.getTasks("");
+      return tasks.data;
     } catch (error) {
       rejectWithValue(error);
     }

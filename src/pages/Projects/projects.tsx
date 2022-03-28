@@ -12,7 +12,6 @@ import {
   selectInprogressProjects,
   selectLateProjects,
   selectLoading,
-  selectAllProjects,
   filterProjects,
 } from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
@@ -27,9 +26,7 @@ const Projects: React.FC = () => {
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const lateProjects = useAppSelector(selectLateProjects);
-  const projects = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectPMs);
-  const techMembers = useAppSelector(selectAllMembers);
   const clients = useAppSelector(selectClients);
   const { register, watch, control } = useForm();
   const onHandleChange = (e: any) => {
@@ -64,7 +61,7 @@ const Projects: React.FC = () => {
                 }}
                 className="select-filter"
               >
-                <option value={""}>select PM</option>
+                <option value={""}>All</option>
                 {PMs &&
                   PMs.length > 0 &&
                   PMs.map((item) => (
@@ -135,7 +132,6 @@ const Projects: React.FC = () => {
           <SearchBar />
         </div>
       </div>
-
       <Box
         sx={{
           mt: 2,

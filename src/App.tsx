@@ -63,7 +63,7 @@ const App: React.FC<Props> = () => {
           />
           <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} />
           <LoggedInContainer
-            path="/tasksList"
+            path="/TasksList"
             key="tasksList"
             component={TasksListView}
           />

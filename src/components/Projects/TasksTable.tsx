@@ -43,8 +43,9 @@ const Tasks: React.FC<TasksProps> = () => {
                   <td width={"30%"}>{task && task?.name}</td>
                   <td width={"20%"}>
                     {task &&
-                      deptMembers?.find((item) => item._id === task.memberId)
-                        ?.name}
+                      deptMembers.techMembers?.find(
+                        (item) => item._id === task.memberId
+                      )?.name}
                   </td>
                   <td width={"20%"}>{task && task?.categoryId}</td>
                   <td width={"20%"}>
