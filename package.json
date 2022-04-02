@@ -101,7 +101,9 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.15",
-    "react-error-overlay": "^6.0.9"
+    "@types/styled-components": "^5.1.15"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

@@ -26,6 +26,7 @@ import { getAllProjects } from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAllMembers } from "./redux/techMember";
+import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 
 type Props = {};
 
@@ -96,6 +97,11 @@ const App: React.FC<Props> = () => {
             path="/ProjectManagers"
             key="/projectManagers"
             component={ProjectManagers}
+          />
+          <LoggedInContainer
+            path="/notifications"
+            key="/notifications"
+            component={NotificationContainer}
           />
         </Switch>
       </BrowserRouter>
