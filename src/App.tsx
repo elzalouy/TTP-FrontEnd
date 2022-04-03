@@ -62,7 +62,7 @@ const App: React.FC<Props> = () => {
             path="/Projects"
             component={Projects}
           />
-          <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} />
+          {/* <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} /> */}
           <LoggedInContainer
             path="/TasksList"
             key="tasksList"

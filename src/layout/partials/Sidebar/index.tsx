@@ -19,7 +19,6 @@ const Sidebar: React.FC<Props> = () => {
       <div className="logo-name-wrapper">
         <div className="logo-name">
           {!toggle && <Logo />}
-
           <span
             onClick={() => setToggle(!toggle)}
             className={toggle ? "active-burger-toggel-width" : ""}
@@ -127,7 +126,7 @@ const Sidebar: React.FC<Props> = () => {
           </NavLink>
         </li>
         <li className="features-item">
-          <NavLink to="/Tasks" activeClassName=" active">
+          <NavLink to="/TasksList" activeClassName=" active">
             <img style={{ marginRight: "15px" }} src={IMAGES.tasks} />
             {!toggle && (
               <Typography
