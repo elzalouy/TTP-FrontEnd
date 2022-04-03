@@ -10,7 +10,7 @@ import ClientCard from "./clientCard";
 
 import { clientsActions } from "../../redux/Clients";
 import { selectClients } from "../../redux/Clients/clients.selectors";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {
   id: string;
@@ -73,7 +73,6 @@ const Clients: React.FC<Props> = () => {
           <Box className="clients-option">
             <label>Date:</label>
             <div className="select-container">
-
               <select
                 style={{ paddingRight: "10px" }}
                 className="select-filter"

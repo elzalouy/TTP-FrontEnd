@@ -52,7 +52,7 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
           justifyContent: "space-between",
           alignItems: "center",
           width: "100%",
-          mb: 2
+          mb: 2,
         }}
       >
         {status}
@@ -106,7 +106,7 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
           </TableHead>
           <TableBody>
             {expanded &&
-              Projects.map((project) => (
+              Projects?.map((project) => (
                 <TableRow
                   onClick={() =>
                     window.location.replace(`/tasksBoard/${project._id}`)
