@@ -1,6 +1,7 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject, Task } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
 
@@ -9,7 +10,7 @@ interface TasksProps {}
 const Tasks: React.FC<TasksProps> = () => {
   const newProject = useAppSelector(selectNewProject);
   const deptMembers = useAppSelector(selectAllMembers);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const onDeleteTask = (task: Task) => {
     dispatch(ProjectsActions.onDeleteNewProjectTask(task));
   };
@@ -42,8 +43,9 @@ const Tasks: React.FC<TasksProps> = () => {
                   <td width={"30%"}>{task && task?.name}</td>
                   <td width={"20%"}>
                     {task &&
-                      deptMembers?.find((item) => item._id === task.memberId)
-                        ?.name}
+                      deptMembers.techMembers?.find(
+                        (item) => item._id === task.memberId
+                      )?.name}
                   </td>
                   <td width={"20%"}>{task && task?.categoryId}</td>
                   <td width={"20%"}>

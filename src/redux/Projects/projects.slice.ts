@@ -3,7 +3,12 @@ import { RootState } from "../store";
 import {
   createProject,
   createProjectTask,
+  filterProjects,
+  filterTasks,
   getAllProjects,
+  getAllTasks,
+  getProject,
+  getTasks,
 } from "./projects.actions";
 import projectsState, { ProjectsInterface } from "./projects.state";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
@@ -54,7 +59,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
       state.loading = false;
-      state.projects = action.payload;
+      state.projects = action?.payload;
     });
     builder.addCase(createProjectTask.rejected, (state) => {
       state.loading = false;
@@ -65,6 +70,66 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
       state.loading = false;
       action.payload !== null && state.newProject.tasks.push(action.payload);
+    });
+    builder.addCase(filterProjects.rejected, (state) => {
+      state.loading = false;
+      state.projects = [];
+    });
+    builder.addCase(filterProjects.pending, (state) => {
+      state.loading = true;
+      state.projects = [];
+    });
+    builder.addCase(filterProjects.fulfilled, (state, action) => {
+      state.loading = false;
+      state.projects = action.payload;
+    });
+    builder.addCase(getTasks.rejected, (state) => {
+      state.selectedProject.loading = false;
+      state.selectedProject.tasks = [];
+    });
+    builder.addCase(getTasks.pending, (state) => {
+      state.selectedProject.loading = false;
+      state.selectedProject.tasks = [];
+    });
+    builder.addCase(getTasks.fulfilled, (state, action) => {
+      state.selectedProject.tasks = action.payload;
+    });
+
+    builder.addCase(getProject.rejected, (state) => {
+      state.selectedProject.loading = false;
+      state.selectedProject.project = null;
+    });
+    builder.addCase(getProject.pending, (state) => {
+      state.selectedProject.loading = true;
+      state.selectedProject.project = null;
+    });
+    builder.addCase(getProject.fulfilled, (state, action) => {
+      state.selectedProject.loading = false;
+      state.selectedProject.project = action.payload;
+    });
+    builder.addCase(getAllTasks.rejected, (state) => {
+      state.loading = false;
+      state.allTasks = [];
+    });
+    builder.addCase(getAllTasks.pending, (state) => {
+      state.loading = true;
+      state.allTasks = null;
+    });
+    builder.addCase(getAllTasks.fulfilled, (state, action) => {
+      state.loading = false;
+      state.allTasks = action.payload;
+    });
+    builder.addCase(filterTasks.rejected, (state) => {
+      state.loading = false;
+      state.allTasks = [];
+    });
+    builder.addCase(filterTasks.pending, (state) => {
+      state.loading = true;
+      state.allTasks = null;
+    });
+    builder.addCase(filterTasks.fulfilled, (state, action) => {
+      state.loading = false;
+      state.allTasks = action.payload;
     });
   },
 });

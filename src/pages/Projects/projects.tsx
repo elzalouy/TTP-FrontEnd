@@ -1,7 +1,4 @@
-import React from "react";
-// <<<<<<< HEAD
-// import CreateNewProject from "./createNewProject";
-// =======
+import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
 import "./projects.css";
@@ -14,23 +11,29 @@ import {
   selectInprogressProjects,
   selectLateProjects,
   selectLoading,
-} from "../../redux/Projects/projects.selectors";
+  filterProjects,
+} from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
 import { selectAllMembers } from "../../redux/techMember";
 import { selectClients } from "../../redux/Clients";
 import { useForm } from "react-hook-form";
 import SearchBox from "../../components/SearchBox";
 import { Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
 
 const Projects: React.FC = () => {
+  const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const lateProjects = useAppSelector(selectLateProjects);
   const PMs = useAppSelector(selectPMs);
-  const techMembers = useAppSelector(selectAllMembers);
   const clients = useAppSelector(selectClients);
-  const { register, watch } = useForm();
+  const { register, watch, control } = useForm();
+  const onHandleChange = (e: any) => {
+    let filter = watch();
+    dispatch(filterProjects(filter));
+  };
   return (
 
     <Box className="projects-page" sx={{ width: "100%" }}>

@@ -3,12 +3,13 @@ import "./createNewProject.css";
 import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject } from "../../redux/Projects";
+import { useDispatch } from "react-redux";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const setShow = (value: string) => {
     let project = { ...newProject };

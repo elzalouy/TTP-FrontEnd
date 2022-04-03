@@ -3,40 +3,18 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
+import { Task } from "../../redux/Projects";
 import "./taskCard.css";
 interface DataTypes {
   index: number;
-  item: {
-    id: string;
-    taskName: string;
-    projectManager: string;
-    time: string;
-    ttpTeam: string;
-    team: string;
-    header: string;
-    timeline: string;
-    footer: string;
-    scheduleIcon: string;
-    picUrl?: string;
-  };
+  item: Task;
 }
 
 const taskCard: React.FC<DataTypes> = ({ item, index }) => {
-  const {
-    id,
-    taskName,
-    projectManager,
-    ttpTeam,
-    team,
-    time,
-    header,
-    footer,
-    timeline,
-    scheduleIcon,
-    picUrl,
-  } = item;
+  const { _id, name, status, deadline, start } = item;
+
   return (
-    <Draggable index={index} draggableId={id}>
+    <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => (
         <Box
           {...provided.draggableProps}
@@ -45,18 +23,18 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
           className="task-card"
         >
           <Stack
-            className={header}
+            className="task-card-header-not-clear"
             direction="row"
             justifyContent="flex-start"
             alignItems="center"
           >
-            <Typography sx={{ fontWeight: "bold" }}>Task Name</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
             <Typography style={{ padding: "12px" }}>
               <img src={IMAGES.moreGrey} alt="more" />
             </Typography>
           </Stack>
           <Box>Project manager name</Box>
-          {picUrl ? (
+          {/* {picUrl ? (
             <>
               <img
                 style={{ width: "100%", marginTop: "10px" }}
@@ -86,11 +64,15 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
                 </Typography>{" "}
               </Stack>
             </>
-          ) : time === "Canceled" ? (
-            <Typography className={timeline} style={{ paddingLeft: "5px" }}>
-              {time}
+          )  */}
+          {/* {status === "cancled" ? (
+            <Typography
+              className={"task-card-timeline-not-clear"}
+              style={{ paddingLeft: "5px" }}
+            >
+              {status}
             </Typography>
-          ) : time === "After 2 day" ? (
+          ) : status === "inProgress" ? (
             <Stack
               direction="row"
               marginTop="12px"
@@ -99,7 +81,7 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
               className="aft-red "
             >
               <img src={IMAGES.scheduleRed} alt="more" />
-              <Typography style={{ paddingLeft: "5px" }}>{time}</Typography>
+              <Typography style={{ paddingLeft: "5px" }}>{status}</Typography>
             </Stack>
           ) : (
             <Stack
@@ -108,22 +90,38 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
               marginTop="12px"
               justifyContent="flex-start"
               alignItems="center"
-              className={timeline}
+              className={"task-card-timeline-not-clear"}
             >
-              <img src={scheduleIcon} alt="more" />
-              <Typography style={{ paddingLeft: "5px" }}>{time}</Typography>
+              <img src={IMAGES.scheduleNotClear} alt="more" />
+              <Typography style={{ paddingLeft: "5px" }}>{status}</Typography>
             </Stack>
-          )}
-
+          )} */}
+          <Stack
+            direction="row"
+            marginTop="12px"
+            justifyContent="flex-start"
+            alignItems="center"
+            className="aft-red"
+          >
+            <img src={IMAGES.scheduleRed} alt="more" />
+            <Typography style={{ paddingLeft: "5px" }}>
+              {new Date(deadline).toDateString()}
+            </Typography>
+          </Stack>
           <Stack
             direction="row"
             marginTop="15px"
             justifyContent="flex-start"
             alignItems="center"
           >
-            <Typography className={footer}>TPP project Team</Typography>
+            <Typography className={"task-card-footer-not-clear"}>
+              TPP project Team
+            </Typography>
             <img src={IMAGES.arrow} alt="more" />
-            <Typography style={{ marginLeft: "10px" }} className={footer}>
+            <Typography
+              style={{ marginLeft: "10px" }}
+              className={"task-card-footer-not-clear"}
+            >
               Al-shaqran team
             </Typography>
           </Stack>

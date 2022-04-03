@@ -1,0 +1,9 @@
+.overviewTitle {
+  flex-direction: row;
+}
+.Icon {
+  background-color: cadetblue;
+}
+.NotificationContainer {
+  height: 200px;
+}

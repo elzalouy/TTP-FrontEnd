@@ -9,7 +9,7 @@ import {
   selectSelectedCategory,
 } from "../../redux/Categories";
 import { selectAllDepartments } from "../../redux/Departments";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
   ProjectsActions,

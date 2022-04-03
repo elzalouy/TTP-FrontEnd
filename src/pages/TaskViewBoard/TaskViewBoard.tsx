@@ -1,12 +1,31 @@
 import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
+import { useAppSelector } from "../../redux/hooks";
 import DragField from "./DragField";
+import {
+  getAllProjects,
+  getTasks,
+  selectSelectedProject,
+} from "../../redux/Projects";
 import "./taskViewBoard.css";
+import { Link } from "react-router-dom";
 
-type Props = {};
-const taskViewBoard: React.FC<Props> = () => {
+const TaskViewBoard: React.FC = (props: any) => {
+  const dispatch = useDispatch();
+  const selectedProject = useAppSelector(selectSelectedProject);
+
+  useEffect(() => {
+    dispatch(getAllProjects(null));
+    dispatch(
+      getTasks({
+        url: `?projectId=${props?.match?.params.id}`,
+        projectId: props?.match?.params.id,
+      })
+    );
+  }, []);
   return (
     <Box className="task-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "50px", marginBottom: "20px" }}>
@@ -24,7 +43,7 @@ const taskViewBoard: React.FC<Props> = () => {
               src={IMAGES.arrowHeader}
               alt="more"
             />
-            Project name
+            {selectedProject?.project?.name}
           </Typography>
         </Stack>
         <Box className="task-broad-settings">
@@ -42,19 +61,16 @@ const taskViewBoard: React.FC<Props> = () => {
               <div className="line"></div>
             </div>
           </Box>
-          <Box className="task-option">
+          <Link to={`/TasksList`} className="task-option">
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>
               Task view List
             </span>
-          </Box>
+          </Link>
         </Box>
       </Box>
-
-      {/* <DragField></DragField> */}
-
-      <DragField></DragField>
+      <DragField {...props} />
     </Box>
   );
 };
 
-export default taskViewBoard;
+export default TaskViewBoard;

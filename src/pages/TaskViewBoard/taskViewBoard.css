@@ -1,24 +1,25 @@
 .task-page {
   padding: 2%;
   background-color: #fafafb;
-  min-height: 100vh;
+  min-height: 400px;
 }
 .done-task {
   border-radius: 20px;
   background-color: #e1f3f5;
   min-height: 400px;
-  margin-right: 20px;
+  margin-inline: 10px;
 }
 .not-clear-task {
   border-radius: 20px;
   background-color: #f7f0e7;
   min-height: 400px;
-  margin-right: 20px;
+  margin-inline: 10px;
 }
 .canceled-task {
   border-radius: 20px;
   background-color: #f7e6e7;
   min-height: 400px;
+  margin-inline: 10px;
 }
 .not-clear-header {
   background-color: #f0ddc3;
@@ -72,6 +73,9 @@
   margin: 10px;
   padding: 0 2px 0 2px;
   background-color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  color: #777;
 }
 
 .task-board-option label {
@@ -93,4 +97,15 @@
 }
 .MuiTypography-root {
   font-family: 'Cairo';
+}
+.tasks-board-container {
+  width: 1200;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tasks-board-scroll {
+  width: "auto";
+  overflow: scroll;
+  background-color: red;
 }

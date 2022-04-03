@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../assets/img/index";
+export const InProgressTasks = [];
 export const taskDataDone = [
   {
     id: uuidv4(),

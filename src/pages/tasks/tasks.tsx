@@ -67,7 +67,6 @@ const tasks: React.FC<Props> = () => {
       hideable: false,
     },
   ];
-
   const rows = [
     {
       id: 1,
@@ -264,7 +263,6 @@ const tasks: React.FC<Props> = () => {
           disableColumnSelector
         />
       </div>
-
       <div className="loading-card">
         <img src={IMAGES.smallLoading} alt="loading" />
         <p>Loading more</p>

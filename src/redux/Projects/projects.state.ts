@@ -1,7 +1,7 @@
 import { Department } from "../Departments";
 
 export interface Task {
-  id?: string;
+  _id?: string;
   name: string;
   projectId: string;
   categoryId: string;
@@ -46,6 +46,12 @@ export interface ProjectsInterface {
     newTask: Task;
     selectedDepartment: Department | null;
   };
+  selectedProject: {
+    loading: boolean | null;
+    tasks: Task[] | null;
+    project: Project | null;
+  };
+  allTasks: Task[] | null;
 }
 
 const PorjectsState: ProjectsInterface = {
@@ -68,7 +74,7 @@ const PorjectsState: ProjectsInterface = {
     },
     tasks: [],
     newTask: {
-      id: "",
+      _id: "",
       name: "",
       projectId: "",
       categoryId: "",
@@ -92,5 +98,11 @@ const PorjectsState: ProjectsInterface = {
     },
     selectedDepartment: null,
   },
+  selectedProject: {
+    loading: null,
+    tasks: null,
+    project: null,
+  },
+  allTasks: [],
 };
 export default PorjectsState;

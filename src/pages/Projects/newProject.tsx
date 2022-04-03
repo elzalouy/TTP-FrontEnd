@@ -5,15 +5,16 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions } from "../../redux/Projects";
 import { selectNewProject } from "../../redux/Projects/projects.selectors";
+import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
   const [expanded, setExpanded] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const setShow = (value: string) => {
     let project = { ...newProject };
