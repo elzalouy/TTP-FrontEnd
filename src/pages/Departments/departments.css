@@ -3,7 +3,6 @@
   background-color: #fafafb;
   min-height: 100vh;
 }
-
 .departments-title {
   margin: 10px 0;
 }
@@ -21,7 +20,8 @@
 .department-Card {
   background-color: #e1edf6;
   border-radius: 20px;
-  padding: 10px;
+  padding: 15px;
+  overflow: hidden;
 }
 
 .dp-card-header {
@@ -30,38 +30,49 @@
   font-weight: bold;
   color: #0079bf;
 }
-
+.department-option {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 35px;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0 10px 0 10px;
+  background-color: #ffffff;
+  position: relative;
+}
+.department-option select {
+  padding-top: 3px;
+}
+.department-option label {
+  width: inherit;
+  color: #777;
+  padding: 2px 8px 0;
+}
 .tasks-count {
   display: flex;
   align-items: center;
   margin: 10px 0;
   color: #0079bf;
-}   
-
-.tasks-count>img {
+}
+.tasks-count > img {
   margin-right: 5px;
 }
-
 .teams {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .teamName-badge {
   border-radius: 5px;
-  width: max-content;
+  color: rgb(75, 75, 75);
+  width: 100px;
   padding: 1%;
   margin: 5px;
-  border: 2px solid #1e89c750;
-}
-
-.teamName-badge:nth-child(1) {
-  border-radius: 5px;
-  width: max-content;
-  padding: 1%;
-  margin: 5px;
-  margin-left: 0px;
-  border: 2px solid #1e89c750;
+  border: 1.5px solid #1e89c750;
 }
 
 .counter-container {
@@ -73,6 +84,7 @@
 .counter-title {
   font-weight: 600;
   margin-bottom: 5px;
+  color: #474747;
 }
 
 .hrVertical {
@@ -133,4 +145,7 @@ select.select-filter {
   outline: none;
   border-radius: 10px;
   font-weight: bold;
+}
+.teams::-webkit-scrollbar {
+  height: 0px; /* width of the entire scrollbar */
 }

@@ -31,13 +31,16 @@ const taskViewBoard: React.FC<Props> = () => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <Box className="task-option">
+          <Box className="task-board-option">
             <label>Sort By:</label>
-            <select className="select-filter" name="color">
-              <option value="A to Z">Due Date</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
+            <div className="select-container">
+              <select className="select-filter" name="color">
+                <option value="A to Z">Due Date</option>
+                <option value="In progress">In progress</option>
+                <option value="To do">To do</option>
+              </select>
+              <div className="line"></div>
+            </div>
           </Box>
           <Box className="task-option">
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>

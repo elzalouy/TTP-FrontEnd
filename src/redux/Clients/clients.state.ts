@@ -1,7 +1,8 @@
 export interface Client {
-  _id: string | null;
+  _id: string;
   clientName: string;
-  projectsId?: string[];
+  projectsId: string[];
+  createdAt: string;
   image: string;
 }
 export interface ClientsInterface {

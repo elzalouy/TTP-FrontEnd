@@ -41,6 +41,7 @@ const IMAGES = {
   // search: require("./search.svg").default,
   progressCircles: require('./progressCircles.svg').default,
   moreClient: require('./moreClient.svg').default,
+  verified: require('./verified.png').default,
   // smallLoading: require("./smallLoading.SVG").default,
   // avatarClients: require("./avatarClients.svg").default,
   // search: require("./search.svg").default,

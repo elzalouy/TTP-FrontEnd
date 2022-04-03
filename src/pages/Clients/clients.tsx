@@ -8,6 +8,9 @@ import axios, { AxiosResponse } from 'axios';
 // import DeleteClient from './DeleteClient';
 import ClientCard from "./clientCard";
 
+import { clientsActions } from "../../redux/Clients";
+import { selectClients } from "../../redux/Clients/clients.selectors";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 
 type Props = {
   id: string
@@ -23,6 +26,8 @@ export interface Client {
 
 const Clients: React.FC<Props> = () => {
   const [clients, setClients] = useState<Client[]>([]);
+  // const dispatch = useAppDispatch();
+  // const allClients = useAppSelector(selectClients);
 
   const fetchData = async () => {
     try {
@@ -36,13 +41,15 @@ const Clients: React.FC<Props> = () => {
   }
 
   useEffect(() => {
+    // dispatch(clientsActions.getAllClients())
     fetchData();
   }, []);
+
   return (
 
 
     <Box className="clients-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: "50px" }}>
+      <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
           style={{
@@ -58,23 +65,30 @@ const Clients: React.FC<Props> = () => {
           </Box>
           <Box className="clients-option">
             <label>Sort By:</label>
-            <select className="select-filter" name="color">
-              <option value="A to Z">A to Z</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
+            <div className="select-container">
+              <select className="select-filter" name="color">
+                <option value="A to Z">A to Z</option>
+                <option value="In progress">In progress</option>
+                <option value="To do">To do</option>
+              </select>
+              <div className="line"></div>
+            </div>
           </Box>
           <Box className="clients-option">
             <label>Date:</label>
-            <select
-              style={{ paddingRight: "10px" }}
-              className="select-filter"
-              name="color"
-            >
-              <option value="Oldest to Newest">Oldest to Newest</option>
-              <option value="option 2">Option 2</option>
-              <option value="option 3">Option 3</option>
-            </select>
+            <div className="select-container">
+
+              <select
+                style={{ paddingRight: "10px" }}
+                className="select-filter"
+                name="color"
+              >
+                <option value="Oldest to Newest">Oldest to Newest</option>
+                <option value="option 2">Option 2</option>
+                <option value="option 3">Option 3</option>
+              </select>
+              <div className="line"></div>
+            </div>
           </Box>
 
           <Box
@@ -88,12 +102,12 @@ const Clients: React.FC<Props> = () => {
           </Box>
         </Box>
         <Box className="all-clients">
-          {clients.map((clientInfo: Client) => (
-            <>
-              <ClientCard client={clientInfo} />
+          {clients.map(clientInfo => (
+
+            <ClientCard client={clientInfo} />
 
 
-            </>
+
           ))}
           <CreateNewClient />
         </Box>
