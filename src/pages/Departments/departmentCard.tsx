@@ -15,7 +15,7 @@ const departmentCard: React.FC<Props> = () => {
         <div className="tasks-count">
           <img src={IMAGES.tasksCheck} alt="taskCheck" />
           4/5
-        </div>   
+        </div>
         <div className="teams">
           <div className="teamName-badge">Team name 1</div>
           <div className="teamName-badge">Team name 2</div>

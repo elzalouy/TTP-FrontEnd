@@ -13,7 +13,7 @@ import style from "./projectCardStyle";
 import { Project } from "../../redux/Projects";
 import { useAppSelector } from "../../redux/hooks";
 import { selectPMs } from "../../redux/PM";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 type Props = {
   status: string;
   Projects: Project[];
@@ -71,7 +71,6 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
           ></ArrowDropDownIcon>
         )}
       </Box>
-
       <Box id="project-title">
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

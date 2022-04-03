@@ -22,6 +22,7 @@ import {
   getAllProjects,
   getAllTasks,
   selectAllProjects,
+  ProjectsInterface,
 } from "../../redux/Projects";
 import { getAllMembers, selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
@@ -29,7 +30,7 @@ import "./TasksListView.css";
 
 const Tasks: React.FC = (props: any) => {
   const dispatch = useDispatch();
-  const projects = useAppSelector(selectAllProjects);
+  const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(selectClients);
   const techMembers = useAppSelector(selectAllMembers);
