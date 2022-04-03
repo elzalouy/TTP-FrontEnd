@@ -47,11 +47,8 @@
     "i18next-resources-to-backend": "^1.0.0",
     "install": "^0.13.0",
     "moment": "^2.29.1",
-<<<<<<< HEAD
     "node-cron": "^3.0.0",
-=======
     "npm": "^8.5.5",
->>>>>>> origin/SAUD-dev
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-chartjs": "^1.2.0",
