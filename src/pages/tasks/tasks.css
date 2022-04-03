@@ -36,7 +36,36 @@
   display: flex;
   align-items: center;
 }
-
+.tasks-option {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0 2px 0 2px;
+  background-color: #ffffff;
+  position: relative;
+}
+.tasks-option select {
+  padding-top: 3px;
+}
+.tasks-option label {
+  width: max-content;
+  color: #777;
+  padding: 2px 4px 0;
+}
+.select-container {
+  position: relative;
+}
+.line {
+  position: absolute;
+  border-left: 1px solid rgb(233, 233, 233);
+  right: 20px;
+  top: 0;
+  height: 35px;
+}
 .deleteBtn-tasks {
   background-color: white;
   margin: 10px;
@@ -84,7 +113,26 @@
 .loading-card p {
   color: #909090;
 }
-
+select.select-filter {
+  background-color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  border: 0px;
+  outline: none;
+  padding-right: 15px !important;
+  border-radius: 10px;
+  font-weight: bold;
+}
+select.select-filter2 {
+  background-color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  border: 0px;
+  outline: none;
+  padding-right: 2px;
+  border-radius: 10px;
+  font-weight: bold;
+}
 @keyframes rotation {
   100% {
     transform: rotate(360deg);

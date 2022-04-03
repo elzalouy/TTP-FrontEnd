@@ -98,7 +98,7 @@ const Sidebar: React.FC<Props> = () => {
 
                 </li>
                 <li className="features-item spam">
-                    <NavLink to="/Notifications" activeClassName="inbox active">
+                    <NavLink to="/Notifications" activeClassName=" active">
 
                         <img style={{ marginRight: "15px", color: 'primary.light' }} src={IMAGES.notification} />
                         {!toggle && <Typography color='primary.light' variant="subtitle1" component="span">

@@ -1,9 +1,10 @@
 import React from "react";
+// <<<<<<< HEAD
 // import CreateNewProject from "./createNewProject";
+// =======
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
-import "../Departments/departments.css";
-import SearchBar from "../Category/SearchBar";
+import "./projects.css";
 import Box from "@mui/material/Box";
 import ProjectCard from "../../components/Projects/ProjectCard";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
@@ -18,6 +19,8 @@ import { selectPMs } from "../../redux/PM";
 import { selectAllMembers } from "../../redux/techMember";
 import { selectClients } from "../../redux/Clients";
 import { useForm } from "react-hook-form";
+import SearchBox from "../../components/SearchBox";
+import { Typography } from "@mui/material";
 
 const Projects: React.FC = () => {
   const loading = useAppSelector(selectLoading);
@@ -29,13 +32,92 @@ const Projects: React.FC = () => {
   const clients = useAppSelector(selectClients);
   const { register, watch } = useForm();
   return (
-    <Box sx={{ width: "100%" }}>
-      <div className="departments-page">
-        <h2 className="departments-title">Projects</h2>
-        <div
-          className="department-tools"
+
+    <Box className="projects-page" sx={{ width: "100%" }}>
+      <Box sx={{ paddingTop: '30px' }}>
+        <Typography
+          variant="h2"
           style={{
-            marginTop: "2%",
+            margin: "10px 0",
+            paddingBottom: "20px",
+          }}
+        >
+          Projects
+        </Typography>
+      </Box>      <div
+        className="department-tools"
+        style={{
+          marginTop: "2%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="filter-icon">
+          <img src={IMAGES.filtericon} alt="FILTER" />
+        </div>
+        <Box className="projects-option">
+          <label>Sort By:</label>
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="A to Z">A to Z</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <Box className="projects-option">
+          <label>Project manager:</label>
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="Nawaf m">Nawaf m</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <Box className="projects-option">
+          <label>Project team:</label>
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="Nawaf m">Developers team</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <Box className="projects-option">
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="Nawaf m">Client name</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <Box className="projects-option">
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="Nawaf m">Status</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <div>
+          <SearchBox></SearchBox>
+        </div>
+      </div>
+      <Box sx={{ mt: 2, display: "flex", flexDirection: "column" }}>
+        <CreateNewProject />
+        <ProjectCard status={"In progress"} Projects={inProgressProjects} />
+        <ProjectCard status={"Done"} Projects={doneProjects} />
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -86,10 +168,10 @@ const Projects: React.FC = () => {
               <option value="inProgress">inProgress</option>
             </select>
           </div>
-          <div>
+          {/* <div>
             <SearchBar />
-          </div>
-        </div>
+          </div> */}
+        </Box>
         <Box
           sx={{
             mt: 2,
@@ -127,8 +209,10 @@ const Projects: React.FC = () => {
             </Box>
           )}
         </Box>
-      </div>
-    </Box>
+      </Box>
+
+    </Box >
+
   );
 };
 

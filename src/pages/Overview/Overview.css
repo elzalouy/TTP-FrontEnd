@@ -1,0 +1,110 @@
+.overview-page {
+  padding: 2%;
+  background-color: #fafafb;
+  min-height: 100vh;
+  width: 100%;
+}
+.projects {
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+.project-card {
+  border-radius: 1em;
+  background-color: white;
+  padding: 1.6em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+.project-cards {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 1em;
+}
+.task-cards {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.task-overview-card {
+  border-radius: 1em;
+  padding: 1.5em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background-color: #f8e8e9;
+}
+.task-card-header-shared {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.task-card-timeline-shared {
+  display: flex;
+  color: #0079bf;
+  background-color: #c1ddf1;
+  border-radius: 5px;
+  padding: 2px;
+  margin: 10px 0;
+}
+.task-card-footer {
+  display: flex;
+  background-color: rgb(235, 206, 208);
+  border-radius: 5px;
+  padding: 3px;
+}
+.statics {
+  display: flex;
+  margin: 25px 5px;
+  width: 100%;
+}
+.project-statics {
+  background-color: white;
+  margin-right: 15px;
+  border-radius: 1em;
+  padding: 2em;
+  width: 48.5%;
+}
+.date-tabs {
+  list-style: none;
+  list-style-type: none;
+}
+
+.date-tabs li {
+  display: inline-block;
+  margin-right: 0.5em;
+  padding: 5px 20px;
+}
+li.active {
+  border-radius: 5px;
+  background-color: #fabb34;
+}
+li.active a {
+  color: rgb(255, 255, 255);
+}
+li a {
+  display: block;
+  color: black;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+}
+.project-statics-status {
+  margin: 1em 0.5em 0 1em;
+}
+.task-statics {
+  background-color: white;
+  border-radius: 1em;
+  padding: 2em;
+  width: 48.5%;
+}
+.task-chart {
+  width: 100%;
+  margin-top: 3em;
+  display: 'flex';
+  flex-direction: column;
+  justify-self: center;
+  position: relative;
+}

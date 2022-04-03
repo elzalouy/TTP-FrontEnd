@@ -51,6 +51,7 @@ const ProjectCard: React.FC<Props> = ({ status, Projects }) => {
           justifyContent: "space-between",
           alignItems: "center",
           width: "100%",
+          mb: 2
         }}
       >
         {status}
