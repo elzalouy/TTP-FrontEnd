@@ -29,19 +29,19 @@ const Clients: React.FC<Props> = () => {
   // const dispatch = useAppDispatch();
   // const allClients = useAppSelector(selectClients);
 
-  const fetchData = async () => {
-    try {
-      const response: AxiosResponse = await axios.get("/api/getAllClients");
-      setClients(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response: AxiosResponse = await axios.get("/api/getAllClients");
+  //     setClients(response.data);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
-  useEffect(() => {
-    // dispatch(clientsActions.getAllClients())
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   // dispatch(clientsActions.getAllClients())
+  //   fetchData();
+  // }, []);
 
   return (
     <Box className="clients-page" sx={{ width: "100%" }}>
