@@ -63,7 +63,7 @@
   margin-top: 15px;
 }
 /* filters */
-.task-option {
+.task-board-option {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -71,17 +71,17 @@
   border: 0;
   border-radius: 10px;
   margin: 10px;
-  padding: 0 10px 0 10px;
+  padding: 0 2px 0 2px;
   background-color: #ffffff;
   cursor: pointer;
   text-decoration: none;
   color: #777;
 }
 
-.task-option label {
+.task-board-option label {
   width: inherit;
   color: #777;
-  padding: 2px 8px 0;
+  padding: 2px 2px 0;
 }
 .add-new-task {
   cursor: pointer;
@@ -94,6 +94,9 @@
   margin: 0 10px 10px 10px;
   min-height: 50px;
   font-weight: bold;
+}
+.MuiTypography-root {
+  font-family: 'Cairo';
 }
 .tasks-board-container {
   width: 1200;

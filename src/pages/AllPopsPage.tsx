@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import EditTask from "../components/popups/EditTask";
 import CreateTask from "../components/popups/CreateTask";
 import DeleteProject from "../components/popups/DeleteProject";
@@ -17,10 +17,36 @@ import ProjectDrop from "../components/dropdowns/ProjectDrop";
 import DepartmentDrop from "../components/dropdowns/DepartmentDrop";
 import ClientDrop from "../components/dropdowns/ClientDrop";
 
-type Props = {};
+import { Client } from './../pages/Clients/clients';
 
-const AllPopsPage: React.FC<Props> = () => {
+type Props = {
+
+};
+interface IProps {
+  client: Client
+}
+const AllPopsPage: React.FC<IProps> = ({ client }) => {
+  const [Show, setShow] = useState<string>("none");
+
+  const [deletePopup, setDeletePopup] = useState<boolean>(false);
+  const [updatePopup, setUpdatePopup] = useState<boolean>(false);
+
+  const handleDelete = () => {
+    setShow('none');
+    setDeletePopup(!false);
+  }
+  const handleUpdate = () => {
+    setShow('none');
+    setUpdatePopup(!false);
+  }
+  const closeDeletePopup = () => {
+    setDeletePopup(false);
+  }
+  const closeUpdatePopup = () => {
+    setUpdatePopup(false);
+  }
   return (
+
     <div style={{ backgroundColor: "#FAFAFB", minHeight: "100vh" }}>
       <br />
       <h1>THIS PAGE JUST FOR TESTING ALL POPUPs AND DROPDOWNS</h1>
@@ -39,11 +65,13 @@ const AllPopsPage: React.FC<Props> = () => {
         <EditProject />
         <EditPM />
         {/* <EditClient /> */}
+        <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} />
         <EditCategory />.
         <DeleteProject />
         <DeletePM />
         <DeleteDepartment />
         {/* <DeleteClient /> */}
+        <DeleteClient id={client._id} show={"flex"} deletePopup={() => closeDeletePopup()} />
         <br />
       </div>
       <div
@@ -58,6 +86,7 @@ const AllPopsPage: React.FC<Props> = () => {
         <ProjectDrop />
         <DepartmentDrop />
         {/* <ClientDrop /> */}
+        <ClientDrop client={client} />
       </div>
     </div>
   );

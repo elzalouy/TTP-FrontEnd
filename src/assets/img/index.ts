@@ -37,23 +37,10 @@ const IMAGES = {
   arrow: require("./arrow.svg").default,
   taskFilter: require("./taskFilter.svg").default,
   arrowHeader: require("./arrowHeader.svg").default,
-  // avatarClients: require("./avatarClients.svg").default,
-  // search: require("./search.svg").default,
-  progressCircles: require("./progressCircles.svg").default,
-  moreClient: require("./moreClient.svg").default,
-  // smallLoading: require("./smallLoading.SVG").default,
-  // avatarClients: require("./avatarClients.svg").default,
-  // search: require("./search.svg").default,
-  // progressCircles: require("./progressCircles.svg").default,
-  // moreClient: require("./moreClient.svg").default,
-  // fileicon: require("./fileicon.SVG").default,
-  // edit: require("./edit.SVG").default,
+  progressCircles: require('./progressCircles.svg').default,
+  moreClient: require('./moreClient.svg').default,
+  verified: require('./verified.png').default,
+
 };
 export default IMAGES;
-// import img from "../../assets"
-// import Ttp from "../../assets/img/ttp_logo.png"
-// import avatar from "../../assets/img/avatar.SVG"
-// import Overviewicon from "../../assets/img/Overviewicon.SVG"
-// import projectsicon from "../../assets/img/projectsicon.SVG"
-// import projectsicon from "../../assets/img/projectsicon.SVG"
-// import Overview from "../Overview/Overview";
+

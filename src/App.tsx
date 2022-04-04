@@ -14,7 +14,8 @@ import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
 import Clients from "./pages/Clients/clients";
-import ProjectManagers from "./pages/projectManagers/ProjectManagers";
+// import Overview from "./pages/Overview/Overview";
+import ProjectManagers from "./pages/projectManagers/projectManagers";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
@@ -26,6 +27,7 @@ import { getAllProjects } from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAllMembers } from "./redux/techMember";
+import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import OverView from "./pages/UserOverview/OverView";
 
 type Props = {};
@@ -62,7 +64,6 @@ const App: React.FC<Props> = () => {
             path="/Projects"
             component={Projects}
           />
-          {/* <LoggedInContainer path="/Tasks" key="/tasks" component={tasks} /> */}
           <LoggedInContainer
             path="/TasksList"
             key="tasksList"
@@ -73,11 +74,6 @@ const App: React.FC<Props> = () => {
             path="/TasksBoard/:id"
             component={TasksBoardView}
           />
-          {/* <LoggedInContainer
-            key="/tasksBoard"
-            path="/AllPopsPage"
-            component={AllPopsPage}
-          /> */}
           <LoggedInContainer
             key="/clients"
             path="/Clients"
@@ -97,6 +93,11 @@ const App: React.FC<Props> = () => {
             path="/ProjectManagers"
             key="/projectManagers"
             component={ProjectManagers}
+          />
+          <LoggedInContainer
+            path="/notifications"
+            key="/notifications"
+            component={NotificationContainer}
           />
           <LoggedInContainer
             path="/Overview"

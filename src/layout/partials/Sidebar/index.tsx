@@ -13,7 +13,6 @@ type Props = {};
 
 const Sidebar: React.FC<Props> = () => {
   const [toggle, setToggle] = useState(false);
-
   return (
     <div className={`side-bar ${toggle && "toogle-width"}`}>
       <div className="logo-name-wrapper">
@@ -203,15 +202,8 @@ const Sidebar: React.FC<Props> = () => {
             </div>
           )}
         </div>
-        {!toggle && (
-          <img
-            style={{ width: "17px", cursor: "pointer" }}
-            src={IMAGES.logouticon}
-          />
-        )}
       </div>
     </div>
   );
 };
-
 export default Sidebar;

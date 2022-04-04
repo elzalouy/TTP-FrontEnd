@@ -1,0 +1,45 @@
+.projects-page {
+  padding: 2%;
+  background-color: #fafafb;
+  min-height: 100vh;
+}
+.projects-option {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0 10px 0 10px;
+  background-color: #ffffff;
+  position: relative;
+}
+.projects-option select {
+  padding-top: 3px;
+}
+.projects-option label {
+  width: inherit;
+  color: #777;
+  padding: 2px 4px 0;
+}
+.select-container {
+  position: relative;
+}
+.line {
+  position: absolute;
+  border-left: 1px solid rgb(233, 233, 233);
+  right: 20px;
+  top: 0;
+  height: 35px;
+}
+select.select-filter {
+  background-color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  border: 0px;
+  outline: none;
+  padding-right: 15px !important;
+  border-radius: 10px;
+  font-weight: bold;
+}

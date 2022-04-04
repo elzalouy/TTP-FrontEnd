@@ -60,13 +60,13 @@
   margin: 10px 0px 0 0px;
 }
 .task-card-timeline-canceled {
-  color: #d23434;
-  width: 80px;
-  font-weight: bold;
+  color: #dd2c2c;
+  width: 65px;
+  font-weight: 500;
   background-color: #f1cbcc;
   border-radius: 5px;
-  padding: 5px 5px;
-  margin: 10px 0px 0 0px;
+  padding: 5px 10px;
+  margin: 10px 0px 0px 0px;
 }
 .onTime {
   color: #00acba;
@@ -88,10 +88,40 @@
 }
 .fileUpload {
   color: #783dbd;
-  width: 120px;
-  font-weight: bold;
+  width: fit-content;
+  font-weight: 500;
   background-color: #d6e0ef;
   border-radius: 5px;
   padding: 5px 5px;
-  margin: 0px 0px 0 5px;
+  margin: 0px 0px 0 15px;
+}
+.task-option {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 0 10px 0 10px;
+  background-color: #ffffff;
+  position: relative;
+}
+.task-option select {
+  padding-top: 3px;
+}
+.projects-option label {
+  width: inherit;
+  color: #777;
+  padding: 2px 4px 0;
+}
+.select-container {
+  position: relative;
+}
+.line {
+  position: absolute;
+  border-left: 1px solid rgb(233, 233, 233);
+  right: 20px;
+  top: 0;
+  height: 35px;
 }

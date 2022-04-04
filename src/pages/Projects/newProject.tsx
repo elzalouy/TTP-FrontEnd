@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions } from "../../redux/Projects";
 import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
+import IMAGES from "../../assets/img";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
+  const [expanded, setExpanded] = useState<boolean>(false);
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const setShow = (value: string) => {
@@ -42,10 +46,25 @@ const CreateNewProject: React.FC<Props> = () => {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            mb: 1,
+            mb: 3,
           }}
         >
           Not started yet
+          {expanded ? (
+            <ArrowDropUpIcon
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setExpanded(false);
+              }}
+            ></ArrowDropUpIcon>
+          ) : (
+            <ArrowDropDownIcon
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setExpanded(true);
+              }}
+            ></ArrowDropDownIcon>
+          )}
         </Box>
         <Box
           onClick={() => {
@@ -62,9 +81,9 @@ const CreateNewProject: React.FC<Props> = () => {
             py: 0.6,
           }}
         >
-          <AddBoxOutlinedIcon sx={{ color: "black" }}></AddBoxOutlinedIcon>
+          <img src={IMAGES.plus} alt="add" height={25} style={{ marginRight: 12 }} />
           <h3 style={{ color: "black", fontWeight: "bold" }}>
-            Add new project
+            Create new project
           </h3>
         </Box>
       </Box>

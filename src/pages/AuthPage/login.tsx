@@ -39,23 +39,24 @@ const Login: React.FC<Props> = ({ history }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
-        <div className="f-inputs">
-          <button
-            className="btn-auth"
-            onClick={() => {
-              //   auth.login(() => {
-              //     props.history.push("/cp");
-              //   });
-              history.push("/projects");
-            }}
-          >
-            Login
-          </button>
+        <div className="login-btns">
+          <div className="f-inputs">
+            <button
+              className="btn-auth"
+              onClick={() => {
+                //   auth.login(() => {
+                //     props.history.push("/cp");
+                //   });
+                history.push("/Overview");
+              }}
+            >
+              Login
+            </button>
+          </div>
+          <Link to="/ForgetPassword" className="f-inputs">
+            <p>Forget password?</p>
+          </Link>
         </div>
-        <Link to="/ForgetPassword" className="f-inputs">
-          <p>Forget password?</p>
-        </Link>
       </form>
     </AuthBorder>
   );

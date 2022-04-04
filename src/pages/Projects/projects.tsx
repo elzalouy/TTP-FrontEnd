@@ -19,8 +19,15 @@ import { selectAllMembers } from "../../redux/techMember";
 import { selectClients } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import SelectInput from "../../coreUI/usable-component/SelectInput";
 
-const Projects: React.FC = () => {
+interface ProjectsProps {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+const Projects: React.FC<ProjectsProps> = (props) => {
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
@@ -34,7 +41,7 @@ const Projects: React.FC = () => {
     dispatch(filterProjects(filter));
   };
   return (
-    <div className="departments-page">
+    <Box sx={{ display: "inline", width: "100%" }} className="departments-page">
       <h2 className="departments-title">Projects</h2>
       <div
         className="department-tools"
@@ -48,64 +55,68 @@ const Projects: React.FC = () => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </div>
         <div>
-          <label style={{ padding: 0 }}>Project manager:</label>
           <Controller
             name="projectManager"
             control={control}
             render={(props) => (
-              <select
+              <SelectInput
+                name="projectManager"
                 {...props}
-                onChange={(e) => {
+                options={PMs.map((item) => {
+                  return { id: item._id, value: item._id, text: item.name };
+                })}
+                placeholder="Project Managers"
+                handleChange={(e) => {
+                  e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
-                className="select-filter"
-              >
-                <option value={""}>All</option>
-                {PMs &&
-                  PMs.length > 0 &&
-                  PMs.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item.name}
-                    </option>
-                  ))}
-              </select>
+                selectValue={props.field.value}
+                selectLabel={
+                  PMs?.find((val) => val._id === props.field.value)?.name
+                }
+              />
             )}
           />
         </div>
         <div>
-          <label style={{ padding: 0 }}>Client Name:</label>
+          {/* <label style={{ padding: 0 }}>Client Name:</label> */}
           <Controller
             name="clientId"
             control={control}
             render={(props) => (
-              <select
+              <SelectInput
+                name="clientId"
                 {...props}
-                onChange={(e) => {
+                options={clients.map((item) => {
+                  return {
+                    id: item._id,
+                    value: item._id,
+                    text: item.clientName,
+                  };
+                })}
+                placeholder="Client"
+                handleChange={(e) => {
+                  e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
-                className="select-filter"
-              >
-                <option value={""}>select Client</option>
-                {clients?.length > 0 &&
-                  clients.map((item) => (
-                    <option key={item._id} value={item?._id}>
-                      {item?.clientName}
-                    </option>
-                  ))}
-              </select>
+                selectValue={props.field.value}
+                selectLabel={
+                  clients.find((val) => val._id === props.field.value)
+                    ?.clientName
+                }
+              />
             )}
           />
         </div>
         <div>
-          <label style={{ padding: 0 }}>Status</label>
           <Controller
             name="projectStatus"
             control={control}
             render={(props) => (
               <>
-                <select
+                {/* <select
                   {...props}
                   className="select-filter"
                   onChange={(e) => {
@@ -123,7 +134,37 @@ const Projects: React.FC = () => {
                   </option>
                   <option value="late">late</option>
                   <option value="inProgress">inProgress</option>
-                </select>
+                </select> */}
+                <SelectInput
+                  name="status"
+                  {...props}
+                  options={[
+                    {
+                      id: "delivered",
+                      value: "delivered on time",
+                      text: "delivered on time",
+                    },
+                    {
+                      id: "delivered before time",
+                      value: "delivered before time",
+                      text: "delivered before time",
+                    },
+                    { id: "late", value: "late", text: "late" },
+                    {
+                      id: "inProgress",
+                      value: "inProgress",
+                      text: "inProgress",
+                    },
+                  ]}
+                  placeholder="Status"
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectLabel={props.field.value}
+                />
               </>
             )}
           />
@@ -143,9 +184,13 @@ const Projects: React.FC = () => {
         {loading === false ? (
           <>
             <CreateNewProject />
-            <ProjectCard status={"In progress"} Projects={inProgressProjects} />
-            <ProjectCard status={"Done"} Projects={doneProjects} />
-            <ProjectCard status={"Late"} Projects={lateProjects} />
+            <ProjectCard
+              {...props}
+              status={"In progress"}
+              Projects={inProgressProjects}
+            />
+            <ProjectCard {...props} status={"Done"} Projects={doneProjects} />
+            <ProjectCard {...props} status={"Late"} Projects={lateProjects} />
           </>
         ) : (
           <Box
@@ -166,7 +211,7 @@ const Projects: React.FC = () => {
           </Box>
         )}
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -2,6 +2,8 @@ import React from "react";
 import "./tasks.css";
 import IMAGES from "../../assets/img/index";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { Box, Typography } from "@mui/material";
+import SearchBox from "../../components/SearchBox";
 
 type Props = {};
 
@@ -140,64 +142,93 @@ const tasks: React.FC<Props> = () => {
     },
   ];
   return (
-    <div className="tasks-page">
-      <h2 className="tasks-title">Tasks</h2>
+    <Box className="tasks-page" sx={{ width: '100%' }}>
+      <Box sx={{ paddingTop: '30px' }}>
+        <Typography
+          variant="h2"
+          style={{
+            margin: "10px 0",
+            paddingBottom: "20px",
+          }}
+        >
+          Tasks
+        </Typography>
+      </Box>
       <div className="tasks-tools">
-        <div className="select-wrap">
+        <Box className="tasks-option">
           <label>Date:</label>
-          <select className="select-filter" name="color">
-            <option value="Done">Done</option>
-            <option value="In progress">In progress</option>
-            <option value="To do">To do</option>
-          </select>
-        </div>
-        <div className="select-wrap">
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="A to Z">Due Date</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+        <Box className="tasks-option">
           <label>Status:</label>
-          <select className="select-filter" name="color">
-            <option value="All">All</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </div>
-        <div className="select-wrap">
-          <label>Project manager:</label>
-          <select className="select-filter" name="color">
-            <option value="All">Nawaf M</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </div>
-        <div className="select-wrap">
+          <div className="select-container">
+            <select className="select-filter2 " name="color">
+              <option value="A to Z">All</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+
+        <Box className="tasks-option">
+          <label >Project manager:</label>
+          <div className="select-container">
+            <select className="select-filter" name="color">
+              <option value="Nawaf m">Nawaf m</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+
+        <Box className="tasks-option">
           <label>Clients:</label>
-          <select className="select-filter" name="color">
-            <option value="All">All</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </div>
-        <div className="select-wrap">
+          <div className="select-container">
+            <select className="select-filter2" name="color">
+              <option value="Nawaf m">All</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+
+        <Box className="tasks-option">
           <label>Project:</label>
-          <select className="select-filter" name="color">
-            <option value="All">All</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </div>
-        <div className="select-wrap">
+          <div className="select-container">
+            <select className="select-filter2" name="color">
+              <option value="Nawaf m">All</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
+
+        <Box className="tasks-option">
           <label>Teams:</label>
-          <select className="select-filter" name="color">
-            <option value="All">All</option>
-            <option value="option 2">option 2</option>
-            <option value="option 3">option 3</option>
-          </select>
-        </div>
+          <div className="select-container">
+            <select className="select-filter2" name="color">
+              <option value="Nawaf m">All</option>
+              <option value="In progress">In progress</option>
+              <option value="To do">To do</option>
+            </select>
+            <div className="line"></div>
+          </div>
+        </Box>
         <div className="deleteBtn-tasks">
           <img src={IMAGES.deleteicon} alt="delete" />
         </div>
-        <div className="search-cover">
-          <img src={IMAGES.serachicon} alt="search" />
-          <input className="search-input" type="text" placeholder="Search" />
-        </div>
+        <SearchBox></SearchBox>
       </div>
       <div style={{ width: "100%" }}>
         <DataGrid
@@ -236,7 +267,7 @@ const tasks: React.FC<Props> = () => {
         <img src={IMAGES.smallLoading} alt="loading" />
         <p>Loading more</p>
       </div>
-    </div>
+    </Box>
   );
 };
 

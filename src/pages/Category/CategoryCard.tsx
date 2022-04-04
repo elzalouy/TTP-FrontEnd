@@ -1,10 +1,18 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { Typography, Button } from "@mui/material";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
-const CategoryCard = ({
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import "./Category.css";
+type Props = {};
+interface IProps {
+  backgroundColor: string;
+  fontColor: string;
+  mainCategory: string;
+  subCategories: string[];
+}
+const CategoryCard: React.FC<IProps> = ({
   backgroundColor,
   fontColor,
   mainCategory,
@@ -12,17 +20,20 @@ const CategoryCard = ({
 }) => {
   return (
     <Box
+      className="category-card"
       sx={{
         flexWrap: "wrap",
-
         alignItems: "flex-start",
-        mx: 1.7,
+        mx: 1,
         my: 1.7,
-        width: 340,
+        py: 1,
+        px: 1,
+        width: 370,
         height: 210,
         maxHeight: 350,
         borderRadius: 3,
-        boxShadow: 9,
+
+        cursor: "pointer",
         backgroundColor: backgroundColor,
       }}
     >
@@ -59,8 +70,9 @@ const CategoryCard = ({
                   textAlign: "left",
                   ml: 2,
                   mb: 1,
-                  border: 1.6,
-                  px: 0.2,
+                  border: 1,
+                  px: 0.5,
+                  py: 0.2,
                   borderRadius: "4px",
                   borderColor: fontColor,
                 }}
@@ -83,30 +95,46 @@ const CategoryCard = ({
           }}
         >
           <Button
-            startIcon={<AddBoxOutlinedIcon />}
             sx={{
               color: fontColor,
               mb: 8.5,
+              mx: 2,
               fontWeight: "bold",
               textTransform: "capitalize",
-              border: 1.7,
+              border: 1,
+              borderRadius: 1,
               borderColor: fontColor,
-              width: "65%",
+              width: "90%",
               mr: 1,
             }}
           >
+            <Box
+              sx={{
+                border: 2,
+                textAlign: "center",
+                borderRadius: 1.5,
+                display: "flex",
+                mr: 1,
+                fontSize: "15px",
+              }}
+            >
+              <AddOutlinedIcon style={{ fontSize: 19 }}></AddOutlinedIcon>{" "}
+            </Box>
             New Sub Category
           </Button>
           <Button
             sx={{
-              border: 1.9,
+              borderRadius: 1,
+              border: 1,
               mb: 8.5,
+              mr: 1,
+              width: "10%",
               fontWeight: "bold",
               borderColor: fontColor,
               color: fontColor,
             }}
           >
-            <EditOutlinedIcon></EditOutlinedIcon>
+            <FontAwesomeIcon icon={faPenToSquare} fontSize={"24px"} />
           </Button>
         </Box>
       </Box>

@@ -42,7 +42,7 @@
   width: 100%;
 }
 /* filters */
-.tasks-option {
+/* .tasks-option {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -55,10 +55,9 @@
 }
 
 .tasks-option label {
-  width: inherit;
+  width: fit-content;
   color: #777;
-  padding: 2px 2px 0;
-}
+} */
 .sharedStatus {
   color: #ff974a;
   background-color: #fff4ec;

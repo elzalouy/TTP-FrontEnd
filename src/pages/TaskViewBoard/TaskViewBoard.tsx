@@ -11,9 +11,14 @@ import {
   selectSelectedProject,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
-import { Link } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
-const TaskViewBoard: React.FC = (props: any) => {
+interface TasksViewBoard {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
 
@@ -50,19 +55,25 @@ const TaskViewBoard: React.FC = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <Box className="task-option">
+          <Box className="task-board-option">
             <label>Sort By:</label>
-            <select className="select-filter" name="color">
-              <option value="A to Z">Due Date</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
+            <div className="select-container">
+              <select className="select-filter" name="color">
+                <option value="A to Z">Due Date</option>
+                <option value="In progress">In progress</option>
+                <option value="To do">To do</option>
+              </select>
+              <div className="line"></div>
+            </div>
           </Box>
-          <Link to={`/TasksList`} className="task-option">
+          <div
+            onClick={() => props.history.push("/TasksList")}
+            className="task-option"
+          >
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>
               Task view List
             </span>
-          </Link>
+          </div>
         </Box>
       </Box>
       <DragField {...props} />
