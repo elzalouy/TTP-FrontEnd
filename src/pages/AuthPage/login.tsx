@@ -109,6 +109,7 @@ const Login: React.FC<Props> = ({ history }) => {
             variant={"h5"}
             sx={{ fontWeight: "900" }}
             paddingTop={3.5}
+            marginBottom={2}
             fontFamily={"Cairo"}
             color="black"
           >
