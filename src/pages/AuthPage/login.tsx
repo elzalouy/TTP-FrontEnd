@@ -20,6 +20,8 @@ const Login: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
+      justifyContent={"center"}
+      height={"100%"}
       marginY={"2%"}
       marginX={"14%"}
       bgcolor={"auto"}
@@ -35,7 +37,7 @@ const Login: React.FC<Props> = ({ history }) => {
         lg={6}
         md={6}
         bgcolor={"white"}
-        paddingLeft={5}
+        paddingX={5}
         paddingTop={6}
       >
         <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
@@ -60,7 +62,7 @@ const Login: React.FC<Props> = ({ history }) => {
           variant="outlined"
           placeholder="Email Address"
           sx={{
-            width: "90%",
+            width: "100%",
             marginTop: 2,
             height: 50,
             bgcolor: "white",
@@ -81,7 +83,7 @@ const Login: React.FC<Props> = ({ history }) => {
           variant="outlined"
           placeholder="Password"
           sx={{
-            width: "90%",
+            width: "100%",
             marginTop: 2,
             height: 50,
             bgcolor: "white",
@@ -109,7 +111,7 @@ const Login: React.FC<Props> = ({ history }) => {
             variant={"h5"}
             sx={{ fontWeight: "900" }}
             paddingTop={3.5}
-            marginBottom={2}
+            marginBottom={4}
             fontFamily={"Cairo"}
             color="black"
           >
