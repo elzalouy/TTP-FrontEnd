@@ -85,7 +85,6 @@ const Clients: React.FC<Props> = () => {
               <div className="line"></div>
             </div>
           </Box>
-
           <Box
             style={{
               backgroundColor: "#fafafa",
