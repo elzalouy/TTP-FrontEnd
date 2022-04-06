@@ -35,11 +35,11 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             justifyContent="flex-start"
             alignItems="center"
           >
-            <Box>
+            {/* <Box>
               {client.image.includes('') ? < img src={IMAGES.avatarClients} alt="avatar" /> : <img src={client.image} alt="avatar" />
               }
 
-            </Box>
+            </Box> */}
             <Box
               style={{
                 marginLeft: "10px",

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { getAllClients } from "./clients.actions";
+import { getAllClients, creatClient } from "./clients.actions";
 import clientState, { ClientsInterface } from "./clients.state";
 
 const clientSlice: Slice<ClientsInterface> = createSlice({
@@ -25,6 +25,17 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         state.selectedClient = action.payload;
       }
     );
+    builder.addCase(creatClient.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(creatClient.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(creatClient.fulfilled, (state, action) => {
+      console.log({ state, action });
+      state.loading = false;
+      state.clients = [...state.clients, action.payload];
+    });
   },
 });
 export const clientsActions = clientSlice.actions;
