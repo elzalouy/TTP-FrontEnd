@@ -3,7 +3,7 @@ import { API_BASE_URL, API_DEV_URL } from "./api.json";
 // import R from 'reactotron-react-native';
 
 const api = create({
-  baseURL: API_DEV_URL,
+  baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 export const setAuthToken = (token: string) => {
