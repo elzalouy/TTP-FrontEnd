@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const ClientCard: React.FC<IProps> = ({ client }) => {
-  console.log({ clientIn: client });
+  console.log({ clientTest: client });
   const {
     clientName,
     createdAt,
