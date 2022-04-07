@@ -132,13 +132,16 @@ const Login: React.FC<Props> = ({ history }) => {
           lg={6}
           bgcolor={"black"}
           paddingY={5}
+          justifyContent="center"
+          alignItems="center"
         >
           <img
             src={Person}
-            width={"100%"}
-            height={"100%"}
+            width={"80%"}
+            height={"80%"}
             className="Image"
             alt=""
+            style={{ marginLeft: 50, marginTop: 20 }}
           />
         </Grid>
       </Grid>
