@@ -204,7 +204,7 @@ const Tasks: React.FC = (props: any) => {
               marginLeft: "20px",
             }}
           >
-            <SearchBox></SearchBox>
+            {/* <SearchBox></SearchBox> */}
           </Box>
         </Grid>
       </Grid>

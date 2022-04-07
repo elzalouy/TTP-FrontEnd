@@ -10,11 +10,11 @@ export interface Client {
 export interface ClientsInterface {
   loading: boolean | null;
   clientsData: Client[];
-  selectedClient: Client | null;
+  selectedClient: Client[];
 }
 const clientState: ClientsInterface = {
   loading: null,
   clientsData: [],
-  selectedClient: null,
+  selectedClient: [],
 };
 export default clientState;

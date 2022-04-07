@@ -31,3 +31,37 @@ export const creatClient = createAsyncThunk<any, any, any>(
     }
   }
 );
+
+export const updateClient = createAsyncThunk<any, any, any>(
+  "client/updateClient",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      console.log({ data });
+      let client = await ClientsApi.updateClient(data);
+      console.log({ client });
+      if (client.ok && client.data) {
+        toast("Client updated successfully");
+        return client.data;
+      } else return [];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteClient = createAsyncThunk<any, any, any>(
+  "client/deletClient",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      console.log({ data });
+      let client = await ClientsApi.deleteClient(data);
+      console.log({ client });
+      if (client.ok && client.data) {
+        toast("Client deleted successfully");
+        return data;
+      } else return [];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);

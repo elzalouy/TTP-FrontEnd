@@ -142,8 +142,8 @@ const tasks: React.FC<Props> = () => {
     },
   ];
   return (
-    <Box className="tasks-page" sx={{ width: '100%' }}>
-      <Box sx={{ paddingTop: '30px' }}>
+    <Box className="tasks-page" sx={{ width: "100%" }}>
+      <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
           style={{
@@ -179,7 +179,7 @@ const tasks: React.FC<Props> = () => {
         </Box>
 
         <Box className="tasks-option">
-          <label >Project manager:</label>
+          <label>Project manager:</label>
           <div className="select-container">
             <select className="select-filter" name="color">
               <option value="Nawaf m">Nawaf m</option>
@@ -228,7 +228,7 @@ const tasks: React.FC<Props> = () => {
         <div className="deleteBtn-tasks">
           <img src={IMAGES.deleteicon} alt="delete" />
         </div>
-        <SearchBox></SearchBox>
+        {/* <SearchBox></SearchBox> */}
       </div>
       <div style={{ width: "100%" }}>
         <DataGrid

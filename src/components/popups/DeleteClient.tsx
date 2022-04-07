@@ -3,64 +3,60 @@ import IMAGES from "../../assets/img";
 import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 import { Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { deleteClient } from "../../redux/Clients";
 
 type Props = {
-  id: string
-  show: string
+  id: string;
+  show: string;
   deletePopup: () => void;
 
+  deletePopupValue: string;
+  setDeletePopup: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const DeleteClient: React.FC<Props> = ({ id, show, deletePopup }) => {
-  const [Show, setShow] = useState<string>(show);
-
-  let config = {
-    headers: {
-      "Content-Type": "application/json",
-    }
-    ,
-    data: {
-      "id": id
-
-    }
-  }
+const DeleteClient: React.FC<Props> = ({
+  id,
+  show,
+  deletePopup,
+  deletePopupValue,
+  setDeletePopup,
+}) => {
+  const dispatch = useDispatch();
 
   const handleDelete = async () => {
-
     try {
       console.log(id);
-      const response: AxiosResponse = await axios.delete('/api/deleteClient', config);
-      window.location.reload();
+      await dispatch(deleteClient({ id }));
+      setDeletePopup("none");
     } catch (e) {
       console.log(e);
     }
-
-  }
+  };
   const handleClose = () => {
-    setShow('none');
+    setDeletePopup("none");
     deletePopup();
   };
   return (
     <>
-
-
-      <SmallPopUp show={Show}>
+      <SmallPopUp show={deletePopupValue}>
         <p className="warning-text">
           Are you sure you want to delete this client?
         </p>
         <hr className="separator" />
         <div className="margin-cover">
           <div className="controllers">
-            <button
-              className="controllers-cancel"
-              onClick={handleClose}
-            >
+            <button className="controllers-cancel" onClick={handleClose}>
               Cancel
             </button>
-            <button className="controllers-delete" onClick={() => { handleDelete() }}>
-
+            <button
+              className="controllers-delete"
+              onClick={() => {
+                handleDelete();
+              }}
+            >
               Delete
             </button>
           </div>

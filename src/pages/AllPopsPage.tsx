@@ -17,13 +17,11 @@ import ProjectDrop from "../components/dropdowns/ProjectDrop";
 import DepartmentDrop from "../components/dropdowns/DepartmentDrop";
 import ClientDrop from "../components/dropdowns/ClientDrop";
 
-import { Client } from './../pages/Clients/clients';
+import { Client } from "./../pages/Clients/clients";
 
-type Props = {
-
-};
+type Props = {};
 interface IProps {
-  client: Client
+  client: Client;
 }
 const AllPopsPage: React.FC<IProps> = ({ client }) => {
   const [Show, setShow] = useState<string>("none");
@@ -32,21 +30,20 @@ const AllPopsPage: React.FC<IProps> = ({ client }) => {
   const [updatePopup, setUpdatePopup] = useState<boolean>(false);
 
   const handleDelete = () => {
-    setShow('none');
+    setShow("none");
     setDeletePopup(!false);
-  }
+  };
   const handleUpdate = () => {
-    setShow('none');
+    setShow("none");
     setUpdatePopup(!false);
-  }
+  };
   const closeDeletePopup = () => {
     setDeletePopup(false);
-  }
+  };
   const closeUpdatePopup = () => {
     setUpdatePopup(false);
-  }
+  };
   return (
-
     <div style={{ backgroundColor: "#FAFAFB", minHeight: "100vh" }}>
       <br />
       <h1>THIS PAGE JUST FOR TESTING ALL POPUPs AND DROPDOWNS</h1>
@@ -65,13 +62,17 @@ const AllPopsPage: React.FC<IProps> = ({ client }) => {
         <EditProject />
         <EditPM />
         {/* <EditClient /> */}
-        <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} />
+        {/* <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} /> */}
         <EditCategory />.
         <DeleteProject />
         <DeletePM />
         <DeleteDepartment />
         {/* <DeleteClient /> */}
-        <DeleteClient id={client._id} show={"flex"} deletePopup={() => closeDeletePopup()} />
+        {/* <DeleteClient
+          id={client._id}
+          show={"flex"}
+          deletePopup={() => closeDeletePopup()}
+        /> */}
         <br />
       </div>
       <div

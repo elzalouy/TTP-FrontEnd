@@ -48,7 +48,7 @@ const Category: React.FC<Props> = () => {
     //     <CreateCategoryPopUp handleClose={togglePopup} />
     //   ) : (
     <Box className="category-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: '30px' }}>
+      <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
           style={{
@@ -59,9 +59,9 @@ const Category: React.FC<Props> = () => {
           Category
         </Typography>
       </Box>
-      <div style={{ width: 370 }}>
+      {/* <div style={{ width: 370 }}>
         <SearchBox></SearchBox>
-      </div>
+      </div> */}
       <Box
         sx={{
           width: "100%",
@@ -74,20 +74,20 @@ const Category: React.FC<Props> = () => {
           border: 1,
           borderRadius: "16px",
           borderColor: "#e2e2ea",
-        }} style={{ marginTop: 40 }}
+        }}
+        style={{ marginTop: 40 }}
       >
         {categories.map((category, index) => (
           <CategoryCard
             mainCategory={category.mainCategory}
             subCategories={category.subCategories}
-            backgroundColor={alternatingColor[(index % 5)][1]}
-            fontColor={alternatingColor[(index % 5)][0]}
+            backgroundColor={alternatingColor[index % 5][1]}
+            fontColor={alternatingColor[index % 5][0]}
           />
         ))}
         <CreateNewCategory />
       </Box>
-    </Box >
-
+    </Box>
   );
 };
 export default Category;

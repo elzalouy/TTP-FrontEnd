@@ -2,40 +2,39 @@ import React from "react";
 import { useState } from "react";
 import IMAGES from "../../assets/img";
 import "./dropdowns-style.css";
-import { Client } from './../../pages/Clients/clients';
-import DeleteClient from './../popups/DeleteClient'
-import EditClient from './../popups/EditClient'
+import { Client } from "./../../pages/Clients/clients";
+import DeleteClient from "./../popups/DeleteClient";
+import EditClient from "./../popups/EditClient";
 
 type Props = {
-  id: string
-  show: string
+  id: string;
+  show: string;
   deletePopup: () => void;
   updatePopup: () => void;
-
 };
 
 interface IProps {
-  client: Client
+  client: Client;
 }
 const ClientDrop: React.FC<IProps> = ({ client }) => {
   const [Show, setShow] = useState<string>("none");
-  const [deletePopup, setDeletePopup] = useState<boolean>(false);
-  const [updatePopup, setUpdatePopup] = useState<boolean>(false);
+  const [deletePopup, setDeletePopup] = useState<string>("none");
+  const [updatePopup, setUpdatePopup] = useState<string>("none");
 
   const handleDelete = () => {
-    setShow('none');
-    setDeletePopup(!false);
-  }
+    setShow("none");
+    setDeletePopup("flex");
+  };
   const handleUpdate = () => {
-    setShow('none');
-    setUpdatePopup(!false);
-  }
+    setShow("none");
+    setUpdatePopup("flex");
+  };
   const closeDeletePopup = () => {
-    setDeletePopup(false);
-  }
+    setDeletePopup("none");
+  };
   const closeUpdatePopup = () => {
-    setUpdatePopup(false);
-  }
+    setUpdatePopup("none");
+  };
   return (
     <>
       <div className="dropdown-cover">
@@ -67,15 +66,29 @@ const ClientDrop: React.FC<IProps> = ({ client }) => {
               width="20px"
               height="20px"
             />
-            <span className="dropdown-btn-titleRed" >Delete</span>
+            <span className="dropdown-btn-titleRed">Delete</span>
           </button>
         </div>
-
       </div>
-      {deletePopup && <DeleteClient id={client._id} show={"flex"} deletePopup={() => closeDeletePopup()} />}
-      {updatePopup && <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} />}
+      {deletePopup === "flex" && (
+        <DeleteClient
+          id={client._id}
+          show={"flex"}
+          deletePopup={() => closeDeletePopup()}
+          deletePopupValue={deletePopup}
+          setDeletePopup={setDeletePopup}
+        />
+      )}
+      {updatePopup == "flex" && (
+        <EditClient
+          client={client}
+          updatePopupValue={updatePopup}
+          setUpdatePopup={setUpdatePopup}
+          show={"flex"}
+          updatePopup={() => closeUpdatePopup()}
+        />
+      )}
     </>
-
   );
 };
 export default ClientDrop;
