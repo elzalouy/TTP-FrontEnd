@@ -9,7 +9,7 @@ import CreateNewTeam from "../../components/popups/CreateNewTeam";
 import { Box, Typography } from "@mui/material";
 type Props = {};
 interface IProps {
-  alternatingColor: string[][]
+  alternatingColor: string[][];
 }
 const departments: React.FC<IProps> = () => {
   const alternatingColor = [
@@ -20,7 +20,7 @@ const departments: React.FC<IProps> = () => {
     ["#00AECC", "#E1F3F7"],
   ];
   return (
-    <Box className="departments-page" sx={{ width: '100%' }}>
+    <Box className="departments-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
@@ -73,14 +73,28 @@ const departments: React.FC<IProps> = () => {
         <CreateNewTeam />
       </div>
       <div className="all-departments">
-        <DepartmentCard backgroundColor={alternatingColor[0][1]} fontColor={alternatingColor[0][0]} />
-        <DepartmentCard backgroundColor={alternatingColor[1][1]} fontColor={alternatingColor[1][0]} />
-        <DepartmentCard backgroundColor={alternatingColor[2][1]} fontColor={alternatingColor[2][0]} />
-        <DepartmentCard backgroundColor={alternatingColor[3][1]} fontColor={alternatingColor[3][0]} />
-        <DepartmentCard backgroundColor={alternatingColor[4][1]} fontColor={alternatingColor[4][0]} />
+        <DepartmentCard
+          backgroundColor={alternatingColor[0][1]}
+          fontColor={alternatingColor[0][0]}
+        />
+        <DepartmentCard
+          backgroundColor={alternatingColor[1][1]}
+          fontColor={alternatingColor[1][0]}
+        />
+        <DepartmentCard
+          backgroundColor={alternatingColor[2][1]}
+          fontColor={alternatingColor[2][0]}
+        />
+        <DepartmentCard
+          backgroundColor={alternatingColor[3][1]}
+          fontColor={alternatingColor[3][0]}
+        />
+        <DepartmentCard
+          backgroundColor={alternatingColor[4][1]}
+          fontColor={alternatingColor[4][0]}
+        />
         <CreateNewDepartment />
       </div>
-
     </Box>
   );
 };
