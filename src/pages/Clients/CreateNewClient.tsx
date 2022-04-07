@@ -10,10 +10,8 @@ import { creatClient } from "../../redux/Clients";
 
 type Props = {};
 interface client {
-  // id: string;
-  // image: string;
+  image: File | null | any;
   clientName: string;
-  projectsId: [];
 }
 
 interface headers {}
@@ -22,16 +20,18 @@ const CreateNewClient: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
   const [Data, setData] = useState<client>({
-    // id: "",
-    // image: "",
+    image: null,
     clientName: "",
-    projectsId: [],
   });
+
+  const [ImageView, setImageView] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ Data });
-    await dispatch(creatClient(Data));
+    let formData = new FormData();
+    formData.append("clientName", Data.clientName);
+    formData.append("image", Data.image);
+    await dispatch(creatClient(formData));
   };
 
   const fileUpload = () => {
@@ -39,7 +39,13 @@ const CreateNewClient: React.FC<Props> = () => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...Data, [e.target.name]: e.target.value });
+    if (e.target.name === "image") {
+      let file: any = e.target.files;
+      setData({ ...Data, image: file[0] });
+      setImageView(URL.createObjectURL(file[0]));
+    } else {
+      setData({ ...Data, [e.target.name]: e.target.value });
+    }
   };
   return (
     <>
@@ -55,7 +61,7 @@ const CreateNewClient: React.FC<Props> = () => {
 
       <PopUp show={Show} widthSize="30vw">
         <Box sx={{ paddingLeft: "15px" }}>
-          {/* <Box>
+          <Box>
             <img
               className="closeIcon"
               width="9"
@@ -66,10 +72,10 @@ const CreateNewClient: React.FC<Props> = () => {
                 setShow("none");
               }}
             />
-          </Box> */}
+          </Box>
           <form onSubmit={handleSubmit}>
             <Typography className="new-client-title">Add new client</Typography>
-            {/* <Box
+            <Box
               style={{
                 marginBottom: "20px",
                 marginTop: "20px",
@@ -85,8 +91,15 @@ const CreateNewClient: React.FC<Props> = () => {
                 onChange={onChange}
                 hidden
               />
-              <img src={IMAGES.imgupload} alt="" />
-            </Box> */}
+              <img
+                src={ImageView ? ImageView : IMAGES.imgupload}
+                style={{
+                  width: "9em",
+                  height: "9em",
+                }}
+                alt=""
+              />
+            </Box>
             {/* <p className="file-name">{Data.image}</p> */}
             <label className="label-client">Client Name</label>
             <input
@@ -104,7 +117,8 @@ const CreateNewClient: React.FC<Props> = () => {
             <Box className="controllers">
               <button
                 className="cancelBtn"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   setShow("none");
                 }}
               >

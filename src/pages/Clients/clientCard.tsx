@@ -2,29 +2,24 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import IMAGES from "../../assets/img";
-import { Client } from './clients';
-import ClientDrop from './../../components/dropdowns/ClientDrop'
+import { Client } from "./clients";
+import ClientDrop from "./../../components/dropdowns/ClientDrop";
+import moment from "moment";
 
 interface IProps {
-  client: Client
+  client: Client;
 }
 
 const ClientCard: React.FC<IProps> = ({ client }) => {
-  const [tasksNumber, setTasksNumber] = useState(0);
-  const [inProgressProjects, setInProgressProjects] = useState(0);
-  const [doneProjects, setDoneProjects] = useState(0);
-
-  var t = new Date(client.createdAt);
-
-
-  var formatted =
-    (t.toString().split(' ')[0])
-    + ', ' + ('0' + t.getDate()).slice(-2)
-    + '/' + ('0' + (t.getMonth() + 1)).slice(-2)
-    + '/' + (t.getFullYear());
-
+  console.log({ clientIn: client });
+  const {
+    clientName,
+    createdAt,
+    doneProject,
+    inProgressProject,
+    inProgressTask,
+  } = client;
   return (
-
     <Box>
       <Box className="client-card">
         <Box className="cl-card-header">
@@ -35,23 +30,25 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             justifyContent="flex-start"
             alignItems="center"
           >
-            {/* <Box>
-              {client.image.includes('') ? < img src={IMAGES.avatarClients} alt="avatar" /> : <img src={client.image} alt="avatar" />
-              }
-
-            </Box> */}
+            <Box>
+              {/* {client.image.includes("") ? ( */}
+              <img src={IMAGES.avatarClients} alt="avatar" />
+              {/* // ) : (
+              //   <img src={client.image} alt="avatar" />
+              // )} */}
+            </Box>
             <Box
               style={{
                 marginLeft: "10px",
                 color: "#783DBD",
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>{client.clientName}</Typography>
+              <Typography sx={{ fontWeight: "bold" }}>{clientName}</Typography>
               <Typography
                 variant="body2"
                 style={{ color: "#808191", fontSize: "12px" }}
               >
-
+                {moment(createdAt).format("d MMMM yyyy")}
               </Typography>
             </Box>
           </Stack>
@@ -75,7 +72,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             >
               In Progress Task
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>{tasksNumber}</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {inProgressTask.length}
+            </Typography>
           </Grid>
 
           <hr
@@ -96,7 +95,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             >
               In Progress Project
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>{inProgressProjects}</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {inProgressProject.length}
+            </Typography>
           </Grid>
 
           <hr
@@ -113,7 +114,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             >
               Done Project
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>{doneProjects}</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {doneProject.length}
+            </Typography>
           </Grid>
         </Grid>
       </Box>

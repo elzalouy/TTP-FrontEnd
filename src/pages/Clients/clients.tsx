@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import SearchBox from "../../components/SearchBox";
@@ -9,103 +9,216 @@ import axios, { AxiosResponse } from "axios";
 import ClientCard from "./clientCard";
 
 import { clientsActions } from "../../redux/Clients";
-import { selectClients } from "../../redux/Clients/clients.selectors";
+import { clientsDataSelector } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
+import SelectInput from "../../coreUI/usable-component/SelectInput";
+import Grid from "@mui/material/Grid";
 
 type Props = {
   id: string;
 };
 
 export interface Client {
-  clientName: string;
-  image: string;
-  projectsId: string[];
-  createdAt: string;
   _id: string;
+  clientName: string;
+  doneProject: string[];
+  inProgressProject: string[];
+  inProgressTask: string[];
+  createdAt: string;
+  image: string;
 }
+
+const options: { id: string; value: string; text: string }[] = [
+  {
+    id: "1",
+    value: "option 1",
+    text: "Option 1",
+  },
+  {
+    id: "2",
+    value: "option 2",
+    text: "Option 2",
+  },
+  {
+    id: "3",
+    value: "option 3",
+    text: "Option 3",
+  },
+  {
+    id: "4",
+    value: "option 4",
+    text: "Option 4",
+  },
+  {
+    id: "5",
+    value: "option 5",
+    text: "Option 5",
+  },
+  {
+    id: "6",
+    value: "option 6",
+    text: "Option 6",
+  },
+];
 
 const Clients: React.FC<Props> = () => {
   const [clients, setClients] = useState<Client[]>([]);
-  // const dispatch = useAppDispatch();
-  // const allClients = useAppSelector(selectClients);
+  const clientData = useAppSelector(clientsDataSelector);
+  const [filter, setFilter] = useState<{
+    sortBy: string;
+    sortDate: string;
+  }>({
+    sortBy: "",
+    sortDate: "",
+  });
 
-  const fetchData = async () => {
-    try {
-      const response: AxiosResponse = await axios.get("/api/getAllClients");
-      setClients(response.data);
-    } catch (e) {
-      console.log(e);
-    }
+  const handleChangeFilter = (e: SelectChangeEvent<string>) => {
+    setFilter({
+      ...filter,
+      [e.target.name]: e.target.value,
+    });
   };
-
   useEffect(() => {
-    // dispatch(clientsActions.getAllClients())
-    fetchData();
-  }, []);
+    if (clientData) {
+      setClients(clientData);
+    }
+  }, [clientData]);
 
   return (
-    <Box className="clients-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: "30px" }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{ height: "fit-content", bgcolor: "#fafafb" }}
+    >
+      {/* <Box className="clients-page" sx={{ width: "100%" }}> */}
+      {/* <Box sx={{ paddingTop: "30px" }}> */}
+      <Grid item xs={12} mt="2em">
         <Typography
           variant="h2"
           style={{
             margin: "10px 0",
-            paddingBottom: "20px",
+            // paddingBottom: "20px",
           }}
         >
           Clients
         </Typography>
-        <Box className="clients-settings">
-          <Box className="filter-icon">
+      </Grid>
+      <Grid item container>
+        <Grid item xs={"auto"}>
+          <Box
+            sx={{
+              borderRadius: "10px",
+              display: "flex",
+              border: "1px solid #ccc",
+            }}
+          >
             <img src={IMAGES.sortout} alt="sortout" />
           </Box>
-          <Box className="clients-option">
-            <label>Sort By:</label>
-            <div className="select-container">
-              <select className="select-filter" name="color">
-                <option value="A to Z">A to Z</option>
-                <option value="In progress">In progress</option>
-                <option value="To do">To do</option>
-              </select>
-              <div className="line"></div>
-            </div>
-          </Box>
-          <Box className="clients-option">
-            <label>Date:</label>
-            <div className="select-container">
-              <select
-                style={{ paddingRight: "10px" }}
-                className="select-filter"
-                name="color"
-              >
-                <option value="Oldest to Newest">Oldest to Newest</option>
-                <option value="option 2">Option 2</option>
-                <option value="option 3">Option 3</option>
-              </select>
-              <div className="line"></div>
-            </div>
-          </Box>
-
+        </Grid>
+        <Grid item xs={2} sx={{ ml: "1em" }}>
+          <SelectInput
+            options={options}
+            handleChange={handleChangeFilter}
+            name="sortBy"
+            selectValue={filter.sortBy}
+            placeholder={
+              <>
+                <span style={{ color: "#827e7e" }}>Sort by:</span>{" "}
+                <strong>A to Z</strong>
+              </>
+            }
+            boxStyle={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            selectStyle={{
+              borderRadius: ".6em",
+              borderColor: "#eeeeee",
+              "& .MuiInputBase-input": {
+                bgcolor: "#fff",
+                boxShadow: "0px 1px 4px 1px #0000000d",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#eeeeee",
+              },
+              "&.Mui-focused ": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#eeeeee",
+                  "&:hover": {
+                    borderColor: "#eeeeee",
+                  },
+                },
+              },
+            }}
+          />
+        </Grid>
+        <Grid item xs={2} sx={{ ml: "2em" }}>
+          <SelectInput
+            options={options}
+            handleChange={handleChangeFilter}
+            name="sortDate"
+            selectValue={filter.sortDate}
+            placeholder={
+              <>
+                <span style={{ color: "#827e7e" }}>Date:</span>{" "}
+                <strong>Oldest to Newest</strong>
+              </>
+            }
+            boxStyle={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            selectStyle={{
+              borderRadius: ".6em",
+              borderColor: "#eeeeee",
+              "& .MuiInputBase-input": {
+                bgcolor: "#fff",
+                boxShadow: "0px 1px 4px 1px #0000000d",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#eeeeee",
+              },
+              "&.Mui-focused ": {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#eeeeee",
+                  "&:hover": {
+                    borderColor: "#eeeeee",
+                  },
+                },
+              },
+            }}
+          />
+        </Grid>
+        <Grid item xs={4}>
           <Box
             style={{
-              backgroundColor: "#fafafa",
+              backgroundColor: "#fff",
               marginLeft: "10px",
               width: "280px",
             }}
           >
             <SearchBox></SearchBox>
           </Box>
-        </Box>
+        </Grid>
+        {/* </Box> */}
+      </Grid>
+      <Grid
+        item
+        xs={11}
+        sx={{ height: "-webkit-fill-available", maxHeight: "100vh" }}
+      >
         <Box className="all-clients">
           {clients?.map((clientInfo: Client) => (
             <>
-              <ClientCard client={clientInfo} />
+              <ClientCard key={clientInfo._id} client={clientInfo} />
             </>
           ))}
           <CreateNewClient />
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+      {/* </Box> */}
+      {/* </Box> */}
+    </Grid>
   );
 };
 export default Clients;

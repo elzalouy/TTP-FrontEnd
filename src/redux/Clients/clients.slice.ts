@@ -9,19 +9,19 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAllClients.rejected, (state) => {
       state.loading = false;
-      state.clients = [];
+      state.clientsData = [];
       state.selectedClient = null;
     });
     builder.addCase(getAllClients.pending, (state) => {
       state.loading = true;
-      state.clients = [];
+      state.clientsData = [];
       state.selectedClient = null;
     });
     builder.addCase(
       getAllClients.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.clients = action.payload;
+        state.clientsData = action.payload;
         state.selectedClient = action.payload;
       }
     );
@@ -32,9 +32,8 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(creatClient.fulfilled, (state, action) => {
-      console.log({ state, action });
       state.loading = false;
-      state.clients = [...state.clients, action.payload];
+      state.clientsData = [...state.clientsData, action.payload];
     });
   },
 });
