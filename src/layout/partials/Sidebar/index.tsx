@@ -4,7 +4,7 @@ import { Toolbar, AppBar, Drawer } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import AppDrawer from "./Drawer";
 const Sidebar = (props: any) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [select, setSelected] = useState("");
   useEffect(() => {
     setSelected(props.location?.pathname);

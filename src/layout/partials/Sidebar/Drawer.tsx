@@ -109,17 +109,6 @@ const AppDrawer: React.FC = (props: any) => {
           </IconButton>
         </DrawerHeader>
         <List>
-          {props.open && (
-            <Typography
-              marginLeft={3.5}
-              variant="h6"
-              fontSize={12}
-              color="#B2B3BD"
-              fontWeight={"700"}
-            >
-              Admin Tools
-            </Typography>
-          )}
           <DrawerItem
             {...props}
             select={props.select}

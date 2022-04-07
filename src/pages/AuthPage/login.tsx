@@ -3,6 +3,8 @@ import "./auth.css";
 import AuthBorder from "./authBorder";
 import { RouteComponentProps } from "react-router-dom";
 import { Grid, Button, Link, TextField, Typography } from "@mui/material";
+import { withStyles } from "@material-ui/core/styles";
+
 import { Box } from "@mui/system";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
@@ -17,6 +19,31 @@ const Login: React.FC<Props> = ({ history }) => {
   const classes = useStyles()();
   const [Email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const CssTextField = withStyles({
+    root: {
+      "& label.Mui-focused": {
+        color: "white",
+      },
+      "& .MuiInput-underline:after": {
+        borderBottomColor: "#E4E4E4",
+        borderWidth: 1,
+      },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: "#E4E4E4",
+          borderWidth: 1,
+        },
+        "&:hover fieldset": {
+          borderColor: "#E4E4E4",
+          borderWidth: 1,
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: "#E4E4E4",
+          borderWidth: 1,
+        },
+      },
+    },
+  })(TextField);
   return (
     <Grid
       container
@@ -26,13 +53,15 @@ const Login: React.FC<Props> = ({ history }) => {
     >
       <Grid
         item
-        xs={7}
+        xs={11}
+        sm={11}
+        md={7}
+        lg={7}
         container
         height="80%"
-        bgcolor={"auto"}
         direction="row"
         sx={{
-          boxShadow: "0px 0px 100px 2px #888888;",
+          boxShadow: "0px 60px 350px 20px #888888;",
         }}
       >
         <Grid
@@ -44,12 +73,13 @@ const Login: React.FC<Props> = ({ history }) => {
           bgcolor={"white"}
           paddingLeft={5}
           paddingTop={6}
+          paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
           <Typography
             variant={"h2"}
             fontWeight={"900"}
-            paddingTop={4.5}
+            paddingTop={4}
             fontFamily={"Cairo"}
           >
             Login to your account
@@ -57,18 +87,18 @@ const Login: React.FC<Props> = ({ history }) => {
           <Typography
             variant={"h5"}
             fontWeight={"700"}
-            paddingTop={3.5}
+            paddingTop={2}
             fontFamily={"Cairo"}
             color="#000000"
           >
             Email Address
           </Typography>
-          <TextField
+          <CssTextField
             variant="outlined"
             placeholder="Email Address"
             sx={{
               width: "90%",
-              marginTop: 2,
+              marginTop: 1,
               height: 50,
               bgcolor: "white",
             }}
@@ -78,18 +108,18 @@ const Login: React.FC<Props> = ({ history }) => {
           <Typography
             variant={"h5"}
             fontWeight={"700"}
-            paddingTop={3.5}
+            paddingTop={2}
             fontFamily={"Cairo"}
             color="#000000"
           >
             Password
           </Typography>
-          <TextField
+          <CssTextField
             variant="outlined"
             placeholder="Password"
             sx={{
               width: "90%",
-              marginTop: 2,
+              marginTop: 1,
               height: 50,
               bgcolor: "white",
             }}

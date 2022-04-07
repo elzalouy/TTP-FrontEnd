@@ -150,7 +150,7 @@ const Tasks: React.FC = (props: any) => {
                   }}
                   selectValue={props.field.value}
                   selectLabel={
-                    projects.projects.find(
+                    projects?.projects?.find(
                       (val) => val._id === props.field.value
                     )?.name
                   }
@@ -357,7 +357,7 @@ const Tasks: React.FC = (props: any) => {
                             align="left"
                           >
                             {
-                              projects.projects.find(
+                              projects?.projects?.find(
                                 (project) => project._id === projectId
                               )?.name
                             }
