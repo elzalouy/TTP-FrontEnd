@@ -24,7 +24,6 @@ const UserProjects: React.FC = (props) => {
         variant="h5"
         fontWeight={"800"}
         color="#505050"
-        paddingTop={5}
         paddingBottom={2}
       >
         In Progress
@@ -37,8 +36,7 @@ const UserProjects: React.FC = (props) => {
           width: "100%",
           borderRadius: "12px",
           backgroundColor: "#FFC5001A",
-          p: 3,
-          mb: 5,
+          p: 1,
           font: "normal normal 600 16px/30px Cairo",
           color: "#505050",
         }}

@@ -1,3 +1,5 @@
+import { CssBaseline } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 import { Route } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
@@ -13,10 +15,14 @@ const LoggedInContainer: React.FC<Props> = ({
 }: any) => {
   return (
     <>
-      <Sidebar />
       <Route
         {...rest}
-        render={(matchProps: any) => <Component {...matchProps} {...rest} />}
+        render={(props) => (
+          <>
+            <Sidebar {...rest} {...props} />
+            <Component key={rest?.location?.key} {...props} {...rest} />
+          </>
+        )}
       />
     </>
   );

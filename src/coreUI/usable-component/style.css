@@ -1,0 +1,21 @@
+.select {
+  background-color: #ffffff;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-weight: bold;
+  outline: none;
+  -webkit-appearance: none;
+}
+input[type="text"] {
+  background: transparent;
+  border: none !important;
+}
+select.option {
+  background-color: white;
+  color: #44444f;
+  font-size: 16;
+}
+select.options {
+  border-radius: 5px;
+}

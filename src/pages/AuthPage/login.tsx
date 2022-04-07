@@ -20,119 +20,127 @@ const Login: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
-      marginY={"2%"}
-      marginX={"14%"}
-      bgcolor={"auto"}
-      direction="row"
-      sx={{
-        boxShadow: "0px 0px 100px 2px #888888;",
-      }}
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
     >
       <Grid
         item
-        xs={12}
-        sm={12}
-        lg={6}
-        md={6}
-        bgcolor={"white"}
-        paddingLeft={5}
-        paddingTop={6}
+        xs={7}
+        container
+        height="80%"
+        bgcolor={"auto"}
+        direction="row"
+        sx={{
+          boxShadow: "0px 0px 100px 2px #888888;",
+        }}
       >
-        <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-        <Typography
-          variant={"h2"}
-          fontWeight={"900"}
-          paddingTop={4.5}
-          fontFamily={"Cairo"}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          lg={6}
+          md={6}
+          bgcolor={"white"}
+          paddingLeft={5}
+          paddingTop={6}
         >
-          Login to your account
-        </Typography>
-        <Typography
-          variant={"h5"}
-          fontWeight={"700"}
-          paddingTop={3.5}
-          fontFamily={"Cairo"}
-          color="#000000"
-        >
-          Email Address
-        </Typography>
-        <TextField
-          variant="outlined"
-          placeholder="Email Address"
-          sx={{
-            width: "90%",
-            marginTop: 2,
-            height: 50,
-            bgcolor: "white",
-          }}
-          required
-          type={"email"}
-        />
-        <Typography
-          variant={"h5"}
-          fontWeight={"700"}
-          paddingTop={3.5}
-          fontFamily={"Cairo"}
-          color="#000000"
-        >
-          Password
-        </Typography>
-        <TextField
-          variant="outlined"
-          placeholder="Password"
-          sx={{
-            width: "90%",
-            marginTop: 2,
-            height: 50,
-            bgcolor: "white",
-          }}
-          required
-          type={"email"}
-        />
-        <Button
-          sx={{ width: "90%", height: 50, borderRadius: 2, marginTop: 4 }}
-          variant="contained"
-          disableElevation
-          onClick={() => {
-            history.push("/Overview");
-          }}
-        >
-          Login
-        </Button>
-        <Link
-          sx={{ textDecoration: "none", cursor: "pointer" }}
-          onClick={() => history.push("/ForgetPassword")}
-        >
+          <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
           <Typography
-            width={"90%"}
-            textAlign={"center"}
+            variant={"h2"}
+            fontWeight={"900"}
+            paddingTop={4.5}
+            fontFamily={"Cairo"}
+          >
+            Login to your account
+          </Typography>
+          <Typography
             variant={"h5"}
-            sx={{ fontWeight: "900" }}
+            fontWeight={"700"}
             paddingTop={3.5}
             fontFamily={"Cairo"}
-            color="black"
+            color="#000000"
           >
-            Forget Password?
+            Email Address
           </Typography>
-        </Link>
-      </Grid>
-      <Grid
-        item
-        display={{ xs: "none", sm: "none", lg: "block", md: "block" }}
-        xs={0}
-        sm={0}
-        md={6}
-        lg={6}
-        bgcolor={"black"}
-        paddingY={5}
-      >
-        <img
-          src={Person}
-          width={"100%"}
-          height={"100%"}
-          className="Image"
-          alt=""
-        />
+          <TextField
+            variant="outlined"
+            placeholder="Email Address"
+            sx={{
+              width: "90%",
+              marginTop: 2,
+              height: 50,
+              bgcolor: "white",
+            }}
+            required
+            type={"email"}
+          />
+          <Typography
+            variant={"h5"}
+            fontWeight={"700"}
+            paddingTop={3.5}
+            fontFamily={"Cairo"}
+            color="#000000"
+          >
+            Password
+          </Typography>
+          <TextField
+            variant="outlined"
+            placeholder="Password"
+            sx={{
+              width: "90%",
+              marginTop: 2,
+              height: 50,
+              bgcolor: "white",
+            }}
+            required
+            type={"email"}
+          />
+          <Button
+            sx={{ width: "90%", height: 50, borderRadius: 2, marginTop: 4 }}
+            variant="contained"
+            disableElevation
+            onClick={() => {
+              history.push("/Overview");
+            }}
+          >
+            Login
+          </Button>
+          <Link
+            sx={{ textDecoration: "none", cursor: "pointer" }}
+            onClick={() => history.push("/ForgetPassword")}
+          >
+            <Typography
+              width={"90%"}
+              textAlign={"center"}
+              variant={"h5"}
+              sx={{ fontWeight: "900" }}
+              paddingTop={3.5}
+              fontFamily={"Cairo"}
+              color="black"
+            >
+              Forget Password?
+            </Typography>
+          </Link>
+        </Grid>
+        <Grid
+          item
+          display={{ xs: "none", sm: "none", lg: "block", md: "block" }}
+          xs={0}
+          sm={0}
+          md={6}
+          lg={6}
+          bgcolor={"black"}
+          paddingY={5}
+        >
+          <img
+            src={Person}
+            width={"100%"}
+            height={"100%"}
+            className="Image"
+            alt=""
+          />
+        </Grid>
       </Grid>
     </Grid>
   );

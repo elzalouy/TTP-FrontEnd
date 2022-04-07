@@ -1,7 +1,7 @@
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import * as React from "react";
-
+import { ArrowForwardIos as ArrowIcon } from "@mui/icons-material";
 interface UserNotificationsProps {}
 
 const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
@@ -10,7 +10,7 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
     <Stack
       bgcolor={"white"}
       borderRadius={2}
-      width={"100%"}
+      width={{ xs: "90%", sm: "90%", md: "100%", lg: "100%" }}
       padding={1.8}
       paddingTop={2.5}
     >
@@ -48,7 +48,11 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
           width={"100%"}
           height={60}
           borderRadius={2}
-          sx={{ boxShadow: 4, padding: 1.2, display: "inline-flex" }}
+          sx={{
+            boxShadow: "0px 5px 15px 5px #FAFAFB;",
+            padding: 1.2,
+            display: "inline-flex",
+          }}
         >
           <Avatar sx={{ bgcolor: deepOrange[200] }}>EE</Avatar>
           <Box paddingTop={0.2} paddingLeft={1}>
@@ -70,6 +74,25 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
           </Box>
         </Box>
       ))}
+      <Divider sx={{ paddingTop: 3 }} />
+      <Button
+        variant="text"
+        sx={{ justifyContent: "flex-start", width: "30%", paddingTop: 1 }}
+        fullWidth={false}
+      >
+        <Typography
+          fontWeight={"700"}
+          variant="h5"
+          fontSize={14}
+          color="#00ACBA"
+        >
+          See More{" "}
+          <ArrowIcon
+            fontSize={"small"}
+            sx={{ fontSize: 14, paddingTop: 0.4, fontWeight: "bold" }}
+          />
+        </Typography>
+      </Button>
     </Stack>
   );
 };

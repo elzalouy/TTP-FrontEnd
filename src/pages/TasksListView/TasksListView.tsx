@@ -1,4 +1,4 @@
-import { Checkbox, Typography } from "@mui/material";
+import { Checkbox, Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../components/SearchBox";
+import Select from "../../coreUI/usable-component/Select";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, selectClients } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
@@ -50,95 +51,163 @@ const Tasks: React.FC = (props: any) => {
     dispatch(filterTasks(filter));
   };
   return (
-    <Box className="tasks-page" sx={{ backgroundColor: "#FAFAFB" }}>
-      <Typography variant="h2" className="tsk-header">
+    <Grid
+      justifyContent={"flex-start"}
+      alignItems="flex-start"
+      container
+      alignContent={"flex-start"}
+      alignSelf="flex-start"
+      padding={4}
+      sx={{ backgroundColor: "#FAFAFB" }}
+    >
+      <Typography variant="h2" marginBottom={2}>
         Tasks
       </Typography>
-      <Box className="tasks-settings">
-        <Box className="tasks-option">
-          <label>Status:</label>
+      <Grid marginBottom={2} container direction={"row"}>
+        <Grid marginX={0.2} item>
           <Controller
-            name="status"
+            name="sort"
             control={control}
             render={(props) => (
-              <select
+              <Select
+                name="Due Date"
+                labelValue="Due Date: "
                 {...props}
-                style={{ width: "50px" }}
-                className="select-filter"
-                onChange={(e) => {
+                options={[
+                  { id: "deadline", text: "Deadline", value: "deadline" },
+                ]}
+                placeholder="Project Managers"
+                handleChange={(e) => {
+                  e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
-              >
-                <option value="">All</option>
-                <option value="inProgress">In progress</option>
-                <option value="delivered">Delivered on time</option>
-                <option value="late">Late</option>
-                <option value="not clear">Not clear</option>
-                <option value="cancled">Canceled</option>
-              </select>
+                selectValue={props.field.value}
+                selectLabel={
+                  PMs?.find((val) => val._id === props.field.value)?.name
+                }
+              />
             )}
           />
-        </Box>
-        <Box className="tasks-option">
-          <label>Project:</label>
-          <Controller
-            name="projectId"
-            control={control}
-            render={(props) => (
-              <select
-                {...props}
-                onChange={(e) => {
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                style={{ width: "50px" }}
-                className="select-filter"
-              >
-                <option value="">All</option>
-                {projects.projects &&
-                  projects.projects.map((item) => (
-                    <option value={item._id}>{item.name} </option>
-                  ))}
-              </select>
-            )}
-          />
-        </Box>
-        <Box className="tasks-option">
-          <label>Members:</label>
-          <Controller
-            name="memberId"
-            control={control}
-            render={(props) => (
-              <select
-                {...props}
-                style={{ width: "50px" }}
-                className="select-filter"
-                onChange={(e) => {
-                  onHandleChange(e);
-                  props.field.onChange(e);
-                }}
-              >
-                <option value="">All</option>
-                {techMembers.techMembers &&
-                  techMembers.techMembers.map((member) => (
-                    <option value={member?._id}>{member?.name}</option>
-                  ))}
-              </select>
-            )}
-          />
-        </Box>
-        <DeleteTask />
-        <Box
-          style={{
-            backgroundColor: "#fafafa",
-            width: "160px",
-            marginLeft: "20px",
-          }}
-        >
-          <SearchBox></SearchBox>
-        </Box>
-      </Box>
+        </Grid>
+        <Grid marginX={0.2} item>
+          <Box className="tasks-option">
+            <Controller
+              name="status"
+              control={control}
+              render={(props) => (
+                <Select
+                  name="status"
+                  labelValue="Status: "
+                  {...props}
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    {
+                      id: "inProgress",
+                      value: "inProgress",
+                      text: "In Progres",
+                    },
+                    { id: "delivered", value: "delivered", text: "Delivered" },
+                    { id: "late", value: "late", text: "late" },
+                    { id: "not clear", value: "not clear", text: "Not Clear" },
+                    { id: "canceled", value: "canceled", text: "Canceled" },
+                  ]}
+                  placeholder="Project Managers: "
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectLabel={props.field.value}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid marginX={0.2} item>
+          <Box className="tasks-option">
+            <Controller
+              name="projectId"
+              control={control}
+              render={(props) => (
+                <Select
+                  name="projectId"
+                  labelValue={"Project: "}
+                  {...props}
+                  options={projects.projects?.map((item) => {
+                    return {
+                      id: item._id,
+                      value: item._id,
+                      text: item.name,
+                    };
+                  })}
+                  placeholder="Project"
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectLabel={
+                    projects.projects.find(
+                      (val) => val._id === props.field.value
+                    )?.name
+                  }
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid marginX={0.2} item>
+          <Box className="tasks-option">
+            <Controller
+              name="memberId"
+              control={control}
+              render={(props) => (
+                <Select
+                  name="Members"
+                  labelValue={"Members : "}
+                  {...props}
+                  options={techMembers.techMembers.map((item) => {
+                    return {
+                      id: item._id,
+                      value: item._id,
+                      text: item.name,
+                    };
+                  })}
+                  placeholder="Members"
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectLabel={
+                    techMembers.techMembers.find(
+                      (val) => val._id === props.field.value
+                    )?.name
+                  }
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid marginX={0.2} item>
+          <DeleteTask />
+        </Grid>
+        <Grid marginX={0.2} item>
+          <Box
+            style={{
+              backgroundColor: "#fafafa",
+              width: "160px",
+              marginLeft: "20px",
+            }}
+          >
+            <SearchBox></SearchBox>
+          </Box>
+        </Grid>
+      </Grid>
       {projects.loading === true ? (
         <>
           <Box
@@ -157,8 +226,8 @@ const Tasks: React.FC = (props: any) => {
         </>
       ) : (
         <>
-          <Paper className="tsk-container" style={{ marginTop: "30px" }}>
-            <TableContainer>
+          <Paper className="tsk-container">
+            <TableContainer sx={{ borderRadius: 2 }}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -317,7 +386,7 @@ const Tasks: React.FC = (props: any) => {
           </Paper>
         </>
       )}
-    </Box>
+    </Grid>
   );
 };
 export default Tasks;

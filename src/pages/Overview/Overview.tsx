@@ -60,7 +60,7 @@ const Overview: React.FC<Props> = () => {
     },
   ]);
   return (
-    <Box className="overview-page" sx={{ width: "100%" }}>
+    <Box className="overview-page" sx={{ width: "100%", display: "block" }}>
       <Box className="projects">
         <Typography
           variant="h2"

@@ -8,12 +8,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import { makeStyles } from "@material-ui/core/styles";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import style from "./projectCardStyle";
 import { Project } from "../../redux/Projects";
 import { useAppSelector } from "../../redux/hooks";
 import { selectPMs } from "../../redux/PM";
 import { RouteComponentProps } from "react-router-dom";
+import { Typography } from "@mui/material";
 interface ProjectCardProps {
   status: string;
   Projects: Project[];
@@ -25,7 +26,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   ...props
 }) => {
   const PMs = useAppSelector(selectPMs);
-  console.log(props);
   const [expanded, setExpanded] = useState<boolean>(false);
   const classes = style(status)();
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
@@ -90,13 +90,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 Project Title
               </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align="right">
+              <TableCell sx={{ borderBottom: "none" }} align="center">
                 Start Date
               </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align="right">
+              <TableCell sx={{ borderBottom: "none" }} align="center">
                 Tasks
               </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align="right">
+              <TableCell sx={{ borderBottom: "none" }} align="center">
                 Deadline Date
               </TableCell>
               <TableCell
@@ -129,7 +129,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       }
                     </p>
                   </TableCell>
-                  <TableCell className={classes.tcellCenter} align="right">
+                  <TableCell className={classes.tcellCenter} align="center">
                     {new Date(project.startDate).toLocaleDateString("en-US", {
                       weekday: "long",
                       year: "numeric",
@@ -137,15 +137,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       day: "numeric",
                     })}
                   </TableCell>
-                  <TableCell className={classes.tcellCenterTask} align="right">
-                    <h3>
-                      <CheckCircleOutlinedIcon
-                        sx={{ color: "#707683" }}
-                      ></CheckCircleOutlinedIcon>
-                      {project.numberOfTasks}
-                    </h3>
+                  <TableCell className={classes.tcellCenterTask} align="center">
+                    <Box sx={{ display: "inline-flex" }}>
+                      <CheckIcon
+                        sx={{
+                          color: "#00ACBA",
+                        }}
+                      />
+                      <Typography variant="h4" color="#00ACBA" paddingTop={0.2}>
+                        {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                      </Typography>
+                    </Box>
                   </TableCell>
-                  <TableCell className={classes.tcellCenter} align="right">
+                  <TableCell className={classes.tcellCenter} align="center">
                     {new Date(project.projectDeadline).toLocaleDateString(
                       "en-US",
                       {
@@ -156,7 +160,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                       }
                     )}
                   </TableCell>
-                  <TableCell className={classes.tcellRight} align="right">
+                  <TableCell className={classes.tcellRight} align="center">
                     ...
                   </TableCell>
                 </TableRow>

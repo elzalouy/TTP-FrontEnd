@@ -214,7 +214,7 @@
   padding-left: 0.1rem;
   cursor: pointer;
   position: relative;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
 }
 .chat-new-btn-text {
@@ -238,7 +238,7 @@
   position: relative;
 }
 .chat-item-avatar-wrapper::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: -3px;
@@ -408,4 +408,11 @@
 }
 .active-burger-toggel-width {
   margin-top: 61px;
+}
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  background-color: #000000;
+  color: "white" !important;
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 import "./App.css";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
@@ -30,9 +30,7 @@ import { getAllMembers } from "./redux/techMember";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import OverView from "./pages/UserOverview/OverView";
 
-type Props = {};
-
-const App: React.FC<Props> = () => {
+const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClients);
   useEffect(() => {
@@ -45,69 +43,59 @@ const App: React.FC<Props> = () => {
   }, []);
   return (
     <div className="main-container">
-      <BrowserRouter>
-        <ToastContainer />
-        <Switch>
-          <Route key="/path" exact path="/" component={Login} />
-          <Route
-            key="forgetPassword"
-            path="/ForgetPassword"
-            component={Forget}
-          />
-          <Route
-            key="/resetPassword"
-            path="/RestPassword"
-            component={RestPassword}
-          />
-          <LoggedInContainer
-            key="/projects"
-            path="/Projects"
-            component={Projects}
-          />
-          <LoggedInContainer
-            path="/TasksList"
-            key="tasksList"
-            component={TasksListView}
-          />
-          <LoggedInContainer
-            key="/tasksBoard"
-            path="/TasksBoard/:id"
-            component={TasksBoardView}
-          />
-          <LoggedInContainer
-            key="/clients"
-            path="/Clients"
-            component={Clients}
-          />
-          <LoggedInContainer
-            path="/Departments"
-            key="/departments"
-            component={departments}
-          />
-          <LoggedInContainer
-            path="/Categories"
-            key="/categories"
-            component={Category}
-          />
-          <LoggedInContainer
-            path="/ProjectManagers"
-            key="/projectManagers"
-            component={ProjectManagers}
-          />
-          <LoggedInContainer
-            path="/notifications"
-            key="/notifications"
-            component={NotificationContainer}
-          />
-          <LoggedInContainer
-            path="/Overview"
-            component={OverView}
-            key="/overview"
-          />
-        </Switch>
-      </BrowserRouter>
+      <ToastContainer />
+      <Switch>
+        <Route key="/path" exact path="/" component={Login} />
+        <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
+        <Route
+          key="/resetPassword"
+          path="/RestPassword"
+          component={RestPassword}
+        />
+        <LoggedInContainer
+          key="/projects"
+          path="/Projects"
+          component={Projects}
+        />
+        <LoggedInContainer
+          path="/TasksList"
+          key="tasksList"
+          component={TasksListView}
+        />
+        <LoggedInContainer
+          key="/tasksBoard"
+          path="/TasksBoard/:id"
+          component={TasksBoardView}
+        />
+        <LoggedInContainer key="/clients" path="/Clients" component={Clients} />
+        <LoggedInContainer
+          path="/Departments"
+          key="/departments"
+          component={departments}
+        />
+        <LoggedInContainer
+          path="/Categories"
+          key="/categories"
+          component={Category}
+        />
+        <LoggedInContainer
+          path="/ProjectManagers"
+          key="/projectManagers"
+          component={ProjectManagers}
+        />
+        <LoggedInContainer
+          path="/notifications"
+          key="/notifications"
+          component={NotificationContainer}
+        />
+        <LoggedInContainer
+          path="/Overview"
+          component={OverView}
+          key="/overview"
+        />
+      </Switch>
     </div>
   );
 };
 
-export default App;
+export default withRouter(App);

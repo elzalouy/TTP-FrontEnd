@@ -36,13 +36,13 @@ const SelectInput: React.FC<Props> = ({
   placeholderStyle = {},
 }) => {
   return (
-    <Box sx={{ minWidth: 120, position: "relative", ...boxStyle }}>
+    <Box>
       {labelValue && (
         <InputLabel htmlFor="component-simple" sx={labelStyle}>
           {labelValue}
         </InputLabel>
       )}
-      <Divider
+      {/* <Divider
         orientation="vertical"
         variant="middle"
         flexItem
@@ -55,7 +55,7 @@ const SelectInput: React.FC<Props> = ({
           zIndex: "2",
           top: "-9px",
         }}
-      />
+      /> */}
       <FormControl fullWidth>
         <Select
           labelId="simple-select-label"

@@ -21,6 +21,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import SelectInput from "../../coreUI/usable-component/SelectInput";
+import { Grid, Typography } from "@mui/material";
+import Select from "../../coreUI/usable-component/Select";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -41,30 +43,44 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     dispatch(filterProjects(filter));
   };
   return (
-    <Box sx={{ display: "inline", width: "100%" }} className="departments-page">
-      <h2 className="departments-title">Projects</h2>
-      <div
-        className="department-tools"
-        style={{
-          marginTop: "2%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <div className="filter-icon">
-          <img src={IMAGES.filtericon} alt="FILTER" />
-        </div>
-        <div>
+    <Grid
+      width={"100%"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      container
+      paddingX={4}
+      paddingTop={6}
+    >
+      <Grid container xs={12} justifyContent="flex-start" direction={"row"}>
+        <Grid item xs={12} marginBottom={4}>
+          <Typography variant="h3" fontFamily={"Cairo"}>
+            Projects
+          </Typography>
+        </Grid>
+        <Grid marginX={1} item>
+          <Box
+            justifyContent={"center"}
+            alignItems="center"
+            sx={{ bgcolor: "white", borderRadius: 4 }}
+            width="auto"
+            paddingX={1}
+            paddingY={1.1}
+          >
+            <img src={IMAGES.filtericon} alt="FILTER" />
+          </Box>
+        </Grid>
+        <Grid marginX={0.2} item>
           <Controller
-            name="projectManager"
+            name="sort"
             control={control}
             render={(props) => (
-              <SelectInput
-                name="projectManager"
+              <Select
+                name="Due Date"
+                labelValue="Due Date: "
                 {...props}
-                options={PMs.map((item) => {
-                  return { id: item._id, value: item._id, text: item.name };
-                })}
+                options={[
+                  { id: "deadline", text: "Deadline", value: "deadline" },
+                ]}
                 placeholder="Project Managers"
                 handleChange={(e) => {
                   e.preventDefault();
@@ -78,15 +94,41 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               />
             )}
           />
-        </div>
-        <div>
-          {/* <label style={{ padding: 0 }}>Client Name:</label> */}
+        </Grid>
+        <Grid marginX={0.2} item>
+          <Controller
+            name="projectManager"
+            control={control}
+            render={(props) => (
+              <Select
+                name="projectManager"
+                labelValue="Project Manager: "
+                {...props}
+                options={PMs.map((item) => {
+                  return { id: item._id, value: item._id, text: item.name };
+                })}
+                placeholder="Project Managers: "
+                handleChange={(e) => {
+                  e.preventDefault();
+                  props.field.onChange(e);
+                  onHandleChange(e);
+                }}
+                selectValue={props.field.value}
+                selectLabel={
+                  PMs?.find((val) => val._id === props.field.value)?.name
+                }
+              />
+            )}
+          />
+        </Grid>
+        <Grid marginX={0.2} item>
           <Controller
             name="clientId"
             control={control}
             render={(props) => (
-              <SelectInput
+              <Select
                 name="clientId"
+                labelValue={"Client: "}
                 {...props}
                 options={clients.map((item) => {
                   return {
@@ -109,34 +151,16 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               />
             )}
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid marginX={0.2} item>
           <Controller
             name="projectStatus"
             control={control}
             render={(props) => (
               <>
-                {/* <select
-                  {...props}
-                  className="select-filter"
-                  onChange={(e) => {
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                >
-                  <option value={""}>select Client</option>
-                  <option value="delivered on time">delivered on time</option>
-                  <option value="delivered before time">
-                    delivered before time
-                  </option>
-                  <option value="delivered after time">
-                    delivered after time
-                  </option>
-                  <option value="late">late</option>
-                  <option value="inProgress">inProgress</option>
-                </select> */}
-                <SelectInput
+                <Select
                   name="status"
+                  labelValue={"Status"}
                   {...props}
                   options={[
                     {
@@ -168,11 +192,12 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               </>
             )}
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid xs={2.5} marginX={0.2} item>
           <SearchBar />
-        </div>
-      </div>
+        </Grid>
+      </Grid>
+
       <Box
         sx={{
           mt: 2,
@@ -190,7 +215,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               Projects={inProgressProjects}
             />
             <ProjectCard {...props} status={"Done"} Projects={doneProjects} />
-            <ProjectCard {...props} status={"Late"} Projects={lateProjects} />
           </>
         ) : (
           <Box
@@ -211,7 +235,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           </Box>
         )}
       </Box>
-    </Box>
+    </Grid>
   );
 };
 

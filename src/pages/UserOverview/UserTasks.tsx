@@ -23,8 +23,8 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         variant="h5"
         fontWeight={"800"}
         color="#505050"
-        paddingTop={5}
         paddingBottom={2}
+        marginTop={2}
       >
         Tasks
       </Typography>

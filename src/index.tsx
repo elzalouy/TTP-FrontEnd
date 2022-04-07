@@ -9,15 +9,16 @@ import store from "./redux/store";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import themes from "./themes";
+import { BrowserRouter } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={themes()}>
           <CssBaseline />
-          {/* <PersistGate loading={null} persistor={persistor}> */}
-          <App />
-          {/* </PersistGate> */}
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </ThemeProvider>
       </StyledEngineProvider>
     </Provider>

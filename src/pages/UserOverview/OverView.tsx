@@ -44,14 +44,13 @@ const OverView: FC = (props) => {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingTop={5}
-            paddingLeft={5}
+            paddingTop={{ xs: 10, sm: 10, md: 4, lg: 4 }}
+            paddingLeft={4}
             xs={12}
           >
             <Box
               sx={{
                 width: "auto",
-                height: 20,
                 display: "inline-flex",
               }}
             >
@@ -61,77 +60,79 @@ const OverView: FC = (props) => {
               color="#171725"
               paddingTop={7}
               variant="h4"
-              component="h4"
+              fontWeight={"900"}
             >
               Overview
             </Typography>
           </Grid>
           <Grid
-            item
             xs={12}
             direction="row"
             justifyContent={"flex-start"}
             alignItems="flex-start"
             container
+            paddingLeft={4}
           >
-            <Grid item direction="column" xs={8}>
+            <Grid item direction="column" xs={12} sm={12} lg={7.5} md={7.5}>
               <Grid
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
-                paddingLeft={5}
                 container
               >
-                <Grid xs={3.9} item marginRight={1}>
-                  <UserStatus
-                    IconBgColor="#EFEFFF"
-                    Icon={() => (
-                      <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
-                    )}
-                    title={"Tasks Completed"}
-                    count={"28"}
-                    percent="- 8%"
-                    percentColor="#260EFF"
-                  />
-                </Grid>
-                <Grid xs={3.9} item marginRight={1}>
-                  <UserStatus
-                    IconBgColor="#ECFDF1"
-                    Icon={() => (
-                      <AssignmentIcon fontSize={"small"} htmlColor="#30CF47" />
-                    )}
-                    title="New Tasks"
-                    count="12"
-                    percent="- 8%"
-                    percentColor="#30CF47"
-                  />
-                </Grid>
-                <Grid xs={3.9} item>
-                  <UserStatus
-                    IconBgColor="#FFF3EF"
-                    Icon={() => (
-                      <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
-                    )}
-                    title="Projects Completed"
-                    count="12"
-                    percent="- 8%"
-                    percentColor="#FF2E35"
-                  />
-                </Grid>
+                <UserStatus
+                  IconBgColor="#EFEFFF"
+                  Icon={() => (
+                    <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
+                  )}
+                  title={"Tasks Completed"}
+                  count={"28"}
+                  percent="- 8%"
+                  percentColor="#260EFF"
+                />
+                <UserStatus
+                  IconBgColor="#ECFDF1"
+                  Icon={() => (
+                    <AssignmentIcon fontSize={"small"} htmlColor="#30CF47" />
+                  )}
+                  title="New Tasks"
+                  count="12"
+                  percent="- 8%"
+                  percentColor="#30CF47"
+                />
+
+                <UserStatus
+                  IconBgColor="#FFF3EF"
+                  Icon={() => (
+                    <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
+                  )}
+                  title="Projects Completed"
+                  count="12"
+                  percent="- 8%"
+                  percentColor="#FF2E35"
+                />
               </Grid>
               <Grid
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="flex-start"
-                paddingTop={5}
-                paddingLeft={5}
-                marginRight={1.2}
+                paddingTop={2.5}
+                paddingRight={3.5}
               >
                 <UserProjects />
               </Grid>
             </Grid>
-            <Grid marginTop={5} item xs={3.8}>
+            <Grid
+              marginTop={5}
+              item
+              lg={4}
+              md={4}
+              sm={12}
+              xs={12}
+              justifyContent="center"
+              alignItems="center"
+            >
               <UserNotifications />
             </Grid>
           </Grid>
@@ -139,8 +140,7 @@ const OverView: FC = (props) => {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingLeft={5}
-            marginRight={5}
+            paddingLeft={4}
             marginBottom={5}
           >
             <UserTasks />
