@@ -5,6 +5,7 @@
   align-items: center;
   border-radius: 20px;
   background-color: #ededed;
+  height: 8em;
 }
 .add-new-cli > img {
   width: 22px;

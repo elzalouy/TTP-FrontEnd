@@ -7,9 +7,9 @@ const SearchBox = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: theme.palette.common.white,
     "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      backgroundColor: theme.palette.common.white,
     },
     marginLeft: 0,
     width: "100%",
@@ -36,6 +36,8 @@ const SearchBox = () => {
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       width: "100%",
+      boxShadow: "0px 1px 4px 1px #0000000d",
+      borderRadius: "0.5em",
     },
   }));
 

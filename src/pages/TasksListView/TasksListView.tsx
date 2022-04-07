@@ -14,7 +14,7 @@ import IMAGES from "../../assets/img/index";
 import SearchBox from "../../components/SearchBox";
 import Select from "../../coreUI/usable-component/Select";
 import { getAllCategories } from "../../redux/Categories";
-import { getAllClients, selectClients } from "../../redux/Clients";
+import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
@@ -33,7 +33,7 @@ const Tasks: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectPMs);
-  const clients = useAppSelector(selectClients);
+  const clients = useAppSelector(clientsDataSelector);
   const techMembers = useAppSelector(selectAllMembers);
   const { register, watch, control } = useForm();
   React.useEffect(() => {

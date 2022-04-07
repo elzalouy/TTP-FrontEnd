@@ -16,7 +16,7 @@ import {
 } from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
 import { selectAllMembers } from "../../redux/techMember";
-import { selectClients } from "../../redux/Clients";
+import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -36,7 +36,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const lateProjects = useAppSelector(selectLateProjects);
   const PMs = useAppSelector(selectPMs);
-  const clients = useAppSelector(selectClients);
+  const clients = useAppSelector(clientsDataSelector);
   const { register, watch, control } = useForm();
   const onHandleChange = (e: any) => {
     let filter = watch();

@@ -19,7 +19,7 @@ import ProjectManagers from "./pages/projectManagers/projectManagers";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
-import { selectClients } from "./redux/Clients/clients.selectors";
+import { clientsDataSelector } from "./redux/Clients/clients.selectors";
 import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
@@ -32,7 +32,7 @@ import OverView from "./pages/UserOverview/OverView";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const clients = useAppSelector(selectClients);
+  const clients = useAppSelector(clientsDataSelector);
   useEffect(() => {
     dispatch(getAllClients(null));
     dispatch(getPMs(null));

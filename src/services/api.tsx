@@ -1,5 +1,5 @@
 import { create } from "apisauce";
-import { API_BASE_URL } from "./api.json";
+import { API_BASE_URL, API_DEV_URL } from "./api.json";
 // import R from 'reactotron-react-native';
 
 const api = create({
