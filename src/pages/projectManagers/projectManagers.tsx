@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../components/SearchBox";
-import CreateNewPM from '../../components/popups/CreateNewPM'
+import CreateNewPM from "../../components/popups/CreateNewPM";
 import "./projectManagers.css";
 const cellsData = [
   {
@@ -83,34 +83,28 @@ const ProjectManagers: React.FC<Props> = () => {
           alignItems="center"
           spacing={2}
         >
-          <Box >
-            <Typography
-              variant="h2"
-
-            >
-              Project Managers
-            </Typography>
+          <Box>
+            <Typography variant="h2">Project Managers</Typography>
           </Box>
           {/* <button className="pmBtn">Create new PM</button> */}
-
         </Stack>
 
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between'
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Box
             style={{
               backgroundColor: "#fafafa",
               width: "350px",
             }}
           >
-            <SearchBox></SearchBox>
-
+            {/* <SearchBox></SearchBox> */}
           </Box>
 
           <CreateNewPM />
-
         </Box>
       </Box>
       <Paper className="pm-container">

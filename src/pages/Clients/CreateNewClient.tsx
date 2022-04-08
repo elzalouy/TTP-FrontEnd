@@ -3,8 +3,6 @@ import React, { useState, useRef } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./CreateNewClient.css";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { creatClient } from "../../redux/Clients";
 
@@ -32,6 +30,13 @@ const CreateNewClient: React.FC<Props> = () => {
     formData.append("clientName", Data.clientName);
     formData.append("image", Data.image);
     await dispatch(creatClient(formData));
+    console.log({ current: fileInput.current });
+    setImageView(null);
+    setData({
+      image: null,
+      clientName: "",
+    });
+    setShow("none");
   };
 
   const fileUpload = () => {
@@ -100,7 +105,7 @@ const CreateNewClient: React.FC<Props> = () => {
                 alt=""
               />
             </Box>
-            {/* <p className="file-name">{Data.image}</p> */}
+
             <label className="label-client">Client Name</label>
             <input
               className="input-client"

@@ -5,52 +5,63 @@ import "./popups-style.css";
 import axios from "axios";
 import { Client } from "./../../pages/Clients/clients";
 import { Box, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updateClient } from "../../redux/Clients";
 
-type Props = {};
-interface IProps {
+interface Props {
   client: Client;
   updatePopup: () => void;
   show: string;
+  updatePopupValue?: string;
+  setUpdatePopup: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface updateInfo {
   _id: string;
   clientName: string;
-  doneProject: string[];
-  inProgressProject: string[];
-  inProgressTask: string[];
   createdAt: string;
   image: string;
 }
 
-const EditClient: React.FC<IProps> = ({ client, updatePopup, show }) => {
+const EditClient: React.FC<Props> = ({
+  client,
+  updatePopup,
+  show,
+  updatePopupValue = "none",
+  setUpdatePopup,
+}) => {
+  console.log({ updatePopupValue });
+  const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
-  const [Show, setShow] = useState(show);
+  const [display, setShow] = useState(updatePopupValue);
   const [Data, setData] = useState<updateInfo>({
     _id: "",
-    image: "",
     clientName: "",
-    doneProject: [],
-    inProgressProject: [],
-    inProgressTask: [],
     createdAt: "",
+    image: "",
   });
 
+  const [ImageView, setImageView] = useState<string | null>(null);
   useEffect(() => {
-    Data.image = client.image;
-    Data.clientName = client.clientName;
-  }, []);
-  const handleSubmit = async () => {
+    setData(client);
+  }, [client]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
-      // Data.id = client._id;
-      // Data.projectsId = client.projectsId;
-      // Data.createdAt = client.createdAt;
-      // const res = await axios.put('/api/updateClient', Data, {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-      // console.log(res.data);
+      e.preventDefault();
+      let formData = new FormData();
+      formData.append("clientName", Data.clientName);
+      formData.append("image", Data.image);
+      formData.append("_id", Data._id);
+      await dispatch(updateClient(formData));
+      setData({
+        _id: "",
+        clientName: "",
+        createdAt: "",
+        image: "",
+      });
+      setImageView(null);
+      setUpdatePopup("none");
     } catch (error: any) {
       console.log(error.message);
     }
@@ -61,16 +72,22 @@ const EditClient: React.FC<IProps> = ({ client, updatePopup, show }) => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...Data, [e.target.name]: e.target.value });
+    if (e.target.name === "image") {
+      let file: any = e.target.files;
+      setData({ ...Data, image: file[0] });
+      setImageView(URL.createObjectURL(file[0]));
+    } else {
+      setData({ ...Data, [e.target.name]: e.target.value });
+    }
   };
   const handleClose = () => {
-    setShow("none");
+    setUpdatePopup("none");
     updatePopup();
   };
   return (
     <>
-      <PopUp show={Show} widthSize="30vw">
-        <form>
+      <PopUp show={updatePopupValue} widthSize="30vw">
+        <form onSubmit={handleSubmit}>
           <Box sx={{ paddingLeft: "15px" }}>
             <Box>
               <img
@@ -100,14 +117,19 @@ const EditClient: React.FC<IProps> = ({ client, updatePopup, show }) => {
                 onChange={onChange}
                 hidden
               />
-              <img src={IMAGES.imgupload} alt="" />
+              <img
+                src={ImageView ? ImageView : Data.image}
+                style={{
+                  width: "9em",
+                  height: "9em",
+                }}
+                alt=""
+              />
             </Box>
-            <p className="file-name">{Data.image}</p>
-            <Typography className="new-client-title">Edit Client</Typography>
+
             <input
               className="input-client"
               type="text"
-              placeholder={client.clientName}
               name="clientName"
               value={Data.clientName}
               onChange={onChange}
@@ -120,9 +142,7 @@ const EditClient: React.FC<IProps> = ({ client, updatePopup, show }) => {
               <button className="cancelBtn" onClick={handleClose}>
                 Cancel
               </button>
-              <button className="blackBtn" onClick={handleSubmit}>
-                Done
-              </button>
+              <button className="blackBtn">Done</button>
             </Box>
           </Box>
         </form>

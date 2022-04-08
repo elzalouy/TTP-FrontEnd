@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const ClientCard: React.FC<IProps> = ({ client }) => {
-  console.log({ clientTest: client });
+  // console.log({ clientTest: client });
   const {
     clientName,
     createdAt,
@@ -25,17 +25,21 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
         <Box className="cl-card-header">
           <Stack
             direction="row"
-            marginLeft="12px"
+            marginLeft="2em"
             marginTop="12px"
             justifyContent="flex-start"
             alignItems="center"
           >
             <Box>
-              {/* {client.image.includes("") ? ( */}
-              <img src={IMAGES.avatarClients} alt="avatar" />
-              {/* // ) : (
-              //   <img src={client.image} alt="avatar" />
-              // )} */}
+              <img
+                src={!client.image ? IMAGES.avatarClients : client.image}
+                alt="avatar"
+                style={{
+                  width: "4em",
+                  height: "4em",
+                  borderRadius: ".5em",
+                }}
+              />
             </Box>
             <Box
               style={{
@@ -73,7 +77,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               In Progress Task
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressTask.length}
+              {inProgressTask?.length}
             </Typography>
           </Grid>
 
@@ -96,7 +100,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               In Progress Project
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressProject.length}
+              {inProgressProject?.length}
             </Typography>
           </Grid>
 
@@ -115,7 +119,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               Done Project
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {doneProject.length}
+              {doneProject?.length}
             </Typography>
           </Grid>
         </Grid>
