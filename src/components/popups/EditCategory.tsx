@@ -80,15 +80,6 @@ const EditCategory: React.FC<Props> = ({
 
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          handleSetEditCatDisplay("flex");
-        }}
-      >
-        Edit Category
-      </button>
-
       <PopUp show={editCatDisplay} minWidthSize="30vw" maxWidthSize="300px">
         <div>
           <img
