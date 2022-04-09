@@ -11,10 +11,11 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { getAllCategories } from "../../redux/Categories";
 import { selectAllCategories } from "../../redux/Categories/categories.selectores";
-
+import { categoriesActions } from "../../redux/Categories";
 type Props = {};
 const Category: React.FC<Props> = () => {
   const dispatch = useDispatch();
+  const [search, setSearch] = useState<string>("");
   const categoriesData = useAppSelector(selectAllCategories);
   useEffect(() => {
     dispatch(getAllCategories(null));
@@ -24,8 +25,6 @@ const Category: React.FC<Props> = () => {
   useEffect(() => {
     setCategoryData(categoriesData);
   }, [categoriesData]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState<null | []>(null);
 
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
@@ -34,8 +33,12 @@ const Category: React.FC<Props> = () => {
     ["#783DBD", "#EFEBF2"],
     ["#00AECC", "#E1F3F7"],
   ];
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
+  const handleSearchChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    console.log({ value: e.target.value });
+    setSearch(e.target.value);
+    dispatch(categoriesActions.onSearch(e.target.value));
   };
 
   const [display, setDisplay] = useState<string>("none");
@@ -65,9 +68,12 @@ const Category: React.FC<Props> = () => {
           Category
         </Typography>
       </Box>
-      {/* <div style={{ width: 370 }}>
-        <SearchBox></SearchBox>
-      </div> */}
+      <div style={{ width: 370 }}>
+        <SearchBox
+          search={search}
+          handleSearchChange={handleSearchChange}
+        ></SearchBox>
+      </div>
       <Box
         sx={{
           width: "100%",

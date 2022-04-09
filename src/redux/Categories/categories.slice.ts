@@ -13,6 +13,19 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
     },
+    onSearch: (state, { payload }) => {
+      console.log({ payload });
+      let categories = state.chosenCategories;
+      if (payload === "") {
+        state.categories = state.chosenCategories;
+      } else {
+        console.log({ payload });
+        categories = categories.filter((category) =>
+          category.category.match(new RegExp(payload, "gi"))
+        );
+        state.categories = categories;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllCategories.pending, (state) => {
@@ -28,6 +41,7 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.loading = false;
       state.categories = action.payload;
+      state.chosenCategories = action.payload;
     });
     builder.addCase(createCategory.pending, (state) => {
       state.loading = true;
