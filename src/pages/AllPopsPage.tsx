@@ -56,14 +56,14 @@ const AllPopsPage: React.FC<IProps> = ({ client }) => {
         }}
       >
         <CreateTask />
-        <CreateSubCategory />
+        {/* <CreateSubCategory /> */}
         <EditTask />
         <EditDepartment />
         <EditProject />
         <EditPM />
         {/* <EditClient /> */}
         {/* <EditClient client={client} show={"flex"} updatePopup={() => closeUpdatePopup()} /> */}
-        <EditCategory />.
+        {/* <EditCategory />. */}
         <DeleteProject />
         <DeletePM />
         <DeleteDepartment />

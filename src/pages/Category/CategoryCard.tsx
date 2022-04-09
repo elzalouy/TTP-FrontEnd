@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { Typography, Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import "./Category.css";
+import { categoriesActions } from "../../redux/Categories";
+import { useDispatch } from "react-redux";
 type Props = {};
 interface IProps {
   backgroundColor: string;
   fontColor: string;
   mainCategory: string;
   subCategories: string[];
+  handleSetDisplay: (value: string) => void;
+  handleSetEditCatDisplay: (value: string) => void;
+  category: any;
 }
 const CategoryCard: React.FC<IProps> = ({
   backgroundColor,
   fontColor,
   mainCategory,
   subCategories,
+  handleSetDisplay,
+  handleSetEditCatDisplay,
+  category,
 }) => {
+  const dispatch = useDispatch();
+  const handleSetSelect = () => {
+    dispatch(categoriesActions.setSelectedCategory(category));
+  };
   return (
     <Box
       className="category-card"
@@ -36,6 +48,7 @@ const CategoryCard: React.FC<IProps> = ({
         cursor: "pointer",
         backgroundColor: backgroundColor,
       }}
+      onClick={handleSetSelect}
     >
       <Typography
         sx={{
@@ -61,10 +74,18 @@ const CategoryCard: React.FC<IProps> = ({
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            height: "5.5em",
+            overflow: "auto",
+          }}
+        >
           {subCategories &&
-            subCategories.map((subCategory) => (
+            subCategories.map(({ subCategory, _id }: any) => (
               <Typography
+                key={_id}
                 sx={{
                   textTransform: "capitalize",
                   textAlign: "left",
@@ -75,12 +96,11 @@ const CategoryCard: React.FC<IProps> = ({
                   py: 0.2,
                   borderRadius: "4px",
                   borderColor: fontColor,
-                }}
-                style={{
                   color: "#5C5C5C",
                   fontFamily: "font: normal normal normal 14px/26px Cairo",
                   letterSpacing: "0.1px",
                   fontSize: "15px",
+                  height: "fit-content",
                 }}
               >
                 {subCategory}
@@ -107,6 +127,7 @@ const CategoryCard: React.FC<IProps> = ({
               width: "90%",
               mr: 1,
             }}
+            onClick={() => handleSetDisplay("flex")}
           >
             <Box
               sx={{
@@ -133,6 +154,7 @@ const CategoryCard: React.FC<IProps> = ({
               borderColor: fontColor,
               color: fontColor,
             }}
+            onClick={() => handleSetEditCatDisplay("flex")}
           >
             <FontAwesomeIcon icon={faPenToSquare} fontSize={"24px"} />
           </Button>
