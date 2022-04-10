@@ -76,7 +76,7 @@
   border-radius: 5px;
   border: solid 0.5px;
   border-color: #b4b6c4;
-  color: #b4b6c4;
+  color: #000;
   margin: 0;
   margin-top: 5px;
 }
@@ -381,4 +381,8 @@ table.allTeam-table td.deleteTd {
   100% {
     opacity: 1;
   }
+}
+
+.input-auth{
+  color:#000
 }

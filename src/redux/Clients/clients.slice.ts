@@ -29,7 +29,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
     },
     onSearch: (state, { payload }) => {
       console.log({ payload });
-      let clientData = state.clientsData;
+      let clientData = state.selectedClient;
       if (payload === "") {
         state.clientsData = state.selectedClient;
       } else {

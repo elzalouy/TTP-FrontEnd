@@ -1,27 +1,86 @@
 import React from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./popups-style.css";
+import { useAppSelector } from "../../redux/hooks";
+import { selectSelectedCategory } from "../../redux/Categories/categories.selectores";
+import { useDispatch } from "react-redux";
+import { updateCategory } from "../../redux/Categories";
 
-type Props = {};
+type Props = {
+  handleSetEditCatDisplay: (value: string) => void;
+  editCatDisplay: string;
+};
 
-const EditCategory: React.FC<Props> = () => {
-  const [Show, setShow] = useState("none");
+const EditCategory: React.FC<Props> = ({
+  handleSetEditCatDisplay,
+  editCatDisplay,
+}) => {
+  const dispatch = useDispatch();
+  const selectedCategory = useAppSelector(selectSelectedCategory);
+  const [title, setTitle] = useState<string | undefined>("");
+  const [selectedData, setSelectedData] = useState<any>({
+    selectedSubCategory: [],
+    subCategoriesId: [],
+  });
+  useEffect(() => {
+    setSelectedData(selectedCategory);
+    setTitle(selectedCategory?.category);
+  }, [selectedCategory]);
   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]);
+
+  const handleAddSubCategory = () => {
+    let findIndex = selectedData.selectedSubCategory
+      .map((cat: any) => cat.subCategory)
+      .indexOf(Data.trim());
+
+    let indexInMainOptions = selectedData.subCategoriesId.find(
+      (cat: any) => cat.subCategory === Data
+    );
+    if (findIndex === -1) {
+      setSelectedData({
+        ...selectedData,
+        selectedSubCategory: [
+          ...selectedData.selectedSubCategory,
+          indexInMainOptions,
+        ],
+      });
+    }
+    return;
+  };
+
+  const handleRemoveSubCategory = (index: number) => {
+    let selectedCategory = selectedData.selectedSubCategory;
+    selectedCategory = selectedCategory.filter(
+      (item: any, i: number) => i !== index
+    );
+    setSelectedData({
+      ...selectedData,
+      selectedSubCategory: selectedCategory,
+    });
+  };
+
+  const handleSubmit = async () => {
+    console.log({ selectedData });
+    const subCatData = {
+      subCategoriesId: selectedData.subCategoriesId.map(
+        (item: any) => item._id
+      ),
+      selectedSubCategory: selectedData.selectedSubCategory.map(
+        (item: any) => item._id
+      ),
+      _id: selectedData._id,
+      category: title,
+    };
+    await dispatch(updateCategory(subCatData));
+    handleSetEditCatDisplay("none");
+  };
+
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Edit Category
-      </button>
-
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
+      <PopUp show={editCatDisplay} minWidthSize="30vw" maxWidthSize="300px">
         <div>
           <img
             className="closeIcon"
@@ -30,7 +89,7 @@ const EditCategory: React.FC<Props> = () => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
-              setShow("none");
+              handleSetEditCatDisplay("none");
             }}
           />
         </div>
@@ -43,48 +102,61 @@ const EditCategory: React.FC<Props> = () => {
             className="popup-input"
             type="text"
             placeholder="Ex: Ahmed Ali"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <label className="popup-label">Sub-category</label>
-          <div className="add-teams-section">
-            <select
-              className="popup-select"
-              onChange={(e) => {
-                setData(e.target.value);
-              }}
-            >
-              <option value="Al-shaqran team">Al-shaqran team</option>
-              <option value="1">option 2 </option>
-              <option value="2">option 3</option>
-            </select>
+          <div>
+            <div className="add-teams-section">
+              <select
+                className="popup-select"
+                onChange={(e) => {
+                  console.log({ value: e.target.value });
+                  setData(e.target.value);
+                }}
+              >
+                <option value="" selected>
+                  Select Sub category
+                </option>
+                {selectedData?.subCategoriesId.map((option: any) => (
+                  <option key={option._id} value={option.subCategory}>
+                    {option.subCategory}
+                  </option>
+                ))}
+              </select>
 
-            <button
-              className="orange-btn"
-              onClick={() => {
-                setNames([...Names, Data]);
-              }}
-            >
-              Add
-            </button>
-          </div>
-          <div className="names-container">
-            {Names.map((el, index) => {
-              return (
-                <div className="team-name-badge">
-                  <p className="name-of-badge">{el}</p>
-                  <img
-                    src={IMAGES.closeicon}
-                    alt="close"
-                    width="9px"
-                    height="9px"
-                    className="pointer"
-                    onClick={() => {
-                      Names.splice(index, 1);
-                      setNames([...Names]);
-                    }}
-                  />
-                </div>
-              );
-            })}
+              <button
+                className="orange-btn"
+                onClick={() => {
+                  handleAddSubCategory();
+                }}
+                disabled={Data === ""}
+                style={{
+                  backgroundColor: Data === "" ? "#ccc" : "#ffc500",
+                }}
+              >
+                Add
+              </button>
+            </div>
+            <div className="names-container">
+              {selectedData?.selectedSubCategory.map((el: any, index: any) => {
+                return (
+                  <div className="team-name-badge" key={el._id}>
+                    <p className="name-of-badge">{el.subCategory}</p>
+                    <img
+                      src={IMAGES.closeicon}
+                      alt="close"
+                      width="9px"
+                      height="9px"
+                      className="pointer"
+                      onClick={() => {
+                        handleRemoveSubCategory(index);
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
         <br />
@@ -92,12 +164,12 @@ const EditCategory: React.FC<Props> = () => {
           <button
             className="controllers-cancel"
             onClick={() => {
-              setShow("none");
+              handleSetEditCatDisplay("none");
             }}
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => {}}>
+          <button className="controllers-done" onClick={handleSubmit}>
             Done
           </button>
         </div>
