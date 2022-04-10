@@ -4,18 +4,15 @@ import "./App.css";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import RestPassword from "./pages/AuthPage/rest";
-
-import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
-import AllPopsPage from "./pages/AllPopsPage";
 import departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
 import Clients from "./pages/Clients/clients";
-// import Overview from "./pages/Overview/Overview";
 import ProjectManagers from "./pages/projectManagers/projectManagers";
+import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
@@ -25,10 +22,10 @@ import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
 import { getAllProjects } from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getAllMembers } from "./redux/techMember";
-import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import OverView from "./pages/UserOverview/OverView";
+import "react-toastify/dist/ReactToastify.css";
+import PopUps from "./pages/PopUps";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -44,6 +41,7 @@ const App: React.FC = (props) => {
   return (
     <div className="main-container">
       <ToastContainer />
+      <PopUps />
       <Switch>
         <Route key="/path" exact path="/" component={Login} />
         <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
@@ -98,4 +96,4 @@ const App: React.FC = (props) => {
   );
 };
 
-export default withRouter(App);
+export default App;

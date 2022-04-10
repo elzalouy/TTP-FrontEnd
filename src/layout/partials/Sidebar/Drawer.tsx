@@ -27,20 +27,21 @@ interface BarProps extends AppBarProps {
 }
 
 const AppDrawer: React.FC = (props: any) => {
-  const drawerWidth = 240;
+  const drawerWidth = 220;
 
   const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
     transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.easeIn,
+      duration: 5000,
     }),
     overflowX: "hidden",
   });
   const closedMixin = (theme: Theme): CSSObject => ({
     transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeIn,
+      duration: 5000,
+      delay: 1000,
     }),
     overflowX: "hidden",
     width: `calc(${theme.spacing(7)} + 1px)`,
@@ -92,7 +93,9 @@ const AppDrawer: React.FC = (props: any) => {
   return (
     <>
       <MyDrawer
-        sx={{ display: { xs: "none", sm: "none", lg: "block", md: "block" } }}
+        sx={{
+          display: { xs: "none", sm: "none", lg: "block", md: "block" },
+        }}
         open={props.open}
         variant="permanent"
       >

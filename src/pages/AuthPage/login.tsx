@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import "./auth.css";
-import AuthBorder from "./authBorder";
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Button, Link, TextField, Typography } from "@mui/material";
-import { withStyles } from "@material-ui/core/styles";
-
-import { Box } from "@mui/system";
+import { Grid, Button, Link, Typography } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
-import useStyles from "./loginStyle";
+import Input from "../../coreUI/usable-component/Inputs/Input";
+import { Controller, useForm } from "react-hook-form";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -16,49 +13,26 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ history }) => {
-  const classes = useStyles()();
-  const [Email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const CssTextField = withStyles({
-    root: {
-      "& label.Mui-focused": {
-        color: "white",
-      },
-      "& .MuiInput-underline:after": {
-        borderBottomColor: "#E4E4E4",
-        borderWidth: 1,
-      },
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: "#E4E4E4",
-          borderWidth: 1,
-        },
-        "&:hover fieldset": {
-          borderColor: "#E4E4E4",
-          borderWidth: 1,
-        },
-        "&.Mui-focused fieldset": {
-          borderColor: "#E4E4E4",
-          borderWidth: 1,
-        },
-      },
-    },
-  })(TextField);
+  const { register, watch, control } = useForm();
+  const [visible, setVisible] = useState(false);
   return (
     <Grid
       container
+      height={"100%"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
+      alignContent={"center"}
+      marginTop={5}
     >
       <Grid
         item
         xs={11}
         sm={11}
-        md={7}
-        lg={7}
+        md={8}
+        lg={8}
+        height={550}
         container
-        height="80%"
         direction="row"
         sx={{
           boxShadow: "0px 60px 350px 20px #888888;",
@@ -70,8 +44,9 @@ const Login: React.FC<Props> = ({ history }) => {
           sm={12}
           lg={6}
           md={6}
+          height={"100%"}
           bgcolor={"white"}
-          paddingLeft={5}
+          paddingX={5}
           paddingTop={6}
           paddingBottom={4}
         >
@@ -87,47 +62,66 @@ const Login: React.FC<Props> = ({ history }) => {
           <Typography
             variant={"h5"}
             fontWeight={"700"}
-            paddingTop={2}
+            paddingTop={3.5}
             fontFamily={"Cairo"}
             color="#000000"
           >
             Email Address
           </Typography>
-          <CssTextField
-            variant="outlined"
-            placeholder="Email Address"
-            sx={{
-              width: "90%",
-              marginTop: 1,
-              height: 50,
-              bgcolor: "white",
-            }}
-            required
-            type={"email"}
+          <Controller
+            name="email"
+            control={control}
+            render={(props) => (
+              <Input
+                {...props}
+                visible
+                setVisible
+                value={props.field.value}
+                onChangeValue={(e: React.ChangeEvent) => {
+                  e.preventDefault();
+                  props.field.onChange(e);
+                }}
+                type="email"
+                placeholder="Email Address"
+              />
+            )}
           />
           <Typography
             variant={"h5"}
             fontWeight={"700"}
-            paddingTop={2}
+            paddingTop={3.5}
             fontFamily={"Cairo"}
             color="#000000"
           >
             Password
           </Typography>
-          <CssTextField
-            variant="outlined"
-            placeholder="Password"
-            sx={{
-              width: "90%",
-              marginTop: 1,
-              height: 50,
-              bgcolor: "white",
-            }}
-            required
-            type={"email"}
+          <Controller
+            name="password"
+            control={control}
+            render={(props) => (
+              <Input
+                {...props}
+                visible={visible}
+                setVisible={setVisible}
+                value={props.field.value}
+                onChangeValue={(e: React.ChangeEvent) => {
+                  e.preventDefault();
+                  props.field.onChange(e);
+                }}
+                type="password"
+                placeholder="Password"
+              />
+            )}
           />
           <Button
-            sx={{ width: "90%", height: 50, borderRadius: 2, marginTop: 4 }}
+            sx={{
+              width: "100%",
+              height: 40,
+              borderRadius: 1.5,
+              marginTop: 4,
+              textTransform: "none",
+              fontWeight: "bold",
+            }}
             variant="contained"
             disableElevation
             onClick={() => {
@@ -141,7 +135,6 @@ const Login: React.FC<Props> = ({ history }) => {
             onClick={() => history.push("/ForgetPassword")}
           >
             <Typography
-              width={"90%"}
               textAlign={"center"}
               variant={"h5"}
               sx={{ fontWeight: "900" }}
@@ -161,18 +154,10 @@ const Login: React.FC<Props> = ({ history }) => {
           md={6}
           lg={6}
           bgcolor={"black"}
-          paddingY={5}
-          justifyContent="center"
-          alignItems="center"
+          textAlign={"center"}
+          paddingTop={20}
         >
-          <img
-            src={Person}
-            width={"80%"}
-            height={"80%"}
-            className="Image"
-            alt=""
-            style={{ marginLeft: 50, marginTop: 20 }}
-          />
+          <img src={Person} className="Image" alt="" style={{ width: "60%" }} />
         </Grid>
       </Grid>
     </Grid>

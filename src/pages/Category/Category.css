@@ -2,7 +2,7 @@
   padding: 2%;
   background-color: #fafafb;
   min-height: 100vh;
-  font-family: 'Cairo', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Cairo", "Helvetica", "Arial", sans-serif;
 }
 
 #search-bar {
@@ -41,7 +41,7 @@
   opacity: 1;
 }
 .remove-category {
-  content: 'x';
+  content: "x";
   color: red;
   cursor: pointer;
   font-size: 20px;
@@ -50,12 +50,12 @@
   top: -12px;
 }
 .MuiTypography-root {
-  font-family: 'Cairo';
+  font-family: "Cairo";
 }
 .category-card {
   transition: transform 0.5s, box-shadow 1s;
 }
-.category-card:hover {
+/* .category-card:hover {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
-}
+} */

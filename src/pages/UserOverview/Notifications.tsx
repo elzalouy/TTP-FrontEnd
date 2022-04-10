@@ -5,7 +5,7 @@ import { ArrowForwardIos as ArrowIcon } from "@mui/icons-material";
 interface UserNotificationsProps {}
 
 const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
-  const notifications = ["", "", "", "", "", ""];
+  const notifications = ["", "", "", ""];
   return (
     <Stack
       bgcolor={"white"}

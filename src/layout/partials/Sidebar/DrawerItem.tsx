@@ -11,8 +11,8 @@ const DrawerItem: React.FC = (props: any) => {
     <ListItemButton
       key={props.key}
       sx={{
-        minHeight: 48,
-        marginX: 1,
+        minHeight: 45,
+        marginX: 2,
         marginY: 1,
         borderRadius: 2,
         justifyContent: props.open ? "initial" : "center",
@@ -31,7 +31,7 @@ const DrawerItem: React.FC = (props: any) => {
       </ListItemIcon>
       <ListItemText
         sx={{
-          color: "#808191",
+          color: props.select === props.path ? "white" : "#808191",
           ":hover": { color: "white" },
           opacity: props.open ? 1 : 0,
         }}

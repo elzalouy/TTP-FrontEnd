@@ -246,7 +246,7 @@
   color: #b4b6c4;
   margin: 0;
   margin-top: 5px;
-  font-family: 'Cairo', sans-serif;
+  font-family: "Cairo", sans-serif;
 }
 
 table.allTask-table {
@@ -352,10 +352,10 @@ table.allTeam-table td.deleteTd {
   transition: transform 0.5s, box-shadow 1s;
 }
 
-.add-new-cat:hover {
+/* .add-new-cat:hover {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
-}
+} */
 .add-new-cat > img {
   width: 22px;
   height: 22px;
@@ -383,6 +383,6 @@ table.allTeam-table td.deleteTd {
   }
 }
 
-.input-auth{
-  color:#000
+.input-auth {
+  color: #000;
 }

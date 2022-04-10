@@ -19,7 +19,13 @@ import { getAllProjects, getAllTasks } from "../../redux/Projects";
 import { getAllMembers } from "../../redux/techMember";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications";
-const OverView: FC = (props) => {
+import { RouteComponentProps } from "react-router";
+interface Props {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllClients(null));
@@ -120,7 +126,7 @@ const OverView: FC = (props) => {
                 paddingTop={2.5}
                 paddingRight={3.5}
               >
-                <UserProjects />
+                <UserProjects {...props} />
               </Grid>
             </Grid>
             <Grid

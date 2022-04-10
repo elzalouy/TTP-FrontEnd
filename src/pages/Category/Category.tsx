@@ -68,12 +68,7 @@ const Category: React.FC<Props> = () => {
           Category
         </Typography>
       </Box>
-      <div style={{ width: 370 }}>
-        <SearchBox
-          search={search}
-          handleSearchChange={handleSearchChange}
-        ></SearchBox>
-      </div>
+
       <Box
         sx={{
           width: "100%",
@@ -81,8 +76,6 @@ const Category: React.FC<Props> = () => {
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "start",
-          m: 1,
-          py: 1,
           border: 1,
           borderRadius: "16px",
           borderColor: "#e2e2ea",

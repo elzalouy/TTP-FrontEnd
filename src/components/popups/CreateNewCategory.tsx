@@ -3,7 +3,7 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/Categories";
@@ -72,8 +72,10 @@ const CreateNewCategory: React.FC<Props> = () => {
           setShow("flex");
         }}
       >
-        <img src={IMAGES.plus} alt="add" />
-        <p>Create new category</p>
+        <img src={IMAGES.plus} alt="add" width={30} height={30} />
+        <Typography fontSize={16} color={"#272727"}>
+          Create new category
+        </Typography>
       </Box>
       <PopUp show={Show} minWidthSize="30vw" maxWidthSize="320px">
         <div>
@@ -89,11 +91,9 @@ const CreateNewCategory: React.FC<Props> = () => {
           />
         </div>
         <p style={{ color: "red" }}>{errors}</p>
-
         <p className="popup-title" style={{ marginBottom: 2 }}>
           Create new category
         </p>
-
         <form className="form-inputs" onSubmit={handleSubmit}>
           <label className="label">Main category</label>
           <div className="f-inputs" style={{ display: "flex" }}>
@@ -139,7 +139,6 @@ const CreateNewCategory: React.FC<Props> = () => {
                 </div>
               ))}
             <br />
-
             <div className="controllers">
               <button
                 className="controllers-cancel"

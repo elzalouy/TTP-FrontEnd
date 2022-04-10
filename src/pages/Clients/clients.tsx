@@ -10,7 +10,7 @@ import ClientCard from "./clientCard";
 
 import { clientsDataSelector } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
-import SelectInput from "../../coreUI/usable-component/SelectInput";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
 import { clientsActions } from "../../redux/Clients";
@@ -149,12 +149,7 @@ const Clients: React.FC<Props> = () => {
             handleChange={handleChangeFilter}
             name="sortDate"
             selectValue={filter.sortDate}
-            placeholder={
-              <>
-                <span style={{ color: "#827e7e" }}>Date:</span>{" "}
-                <strong>Oldest to Newest</strong>
-              </>
-            }
+            placeholder=""
             boxStyle={{
               display: "flex",
               justifyContent: "space-between",

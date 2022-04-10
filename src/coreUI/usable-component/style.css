@@ -11,11 +11,27 @@ input[type="text"] {
   background: transparent;
   border: none !important;
 }
-select.option {
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
   background-color: white;
-  color: #44444f;
-  font-size: 16;
+  outline: none;
+  border-width: 0;
+  height: 38px;
+  width: auto;
+  padding-left: 5px;
+  outline: none;
+  padding-right: 5px;
 }
-select.options {
-  border-radius: 5px;
+select .select-option {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: 700;
 }

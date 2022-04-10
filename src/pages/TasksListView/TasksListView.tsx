@@ -12,7 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../components/SearchBox";
-import Select from "../../coreUI/usable-component/Select";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
@@ -52,6 +52,7 @@ const Tasks: React.FC = (props: any) => {
   };
   return (
     <Grid
+      bgcolor={"#FAFAFB"}
       justifyContent={"flex-start"}
       alignItems="flex-start"
       container
@@ -69,7 +70,7 @@ const Tasks: React.FC = (props: any) => {
             name="sort"
             control={control}
             render={(props) => (
-              <Select
+              <SelectInput
                 name="Due Date"
                 labelValue="Due Date: "
                 {...props}
@@ -96,7 +97,7 @@ const Tasks: React.FC = (props: any) => {
               name="status"
               control={control}
               render={(props) => (
-                <Select
+                <SelectInput
                   name="status"
                   labelValue="Status: "
                   {...props}
@@ -131,7 +132,7 @@ const Tasks: React.FC = (props: any) => {
               name="projectId"
               control={control}
               render={(props) => (
-                <Select
+                <SelectInput
                   name="projectId"
                   labelValue={"Project: "}
                   {...props}
@@ -160,12 +161,12 @@ const Tasks: React.FC = (props: any) => {
           </Box>
         </Grid>
         <Grid marginX={0.2} item>
-          <Box className="tasks-option">
+          <Box className="tasks-option" width={"100%"}>
             <Controller
               name="memberId"
               control={control}
               render={(props) => (
-                <Select
+                <SelectInput
                   name="Members"
                   labelValue={"Members : "}
                   {...props}

@@ -8,7 +8,6 @@ const Sidebar = (props: any) => {
   const [select, setSelected] = useState("");
   useEffect(() => {
     setSelected(props.location?.pathname);
-    console.log(props);
   }, []);
 
   return (

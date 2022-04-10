@@ -1,7 +1,7 @@
 const IMAGES = {
   avatar: require("./avatar.SVG").default,
-  Overviewicon: require("./Overviewicon.SVG").default,
-  projectsicon: require("./projectsicon.SVG").default,
+  Overviewicon: require("./Overviewicon.svg").default,
+  projectsicon: require("./projectsicon.svg").default,
   departments: require("./departmentIcon.svg").default,
   personicon: require("./personicon.SVG").default,
   clients: require("./clients.svg").default,
@@ -15,7 +15,7 @@ const IMAGES = {
   closeicon: require("./closeicon.SVG").default,
   deleteicon: require("./deleteicon.svg").default,
   deleteicon2: require("./deleteicon2.SVG").default,
-  tasksCheck: require("./tasksCheck.SVG").default,
+  tasksCheck: require("./tasksCheck.svg").default,
   picTask: require("./picTask.svg").default,
   attachment: require("./attachment.svg").default,
   scheduleOn: require("./scheduleOn.svg").default,
@@ -37,10 +37,8 @@ const IMAGES = {
   arrow: require("./arrow.svg").default,
   taskFilter: require("./taskFilter.svg").default,
   arrowHeader: require("./arrowHeader.svg").default,
-  progressCircles: require('./progressCircles.svg').default,
-  moreClient: require('./moreClient.svg').default,
-  verified: require('./verified.png').default,
-
+  progressCircles: require("./progressCircles.svg").default,
+  moreClient: require("./moreClient.svg").default,
+  verified: require("./verified.png").default,
 };
 export default IMAGES;
-

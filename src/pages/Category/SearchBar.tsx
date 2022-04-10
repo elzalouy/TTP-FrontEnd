@@ -11,7 +11,13 @@ export default function Search() {
   return (
     <Paper
       component="form"
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}
+      sx={{
+        p: "2px 4px",
+        display: "flex",
+        borderRadius: 4,
+        alignItems: "center",
+        height: 42,
+      }}
     >
       <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
         <SearchIcon />

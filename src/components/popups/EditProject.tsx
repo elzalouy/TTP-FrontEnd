@@ -4,23 +4,15 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
 
-type Props = {};
+type Props = {
+  show: string;
+  setShow: any;
+};
 
-const EditProject: React.FC<Props> = () => {
-  const [Show, setShow] = useState("none");
-
+const EditProject: React.FC<Props> = ({ show, setShow }) => {
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Edit Project
-      </button>
-
-      <PopUp show={Show} minWidthSize="50vw">
+      <PopUp show={show} minWidthSize="50vw">
         <div>
           <img
             className="closeIcon"
@@ -33,14 +25,11 @@ const EditProject: React.FC<Props> = () => {
             }}
           />
         </div>
-
         <p className="popup-title">Edit project</p>
-
         <div>
           <div className="inputs-grid">
             <div>
               <label className="popup-label">Project title</label>
-
               <input
                 className="popup-input"
                 type="text"
@@ -50,33 +39,26 @@ const EditProject: React.FC<Props> = () => {
 
             <div>
               <label className="popup-label">Client name</label>
-
               <select className="popup-select">
                 <option value="0">Ahmed</option>
                 <option value="1">option 2 </option>
                 <option value="2">option 3</option>
               </select>
             </div>
-
             <div>
               <label className="popup-label">Deadline date</label>
-
               <input className="popup-input" type="date" />
             </div>
-
             <div>
               <label className="popup-label">Project manager</label>
-
               <select className="popup-select">
                 <option value="0">Abdullah</option>
                 <option value="1">option 2 </option>
                 <option value="2">option 3 </option>
               </select>
             </div>
-
             <div>
               <label className="popup-label">Description</label>
-
               <textarea
                 maxLength={75}
                 className="popup-textarea"
