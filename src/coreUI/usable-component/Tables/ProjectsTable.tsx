@@ -66,7 +66,11 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded &&
           props?.projects?.map((project: any) => (
             <TableRow className={classes.tbody} key={project._id}>
-              <TableCell className={classes.tcellLeft}>
+              <TableCell
+                className={classes.tcellLeft}
+                sx={{ cursor: "pointer" }}
+                onClick={() => props.history.push(`/TasksBoard/${project._id}`)}
+              >
                 <Typography
                   fontWeight={"700"}
                   fontSize={14}

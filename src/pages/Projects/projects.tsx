@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
 import "../Departments/departments.css";
@@ -11,6 +11,7 @@ import {
   selectInprogressProjects,
   selectLoading,
   filterProjects,
+  getAllProjects,
 } from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
 import { clientsDataSelector } from "../../redux/Clients";
@@ -42,6 +43,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     let filter = watch();
     dispatch(filterProjects(filter));
   };
+  useEffect(() => {
+    dispatch(getAllProjects(null));
+  }, []);
   return (
     <Grid
       width={"100%"}

@@ -65,7 +65,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Controller
             name="sort"
             control={control}
@@ -91,7 +91,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -126,7 +126,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -160,7 +160,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box className="tasks-option" width={"100%"}>
             <Controller
               name="memberId"
@@ -194,10 +194,10 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <DeleteTask />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box
             style={{
               backgroundColor: "#fafafa",

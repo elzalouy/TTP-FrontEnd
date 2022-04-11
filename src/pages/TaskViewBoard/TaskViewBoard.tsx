@@ -12,6 +12,7 @@ import {
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
 import { RouteComponentProps } from "react-router-dom";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -55,25 +56,24 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <Box className="task-board-option">
-            <label>Sort By:</label>
-            <div className="select-container">
-              <select className="select-filter" name="color">
-                <option value="A to Z">Due Date</option>
-                <option value="In progress">In progress</option>
-                <option value="To do">To do</option>
-              </select>
-              <div className="line"></div>
-            </div>
-          </Box>
-          <div
+          <SelectInput
+            name="sortby"
+            options={[{ id: "due date", text: "Due Date", value: "due date" }]}
+            handleChange={() => null}
+            placeholder=""
+            selectValue="Sort By: "
+            selectLabel="Sort By: "
+            labelValue="Sort By : "
+          />
+          <Box
+            sx={{ cursor: "pointer" }}
             onClick={() => props.history.push("/TasksList")}
             className="task-option"
           >
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>
               Task view List
             </span>
-          </div>
+          </Box>
         </Box>
       </Box>
       <DragField {...props} />
