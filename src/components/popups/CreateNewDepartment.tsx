@@ -104,7 +104,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => { }}>
+          <button className="controllers-done" onClick={() => {}}>
             Done
           </button>
         </div>

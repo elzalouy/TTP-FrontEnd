@@ -19,36 +19,39 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
   Logout as LogoutIcon,
+  PersonOffOutlined as PersonIcon,
 } from "@mui/icons-material";
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
+import "./slider.css";
 interface BarProps extends AppBarProps {
   open?: boolean;
 }
 
 const AppDrawer: React.FC = (props: any) => {
-  const drawerWidth = 220;
+  const drawerWidth = "17%";
 
   const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.easeIn,
-      duration: 5000,
-    }),
     overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.easeInOut,
+      duration: 2000,
+    }),
   });
+
   const closedMixin = (theme: Theme): CSSObject => ({
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.easeIn,
-      duration: 5000,
-      delay: 1000,
-    }),
-    overflowX: "hidden",
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up("sm")]: {
       width: `calc(${theme.spacing(8)} + 1px)`,
     },
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.easeInOut,
+      duration: 2000,
+    }),
   });
+
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -66,16 +69,14 @@ const AppDrawer: React.FC = (props: any) => {
     }),
     ...(open && {
       marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${drawerWidth})`,
       transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
     }),
   }));
-  const MyDrawer = styled(Drawer, {
-    shouldForwardProp: (prop) => prop !== "open",
-  })(({ theme, open }) => ({
+  const MyDrawer = styled(Drawer)(({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
@@ -92,9 +93,18 @@ const AppDrawer: React.FC = (props: any) => {
 
   return (
     <>
-      <MyDrawer
+      <Drawer
         sx={{
+          overflowX: "hidden",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
+          width: props.open ? "16%" : `calc(2% + 1px)`,
+          flexShrink: 0,
+          transition: " all 0.5s ease !important",
+          marginRight: props.open ? 0 : 5,
+          "& .MuiDrawer-paper": {
+            width: props.open ? "16%" : "5%",
+            transition: "all 0.5s ease !important",
+          },
         }}
         open={props.open}
         variant="permanent"
@@ -141,6 +151,16 @@ const AppDrawer: React.FC = (props: any) => {
             path={"/Departments"}
             src={IMAGES.departments}
             text="Departments"
+          />
+          <DrawerItem
+            {...props}
+            select={props.select}
+            open={props.open}
+            key="7"
+            onClick={() => props.history.push("/ProjectManagers")}
+            path={"/ProjectManagers"}
+            src={IMAGES.person}
+            text="Project Managers"
           />
           <DrawerItem
             {...props}
@@ -201,8 +221,8 @@ const AppDrawer: React.FC = (props: any) => {
               ":hover": { bgcolor: "white" },
               justifyContent: props.open ? "space-between" : "center",
               position: "absolute",
-              bottom: -70,
               bgcolor: "white",
+              top: "100%",
             }}
           >
             <ListItemIcon
@@ -236,7 +256,7 @@ const AppDrawer: React.FC = (props: any) => {
                   </Typography>
                 </Box>
                 <Box
-                  paddingLeft={9}
+                  paddingLeft={7}
                   paddingTop={1.5}
                   sx={{ cursor: "pointer" }}
                 >
@@ -246,7 +266,7 @@ const AppDrawer: React.FC = (props: any) => {
             </ListItemText>
           </ListItemButton>
         </List>
-      </MyDrawer>
+      </Drawer>
     </>
   );
 };

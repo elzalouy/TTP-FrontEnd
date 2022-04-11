@@ -45,6 +45,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   return (
     <Grid
       width={"100%"}
+      minHeight={"100%"}
       justifyContent={"center"}
       alignItems={"center"}
       container

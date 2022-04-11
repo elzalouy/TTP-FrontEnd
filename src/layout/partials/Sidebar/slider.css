@@ -4,6 +4,9 @@
   --grey-color: #b5b5be;
   --dark-grey-color: #292932;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 .side-bar {
   width: 256px;
   height: 93vh;
@@ -415,4 +418,7 @@
 .clickable:hover {
   background-color: #000000;
   color: "white" !important;
+}
+.css-vl0s0e-MuiDrawer-docked {
+  transition: all 1s ease !important;
 }

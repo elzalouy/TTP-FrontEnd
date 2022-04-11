@@ -1,9 +1,9 @@
 const IMAGES = {
-  avatar: require("./avatar.SVG").default,
+  avatar: require("./avatar.svg").default,
   Overviewicon: require("./Overviewicon.svg").default,
   projectsicon: require("./projectsicon.svg").default,
   departments: require("./departmentIcon.svg").default,
-  personicon: require("./personicon.SVG").default,
+  personicon: require("./personicon.svg").default,
   clients: require("./clients.svg").default,
   tasks: require("./tasks.svg").default,
   notification: require("./notification.svg").default,
@@ -26,7 +26,7 @@ const IMAGES = {
   editicon: require("./editicon.svg").default,
   sortout: require("./sortout.svg").default,
   imgupload: require("./imgupload.svg").default,
-  more: require("./more.SVG").default,
+  more: require("./more.svg").default,
   serachicon: require("./serachicon.SVG").default,
   smallLoading: require("./smallLoading.SVG").default,
   fileicon: require("./fileicon.SVG").default,
@@ -40,5 +40,6 @@ const IMAGES = {
   progressCircles: require("./progressCircles.svg").default,
   moreClient: require("./moreClient.svg").default,
   verified: require("./verified.png").default,
+  person: require("./person.svg").default,
 };
 export default IMAGES;

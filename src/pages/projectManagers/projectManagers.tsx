@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import * as React from "react";
 import IMAGES from "../../assets/img/index";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewPM from "../../components/popups/CreateNewPM";
 import "./projectManagers.css";
 const cellsData = [
@@ -75,37 +75,19 @@ type Props = {};
 const ProjectManagers: React.FC<Props> = () => {
   return (
     <Box sx={{ backgroundColor: "#FAFAFB", width: "100%" }}>
-      <Box className="pm-header">
-        <Stack
-          sx={{ margin: "70px 0 25px 0" }}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-        >
-          <Box>
-            <Typography variant="h2">Project Managers</Typography>
-          </Box>
-          {/* <button className="pmBtn">Create new PM</button> */}
-        </Stack>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box
-            style={{
-              backgroundColor: "#fafafa",
-              width: "350px",
-            }}
-          >
-            {/* <SearchBox></SearchBox> */}
-          </Box>
-
-          <CreateNewPM />
-        </Box>
+      <Box
+        width={"100%"}
+        paddingLeft={3.8}
+        paddingRight={12.5}
+        paddingTop={6}
+        paddingBottom={12}
+        flexDirection="row"
+        display="inline-flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Typography variant="h2">Project Managers</Typography>
+        <CreateNewPM />
       </Box>
       <Paper className="pm-container">
         <TableContainer>
@@ -173,6 +155,7 @@ const ProjectManagers: React.FC<Props> = () => {
                   Done Project
                 </TableCell>
                 <TableCell
+                  align="center"
                   style={{ color: "#334D6E", width: "50px", margin: "0px" }}
                 >
                   Action
@@ -204,34 +187,52 @@ const ProjectManagers: React.FC<Props> = () => {
 
                     <TableCell
                       align="left"
-                      style={{ width: "300px", margin: "0px", padding: "0px" }}
+                      style={{
+                        width: "300px",
+                        margin: "0px",
+                        padding: "0px",
+                      }}
                     >
-                      <Stack
-                        direction="row"
-                        justifyContent="flex-start"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <Avatar></Avatar> <Typography>{name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ width: "300px", margin: "0px", padding: "0px" }}
-                    >
-                      {email}
-                    </TableCell>
-                    <TableCell align="left">{progressTask}</TableCell>
-                    <TableCell align="left">{progressProject}</TableCell>
-                    <TableCell align="left">{doneProject}</TableCell>
-
-                    <TableCell align="left">
                       <Stack
                         direction="row"
                         justifyContent="flex-start"
                         alignItems="center"
                         spacing={1}
                       >
+                        <Avatar sx={{ width: 20, height: 20 }} />
+                        <Typography
+                          fontWeight={"700"}
+                          fontSize={15}
+                          sx={{
+                            color: "#323C47",
+                          }}
+                        >
+                          {name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      style={{
+                        width: "300px",
+                        margin: "0px",
+                        padding: "0px",
+                        color: "#707683",
+                      }}
+                    >
+                      {email}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography color="#707683">{progressTask}</Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography color="#707683">{progressProject}</Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography color="#707683">{doneProject}</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box display={"inline-flex"}>
                         <IconButton>
                           <img src={IMAGES.editicon} alt="editicon" />
                         </IconButton>
@@ -239,7 +240,7 @@ const ProjectManagers: React.FC<Props> = () => {
                         <IconButton>
                           <img src={IMAGES.deleteicon} alt="deleteicon" />
                         </IconButton>
-                      </Stack>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 );

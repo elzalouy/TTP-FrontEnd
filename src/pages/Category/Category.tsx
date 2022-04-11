@@ -3,7 +3,7 @@ import "./Category.css";
 import CategoryCard from "./CategoryCard";
 import { Box, Typography } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewCategory from "../../components/popups/CreateNewCategory";
 import CreateSubCategory from "../../components/popups/CreateSubCategory";
 import EditCategory from "../../components/popups/EditCategory";

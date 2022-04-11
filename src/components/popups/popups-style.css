@@ -341,6 +341,7 @@ table.allTeam-table td.deleteTd {
   align-items: center;
   border-radius: 20px;
   background-color: #ededed;
+  height: 100%;
 }
 .add-new-cat {
   cursor: pointer;

@@ -1,12 +1,11 @@
 import React from "react";
 import IMAGES from "../../assets/img/index";
-// import AddNewTeam from "./AddNewTeam";
-// import CreateNewDepartment from "./CreateNewDepartment";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
 import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
 import CreateNewTeam from "../../components/popups/CreateNewTeam";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 type Props = {};
 interface IProps {
   alternatingColor: string[][];
@@ -36,65 +35,82 @@ const departments: React.FC<IProps> = () => {
         <div className="filter-icon">
           <img src={IMAGES.filtericon} alt="FILTER" />
         </div>
-        <Box className="department-option">
-          <label>Project type:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">Done</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-        <Box className="department-option">
-          <label>No. of projects:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">All</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-        <Box className="department-option">
-          <label>No. of tasks:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">All</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-
+        <Grid marginX={1.8}>
+          <SelectInput
+            labelValue="Project type: "
+            options={[
+              { id: "done", text: "done", value: "done" },
+              { id: "in Progress", text: "In Progress", value: "in Progress" },
+            ]}
+            name="status"
+            placeholder=""
+            handleChange={() => null}
+            selectValue=""
+          />
+        </Grid>
+        <Grid marginX={1.8}>
+          <SelectInput
+            labelValue="No. of projects: "
+            options={[
+              { id: "done", text: "done", value: "done" },
+              { id: "in Progress", text: "In Progress", value: "in Progress" },
+            ]}
+            name="status"
+            placeholder=""
+            handleChange={() => null}
+            selectValue=""
+          />
+        </Grid>
+        <Grid marginX={1.8}>
+          <SelectInput
+            labelValue="No. of Tasks: "
+            options={[
+              { id: "done", text: "done", value: "done" },
+              { id: "in Progress", text: "In Progress", value: "in Progress" },
+            ]}
+            name="status"
+            placeholder=""
+            handleChange={() => null}
+            selectValue=""
+          />
+        </Grid>
         <CreateNewTeam />
       </div>
-      <div className="all-departments">
-        <DepartmentCard
-          backgroundColor={alternatingColor[0][1]}
-          fontColor={alternatingColor[0][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[1][1]}
-          fontColor={alternatingColor[1][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[2][1]}
-          fontColor={alternatingColor[2][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[3][1]}
-          fontColor={alternatingColor[3][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[4][1]}
-          fontColor={alternatingColor[4][0]}
-        />
-        <CreateNewDepartment />
-      </div>
+      <Grid container direction={"row"} className="all-departments">
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <DepartmentCard
+            backgroundColor={alternatingColor[0][1]}
+            fontColor={alternatingColor[0][0]}
+          />
+        </Grid>
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <DepartmentCard
+            backgroundColor={alternatingColor[1][1]}
+            fontColor={alternatingColor[1][0]}
+          />
+        </Grid>
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <DepartmentCard
+            backgroundColor={alternatingColor[2][1]}
+            fontColor={alternatingColor[2][0]}
+          />
+        </Grid>
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <DepartmentCard
+            backgroundColor={alternatingColor[3][1]}
+            fontColor={alternatingColor[3][0]}
+          />
+        </Grid>
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <DepartmentCard
+            backgroundColor={alternatingColor[4][1]}
+            fontColor={alternatingColor[4][0]}
+          />
+        </Grid>
+        <Grid xs={12} sm={12} md={12} lg={4} padding={1}>
+          <CreateNewDepartment />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

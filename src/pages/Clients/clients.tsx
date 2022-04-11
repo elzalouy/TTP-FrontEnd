@@ -1,7 +1,7 @@
 import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import IMAGES from "../../assets/img";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import "./clients.css";
 import CreateNewClient from "./CreateNewClient";
 import axios, { AxiosResponse } from "axios";
@@ -56,7 +56,6 @@ const Clients: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log({ value: e.target.value });
     setSearch(e.target.value);
     dispatch(clientsActions.onSearch(e.target.value));
   };
@@ -76,124 +75,44 @@ const Clients: React.FC<Props> = () => {
   }, [clientData]);
 
   return (
-    <Grid
-      container
-      spacing={2}
-      sx={{ height: "fit-content", bgcolor: "#fafafb", ml: "2em" }}
-    >
-      {/* <Box className="clients-page" sx={{ width: "100%" }}> */}
-      {/* <Box sx={{ paddingTop: "30px" }}> */}
-      <Grid item xs={12} mt="2em">
-        <Typography
-          variant="h2"
-          style={{
-            margin: "10px 0",
-            // paddingBottom: "20px",
-          }}
-        >
-          Clients
-        </Typography>
+    <Grid container paddingX={4}>
+      <Grid container xs={12} mt="2em">
+        <Typography variant="h2">Clients</Typography>
       </Grid>
-      <Grid item container>
-        <Grid item xs={"auto"}>
+      <Grid
+        justifyItems={"flex-start"}
+        alignItems="flex-start"
+        marginTop={4}
+        marginBottom={1}
+        container
+      >
+        <Grid item xs={1} sm={1} md={0.3} lg={0.3}>
           <Box
             sx={{
               borderRadius: "10px",
               display: "flex",
-              border: "1px solid #ccc",
             }}
           >
             <img src={IMAGES.sortout} alt="sortout" />
           </Box>
         </Grid>
-        {/* <Grid item xs={2} sx={{ ml: "1em" }}>
-          <SelectInput
-            options={options}
-            handleChange={handleChangeFilter}
-            name="sortBy"
-            selectValue={filter.sortBy}
-            placeholder={
-              <>
-                <span style={{ color: "#827e7e" }}>Sort by:</span>{" "}
-                <strong>A to Z</strong>
-              </>
-            }
-            boxStyle={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-            selectStyle={{
-              borderRadius: ".6em",
-              borderColor: "#eeeeee",
-              "& .MuiInputBase-input": {
-                bgcolor: "#fff",
-                boxShadow: "0px 1px 4px 1px #0000000d",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-              },
-              "&.Mui-focused ": {
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#eeeeee",
-                  "&:hover": {
-                    borderColor: "#eeeeee",
-                  },
-                },
-              },
-            }}
-          />
-        </Grid> */}
-        <Grid item xs={2} sx={{ ml: "2em" }}>
+        <Grid item xs={4} sm={4} marginBottom={1} md={2} lg={2} marginLeft={4}>
           <SelectInput
             options={options}
             handleChange={handleChangeFilter}
             name="sortDate"
             selectValue={filter.sortDate}
             placeholder=""
-            boxStyle={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-            selectStyle={{
-              borderRadius: ".6em",
-              borderColor: "#eeeeee",
-              "& .MuiInputBase-input": {
-                bgcolor: "#fff",
-                boxShadow: "0px 1px 4px 1px #0000000d",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-              },
-              "&.Mui-focused ": {
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#eeeeee",
-                  "&:hover": {
-                    borderColor: "#eeeeee",
-                  },
-                },
-              },
-            }}
+            labelValue="Sort : "
           />
         </Grid>
-        <Grid item xs={4}>
-          <Box
-            style={{
-              backgroundColor: "#fff",
-              marginLeft: "10px",
-              width: "280px",
-            }}
-          >
-            <SearchBox
-              search={search}
-              handleSearchChange={handleSearchChange}
-            ></SearchBox>
-          </Box>
+        <Grid item xs={4} sm={4} md={2} lg={2}>
+          <SearchBox search={search} handleSearchChange={handleSearchChange} />
         </Grid>
-        {/* </Box> */}
       </Grid>
       <Grid
+        xs={12}
         item
-        xs={11}
         sx={{ height: "-webkit-fill-available", maxHeight: "100vh" }}
       >
         <Box className="all-clients">

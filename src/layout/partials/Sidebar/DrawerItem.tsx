@@ -11,9 +11,9 @@ const DrawerItem: React.FC = (props: any) => {
     <ListItemButton
       key={props.key}
       sx={{
-        minHeight: 45,
-        marginX: 2,
-        marginY: 1,
+        minHeight: 55,
+        marginX: props.open ? 1 : 0.8,
+        marginY: 0.5,
         borderRadius: 2,
         justifyContent: props.open ? "initial" : "center",
       }}

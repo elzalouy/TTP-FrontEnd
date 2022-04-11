@@ -11,7 +11,7 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
