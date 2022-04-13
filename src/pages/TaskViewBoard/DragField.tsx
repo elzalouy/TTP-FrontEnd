@@ -1,3 +1,4 @@
+import { BoltRounded } from "@mui/icons-material";
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import {
   selectLateTasks,
   selectNotClearTasks,
   selectSelectedProject,
+  selectSharedTasks,
   Task,
 } from "../../redux/Projects";
 import CreateNewTask from "./CreateNewTask";
@@ -34,40 +36,54 @@ const DragField: React.FC = (props: any) => {
   const lateTasks = useAppSelector(selectLateTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
+  const sharedTasks = useAppSelector(selectSharedTasks);
   const [columns, setColumns] = useState({
     [uuidv4()]: {
-      name: "In Progress",
-      items: inProgressTasks ? inProgressTasks : [],
-      header: "done-header",
-      body: "done-task",
-      border: "done-border",
+      name: "Not Started",
+      items: [],
+      header: "not-started-header",
+      body: "not-started-task",
+      border: "not-started-border",
       NewTask: <CreateNewTask />,
+    },
+    [uuidv4()]: {
+      name: "In Progress",
+      items: inProgressTasks,
+      header: "in-progress-header",
+      body: "in-progress-task",
+      border: "in-progress-border",
+    },
+    [uuidv4()]: {
+      name: "Shared",
+      items: sharedTasks,
+      header: "canceled-header",
+      body: "canceled-task",
+      border: "canceled-border",
     },
     [uuidv4()]: {
       name: "Done",
-      items: doneTasks ? doneTasks : [],
+      items: doneTasks,
       header: "done-header",
       body: "done-task",
       border: "done-border",
-      NewTask: <CreateNewTask />,
     },
     [uuidv4()]: {
       name: "Not clear",
-      items: notClearTasks ? notClearTasks : [],
+      items: notClearTasks,
       header: "not-clear-header",
       body: "not-clear-task",
       border: "not-clear-border",
     },
     [uuidv4()]: {
       name: "Canceled",
-      items: cancledTasks ? cancledTasks : [],
+      items: cancledTasks,
       header: "canceled-header",
       body: "canceled-task",
       border: "canceled-border",
     },
     [uuidv4()]: {
       name: "Late",
-      items: lateTasks ? lateTasks : [],
+      items: lateTasks,
       header: "canceled-header",
       body: "canceled-task",
       border: "canceled-border",
@@ -86,12 +102,26 @@ const DragField: React.FC = (props: any) => {
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
+        name: "Not Started",
+        items: [],
+        header: "not-started-header",
+        body: "not-started-task",
+        border: "not-started-border",
+        NewTask: <CreateNewTask />,
+      },
+      [uuidv4()]: {
         name: "In Progress",
         items: inProgressTasks,
-        header: "done-header",
-        body: "done-task",
-        border: "done-border",
-        NewTask: <CreateNewTask />,
+        header: "in-progress-header",
+        body: "in-progress-task",
+        border: "in-progress-border",
+      },
+      [uuidv4()]: {
+        name: "Shared",
+        items: sharedTasks,
+        header: "canceled-header",
+        body: "canceled-task",
+        border: "canceled-border",
       },
       [uuidv4()]: {
         name: "Done",
@@ -99,7 +129,6 @@ const DragField: React.FC = (props: any) => {
         header: "done-header",
         body: "done-task",
         border: "done-border",
-        NewTask: <CreateNewTask />,
       },
       [uuidv4()]: {
         name: "Not clear",
@@ -128,7 +157,6 @@ const DragField: React.FC = (props: any) => {
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
-
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
@@ -165,13 +193,7 @@ const DragField: React.FC = (props: any) => {
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
-      <Grid
-        width={1600}
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        container
-      >
+      <Box sx={{ width: 1200, overflowX: "scroll" }} display="inline-flex">
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
             <Droppable droppableId={columnId} key={index}>
@@ -180,9 +202,11 @@ const DragField: React.FC = (props: any) => {
                   <Grid
                     ref={provided.innerRef}
                     className={column?.body}
-                    item
-                    xs
                     key={columnId}
+                    xs
+                    minWidth={"312px"}
+                    height="auto"
+                    sx={{ overflowY: "scroll", height: 400 }}
                   >
                     <Stack
                       direction="row"
@@ -216,7 +240,7 @@ const DragField: React.FC = (props: any) => {
             </Droppable>
           );
         })}
-      </Grid>
+      </Box>
     </DragDropContext>
   );
 };

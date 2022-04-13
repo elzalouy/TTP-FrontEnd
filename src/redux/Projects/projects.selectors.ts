@@ -42,4 +42,8 @@ export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "cancled"
   );
+export const selectSharedTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "shared"
+  );
 export const selectTasks = (state: RootState) => state.projects.allTasks;

@@ -31,27 +31,6 @@ interface BarProps extends AppBarProps {
 const AppDrawer: React.FC = (props: any) => {
   const drawerWidth = "17%";
 
-  const openedMixin = (theme: Theme): CSSObject => ({
-    width: drawerWidth,
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.easeInOut,
-      duration: 2000,
-    }),
-  });
-
-  const closedMixin = (theme: Theme): CSSObject => ({
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.easeInOut,
-      duration: 2000,
-    }),
-  });
-
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -59,43 +38,15 @@ const AppDrawer: React.FC = (props: any) => {
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   }));
-  const Bar = styled(AppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-  })<BarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth})`,
-      transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    }),
-  }));
-  const MyDrawer = styled(Drawer)(({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    boxSizing: "border-box",
-    ...(open && {
-      ...openedMixin(theme),
-      "& .MuiDrawer-paper": openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      "& .MuiDrawer-paper": closedMixin(theme),
-    }),
-  }));
 
   return (
     <>
       <Drawer
         sx={{
           overflowX: "hidden",
+          height: "100%",
+          position: "inherit",
+          overflowY: "hidden",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
           width: props.open ? "16%" : `calc(2% + 1px)`,
           flexShrink: 0,
@@ -109,120 +60,124 @@ const AppDrawer: React.FC = (props: any) => {
         open={props.open}
         variant="permanent"
       >
-        <DrawerHeader
-          sx={{ justifyContent: props.open ? "space-between" : "center" }}
-        >
-          {props.open && <Logo />}
-          <IconButton onClick={() => props.setOpen(!props.open)}>
-            {props?.open ? (
-              <MenuIcon htmlColor="#000000" />
-            ) : (
-              <MenuIcon htmlColor="#000000" />
+        <List>
+          <DrawerHeader
+            sx={{ justifyContent: props.open ? "space-between" : "center" }}
+          >
+            {props.open && <Logo />}
+            <IconButton onClick={() => props.setOpen(!props.open)}>
+              {props?.open ? (
+                <MenuIcon htmlColor="#000000" />
+              ) : (
+                <MenuIcon htmlColor="#000000" />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <List>
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="0"
+              onClick={() => props.history.push("/Overview")}
+              path={"/Overview"}
+              src={IMAGES.Overviewicon}
+              text="OverView"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="1"
+              onClick={() => props.history.push("/projects")}
+              path={"/projects"}
+              src={IMAGES.projectsicon}
+              text="Projects"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="2"
+              onClick={() => props.history.push("/Departments")}
+              path={"/Departments"}
+              src={IMAGES.departments}
+              text="Departments"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="7"
+              onClick={() => props.history.push("/ProjectManagers")}
+              path={"/ProjectManagers"}
+              src={IMAGES.person}
+              text="Project Managers"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="3"
+              onClick={() => props.history.push("/Clients")}
+              path={"/Clients"}
+              src={IMAGES.clients}
+              text="Clients"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="4"
+              onClick={() => props.history.push("/TasksList")}
+              path={"/TasksList"}
+              src={IMAGES.tasks}
+              text="Tasks"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="5"
+              onClick={() => props.history.push("/Categories")}
+              path={"/Categories"}
+              src={IMAGES.categories}
+              text="Categories"
+            />
+          </List>
+          <Divider sx={{ marginX: 2.5 }} />
+          <List>
+            {props.open && (
+              <Typography
+                marginLeft={3.5}
+                variant="h6"
+                fontSize={12}
+                color="#B2B3BD"
+                fontWeight={"700"}
+              >
+                Insights
+              </Typography>
             )}
-          </IconButton>
-        </DrawerHeader>
-        <List>
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="0"
-            onClick={() => props.history.push("/Overview")}
-            path={"/Overview"}
-            src={IMAGES.Overviewicon}
-            text="OverView"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="1"
-            onClick={() => props.history.push("/projects")}
-            path={"/projects"}
-            src={IMAGES.projectsicon}
-            text="Projects"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="2"
-            onClick={() => props.history.push("/Departments")}
-            path={"/Departments"}
-            src={IMAGES.departments}
-            text="Departments"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="7"
-            onClick={() => props.history.push("/ProjectManagers")}
-            path={"/ProjectManagers"}
-            src={IMAGES.person}
-            text="Project Managers"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="3"
-            onClick={() => props.history.push("/Clients")}
-            path={"/Clients"}
-            src={IMAGES.clients}
-            text="Clients"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="4"
-            onClick={() => props.history.push("/TasksList")}
-            path={"/TasksList"}
-            src={IMAGES.tasks}
-            text="Tasks"
-          />
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="5"
-            onClick={() => props.history.push("/Categories")}
-            path={"/Categories"}
-            src={IMAGES.categories}
-            text="Categories"
-          />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="6"
+              onClick={() => props.history.push("/notifications")}
+              path={"/notifications"}
+              src={IMAGES.notification}
+              text="Notifications"
+            />
+          </List>
         </List>
-        <Divider sx={{ marginX: 2.5 }} />
         <List>
-          {props.open && (
-            <Typography
-              marginLeft={3.5}
-              variant="h6"
-              fontSize={12}
-              color="#B2B3BD"
-              fontWeight={"700"}
-            >
-              Insights
-            </Typography>
-          )}
-          <DrawerItem
-            {...props}
-            select={props.select}
-            open={props.open}
-            key="6"
-            onClick={() => props.history.push("/notifications")}
-            path={"/notifications"}
-            src={IMAGES.notification}
-            text="Notifications"
-          />
           <ListItemButton
             sx={{
               ":hover": { bgcolor: "white" },
               justifyContent: props.open ? "space-between" : "center",
-              position: "absolute",
+              position: "inherit",
               bgcolor: "white",
-              top: "100%",
+              bottom: 0,
             }}
           >
             <ListItemIcon

@@ -12,19 +12,6 @@ const Sidebar = (props: any) => {
 
   return (
     <>
-      <AppBar sx={{ bgcolor: "white" }}>
-        <Toolbar
-          sx={{
-            display: { lg: "none", md: "none", sm: "block", xs: "block" },
-          }}
-        >
-          <MenuIcon
-            sx={{ cursor: "pointer" }}
-            htmlColor="#000000"
-            onClick={() => setOpen(true)}
-          />
-        </Toolbar>
-      </AppBar>
       <AppDrawer {...props} select={select} open={open} setOpen={setOpen} />
     </>
   );

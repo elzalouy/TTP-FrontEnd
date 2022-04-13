@@ -1,24 +1,62 @@
 .task-page {
   padding: 2%;
   background-color: #fafafb;
-  min-height: 400px;
 }
+.not-started-border {
+  border: #9fa1ab1a solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.not-started-header {
+  background-color: #9fa1ab1a;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.not-started-task {
+  border-radius: 20px;
+  background-color: #9fa1ab1a;
+  width: 312px !important;
+  margin-left: 30px;
+}
+
+.in-progress-border {
+  border: #ffc500 solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.in-progress-header {
+  background-color: #fcefc0;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.in-progress-task {
+  border-radius: 20px;
+  background-color: #ffc5001a;
+  width: 312px !important;
+  margin-inline: 10px;
+  margin-left: 30px;
+}
+
 .done-task {
   border-radius: 20px;
   background-color: #e1f3f5;
-  min-height: 400px;
+  width: 312px !important;
   margin-inline: 10px;
 }
 .not-clear-task {
   border-radius: 20px;
   background-color: #f7f0e7;
-  min-height: 400px;
+  width: 312px !important;
   margin-inline: 10px;
 }
 .canceled-task {
   border-radius: 20px;
   background-color: #f7e6e7;
-  min-height: 400px;
+  width: 312px !important;
   margin-inline: 10px;
 }
 .not-clear-header {
@@ -96,7 +134,7 @@
   font-weight: bold;
 }
 .MuiTypography-root {
-  font-family: 'Cairo';
+  font-family: "Cairo";
 }
 .tasks-board-container {
   width: 1200;

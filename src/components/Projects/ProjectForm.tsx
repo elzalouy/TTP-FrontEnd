@@ -40,7 +40,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       <div className="inputs-grid">
         <div>
           <label className="label-project">Project title</label>
-          <br />{" "}
+          <br />
           <input
             className="input-project"
             type="text"

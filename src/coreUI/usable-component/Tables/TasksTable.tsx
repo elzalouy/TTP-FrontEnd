@@ -11,7 +11,7 @@ import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
 
 interface TasksTableProps {
-  tasks: Task[];
+  tasks: Task[] | null;
   projects: Project[];
 }
 

@@ -1,3 +1,4 @@
+import { ImageSearch } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
@@ -12,7 +13,11 @@ interface DataTypes {
 
 const taskCard: React.FC<DataTypes> = ({ item, index }) => {
   const { _id, name, status, deadline, start } = item;
+  const floatDays =
+    (new Date(deadline).getTime() - new Date().getTime()) /
+    (1000 * 60 * 60 * 24);
 
+  const remainingDays = Math.round(floatDays);
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => (
@@ -34,6 +39,25 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
             </Typography>
           </Stack>
           <Box>Project manager name</Box>
+          {item.attachedFiles && (
+            <>
+              <img
+                style={{ width: "100%", marginTop: "10px" }}
+                src={IMAGES.picTask}
+                alt="more"
+              />
+              <Stack
+                direction="row"
+                marginTop="12px"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
+                <img src={IMAGES.attachment} alt="more" />
+                <Typography style={{ paddingLeft: "5px" }}>1</Typography>{" "}
+                <Typography className="fileUpload">TTP Project.pdf</Typography>{" "}
+              </Stack>
+            </>
+          )}
           {/* {picUrl ? (
             <>
               <img
@@ -102,10 +126,19 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
             justifyContent="flex-start"
             alignItems="center"
             className="aft-red"
+            sx={{
+              color: remainingDays > 4 ? "#0079BF" : "#FF974A",
+              bgcolor: remainingDays > 4 ? "#DAE6EF" : "#FF974A1A",
+            }}
           >
-            <img src={IMAGES.scheduleRed} alt="more" />
+            <img
+              src={
+                remainingDays > 4 ? IMAGES.scheduleNotClear : IMAGES.scheduleRed
+              }
+              alt="more"
+            />
             <Typography style={{ paddingLeft: "5px" }}>
-              {new Date(deadline).toDateString()}
+              {remainingDays} Days left
             </Typography>
           </Stack>
           <Stack

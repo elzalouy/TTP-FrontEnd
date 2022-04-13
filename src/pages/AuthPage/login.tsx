@@ -22,7 +22,6 @@ const Login: React.FC<Props> = ({ history }) => {
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
-      alignContent={"center"}
       marginTop={5}
     >
       <Grid

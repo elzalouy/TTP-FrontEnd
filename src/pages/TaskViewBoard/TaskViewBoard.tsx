@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -7,12 +7,15 @@ import { useAppSelector } from "../../redux/hooks";
 import DragField from "./DragField";
 import {
   getAllProjects,
+  getProject,
   getTasks,
   selectSelectedProject,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
 import { RouteComponentProps } from "react-router-dom";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
+import TasksIcon from "../../assets/icons/TasksIcon";
+import { AssignmentOutlined as AddignmentIcon } from "@mui/icons-material";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -24,7 +27,7 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
 
   useEffect(() => {
-    dispatch(getAllProjects(null));
+    dispatch(getProject(`?projectId:${props.match.params.id}`));
     dispatch(
       getTasks({
         url: `?projectId=${props?.match?.params.id}`,
@@ -33,16 +36,26 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
     );
   }, []);
   return (
-    <Box className="task-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: "50px", marginBottom: "20px" }}>
-        <Stack
-          direction="row"
-          marginLeft="12px"
-          marginTop="12px"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <Typography variant="h2">
+    <Grid
+      container
+      direction="row"
+      sx={{
+        overflowX: "hidden",
+        overflowY: "hidden",
+      }}
+      padding={0}
+      margin={0}
+      marginTop={{ xs: 8, sm: 8, md: 0, lg: 0 }}
+    >
+      <Grid
+        paddingX={4}
+        paddingY={2}
+        item
+        xs={12}
+        sx={{ marginBottom: "20px", overflow: "hidden" }}
+      >
+        <Stack direction="row" justifyContent="flex-start" alignItems="center">
+          <Typography variant="h2" fontFamily={"Cairo"} fontSize={20}>
             Projects
             <img
               style={{ margin: "0 20px" }}
@@ -56,28 +69,39 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <SelectInput
-            name="sortby"
-            options={[{ id: "due date", text: "Due Date", value: "due date" }]}
-            handleChange={() => null}
-            placeholder=""
-            selectValue="Sort By: "
-            selectLabel="Sort By: "
-            labelValue="Sort By : "
-          />
+          <Box marginLeft={2}>
+            <SelectInput
+              name="sortby"
+              options={[
+                { id: "due date", text: "Due Date", value: "due date" },
+              ]}
+              handleChange={() => null}
+              placeholder=""
+              selectValue="Sort By: "
+              selectLabel="Sort By: "
+              labelValue="Sort By : "
+            />
+          </Box>
           <Box
             sx={{ cursor: "pointer" }}
             onClick={() => props.history.push("/TasksList")}
             className="task-option"
           >
             <span style={{ fontWeight: "bold", padding: "0 10px" }}>
+              <AddignmentIcon
+                htmlColor="#000000"
+                fontSize="inherit"
+                sx={{ marginRight: 1 }}
+              />
               Task view List
             </span>
           </Box>
         </Box>
-      </Box>
-      <DragField {...props} />
-    </Box>
+      </Grid>
+      <Grid xs={12} item sx={{ overflowX: "scroll" }}>
+        <DragField {...props} />
+      </Grid>
+    </Grid>
   );
 };
 

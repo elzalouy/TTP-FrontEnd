@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 import "./App.css";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
-import RestPassword from "./pages/AuthPage/rest";
+import ResetPassword from "./pages/AuthPage/reset";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
 import departments from "./pages/Departments/departments";
@@ -26,6 +26,7 @@ import { getAllMembers } from "./redux/techMember";
 import OverView from "./pages/UserOverview/OverView";
 import "react-toastify/dist/ReactToastify.css";
 import PopUps from "./pages/PopUps";
+import { Box } from "@mui/system";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ const App: React.FC = (props) => {
     dispatch(getAllMembers(null));
   }, []);
   return (
-    <div className="main-container">
+    // <div className="main-container">
+    <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />
       <PopUps />
       <Switch>
@@ -47,8 +49,8 @@ const App: React.FC = (props) => {
         <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
-          path="/RestPassword"
-          component={RestPassword}
+          path="/ResetPassword"
+          component={ResetPassword}
         />
         <LoggedInContainer
           key="/projects"
@@ -92,7 +94,8 @@ const App: React.FC = (props) => {
           key="/overview"
         />
       </Switch>
-    </div>
+    </Box>
+    // </div>
   );
 };
 

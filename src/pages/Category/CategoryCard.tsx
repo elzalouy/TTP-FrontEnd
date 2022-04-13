@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Grid } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import "./Category.css";
 import { categoriesActions } from "../../redux/Categories";
 import { useDispatch } from "react-redux";
+import EditIcon from "../../assets/icons/EditIcon";
 type Props = {};
 interface IProps {
   backgroundColor: string;
@@ -36,15 +37,12 @@ const CategoryCard: React.FC<IProps> = ({
       sx={{
         flexWrap: "wrap",
         alignItems: "flex-start",
-        mx: 1,
-        my: 1.7,
-        py: 1,
-        px: 1,
-        width: 370,
+        paddingTop: 1.5,
+        px: 2,
+        width: "100%",
         height: 210,
         maxHeight: 350,
         borderRadius: 3,
-
         cursor: "pointer",
         backgroundColor: backgroundColor,
       }}
@@ -53,10 +51,9 @@ const CategoryCard: React.FC<IProps> = ({
       <Typography
         sx={{
           fontWeight: "bold",
-          mx: 2,
           mt: 1,
           mb: 0.2,
-          fontSize: 21,
+          fontSize: 18,
           letterSpacing: 0.2,
           textAlign: "left",
           textTransform: "capitalize",
@@ -89,11 +86,11 @@ const CategoryCard: React.FC<IProps> = ({
                 sx={{
                   textTransform: "capitalize",
                   textAlign: "left",
-                  ml: 2,
                   mb: 1,
                   border: 1,
-                  px: 0.5,
-                  py: 0.2,
+                  px: 1,
+                  mr: 1.5,
+                  py: 0.5,
                   borderRadius: "4px",
                   borderColor: fontColor,
                   color: "#5C5C5C",
@@ -107,58 +104,52 @@ const CategoryCard: React.FC<IProps> = ({
               </Typography>
             ))}
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <Grid display={"inline-flex"}>
           <Button
             sx={{
               color: fontColor,
               mb: 8.5,
-              mx: 2,
+              width: "100%",
               fontWeight: "bold",
               textTransform: "capitalize",
               border: 1,
               borderRadius: 1,
               borderColor: fontColor,
-              width: "90%",
               mr: 1,
             }}
             onClick={() => handleSetDisplay("flex")}
           >
             <Box
               sx={{
+                mr: 1,
                 border: 2,
                 textAlign: "center",
                 borderRadius: 1.5,
                 display: "flex",
-                mr: 1,
                 fontSize: "15px",
+                paddingX: 0.5,
               }}
             >
-              <AddOutlinedIcon style={{ fontSize: 19 }}></AddOutlinedIcon>{" "}
+              <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>{" "}
             </Box>
-            New Sub Category
+            <Typography fontSize={14} fontWeight={"bold"}>
+              New Sub Category
+            </Typography>
           </Button>
           <Button
             sx={{
               borderRadius: 1,
               border: 1,
               mb: 8.5,
-              mr: 1,
-              width: "10%",
               fontWeight: "bold",
               borderColor: fontColor,
               color: fontColor,
             }}
             onClick={() => handleSetEditCatDisplay("flex")}
           >
-            <FontAwesomeIcon icon={faPenToSquare} fontSize={"24px"} />
+            <EditIcon color={fontColor} />
           </Button>
-        </Box>
+        </Grid>
       </Box>
     </Box>
   );

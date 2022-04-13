@@ -12,8 +12,10 @@ const CreateNewTask = () => {
         setShow("flex");
       }}
     >
-      <img src={IMAGES.plus} alt="add" />
-      <Typography style={{ paddingLeft: "10px" }}>Create new task</Typography>
+      <img src={IMAGES.plus} alt="add" width={"24px"} />
+      <Typography style={{ paddingLeft: "10px", fontSize: "14px" }}>
+        Create new task
+      </Typography>
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Category.css";
 import CategoryCard from "./CategoryCard";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewCategory from "../../components/popups/CreateNewCategory";
@@ -69,13 +69,14 @@ const Category: React.FC<Props> = () => {
         </Typography>
       </Box>
 
-      <Box
+      <Grid
+        container
         sx={{
           width: "100%",
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: "start",
+          justifyContent: "flex-start",
           border: 1,
           borderRadius: "16px",
           borderColor: "#e2e2ea",
@@ -83,19 +84,21 @@ const Category: React.FC<Props> = () => {
         style={{ marginTop: 40 }}
       >
         {categoryData?.map((category: any, index: any) => (
-          <CategoryCard
-            key={index}
-            mainCategory={category.category}
-            subCategories={category.selectedSubCategory}
-            backgroundColor={alternatingColor[index % 5][1]}
-            fontColor={alternatingColor[index % 5][0]}
-            handleSetDisplay={handleSetDisplay}
-            handleSetEditCatDisplay={handleSetEditCatDisplay}
-            category={category}
-          />
+          <Grid sm={12} xs={12} md={6} lg={4} padding={1}>
+            <CategoryCard
+              key={index}
+              mainCategory={category.category}
+              subCategories={category.selectedSubCategory}
+              backgroundColor={alternatingColor[index % 5][1]}
+              fontColor={alternatingColor[index % 5][0]}
+              handleSetDisplay={handleSetDisplay}
+              handleSetEditCatDisplay={handleSetEditCatDisplay}
+              category={category}
+            />
+          </Grid>
         ))}
         <CreateNewCategory />
-      </Box>
+      </Grid>
       <CreateSubCategory
         display={display}
         handleSetDisplay={handleSetDisplay}

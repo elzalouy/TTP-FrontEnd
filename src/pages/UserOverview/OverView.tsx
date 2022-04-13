@@ -143,6 +143,7 @@ const OverView: FC<Props> = (props) => {
             </Grid>
           </Grid>
           <Grid
+            xs={11.5}
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"

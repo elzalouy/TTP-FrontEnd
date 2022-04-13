@@ -1,17 +1,8 @@
-.select {
-  background-color: #ffffff;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  font-weight: bold;
-  outline: none;
-  -webkit-appearance: none;
-}
-input[type="text"] {
+/* input[type="text"] {
   background: transparent;
   border: none !important;
-}
-select {
+} */
+.selectFilter {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -19,13 +10,14 @@ select {
   background-color: white;
   outline: none;
   border-width: 0;
-  height: 38px;
+  height: auto;
   width: auto;
   padding-left: 5px;
   outline: none;
   padding-right: 5px;
+  -webkit-appearance: none !important;
 }
-select .select-option {
+.selectFilter .select-option {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
