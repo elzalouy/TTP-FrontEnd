@@ -50,21 +50,6 @@ const CreateNewProject: React.FC<Props> = () => {
           }}
         >
           Not started yet
-          {expanded ? (
-            <ArrowDropUpIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(false);
-              }}
-            ></ArrowDropUpIcon>
-          ) : (
-            <ArrowDropDownIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(true);
-              }}
-            ></ArrowDropDownIcon>
-          )}
         </Box>
         <Box
           onClick={() => {

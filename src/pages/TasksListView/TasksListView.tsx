@@ -68,24 +68,22 @@ const Tasks: React.FC = (props: any) => {
       <Grid marginBottom={2} container direction={"row"}>
         <Grid marginX={0.5} item>
           <Controller
-            name="sort"
             control={control}
+            name="deadline"
             render={(props) => (
               <SelectInput
-                name="Due Date"
-                labelValue="Due Date: "
+                label="Due Date: "
                 {...props}
                 options={[
                   { id: "deadline", text: "Deadline", value: "deadline" },
                 ]}
-                placeholder="Project Managers"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
@@ -99,8 +97,7 @@ const Tasks: React.FC = (props: any) => {
               control={control}
               render={(props) => (
                 <SelectInput
-                  name="status"
-                  labelValue="Status: "
+                  label="Status: "
                   {...props}
                   options={[
                     { id: "", value: "", text: "All" },
@@ -114,14 +111,13 @@ const Tasks: React.FC = (props: any) => {
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
-                  placeholder="Project Managers: "
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={props.field.value}
+                  selectText={props.field.value}
                 />
               )}
             />
@@ -134,8 +130,7 @@ const Tasks: React.FC = (props: any) => {
               control={control}
               render={(props) => (
                 <SelectInput
-                  name="projectId"
-                  labelValue={"Project: "}
+                  label={"Project: "}
                   {...props}
                   options={projects.projects?.map((item) => {
                     return {
@@ -144,14 +139,13 @@ const Tasks: React.FC = (props: any) => {
                       text: item.name,
                     };
                   })}
-                  placeholder="Project"
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={
+                  selectText={
                     projects?.projects?.find(
                       (val) => val._id === props.field.value
                     )?.name
@@ -168,8 +162,7 @@ const Tasks: React.FC = (props: any) => {
               control={control}
               render={(props) => (
                 <SelectInput
-                  name="Members"
-                  labelValue={"Members : "}
+                  label={"Members : "}
                   {...props}
                   options={techMembers.techMembers.map((item) => {
                     return {
@@ -178,14 +171,13 @@ const Tasks: React.FC = (props: any) => {
                       text: item.name,
                     };
                   })}
-                  placeholder="Members"
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={
+                  selectText={
                     techMembers.techMembers.find(
                       (val) => val._id === props.field.value
                     )?.name

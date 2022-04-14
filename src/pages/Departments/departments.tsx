@@ -37,41 +37,38 @@ const departments: React.FC<IProps> = () => {
         </div>
         <Grid marginX={1.8}>
           <SelectInput
-            labelValue="Project type: "
+            label="Project type: "
             options={[
               { id: "done", text: "done", value: "done" },
               { id: "in Progress", text: "In Progress", value: "in Progress" },
             ]}
-            name="status"
-            placeholder=""
             handleChange={() => null}
             selectValue=""
+            selectText=""
           />
         </Grid>
         <Grid marginX={1.8}>
           <SelectInput
-            labelValue="No. of projects: "
+            label="No. of projects: "
             options={[
               { id: "done", text: "done", value: "done" },
               { id: "in Progress", text: "In Progress", value: "in Progress" },
             ]}
-            name="status"
-            placeholder=""
             handleChange={() => null}
             selectValue=""
+            selectText=""
           />
         </Grid>
         <Grid marginX={1.8}>
           <SelectInput
-            labelValue="No. of Tasks: "
+            label="No. of Tasks: "
             options={[
               { id: "done", text: "done", value: "done" },
               { id: "in Progress", text: "In Progress", value: "in Progress" },
             ]}
-            name="status"
-            placeholder=""
             handleChange={() => null}
             selectValue=""
+            selectText=""
           />
         </Grid>
         <CreateNewTeam />

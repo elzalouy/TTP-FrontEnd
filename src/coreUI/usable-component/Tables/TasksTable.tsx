@@ -9,13 +9,27 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
-
+import _ from "lodash";
 interface TasksTableProps {
-  tasks: Task[] | null;
+  tasks: Task[];
   projects: Project[];
 }
 
 const TasksTable: React.FC<TasksTableProps> = (props) => {
+  const [select, setSelected] = React.useState(false);
+  const [selects, setAllSelected] = React.useState<string[]>([]);
+  const setSingleSelect = (val: string, checked: boolean) => {
+    if (checked === true) {
+      let selected = [...selects];
+      selected.push(val);
+      selected = _.uniq(selected);
+      setAllSelected(selected);
+    } else {
+      let selected = [...selects];
+      selected = _.remove(selected, val);
+      setAllSelected(selected);
+    }
+  };
   return (
     <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
       <Table>
@@ -29,7 +43,16 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                 padding: "0px 0px 0px 8px",
               }}
             >
-              <Checkbox className="col-grey" color="primary" />
+              <Checkbox
+                onChange={(e, checked) => {
+                  setSelected(checked);
+                  if (checked)
+                    setAllSelected(props?.tasks?.map((item) => item._id));
+                  else setAllSelected([]);
+                }}
+                className="col-grey"
+                color="primary"
+              />
             </TableCell>
             <TableCell
               style={{
@@ -102,7 +125,16 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                       padding: "0px 8px 0px 8px",
                     }}
                   >
-                    <Checkbox className="col-grey" color="primary" />
+                    <Checkbox
+                      checked={
+                        select || selects.findIndex((i) => i === _id) >= 0
+                      }
+                      onChange={(e, checked) =>
+                        setSingleSelect(`${_id}`, checked)
+                      }
+                      className="col-grey"
+                      color="primary"
+                    />
                   </TableCell>
                   <TableCell
                     align="left"

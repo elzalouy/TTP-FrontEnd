@@ -60,7 +60,6 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             <ClientDrop client={client} />
           </Typography>
         </Box>
-
         <Grid container className="counter-container">
           <Grid
             item
@@ -80,11 +79,19 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               {inProgressTask?.length}
             </Typography>
           </Grid>
-
-          <hr
-            style={{ color: "#B9B9B9", fontWeight: "normal" }}
-            className="hrVertical"
-          />
+          <Box
+            width="1px !important"
+            paddingTop={0.5}
+            overflow={"hidden"}
+            margin={"0px 20px 0px 0px"}
+            sx={{ opacity: 0.5 }}
+          >
+            <hr
+              color="#88888885"
+              style={{ width: "1px !important" }}
+              className="hrVertical"
+            />
+          </Box>
           <Grid
             item
             xs={4.5}
@@ -104,10 +111,18 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             </Typography>
           </Grid>
 
-          <hr
-            style={{ color: "#B9B9B9", fontWeight: "normal" }}
-            className="hrVertical"
-          />
+          <Box
+            width="1px !important"
+            paddingTop={0.5}
+            overflow={"hidden"}
+            sx={{ opacity: 0.5 }}
+          >
+            <hr
+              color="#88888885"
+              style={{ width: "1px !important" }}
+              className="hrVertical"
+            />
+          </Box>
 
           <Grid item xs={3.5} className="Done" style={{ textAlign: "center" }}>
             <Typography

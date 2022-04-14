@@ -57,58 +57,18 @@ const NotificationFilter = (props: Props) => {
     <Grid container justifyContent={"space-around"}>
       <Grid item xs={4}>
         <SelectInput
+          selectText=""
           options={options}
           handleChange={handleChangeFilter}
-          name="clientName"
           selectValue={filter.clientName}
-          placeholder="Client name"
-          boxStyle={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-          selectStyle={{
-            borderRadius: ".6em",
-            borderColor: "#eeeeee",
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#eeeeee",
-            },
-            "&.Mui-focused ": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-                "&:hover": {
-                  borderColor: "#eeeeee",
-                },
-              },
-            },
-          }}
         />
       </Grid>
       <Grid item xs={7}>
         <SelectInput
           options={options}
           handleChange={handleChangeFilter}
-          placeholder=""
-          name="projectName"
           selectValue={filter.projectName}
-          boxStyle={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-          selectStyle={{
-            borderRadius: ".6em",
-            borderColor: "#eeeeee",
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#eeeeee",
-            },
-            "&.Mui-focused ": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-                "&:hover": {
-                  borderColor: "#eeeeee",
-                },
-              },
-            },
-          }}
+          selectText={filter.projectName}
         />
       </Grid>
     </Grid>

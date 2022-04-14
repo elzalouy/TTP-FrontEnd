@@ -71,15 +71,13 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           </Box>
           <Box marginLeft={2}>
             <SelectInput
-              name="sortby"
               options={[
                 { id: "due date", text: "Due Date", value: "due date" },
               ]}
+              selectText={""}
               handleChange={() => null}
-              placeholder=""
               selectValue="Sort By: "
-              selectLabel="Sort By: "
-              labelValue="Sort By : "
+              label="Sort By: "
             />
           </Box>
           <Box

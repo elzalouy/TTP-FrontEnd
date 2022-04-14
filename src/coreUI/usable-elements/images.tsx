@@ -8,7 +8,14 @@ import projects from "../../assets/img/projects.svg";
 import tasks from "../../assets/img/tasks.svg";
 import overView from "../../assets/img/taskviewiconCopy.svg";
 
-export const Logo = (props: any) => <img src={logo} alt="Logo" {...props} />;
+export const Logo = (props: any) => (
+  <img
+    src={logo}
+    alt="Logo"
+    onClick={() => props.history.push("/Overview")}
+    {...props}
+  />
+);
 
 export const BurgerIcon = (props: any) => (
   <img

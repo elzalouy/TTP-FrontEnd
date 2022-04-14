@@ -14,7 +14,7 @@ const departmentCard: React.FC<Props> = ({ backgroundColor, fontColor }) => {
     >
       <div
         className="dp-card-header"
-        style={{ color: fontColor, paddingTop: 8 }}
+        style={{ color: fontColor, paddingTop: 8, paddingBottom: 10 }}
       >
         <Typography variant="h4" fontSize={20} color={fontColor}>
           Department name
@@ -22,12 +22,6 @@ const departmentCard: React.FC<Props> = ({ backgroundColor, fontColor }) => {
         <p>
           <img src={IMAGES.more} alt="more" />
         </p>
-      </div>
-      <div className="tasks-count" style={{ color: fontColor }}>
-        <Box paddingTop={0.3} paddingRight={0.2}>
-          <TasksCheckIcon color={fontColor} />
-        </Box>
-        4/5
       </div>
       <div className="teams">
         <div className="teamName-badge" style={{ borderColor: fontColor }}>

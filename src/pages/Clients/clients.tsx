@@ -62,10 +62,8 @@ const Clients: React.FC<Props> = () => {
 
   const handleChangeFilter = (e: SelectChangeEvent<string>) => {
     setFilter({
-      ...filter,
-      [e.target.name]: e.target.value,
+      sortDate: e.target.value,
     });
-    console.log({ value: e.target.value });
     dispatch(clientsActions.onSort(e.target.value));
   };
   useEffect(() => {
@@ -73,7 +71,7 @@ const Clients: React.FC<Props> = () => {
       setClients(clientData);
     }
   }, [clientData]);
-
+  console.log(filter);
   return (
     <Grid container paddingX={4}>
       <Grid container xs={12} mt="2em">
@@ -96,14 +94,19 @@ const Clients: React.FC<Props> = () => {
             <img src={IMAGES.sortout} alt="sortout" />
           </Box>
         </Grid>
-        <Grid item xs={4} sm={4} marginBottom={1} md={2} lg={2} marginLeft={4}>
+        <Grid
+          item
+          marginBottom={1}
+          sx={{ bgcolor: "transparent" }}
+          marginLeft={4}
+          marginRight={2.8}
+        >
           <SelectInput
             options={options}
             handleChange={handleChangeFilter}
-            name="sortDate"
             selectValue={filter.sortDate}
-            placeholder=""
-            labelValue="Sort : "
+            label="Sort : "
+            selectText={filter.sortDate}
           />
         </Grid>
         <Grid item xs={4} sm={4} md={2} lg={2}>

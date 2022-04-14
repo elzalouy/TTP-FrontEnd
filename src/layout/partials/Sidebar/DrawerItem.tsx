@@ -16,6 +16,7 @@ const DrawerItem: React.FC = (props: any) => {
         marginY: 0.5,
         borderRadius: 2,
         justifyContent: props.open ? "initial" : "center",
+        ":hover": { "& .MuiListItemText-root": { color: "white" } },
       }}
       onClick={() => props.onClick()}
       className={props.select === props.path ? "active" : ""}
@@ -32,7 +33,6 @@ const DrawerItem: React.FC = (props: any) => {
       <ListItemText
         sx={{
           color: props.select === props.path ? "white" : "#808191",
-          ":hover": { color: "white" },
           opacity: props.open ? 1 : 0,
         }}
       >

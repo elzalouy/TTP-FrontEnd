@@ -39,6 +39,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const { register, watch, control } = useForm();
   const onHandleChange = (e: any) => {
+    console.log(e);
     let filter = watch();
     dispatch(filterProjects(filter));
   };
@@ -74,24 +75,22 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         </Grid>
         <Grid marginX={0.2} item>
           <Controller
-            name="sort"
+            name="deadline"
             control={control}
             render={(props) => (
               <SelectInput
-                name="Due Date"
-                labelValue="Due Date: "
                 {...props}
+                label="Due Date: "
                 options={[
                   { id: "deadline", text: "Deadline", value: "deadline" },
                 ]}
-                placeholder="Project Managers"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
@@ -104,20 +103,18 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             control={control}
             render={(props) => (
               <SelectInput
-                name="projectManager"
-                labelValue="Project Manager: "
+                label="Project Manager: "
                 {...props}
                 options={PMs.map((item) => {
                   return { id: item._id, value: item._id, text: item.name };
                 })}
-                placeholder="Project Managers: "
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
@@ -130,8 +127,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             control={control}
             render={(props) => (
               <SelectInput
-                name="clientId"
-                labelValue={"Client: "}
+                label={"Client: "}
                 {...props}
                 options={clients.map((item) => {
                   return {
@@ -140,14 +136,13 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     text: item.clientName,
                   };
                 })}
-                placeholder="Client"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   clients.find((val) => val._id === props.field.value)
                     ?.clientName
                 }
@@ -162,8 +157,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             render={(props) => (
               <>
                 <SelectInput
-                  name="status"
-                  labelValue={"Status"}
+                  label={"Status"}
                   {...props}
                   options={[
                     {
@@ -183,14 +177,13 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                       text: "inProgress",
                     },
                   ]}
-                  placeholder="Status"
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={props.field.value}
+                  selectText={props.field.value}
                 />
               </>
             )}

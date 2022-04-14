@@ -43,10 +43,8 @@ const AppDrawer: React.FC = (props: any) => {
     <>
       <Drawer
         sx={{
-          overflowX: "hidden",
-          height: "100%",
+          overflow: "hidden",
           position: "inherit",
-          overflowY: "hidden",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
           width: props.open ? "16%" : `calc(2% + 1px)`,
           flexShrink: 0,
@@ -60,11 +58,14 @@ const AppDrawer: React.FC = (props: any) => {
         open={props.open}
         variant="permanent"
       >
-        <List>
+        <List sx={{ height: "90%", overflowX: "scroll" }}>
           <DrawerHeader
-            sx={{ justifyContent: props.open ? "space-between" : "center" }}
+            sx={{
+              justifyContent: props.open ? "space-between" : "center",
+              cursor: "pointer",
+            }}
           >
-            {props.open && <Logo />}
+            {props.open && <Logo {...props} />}
             <IconButton onClick={() => props.setOpen(!props.open)}>
               {props?.open ? (
                 <MenuIcon htmlColor="#000000" />
