@@ -8,6 +8,8 @@ import "./Category.css";
 import { categoriesActions } from "../../redux/Categories";
 import { useDispatch } from "react-redux";
 import EditIcon from "../../assets/icons/EditIcon";
+import { styled } from "@mui/material/styles";
+
 type Props = {};
 interface IProps {
   backgroundColor: string;
@@ -31,6 +33,9 @@ const CategoryCard: React.FC<IProps> = ({
   const handleSetSelect = () => {
     dispatch(categoriesActions.setSelectedCategory(category));
   };
+  const EditBtn = styled(Button)({
+    minWidth: "40px",
+  });
   return (
     <Box
       className="category-card"
@@ -45,6 +50,7 @@ const CategoryCard: React.FC<IProps> = ({
         borderRadius: 3,
         cursor: "pointer",
         backgroundColor: backgroundColor,
+        overflow: "hidden",
       }}
       onClick={handleSetSelect}
     >
@@ -104,51 +110,62 @@ const CategoryCard: React.FC<IProps> = ({
               </Typography>
             ))}
         </Box>
-        <Grid display={"inline-flex"}>
-          <Button
-            sx={{
-              color: fontColor,
-              mb: 8.5,
-              width: "100%",
-              fontWeight: "bold",
-              textTransform: "capitalize",
-              border: 1,
-              borderRadius: 1,
-              borderColor: fontColor,
-              mr: 1,
-            }}
-            onClick={() => handleSetDisplay("flex")}
-          >
-            <Box
+        <Grid
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          flexDirection="row"
+          width="100%"
+          container
+        >
+          <Grid xs={10} paddingRight={1.5}>
+            <Button
               sx={{
+                color: fontColor,
+                mb: 8.5,
+                width: "100%",
+                fontWeight: "bold",
+                textTransform: "capitalize",
+                border: 1,
+                borderRadius: 1,
+                borderColor: fontColor,
                 mr: 1,
-                border: 2,
-                textAlign: "center",
-                borderRadius: 1.5,
-                display: "flex",
-                fontSize: "15px",
-                paddingX: 0.5,
+                height: "40px",
               }}
+              onClick={() => handleSetDisplay("flex")}
             >
-              <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>{" "}
-            </Box>
-            <Typography fontSize={14} fontWeight={"bold"}>
-              New Sub Category
-            </Typography>
-          </Button>
-          <Button
-            sx={{
-              borderRadius: 1,
-              border: 1,
-              mb: 8.5,
-              fontWeight: "bold",
-              borderColor: fontColor,
-              color: fontColor,
-            }}
-            onClick={() => handleSetEditCatDisplay("flex")}
-          >
-            <EditIcon color={fontColor} />
-          </Button>
+              <Box
+                sx={{
+                  mr: 1,
+                  border: 2,
+                  textAlign: "center",
+                  borderRadius: 1.5,
+                  display: "flex",
+                  fontSize: "15px",
+                  paddingX: 0.5,
+                }}
+              >
+                <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>{" "}
+              </Box>
+              <Typography fontSize={14} fontWeight={"bold"}>
+                New Sub Category
+              </Typography>
+            </Button>
+          </Grid>
+          <Grid xs={2}>
+            <EditBtn
+              sx={{
+                borderRadius: 1,
+                border: 1,
+                mb: 8.5,
+                borderColor: fontColor,
+                color: fontColor,
+                height: "40px",
+              }}
+              onClick={() => handleSetEditCatDisplay("flex")}
+            >
+              <EditIcon width={20} height={20} color={fontColor} />
+            </EditBtn>
+          </Grid>
         </Grid>
       </Box>
     </Box>

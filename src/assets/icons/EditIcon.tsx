@@ -1,15 +1,16 @@
 import React, { FC } from "react";
 interface Props {
   color: string;
+  width: string | number;
+  height: string | number;
 }
 const EditIcon: FC<Props> = (props) => {
   return (
     <svg
       data-name="Iconly/Light-outline/Edit Square"
       xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
-      {...props}
+      width={props.width}
+      height={props.height}
     >
       <path
         data-name="Edit Square"

@@ -4,14 +4,15 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
-import { Task } from "../../redux/Projects";
+import { Project, Task } from "../../redux/Projects";
 import "./taskCard.css";
 interface DataTypes {
   index: number;
   item: Task;
+  project: Project | null;
 }
 
-const taskCard: React.FC<DataTypes> = ({ item, index }) => {
+const taskCard: React.FC<DataTypes> = ({ item, index, project }) => {
   const { _id, name, status, deadline, start } = item;
   const floatDays =
     (new Date(deadline).getTime() - new Date().getTime()) /
@@ -38,7 +39,7 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
               <img src={IMAGES.moreGrey} alt="more" />
             </Typography>
           </Stack>
-          <Box>Project manager name</Box>
+          <Box>PM: {project?.projectManager?.name}</Box>
           {item.attachedFiles && (
             <>
               <img
@@ -120,27 +121,46 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
               <Typography style={{ paddingLeft: "5px" }}>{status}</Typography>
             </Stack>
           )} */}
-          <Stack
-            direction="row"
-            marginTop="12px"
-            justifyContent="flex-start"
-            alignItems="center"
-            className="aft-red"
-            sx={{
-              color: remainingDays > 4 ? "#0079BF" : "#FF974A",
-              bgcolor: remainingDays > 4 ? "#DAE6EF" : "#FF974A1A",
-            }}
-          >
-            <img
-              src={
-                remainingDays > 4 ? IMAGES.scheduleNotClear : IMAGES.scheduleRed
-              }
-              alt="more"
-            />
-            <Typography style={{ paddingLeft: "5px" }}>
-              {remainingDays} Days left
-            </Typography>
-          </Stack>
+          {item.status !== "cancled" ? (
+            <Stack
+              direction="row"
+              marginTop="12px"
+              justifyContent="flex-start"
+              alignItems="center"
+              className="aft-red"
+              sx={{
+                color: remainingDays > 4 ? "#0079BF" : "#FF974A",
+                bgcolor: remainingDays > 4 ? "#DAE6EF" : "#FF974A1A",
+              }}
+            >
+              <img
+                src={
+                  remainingDays > 4
+                    ? IMAGES.scheduleNotClear
+                    : IMAGES.scheduleRed
+                }
+                alt="more"
+              />
+              <Typography style={{ paddingLeft: "5px" }}>
+                {remainingDays} Days left
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack
+              direction="row"
+              marginTop="12px"
+              justifyContent="flex-start"
+              alignItems="center"
+              className="aft-red"
+              sx={{
+                color: "#B04632",
+                bgcolor: "#ECDAD7",
+              }}
+            >
+              <img src={IMAGES.scheduleRed} alt="more" />
+              <Typography style={{ paddingLeft: "5px" }}>Canceled</Typography>
+            </Stack>
+          )}
           <Stack
             direction="row"
             marginTop="15px"
@@ -148,7 +168,7 @@ const taskCard: React.FC<DataTypes> = ({ item, index }) => {
             alignItems="center"
           >
             <Typography className={"task-card-footer-not-clear"}>
-              TPP project Team
+              Assigned To
             </Typography>
             <img src={IMAGES.arrow} alt="more" />
             <Typography

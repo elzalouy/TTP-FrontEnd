@@ -1,5 +1,5 @@
 import { Box, Grid, Typography, Stack } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   AssignmentOutlined as AssignmentIcon,
   Done as DoneIcon,
@@ -27,6 +27,7 @@ interface Props {
 }
 const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
+  const [user, setUser] = useState("project manager");
   useEffect(() => {
     dispatch(getAllClients(null));
     dispatch(getPMs(null));
@@ -85,39 +86,99 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
+                paddingRight={user === "project manager" ? 0 : "3%"}
                 container
               >
-                <UserStatus
-                  IconBgColor="#EFEFFF"
-                  Icon={() => (
-                    <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
-                  )}
-                  title={"Tasks Completed"}
-                  count={"28"}
-                  percent="- 8%"
-                  percentColor="#260EFF"
-                />
-                <UserStatus
-                  IconBgColor="#ECFDF1"
-                  Icon={() => (
-                    <AssignmentIcon fontSize={"small"} htmlColor="#30CF47" />
-                  )}
-                  title="New Tasks"
-                  count="12"
-                  percent="- 8%"
-                  percentColor="#30CF47"
-                />
-
-                <UserStatus
-                  IconBgColor="#FFF3EF"
-                  Icon={() => (
-                    <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
-                  )}
-                  title="Projects Completed"
-                  count="12"
-                  percent="- 8%"
-                  percentColor="#FF2E35"
-                />
+                {user === "project manager" ? (
+                  <>
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#EFEFFF"
+                      Icon={() => (
+                        <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
+                      )}
+                      title={"Tasks Completed"}
+                      count={"28"}
+                      percent="- 8%"
+                      percentColor="#260EFF"
+                    />
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#ECFDF1"
+                      Icon={() => (
+                        <AssignmentIcon
+                          fontSize={"small"}
+                          htmlColor="#30CF47"
+                        />
+                      )}
+                      title="New Tasks"
+                      count="12"
+                      percent="- 8%"
+                      percentColor="#30CF47"
+                    />
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#FFF3EF"
+                      Icon={() => (
+                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
+                      )}
+                      title="Projects Completed"
+                      count="12"
+                      percent="- 8%"
+                      percentColor="#FF2E35"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#EFEFFF"
+                      Icon={() => (
+                        <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
+                      )}
+                      title={"Tasks Completed"}
+                      count={"28"}
+                      percent="- 8%"
+                      percentColor="#260EFF"
+                    />
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#ECFDF1"
+                      Icon={() => (
+                        <AssignmentIcon
+                          fontSize={"small"}
+                          htmlColor="#30CF47"
+                        />
+                      )}
+                      title="New Tasks"
+                      count="12"
+                      percent="- 8%"
+                      percentColor="#30CF47"
+                    />
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#FFF3EF"
+                      Icon={() => (
+                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
+                      )}
+                      title="Projects Completed"
+                      count="12"
+                      percent="- 8%"
+                      percentColor="#FF2E35"
+                    />
+                    <UserStatus
+                      user={user}
+                      IconBgColor="#FFF3EF"
+                      Icon={() => (
+                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
+                      )}
+                      title="Projects Completed"
+                      count="12"
+                      percent="- 8%"
+                      percentColor="#FF2E35"
+                    />
+                  </>
+                )}
               </Grid>
               <Grid
                 direction="row"

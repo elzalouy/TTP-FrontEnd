@@ -15,6 +15,7 @@ import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
 import IMAGES from "../../../assets/img";
+import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 
 interface ProjectsTableProps {
   status: string;
@@ -113,7 +114,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                 align={props.align}
               >
                 <Box sx={{ display: "inline-flex" }}>
-                  <img src={IMAGES.tasksCheck} color="#00ACBA" />
+                  <TasksCheckIcon color="#00ACBA" />
                   <Typography
                     paddingLeft={0.3}
                     variant="h4"

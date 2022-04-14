@@ -128,7 +128,7 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                   <TableCell
                     align="left"
                     style={{
-                      color: "#334D6E",
+                      color: "#323C47",
                       width: "300px",
                       margin: "0px",
                       padding: "0px 0px 0px 15px",
@@ -138,7 +138,7 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                   </TableCell>
                   <TableCell
                     style={{
-                      color: "#334D6E",
+                      color: "#707683",
                       width: "300px",
                       margin: "0px",
                       padding: "0px 0px 0px 8px",
@@ -151,12 +151,12 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                       )?.name
                     }
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="left" style={{ color: "#707683" }}>
                     {new Date(start).toDateString()}
                   </TableCell>
                   <TableCell
                     style={{
-                      color: "#334D6E",
+                      color: "#707683",
                       width: "160px",
                       margin: "0px",
                       padding: "0px 15px 0px 8px",

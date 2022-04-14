@@ -3,6 +3,7 @@ import IMAGES from "../../assets/img";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import { Divider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import TasksCheckIcon from "../../assets/icons/TasksCheck";
 
 type Props = { backgroundColor: string; fontColor: string };
 const departmentCard: React.FC<Props> = ({ backgroundColor, fontColor }) => {
@@ -23,9 +24,9 @@ const departmentCard: React.FC<Props> = ({ backgroundColor, fontColor }) => {
         </p>
       </div>
       <div className="tasks-count" style={{ color: fontColor }}>
-        <CheckBoxOutlinedIcon
-          sx={{ color: fontColor, fontSize: "16px" }}
-        ></CheckBoxOutlinedIcon>
+        <Box paddingTop={0.3} paddingRight={0.2}>
+          <TasksCheckIcon color={fontColor} />
+        </Box>
         4/5
       </div>
       <div className="teams">

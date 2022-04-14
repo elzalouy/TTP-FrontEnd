@@ -41,5 +41,6 @@ const IMAGES = {
   moreClient: require("./moreClient.svg").default,
   verified: require("./verified.png").default,
   person: require("./person.svg").default,
+  notFound: require("./notfound.svg").default,
 };
 export default IMAGES;

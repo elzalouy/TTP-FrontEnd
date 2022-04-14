@@ -13,80 +13,32 @@ import {
   selectCancledTasks,
   selectDoneTasks,
   selectInProgressTasks,
-  selectLateTasks,
   selectNotClearTasks,
+  selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
   Task,
 } from "../../redux/Projects";
 import CreateNewTask from "./CreateNewTask";
 import TaskCard from "./taskCard";
-import {
-  InProgressTasks,
-  taskDataCanceled,
-  taskDataDone,
-  taskDataNotClear,
-} from "./taskData";
 import "./taskViewBoard.css";
 const DragField: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const inProgressTasks = useAppSelector(selectInProgressTasks);
   const doneTasks = useAppSelector(selectDoneTasks);
-  const lateTasks = useAppSelector(selectLateTasks);
+  const reviewTasks = useAppSelector(selectReviewTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
   const [columns, setColumns] = useState({
     [uuidv4()]: {
-      name: "Not Started",
+      name: "",
       items: [],
-      header: "not-started-header",
-      body: "not-started-task",
-      border: "not-started-border",
+      header: "",
+      body: "",
+      border: "",
       NewTask: <CreateNewTask />,
-    },
-    [uuidv4()]: {
-      name: "In Progress",
-      items: inProgressTasks,
-      header: "in-progress-header",
-      body: "in-progress-task",
-      border: "in-progress-border",
-    },
-    [uuidv4()]: {
-      name: "Shared",
-      items: sharedTasks,
-      header: "canceled-header",
-      body: "canceled-task",
-      border: "canceled-border",
-    },
-    [uuidv4()]: {
-      name: "Done",
-      items: doneTasks,
-      header: "done-header",
-      body: "done-task",
-      border: "done-border",
-    },
-    [uuidv4()]: {
-      name: "Not clear",
-      items: notClearTasks,
-      header: "not-clear-header",
-      body: "not-clear-task",
-      border: "not-clear-border",
-    },
-    [uuidv4()]: {
-      name: "Canceled",
-      items: cancledTasks,
-      header: "canceled-header",
-      body: "canceled-task",
-      border: "canceled-border",
-    },
-    [uuidv4()]: {
-      name: "Late",
-      items: lateTasks,
-      header: "canceled-header",
-      body: "canceled-task",
-      border: "canceled-border",
     },
   });
 
@@ -102,23 +54,16 @@ const DragField: React.FC = (props: any) => {
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
-        name: "Not Started",
-        items: [],
-        header: "not-started-header",
-        body: "not-started-task",
-        border: "not-started-border",
-        NewTask: <CreateNewTask />,
-      },
-      [uuidv4()]: {
         name: "In Progress",
         items: inProgressTasks,
         header: "in-progress-header",
         body: "in-progress-task",
         border: "in-progress-border",
+        NewTask: <CreateNewTask />,
       },
       [uuidv4()]: {
-        name: "Shared",
-        items: sharedTasks,
+        name: "Review",
+        items: reviewTasks,
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
@@ -145,8 +90,8 @@ const DragField: React.FC = (props: any) => {
         border: "canceled-border",
       },
       [uuidv4()]: {
-        name: "Late",
-        items: lateTasks,
+        name: "Shared",
+        items: sharedTasks,
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
@@ -225,6 +170,7 @@ const DragField: React.FC = (props: any) => {
                         return (
                           <Box className={column.border}>
                             <TaskCard
+                              project={selectedProject.project}
                               key={item?._id}
                               item={item}
                               index={index}
@@ -232,7 +178,7 @@ const DragField: React.FC = (props: any) => {
                           </Box>
                         );
                       })}
-                    {column.NewTask}
+                    {column?.NewTask}
                     {provided.placeholder}
                   </Grid>
                 );

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 import "./App.css";
+import React, { useEffect } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
@@ -27,6 +27,7 @@ import OverView from "./pages/UserOverview/OverView";
 import "react-toastify/dist/ReactToastify.css";
 import PopUps from "./pages/PopUps";
 import { Box } from "@mui/system";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -40,7 +41,6 @@ const App: React.FC = (props) => {
     dispatch(getAllMembers(null));
   }, []);
   return (
-    // <div className="main-container">
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />
       <PopUps />
@@ -93,9 +93,10 @@ const App: React.FC = (props) => {
           component={OverView}
           key="/overview"
         />
+        <LoggedInContainer path="/404" component={NotFound} key="/notfound" />
+        <Redirect from="*" to="/404" key="404" />
       </Switch>
     </Box>
-    // </div>
   );
 };
 
