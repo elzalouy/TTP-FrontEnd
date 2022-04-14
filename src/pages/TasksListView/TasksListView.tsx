@@ -132,13 +132,16 @@ const Tasks: React.FC = (props: any) => {
                 <SelectInput
                   label={"Project: "}
                   {...props}
-                  options={projects.projects?.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.name,
-                    };
-                  })}
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    ...projects.projects?.map((item) => {
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    }),
+                  ]}
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
@@ -156,36 +159,34 @@ const Tasks: React.FC = (props: any) => {
           </Box>
         </Grid>
         <Grid marginX={0.5} item>
-          <Box className="tasks-option" width={"100%"}>
-            <Controller
-              name="memberId"
-              control={control}
-              render={(props) => (
-                <SelectInput
-                  label={"Members : "}
-                  {...props}
-                  options={techMembers.techMembers.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.name,
-                    };
-                  })}
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectText={
-                    techMembers.techMembers.find(
-                      (val) => val._id === props.field.value
-                    )?.name
-                  }
-                />
-              )}
-            />
-          </Box>
+          <Controller
+            name="memberId"
+            control={control}
+            render={(props) => (
+              <SelectInput
+                label={"Members:"}
+                {...props}
+                options={techMembers.techMembers.map((item) => {
+                  return {
+                    id: item._id,
+                    value: item._id,
+                    text: item.name,
+                  };
+                })}
+                handleChange={(e) => {
+                  e.preventDefault();
+                  props.field.onChange(e);
+                  onHandleChange(e);
+                }}
+                selectValue={props.field.value}
+                selectText={
+                  techMembers.techMembers.find(
+                    (val) => val._id === props.field.value
+                  )?.name
+                }
+              />
+            )}
+          />
         </Grid>
         <Grid marginX={0.5} item>
           <DeleteTask />

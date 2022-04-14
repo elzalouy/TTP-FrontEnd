@@ -73,7 +73,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             <img src={IMAGES.filtericon} alt="FILTER" />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="deadline"
             control={control}
@@ -97,7 +97,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="projectManager"
             control={control}
@@ -121,7 +121,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="clientId"
             control={control}
@@ -150,7 +150,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="projectStatus"
             control={control}
@@ -189,7 +189,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid xs={2.5} marginX={0.2} item>
+        <Grid xs={2.5} marginX={1} item>
           <SearchBar />
         </Grid>
       </Grid>
