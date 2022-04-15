@@ -26,7 +26,7 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
       setAllSelected(selected);
     } else {
       let selected = [...selects];
-      selected = _.remove(selected, val);
+      _.remove(selected, (item) => item === val);
       setAllSelected(selected);
     }
   };

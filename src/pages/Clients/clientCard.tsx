@@ -11,7 +11,6 @@ interface IProps {
 }
 
 const ClientCard: React.FC<IProps> = ({ client }) => {
-  // console.log({ clientTest: client });
   const {
     clientName,
     createdAt,
@@ -21,12 +20,10 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
   } = client;
   return (
     <Box>
-      <Box className="client-card">
+      <Box paddingX="18px" paddingTop="18px" className="client-card">
         <Box className="cl-card-header">
           <Stack
             direction="row"
-            marginLeft="2em"
-            marginTop="12px"
             justifyContent="flex-start"
             alignItems="center"
           >
@@ -35,9 +32,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
                 src={!client.image ? IMAGES.avatarClients : client.image}
                 alt="avatar"
                 style={{
-                  width: "4em",
-                  height: "4em",
-                  borderRadius: ".5em",
+                  width: "52px",
+                  height: "52pxp",
+                  borderRadius: "10px",
                 }}
               />
             </Box>
@@ -47,7 +44,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
                 color: "#783DBD",
               }}
             >
-              <Typography sx={{ fontWeight: "bold" }}>{clientName}</Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: 16 }}>
+                {clientName}
+              </Typography>
               <Typography
                 variant="body2"
                 style={{ color: "#808191", fontSize: "12px" }}
@@ -60,13 +59,13 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             <ClientDrop client={client} />
           </Typography>
         </Box>
-        <Grid container className="counter-container">
-          <Grid
-            item
-            xs={4}
-            className="InProgress"
-            style={{ textAlign: "center" }}
-          >
+        <Grid
+          container
+          className="counter-container"
+          justifyContent={"space-between"}
+          alignItems="center"
+        >
+          <Grid item style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"
@@ -79,11 +78,11 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               {inProgressTask?.length}
             </Typography>
           </Grid>
-          <Box
+          <Grid
+            item
             width="1px !important"
             paddingTop={0.5}
             overflow={"hidden"}
-            margin={"0px 20px 0px 0px"}
             sx={{ opacity: 0.5 }}
           >
             <hr
@@ -91,13 +90,8 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               style={{ width: "1px !important" }}
               className="hrVertical"
             />
-          </Box>
-          <Grid
-            item
-            xs={4.5}
-            className="InProgress"
-            style={{ textAlign: "center" }}
-          >
+          </Grid>
+          <Grid item style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"
@@ -110,8 +104,8 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               {inProgressProject?.length}
             </Typography>
           </Grid>
-
-          <Box
+          <Grid
+            item
             width="1px !important"
             paddingTop={0.5}
             overflow={"hidden"}
@@ -122,9 +116,9 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               style={{ width: "1px !important" }}
               className="hrVertical"
             />
-          </Box>
+          </Grid>
 
-          <Grid item xs={3.5} className="Done" style={{ textAlign: "center" }}>
+          <Grid item style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"

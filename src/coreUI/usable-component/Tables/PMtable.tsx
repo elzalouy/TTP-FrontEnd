@@ -30,7 +30,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
       setAllSelected(selected);
     } else {
       let selected = [...selects];
-      selected = _.remove(selected, val);
+      _.remove(selected, (item) => item === val);
       setAllSelected(selected);
     }
   };

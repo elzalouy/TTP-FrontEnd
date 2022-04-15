@@ -142,9 +142,10 @@ const CategoryCard: React.FC<IProps> = ({
                   display: "flex",
                   fontSize: "15px",
                   paddingX: 0.5,
+                  paddingY: 0.4,
                 }}
               >
-                <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>{" "}
+                <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
               </Box>
               <Typography fontSize={14} fontWeight={"bold"}>
                 New Sub Category

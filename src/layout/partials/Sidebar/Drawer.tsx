@@ -83,7 +83,7 @@ const AppDrawer: React.FC = (props: any) => {
               onClick={() => props.history.push("/Overview")}
               path={"/Overview"}
               src={IMAGES.Overviewicon}
-              text="OverView"
+              text="Overview"
             />
             <DrawerItem
               {...props}
@@ -143,7 +143,7 @@ const AppDrawer: React.FC = (props: any) => {
               onClick={() => props.history.push("/Categories")}
               path={"/Categories"}
               src={IMAGES.categories}
-              text="Categories"
+              text="Category"
             />
           </List>
           <Divider sx={{ marginX: 2.5 }} />
