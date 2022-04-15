@@ -2,9 +2,11 @@ import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import * as React from "react";
 import { ArrowForwardIos as ArrowIcon } from "@mui/icons-material";
-interface UserNotificationsProps {}
-
-const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
+import { RouteComponentProps } from "react-router";
+interface Props {
+  history: RouteComponentProps["history"];
+}
+const UserNotifications: React.FC<Props> = (props) => {
   const notifications = ["", "", "", ""];
   return (
     <Stack
@@ -54,7 +56,7 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
             display: "inline-flex",
           }}
         >
-          <Avatar sx={{ bgcolor: deepOrange[200] }}>EE</Avatar>
+          <Avatar sx={{ bgcolor: "#57B8FF" }}>EE</Avatar>
           <Box paddingTop={0.2} paddingLeft={1}>
             <Typography
               fontFamily={"Cairo"}
@@ -74,11 +76,17 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
           </Box>
         </Box>
       ))}
-      <Divider sx={{ paddingTop: 3 }} />
       <Button
         variant="text"
-        sx={{ justifyContent: "flex-start", width: "30%", paddingTop: 1 }}
+        sx={{
+          justifyContent: "flex-start",
+          width: "30%",
+          paddingTop: 1,
+          marginTop: 2,
+          marginLeft: 32,
+        }}
         fullWidth={false}
+        onClick={() => props.history.push("/notifications")}
       >
         <Typography
           fontWeight={"700"}
@@ -86,7 +94,7 @@ const UserNotifications: React.FC<UserNotificationsProps> = (props) => {
           fontSize={14}
           color="#00ACBA"
         >
-          See More{" "}
+          See More
           <ArrowIcon
             fontSize={"small"}
             sx={{ fontSize: 14, paddingTop: 0.4, fontWeight: "bold" }}

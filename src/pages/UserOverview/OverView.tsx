@@ -20,6 +20,7 @@ import { getAllMembers } from "../../redux/techMember";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
+import ManagerNotifications from "./ManagerNotifications";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -27,7 +28,7 @@ interface Props {
 }
 const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState("project manager");
+  const [user, setUser] = useState("operation manager");
   useEffect(() => {
     dispatch(getAllClients(null));
     dispatch(getPMs(null));
@@ -136,7 +137,7 @@ const OverView: FC<Props> = (props) => {
                       Icon={() => (
                         <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
                       )}
-                      title={"Tasks Completed"}
+                      title={"Organization Capacity"}
                       count={"28"}
                       percent="- 8%"
                       percentColor="#260EFF"
@@ -150,7 +151,7 @@ const OverView: FC<Props> = (props) => {
                           htmlColor="#30CF47"
                         />
                       )}
-                      title="New Tasks"
+                      title="Revision Tasks"
                       count="12"
                       percent="- 8%"
                       percentColor="#30CF47"
@@ -161,7 +162,7 @@ const OverView: FC<Props> = (props) => {
                       Icon={() => (
                         <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
                       )}
-                      title="Projects Completed"
+                      title="Meeting deadlines"
                       count="12"
                       percent="- 8%"
                       percentColor="#FF2E35"
@@ -172,7 +173,7 @@ const OverView: FC<Props> = (props) => {
                       Icon={() => (
                         <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
                       )}
-                      title="Projects Completed"
+                      title="Current Active Projects"
                       count="12"
                       percent="- 8%"
                       percentColor="#FF2E35"
@@ -200,7 +201,11 @@ const OverView: FC<Props> = (props) => {
               justifyContent="center"
               alignItems="center"
             >
-              <UserNotifications />
+              {user === "operation manager" ? (
+                <ManagerNotifications {...props} />
+              ) : (
+                <UserNotifications {...props} />
+              )}
             </Grid>
           </Grid>
           <Grid

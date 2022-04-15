@@ -23,6 +23,7 @@ export const selectSelectedDepartment = (state: RootState) =>
 export const selectAllProjects = (state: RootState) => state?.projects;
 export const selectSelectedProject = (state: RootState) =>
   state?.projects.selectedProject;
+
 // tasks
 export const selectInProgressTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(

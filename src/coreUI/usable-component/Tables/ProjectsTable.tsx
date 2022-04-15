@@ -18,9 +18,10 @@ import IMAGES from "../../../assets/img";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 
 interface ProjectsTableProps {
+  progress?: boolean;
   status: string;
   expanded: boolean;
-  projects: Project[];
+  projects: Project[] | any;
   projectManagers: ProjectManager[];
   textSize: string;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
@@ -48,7 +49,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
             Start Date
           </TableCell>
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-            Tasks
+            {props.progress ? "Progress" : "Tasks"}
           </TableCell>
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
             Deadline Date
@@ -113,17 +114,31 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                 className={classes.tcellCenterTask}
                 align={props.align}
               >
-                <Box sx={{ display: "inline-flex" }}>
-                  <TasksCheckIcon color="#00ACBA" />
+                {props.progress ? (
                   <Typography
                     paddingLeft={0.3}
                     variant="h4"
                     color="#00ACBA"
                     fontSize={props.textSize === "small" ? 12 : 14}
                   >
-                    {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                    {Math.round(
+                      project?.numberOfFinshedTasks / project?.numberOfTasks
+                    ) * 100 || 0}
+                    %
                   </Typography>
-                </Box>
+                ) : (
+                  <Box sx={{ display: "inline-flex" }}>
+                    <TasksCheckIcon color="#00ACBA" />
+                    <Typography
+                      paddingLeft={0.3}
+                      variant="h4"
+                      color="#00ACBA"
+                      fontSize={props.textSize === "small" ? 12 : 14}
+                    >
+                      {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                    </Typography>
+                  </Box>
+                )}
               </TableCell>
               <TableCell className={classes.tcellCenter} align={props.align}>
                 <Typography
