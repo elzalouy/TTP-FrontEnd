@@ -23,8 +23,10 @@
 .cl-card-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   font-weight: bold;
   color: #0079bf;
+  background-color: red;
 }
 
 .clients-settings {

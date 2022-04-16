@@ -11,33 +11,42 @@ type Props = {};
 
 const NotificationItem = (props: Props) => {
   return (
-    <Grid container spacing={3} sx={{ pl: "1.5em" }}>
-      <Grid item xs={12} sx={{ pl: "0 !important" }}>
-        <Typography variant="h4" gutterBottom component="div">
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          component="div"
+          fontFamily={"Poppins"}
+        >
           Recent Notification
         </Typography>
       </Grid>
       {[1, 2, 3].map((item) => (
         <Grid item container xs={12}>
           <Grid
+            paddingX={1}
+            paddingY={3}
             item
             container
             key={item}
-            xs={6}
+            xs={12}
+            sm={12}
+            md={6}
+            lg={6}
             sx={{
               background: "#f4f4f4",
-              padding: "2em",
               borderRadius: "1em",
             }}
           >
-            <Grid item xs={1}>
+            <Grid marginX={1} item xs={1}>
               <Badge
                 overlap="circular"
                 badgeContent={
                   <CircleNotificationsIcon
-                    width=".7em"
-                    height=".7em"
+                    fontSize={"inherit"}
                     sx={{
+                      fontSize: "17px",
                       color: "#00acba",
                     }}
                   />

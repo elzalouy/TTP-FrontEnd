@@ -54,17 +54,19 @@ const NotificationFilter = (props: Props) => {
   };
 
   return (
-    <Grid container justifyContent={"space-around"}>
-      <Grid item xs={4}>
+    <Grid container>
+      <Grid item xs={2} marginRight={3}>
         <SelectInput
+          label="Client Name: "
           selectText=""
           options={options}
           handleChange={handleChangeFilter}
           selectValue={filter.clientName}
         />
       </Grid>
-      <Grid item xs={7}>
+      <Grid item xs={2} marginRight={3}>
         <SelectInput
+          label="Sort By:"
           options={options}
           handleChange={handleChangeFilter}
           selectValue={filter.projectName}
