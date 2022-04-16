@@ -195,6 +195,7 @@
   width: 100%;
   display: flex;
 }
+
 .add-subcategory {
   display: inline-flex;
   align-items: center;
@@ -209,6 +210,7 @@
   background-color: #ffc500;
   font-weight: bold;
 }
+
 .names-container {
   display: flex;
   flex-wrap: wrap;
@@ -262,6 +264,7 @@ tr {
   border-style: solid;
   border-collapse: collapse;
 }
+
 tr {
   border: 0px solid;
   border-bottom: 1px solid rgb(197, 197, 197);
@@ -270,6 +273,7 @@ tr {
 table.allTask-table th {
   text-align: left;
 }
+
 table.allTask-table td.deleteTd {
   text-align: center;
 }
@@ -279,6 +283,7 @@ table.allTask-table td.deleteTd {
 .MuiStepIcon-root.Mui-active {
   color: #00acba !important;
 }
+
 .MuiStepIcon-root.Mui-completed {
   color: #00acba !important;
 }
@@ -321,6 +326,7 @@ tr {
   border-style: solid;
   border-collapse: collapse;
 }
+
 tr {
   border: 0px solid;
   border-bottom: 1px solid rgb(197, 197, 197);
@@ -330,6 +336,7 @@ tr {
 table.allTeam-table th {
   text-align: left;
 }
+
 table.allTeam-table td.deleteTd {
   text-align: center;
 }
@@ -341,8 +348,9 @@ table.allTeam-table td.deleteTd {
   align-items: center;
   border-radius: 20px;
   background-color: #ededed;
-  height: 100%;
+  min-height: 11em;
 }
+
 .add-new-cat {
   cursor: pointer;
   display: flex;
@@ -357,20 +365,22 @@ table.allTeam-table td.deleteTd {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
 } */
-.add-new-cat > img {
-  width: 22px;
-  height: 22px;
-}
-.add-new-cat > p {
-  padding: 5px;
-  font-weight: 600;
-}
-.add-new-dep > img {
+.add-new-cat>img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-dep > p {
+.add-new-cat>p {
+  padding: 5px;
+  font-weight: 600;
+}
+
+.add-new-dep>img {
+  width: 22px;
+  height: 22px;
+}
+
+.add-new-dep>p {
   padding: 5px;
   font-weight: 600;
 }
@@ -379,6 +389,7 @@ table.allTeam-table td.deleteTd {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }

@@ -3,13 +3,17 @@
   background-color: #fafafb;
   min-height: 100vh;
 }
+
 .departments-title {
   margin: 10px 0;
 }
 
 .all-departments {
   margin: 20px 0;
+  display: grid;
   padding: 15px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
   border: 2px solid rgba(128, 128, 128, 0.3);
   border-radius: 20px;
 }
@@ -17,20 +21,17 @@
 .department-Card {
   background-color: #e1edf6;
   border-radius: 20px;
-  padding-inline: 20px;
-  padding-top: 10px;
+  padding: 15px;
   overflow: hidden;
-  height: 100%;
 }
-.department-Card:hover {
-  box-shadow: 0px 6px 20px #0000001a;
-}
+
 .dp-card-header {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
   color: #0079bf;
 }
+
 .department-option {
   display: flex;
   justify-content: space-around;
@@ -43,48 +44,52 @@
   background-color: #ffffff;
   position: relative;
 }
+
 .department-option select {
   padding-top: 3px;
 }
+
 .department-option label {
   width: inherit;
   color: #777;
   padding: 2px 8px 0;
 }
+
 .tasks-count {
   display: flex;
-  margin-top: 14px;
-  margin-bottom: 10px;
+  align-items: center;
+  margin: 10px 0;
   color: #0079bf;
-  padding-left: 5px;
 }
-.tasks-count > img {
+
+.tasks-count>img {
   margin-right: 5px;
+
 }
+
 .teams {
-  width: 100%;
+  flex-wrap: wrap;
+  height: 6em;
+  overflow: auto;
   display: flex;
-  overflow-x: scroll;
-  white-space: nowrap;
-  padding-top: 5px;
+  justify-content: flex-start;
 }
 
 .teamName-badge {
   border-radius: 5px;
   color: rgb(75, 75, 75);
+  width: auto;
   padding: 1%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-right: 10px;
+  margin: 5px;
   border: 1.5px solid #1e89c750;
+  height: fit-content;
+  margin-top: 1em;
 }
 
 .counter-container {
-  display: inline-flex;
+  display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
-  margin: 12px 0 10px 0;
 }
 
 .counter-title {
@@ -94,15 +99,18 @@
 }
 
 .hrVertical {
-  height: 2rem;
+  height: 2.5rem;
+  border: 0.2px solid #88888885;
 }
 
 .InProgress {
   flex: 1;
+  padding: 2%;
 }
 
 .Done {
   flex: 1;
+  padding: 2%;
 }
 
 .department-tools {
@@ -149,6 +157,8 @@ select.select-filter {
   border-radius: 10px;
   font-weight: bold;
 }
+
 .teams::-webkit-scrollbar {
-  height: 0px; /* width of the entire scrollbar */
+  height: 0px;
+  /* width of the entire scrollbar */
 }

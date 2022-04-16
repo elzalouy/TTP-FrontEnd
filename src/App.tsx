@@ -6,7 +6,8 @@ import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
-import departments from "./pages/Departments/departments";
+// import AllPopsPage from "./pages/AllPopsPage";
+import Departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
@@ -71,7 +72,7 @@ const App: React.FC = (props) => {
         <LoggedInContainer
           path="/Departments"
           key="/departments"
-          component={departments}
+          component={Departments}
         />
         <LoggedInContainer
           path="/Categories"
