@@ -11,11 +11,12 @@ const DrawerItem: React.FC = (props: any) => {
     <ListItemButton
       key={props.key}
       sx={{
-        minHeight: 48,
-        marginX: 1,
-        marginY: 1,
+        minHeight: 55,
+        marginX: props.open ? 1 : 0.8,
+        marginY: 0.5,
         borderRadius: 2,
         justifyContent: props.open ? "initial" : "center",
+        ":hover": { "& .MuiListItemText-root": { color: "white" } },
       }}
       onClick={() => props.onClick()}
       className={props.select === props.path ? "active" : ""}
@@ -31,8 +32,7 @@ const DrawerItem: React.FC = (props: any) => {
       </ListItemIcon>
       <ListItemText
         sx={{
-          color: "#808191",
-          ":hover": { color: "white" },
+          color: props.select === props.path ? "white" : "#808191",
           opacity: props.open ? 1 : 0,
         }}
       >

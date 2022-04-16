@@ -96,9 +96,12 @@ const AddNewTeam: React.FC<Props> = () => {
             setAllTeam([...AllTeam, Team]);
             setTeam({ name: "", department: "" });
           }}
-          disabled={AllTeam.length === 1}
+          disabled={AllTeam.length === 1 || Team.department === ""}
           style={{
-            background: AllTeam.length === 1 ? "#ccc" : "#ffc500",
+            background:
+              AllTeam.length === 1 || Team.department === ""
+                ? "#ccc"
+                : "#ffc500",
           }}
         >
           Add

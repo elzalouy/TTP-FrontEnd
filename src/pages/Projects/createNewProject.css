@@ -20,8 +20,8 @@
 
 .inputs-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
+  /* grid-template-columns: 1fr 1fr; */
+  /* grid-gap: 20px; */
 }
 
 .select-project {
@@ -38,8 +38,7 @@
   font-size: initial;
   padding: 11px;
   border-radius: 5px;
-  border: solid 0.5px;
-  border-color: #b4b6c4;
+  border: solid 0.5px #b4b6c4;
   color: #b4b6c4;
   margin: 0;
   margin-top: 5px;

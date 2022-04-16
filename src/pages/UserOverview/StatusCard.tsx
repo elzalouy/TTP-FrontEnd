@@ -10,17 +10,17 @@ interface UserStatusProps {
   count: string;
   percent: string;
   percentColor: string;
+  user: string;
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
   return (
     <Grid
       xs={12}
-      sm={4}
-      md={4}
-      lg={4}
-      paddingRight={3.5}
-      paddingBottom={2}
+      sm={props.user === "project manager" ? 4 : 3}
+      md={props.user === "project manager" ? 4 : 3}
+      lg={props.user === "project manager" ? 4 : 3}
+      paddingRight={props.user === "project manager" ? "4%" : "1%"}
       item
     >
       <Card
@@ -31,7 +31,12 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           height: "100%",
         }}
       >
-        <CardContent>
+        <CardContent
+          sx={{
+            paddingX: props.user === "project manager" ? "10%" : "6%",
+            paddingY: "10%",
+          }}
+        >
           <Box
             width={40}
             height={40}
@@ -42,7 +47,12 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           >
             <Icon></Icon>
           </Box>
-          <Typography color={"#B2B3BD"} variant="h5" paddingTop={3.5}>
+          <Typography
+            color={"#B2B3BD"}
+            variant="h5"
+            width={"100%"}
+            paddingTop={3.5}
+          >
             {props.title}
           </Typography>
           <Typography

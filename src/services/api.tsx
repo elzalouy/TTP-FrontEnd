@@ -1,9 +1,8 @@
 import { create } from "apisauce";
-import { API_BASE_URL, API_DEV_URL } from "./api.json";
-// import R from 'reactotron-react-native';
+import apiUrl from "./api.json";
 
 const api = create({
-  baseURL: API_DEV_URL,
+  baseURL: apiUrl.API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 export const setAuthToken = (token: string) => {

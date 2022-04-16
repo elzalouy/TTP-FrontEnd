@@ -11,13 +11,14 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
-import SearchBox from "../../components/SearchBox";
-import Select from "../../coreUI/usable-component/Select";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
+import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
   filterTasks,
   getAllProjects,
@@ -52,6 +53,7 @@ const Tasks: React.FC = (props: any) => {
   };
   return (
     <Grid
+      bgcolor={"#FAFAFB"}
       justifyContent={"flex-start"}
       alignItems="flex-start"
       container
@@ -64,41 +66,38 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Controller
-            name="sort"
             control={control}
+            name="deadline"
             render={(props) => (
-              <Select
-                name="Due Date"
-                labelValue="Due Date: "
+              <SelectInput
+                label="Due Date: "
                 {...props}
                 options={[
                   { id: "deadline", text: "Deadline", value: "deadline" },
                 ]}
-                placeholder="Project Managers"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box className="tasks-option">
             <Controller
               name="status"
               control={control}
               render={(props) => (
-                <Select
-                  name="status"
-                  labelValue="Status: "
+                <SelectInput
+                  label="Status: "
                   {...props}
                   options={[
                     { id: "", value: "", text: "All" },
@@ -112,44 +111,44 @@ const Tasks: React.FC = (props: any) => {
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
-                  placeholder="Project Managers: "
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={props.field.value}
+                  selectText={props.field.value}
                 />
               )}
             />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box className="tasks-option">
             <Controller
               name="projectId"
               control={control}
               render={(props) => (
-                <Select
-                  name="projectId"
-                  labelValue={"Project: "}
+                <SelectInput
+                  label={"Project: "}
                   {...props}
-                  options={projects.projects?.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.name,
-                    };
-                  })}
-                  placeholder="Project"
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    ...projects.projects?.map((item) => {
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    }),
+                  ]}
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={
+                  selectText={
                     projects?.projects?.find(
                       (val) => val._id === props.field.value
                     )?.name
@@ -159,44 +158,40 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
-          <Box className="tasks-option">
-            <Controller
-              name="memberId"
-              control={control}
-              render={(props) => (
-                <Select
-                  name="Members"
-                  labelValue={"Members : "}
-                  {...props}
-                  options={techMembers.techMembers.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.name,
-                    };
-                  })}
-                  placeholder="Members"
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectLabel={
-                    techMembers.techMembers.find(
-                      (val) => val._id === props.field.value
-                    )?.name
-                  }
-                />
-              )}
-            />
-          </Box>
+        <Grid marginX={0.5} item>
+          <Controller
+            name="memberId"
+            control={control}
+            render={(props) => (
+              <SelectInput
+                label={"Members:"}
+                {...props}
+                options={techMembers.techMembers.map((item) => {
+                  return {
+                    id: item._id,
+                    value: item._id,
+                    text: item.name,
+                  };
+                })}
+                handleChange={(e) => {
+                  e.preventDefault();
+                  props.field.onChange(e);
+                  onHandleChange(e);
+                }}
+                selectValue={props.field.value}
+                selectText={
+                  techMembers.techMembers.find(
+                    (val) => val._id === props.field.value
+                  )?.name
+                }
+              />
+            )}
+          />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <DeleteTask />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={0.5} item>
           <Box
             style={{
               backgroundColor: "#fafafa",
@@ -204,7 +199,7 @@ const Tasks: React.FC = (props: any) => {
               marginLeft: "20px",
             }}
           >
-            {/* <SearchBox></SearchBox> */}
+            <SearchBox search="" handleSearchChange={() => null}></SearchBox>
           </Box>
         </Grid>
       </Grid>
@@ -227,162 +222,10 @@ const Tasks: React.FC = (props: any) => {
       ) : (
         <>
           <Paper className="tsk-container">
-            <TableContainer sx={{ borderRadius: 2 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "20px",
-                        margin: "0px",
-                        padding: "0px 0px 0px 8px",
-                      }}
-                    >
-                      <Checkbox className="col-grey" color="primary" />
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "30px",
-                        margin: "0px",
-                        padding: "0px 8px 0px 0px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Status
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "300px",
-                        margin: "0px",
-                        padding: "0px 0px 0px 15px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Task Name
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "300px",
-                        margin: "0px",
-                        padding: "0px 0px 0px 8px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Project Name
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "250px",
-                        margin: "0px",
-                        paddingRight: "15px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Brief Date
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        color: "#334D6E",
-                        width: "160px",
-                        margin: "0px",
-                        padding: "0px 15px 0px 8px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Deadline
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {projects?.allTasks &&
-                    projects?.allTasks?.map((item) => {
-                      const { _id, status, name, projectId, start, deadline } =
-                        item;
-                      return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
-                          <TableCell
-                            style={{
-                              color: "#334D6E",
-                              width: "20px",
-                              margin: "0px",
-                              padding: "0px 8px 0px 8px",
-                            }}
-                          >
-                            <Checkbox className="col-grey" color="primary" />
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            style={{
-                              color: "#334D6E",
-                              width: "30px",
-                              margin: "0px",
-                              padding: "0px 8px 0px 0px",
-                            }}
-                          >
-                            <div
-                              className={
-                                status === "inProgress"
-                                  ? "sharedStatus"
-                                  : status === "delivered on time"
-                                  ? "endedStatus"
-                                  : "doneStatus"
-                              }
-                            >
-                              {status}
-                            </div>
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            style={{
-                              color: "#334D6E",
-                              width: "300px",
-                              margin: "0px",
-                              padding: "0px 0px 0px 15px",
-                            }}
-                          >
-                            {name}
-                          </TableCell>
-                          <TableCell
-                            style={{
-                              color: "#334D6E",
-                              width: "300px",
-                              margin: "0px",
-                              padding: "0px 0px 0px 8px",
-                            }}
-                            align="left"
-                          >
-                            {
-                              projects?.projects?.find(
-                                (project) => project._id === projectId
-                              )?.name
-                            }
-                          </TableCell>
-                          {/* <TableCell align="left">{version}</TableCell> */}
-                          <TableCell align="left">
-                            {new Date(start).toDateString()}
-                          </TableCell>
-                          <TableCell
-                            style={{
-                              color: "#334D6E",
-                              width: "160px",
-                              margin: "0px",
-                              padding: "0px 15px 0px 8px",
-                            }}
-                            align="left"
-                          >
-                            {new Date(deadline).toDateString()}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <TasksTable
+              projects={projects.projects}
+              tasks={projects.allTasks}
+            />
           </Paper>
         </>
       )}

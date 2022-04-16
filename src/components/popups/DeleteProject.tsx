@@ -4,22 +4,15 @@ import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
 
-type Props = {};
+type Props = {
+  show: string;
+  setShow: any;
+};
 
-const DeleteProject: React.FC<Props> = () => {
-  const [Show, setShow] = useState<string>("none");
-
+const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Delete Project
-      </button>
-      <SmallPopUp show={Show}>
+      <SmallPopUp show={show}>
         <p className="warning-text">
           Are you sure you want to delete this project?
         </p>

@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
-import "../Departments/departments.css";
 import SearchBar from "../Category/SearchBar";
 import Box from "@mui/material/Box";
-import ProjectCard from "../../components/Projects/ProjectCard";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../redux/hooks";
 import {
   selectDoneProjects,
   selectInprogressProjects,
-  selectLateProjects,
   selectLoading,
   filterProjects,
+  getAllProjects,
 } from "../../redux/Projects";
 import { selectPMs } from "../../redux/PM";
-import { selectAllMembers } from "../../redux/techMember";
 import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import SelectInput from "../../coreUI/usable-component/SelectInput";
 import { Grid, Typography } from "@mui/material";
-import Select from "../../coreUI/usable-component/Select";
+import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
+import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -34,17 +32,24 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
-  const lateProjects = useAppSelector(selectLateProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
+  const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const { register, watch, control } = useForm();
   const onHandleChange = (e: any) => {
+    console.log(e);
     let filter = watch();
     dispatch(filterProjects(filter));
   };
+  useEffect(() => {
+    dispatch(getAllProjects(null));
+  }, []);
   return (
     <Grid
       width={"100%"}
+      minHeight={"100%"}
       justifyContent={"center"}
       alignItems={"center"}
       container
@@ -59,76 +64,70 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         </Grid>
         <Grid marginX={1} item>
           <Box
-            justifyContent={"center"}
-            alignItems="center"
+            textAlign={"center"}
             sx={{ bgcolor: "white", borderRadius: 4 }}
-            width="auto"
-            paddingX={1}
-            paddingY={1.1}
+            width={38}
+            height={38}
+            paddingTop={1.2}
           >
             <img src={IMAGES.filtericon} alt="FILTER" />
           </Box>
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
-            name="sort"
+            name="deadline"
             control={control}
             render={(props) => (
-              <Select
-                name="Due Date"
-                labelValue="Due Date: "
+              <SelectInput
                 {...props}
+                label="Due Date: "
                 options={[
                   { id: "deadline", text: "Deadline", value: "deadline" },
                 ]}
-                placeholder="Project Managers"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="projectManager"
             control={control}
             render={(props) => (
-              <Select
-                name="projectManager"
-                labelValue="Project Manager: "
+              <SelectInput
+                label="Project Manager: "
                 {...props}
                 options={PMs.map((item) => {
                   return { id: item._id, value: item._id, text: item.name };
                 })}
-                placeholder="Project Managers: "
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   PMs?.find((val) => val._id === props.field.value)?.name
                 }
               />
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="clientId"
             control={control}
             render={(props) => (
-              <Select
-                name="clientId"
-                labelValue={"Client: "}
+              <SelectInput
+                label={"Client: "}
                 {...props}
                 options={clients.map((item) => {
                   return {
@@ -137,14 +136,13 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     text: item.clientName,
                   };
                 })}
-                placeholder="Client"
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
                 selectValue={props.field.value}
-                selectLabel={
+                selectText={
                   clients.find((val) => val._id === props.field.value)
                     ?.clientName
                 }
@@ -152,15 +150,14 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.2} item>
+        <Grid marginX={1} item>
           <Controller
             name="projectStatus"
             control={control}
             render={(props) => (
               <>
-                <Select
-                  name="status"
-                  labelValue={"Status"}
+                <SelectInput
+                  label={"Status"}
                   {...props}
                   options={[
                     {
@@ -180,24 +177,22 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                       text: "inProgress",
                     },
                   ]}
-                  placeholder="Status"
                   handleChange={(e) => {
                     e.preventDefault();
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
                   selectValue={props.field.value}
-                  selectLabel={props.field.value}
+                  selectText={props.field.value}
                 />
               </>
             )}
           />
         </Grid>
-        <Grid xs={2.5} marginX={0.2} item>
+        <Grid xs={2.5} marginX={1} item>
           <SearchBar />
         </Grid>
       </Grid>
-
       <Box
         sx={{
           mt: 2,
@@ -209,12 +204,44 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         {loading === false ? (
           <>
             <CreateNewProject />
-            <ProjectCard
-              {...props}
-              status={"In progress"}
-              Projects={inProgressProjects}
-            />
-            <ProjectCard {...props} status={"Done"} Projects={doneProjects} />
+            <TableBox
+              title={"In Progress"}
+              outTitled={false}
+              expanded={expanded}
+              setExpanded={setExpanded}
+              bgColor={backgroundColor[0]}
+            >
+              <Box id="project-title">
+                <ProjectsTable
+                  align="center"
+                  textSize="medium"
+                  status={"In progress"}
+                  expanded={expanded}
+                  projects={inProgressProjects}
+                  projectManagers={PMs}
+                  {...props}
+                />
+              </Box>
+            </TableBox>
+            <TableBox
+              title={"Done"}
+              outTitled={false}
+              expanded={doneExpanded}
+              setExpanded={setDoneExpanded}
+              bgColor={backgroundColor[1]}
+            >
+              <Box id="project-title">
+                <ProjectsTable
+                  align="center"
+                  textSize="medium"
+                  status={"Done"}
+                  expanded={doneExpanded}
+                  projects={doneProjects}
+                  projectManagers={PMs}
+                  {...props}
+                />
+              </Box>
+            </TableBox>
           </>
         ) : (
           <Box

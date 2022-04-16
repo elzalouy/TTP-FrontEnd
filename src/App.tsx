@@ -1,21 +1,19 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch, withRouter } from "react-router-dom";
 import "./App.css";
+import React, { useEffect } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
-import RestPassword from "./pages/AuthPage/rest";
-
-import tasks from "./pages/tasks/tasks";
+import ResetPassword from "./pages/AuthPage/reset";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
-import AllPopsPage from "./pages/AllPopsPage";
+// import AllPopsPage from "./pages/AllPopsPage";
 import Departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
 import Clients from "./pages/Clients/clients";
-// import Overview from "./pages/Overview/Overview";
 import ProjectManagers from "./pages/projectManagers/projectManagers";
+import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
@@ -25,10 +23,12 @@ import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
 import { getAllProjects } from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getAllMembers } from "./redux/techMember";
-import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import OverView from "./pages/UserOverview/OverView";
+import "react-toastify/dist/ReactToastify.css";
+import PopUps from "./pages/PopUps";
+import { Box } from "@mui/system";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -42,15 +42,16 @@ const App: React.FC = (props) => {
     dispatch(getAllMembers(null));
   }, []);
   return (
-    <div className="main-container">
+    <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />
+      <PopUps />
       <Switch>
         <Route key="/path" exact path="/" component={Login} />
         <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
-          path="/RestPassword"
-          component={RestPassword}
+          path="/ResetPassword"
+          component={ResetPassword}
         />
         <LoggedInContainer
           key="/projects"
@@ -93,9 +94,11 @@ const App: React.FC = (props) => {
           component={OverView}
           key="/overview"
         />
+        <LoggedInContainer path="/404" component={NotFound} key="/notfound" />
+        <Redirect from="*" to="/404" key="404" />
       </Switch>
-    </div>
+    </Box>
   );
 };
 
-export default withRouter(App);
+export default App;

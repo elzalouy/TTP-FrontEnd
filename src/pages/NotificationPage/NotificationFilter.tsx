@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { SelectChangeEvent } from "@mui/material/Select";
 import React, { useState } from "react";
-import SelectInput from "../../coreUI/usable-component/SelectInput";
+import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 
 type Props = {};
 const options: { id: string; value: string; text: string }[] = [
@@ -57,62 +57,18 @@ const NotificationFilter = (props: Props) => {
     <Grid container justifyContent={"space-around"}>
       <Grid item xs={4}>
         <SelectInput
+          selectText=""
           options={options}
           handleChange={handleChangeFilter}
-          name="clientName"
           selectValue={filter.clientName}
-          placeholder="Client name"
-          boxStyle={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-          selectStyle={{
-            borderRadius: ".6em",
-            borderColor: "#eeeeee",
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#eeeeee",
-            },
-            "&.Mui-focused ": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-                "&:hover": {
-                  borderColor: "#eeeeee",
-                },
-              },
-            },
-          }}
         />
       </Grid>
       <Grid item xs={7}>
         <SelectInput
           options={options}
           handleChange={handleChangeFilter}
-          name="projectName"
           selectValue={filter.projectName}
-          placeholder={
-            <>
-              <span style={{ color: "#827e7e" }}>Sort by:</span> Project name
-            </>
-          }
-          boxStyle={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-          selectStyle={{
-            borderRadius: ".6em",
-            borderColor: "#eeeeee",
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#eeeeee",
-            },
-            "&.Mui-focused ": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#eeeeee",
-                "&:hover": {
-                  borderColor: "#eeeeee",
-                },
-              },
-            },
-          }}
+          selectText={filter.projectName}
         />
       </Grid>
     </Grid>

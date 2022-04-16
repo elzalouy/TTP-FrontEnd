@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Route } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
+import Bar from "./partials/TopBar/AppBar";
 
 interface Props {
   component: React.ReactNode;
@@ -18,10 +19,11 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => (
-          <>
+          <div key={rest.location.key} style={{ display: "flex" }}>
             <Sidebar {...rest} {...props} />
+            <Bar {...props} {...rest} />
             <Component key={rest?.location?.key} {...props} {...rest} />
-          </>
+          </div>
         )}
       />
     </>

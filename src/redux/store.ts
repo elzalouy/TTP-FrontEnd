@@ -6,6 +6,7 @@ import departmentsSlice from "./Departments/departments.slice";
 import pmSlice from "./PM/pm.slice";
 import projectsSlice from "./Projects/projects.slice";
 import techMembersSlice from "./techMember/techMembers.slice";
+import UISlice from "./Ui/UI.slice";
 const reducers = combineReducers({
   projects: projectsSlice,
   clients: clientsSlice,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   departments: departmentsSlice,
   categories: categoriesSlice,
   techMembers: techMembersSlice,
+  Ui: UISlice,
 });
 const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
 export type AppDispatch = typeof store.dispatch;

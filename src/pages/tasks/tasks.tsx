@@ -3,7 +3,7 @@ import "./tasks.css";
 import IMAGES from "../../assets/img/index";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
-import SearchBox from "../../components/SearchBox";
+import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 
 type Props = {};
 

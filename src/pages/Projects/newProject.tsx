@@ -50,21 +50,6 @@ const CreateNewProject: React.FC<Props> = () => {
           }}
         >
           Not started yet
-          {expanded ? (
-            <ArrowDropUpIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(false);
-              }}
-            ></ArrowDropUpIcon>
-          ) : (
-            <ArrowDropDownIcon
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setExpanded(true);
-              }}
-            ></ArrowDropDownIcon>
-          )}
         </Box>
         <Box
           onClick={() => {
@@ -81,10 +66,15 @@ const CreateNewProject: React.FC<Props> = () => {
             py: 0.6,
           }}
         >
-          <img src={IMAGES.plus} alt="add" height={25} style={{ marginRight: 12 }} />
-          <h3 style={{ color: "black", fontWeight: "bold" }}>
+          <img
+            src={IMAGES.plus}
+            alt="add"
+            height={20}
+            style={{ marginRight: 12 }}
+          />
+          <h5 style={{ color: "black", fontWeight: "bold" }}>
             Create new project
-          </h3>
+          </h5>
         </Box>
       </Box>
       <NewProjectPopUp setShow={setShow} />
