@@ -1,6 +1,10 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { deflate } from "zlib";
-import { getAllMembers, getTechMembersByDeptId } from "./techMembers.actions";
+import {
+  getAllMembers,
+  getTechMembersByDeptId,
+  createTeam,
+} from "./techMembers.actions";
 import { TechMembersInterface, techMembersState } from "./techMembers.state";
 
 const techMembersSlice: Slice<TechMembersInterface> = createSlice({
@@ -31,6 +35,16 @@ const techMembersSlice: Slice<TechMembersInterface> = createSlice({
     builder.addCase(getAllMembers.fulfilled, (state, action) => {
       state.loading = false;
       state.techMembers = action.payload;
+    });
+    builder.addCase(createTeam.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createTeam.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createTeam.fulfilled, (state, action) => {
+      state.loading = false;
+      state.techMembers = [...state.techMembers, action.payload];
     });
   },
 });

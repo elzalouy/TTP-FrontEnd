@@ -3,6 +3,7 @@
   background-color: #fafafb;
   min-height: 100vh;
 }
+
 .departments-title {
   margin: 10px 0;
 }
@@ -30,6 +31,7 @@
   font-weight: bold;
   color: #0079bf;
 }
+
 .department-option {
   display: flex;
   justify-content: space-around;
@@ -42,37 +44,46 @@
   background-color: #ffffff;
   position: relative;
 }
+
 .department-option select {
   padding-top: 3px;
 }
+
 .department-option label {
   width: inherit;
   color: #777;
   padding: 2px 8px 0;
 }
+
 .tasks-count {
   display: flex;
   align-items: center;
   margin: 10px 0;
   color: #0079bf;
 }
-.tasks-count > img {
+
+.tasks-count>img {
   margin-right: 5px;
+
 }
+
 .teams {
-  width: 100%;
+  flex-wrap: wrap;
+  height: 6em;
+  overflow: auto;
   display: flex;
-  overflow-x: scroll;
-  white-space: nowrap;
+  justify-content: flex-start;
 }
 
 .teamName-badge {
   border-radius: 5px;
   color: rgb(75, 75, 75);
-  width: 100px;
+  width: auto;
   padding: 1%;
   margin: 5px;
   border: 1.5px solid #1e89c750;
+  height: fit-content;
+  margin-top: 1em;
 }
 
 .counter-container {
@@ -146,6 +157,8 @@ select.select-filter {
   border-radius: 10px;
   font-weight: bold;
 }
+
 .teams::-webkit-scrollbar {
-  height: 0px; /* width of the entire scrollbar */
+  height: 0px;
+  /* width of the entire scrollbar */
 }

@@ -3,13 +3,82 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { useState } from "react";
-
+import { color } from "@mui/system";
+import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
+import { useAppSelector } from "../../redux/hooks";
+import { useDispatch } from "react-redux";
+import { createDepartment } from "../../redux/Departments";
 type Props = {};
 
+const colors: string[] = [
+  "blue",
+  "orange",
+  "green",
+  "red",
+  "purple",
+  "pink",
+  "lime",
+  "sky",
+  "grey",
+];
+
 const CreateNewDepartment: React.FC<Props> = () => {
+  const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]);
+  const [formData, setFormData] = useState<{
+    name: string;
+    color: string;
+    teams: { _id: string; name: string }[];
+    mainBoard: boolean;
+    totalInProgress: number;
+    totalDone: number;
+  }>({
+    name: "",
+    color: "",
+    teams: [],
+    mainBoard: false,
+    totalInProgress: 0,
+    totalDone: 0,
+  });
+  const { name, color, teams, mainBoard } = formData;
+  let teamsData = useAppSelector(selectAllMembers);
+  const handleSelectTeam = () => {
+    // let value = e.target.value;
+    let teamData = Data.split(",");
+    if (!Names.includes(teamData[1])) {
+      setNames([...Names, teamData[1]]);
+      setFormData({
+        ...formData,
+        teams: [...teams, { _id: teamData[0], name: teamData[1] }],
+      });
+      setData("");
+    }
+  };
+
+  const handleRemoveTeam = (index: number) => {
+    Names.splice(index, 1);
+    setNames([...Names]);
+    setFormData({
+      ...formData,
+      teams: teams.splice(index, 1),
+    });
+  };
+
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    console.log({ formData });
+    await dispatch(createDepartment(formData));
+    setShow("none");
+  };
   return (
     <>
       <div
@@ -42,13 +111,18 @@ const CreateNewDepartment: React.FC<Props> = () => {
           className="popup-input"
           type="text"
           placeholder="Department name"
+          name="name"
+          onChange={handleChange}
+          value={name}
         />
 
         <label className="popup-label">Color</label>
-        <select className="popup-select">
-          <option value="#FFFFFF">#FFFFFF</option>
-          <option value="1">option 2 </option>
-          <option value="2">option 3</option>
+        <select className="popup-select" name="color" onChange={handleChange}>
+          {colors.map((item: string, i: number) => (
+            <option key={i} value={item}>
+              {item}
+            </option>
+          ))}
         </select>
 
         <label className="popup-label">Teams</label>
@@ -56,18 +130,30 @@ const CreateNewDepartment: React.FC<Props> = () => {
           <select
             className="popup-select"
             onChange={(e) => {
-              setData(e.target.value);
+              if (e.target.value !== "") {
+                setData(e.target.value);
+              }
             }}
+            value={Data}
           >
-            <option value="Al-shaqran team">Al-shaqran team</option>
-            <option value="1">option 2 </option>
-            <option value="2">option 3</option>
+            <option value="" selected>
+              Select Team
+            </option>
+            {teamsData?.techMembers?.map((team: any) => (
+              <option key={team._id} value={`${team._id},${team.name}`}>
+                {team.name}
+              </option>
+            ))}
           </select>
 
           <button
             className="orange-btn"
             onClick={() => {
-              setNames([...Names, Data]);
+              handleSelectTeam();
+            }}
+            disabled={Data === ""}
+            style={{
+              background: Data !== "" ? "#ffc500" : "#b4b6c4",
             }}
           >
             Add
@@ -76,7 +162,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <div className="names-container">
           {Names.map((el, index) => {
             return (
-              <div className="team-name-badge">
+              <div key={index} className="team-name-badge">
                 <p className="name-of-badge">{el}</p>
                 <img
                   src={IMAGES.closeicon}
@@ -85,8 +171,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
                   height="9px"
                   className="close-badge"
                   onClick={() => {
-                    Names.splice(index, 1);
-                    setNames([...Names]);
+                    handleRemoveTeam(index);
                   }}
                 />
               </div>
@@ -104,7 +189,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => { }}>
+          <button className="controllers-done" onClick={() => handleSubmit()}>
             Done
           </button>
         </div>

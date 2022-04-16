@@ -3,6 +3,10 @@ import "./popups-style.css";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
+import { useAppSelector } from "../../redux/hooks";
+import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
+import { useDispatch } from "react-redux";
+import { createTeam } from "../../redux/techMember";
 
 type Props = {};
 
@@ -15,7 +19,23 @@ const AddNewTeam: React.FC<Props> = () => {
   const [Show, setShow] = useState("none");
   const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
-
+  const dispatch = useDispatch();
+  const departments = useAppSelector(selectAllDepartments);
+  const handleAddTeam = async () => {
+    for (let i = 0; i < AllTeam.length; i++) {
+      let depData = AllTeam[i].department.split(",");
+      const data = {
+        name: AllTeam[i].name,
+        departmentId: depData[0],
+        boardId: depData[1],
+      };
+      if (AllTeam[i]) {
+        await dispatch(createTeam(data));
+      }
+    }
+    setTeam({ name: "", department: "" });
+    setShow("none");
+  };
   return (
     <>
       <button
@@ -27,7 +47,7 @@ const AddNewTeam: React.FC<Props> = () => {
         Add new team
       </button>
 
-      <PopUp show={Show} minWidthSize="30vw" >
+      <PopUp show={Show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"
@@ -49,8 +69,7 @@ const AddNewTeam: React.FC<Props> = () => {
           type="text"
           placeholder="EX: Al-shaqran"
           onChange={(e) => {
-            Team.name = e.target.value;
-            setTeam({ ...Team });
+            setTeam({ ...Team, name: e.target.value });
           }}
           value={Team.name}
         />
@@ -59,13 +78,16 @@ const AddNewTeam: React.FC<Props> = () => {
         <select
           className="popup-select"
           onChange={(e) => {
-            Team.department = e.target.value;
-            setTeam({ ...Team });
+            console.log(e.target.value);
+            setTeam({ ...Team, department: e.target.value });
           }}
         >
-          <option value="Design">Design </option>
-          <option value="1">option 2 </option>
-          <option value="2">option 3</option>
+          <option value="">Select Department</option>
+          {departments?.map((dep: any) => (
+            <option key={dep._id} value={`${dep._id},${dep.boardId}`}>
+              {dep.name}{" "}
+            </option>
+          ))}
         </select>
 
         <button
@@ -73,6 +95,10 @@ const AddNewTeam: React.FC<Props> = () => {
           onClick={() => {
             setAllTeam([...AllTeam, Team]);
             setTeam({ name: "", department: "" });
+          }}
+          disabled={AllTeam.length === 1}
+          style={{
+            background: AllTeam.length === 1 ? "#ccc" : "#ffc500",
           }}
         >
           Add
@@ -86,7 +112,7 @@ const AddNewTeam: React.FC<Props> = () => {
           </tr>
           {AllTeam.map((el, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{el.name}</td>
                 <td>Ust ID</td>
                 <td>
@@ -113,7 +139,7 @@ const AddNewTeam: React.FC<Props> = () => {
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => {}}>
+          <button className="controllers-done" onClick={handleAddTeam}>
             Done
           </button>
         </div>

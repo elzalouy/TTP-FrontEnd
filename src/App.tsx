@@ -9,7 +9,7 @@ import tasks from "./pages/tasks/tasks";
 import TasksListView from "./pages/TasksListView/TasksListView";
 import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
 import AllPopsPage from "./pages/AllPopsPage";
-import departments from "./pages/Departments/departments";
+import Departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
@@ -71,7 +71,7 @@ const App: React.FC = (props) => {
         <LoggedInContainer
           path="/Departments"
           key="/departments"
-          component={departments}
+          component={Departments}
         />
         <LoggedInContainer
           path="/Categories"

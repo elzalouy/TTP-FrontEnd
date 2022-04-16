@@ -1,47 +1,61 @@
 import React from "react";
 import IMAGES from "../../assets/img";
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import { Department } from "../../redux/Departments";
 
-type Props = { backgroundColor: string, fontColor: string };
-const departmentCard: React.FC<Props> = ({ backgroundColor, fontColor }) => {
+type Props = {
+  backgroundColor: string;
+  fontColor: string;
+  department: Department;
+};
+const departmentCard: React.FC<Props> = ({
+  backgroundColor,
+  fontColor,
+  department,
+}) => {
   return (
-
-    <div className="department-Card" style={{ backgroundColor: backgroundColor, }}>
+    <div
+      className="department-Card"
+      style={{ backgroundColor: backgroundColor }}
+    >
       <div className="dp-card-header" style={{ color: fontColor }}>
-        <h2>Department name</h2>
+        <h2>{department.name}</h2>
         <p>
           <img src={IMAGES.more} alt="more" />
         </p>
       </div>
-      <div className="tasks-count" style={{ color: fontColor }}>
+      {/* <div className="tasks-count" style={{ color: fontColor }}>
         <CheckBoxOutlinedIcon
-          sx={{ color: fontColor, fontSize: '16px' }}
-        ></CheckBoxOutlinedIcon>4/5
-      </div>
+          sx={{ color: fontColor, fontSize: "16px" }}
+        ></CheckBoxOutlinedIcon>
+        4/5
+      </div> */}
       <div className="teams">
-        <div className="teamName-badge" style={{ borderColor: fontColor }}>Team name 1</div>
-        <div className="teamName-badge" style={{ borderColor: fontColor }}>Team name 2</div>
-        <div className="teamName-badge" style={{ borderColor: fontColor }}>Team name 2</div>
-        <div className="teamName-badge" style={{ borderColor: fontColor }}>Team name 2</div>
-        <div className="teamName-badge" style={{ borderColor: fontColor }}>Team name 2</div>
-
+        {department?.teamsId?.map((team: any) => (
+          <div
+            className="teamName-badge"
+            key={team._id}
+            style={{ borderColor: fontColor }}
+          >
+            {team.name}
+          </div>
+        ))}
       </div>
 
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">In progress Project</p>
-          <p>02</p>
+          <p>{department.totalInProgress}</p>
         </div>
 
         <hr className="hrVertical" />
 
         <div className="Done">
           <p className="counter-title">Done Project</p>
-          <p>10</p>
+          <p>{department.totalDone}</p>
         </div>
       </div>
     </div>
-
   );
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IMAGES from "../../assets/img/index";
 // import AddNewTeam from "./AddNewTeam";
 // import CreateNewDepartment from "./CreateNewDepartment";
@@ -7,11 +7,28 @@ import "./departments.css";
 import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
 import CreateNewTeam from "../../components/popups/CreateNewTeam";
 import { Box, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Department, getAllDepartments } from "../../redux/Departments";
+import { useAppSelector } from "../../redux/hooks";
+import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
+import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
+
 type Props = {};
 interface IProps {
   alternatingColor: string[][];
 }
-const departments: React.FC<IProps> = () => {
+const Departments: React.FC<IProps> = () => {
+  const [department, setDepartment] = useState<null | Department[]>(null);
+  let departmentData = useAppSelector(selectAllDepartments);
+  let teamsData = useAppSelector(selectAllMembers);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllDepartments(null));
+  }, [teamsData]);
+
+  useEffect(() => {
+    setDepartment(departmentData);
+  }, [departmentData]);
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
     ["#B04632", "#F3E8E7"],
@@ -19,6 +36,7 @@ const departments: React.FC<IProps> = () => {
     ["#783DBD", "#EFEBF2"],
     ["#00AECC", "#E1F3F7"],
   ];
+
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "30px" }}>
@@ -33,69 +51,21 @@ const departments: React.FC<IProps> = () => {
         </Typography>
       </Box>
       <div className="department-tools">
-        <div className="filter-icon">
-          <img src={IMAGES.filtericon} alt="FILTER" />
-        </div>
-        <Box className="department-option">
-          <label>Project type:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">Done</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-        <Box className="department-option">
-          <label>No. of projects:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">All</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-        <Box className="department-option">
-          <label>No. of tasks:</label>
-          <div className="select-container">
-            <select className="select-filter" name="color">
-              <option value="A to Z">All</option>
-              <option value="In progress">In progress</option>
-              <option value="To do">To do</option>
-            </select>
-            <div className="line"></div>
-          </div>
-        </Box>
-
         <CreateNewTeam />
       </div>
       <div className="all-departments">
-        <DepartmentCard
-          backgroundColor={alternatingColor[0][1]}
-          fontColor={alternatingColor[0][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[1][1]}
-          fontColor={alternatingColor[1][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[2][1]}
-          fontColor={alternatingColor[2][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[3][1]}
-          fontColor={alternatingColor[3][0]}
-        />
-        <DepartmentCard
-          backgroundColor={alternatingColor[4][1]}
-          fontColor={alternatingColor[4][0]}
-        />
+        {department?.map((dep: Department) => (
+          <DepartmentCard
+            backgroundColor={alternatingColor[0][1]}
+            fontColor={alternatingColor[0][0]}
+            department={dep}
+            key={dep._id}
+          />
+        ))}
+
         <CreateNewDepartment />
       </div>
     </Box>
   );
 };
-export default departments;
+export default Departments;

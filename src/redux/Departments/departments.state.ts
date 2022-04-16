@@ -14,6 +14,8 @@ export interface Department {
     idInTrello: string;
     idInDB: any;
   }[];
+  totalInProgress: number;
+  totalDone: number;
 }
 export interface DepartmentsIterface {
   loading: boolean | null;

@@ -1,5 +1,5 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { getAllDepartments } from "./departments.actions";
+import { getAllDepartments, createDepartment } from "./departments.actions";
 import initialState, { DepartmentsIterface } from "./departments.state";
 
 const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
@@ -18,6 +18,16 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
     builder.addCase(getAllDepartments.fulfilled, (state, action) => {
       state.loading = false;
       state.departments = action.payload;
+    });
+    builder.addCase(createDepartment.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createDepartment.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createDepartment.fulfilled, (state, action) => {
+      state.loading = false;
+      state.departments = [...state.departments, action.payload];
     });
   },
 });
