@@ -78,6 +78,14 @@ const CreateNewDepartment: React.FC<Props> = () => {
     console.log({ formData });
     await dispatch(createDepartment(formData));
     setShow("none");
+    setFormData({
+      name: "",
+      color: "",
+      teams: [],
+      mainBoard: false,
+      totalInProgress: 0,
+      totalDone: 0,
+    });
   };
   return (
     <>
