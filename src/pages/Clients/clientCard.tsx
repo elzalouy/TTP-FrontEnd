@@ -5,7 +5,7 @@ import IMAGES from "../../assets/img";
 import { Client } from "./clients";
 import ClientDrop from "./../../components/dropdowns/ClientDrop";
 import moment from "moment";
-
+import ClientsPopover from "../../coreUI/usable-component/Popovers/ClientsPopover";
 interface IProps {
   client: Client;
 }
@@ -21,23 +21,21 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
   return (
     <Box>
       <Box paddingX="18px" paddingTop="18px" className="client-card">
-        <Box className="cl-card-header">
+        <Box display={"flex"} justifyContent="space-between">
           <Stack
             direction="row"
             justifyContent="flex-start"
-            alignItems="center"
+            alignItems="flex-start"
           >
-            <Box>
-              <img
-                src={!client.image ? IMAGES.avatarClients : client.image}
-                alt="avatar"
-                style={{
-                  width: "52px",
-                  height: "52pxp",
-                  borderRadius: "10px",
-                }}
-              />
-            </Box>
+            <img
+              src={!client.image ? IMAGES.avatarClients : client.image}
+              alt="avatar"
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "10px",
+              }}
+            />
             <Box
               style={{
                 marginLeft: "10px",
@@ -55,8 +53,8 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               </Typography>
             </Box>
           </Stack>
-          <Typography style={{ padding: "12px" }}>
-            <ClientDrop client={client} />
+          <Typography>
+            <ClientsPopover />
           </Typography>
         </Box>
         <Grid

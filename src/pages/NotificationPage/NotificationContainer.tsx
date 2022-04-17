@@ -8,11 +8,11 @@ type Props = {};
 
 const NotificationContainer = (props: Props) => {
   return (
-    <Grid container paddingX={4} spacing={2}>
+    <Grid container paddingX={4} spacing={2} bgcolor="#FAFAFB">
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={12}>
         <NotificationFilter />
       </Grid>
       <Grid item xs={12}>
