@@ -104,7 +104,7 @@ const Login: React.FC<Props> = ({ history }) => {
                 setVisible={setVisible}
                 value={props.field.value}
                 onChangeValue={(e: React.ChangeEvent) => {
-                  e.preventDefault();
+                  // e.preventDefault();
                   props.field.onChange(e);
                 }}
                 type="password"

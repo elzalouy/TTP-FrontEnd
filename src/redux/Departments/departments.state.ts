@@ -20,9 +20,11 @@ export interface Department {
 export interface DepartmentsIterface {
   loading: boolean | null;
   departments: Department[];
+  selectedDepart: Department | null;
 }
 const departmentsState: DepartmentsIterface = {
   loading: null,
   departments: [],
+  selectedDepart: null,
 };
 export default departmentsState;
