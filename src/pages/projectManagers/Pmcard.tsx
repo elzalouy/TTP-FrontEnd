@@ -9,7 +9,10 @@ const AccountInfo = {
     CurrentProjects: "5",
     CompletedProjects:"4"
 }
-const Pmcard = (props) => {
+
+type Props = {};
+
+const Pmcard = (props:Props) => {
     return (
       <div className="single-card">
             <div className="circular--portrait">
