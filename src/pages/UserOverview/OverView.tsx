@@ -6,7 +6,7 @@ import {
   Circle as DotIcon,
   DashboardOutlined as DashboardIcon,
 } from "@mui/icons-material";
-import UserName from "../../components/Overview/Name";
+import UserName from "./Name";
 import "./overview.css";
 import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
@@ -30,12 +30,8 @@ const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState("operation manager");
   useEffect(() => {
-    dispatch(getAllClients(null));
     dispatch(getPMs(null));
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
     dispatch(getAllProjects(null));
-    dispatch(getAllMembers(null));
     dispatch(getAllTasks(null));
   }, []);
   return (

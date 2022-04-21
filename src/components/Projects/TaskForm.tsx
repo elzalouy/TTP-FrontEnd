@@ -1,14 +1,18 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import {
   categoriesActions,
+  getAllCategories,
   selectAllCategories,
   selectSelectedCategory,
 } from "../../redux/Categories";
-import { selectAllDepartments } from "../../redux/Departments";
+import {
+  getAllDepartments,
+  selectAllDepartments,
+} from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
@@ -29,14 +33,16 @@ interface TaskFormProps {
 const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
-
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
-  const depMembers = useAppSelector(selectDepartmentMembers);
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch, control, reset } = useForm();
+  React.useEffect(() => {
+    dispatch(getAllDepartments(null));
+    dispatch(getAllCategories(null));
+  }, []);
   React.useEffect(() => {
     let values = watch();
     if (values?.categoryId !== selectedCategory?._id) {
@@ -45,39 +51,32 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
         categoriesActions.setSelectedCategory(category ? category : null)
       );
     }
-    if (values.selectedDepartment !== selectedDepartment) {
-      dispatch(
-        ProjectsActions.onChangeSelectedDepartment(values.selectedDepartment)
+    if (values.selectedDepartmentId !== selectedDepartment?._id) {
+      let dep = departments.find(
+        (item) => item._id === values.selectedDepartmentId
       );
-      dispatch(
-        getTechMembersByDeptId({ departmentId: values.selectedDepartment })
-      );
+      dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
-  }, [register]);
+  }, [watch(), reset]);
+
   const onSubmit = (data: any) => {
-    console.log(data.memberId);
-    let assignedTo = depMembers?.find((item) => item._id === data.memberId);
     let newTask = {
       name: data.name,
       categoryId: null,
       subCategoryId: null,
       memberId: data?.memberId,
       projectId: newProject.project?._id,
-      countNotClear: 0,
-      countShared: 0,
       status: "inProgress",
       start: new Date().toUTCString(),
       deadline: data.deadline,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: null,
-      attachedCard: null,
-      listId: assignedTo?.listId,
-      boardId: assignedTo?.boardId,
-      cardId: null,
-      file: data.file,
-      description: data.description,
+      attachedFiles: data.file,
+      listId: selectedDepartment?.teamsId?.find(
+        (item) => item._id === data.memberId
+      )?.listId,
+      boardId: selectedDepartment?.boardId,
     };
     dispatch(createProjectTask(newTask));
   };
@@ -100,92 +99,167 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             <div>
               <label className="label-project">Task name</label>
               <br />
-              <input
-                className="input-project"
-                type="text"
-                placeholder="Task name"
-                {...register("name", { required: true, minLength: 3 })}
+              <Controller
+                name="name"
+                control={control}
+                render={(props) => (
+                  <input
+                    {...props}
+                    className="input-project"
+                    type="text"
+                    placeholder="Task name"
+                    onChange={props.field.onChange}
+                  />
+                )}
               />
             </div>
             <div>
               <label className="label-project">Department name</label>
               <br />
-              <select
-                className="select-project"
-                {...register("selectedDepartment", { required: true })}
-              >
-                {departments && departments.length > 0 ? (
-                  departments.map((item) => (
-                    <option key={item._id} value={item._id}>
-                      {item?.name}
-                    </option>
-                  ))
-                ) : (
-                  <></>
+              <Controller
+                name="selectedDepartmentId"
+                control={control}
+                render={(props) => (
+                  <select
+                    className="select-project"
+                    {...props}
+                    onChange={props.field.onChange}
+                    defaultChecked
+                  >
+                    <option>select</option>
+
+                    {departments && departments.length > 0 ? (
+                      departments.map((item) => (
+                        <option key={item._id} value={item._id}>
+                          {item?.name}
+                        </option>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </select>
                 )}
-              </select>
+              />
             </div>
             <div>
               <label className="label-project" {...register("deadline")}>
                 Deadline date
               </label>
               <br />
-              <input
-                className="input-project"
-                type="date"
-                {...register("deadline", { required: true })}
+              <Controller
+                name="deadline"
+                control={control}
+                render={(props) => (
+                  <input
+                    {...props}
+                    onChange={props.field.onChange}
+                    className="input-project"
+                    type="date"
+                  />
+                )}
               />
             </div>
             <div>
               <label className="label-project">Category</label>
               <br />
-              <select className="select-project" {...register("categoryId")}>
-                {categories &&
-                  categories.length > 0 &&
-                  categories.map((item) => (
-                    <option key={item?._id} value={item._id}>
-                      {item.category}
-                    </option>
-                  ))}
-              </select>
+              <Controller
+                name="categoryId"
+                control={control}
+                render={(props) => (
+                  <select
+                    className="select-project"
+                    {...props}
+                    onChange={props.field.onChange}
+                    defaultChecked
+                  >
+                    <option>select</option>
+
+                    {categories &&
+                      categories?.length > 0 &&
+                      categories?.map((item) => (
+                        <option key={item?._id} value={item._id}>
+                          {item.category}
+                        </option>
+                      ))}
+                  </select>
+                )}
+              />
             </div>
             <div>
               <label className="label-project">Description</label>
               <br />
-              <textarea
-                {...register("description", { required: true })}
-                className="textarea-project"
-                rows={3}
-                placeholder="Write about your task"
+              <Controller
+                name="description"
+                control={control}
+                render={(props) => (
+                  <textarea
+                    {...props}
+                    className="textarea-project"
+                    rows={3}
+                    placeholder="Write about your task"
+                    onChange={props.field.onChange}
+                  />
+                )}
               />
             </div>
             <div>
               <label className="label-project">Sub category</label>
               <br />
-              <select className="select-project" {...register("subCategoryId")}>
-                {selectedCategory?.subCategories &&
-                  selectedCategory?.subCategories.length > 0 &&
-                  selectedCategory.subCategories.map((item, index) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-              </select>
+              <Controller
+                name="subCategoryId"
+                control={control}
+                render={(props) => (
+                  <select
+                    className="select-project"
+                    {...props}
+                    onChange={props.field.onChange}
+                    defaultChecked
+                  >
+                    <option>select</option>
+                    {selectedCategory?.selectedSubCategory &&
+                      selectedCategory?.selectedSubCategory.length > 0 &&
+                      selectedCategory.selectedSubCategory.map(
+                        (item, index) => (
+                          <option key={item._id} value={item._id}>
+                            {item.subCategory}
+                          </option>
+                        )
+                      )}
+                  </select>
+                )}
+              />
               <br />
               <label className="label-project">Assign to Member</label>
               <br />
-              <select
-                className="select-project"
-                {...register("memberId", { required: true })}
-              >
-                {depMembers?.map((item) => (
-                  <option value={item._id}>{item.name.toString()}</option>
-                ))}
-              </select>
+              <Controller
+                name="memberId"
+                control={control}
+                defaultValue=""
+                render={(props) => (
+                  <select
+                    {...props}
+                    defaultChecked
+                    onChange={props.field.onChange}
+                    className="select-project"
+                  >
+                    <option value="">select</option>
+                    {selectedDepartment &&
+                      selectedDepartment?.teamsId?.map((item) => (
+                        <option value={item._id}>{item.name}</option>
+                      ))}
+                  </select>
+                )}
+              />
             </div>
           </div>
           <div className="files">
-            <input type="file" {...register("file")} />
+            <Controller
+              name="file"
+              control={control}
+              render={(props) => (
+                <input {...props} onChange={props.field.onChange} type="file" />
+              )}
+            />
           </div>
           <div>
             <button type="submit" className="addTaskBtn">

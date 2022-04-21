@@ -17,7 +17,6 @@ const taskCard: React.FC<DataTypes> = ({ item, index, project }) => {
   const floatDays =
     (new Date(deadline).getTime() - new Date().getTime()) /
     (1000 * 60 * 60 * 24);
-
   const remainingDays = Math.round(floatDays);
   return (
     <Draggable index={index} draggableId={`${_id}`}>

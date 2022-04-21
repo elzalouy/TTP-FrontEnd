@@ -9,6 +9,7 @@ import {
   getAllProjects,
   getProject,
   getTasks,
+  ProjectsActions,
   selectSelectedProject,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
@@ -16,6 +17,8 @@ import { RouteComponentProps } from "react-router-dom";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import TasksIcon from "../../assets/icons/TasksIcon";
 import { AssignmentOutlined as AddignmentIcon } from "@mui/icons-material";
+import { getPMs } from "../../redux/PM";
+import { Controller, useForm } from "react-hook-form";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -25,16 +28,21 @@ interface TasksViewBoard {
 const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
-
+  const { control, register, reset, watch } = useForm();
   useEffect(() => {
-    dispatch(getProject(`?projectId:${props.match.params.id}`));
+    dispatch(getProject(`?_id=${props.match.params.id}`));
     dispatch(
       getTasks({
         url: `?projectId=${props?.match?.params.id}`,
         projectId: props?.match?.params.id,
       })
     );
+    dispatch(getPMs(null));
   }, []);
+  const onHandleSort = (e: any) => {
+    let data = watch();
+    dispatch(ProjectsActions.onSortProjectTasks(data.deadline));
+  };
   return (
     <Grid
       container
@@ -70,14 +78,25 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
           <Box marginLeft={2}>
-            <SelectInput
-              options={[
-                { id: "due date", text: "Due Date", value: "due date" },
-              ]}
-              selectText={""}
-              handleChange={() => null}
-              selectValue="Sort By: "
-              label="Sort By: "
+            <Controller
+              name="deadline"
+              control={control}
+              render={(props) => (
+                <SelectInput
+                  {...props}
+                  options={[
+                    { id: "asc", text: "Ascending", value: "asc" },
+                    { id: "desc", text: "Descending", value: "desc" },
+                  ]}
+                  selectText={props.field.value}
+                  handleChange={(e) => {
+                    props.field.onChange(e);
+                    onHandleSort(e);
+                  }}
+                  selectValue="Due date:"
+                  label="Due date:"
+                />
+              )}
             />
           </Box>
           <Box

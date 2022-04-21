@@ -3,6 +3,10 @@ import { RootState } from "../store";
 import {
   createProject,
   createProjectTask,
+  deleteProject,
+  deleteProjectTasks,
+  deleteTask,
+  editProject,
   filterProjects,
   filterTasks,
   getAllProjects,
@@ -10,7 +14,8 @@ import {
   getProject,
   getTasks,
 } from "./projects.actions";
-import projectsState, { ProjectsInterface } from "./projects.state";
+import projectsState, { ProjectsInterface, Task } from "./projects.state";
+import _ from "lodash";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
   initialState: projectsState,
@@ -32,10 +37,51 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       let tasks = [...state.newProject.tasks];
       tasks = tasks.filter(
         (item) =>
+          item._id === action.payload._id &&
           item.name !== action.payload.name &&
           item.description !== action.payload.description
       );
       state.newProject.tasks = tasks;
+    },
+    onSetDeleteProjectId: (state, action) => {
+      state.deleteProject = action.payload;
+    },
+    onSetEditProjectId: (state, action) => {
+      state.editProject = state.projects.find(
+        (item) => item._id === action.payload
+      );
+    },
+    onSortProjects: (state, action) => {
+      state.sorting = action.payload;
+      let projects = [...state.projects];
+      _.sortBy(projects, ["projectDeadline"], [action.payload]);
+      state.projects = projects;
+    },
+    onSortTasks: (state, action) => {
+      state.sorting = action.payload;
+      let tasks = [...state.allTasks];
+      if (action.payload === "asc")
+        tasks = tasks.sort((a, b) =>
+          new Date(a.deadline) < new Date(b.deadline) ? -1 : 1
+        );
+      if (action.payload === "desc")
+        tasks = tasks.sort((a, b) =>
+          new Date(a.deadline) > new Date(b.deadline) ? -1 : 1
+        );
+      state.allTasks = tasks;
+    },
+    onSortProjectTasks: (state, action) => {
+      state.sorting = action.payload;
+      let tasks = [...state.selectedProject.tasks];
+      if (action.payload === "asc")
+        tasks = tasks.sort((a, b) =>
+          new Date(a.deadline) < new Date(b.deadline) ? -1 : 1
+        );
+      if (action.payload === "desc")
+        tasks = tasks.sort((a, b) =>
+          new Date(a.deadline) > new Date(b.deadline) ? -1 : 1
+        );
+      state.selectedProject.tasks = tasks;
     },
   },
   extraReducers: (builder) => {
@@ -130,6 +176,48 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(filterTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.allTasks = action.payload;
+    });
+    builder.addCase(deleteProjectTasks.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteProjectTasks.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteProjectTasks.fulfilled, (state, action) => {
+      state.loading = false;
+      state.deleteProjectTasks = [];
+    });
+    builder.addCase(deleteProject.fulfilled, (state, action) => {
+      state.loading = false;
+      state.deleteProject = "";
+    });
+    builder.addCase(deleteProject.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteProject.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTask.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTask.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteTask.fulfilled, (state, action) => {
+      let tasks = [...state.newProject.tasks];
+      tasks = tasks.filter((item) => item._id !== action.payload._id);
+      state.newProject.tasks = tasks;
+      state.loading = false;
+    });
+    builder.addCase(editProject.fulfilled, (state, action) => {
+      state.editProject = undefined;
+      state.loading = false;
+    });
+    builder.addCase(editProject.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(editProject.pending, (state, action) => {
+      state.loading = true;
     });
   },
 });

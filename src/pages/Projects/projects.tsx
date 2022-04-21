@@ -11,8 +11,10 @@ import {
   selectLoading,
   filterProjects,
   getAllProjects,
+  selectDeleteProjectId,
+  ProjectsActions,
 } from "../../redux/Projects";
-import { selectPMs } from "../../redux/PM";
+import { getPMs, selectPMs } from "../../redux/PM";
 import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -34,18 +36,34 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
+  const isDelete = useAppSelector(selectDeleteProjectId);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
-  const { register, watch, control } = useForm();
+  const { register, watch, control, setValue } = useForm();
   const onHandleChange = (e: any) => {
-    console.log(e);
-    let filter = watch();
+    let data = watch();
+    let filter = {
+      name: data.name,
+      clientId: data.clientId,
+      projectManager: data.projectManager,
+      projectStatus: data.projectStatus,
+    };
+    console.log(filter);
     dispatch(filterProjects(filter));
   };
+  const onHandleSort = (e: any) => {
+    let data = watch();
+    dispatch(ProjectsActions.onSortProjects(data.deadline));
+  };
+  useEffect(() => {
+    setValue("name", "");
+    dispatch(getAllProjects(null));
+    dispatch(getPMs(null));
+  }, []);
   useEffect(() => {
     dispatch(getAllProjects(null));
-  }, []);
+  }, [isDelete]);
   return (
     <Grid
       width={"100%"}
@@ -82,17 +100,16 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 {...props}
                 label="Due Date: "
                 options={[
-                  { id: "deadline", text: "Deadline", value: "deadline" },
+                  { id: "asc", text: "Ascending", value: "asc" },
+                  { id: "desc", text: "Descending", value: "desc" },
                 ]}
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
-                  onHandleChange(e);
+                  onHandleSort(e);
                 }}
                 selectValue={props.field.value}
-                selectText={
-                  PMs?.find((val) => val._id === props.field.value)?.name
-                }
+                selectText={props.field.value}
               />
             )}
           />
@@ -105,9 +122,12 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               <SelectInput
                 label="Project Manager: "
                 {...props}
-                options={PMs.map((item) => {
-                  return { id: item._id, value: item._id, text: item.name };
-                })}
+                options={[
+                  { id: "all", value: "", text: "All" },
+                  ...PMs.map((item) => {
+                    return { id: item._id, value: item._id, text: item.name };
+                  }),
+                ]}
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
@@ -129,13 +149,16 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               <SelectInput
                 label={"Client: "}
                 {...props}
-                options={clients.map((item) => {
-                  return {
-                    id: item._id,
-                    value: item._id,
-                    text: item.clientName,
-                  };
-                })}
+                options={[
+                  { id: "all", value: "", text: "All" },
+                  ...clients?.map((item) => {
+                    return {
+                      id: item._id,
+                      value: item._id,
+                      text: item.clientName,
+                    };
+                  }),
+                ]}
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
@@ -160,6 +183,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   label={"Status"}
                   {...props}
                   options={[
+                    { id: "all", value: "", text: "All" },
                     {
                       id: "delivered",
                       value: "delivered on time",
@@ -190,7 +214,20 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           />
         </Grid>
         <Grid xs={2.5} marginX={1} item>
-          <SearchBar />
+          <Controller
+            name="name"
+            control={control}
+            render={(props) => (
+              <SearchBar
+                {...props}
+                value={props.field.value}
+                onChange={(e: any) => {
+                  props.field.onChange(e);
+                }}
+                onHandleChange={onHandleChange}
+              />
+            )}
+          />
         </Grid>
       </Grid>
       <Box
@@ -201,9 +238,10 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
+        <CreateNewProject />
+
         {loading === false ? (
           <>
-            <CreateNewProject />
             <TableBox
               title={"In Progress"}
               outTitled={false}

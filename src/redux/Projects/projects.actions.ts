@@ -51,7 +51,6 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       let projects: ApiResponse<any> = await api.filterProjects(args);
       if (projects.ok && projects.data) return projects?.data?.result;
       else {
-        console.log("response error", projects);
         return [];
       }
     } catch (error) {
@@ -103,6 +102,85 @@ export const filterTasks = createAsyncThunk<any, any, any>(
       let tasks = await api.filterTasks(args);
       return tasks.data;
     } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+export const deleteProjectTasks = createAsyncThunk<any, any, any>(
+  "projects/deleteProjectTasks",
+  async (args, { rejectWithValue }) => {
+    try {
+      let deleteResult = await api.deleteProjectTasks(args);
+      if (deleteResult.ok) {
+        toast("Project Tasks deleted first.");
+        return true;
+      }
+      throw "Error happenned";
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+export const deleteTasks = createAsyncThunk<any, any, any>(
+  "projects/deleteTasks",
+  async (args, { rejectWithValue }) => {
+    try {
+      let deleteResult = await api.deleteTasks(args.data);
+      if (deleteResult.ok) {
+        args.dispatch(getAllTasks(null));
+        toast("Tasks deleted first.");
+        return true;
+      }
+      throw "Error happenned";
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+export const deleteProject = createAsyncThunk<any, any, any>(
+  "projects/deleteProject",
+  async (args, { rejectWithValue }) => {
+    try {
+      let deleteResult = await api.deleteProject(args);
+      if (deleteResult?.ok) {
+        toast("Project Deleted Sucessfully");
+        window.location.reload();
+        return true;
+      }
+      throw "Error happenned while deleting the project";
+    } catch (error: any) {
+      toast(error);
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteTask = createAsyncThunk<any, any, any>(
+  "projects/deleteTask",
+  async (args, { rejectWithValue }) => {
+    try {
+      let deleteResult = await api.deleteTask(args);
+      if (deleteResult.ok) {
+        toast("Tasks deleted from DB and Trello");
+        return deleteResult.data;
+      } else throw "Error while deleting the task";
+    } catch (error: any) {
+      toast(error);
+      rejectWithValue(error);
+    }
+  }
+);
+export const editProject = createAsyncThunk<any, any, any>(
+  "projects/editProject",
+  async (args, { rejectWithValue }) => {
+    try {
+      let editResult = await api.editProject(args);
+      if (editResult.ok) {
+        toast("Project updated successfully");
+        return true;
+      } else throw "Error happened while editing the project";
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }

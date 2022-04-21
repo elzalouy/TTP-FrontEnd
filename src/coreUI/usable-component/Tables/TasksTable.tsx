@@ -13,11 +13,17 @@ import _ from "lodash";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
+  selects: any[];
+  setAllSelected: (value: any) => any;
 }
 
-const TasksTable: React.FC<TasksTableProps> = (props) => {
+const TasksTable: React.FC<TasksTableProps> = ({
+  tasks,
+  projects,
+  selects,
+  setAllSelected,
+}) => {
   const [select, setSelected] = React.useState(false);
-  const [selects, setAllSelected] = React.useState<string[]>([]);
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
       let selected = [...selects];
@@ -30,6 +36,7 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
       setAllSelected(selected);
     }
   };
+  console.log(tasks);
   return (
     <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
       <Table>
@@ -46,8 +53,7 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
               <Checkbox
                 onChange={(e, checked) => {
                   setSelected(checked);
-                  if (checked)
-                    setAllSelected(props?.tasks?.map((item) => item._id));
+                  if (checked) setAllSelected(tasks?.map((item) => item._id));
                   else setAllSelected([]);
                 }}
                 className="col-grey"
@@ -112,8 +118,8 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props?.tasks &&
-            props.tasks?.map((item) => {
+          {tasks &&
+            tasks?.map((item) => {
               const { _id, status, name, projectId, start, deadline } = item;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -178,9 +184,8 @@ const TasksTable: React.FC<TasksTableProps> = (props) => {
                     align="left"
                   >
                     {
-                      props.projects.find(
-                        (project) => project._id === projectId
-                      )?.name
+                      projects.find((project) => project._id === projectId)
+                        ?.name
                     }
                   </TableCell>
                   <TableCell align="left" style={{ color: "#707683" }}>

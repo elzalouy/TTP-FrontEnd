@@ -126,6 +126,7 @@ const SelectInput: React.FC<Props> = ({
           {options &&
             options.map((item) => (
               <option
+                key={item.id}
                 className="Option"
                 value={item.value}
                 onClick={(e) => {

@@ -1,10 +1,12 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
-import { selectPMs } from "../../redux/PM";
+import { getPMs, selectPMs } from "../../redux/PM";
 import { createProject, Project, ProjectsActions } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
+import { getAllClients } from "../../redux/Clients";
+import { Button } from "@mui/material";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -15,92 +17,136 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch } = useForm();
+  const { register, watch, control } = useForm();
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
-  const onsubmit = () => {
+  React.useEffect(() => {
+    dispatch(getPMs(null));
+    dispatch(getAllClients(null));
+  }, []);
+  const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setcurrentStep(1);
     let data = watch();
-    let project: Project = {
+    let project = {
       name: data?.name,
       projectManager: data?.projectManager,
-      numberOfTasks: 0,
-      numberOfFinshedTasks: 0,
       projectDeadline: data.deadline,
-      startDate: new Date().toDateString(),
-      completedDate: null,
-      projectStatus: "inProgress",
+      startDate: data?.startDate,
       clientId: data.clientId,
+      numberOfFinshedTasks: 0,
+      numberOfTasks: 0,
+      projectStatus: "inProgress",
+      completedDate: null,
     };
     dispatch(createProject(project));
-    setcurrentStep(1);
   };
   return (
-    <form>
+    <>
       <div className="inputs-grid">
         <div>
           <label className="label-project">Project title</label>
           <br />
-          <input
-            className="input-project"
-            type="text"
-            placeholder="Project name"
-            {...register("name", { required: true })}
+          <Controller
+            control={control}
+            name="name"
+            render={(props) => (
+              <input
+                {...props}
+                className="input-project"
+                type="text"
+                placeholder="Project name"
+                onChange={props.field.onChange}
+              />
+            )}
           />
         </div>
         <div>
           <label className="label-project">Client name</label>
           <br />
-          <select
-            {...register("clientId", { required: true })}
-            className="select-project"
-          >
-            {clients && clients.length > 0 ? (
-              clients.map((item) => (
-                <option key={item.clientId} value={item.clientId?.toString()}>
-                  {item.clientName}
-                </option>
-              ))
-            ) : (
-              <></>
+          <Controller
+            name="clientId"
+            control={control}
+            render={(props) => (
+              <select
+                {...props}
+                className="select-project"
+                onChange={props.field.onChange}
+                defaultChecked={true}
+              >
+                <option value="">Select Client</option>
+                {clients && clients.length > 0 ? (
+                  clients.map((item) => (
+                    <option key={item.clientId} value={item?.clientId}>
+                      {item.clientName}
+                    </option>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </select>
             )}
-          </select>
+          />
         </div>
         <div>
           <label className="label-project">Deadline date</label>
           <br />
-          <input
-            className="input-project"
-            type="date"
-            {...register("deadline", { required: true })}
+          <Controller
+            name="deadline"
+            control={control}
+            render={(props) => (
+              <input
+                {...props}
+                className="input-project"
+                type="date"
+                onChange={props.field.onChange}
+              />
+            )}
           />
         </div>
         <div>
           <label className="label-project">Project manager</label>
           <br />
-          <select
-            className="select-project"
-            {...register("projectManager", { required: true })}
-          >
-            {PMs && PMs.length > 0 ? (
-              PMs.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              ))
-            ) : (
-              <></>
+          <Controller
+            name="projectManager"
+            control={control}
+            render={(props) => (
+              <select
+                {...props}
+                className="select-project"
+                onChange={props.field.onChange}
+                defaultChecked={true}
+              >
+                <option value="">Select Manager</option>
+
+                {PMs && PMs.length > 0 ? (
+                  PMs.map((item) => (
+                    <option key={item._id} value={item?._id}>
+                      {item.name}
+                    </option>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </select>
             )}
-          </select>
+          />
         </div>
         <div>
-          <label className="label-project">Description</label>
+          <label className="label-project">Start Date</label>
           <br />
-          <textarea
-            {...register("description", { required: true })}
-            className="textarea-project"
-            rows={3}
-            placeholder="Write about your project"
+
+          <Controller
+            name="startDate"
+            control={control}
+            render={(props) => (
+              <input
+                {...props}
+                className="input-project"
+                type="date"
+                onChange={props.field.onChange}
+              />
+            )}
           />
         </div>
       </div>
@@ -114,14 +160,16 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         >
           Cancel
         </button>
-        <input
-          className="blackBtn"
+        <Button
           type="button"
-          onClick={() => onsubmit()}
-          value="Next"
-        />
+          variant="contained"
+          className="blackBtn"
+          onClick={onsubmit}
+        >
+          Next
+        </Button>
       </div>
-    </form>
+    </>
   );
 };
 

@@ -24,7 +24,7 @@ export interface Task {
   description: string;
 }
 export interface Project {
-  _id?: string;
+  _id: string;
   name: string;
   projectManager: { _id: string; name: string } | null;
   teamsId?: any[];
@@ -35,6 +35,12 @@ export interface Project {
   completedDate?: any;
   projectStatus?: string;
   clientId: string;
+  tasks: Task[];
+}
+export interface TasksStatistics {
+  numberOfTasks: number | null;
+  numberOfFinishedTasks: number | null;
+  progress: number | null;
 }
 export interface ProjectsInterface {
   loading: boolean;
@@ -48,15 +54,20 @@ export interface ProjectsInterface {
   };
   selectedProject: {
     loading: boolean | null;
-    tasks: Task[] | null;
+    tasks: Task[];
     project: Project | null;
   };
   allTasks: Task[];
+  deleteProject: string | undefined;
+  deleteProjectTasks: string[] | undefined;
+  editProject: Project | undefined;
+  sorting: string | null;
 }
 
 const PorjectsState: ProjectsInterface = {
   loading: true,
   projects: [],
+  allTasks: [],
   newProject: {
     showPopUp: "none",
     project: {
@@ -71,6 +82,7 @@ const PorjectsState: ProjectsInterface = {
       completedDate: new Date(),
       projectStatus: "inProgress",
       clientId: "",
+      tasks: [],
     },
     tasks: [],
     newTask: {
@@ -100,9 +112,12 @@ const PorjectsState: ProjectsInterface = {
   },
   selectedProject: {
     loading: null,
-    tasks: null,
+    tasks: [],
     project: null,
   },
-  allTasks: [],
+  deleteProject: undefined,
+  deleteProjectTasks: undefined,
+  editProject: undefined,
+  sorting: null,
 };
 export default PorjectsState;

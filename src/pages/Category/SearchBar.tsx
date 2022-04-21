@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import DirectionsIcon from "@mui/icons-material/Directions";
 
-export default function Search() {
+export default function Search(props: any) {
   return (
     <Paper
       component="form"
@@ -19,10 +19,21 @@ export default function Search() {
         height: 42,
       }}
     >
-      <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+      <IconButton
+        type="button"
+        onClick={props.onHandleChange}
+        sx={{ p: "10px" }}
+        aria-label="search"
+      >
         <SearchIcon />
       </IconButton>
-      <InputBase sx={{ ml: 1, flex: 1 }} inputProps={{ "aria-label": "" }} />
+      <InputBase
+        {...props}
+        sx={{ ml: 1, flex: 1 }}
+        value={props.value}
+        onChange={props.onChange}
+        inputProps={{ "aria-label": "" }}
+      />
     </Paper>
   );
 }

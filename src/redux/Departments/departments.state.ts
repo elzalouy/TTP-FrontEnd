@@ -11,8 +11,10 @@ export interface Department {
   color: string;
   mainBoard: boolean;
   teamsId: {
-    idInTrello: string;
-    idInDB: any;
+    _id: string;
+    name: string;
+    departmentId: string;
+    listId: string | null;
   }[];
   totalInProgress: number;
   totalDone: number;
