@@ -25,6 +25,8 @@ import {
   getAllTasks,
   selectAllProjects,
   ProjectsInterface,
+  ProjectsActions,
+  deleteTasks,
 } from "../../redux/Projects";
 import { getAllMembers, selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
@@ -33,9 +35,9 @@ import "./TasksListView.css";
 const Tasks: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const PMs = useAppSelector(selectPMs);
-  const clients = useAppSelector(clientsDataSelector);
   const techMembers = useAppSelector(selectAllMembers);
+  const [selects, setAllSelected] = React.useState<string[]>([]);
+  const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
   React.useEffect(() => {
     dispatch(getAllClients(null));
@@ -46,11 +48,23 @@ const Tasks: React.FC = (props: any) => {
     dispatch(getAllMembers(null));
     dispatch(getAllTasks(null));
   }, []);
-
   const onHandleChange = (e: any) => {
     let filter = watch();
     dispatch(filterTasks(filter));
   };
+  const onHandleSort = (e: any) => {
+    let filter = watch();
+    dispatch(ProjectsActions.onSortTasks(filter.deadline));
+  };
+
+  const onDeleteTasks = async () => {
+    dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
+    setShow("none");
+  };
+  React.useEffect(() => {
+    console.log("changed");
+    console.log(projects.allTasks);
+  }, [projects.allTasks]);
   return (
     <Grid
       bgcolor={"#FAFAFB"}
@@ -75,17 +89,16 @@ const Tasks: React.FC = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
-                  { id: "deadline", text: "Deadline", value: "deadline" },
+                  { id: "asc", text: "Ascending", value: "asc" },
+                  { id: "desc", text: "Descending", value: "desc" },
                 ]}
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
-                  onHandleChange(e);
+                  onHandleSort(e);
                 }}
                 selectValue={props.field.value}
-                selectText={
-                  PMs?.find((val) => val._id === props.field.value)?.name
-                }
+                selectText={props.field.value}
               />
             )}
           />
@@ -106,7 +119,7 @@ const Tasks: React.FC = (props: any) => {
                       value: "inProgress",
                       text: "In Progres",
                     },
-                    { id: "delivered", value: "delivered", text: "Delivered" },
+                    { id: "shared", value: "shared", text: "Shared" },
                     { id: "late", value: "late", text: "late" },
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     { id: "canceled", value: "canceled", text: "Canceled" },
@@ -166,13 +179,16 @@ const Tasks: React.FC = (props: any) => {
               <SelectInput
                 label={"Members:"}
                 {...props}
-                options={techMembers.techMembers.map((item) => {
-                  return {
-                    id: item._id,
-                    value: item._id,
-                    text: item.name,
-                  };
-                })}
+                options={[
+                  { id: "", value: "", text: "All" },
+                  ...techMembers.techMembers.map((item) => {
+                    return {
+                      id: item._id,
+                      value: item._id,
+                      text: item.name,
+                    };
+                  }),
+                ]}
                 handleChange={(e) => {
                   e.preventDefault();
                   props.field.onChange(e);
@@ -189,7 +205,7 @@ const Tasks: React.FC = (props: any) => {
           />
         </Grid>
         <Grid marginX={0.5} item>
-          <DeleteTask />
+          <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
         <Grid marginX={0.5} item>
           <Box
@@ -199,7 +215,18 @@ const Tasks: React.FC = (props: any) => {
               marginLeft: "20px",
             }}
           >
-            <SearchBox search="" handleSearchChange={() => null}></SearchBox>
+            <Controller
+              name="name"
+              control={control}
+              render={(props) => (
+                <SearchBox
+                  {...props}
+                  onChange={props.field.onChange}
+                  onHandleChange={onHandleChange}
+                  value={props.field.value}
+                />
+              )}
+            />
           </Box>
         </Grid>
       </Grid>
@@ -223,6 +250,8 @@ const Tasks: React.FC = (props: any) => {
         <>
           <Paper className="tsk-container">
             <TasksTable
+              selects={selects}
+              setAllSelected={setAllSelected}
               projects={projects.projects}
               tasks={projects.allTasks}
             />

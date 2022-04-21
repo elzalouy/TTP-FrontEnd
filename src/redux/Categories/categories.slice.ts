@@ -14,12 +14,10 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
       state.selectedCategory = action.payload;
     },
     onSearch: (state, { payload }) => {
-      console.log({ payload });
       let categories = state.chosenCategories;
       if (payload === "") {
         state.categories = state.chosenCategories;
       } else {
-        console.log({ payload });
         categories = categories.filter((category) =>
           category.category.match(new RegExp(payload, "gi"))
         );
@@ -64,7 +62,6 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
       let targetIndex = state.categories
         .map((item: any) => item._id)
         .indexOf(payload._id);
-      console.log({ payload, targetIndex });
       state.categories.splice(targetIndex, 1, payload);
       state.chosenCategories.splice(targetIndex, 1, payload);
       state.loading = false;

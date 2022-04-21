@@ -32,14 +32,9 @@ import NotFound from "./pages/NotFound";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const clients = useAppSelector(clientsDataSelector);
   useEffect(() => {
-    dispatch(getAllClients(null));
-    dispatch(getPMs(null));
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllMembers(null));
   }, []);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>

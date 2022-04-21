@@ -3,6 +3,13 @@ import IMAGES from "../../assets/img";
 import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
+import { useAppSelector } from "../../redux/hooks";
+import {
+  deleteProject,
+  deleteProjectTasks,
+  selectDeleteProjectId,
+} from "../../redux/Projects";
+import { useDispatch } from "react-redux";
 
 type Props = {
   show: string;
@@ -10,6 +17,13 @@ type Props = {
 };
 
 const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
+  const id = useAppSelector(selectDeleteProjectId);
+  const dispatch = useDispatch();
+  const onDeleteProject = () => {
+    dispatch(deleteProjectTasks({ id: id }));
+    dispatch(deleteProject({ id: id }));
+    setShow("none");
+  };
   return (
     <>
       <SmallPopUp show={show}>
@@ -27,7 +41,7 @@ const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
             >
               Cancel
             </button>
-            <button className="controllers-delete" onClick={() => {}}>
+            <button className="controllers-delete" onClick={onDeleteProject}>
               Delete
             </button>
           </div>

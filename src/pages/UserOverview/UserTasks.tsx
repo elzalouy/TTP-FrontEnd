@@ -16,6 +16,7 @@ interface UserTasksProps {}
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
+  const [selects, setAllSelected] = React.useState<string[]>([]);
 
   return (
     <>
@@ -27,9 +28,14 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         paddingBottom={2}
         marginTop={2}
       >
-        Tasks
+        Tasks Closed to deadline
       </Typography>
-      <TasksTable projects={projects.projects} tasks={projects.allTasks} />
+      <TasksTable
+        selects={selects}
+        setAllSelected={setAllSelected}
+        projects={projects.projects}
+        tasks={projects.allTasks}
+      />
     </>
   );
 };

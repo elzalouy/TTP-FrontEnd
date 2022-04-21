@@ -1,5 +1,5 @@
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useAppSelector } from "../../redux/hooks";
 import { selectNewProject } from "../../redux/Projects";

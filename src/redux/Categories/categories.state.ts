@@ -1,8 +1,13 @@
+export interface SubCategory {
+  _id: string;
+  subCategory: string;
+}
 export interface Category {
   _id?: string;
   category: string;
   subCategories?: string[];
-  subCategoriesId?: string[];
+  subCategoriesId?: SubCategory[];
+  selectedSubCategory: SubCategory[];
 }
 
 export interface CategoriesInterface {

@@ -29,8 +29,7 @@ const CreateNewClient: React.FC<Props> = () => {
     let formData = new FormData();
     formData.append("clientName", Data.clientName);
     formData.append("image", Data.image);
-    await dispatch(creatClient(formData));
-    console.log({ current: fileInput.current });
+    dispatch(creatClient(formData));
     setImageView(null);
     setData({
       image: null,

@@ -1,18 +1,27 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
+import { selectAllCategories } from "../../redux/Categories";
+import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
-import { ProjectsActions, selectNewProject, Task } from "../../redux/Projects";
+import {
+  deleteTask,
+  ProjectsActions,
+  selectNewProject,
+  selectSelectedDepartment,
+  Task,
+} from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
 
 interface TasksProps {}
 
 const Tasks: React.FC<TasksProps> = () => {
   const newProject = useAppSelector(selectNewProject);
-  const deptMembers = useAppSelector(selectAllMembers);
+  const deps = useAppSelector(selectAllDepartments);
+  const categories = useAppSelector(selectAllCategories);
   const dispatch = useDispatch();
   const onDeleteTask = (task: Task) => {
-    dispatch(ProjectsActions.onDeleteNewProjectTask(task));
+    dispatch(deleteTask({ id: task._id }));
   };
   return (
     <div>
@@ -39,15 +48,22 @@ const Tasks: React.FC<TasksProps> = () => {
             newProject.tasks &&
             newProject?.tasks?.map((task, index: any) => {
               return (
-                <tr key={index}>
+                <tr key={task._id}>
                   <td width={"30%"}>{task && task?.name}</td>
                   <td width={"20%"}>
                     {task &&
-                      deptMembers.techMembers?.find(
-                        (item) => item._id === task.memberId
-                      )?.name}
+                      deps
+                        .find((item) =>
+                          item.teamsId.findIndex((i) => i._id === task._id)
+                        )
+                        ?.teamsId?.find((item) => item._id === task.memberId)
+                        ?.name}
                   </td>
-                  <td width={"20%"}>{task && task?.categoryId}</td>
+                  <td width={"20%"}>
+                    {task &&
+                      categories.find((item) => item._id === task?.categoryId)
+                        ?.category}
+                  </td>
                   <td width={"20%"}>
                     {task && new Date(task?.deadline).toDateString()}
                   </td>
@@ -55,6 +71,7 @@ const Tasks: React.FC<TasksProps> = () => {
                     className="deleteTd"
                     width={"10%"}
                     onClick={() => onDeleteTask(task)}
+                    style={{ cursor: "pointer" }}
                   >
                     <img src={IMAGES.deleteicon} alt="delete" />
                   </td>

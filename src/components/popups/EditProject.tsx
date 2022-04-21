@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
+import { Controller, useForm } from "react-hook-form";
+import { useAppSelector } from "../../redux/hooks";
+import { selectClientsNames } from "../../redux/Clients";
+import { selectPMs } from "../../redux/PM";
+import {
+  selectEditProject,
+  editProject as editProjectAction,
+} from "../../redux/Projects";
+import { useDispatch } from "react-redux";
 
 type Props = {
   show: string;
@@ -10,6 +19,29 @@ type Props = {
 };
 
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
+  const dispatch = useDispatch();
+  const { control, register, watch, setValue } = useForm();
+  const clients = useAppSelector(selectClientsNames);
+  const PMs = useAppSelector(selectPMs);
+  const project = useAppSelector(selectEditProject);
+  useEffect(() => {
+    setValue("clientId", project?.clientId);
+    setValue("projectManager", project?.projectManager?._id);
+    setValue("deadline", project?.projectDeadline);
+    setValue("name", project?.name);
+    setValue("status", project?.projectStatus);
+  }, [project]);
+  const onSubmitEdit = () => {
+    let data = watch();
+    let editProject = { ...project };
+    editProject.name = data.name;
+    editProject.projectManager = data.projectManager;
+    editProject.projectDeadline = data.deadline;
+    editProject.clientId = data.clientId;
+    editProject.projectStatus = data.status;
+    dispatch(editProjectAction(editProject));
+    setShow("none");
+  };
   return (
     <>
       <PopUp show={show} minWidthSize="50vw">
@@ -30,40 +62,143 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           <div className="inputs-grid">
             <div>
               <label className="popup-label">Project title</label>
-              <input
-                className="popup-input"
-                type="text"
-                placeholder="Project name"
+              <Controller
+                name="name"
+                control={control}
+                render={(props) => (
+                  <input
+                    {...props}
+                    defaultValue={project?.name}
+                    onChange={props.field.onChange}
+                    className="popup-input"
+                    type="text"
+                    placeholder="Project name"
+                  />
+                )}
               />
             </div>
 
             <div>
               <label className="popup-label">Client name</label>
-              <select className="popup-select">
-                <option value="0">Ahmed</option>
-                <option value="1">option 2 </option>
-                <option value="2">option 3</option>
-              </select>
+              <Controller
+                name="clientId"
+                control={control}
+                render={(props) => (
+                  <select
+                    defaultChecked
+                    {...props}
+                    onChange={props.field.onChange}
+                    className="popup-select"
+                    defaultValue={project?.clientId}
+                  >
+                    <option>Select</option>
+                    {clients &&
+                      clients.map((item) => (
+                        <option
+                          selected={props.field.value === item.clientId}
+                          value={item.clientId}
+                        >
+                          {item.clientName}
+                        </option>
+                      ))}
+                  </select>
+                )}
+              />
             </div>
             <div>
               <label className="popup-label">Deadline date</label>
-              <input className="popup-input" type="date" />
+              <Controller
+                name={"deadline"}
+                control={control}
+                render={(props) => (
+                  <input
+                    {...props}
+                    defaultValue={
+                      project?.projectDeadline
+                        ? new Date(project?.projectDeadline).toISOString()
+                        : new Date().toISOString()
+                    }
+                    onChange={props.field.onChange}
+                    className="popup-input"
+                    type="date"
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <label className="popup-label">Project title</label>
+              <Controller
+                name="status"
+                control={control}
+                render={(props) => (
+                  <select
+                    className="popup-select"
+                    {...props}
+                    onChange={props.field.onChange}
+                    defaultValue={project?.projectStatus}
+                  >
+                    <option>Select</option>
+                    {[
+                      { value: "inProgress", text: "In Progress" },
+                      { value: "late", text: "Late" },
+                      { value: "delivered on time", text: "delivered on time" },
+                      {
+                        value: "delivered defore deadline",
+                        text: "delivered defore deadline",
+                      },
+                    ].map((item) => (
+                      <option
+                        value={item.value}
+                        selected={item.value === props.field.value}
+                      >
+                        {item.value}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
             </div>
             <div>
               <label className="popup-label">Project manager</label>
-              <select className="popup-select">
-                <option value="0">Abdullah</option>
-                <option value="1">option 2 </option>
-                <option value="2">option 3 </option>
-              </select>
+              <Controller
+                name="projectManager"
+                control={control}
+                render={(props) => (
+                  <select
+                    {...props}
+                    onChange={props.field.onChange}
+                    className="popup-select"
+                    defaultValue={project?.projectManager?._id}
+                  >
+                    <option value=""> Select</option>
+                    {PMs?.length > 0 &&
+                      PMs.map((item) => (
+                        <option
+                          selected={props.field.value === item._id}
+                          value={item?._id}
+                        >
+                          {item?.name}
+                        </option>
+                      ))}
+                  </select>
+                )}
+              />
             </div>
             <div>
               <label className="popup-label">Description</label>
-              <textarea
-                maxLength={75}
-                className="popup-textarea"
-                rows={3}
-                placeholder="Write about your project"
+              <Controller
+                name="description"
+                control={control}
+                render={(props) => (
+                  <textarea
+                    {...props}
+                    onChange={props.field.onChange}
+                    maxLength={75}
+                    className="popup-textarea"
+                    rows={3}
+                    placeholder="Write about your project"
+                  />
+                )}
               />
             </div>
           </div>
@@ -76,7 +211,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             >
               Cancel
             </button>
-            <button className="controllers-done" onClick={() => {}}>
+            <button className="controllers-done" onClick={onSubmitEdit}>
               Done
             </button>
           </div>

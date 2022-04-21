@@ -66,102 +66,106 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
       </TableHead>
       <TableBody>
         {props.expanded &&
-          props?.projects?.map((project: any) => (
-            <TableRow className={classes.tbody} key={project._id}>
-              <TableCell
-                className={classes.tcellLeft}
-                sx={{ cursor: "pointer" }}
-                onClick={() => props.history.push(`/TasksBoard/${project._id}`)}
-              >
-                <Typography
-                  fontWeight={"700"}
-                  fontSize={14}
-                  fontFamily={"Cairo"}
-                  style={{
-                    textDecorationLine:
-                      props.status === "Done" ? "line-through" : "none",
-                  }}
-                >
-                  {project?.name}
-                </Typography>
-                <Typography
-                  variant={props.textSize === "small" ? "h6" : "h5"}
-                  fontSize={props.textSize ? 12 : 14}
-                  color="#696974"
-                >
-                  {
-                    props.projectManagers?.find(
-                      (item) => item._id === project?.projectManager?._id
-                    )?.name
+          props?.projects?.map((project: Project) => {
+            return (
+              <TableRow className={classes.tbody} key={project._id}>
+                <TableCell
+                  className={classes.tcellLeft}
+                  sx={{ cursor: "pointer" }}
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
                   }
-                </Typography>
-              </TableCell>
-              <TableCell className={classes.tcellCenter} align={props.align}>
-                <Typography
-                  variant={props.textSize === "small" ? "h6" : "h5"}
-                  fontSize={props.textSize ? 12 : 14}
-                  color="#696974"
                 >
-                  {new Date(project.startDate).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </Typography>
-              </TableCell>
-              <TableCell
-                className={classes.tcellCenterTask}
-                align={props.align}
-              >
-                {props.progress ? (
                   <Typography
-                    paddingLeft={0.3}
-                    variant="h4"
-                    color="#00ACBA"
-                    fontSize={props.textSize === "small" ? 12 : 14}
+                    fontWeight={"700"}
+                    fontSize={14}
+                    fontFamily={"Cairo"}
+                    style={{
+                      textDecorationLine:
+                        props.status === "Done" ? "line-through" : "none",
+                    }}
                   >
-                    {Math.round(
-                      project?.numberOfFinshedTasks / project?.numberOfTasks
-                    ) * 100 || 0}
-                    %
+                    {project?.name}
                   </Typography>
-                ) : (
-                  <Box sx={{ display: "inline-flex" }}>
-                    <TasksCheckIcon color="#00ACBA" />
+                  <Typography
+                    variant={props.textSize === "small" ? "h6" : "h5"}
+                    fontSize={props.textSize ? 12 : 14}
+                    color="#696974"
+                  >
+                    {
+                      props.projectManagers?.find(
+                        (item) => item._id === project?.projectManager?._id
+                      )?.name
+                    }
+                  </Typography>
+                </TableCell>
+                <TableCell className={classes.tcellCenter} align={props.align}>
+                  <Typography
+                    variant={props.textSize === "small" ? "h6" : "h5"}
+                    fontSize={props.textSize ? 12 : 14}
+                    color="#696974"
+                  >
+                    {new Date(project.startDate).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  className={classes.tcellCenterTask}
+                  align={props.align}
+                >
+                  {props.progress ? (
                     <Typography
                       paddingLeft={0.3}
                       variant="h4"
                       color="#00ACBA"
                       fontSize={props.textSize === "small" ? 12 : 14}
                     >
-                      {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                      {Math.round(
+                        project.numberOfFinshedTasks / project.numberOfTasks
+                      ) * 100 || 0}
+                      %
                     </Typography>
-                  </Box>
-                )}
-              </TableCell>
-              <TableCell className={classes.tcellCenter} align={props.align}>
-                <Typography
-                  variant="h4"
-                  color="#00ACBA"
-                  fontSize={props.textSize === "small" ? 12 : 14}
-                >
-                  {new Date(project.projectDeadline).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    }
+                  ) : (
+                    <Box sx={{ display: "inline-flex" }}>
+                      <TasksCheckIcon color="#00ACBA" />
+                      <Typography
+                        paddingLeft={0.3}
+                        variant="h4"
+                        color="#00ACBA"
+                        fontSize={props.textSize === "small" ? 12 : 14}
+                      >
+                        {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                      </Typography>
+                    </Box>
                   )}
-                </Typography>
-              </TableCell>
-              <TableCell className={classes.tcellRight} align={props.align}>
-                <ProjectPopover id={project?._id} {...props} />
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell className={classes.tcellCenter} align={props.align}>
+                  <Typography
+                    variant="h4"
+                    color="#00ACBA"
+                    fontSize={props.textSize === "small" ? 12 : 14}
+                  >
+                    {new Date(project.projectDeadline).toLocaleDateString(
+                      "en-US",
+                      {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </Typography>
+                </TableCell>
+                <TableCell className={classes.tcellRight} align={props.align}>
+                  <ProjectPopover id={project?._id} {...props} />
+                </TableCell>
+              </TableRow>
+            );
+          })}
       </TableBody>
     </Table>
   );

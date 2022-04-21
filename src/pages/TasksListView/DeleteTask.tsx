@@ -4,24 +4,26 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./DeleteTask.css";
 
-type Props = {};
+type Props = {
+  onDelete: () => void;
+  Show: string;
+  setShow: (val: string) => void;
+};
 
-const DeleteTask: React.FC<Props> = () => {
-  const [Show, setShow] = useState("none");
-
+const DeleteTask: React.FC<Props> = (props) => {
   return (
     <Box style={{ height: "30px" }}>
       <Box style={{ width: "35px", padding: "0 10px" }} className="filter-icon">
         <IconButton
           onClick={() => {
-            setShow("flex");
+            props.setShow("flex");
           }}
         >
           <img src={IMAGES.deleteicon} alt="sortout" />
         </IconButton>
       </Box>
 
-      <PopUp show={Show} widthSize="23vw">
+      <PopUp show={props.Show} widthSize="23vw">
         <p className="delete-title">
           Are you sure you want to delete this task?
         </p>
@@ -30,12 +32,12 @@ const DeleteTask: React.FC<Props> = () => {
           <button
             className="cancelBtn-dt"
             onClick={() => {
-              setShow("none");
+              props.setShow("none");
             }}
           >
             Cancel
           </button>
-          <button className="redBtn" onClick={() => {}}>
+          <button className="redBtn" onClick={props.onDelete}>
             Delete
           </button>
         </div>

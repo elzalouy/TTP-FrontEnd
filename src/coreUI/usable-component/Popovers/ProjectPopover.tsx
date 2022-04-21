@@ -9,6 +9,7 @@ import {
   openDeleteProjectPopup,
   openEditProjectPopup,
 } from "../../../redux/Ui";
+import { ProjectsActions } from "../../../redux/Projects";
 interface Props {
   id: string;
   history: RouteComponentProps["history"];
@@ -26,11 +27,15 @@ const ProjectPopover: React.FC<Props> = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showDeleteProjectPopup = (val: string) => {
-    dispatch(openDeleteProjectPopup(val));
+  const showDeleteProjectPopup = () => {
+    dispatch(ProjectsActions.onSetDeleteProjectId(props.id));
+    dispatch(openDeleteProjectPopup("flex"));
+    handleClose();
   };
-  const showEditProjectPopup = (val: string) => {
-    dispatch(openEditProjectPopup(val));
+  const showEditProjectPopup = () => {
+    dispatch(ProjectsActions.onSetEditProjectId(props.id));
+    dispatch(openEditProjectPopup("flex"));
+    handleClose();
   };
   return (
     <div>
@@ -77,10 +82,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
           </Button>
           <Button
             variant="text"
-            onClick={() => {
-              showEditProjectPopup("flex");
-              handleClose();
-            }}
+            onClick={showEditProjectPopup}
             sx={{
               width: 180,
               justifyContent: "flex-start",
@@ -95,10 +97,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
             Edit Project
           </Button>
           <Button
-            onClick={() => {
-              showDeleteProjectPopup("flex");
-              handleClose();
-            }}
+            onClick={showDeleteProjectPopup}
             variant="text"
             sx={{
               width: 180,
