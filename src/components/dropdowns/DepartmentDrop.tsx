@@ -3,9 +3,15 @@ import { useState } from "react";
 import IMAGES from "../../assets/img";
 import "./dropdowns-style.css";
 
-type Props = {};
+type Props = {
+  handleSetShow: (value: string) => void;
+  handleSetShowDelete: (value: string) => void;
+};
 
-const DepartmentDrop: React.FC<Props> = () => {
+const DepartmentDrop: React.FC<Props> = ({
+  handleSetShow,
+  handleSetShowDelete,
+}) => {
   const [Show, setShow] = useState<string>("none");
 
   return (
@@ -21,7 +27,13 @@ const DepartmentDrop: React.FC<Props> = () => {
       </button>
 
       <div className="dropdown-container" style={{ display: Show }}>
-        <button className="dropdown-btn" onClick={() => setShow("none")}>
+        <button
+          className="dropdown-btn"
+          onClick={() => {
+            setShow("none");
+            handleSetShow("flex");
+          }}
+        >
           <img
             className="dropdown-btn-icon grey-icon"
             src={IMAGES.edit}
@@ -30,7 +42,13 @@ const DepartmentDrop: React.FC<Props> = () => {
           <span className="dropdown-btn-titleGrey">Edit department</span>
         </button>
 
-        <button className="dropdown-btn" onClick={() => setShow("none")}>
+        <button
+          className="dropdown-btn"
+          onClick={() => {
+            setShow("none");
+            handleSetShowDelete("flex");
+          }}
+        >
           <img
             className="dropdown-btn-icon"
             src={IMAGES.deleteicon2}

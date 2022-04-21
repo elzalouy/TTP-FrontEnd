@@ -3,44 +3,51 @@ import IMAGES from "../../assets/img";
 import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
+import { useDispatch } from "react-redux";
+import { deleteDepartment, getAllDepartments } from "../../redux/Departments";
+import { useAppSelector } from "../../redux/hooks";
+import { selectedDepart } from "../../redux/Departments/departments.selectors";
 
-type Props = {};
+type Props = {
+  showDelete: string;
+  handleSetShowDelete: (value: string) => void;
+};
 
-const DeleteDepartment: React.FC<Props> = () => {
-  const [Show, setShow] = useState<string>("none");
+const DeleteDepartment: React.FC<Props> = ({
+  showDelete,
+  handleSetShowDelete,
+}) => {
+  const dispatch = useDispatch();
+  const depData = useAppSelector(selectedDepart);
+
+  const handleSubmit = async () => {
+    await dispatch(deleteDepartment({ _id: depData?._id }));
+    await dispatch(getAllDepartments(null));
+    handleSetShowDelete("none");
+  };
 
   return (
-    <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Delete Department
-      </button>
-      <SmallPopUp show={Show}>
-        <p className="warning-text">
-          Are you sure you want to delete this department?
-        </p>
-        <hr className="separator" />
-        <div className="margin-cover">
-          <div className="controllers">
-            <button
-              className="controllers-cancel"
-              onClick={() => {
-                setShow("none");
-              }}
-            >
-              Cancel
-            </button>
-            <button className="controllers-delete" onClick={() => {}}>
-              Delete
-            </button>
-          </div>
+    <SmallPopUp show={showDelete}>
+      <p className="warning-text">
+        Are you sure you want to delete this department?
+      </p>
+      <hr className="separator" />
+      <div className="margin-cover">
+        <div className="controllers">
+          <button
+            className="controllers-cancel"
+            onClick={() => {
+              handleSetShowDelete("none");
+            }}
+          >
+            Cancel
+          </button>
+          <button className="controllers-delete" onClick={handleSubmit}>
+            Delete
+          </button>
         </div>
-      </SmallPopUp>
-    </>
+      </div>
+    </SmallPopUp>
   );
 };
 export default DeleteDepartment;
