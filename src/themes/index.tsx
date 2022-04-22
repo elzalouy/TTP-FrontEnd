@@ -19,7 +19,7 @@ export const theme = () => {
     divider: "#eeeeee",
   };
 
-  const themeOptions = {
+  const themeOptions:any = {
     direction: "ltr",
     palette: themePalette(themeOption),
     mixins: {
