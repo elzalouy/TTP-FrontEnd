@@ -4,21 +4,24 @@ import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
 
-type Props = {};
+type Props = {
+  hideButton:boolean,
+  toggle:string,
+};
 
-const DeletePM: React.FC<Props> = () => {
+const DeletePM: React.FC<Props> = (props:Props) => {
   const [Show, setShow] = useState<string>("none");
 
   return (
     <>
-      <button
+     {!props.hideButton && <button
         className="black-btn"
         onClick={() => {
           setShow("flex");
         }}
       >
         Delete PM
-      </button>
+      </button>}
       <SmallPopUp show={Show}>
         <p className="warning-text">
           Are you sure you want to delete this project manager?

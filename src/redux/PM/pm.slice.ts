@@ -1,11 +1,14 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { getPMs ,createPM,updatePM,deletePM, updatePMpassword} from "./pm.actions";
 import initialState, { ProjectManagersInterface } from "./pm.state";
+
 const PMSlice: Slice<ProjectManagersInterface> = createSlice({
   name: "PM",
   initialState: initialState,
   reducers: {
-
+      getPM:(state,{payload})=>{
+        
+      },
   },
   extraReducers: (builder) => {
     builder.addCase(getPMs.rejected, (state) => {

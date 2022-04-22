@@ -12,16 +12,26 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import React, { FC, useState } from "react";
+import LockIcon from '@mui/icons-material/Lock';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import { FC, MouseEventHandler, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
+import { ProjectManager } from "../../../redux/PM";
+import EditPM from "../../../components/popups/EditPM";
+import DeletePM from "../../../components/popups/DeletePM";
+
 interface ProjectManagersProps {
-  cellsData: any[];
+  cellsData: ProjectManager[];
 }
 
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
-  const [select, setSelected] = useState(false);
+  const [select, setSelected] = useState<boolean>(false);
   const [selects, setAllSelected] = useState<string[]>([]);
+  const [toggleEdit , setToggleEdit] = useState<string>("none");
+  const [toggleDelete , setToggleDelete] = useState<string>("none");
+
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
       let selected = [...selects];
@@ -34,9 +44,24 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
       setAllSelected(selected);
     }
   };
-  console.log(selects);
+
+  const refreshUser = (e:any) => {
+    return;
+  } 
+
+  const toggleDeletePopUp = (e:any) => {
+      setToggleEdit("flex");
+  };
+
+  const toggleUpdatePopUp = (e:any) => {
+    setToggleDelete("flex");
+  };
+
+
   return (
     <>
+      <EditPM toggle={toggleEdit} hideButton/>
+      <DeletePM toggle={toggleDelete} hideButton/>
       <TableContainer>
         <Table size="small" aria-label="a dense table">
           <TableHead>
@@ -53,7 +78,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   onChange={(e, checked) => {
                     setSelected(checked);
                     if (checked)
-                      setAllSelected(cellsData.map((item) => item.id));
+                      setAllSelected(cellsData.map((item) => item._id));
                     else setAllSelected([]);
                   }}
                   className="col-grey"
@@ -114,7 +139,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 align="center"
                 style={{ color: "#334D6E", width: "50px", margin: "0px" }}
               >
-                Action
+                Actions
               </TableCell>
             </TableRow>
           </TableHead>
@@ -122,15 +147,13 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
           <TableBody>
             {cellsData.map((cellData) => {
               const {
-                id,
+                _id,
                 name,
                 email,
-                progressTask,
-                progressProject,
-                doneProject,
               } = cellData;
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+              
+               return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
                     style={{
                       width: "50px",
@@ -140,10 +163,10 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   >
                     <Checkbox
                       checked={
-                        select || selects.findIndex((i) => i === id) >= 0
+                        select || selects.findIndex((i) => i === _id) >= 0
                       }
                       onChange={(e, checked) =>
-                        setSingleSelect(cellData.id, checked)
+                        setSingleSelect(_id, checked)
                       }
                       className="col-grey"
                       color="primary"
@@ -168,12 +191,16 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       <Typography
                         fontWeight={"700"}
                         fontSize={15}
+                        textTransform={"capitalize"}
                         sx={{
                           color: "#323C47",
                         }}
                       >
                         {name}
                       </Typography>
+                      <IconButton onClick={refreshUser}>
+                        <RefreshIcon />
+                      </IconButton>
                     </Stack>
                   </TableCell>
                   <TableCell
@@ -188,21 +215,23 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     {email}
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{progressTask}</Typography>
+                    <Typography color="#707683">{/* {progressTask} */} Progress Task</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{progressProject}</Typography>
+                    <Typography color="#707683">{/* {progressProject} */}Progress Project</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{doneProject}</Typography>
+                    <Typography color="#707683">{/* {doneProject} */}Done Project</Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
                       <IconButton>
+                        <LockOpenIcon/>
+                      </IconButton>
+                      <IconButton onClick={toggleUpdatePopUp}>
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-
-                      <IconButton>
+                      <IconButton onClick={toggleDeletePopUp}>
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
                       </IconButton>
                     </Box>

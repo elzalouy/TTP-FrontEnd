@@ -3,22 +3,26 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
+import { useDispatch } from "react-redux";
 
-type Props = {};
+type Props = {
+  hideButton:boolean,
+  toggle:string,
+};
 
-const EditPM: React.FC<Props> = () => {
+const EditPM: React.FC<Props> = (props:Props) => {
   const [Show, setShow] = useState("none");
 
   return (
     <>
-      <button
+      {!props.hideButton && <button
         className="black-btn"
         onClick={() => {
           setShow("flex");
         }}
       >
         Edit PM
-      </button>
+      </button>}
 
       <PopUp show={Show} minWidthSize="30vw">
         <div>
