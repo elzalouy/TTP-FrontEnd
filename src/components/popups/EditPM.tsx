@@ -4,27 +4,30 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
+import { selectEditPMPopup } from "../../redux/Ui/UI.selectors";
+import { toggleEditProjectManagerPopup } from "../../redux/Ui";
 
 type Props = {
-  hideButton:boolean,
-  toggle:string,
+  hideButton:boolean
 };
 
 const EditPM: React.FC<Props> = (props:Props) => {
-  const [Show, setShow] = useState("none");
+  const toggler = useAppSelector(selectEditPMPopup);
+  const dispatch = useDispatch();
 
   return (
     <>
       {!props.hideButton && <button
         className="black-btn"
         onClick={() => {
-          setShow("flex");
+          dispatch(toggleEditProjectManagerPopup("flex"));
         }}
       >
         Edit PM
       </button>}
 
-      <PopUp show={Show} minWidthSize="30vw">
+      <PopUp show={toggler} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"
@@ -33,7 +36,7 @@ const EditPM: React.FC<Props> = (props:Props) => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
-              setShow("none");
+              dispatch(toggleEditProjectManagerPopup("none"));
             }}
           />
         </div>
@@ -57,7 +60,7 @@ const EditPM: React.FC<Props> = (props:Props) => {
           <button
             className="controllers-cancel"
             onClick={() => {
-              setShow("none");
+              dispatch(toggleEditProjectManagerPopup("none"));
             }}
           >
             Cancel

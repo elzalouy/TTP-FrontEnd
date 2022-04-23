@@ -21,6 +21,8 @@ import _ from "lodash";
 import { ProjectManager } from "../../../redux/PM";
 import EditPM from "../../../components/popups/EditPM";
 import DeletePM from "../../../components/popups/DeletePM";
+import { useDispatch } from "react-redux";
+import { toggleDeleteProjectManagerPopup, toggleEditProjectManagerPopup } from "../../../redux/Ui";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -28,9 +30,8 @@ interface ProjectManagersProps {
 
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const [select, setSelected] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const [selects, setAllSelected] = useState<string[]>([]);
-  const [toggleEdit , setToggleEdit] = useState<string>("none");
-  const [toggleDelete , setToggleDelete] = useState<string>("none");
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -50,18 +51,18 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   } 
 
   const toggleDeletePopUp = (e:any) => {
-      setToggleEdit("flex");
+     dispatch(toggleDeleteProjectManagerPopup("flex"));
   };
 
   const toggleUpdatePopUp = (e:any) => {
-    setToggleDelete("flex");
+    dispatch(toggleEditProjectManagerPopup("flex"));
   };
 
 
   return (
     <>
-      <EditPM toggle={toggleEdit} hideButton/>
-      <DeletePM toggle={toggleDelete} hideButton/>
+      <EditPM hideButton/>
+      <DeletePM hideButton/>
       <TableContainer>
         <Table size="small" aria-label="a dense table">
           <TableHead>

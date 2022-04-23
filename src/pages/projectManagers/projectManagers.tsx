@@ -25,7 +25,6 @@ const ProjectManagers: React.FC<Props> = () => {
   const dispatch = useDispatch(); 
   const productManagerData = useAppSelector(selectPMs);
 
-
   useEffect(()=>{
     setCellsData(productManagerData);
   },[productManagerData]);
