@@ -18,7 +18,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { FC, MouseEventHandler, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
-import { ProjectManager } from "../../../redux/PM";
+import { PMsActions, ProjectManager } from "../../../redux/PM";
 import EditPM from "../../../components/popups/EditPM";
 import DeletePM from "../../../components/popups/DeletePM";
 import { useDispatch } from "react-redux";
@@ -50,11 +50,13 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     return;
   } 
 
-  const toggleDeletePopUp = (e:any) => {
+  const toggleDeletePopUp = (e:any,cellData:ProjectManager) => {
+     dispatch(PMsActions.setId(cellData));
      dispatch(toggleDeleteProjectManagerPopup("flex"));
   };
 
-  const toggleUpdatePopUp = (e:any) => {
+  const toggleUpdatePopUp = (e:any,cellData:ProjectManager) => {
+    dispatch(PMsActions.setId(cellData));
     dispatch(toggleEditProjectManagerPopup("flex"));
   };
 
@@ -229,10 +231,10 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       <IconButton>
                         <LockOpenIcon/>
                       </IconButton>
-                      <IconButton onClick={toggleUpdatePopUp}>
+                      <IconButton onClick={(e)=>toggleUpdatePopUp(e,cellData)}>
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-                      <IconButton onClick={toggleDeletePopUp}>
+                      <IconButton onClick={(e)=>toggleDeletePopUp(e,cellData)}>
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
                       </IconButton>
                     </Box>

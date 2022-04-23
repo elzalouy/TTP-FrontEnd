@@ -9,6 +9,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
       getPM:(state,{payload})=>{
         
       },
+      setId:(state,{payload})=>{
+        state.current_ID = payload._id;
+      }
   },
   extraReducers: (builder) => {
     builder.addCase(getPMs.rejected, (state) => {
@@ -25,11 +28,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(createPM.rejected, (state) => {
       state.loading = false;
-      state.PMs = [];
     });
     builder.addCase(createPM.pending, (state) => {
       state.loading = true;
-      state.PMs = [];
     });
     builder.addCase(createPM.fulfilled, (state, action) => {
       state.loading = false;
@@ -37,11 +38,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(deletePM.rejected, (state) => {
       state.loading = false;
-      state.PMs = [];
     });
     builder.addCase(deletePM.pending, (state) => {
       state.loading = true;
-      state.PMs = [];
     });
     builder.addCase(deletePM.fulfilled, (state, action) => {
       state.loading = false;
@@ -49,11 +48,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(updatePM.rejected, (state) => {
       state.loading = false;
-      state.PMs = [];
     });
     builder.addCase(updatePM.pending, (state) => {
       state.loading = true;
-      state.PMs = [];
     });
     builder.addCase(updatePM.fulfilled, (state, action) => {
       state.loading = false;
@@ -61,11 +58,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(updatePMpassword.rejected, (state) => {
       state.loading = false;
-      state.PMs = [];
     });
     builder.addCase(updatePMpassword.pending, (state) => {
       state.loading = true;
-      state.PMs = [];
     });
     builder.addCase(updatePMpassword.fulfilled, (state, action) => {
       state.loading = false;

@@ -52,8 +52,6 @@ const EditPM: React.FC<Props> = (props:Props) => {
             type="text"
             placeholder="user@example.com"
           />
-          <label className="popup-label">Trello username</label>
-          <input className="popup-input" type="text" placeholder="Username" />
         </div>
         <br />
         <div className="controllers">
@@ -65,7 +63,9 @@ const EditPM: React.FC<Props> = (props:Props) => {
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => {}}>
+          <button className="controllers-done" onClick={() => {
+            
+          }}>
             Done
           </button>
         </div>
