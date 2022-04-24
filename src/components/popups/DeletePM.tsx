@@ -1,12 +1,13 @@
 import React from "react";
 import IMAGES from "../../assets/img";
 import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
-import { useState } from "react";
 import "./popups-style.css";
 import { useAppSelector } from "../../redux/hooks";
 import { selectDeletePMPopup } from "../../redux/Ui/UI.selectors";
+import {select_Id} from "../../redux/PM/pm.selectors"
 import { useDispatch } from "react-redux";
 import { toggleDeleteProjectManagerPopup } from "../../redux/Ui";
+import { deletePM } from "../../redux/PM";
 
 type Props = {
   hideButton:boolean
@@ -14,6 +15,7 @@ type Props = {
 
 const DeletePM: React.FC<Props> = (props:Props) => {
   const toggler = useAppSelector(selectDeletePMPopup);
+  const _id = useAppSelector(select_Id);
   const dispatch = useDispatch();
 
   return (
@@ -41,7 +43,10 @@ const DeletePM: React.FC<Props> = (props:Props) => {
             >
               Cancel
             </button>
-            <button className="controllers-delete" onClick={() => {}}>
+            <button className="controllers-delete" onClick={() => {
+              dispatch(deletePM(_id));
+              dispatch(toggleDeleteProjectManagerPopup("none"));
+            }}>
               Delete
             </button>
           </div>

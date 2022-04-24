@@ -44,7 +44,7 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(deletePM.fulfilled, (state, action) => {
       state.loading = false;
-      state.PMs = [...state.PMs,action.payload];
+      state.PMs = state.PMs.filter((pm)=>pm._id!==state.current_ID);
     });
     builder.addCase(updatePM.rejected, (state) => {
       state.loading = false;
@@ -54,7 +54,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(updatePM.fulfilled, (state, action) => {
       state.loading = false;
-      state.PMs = [...state.PMs,action.payload];
+      console.log();
+      let oldData = state.PMs.filter((pm)=>pm._id!==action.payload._id);
+      state.PMs = [...oldData,action.payload];
     });
     builder.addCase(updatePMpassword.rejected, (state) => {
       state.loading = false;

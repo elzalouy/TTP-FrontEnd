@@ -12,9 +12,9 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from "@mui/icons-material/Lock";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { FC, MouseEventHandler, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
@@ -22,7 +22,10 @@ import { PMsActions, ProjectManager } from "../../../redux/PM";
 import EditPM from "../../../components/popups/EditPM";
 import DeletePM from "../../../components/popups/DeletePM";
 import { useDispatch } from "react-redux";
-import { toggleDeleteProjectManagerPopup, toggleEditProjectManagerPopup } from "../../../redux/Ui";
+import {
+  toggleDeleteProjectManagerPopup,
+  toggleEditProjectManagerPopup,
+} from "../../../redux/Ui";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -46,25 +49,24 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     }
   };
 
-  const refreshUser = (e:any) => {
+  const refreshUser = (e: any) => {
     return;
-  } 
-
-  const toggleDeletePopUp = (e:any,cellData:ProjectManager) => {
-     dispatch(PMsActions.setId(cellData));
-     dispatch(toggleDeleteProjectManagerPopup("flex"));
   };
 
-  const toggleUpdatePopUp = (e:any,cellData:ProjectManager) => {
+  const toggleDeletePopUp = (e: any, cellData: ProjectManager) => {
+    dispatch(PMsActions.setId(cellData));
+    dispatch(toggleDeleteProjectManagerPopup("flex"));
+  };
+
+  const toggleUpdatePopUp = (e: any, cellData: ProjectManager) => {
     dispatch(PMsActions.setId(cellData));
     dispatch(toggleEditProjectManagerPopup("flex"));
   };
 
-
   return (
     <>
-      <EditPM hideButton/>
-      <DeletePM hideButton/>
+      <EditPM hideButton />
+      <DeletePM hideButton />
       <TableContainer>
         <Table size="small" aria-label="a dense table">
           <TableHead>
@@ -149,13 +151,9 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
 
           <TableBody>
             {cellsData.map((cellData) => {
-              const {
-                _id,
-                name,
-                email,
-              } = cellData;
-              
-               return (
+              const { _id, name, email } = cellData;
+
+              return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
                     style={{
@@ -168,9 +166,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       checked={
                         select || selects.findIndex((i) => i === _id) >= 0
                       }
-                      onChange={(e, checked) =>
-                        setSingleSelect(_id, checked)
-                      }
+                      onChange={(e, checked) => setSingleSelect(_id, checked)}
                       className="col-grey"
                       color="primary"
                     />
@@ -218,23 +214,33 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     {email}
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{/* {progressTask} */} Progress Task</Typography>
+                    <Typography color="#707683">
+                      {/* {progressTask} */} Progress Task
+                    </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{/* {progressProject} */}Progress Project</Typography>
+                    <Typography color="#707683">
+                      {/* {progressProject} */}Progress Project
+                    </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{/* {doneProject} */}Done Project</Typography>
+                    <Typography color="#707683">
+                      {/* {doneProject} */}Done Project
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
                       <IconButton>
-                        <LockOpenIcon/>
+                        <LockOpenIcon />
                       </IconButton>
-                      <IconButton onClick={(e)=>toggleUpdatePopUp(e,cellData)}>
+                      <IconButton
+                        onClick={(e) => toggleUpdatePopUp(e, cellData)}
+                      >
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-                      <IconButton onClick={(e)=>toggleDeletePopUp(e,cellData)}>
+                      <IconButton
+                        onClick={(e) => toggleDeletePopUp(e, cellData)}
+                      >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
                       </IconButton>
                     </Box>

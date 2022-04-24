@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import PMapi from "../../services/endpoints/PMs";
 
+
+
 export const getPMs = createAsyncThunk<any, any, any>(
   "PM/getPMs",
   async (_, { rejectWithValue }) => {
@@ -54,7 +56,7 @@ export const updatePMpassword = createAsyncThunk<any, any, any>(
 
 export const deletePM = createAsyncThunk<any, any, any>(
   "PM/deletePM",
-  async (id: string, { rejectWithValue }) => {
+  async (id:any, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.deleteUser(id);
       if (PMs.ok && PMs.data) return PMs.data;

@@ -18,18 +18,16 @@ const AddNewPM: React.FC<Props> = () => {
     if (!username || !email) {
       setError(true);
     } else {
-      setError(false);
       dispatch(
         createPM({
           name: username,
           email: email,
-          password: "199988888",
-          role: "project manager",
-          type: "admin",
-          trelloBoardId: "616577753fa7db4ef1e715ea",
-          trelloMemberId: "5cd742d89b200d471e827fc8",
         })
       );
+      setError(false);
+      setShow("none");
+      setUsername("");
+      setEmail("");
     }
   };
 
@@ -53,21 +51,22 @@ const AddNewPM: React.FC<Props> = () => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setUsername("");
+              setEmail("");
             }}
           />
         </div>
 
         <div>
           <p className="popup-title">Add new product manager</p>
-
           {error && (
             <p className="popup-error">Please fill all the empty field</p>
           )}
-
           <label className="popup-label">Project manager name</label>
           <input
             className="popup-input"
             type="text"
+            value={username}
             placeholder="PM name"
             onChange={(e) => {
               setUsername(e.target.value);
@@ -78,6 +77,7 @@ const AddNewPM: React.FC<Props> = () => {
           <input
             className="popup-input"
             type="text"
+            value={email}
             placeholder="user@example.com"
             onChange={(e) => {
               setEmail(e.target.value);
@@ -91,6 +91,8 @@ const AddNewPM: React.FC<Props> = () => {
             className="controllers-cancel"
             onClick={() => {
               setShow("none");
+              setUsername("");
+              setEmail("");
             }}
           >
             Cancel
