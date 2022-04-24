@@ -78,6 +78,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
       )?.listId,
       boardId: selectedDepartment?.boardId,
     };
+    // console.log(newTask);
     dispatch(createProjectTask(newTask));
   };
 

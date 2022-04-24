@@ -19,7 +19,6 @@ const EditPM: React.FC<Props> = () => {
       >
         Edit PM
       </button>
-
       <PopUp show={Show} minWidthSize="30vw">
         <div>
           <img

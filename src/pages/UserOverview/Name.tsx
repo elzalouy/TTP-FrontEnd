@@ -25,6 +25,7 @@ const UserName: React.FC<UserNameProps> = (props) => {
             component="h4"
             color={"#FFC500"}
             paddingLeft={1}
+            fontWeight={"600"}
           >
             {props.name},
           </Typography>

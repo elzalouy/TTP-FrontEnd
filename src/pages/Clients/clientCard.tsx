@@ -1,9 +1,8 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
 import IMAGES from "../../assets/img";
 import { Client } from "./clients";
-import ClientDrop from "./../../components/dropdowns/ClientDrop";
 import moment from "moment";
 import ClientsPopover from "../../coreUI/usable-component/Popovers/ClientsPopover";
 interface IProps {
@@ -54,7 +53,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             </Box>
           </Stack>
           <Typography>
-            <ClientsPopover />
+            <ClientsPopover client={client} />
           </Typography>
         </Box>
         <Grid

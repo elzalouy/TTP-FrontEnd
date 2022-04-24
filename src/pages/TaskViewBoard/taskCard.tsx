@@ -1,10 +1,12 @@
-import { ImageSearch } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
+import { useAppSelector } from "../../redux/hooks";
 import { Project, Task } from "../../redux/Projects";
+import { selectAllMembers } from "../../redux/techMember";
+
 import "./taskCard.css";
 interface DataTypes {
   index: number;
@@ -12,8 +14,9 @@ interface DataTypes {
   project: Project | null;
 }
 
-const taskCard: React.FC<DataTypes> = ({ item, index, project }) => {
-  const { _id, name, status, deadline, start } = item;
+const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
+  const techMembers = useAppSelector(selectAllMembers);
+  const { _id, name, deadline } = item;
   const floatDays =
     (new Date(deadline).getTime() - new Date().getTime()) /
     (1000 * 60 * 60 * 24);
@@ -174,7 +177,11 @@ const taskCard: React.FC<DataTypes> = ({ item, index, project }) => {
               style={{ marginLeft: "10px" }}
               className={"task-card-footer-not-clear"}
             >
-              Al-shaqran team
+              {
+                techMembers.techMembers.find(
+                  (member) => member._id === item.memberId
+                )?.name
+              }
             </Typography>
           </Stack>
         </Box>
@@ -183,4 +190,4 @@ const taskCard: React.FC<DataTypes> = ({ item, index, project }) => {
   );
 };
 
-export default taskCard;
+export default TaskCard;

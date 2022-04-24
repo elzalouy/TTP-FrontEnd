@@ -3,14 +3,13 @@ import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../styles";
 import IMAGES from "../../../assets/img";
-import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
-import {
-  openDeleteProjectPopup,
-  openEditProjectPopup,
-} from "../../../redux/Ui";
-interface Props {}
-const ClientsPopover: React.FC<Props> = (props) => {
+import { openEditClientPopup, openDeleteClientPopup } from "../../../redux/Ui";
+import { Client, clientsActions } from "../../../redux/Clients";
+interface Props {
+  client: Client;
+}
+const ClientsPopover: React.FC<Props> = ({ client }) => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -23,11 +22,15 @@ const ClientsPopover: React.FC<Props> = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showDeleteProjectPopup = (val: string) => {
-    dispatch(openDeleteProjectPopup(val));
+  const showEditClientPopup = () => {
+    dispatch(openEditClientPopup("flex"));
+    dispatch(clientsActions.setEditClient(client));
+    handleClose();
   };
-  const showEditProjectPopup = (val: string) => {
-    dispatch(openEditProjectPopup(val));
+  const showDeleteClientPopup = () => {
+    dispatch(openDeleteClientPopup("flex"));
+    dispatch(clientsActions.setEditClient(client));
+    handleClose();
   };
   return (
     <div>
@@ -54,10 +57,7 @@ const ClientsPopover: React.FC<Props> = (props) => {
         <Box display={"grid"} padding={1}>
           <Button
             variant="text"
-            onClick={() => {
-              showEditProjectPopup("flex");
-              handleClose();
-            }}
+            onClick={showEditClientPopup}
             sx={{
               width: 120,
               justifyContent: "flex-start",
@@ -68,15 +68,17 @@ const ClientsPopover: React.FC<Props> = (props) => {
               fontSize: 13,
             }}
           >
-            <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
+            <img
+              alt=""
+              src={IMAGES.edit}
+              width={18}
+              style={{ marginRight: 10 }}
+            ></img>
             Edit Client
           </Button>
           <Button
-            onClick={() => {
-              showDeleteProjectPopup("flex");
-              handleClose();
-            }}
             variant="text"
+            onClick={showDeleteClientPopup}
             sx={{
               width: 120,
               justifyContent: "flex-start",
@@ -88,6 +90,7 @@ const ClientsPopover: React.FC<Props> = (props) => {
             }}
           >
             <img
+              alt=""
               src={IMAGES.deleteicon2}
               width={18}
               style={{ marginRight: 10 }}

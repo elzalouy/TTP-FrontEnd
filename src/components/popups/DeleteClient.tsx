@@ -6,42 +6,31 @@ import "./popups-style.css";
 import axios, { AxiosResponse } from "axios";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { deleteClient } from "../../redux/Clients";
+import { deleteClient, selectEditClient } from "../../redux/Clients";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {
-  id: string;
   show: string;
-  deletePopup: () => void;
-
-  deletePopupValue: string;
-  setDeletePopup: React.Dispatch<React.SetStateAction<string>>;
+  setShow: (val: string) => void;
 };
 
-const DeleteClient: React.FC<Props> = ({
-  id,
-  show,
-  deletePopup,
-  deletePopupValue,
-  setDeletePopup,
-}) => {
+const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-
+  const editClient = useAppSelector(selectEditClient);
   const handleDelete = async () => {
     try {
-      console.log(id);
-      await dispatch(deleteClient({ id }));
-      setDeletePopup("none");
+      dispatch(deleteClient({ id: editClient._id }));
+      setShow("none");
     } catch (e) {
       console.log(e);
     }
   };
   const handleClose = () => {
-    setDeletePopup("none");
-    deletePopup();
+    setShow("none");
   };
   return (
     <>
-      <SmallPopUp show={deletePopupValue}>
+      <SmallPopUp show={show}>
         <p className="warning-text">
           Are you sure you want to delete this client?
         </p>

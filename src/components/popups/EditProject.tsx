@@ -36,6 +36,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let editProject = { ...project };
     editProject.name = data.name;
     editProject.projectManager = data.projectManager;
+    editProject.projectManagerName = PMs.find(
+      (item) => item._id === data.projectManager
+    )?.name;
     editProject.projectDeadline = data.deadline;
     editProject.clientId = data.clientId;
     editProject.projectStatus = data.status;

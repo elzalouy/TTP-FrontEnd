@@ -36,7 +36,6 @@ const TasksTable: React.FC<TasksTableProps> = ({
       setAllSelected(selected);
     }
   };
-  console.log(tasks);
   return (
     <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
       <Table>

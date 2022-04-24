@@ -10,3 +10,4 @@ export const selectClientsNames = (state: RootState) => {
   });
   return names;
 };
+export const selectEditClient = (state: RootState) => state?.clients.editClient;

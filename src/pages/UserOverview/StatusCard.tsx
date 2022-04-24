@@ -11,6 +11,7 @@ interface UserStatusProps {
   percent: string;
   percentColor: string;
   user: string;
+  pt: number;
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
@@ -38,10 +39,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           }}
         >
           <Box
-            width={40}
-            height={40}
-            borderRadius={5}
-            paddingTop={1.3}
+            width={45}
+            height={45}
+            borderRadius={10}
+            paddingTop={props.pt}
             textAlign={"center"}
             bgcolor={props.IconBgColor}
           >

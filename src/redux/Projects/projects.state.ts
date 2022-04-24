@@ -27,6 +27,7 @@ export interface Project {
   _id: string;
   name: string;
   projectManager: { _id: string; name: string } | null;
+  projectManagerName: string | null;
   teamsId?: any[];
   numberOfTasks?: any;
   numberOfFinshedTasks?: any;
@@ -74,6 +75,7 @@ const PorjectsState: ProjectsInterface = {
       _id: "",
       name: "",
       projectManager: null,
+      projectManagerName: null,
       teamsId: [],
       numberOfTasks: 0,
       numberOfFinshedTasks: 0,
