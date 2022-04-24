@@ -44,6 +44,7 @@ const EditPM: React.FC<Props> = (props: Props) => {
       setError(false);
       setUsername("");
       setEmail("");
+      dispatch(toggleEditProjectManagerPopup("none"));
     }
   };
 
