@@ -1,25 +1,67 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
+import { selectEditPMPopup } from "../../redux/Ui/UI.selectors";
+import { toggleEditProjectManagerPopup } from "../../redux/Ui";
+import { selectPMs, select_Id, updatePM } from "../../redux/PM";
 
-type Props = {};
+type Props = {
+  hideButton: boolean;
+};
 
-const EditPM: React.FC<Props> = () => {
-  const [Show, setShow] = useState("none");
+const EditPM: React.FC<Props> = (props: Props) => {
+  const toggler = useAppSelector(selectEditPMPopup);
+  const _id = useAppSelector(select_Id);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const currentPM = useAppSelector(selectPMs);
+  const currentData = currentPM.filter((element) => {
+    return element._id === _id;
+  });
+
+  useEffect(() => {
+    setUsername(currentData[0]?.name);
+    setEmail(currentData[0]?.email);
+  }, [toggler]);
+
+  const updateUser = () => {
+    if (!username || !email) {
+      setError(true);
+    } else {
+      dispatch(
+        updatePM({
+          id: _id,
+          name: username,
+          email: email,
+        })
+      );
+      setError(false);
+      setUsername("");
+      setEmail("");
+      dispatch(toggleEditProjectManagerPopup("none"));
+    }
+  };
 
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Edit PM
-      </button>
-      <PopUp show={Show} minWidthSize="30vw">
+      {!props.hideButton && (
+        <button
+          className="black-btn"
+          onClick={() => {
+            dispatch(toggleEditProjectManagerPopup("flex"));
+          }}
+        >
+          Edit PM
+        </button>
+      )}
+
+      <PopUp show={toggler} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"
@@ -28,36 +70,55 @@ const EditPM: React.FC<Props> = () => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
-              setShow("none");
+              dispatch(toggleEditProjectManagerPopup("none"));
+              setUsername("");
+              setError(false);
+              setEmail("");
             }}
           />
         </div>
-
         <p className="popup-title">Edit project manager</p>
-
+        {error && (
+          <p className="popup-error">Please fill all the empty field</p>
+        )}
         <div>
           <label className="popup-label">Project manager name</label>
-          <input className="popup-input" type="text" placeholder="PM name" />
+          <input
+            className="popup-input"
+            type="text"
+            placeholder="PM name"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError(false);
+            }}
+          />
           <label className="popup-label">Email</label>
           <input
             className="popup-input"
             type="text"
+            value={email}
             placeholder="user@example.com"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(false);
+            }}
           />
-          <label className="popup-label">Trello username</label>
-          <input className="popup-input" type="text" placeholder="Username" />
         </div>
         <br />
         <div className="controllers">
           <button
             className="controllers-cancel"
             onClick={() => {
-              setShow("none");
+              setUsername("");
+              setEmail("");
+              setError(false);
+              dispatch(toggleEditProjectManagerPopup("none"));
             }}
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={() => {}}>
+          <button className="controllers-done" onClick={updateUser}>
             Done
           </button>
         </div>

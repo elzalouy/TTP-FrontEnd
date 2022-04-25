@@ -1,5 +1,6 @@
 .black-btn {
   cursor: pointer;
+  text-transform: capitalize;
   /* margin-left: auto; */
   background-color: black;
   color: white;
@@ -61,12 +62,20 @@
 .popup-title {
   color: #30bcc7;
   font-weight: 600;
+  text-transform: capitalize;
+}
+.popup-error {
+  color: red;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin:10px 0;
 }
 
 .popup-label {
   display: block;
   font-weight: bold;
   margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
 }
 
 .popup-input {

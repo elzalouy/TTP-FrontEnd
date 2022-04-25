@@ -5,6 +5,7 @@ const api = create({
   baseURL: apiUrl.API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
+
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("@accessToken", token);

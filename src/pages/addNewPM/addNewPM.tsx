@@ -4,7 +4,7 @@ import IMAGES from "../../assets/img/index";
 import "./addNewPM.css";
 
 type Props = {};
-const AddNewPM: React.FC<Props> = () => {
+const AddNewPM: React.FC<Props> = (props:Props) => {
   const [Show, setShow] = useState("none");
   return (
     <>
