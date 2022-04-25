@@ -3,34 +3,104 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
-
+import { Typography } from "@mui/material";
+import { useAppSelector } from "../../redux/hooks";
+import {
+  createProjectTask,
+  ProjectsActions,
+  selectNewProject,
+  selectSelectedDepartment,
+  selectSelectedProject,
+} from "../../redux/Projects";
+import { useDispatch } from "react-redux";
+import {
+  getAllDepartments,
+  selectAllDepartments,
+} from "../../redux/Departments";
+import {
+  categoriesActions,
+  getAllCategories,
+  selectAllCategories,
+  selectSelectedCategory,
+} from "../../redux/Categories";
+import _ from "lodash";
 type Props = {
   show: string;
   setShow: (val: string) => void;
 };
 
-interface taskData {
-  taskName: string;
-  department: string;
-  deadline: string;
-  Category: string;
-  Description: string;
-  SubCategory: string;
-  AttachCard: string;
-  files: any;
-}
-
 const CreateTask: React.FC<Props> = (props) => {
-  const [Task, setTask] = useState<taskData>({
-    taskName: "",
-    department: "",
+  const dispatch = useDispatch();
+  const selectedDepartment = useAppSelector(selectSelectedDepartment);
+  const selectedProject = useAppSelector(selectSelectedProject);
+  const departments = useAppSelector(selectAllDepartments);
+  const categories = useAppSelector(selectAllCategories);
+  const selectedCategory = useAppSelector(selectSelectedCategory);
+  const [Task, setTask] = useState<any>({
+    name: "",
+    categoryId: "",
+    subCategoryId: "",
+    memberId: "",
     deadline: "",
-    Category: "",
-    Description: "",
-    SubCategory: "",
-    AttachCard: "",
-    files: [],
+    attachedFiles: "",
+    selectedDepartmentId: "",
+    description: "",
   });
+  React.useEffect(() => {
+    dispatch(getAllDepartments(null));
+    dispatch(getAllCategories(null));
+  }, []);
+
+  React.useEffect(() => {
+    if (Task?.categoryId !== selectedCategory?._id) {
+      let category = categories.find((item) => item._id === Task?.categoryId);
+      dispatch(
+        categoriesActions?.setSelectedCategory(category ? category : null)
+      );
+    }
+    if (Task?.selectedDepartmentId !== selectedDepartment?._id) {
+      let dep = departments?.find(
+        (item) => item._id === Task.selectedDepartmentId
+      );
+      dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
+    }
+  }, [Task]);
+  const onSubmit = (data: any) => {
+    let newTask = {
+      name: Task.name,
+      categoryId: Task?.categoryId,
+      subCategoryId: Task?.subCategoryId,
+      memberId: Task?.memberId,
+      projectId: selectedProject?.project?._id,
+      status: "inProgress",
+      start: new Date().toUTCString(),
+      deadline: Task?.deadline,
+      deliveryDate: null,
+      done: null,
+      turnoverTime: null,
+      attachedFiles: Task?.attachedFiles,
+      listId: selectedDepartment?.teamsId?.find(
+        (item) => item._id === Task?.memberId
+      )?.listId,
+      boardId: selectedDepartment?.boardId,
+    };
+    dispatch(createProjectTask(newTask));
+  };
+  const onChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    let task = { ...Task };
+    task[e.target.name] = e.target.value;
+    setTask(task);
+  };
+  const onDeleteFile = () => {
+    let task = { ...Task };
+    task.attachedFiles = "";
+    setTask(task);
+  };
+  console.log(Task);
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
@@ -44,101 +114,85 @@ const CreateTask: React.FC<Props> = (props) => {
             }}
           />
         </div>
-        <p className="popup-title">Create task</p>
+        <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
+          Create task
+        </Typography>
         <div className="inputs-grid">
           <div>
             <label className="popup-label">Task name</label>
             <input
+              name="name"
               className="popup-input"
               type="text"
               placeholder="Task name"
-              value={Task.taskName}
-              onChange={(e) => {
-                Task.taskName = e.target.value;
-                setTask({ ...Task });
-              }}
+              value={Task.name}
+              onChange={onChange}
             />
           </div>
-
           <div>
             <label className="popup-label">Department name</label>
-
             <select
               className="popup-select"
-              onChange={(e) => {
-                Task.department = e.target.value;
-                setTask({ ...Task });
-              }}
+              name="selectedDepartmentId"
+              value={Task.selectedDepartmentId}
+              onChange={onChange}
             >
-              <option value="design"> design</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              {departments &&
+                departments?.map((item) => (
+                  <option value={item._id}>{item.name}</option>
+                ))}
             </select>
           </div>
-
           <div>
             <label className="popup-label">Deadline date</label>
-
             <input
               className="popup-input"
               type="date"
+              name="deadline"
               value={Task.deadline}
-              onChange={(e) => {
-                Task.deadline = e.target.value;
-                setTask({ ...Task });
-              }}
+              onChange={onChange}
             />
           </div>
           <div>
             <label className="popup-label">Category</label>
-
             <select
               className="popup-select"
-              onChange={(e) => {
-                Task.Category = e.target.value;
-                setTask({ ...Task });
-              }}
+              onChange={onChange}
+              name="categoryId"
+              value={Task.categoryId}
             >
-              <option value="0">Graphic design</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              {categories &&
+                categories?.map((item) => (
+                  <option value={item._id}>{item.category}</option>
+                ))}
             </select>
           </div>
-
           <div>
             <label className="popup-label">Description</label>
-
             <textarea
               maxLength={75}
               className="popup-textarea"
               rows={4}
               placeholder="Write about your task"
-              value={Task.Description}
-              onChange={(e) => {
-                Task.Description = e.target.value;
-                setTask({ ...Task });
-              }}
+              value={Task.description}
+              onChange={onChange}
+              name="description"
             />
           </div>
-
           <div>
             <label className="popup-label">Sub category</label>
-
             <select
               className="popup-select"
-              onChange={(e) => {
-                Task.SubCategory = e.target.value;
-                setTask({ ...Task });
-              }}
+              name="subCategoryId"
+              onChange={onChange}
             >
-              <option value="Sub Category">Sub Category</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              {selectedCategory &&
+                selectedCategory.selectedSubCategory?.map((item) => (
+                  <option value={item._id}>{item.subCategory}</option>
+                ))}
             </select>
-
-            <label className="popup-label">Attach card</label>
-
-            <select
+            {/* <label className="popup-label">Attach card</label> */}
+            {/* <select
               className="popup-select"
               onChange={(e) => {
                 Task.AttachCard = e.target.value;
@@ -148,52 +202,40 @@ const CreateTask: React.FC<Props> = (props) => {
               <option value="Sub Category">Sub Category</option>
               <option value="1">option 2 </option>
               <option value="2">option</option>
-            </select>
+            </select> */}
           </div>
         </div>
         <div className="row-wrap">
           <div className="upload-btn-wrapper">
             <button className="btnFile">
-              <img src={IMAGES.fileicon} alt="Upload" /> {Task.files.length}
+              <img src={IMAGES.fileicon} alt="Upload" />
+              {Task?.attachedFiles?.length > 0 ? 1 : 0}
             </button>
             <input
               type="file"
-              multiple
               className="custom-file-input"
-              onChange={(e) => {
-                console.log(e.target.files);
-                const files = (e.target as HTMLInputElement).files;
-                if (files == null) Task.files = [];
-                else if (files.length != null) {
-                  Task.files = files;
-                }
-
-                setTask({ ...Task });
-              }}
+              name="attachedFiles"
+              onChange={onChange}
             />
           </div>
-
-          {Array.from(Task.files).map((el: any, i) => {
-            return (
-              <div key={i} className="added-file">
-                <p className="title-added-file">{el.name}</p>
-                <img
-                  src={IMAGES.closeicon}
-                  alt="close"
-                  width="9"
-                  height="9"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    let newFileList = Array.from(Task.files);
-                    newFileList.splice(i, 1);
-                    Task.files = newFileList;
-                    setTask({ ...Task });
-                    console.log(Task);
-                  }}
-                />
-              </div>
-            );
-          })}
+          {Task?.attachedFiles?.length > 0 && (
+            <div className="added-file">
+              <p className="title-added-file">
+                {_.truncate(`${Task?.attachedFiles}`, {
+                  length: 30,
+                  separator: " ",
+                })}
+              </p>
+              <img
+                src={IMAGES.closeicon}
+                alt="close"
+                width="9"
+                height="9"
+                style={{ cursor: "pointer" }}
+                onClick={onDeleteFile}
+              />
+            </div>
+          )}
         </div>
         <div>
           <button type="submit" className="addTaskBtn">

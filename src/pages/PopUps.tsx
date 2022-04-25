@@ -37,7 +37,7 @@ const PopUps: React.FC = () => {
     dispatch(openDeleteClientPopup(val));
   };
   const showCreateTaskPopup = (val: string) => {
-    dispatch(openCreateTaskPopup("flex"));
+    dispatch(openCreateTaskPopup(val));
   };
   return (
     <>
