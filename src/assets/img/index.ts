@@ -42,5 +42,10 @@ const IMAGES = {
   verified: require("./verified.png").default,
   person: require("./person.svg").default,
   notFound: require("./notfound.svg").default,
+  overViewDeadline: require("./OverviewDeadline.svg").default,
+  overViewDone: require("./OverViewDone.svg").default,
+  overviewProjects: require("./OverviewProjects.svg").default,
+  overViewRevision: require("./OverviewRevision.svg").default,
+  overviewCheck: require("./OverviewCheck.svg").default,
 };
 export default IMAGES;

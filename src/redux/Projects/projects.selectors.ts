@@ -45,7 +45,7 @@ export const selectInProgressTasks = (state: RootState) =>
   );
 export const selectDoneTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "delivered on time"
+    (item) => item.status === "done"
   );
 export const selectReviewTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(

@@ -2,44 +2,21 @@ import React, { useState, useRef, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
-import axios from "axios";
-import { Client } from "./../../pages/Clients/clients";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { updateClient } from "../../redux/Clients";
+import { selectEditClient, updateClient } from "../../redux/Clients";
+import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
-  client: Client;
-  updatePopup: () => void;
   show: string;
-  updatePopupValue?: string;
-  setUpdatePopup: React.Dispatch<React.SetStateAction<string>>;
+  setShow: (val: string) => void;
 }
 
-interface updateInfo {
-  _id: string;
-  clientName: string;
-  createdAt: string;
-  image: string;
-}
-
-const EditClient: React.FC<Props> = ({
-  client,
-  updatePopup,
-  show,
-  updatePopupValue = "none",
-  setUpdatePopup,
-}) => {
-  console.log({ updatePopupValue });
+const EditClient: React.FC<Props> = ({ show, setShow }) => {
+  const client = useAppSelector(selectEditClient);
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
-  const [display, setShow] = useState(updatePopupValue);
-  const [Data, setData] = useState<updateInfo>({
-    _id: "",
-    clientName: "",
-    createdAt: "",
-    image: "",
-  });
+  const [Data, setData] = useState<any>();
 
   const [ImageView, setImageView] = useState<string | null>(null);
   useEffect(() => {
@@ -49,11 +26,7 @@ const EditClient: React.FC<Props> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      let formData = new FormData();
-      formData.append("clientName", Data.clientName);
-      formData.append("image", Data.image);
-      formData.append("_id", Data._id);
-      await dispatch(updateClient(formData));
+      dispatch(updateClient(Data));
       setData({
         _id: "",
         clientName: "",
@@ -61,7 +34,7 @@ const EditClient: React.FC<Props> = ({
         image: "",
       });
       setImageView(null);
-      setUpdatePopup("none");
+      setShow("none");
     } catch (error: any) {
       console.log(error.message);
     }
@@ -74,19 +47,18 @@ const EditClient: React.FC<Props> = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "image") {
       let file: any = e.target.files;
-      setData({ ...Data, image: file[0] });
+      setData({ image: file[0], ...Data });
       setImageView(URL.createObjectURL(file[0]));
     } else {
       setData({ ...Data, [e.target.name]: e.target.value });
     }
   };
   const handleClose = () => {
-    setUpdatePopup("none");
-    updatePopup();
+    setShow("none");
   };
   return (
     <>
-      <PopUp show={updatePopupValue} widthSize="30vw">
+      <PopUp show={show} widthSize="30vw">
         <form onSubmit={handleSubmit}>
           <Box sx={{ paddingLeft: "15px" }}>
             <Box>
@@ -99,7 +71,6 @@ const EditClient: React.FC<Props> = ({
                 onClick={handleClose}
               />
             </Box>
-
             <Typography className="new-client-title">Edit Client</Typography>
             <Box
               style={{
@@ -118,7 +89,7 @@ const EditClient: React.FC<Props> = ({
                 hidden
               />
               <img
-                src={ImageView ? ImageView : Data.image}
+                src={ImageView ? ImageView : Data?.image}
                 style={{
                   width: "9em",
                   height: "9em",
@@ -131,7 +102,7 @@ const EditClient: React.FC<Props> = ({
               className="input-client"
               type="text"
               name="clientName"
-              value={Data.clientName}
+              value={Data?.clientName ? Data.clientName : ""}
               onChange={onChange}
               required
             />

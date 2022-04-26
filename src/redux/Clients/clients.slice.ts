@@ -28,7 +28,6 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       state.clientsData = clientData;
     },
     onSearch: (state, { payload }) => {
-      console.log({ payload });
       let clientData = state.selectedClient;
       if (payload === "") {
         state.clientsData = state.selectedClient;
@@ -38,6 +37,9 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         );
         state.clientsData = clientData;
       }
+    },
+    setEditClient: (state, action) => {
+      state.editClient = action.payload;
     },
   },
   extraReducers: (builder) => {

@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import IMAGES from "../../assets/img/index";
-// import AddNewTeam from "./AddNewTeam";
-// import CreateNewDepartment from "./CreateNewDepartment";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
 import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
@@ -13,7 +10,6 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 
-type Props = {};
 interface IProps {
   alternatingColor: string[][];
 }
@@ -24,7 +20,7 @@ const Departments: React.FC<IProps> = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllDepartments(null));
-  }, [teamsData]);
+  }, [teamsData, dispatch]);
 
   useEffect(() => {
     setDepartment(departmentData);

@@ -22,7 +22,7 @@
 }
 
 .in-progress-border {
-  border: #ffc500 solid 2px;
+  border: #ffc500 solid 1px;
   border-radius: 20px;
   margin: 0 10px 10px 10px;
 }
@@ -81,17 +81,17 @@
   margin: 0 5px 0 0;
 }
 .done-border {
-  border: #00aaba4b solid 2px;
+  border: #00aaba4b solid 1px;
   border-radius: 20px;
   margin: 0 10px 10px 10px;
 }
 .not-clear-border {
-  border: #d2903456 solid 2px;
+  border: #d2903456 solid 1px;
   border-radius: 20px;
   margin: 0 10px 10px 10px;
 }
 .canceled-border {
-  border: #d2343441 solid 2px;
+  border: #d2343441 solid 1px;
   border-radius: 20px;
   margin: 0 10px 10px 10px;
 }
@@ -123,7 +123,7 @@
 }
 .add-new-task {
   cursor: pointer;
-  border: #9fa1ab solid 2px;
+  border: #9fa1ab solid 1px;
   display: flex;
   justify-content: center;
   align-items: center;

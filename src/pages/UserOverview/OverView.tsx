@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./ManagerNotifications";
+import IMAGES from "../../assets/img";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -48,7 +49,7 @@ const OverView: FC<Props> = (props) => {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingTop={{ xs: 10, sm: 10, md: 4, lg: 4 }}
+            paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
             paddingLeft={4}
             xs={12}
           >
@@ -63,7 +64,8 @@ const OverView: FC<Props> = (props) => {
             <Typography
               color="#171725"
               paddingTop={7}
-              variant="h4"
+              variant="h5"
+              fontSize={18}
               fontWeight={"900"}
             >
               Overview
@@ -91,9 +93,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#EFEFFF"
-                      Icon={() => (
-                        <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
-                      )}
+                      Icon={() => <img alt="1" src={IMAGES.overviewCheck} />}
+                      pt={1.7}
                       title={"Tasks Completed"}
                       count={"28"}
                       percent="- 8%"
@@ -102,12 +103,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#ECFDF1"
-                      Icon={() => (
-                        <AssignmentIcon
-                          fontSize={"small"}
-                          htmlColor="#30CF47"
-                        />
-                      )}
+                      Icon={() => <img alt="2" src={IMAGES.overViewRevision} />}
+                      pt={1.6}
                       title="New Tasks"
                       count="12"
                       percent="- 8%"
@@ -116,9 +113,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#FFF3EF"
-                      Icon={() => (
-                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
-                      )}
+                      Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
+                      pt={1.5}
                       title="Projects Completed"
                       count="12"
                       percent="- 8%"
@@ -130,9 +126,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#EFEFFF"
-                      Icon={() => (
-                        <DoneIcon fontSize={"small"} htmlColor="#260EFF" />
-                      )}
+                      Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
+                      pt={1.5}
                       title={"Organization Capacity"}
                       count={"28"}
                       percent="- 8%"
@@ -141,12 +136,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#ECFDF1"
-                      Icon={() => (
-                        <AssignmentIcon
-                          fontSize={"small"}
-                          htmlColor="#30CF47"
-                        />
-                      )}
+                      Icon={() => <img src={IMAGES.overViewRevision} alt="3" />}
+                      pt={1.5}
                       title="Revision Tasks"
                       count="12"
                       percent="- 8%"
@@ -155,9 +146,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#FFF3EF"
-                      Icon={() => (
-                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
-                      )}
+                      Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
+                      pt={1.5}
                       title="Meeting deadlines"
                       count="12"
                       percent="- 8%"
@@ -166,9 +156,8 @@ const OverView: FC<Props> = (props) => {
                     <UserStatus
                       user={user}
                       IconBgColor="#FFF3EF"
-                      Icon={() => (
-                        <DashboardIcon fontSize={"small"} htmlColor="#FF2E35" />
-                      )}
+                      Icon={() => <img src={IMAGES.overviewProjects} alt="3" />}
+                      pt={1.7}
                       title="Current Active Projects"
                       count="12"
                       percent="- 8%"

@@ -6,10 +6,12 @@ import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../assets/img";
+import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   getProject,
   getTasks,
+  moveTask,
   selectCancledTasks,
   selectDoneTasks,
   selectInProgressTasks,
@@ -31,6 +33,7 @@ const DragField: React.FC = (props: any) => {
   const notClearTasks = useAppSelector(selectNotClearTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
+  const departments = useAppSelector(selectAllDepartments);
   const [columns, setColumns] = useState({
     [uuidv4()]: {
       name: "",
@@ -60,34 +63,15 @@ const DragField: React.FC = (props: any) => {
         body: "in-progress-task",
         border: "in-progress-border",
         NewTask: <CreateNewTask />,
+        value: "inProgress",
       },
       [uuidv4()]: {
         name: "Review",
         items: reviewTasks,
-        header: "canceled-header",
-        body: "canceled-task",
-        border: "canceled-border",
-      },
-      [uuidv4()]: {
-        name: "Done",
-        items: doneTasks,
         header: "done-header",
         body: "done-task",
         border: "done-border",
-      },
-      [uuidv4()]: {
-        name: "Not clear",
-        items: notClearTasks,
-        header: "not-clear-header",
-        body: "not-clear-task",
-        border: "not-clear-border",
-      },
-      [uuidv4()]: {
-        name: "Canceled",
-        items: cancledTasks,
-        header: "canceled-header",
-        body: "canceled-task",
-        border: "canceled-border",
+        value: "review",
       },
       [uuidv4()]: {
         name: "Shared",
@@ -95,20 +79,58 @@ const DragField: React.FC = (props: any) => {
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
+        value: "shared",
+      },
+      [uuidv4()]: {
+        name: "Done",
+        items: doneTasks,
+        header: "done-header",
+        body: "done-task",
+        border: "done-border",
+        value: "done",
+      },
+      [uuidv4()]: {
+        name: "Not clear",
+        items: notClearTasks,
+        header: "not-clear-header",
+        body: "not-clear-task",
+        border: "not-clear-border",
+        value: "not clear",
+      },
+      [uuidv4()]: {
+        name: "Canceled",
+        items: cancledTasks,
+        header: "canceled-header",
+        body: "canceled-task",
+        border: "canceled-border",
+        value: "cancled",
       },
     };
     setColumns(cols);
   }, [selectedProject]);
+
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
     if (source.droppableId !== destination.droppableId) {
+      // move task on trello from list to list.
+
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
+      let department = departments.find(
+        (item) => item.boardId === sourceColumn.items[source.index]?.boardId
+      );
+      dispatch(
+        moveTask({
+          department: department,
+          list: destColumn,
+          task: sourceColumn.items[source.index],
+        })
+      );
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -121,6 +143,7 @@ const DragField: React.FC = (props: any) => {
         },
       });
     } else {
+      // sort tasks
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);

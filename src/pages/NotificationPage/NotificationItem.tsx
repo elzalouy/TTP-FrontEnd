@@ -6,10 +6,13 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import Avatar from "@mui/material/Avatar";
 import profileImg from "./test.jpg";
 import Button from "@mui/material/Button";
+import moment from 'moment'
 
-type Props = {};
+type Props = {
+  notifiData:object[]
+};
 
-const NotificationItem = (props: Props) => {
+const NotificationItem = ({notifiData}: Props) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -22,14 +25,13 @@ const NotificationItem = (props: Props) => {
           Recent Notification
         </Typography>
       </Grid>
-      {[1, 2, 3].map((item) => (
-        <Grid item container xs={12}>
+      {notifiData.map((item:any) => (
+        <Grid item container xs={12} key={item._id}>
           <Grid
             paddingX={1}
             paddingY={3}
             item
             container
-            key={item}
             xs={12}
             sm={12}
             md={6}
@@ -39,7 +41,7 @@ const NotificationItem = (props: Props) => {
               borderRadius: "1em",
             }}
           >
-            <Grid marginX={1} item xs={1}>
+            {/* <Grid marginX={1} item xs={1}>
               <Badge
                 overlap="circular"
                 badgeContent={
@@ -55,7 +57,7 @@ const NotificationItem = (props: Props) => {
               >
                 <Avatar alt="Remy Sharp" src={profileImg} />
               </Badge>
-            </Grid>
+            </Grid> */}
             <Grid item container xs={10}>
               <Grid item xs={12}>
                 <Typography
@@ -64,7 +66,7 @@ const NotificationItem = (props: Props) => {
                   component="div"
                   sx={{ fontWeight: "bold" }}
                 >
-                  Product manager name
+                  {item?.projectManagerID?.name}
                 </Typography>
               </Grid>
               <Grid item container xs={12}>
@@ -77,7 +79,7 @@ const NotificationItem = (props: Props) => {
                       color: "#acabab",
                     }}
                   >
-                    Project name
+                    {item?.adminUserID?.name}
                   </Typography>
                 </Grid>
                 <Grid item xs={2}>
@@ -89,27 +91,25 @@ const NotificationItem = (props: Props) => {
                       color: "#acabab",
                     }}
                   >
-                    12h
+                    {moment(item?.createdAt).fromNow(true)}
                   </Typography>
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ color: "#403f3f" }}>
-                This is a test notification This is a test notification This is
-                a test notification This is a test notification This is a test
-                notification This is a test notification
+                {item?.description}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       ))}
-      <Grid item xs={6} textAlign="center">
+      {/* <Grid item xs={6} textAlign="center">
         <Button
           variant="contained"
           sx={{ textTransform: "capitalize", pr: "2em", pl: "2em" }}
         >
           Load More
         </Button>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

@@ -15,9 +15,7 @@ import Clients from "./pages/Clients/clients";
 import ProjectManagers from "./pages/projectManagers/projectManagers";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "./redux/hooks";
 import { getAllClients } from "./redux/Clients";
-import { clientsDataSelector } from "./redux/Clients/clients.selectors";
 import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
@@ -35,7 +33,11 @@ const App: React.FC = (props) => {
   useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
-  }, []);
+    dispatch(getAllClients(null));
+    dispatch(getPMs(null));
+    dispatch(getAllMembers(null));
+    dispatch(getAllProjects(null));
+  }, [dispatch]);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />

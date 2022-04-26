@@ -4,8 +4,6 @@ import IMAGES from "../../assets/img";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import "./clients.css";
 import CreateNewClient from "./CreateNewClient";
-import axios, { AxiosResponse } from "axios";
-// import DeleteClient from './DeleteClient';
 import ClientCard from "./clientCard";
 
 import { clientsDataSelector } from "../../redux/Clients/clients.selectors";
@@ -71,7 +69,6 @@ const Clients: React.FC<Props> = () => {
       setClients(clientData);
     }
   }, [clientData]);
-  console.log(filter);
   return (
     <Grid container paddingX={4}>
       <Grid container xs={12} mt="2em">

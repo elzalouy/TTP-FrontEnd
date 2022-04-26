@@ -189,7 +189,6 @@ const tasks: React.FC<Props> = () => {
             <div className="line"></div>
           </div>
         </Box>
-
         <Box className="tasks-option">
           <label>Clients:</label>
           <div className="select-container">
@@ -201,7 +200,6 @@ const tasks: React.FC<Props> = () => {
             <div className="line"></div>
           </div>
         </Box>
-
         <Box className="tasks-option">
           <label>Project:</label>
           <div className="select-container">
@@ -213,7 +211,6 @@ const tasks: React.FC<Props> = () => {
             <div className="line"></div>
           </div>
         </Box>
-
         <Box className="tasks-option">
           <label>Teams:</label>
           <div className="select-container">

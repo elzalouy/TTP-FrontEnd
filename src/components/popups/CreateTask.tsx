@@ -4,7 +4,10 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
 
-type Props = {};
+type Props = {
+  show: string;
+  setShow: (val: string) => void;
+};
 
 interface taskData {
   taskName: string;
@@ -17,8 +20,7 @@ interface taskData {
   files: any;
 }
 
-const CreateTask: React.FC<Props> = () => {
-  const [Show, setShow] = useState<string>("none");
+const CreateTask: React.FC<Props> = (props) => {
   const [Task, setTask] = useState<taskData>({
     taskName: "",
     department: "",
@@ -29,35 +31,23 @@ const CreateTask: React.FC<Props> = () => {
     AttachCard: "",
     files: [],
   });
-
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Create Task
-      </button>
-
-      <PopUp show={Show} minWidthSize="50vw">
+      <PopUp show={props.show} minWidthSize="50vw">
         <div>
           <img
             className="closeIcon"
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
-              setShow("none");
+              props.setShow("none");
             }}
           />
         </div>
         <p className="popup-title">Create task</p>
-
         <div className="inputs-grid">
           <div>
             <label className="popup-label">Task name</label>
-
             <input
               className="popup-input"
               type="text"

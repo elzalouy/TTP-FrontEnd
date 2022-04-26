@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import ClientsApi from "../../services/endpoints/clients";
+
 export const getAllClients = createAsyncThunk<any, any, any>(
   "clients/getAll",
   async (args: any, { rejectWithValue }) => {
@@ -34,9 +35,12 @@ export const updateClient = createAsyncThunk<any, any, any>(
   "client/updateClient",
   async (data: any, { rejectWithValue }) => {
     try {
-      console.log({ data });
-      let client = await ClientsApi.updateClient(data);
-      console.log({ client });
+      let formData = new FormData();
+      formData.append("_id", data._id);
+      formData.append("clientName", data.clientName);
+      formData.append("image", data.image);
+      formData.append("createdAt", data.createdAt);
+      let client = await ClientsApi.updateClient(formData);
       if (client.ok && client.data) {
         toast("Client updated successfully");
         return client.data;

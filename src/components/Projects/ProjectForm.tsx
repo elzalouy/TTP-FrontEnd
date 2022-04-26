@@ -21,6 +21,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
+  console.log(PMs);
   React.useEffect(() => {
     dispatch(getPMs(null));
     dispatch(getAllClients(null));
@@ -31,6 +32,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     let project = {
       name: data?.name,
       projectManager: data?.projectManager,
+      projectManagerName: PMs.find((item) => item._id === data?.projectManager)
+        ?.name,
       projectDeadline: data.deadline,
       startDate: data?.startDate,
       clientId: data.clientId,
@@ -38,6 +41,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       numberOfTasks: 0,
       projectStatus: "inProgress",
       completedDate: null,
+      adminId: "626418935119257872f7cf1c",
     };
     dispatch(createProject(project));
   };
