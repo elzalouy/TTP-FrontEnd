@@ -120,8 +120,6 @@ const DragField: React.FC = (props: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
     if (source.droppableId !== destination.droppableId) {
-      // move task on trello from list to list.
-
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
@@ -190,7 +188,8 @@ const DragField: React.FC = (props: any) => {
                       alignItems="center"
                     >
                       <Typography style={{ paddingLeft: "12px" }}>
-                        <span className={column?.header}>{column.name}</span> 3
+                        <span className={column?.header}>{column.name}</span>{" "}
+                        {column.items.length}
                       </Typography>
                       <Typography style={{ padding: "12px" }}>
                         <img src={IMAGES.taskFilter} alt="more" />
