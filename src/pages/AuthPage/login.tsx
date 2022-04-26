@@ -13,8 +13,12 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ history }) => {
-  const { register, watch, control } = useForm();
+  const { register, handleSubmit , control ,formState: { errors } } = useForm();
   const [visible, setVisible] = useState(false);
+
+  const onSubmit = (data:any) => {
+    console.log(data.email, data.password);
+  }
 
   return (
     <Grid
@@ -59,7 +63,7 @@ const Login: React.FC<Props> = ({ history }) => {
           >
             Login to your account
           </Typography>
-          <form onSubmit={}>
+          <form>
             <Typography
               variant={"h5"}
               fontWeight={"700"}
@@ -75,6 +79,7 @@ const Login: React.FC<Props> = ({ history }) => {
               render={(props) => (
                 <Input
                   {...props}
+                  {...register("email",{required:"true"})}
                   visible
                   setVisible
                   value={props.field.value}
@@ -87,6 +92,7 @@ const Login: React.FC<Props> = ({ history }) => {
                 />
               )}
             />
+             {errors.email?.type === 'required' && "First name is required"}
             <Typography
               variant={"h5"}
               fontWeight={"700"}
@@ -102,6 +108,7 @@ const Login: React.FC<Props> = ({ history }) => {
               render={(props) => (
                 <Input
                   {...props}
+                  {...register("password",{required:"true"})}
                   visible={visible}
                   setVisible={setVisible}
                   value={props.field.value}
@@ -114,6 +121,7 @@ const Login: React.FC<Props> = ({ history }) => {
                 />
               )}
             />
+            {errors.password?.type === 'required' && "First name is required"}
             <Button
               sx={{
                 width: "100%",
@@ -124,10 +132,8 @@ const Login: React.FC<Props> = ({ history }) => {
                 fontWeight: "bold",
               }}
               variant="contained"
+              onClick={handleSubmit(onSubmit)}
               disableElevation
-              onClick={() => {
-                history.push("/Overview");
-              }}
             >
               Login
             </Button>
