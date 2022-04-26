@@ -29,7 +29,7 @@ const IMAGES = {
   more: require("./more.svg").default,
   serachicon: require("./serachicon.SVG").default,
   smallLoading: require("./smallLoading.SVG").default,
-  fileicon: require("./fileicon.SVG").default,
+  fileicon: require("./fileicon.svg").default,
   edit: require("./edit.svg").default,
   avatarClients: require("./avatarClients.svg").default,
   search: require("./search.svg").default,
