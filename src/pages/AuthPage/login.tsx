@@ -15,6 +15,7 @@ interface Props {
 const Login: React.FC<Props> = ({ history }) => {
   const { register, watch, control } = useForm();
   const [visible, setVisible] = useState(false);
+
   return (
     <Grid
       container
@@ -58,77 +59,79 @@ const Login: React.FC<Props> = ({ history }) => {
           >
             Login to your account
           </Typography>
-          <Typography
-            variant={"h5"}
-            fontWeight={"700"}
-            paddingTop={3.5}
-            fontFamily={"Cairo"}
-            color="#000000"
-          >
-            Email Address
-          </Typography>
-          <Controller
-            name="email"
-            control={control}
-            render={(props) => (
-              <Input
-                {...props}
-                visible
-                setVisible
-                value={props.field.value}
-                onChangeValue={(e: React.ChangeEvent) => {
-                  // e.preventDefault();
-                  props.field.onChange(e);
-                }}
-                type="email"
-                placeholder="Email Address"
-              />
-            )}
-          />
-          <Typography
-            variant={"h5"}
-            fontWeight={"700"}
-            paddingTop={3.5}
-            fontFamily={"Cairo"}
-            color="#000000"
-          >
-            Password
-          </Typography>
-          <Controller
-            name="password"
-            control={control}
-            render={(props) => (
-              <Input
-                {...props}
-                visible={visible}
-                setVisible={setVisible}
-                value={props.field.value}
-                onChangeValue={(e: React.ChangeEvent) => {
-                  // e.preventDefault();
-                  props.field.onChange(e);
-                }}
-                type="password"
-                placeholder="Password"
-              />
-            )}
-          />
-          <Button
-            sx={{
-              width: "100%",
-              height: 40,
-              borderRadius: 1.5,
-              marginTop: 4,
-              textTransform: "none",
-              fontWeight: "bold",
-            }}
-            variant="contained"
-            disableElevation
-            onClick={() => {
-              history.push("/Overview");
-            }}
-          >
-            Login
-          </Button>
+          <form onSubmit={}>
+            <Typography
+              variant={"h5"}
+              fontWeight={"700"}
+              paddingTop={3.5}
+              fontFamily={"Cairo"}
+              color="#000000"
+            >
+              Email Address
+            </Typography>
+            <Controller
+              name="email"
+              control={control}
+              render={(props) => (
+                <Input
+                  {...props}
+                  visible
+                  setVisible
+                  value={props.field.value}
+                  onChangeValue={(e: React.ChangeEvent) => {
+                    // e.preventDefault();
+                    props.field.onChange(e);
+                  }}
+                  type="email"
+                  placeholder="Email Address"
+                />
+              )}
+            />
+            <Typography
+              variant={"h5"}
+              fontWeight={"700"}
+              paddingTop={3.5}
+              fontFamily={"Cairo"}
+              color="#000000"
+            >
+              Password
+            </Typography>
+            <Controller
+              name="password"
+              control={control}
+              render={(props) => (
+                <Input
+                  {...props}
+                  visible={visible}
+                  setVisible={setVisible}
+                  value={props.field.value}
+                  onChangeValue={(e: React.ChangeEvent) => {
+                    // e.preventDefault();
+                    props.field.onChange(e);
+                  }}
+                  type="password"
+                  placeholder="Password"
+                />
+              )}
+            />
+            <Button
+              sx={{
+                width: "100%",
+                height: 40,
+                borderRadius: 1.5,
+                marginTop: 4,
+                textTransform: "none",
+                fontWeight: "bold",
+              }}
+              variant="contained"
+              disableElevation
+              onClick={() => {
+                history.push("/Overview");
+              }}
+            >
+              Login
+            </Button>
+          </form>
           <Link
             sx={{ textDecoration: "none", cursor: "pointer" }}
             onClick={() => history.push("/ForgetPassword")}
