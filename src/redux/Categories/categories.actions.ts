@@ -8,8 +8,6 @@ export const getAllCategories = createAsyncThunk<any, any, any>(
     try {
       let result = await api.getCategories();
       if (result.data) {
-        console.log({ category: result.data });
-
         return result.data;
       } else return [];
     } catch (error) {

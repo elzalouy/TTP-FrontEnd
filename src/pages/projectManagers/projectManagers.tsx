@@ -7,73 +7,28 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
-import * as React from "react";
+import {useEffect,useState} from "react";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewPM from "../../components/popups/CreateNewPM";
 import "./projectManagers.css";
 import ProjectManagersTable from "../../coreUI/usable-component/Tables/PMtable";
-const cellsData = [
-  {
-    id: 1,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 2,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 3,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 4,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 5,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 6,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-  {
-    id: 7,
-    name: "Lindsey Stoud",
-    email: "lindseystoud@gmail.com",
-    progressTask: 2,
-    progressProject: 3,
-    doneProject: 1,
-  },
-];
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
+import { ProjectManager, selectPMs } from "../../redux/PM";
 
 type Props = {};
+
 const ProjectManagers: React.FC<Props> = () => {
+
+  const [cellsData , setCellsData] = useState<ProjectManager[]>([]);
+  const dispatch = useDispatch(); 
+  const productManagerData = useAppSelector(selectPMs);
+
+  useEffect(()=>{
+    setCellsData(productManagerData);
+  },[productManagerData]);
+
   return (
     <Box sx={{ backgroundColor: "#FAFAFB", width: "100%" }}>
       <Box

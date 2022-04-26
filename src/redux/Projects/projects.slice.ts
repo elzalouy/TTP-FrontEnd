@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import {
   createProject,
   createProjectTask,
+  createTaskFromBoard,
   deleteProject,
   deleteProjectTasks,
   deleteTask,
@@ -116,6 +117,19 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
       state.loading = false;
       action.payload !== null && state.newProject.tasks.push(action.payload);
+    });
+
+    builder.addCase(createTaskFromBoard.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createTaskFromBoard.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createTaskFromBoard.fulfilled, (state, action) => {
+      state.loading = false;
+      let selectedProject = { ...state.selectedProject };
+      selectedProject.tasks.push(action.payload);
+      state.selectedProject = selectedProject;
     });
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;

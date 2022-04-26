@@ -15,9 +15,11 @@ export interface ProjectManager {
 export interface ProjectManagersInterface {
   loading: boolean | null;
   PMs: ProjectManager[];
+  current_ID:string,
 }
 const PMState: ProjectManagersInterface = {
   loading: null,
   PMs: [],
+  current_ID:""
 };
 export default PMState;

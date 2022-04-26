@@ -39,10 +39,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
   const { register, handleSubmit, watch, control, reset } = useForm();
+
   React.useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
   }, []);
+
   React.useEffect(() => {
     let values = watch();
     if (values?.categoryId !== selectedCategory?._id) {
@@ -62,13 +64,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const onSubmit = (data: any) => {
     let newTask = {
       name: data.name,
-      categoryId: null,
-      subCategoryId: null,
+      categoryId: data?.categoryId,
+      subCategoryId: data?.subCategoryId,
       memberId: data?.memberId,
-      projectId: newProject.project?._id,
+      projectId: newProject?.project?._id,
       status: "inProgress",
       start: new Date().toUTCString(),
-      deadline: data.deadline,
+      deadline: data?.deadline,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
@@ -78,7 +80,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
       )?.listId,
       boardId: selectedDepartment?.boardId,
     };
-    // console.log(newTask);
     dispatch(createProjectTask(newTask));
   };
 

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
 import { openCreateTaskPopup } from "../../redux/Ui";
+
 import "./taskViewBoard.css";
 type Props = {};
 const CreateNewTask = () => {

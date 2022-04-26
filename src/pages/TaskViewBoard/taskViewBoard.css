@@ -35,7 +35,7 @@
 }
 .in-progress-task {
   border-radius: 20px;
-  background-color: #ffc5001a;
+  background-color: #fbf5e2;
   width: 312px !important;
   margin-inline: 10px;
   margin-left: 30px;
@@ -146,4 +146,41 @@
   width: "auto";
   overflow: scroll;
   background-color: red;
+}
+.task-card-footer-inprogress {
+  background-color: #fcefc0;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-review {
+  background-color: #b4d6eb;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-shared {
+  background-color: #ecdad7;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-done {
+  background-color: #b4d6eb;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-notclear {
+  background-color: #f0ddc3;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+
+.task-card-footer-cancled {
+  background-color: #f1cbcc;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
 }

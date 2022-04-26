@@ -27,6 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PopUps from "./pages/PopUps";
 import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
+import { socket } from "./config/socket/actions";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -38,6 +39,16 @@ const App: React.FC = (props) => {
     dispatch(getAllMembers(null));
     dispatch(getAllProjects(null));
   }, [dispatch]);
+
+  // Socket track changing
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log('socket connected')
+    });
+  },[])
+  useEffect(() => {
+ 
+  })
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />
