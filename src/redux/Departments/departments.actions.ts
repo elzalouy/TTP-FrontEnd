@@ -3,7 +3,7 @@ import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
 
 export const getAllDepartments = createAsyncThunk<any, any, any>(
-  "departments/getALl",
+  "departments/getAll",
   async (args: any, { rejectWithValue }) => {
     try {
       let departments = await DepartmentsApi.getDepartments();

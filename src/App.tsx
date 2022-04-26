@@ -30,14 +30,16 @@ import NotFound from "./pages/NotFound";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+  // const clients = useAppSelector(clientsDataSelector);
+
   useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
     dispatch(getAllClients(null));
     dispatch(getPMs(null));
     dispatch(getAllMembers(null));
-    dispatch(getAllProjects(null));
-  }, [dispatch]);
+  }, []);
+
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />
