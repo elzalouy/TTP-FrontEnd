@@ -44,6 +44,21 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     }
   }
 );
+export const createTaskFromBoard = createAsyncThunk<any, any, any>(
+  "projects/createTaskFromBoard",
+  async (args, { rejectWithValue }) => {
+    try {
+      let result: ApiResponse<any> = await api.createTask(args);
+      if (result.ok) {
+        toast("Task have been save to the Database");
+        return result.data?.task;
+      }
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
 export const filterProjects = createAsyncThunk<any, any, any>(
   "projects/filterProjects",
   async (args, { rejectWithValue }) => {

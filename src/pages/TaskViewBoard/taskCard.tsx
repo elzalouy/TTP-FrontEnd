@@ -12,15 +12,34 @@ interface DataTypes {
   index: number;
   item: Task;
   project: Project | null;
+  footerStyle: string;
 }
 
-const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
+const TaskCard: React.FC<DataTypes> = ({
+  item,
+  index,
+  project,
+  footerStyle,
+}) => {
   const techMembers = useAppSelector(selectAllMembers);
   const { _id, name, deadline } = item;
   const floatDays =
     (new Date(deadline).getTime() - new Date().getTime()) /
     (1000 * 60 * 60 * 24);
+
   const remainingDays = Math.round(floatDays);
+  const daysColor =
+    remainingDays <= 2
+      ? "#FF0000"
+      : remainingDays > 2 && remainingDays <= 5
+      ? "#FF974A"
+      : "#0079BF";
+  const daysBgColor =
+    remainingDays <= 2
+      ? "#F1CBCC"
+      : remainingDays > 2 && remainingDays <= 5
+      ? "#FF974A1A"
+      : "#DAE6EF";
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => (
@@ -41,7 +60,11 @@ const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
               <img src={IMAGES.moreGrey} alt="more" />
             </Typography>
           </Stack>
-          <Box>PM: {project?.projectManager?.name}</Box>
+          <Box>
+            <Typography color={"#696974"}>
+              {project?.projectManager?.name}
+            </Typography>
+          </Box>
           {item.attachedFiles && (
             <>
               <img
@@ -57,7 +80,9 @@ const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
               >
                 <img src={IMAGES.attachment} alt="more" />
                 <Typography style={{ paddingLeft: "5px" }}>1</Typography>{" "}
-                <Typography className="fileUpload">TTP Project.pdf</Typography>{" "}
+                <Typography className="fileUpload">
+                  {item?.attachedFiles}
+                </Typography>
               </Stack>
             </>
           )}
@@ -131,20 +156,22 @@ const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
               alignItems="center"
               className="aft-red"
               sx={{
-                color: remainingDays > 4 ? "#0079BF" : "#FF974A",
-                bgcolor: remainingDays > 4 ? "#DAE6EF" : "#FF974A1A",
+                color: daysColor,
+                bgcolor: daysBgColor,
               }}
             >
               <img
                 src={
-                  remainingDays > 4
-                    ? IMAGES.scheduleNotClear
-                    : IMAGES.scheduleRed
+                  remainingDays <= 2
+                    ? IMAGES.scheduleRed
+                    : remainingDays > 2 && remainingDays <= 5
+                    ? IMAGES.scheduleOrange
+                    : IMAGES.scheduleNotClear
                 }
                 alt="more"
               />
-              <Typography style={{ paddingLeft: "5px" }}>
-                {remainingDays} Days left
+              <Typography style={{ paddingLeft: "5px", fontSize: 14 }}>
+                {remainingDays > 0 ? `${remainingDays} Days left` : "Late"}
               </Typography>
             </Stack>
           ) : (
@@ -169,13 +196,13 @@ const TaskCard: React.FC<DataTypes> = ({ item, index, project }) => {
             justifyContent="flex-start"
             alignItems="center"
           >
-            <Typography className={"task-card-footer-not-clear"}>
+            <Typography className={footerStyle} sx={{ fontSize: 14 }}>
               Assigned To
             </Typography>
             <img src={IMAGES.arrow} alt="more" />
             <Typography
-              style={{ marginLeft: "10px" }}
-              className={"task-card-footer-not-clear"}
+              style={{ marginLeft: "10px", fontSize: 14 }}
+              className={footerStyle}
             >
               {
                 techMembers.techMembers.find(

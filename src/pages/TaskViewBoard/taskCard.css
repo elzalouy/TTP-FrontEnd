@@ -78,9 +78,8 @@
   margin: 10px 0px 0 0px;
 }
 .aft-red {
-  width: 160px;
+  width: fit-content;
   font-weight: bold;
-  background-color: #e4dadc;
   border-radius: 5px;
   padding: 5px 5px;
   margin: 10px 0px 0 0px;

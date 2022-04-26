@@ -6,7 +6,7 @@ import "./popups-style.css";
 import { Typography } from "@mui/material";
 import { useAppSelector } from "../../redux/hooks";
 import {
-  createProjectTask,
+  createTaskFromBoard,
   ProjectsActions,
   selectNewProject,
   selectSelectedDepartment,
@@ -44,7 +44,6 @@ const CreateTask: React.FC<Props> = (props) => {
     deadline: "",
     attachedFiles: "",
     selectedDepartmentId: "",
-    description: "",
   });
   React.useEffect(() => {
     dispatch(getAllDepartments(null));
@@ -84,7 +83,8 @@ const CreateTask: React.FC<Props> = (props) => {
       )?.listId,
       boardId: selectedDepartment?.boardId,
     };
-    dispatch(createProjectTask(newTask));
+    dispatch(createTaskFromBoard(newTask));
+    props.setShow("none");
   };
   const onChange = (
     e: React.ChangeEvent<
@@ -100,7 +100,6 @@ const CreateTask: React.FC<Props> = (props) => {
     task.attachedFiles = "";
     setTask(task);
   };
-  console.log(Task);
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
@@ -136,10 +135,16 @@ const CreateTask: React.FC<Props> = (props) => {
               name="selectedDepartmentId"
               value={Task.selectedDepartmentId}
               onChange={onChange}
+              defaultValue=""
             >
+              <option value="" selected key={"0"}>
+                Select
+              </option>
               {departments &&
                 departments?.map((item) => (
-                  <option value={item._id}>{item.name}</option>
+                  <option key={item._id} value={item._id}>
+                    {item.name}
+                  </option>
                 ))}
             </select>
           </div>
@@ -161,51 +166,60 @@ const CreateTask: React.FC<Props> = (props) => {
               name="categoryId"
               value={Task.categoryId}
             >
+              <option value="" key="" selected>
+                Select
+              </option>
               {categories &&
                 categories?.map((item) => (
-                  <option value={item._id}>{item.category}</option>
+                  <option key={item._id} value={item._id}>
+                    {item.category}
+                  </option>
                 ))}
             </select>
           </div>
           <div>
-            <label className="popup-label">Description</label>
-            <textarea
-              maxLength={75}
-              className="popup-textarea"
-              rows={4}
-              placeholder="Write about your task"
-              value={Task.description}
-              onChange={onChange}
-              name="description"
-            />
+            <div>
+              <label className="popup-label">Sub category</label>
+              <select
+                className="popup-select"
+                name="subCategoryId"
+                onChange={onChange}
+              >
+                <option value="" key="" selected>
+                  Select
+                </option>
+                {selectedCategory &&
+                  selectedCategory.selectedSubCategory?.map((item) => (
+                    <option key={item._id} value={item._id}>
+                      {item.subCategory}
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
+
           <div>
-            <label className="popup-label">Sub category</label>
+            <label className="popup-label">Assign Member</label>
             <select
-              className="popup-select"
-              name="subCategoryId"
+              {...props}
+              defaultChecked
+              name="memberId"
               onChange={onChange}
+              className="popup-select"
             >
-              {selectedCategory &&
-                selectedCategory.selectedSubCategory?.map((item) => (
-                  <option value={item._id}>{item.subCategory}</option>
+              <option value="" key="">
+                select
+              </option>
+              {selectedDepartment &&
+                selectedDepartment?.teamsId?.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.name}
+                  </option>
                 ))}
             </select>
-            {/* <label className="popup-label">Attach card</label> */}
-            {/* <select
-              className="popup-select"
-              onChange={(e) => {
-                Task.AttachCard = e.target.value;
-                setTask({ ...Task });
-              }}
-            >
-              <option value="Sub Category">Sub Category</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
-            </select> */}
           </div>
         </div>
-        <div className="row-wrap">
+        <div className="row-wrap" style={{ paddingTop: "20px" }}>
           <div className="upload-btn-wrapper">
             <button className="btnFile">
               <img src={IMAGES.fileicon} alt="Upload" />
@@ -238,7 +252,7 @@ const CreateTask: React.FC<Props> = (props) => {
           )}
         </div>
         <div>
-          <button type="submit" className="addTaskBtn">
+          <button type="submit" className="addTaskBtn" onClick={onSubmit}>
             Done
           </button>
         </div>

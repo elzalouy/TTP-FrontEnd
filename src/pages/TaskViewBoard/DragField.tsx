@@ -42,6 +42,7 @@ const DragField: React.FC = (props: any) => {
       body: "",
       border: "",
       NewTask: <CreateNewTask />,
+      footer: "",
     },
   });
 
@@ -64,6 +65,7 @@ const DragField: React.FC = (props: any) => {
         border: "in-progress-border",
         NewTask: <CreateNewTask />,
         value: "inProgress",
+        footer: "task-card-footer-inprogress",
       },
       [uuidv4()]: {
         name: "Review",
@@ -72,6 +74,7 @@ const DragField: React.FC = (props: any) => {
         body: "done-task",
         border: "done-border",
         value: "review",
+        footer: "task-card-footer-review",
       },
       [uuidv4()]: {
         name: "Shared",
@@ -80,6 +83,7 @@ const DragField: React.FC = (props: any) => {
         body: "canceled-task",
         border: "canceled-border",
         value: "shared",
+        footer: "task-card-footer-shared",
       },
       [uuidv4()]: {
         name: "Done",
@@ -88,6 +92,7 @@ const DragField: React.FC = (props: any) => {
         body: "done-task",
         border: "done-border",
         value: "done",
+        footer: "task-card-footer-done",
       },
       [uuidv4()]: {
         name: "Not clear",
@@ -96,6 +101,7 @@ const DragField: React.FC = (props: any) => {
         body: "not-clear-task",
         border: "not-clear-border",
         value: "not clear",
+        footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
         name: "Canceled",
@@ -104,6 +110,7 @@ const DragField: React.FC = (props: any) => {
         body: "canceled-task",
         border: "canceled-border",
         value: "cancled",
+        footer: "task-card-footer-cancled",
       },
     };
     setColumns(cols);
@@ -120,6 +127,7 @@ const DragField: React.FC = (props: any) => {
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
+      console.log(removed);
       destItems.splice(destination.index, 0, removed);
       let department = departments.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
@@ -197,6 +205,7 @@ const DragField: React.FC = (props: any) => {
                               key={item?._id}
                               item={item}
                               index={index}
+                              footerStyle={column?.footer}
                             ></TaskCard>
                           </Box>
                         );
