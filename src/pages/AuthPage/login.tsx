@@ -13,13 +13,8 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ history }) => {
-  const { register, handleSubmit , control ,formState: { errors } } = useForm();
+  const { register, watch, control } = useForm();
   const [visible, setVisible] = useState(false);
-
-  const onSubmit = (data:any) => {
-    console.log(data.email, data.password);
-  }
-
   return (
     <Grid
       container
@@ -63,81 +58,77 @@ const Login: React.FC<Props> = ({ history }) => {
           >
             Login to your account
           </Typography>
-          <form>
-            <Typography
-              variant={"h5"}
-              fontWeight={"700"}
-              paddingTop={3.5}
-              fontFamily={"Cairo"}
-              color="#000000"
-            >
-              Email Address
-            </Typography>
-            <Controller
-              name="email"
-              control={control}
-              render={(props) => (
-                <Input
-                  {...props}
-                  {...register("email",{required:"true"})}
-                  visible
-                  setVisible
-                  value={props.field.value}
-                  onChangeValue={(e: React.ChangeEvent) => {
-                    // e.preventDefault();
-                    props.field.onChange(e);
-                  }}
-                  type="email"
-                  placeholder="Email Address"
-                />
-              )}
-            />
-             {errors.email?.type === 'required' && "First name is required"}
-            <Typography
-              variant={"h5"}
-              fontWeight={"700"}
-              paddingTop={3.5}
-              fontFamily={"Cairo"}
-              color="#000000"
-            >
-              Password
-            </Typography>
-            <Controller
-              name="password"
-              control={control}
-              render={(props) => (
-                <Input
-                  {...props}
-                  {...register("password",{required:"true"})}
-                  visible={visible}
-                  setVisible={setVisible}
-                  value={props.field.value}
-                  onChangeValue={(e: React.ChangeEvent) => {
-                    // e.preventDefault();
-                    props.field.onChange(e);
-                  }}
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            />
-            {errors.password?.type === 'required' && "First name is required"}
-            <Button
-              sx={{
-                width: "100%",
-                height: 40,
-                borderRadius: 1.5,
-                marginTop: 4,
-                textTransform: "none",
-                fontWeight: "bold",
-              }}
-              variant="contained"
-              onClick={handleSubmit(onSubmit)}
-              disableElevation
-            >
-              Login
-            </Button>
-          </form>
+          <Typography
+            variant={"h5"}
+            fontWeight={"700"}
+            paddingTop={3.5}
+            fontFamily={"Cairo"}
+            color="#000000"
+          >
+            Email Address
+          </Typography>
+          <Controller
+            name="email"
+            control={control}
+            render={(props) => (
+              <Input
+                {...props}
+                visible
+                setVisible
+                value={props.field.value}
+                onChangeValue={(e: React.ChangeEvent) => {
+                  // e.preventDefault();
+                  props.field.onChange(e);
+                }}
+                type="email"
+                placeholder="Email Address"
+              />
+            )}
+          />
+          <Typography
+            variant={"h5"}
+            fontWeight={"700"}
+            paddingTop={3.5}
+            fontFamily={"Cairo"}
+            color="#000000"
+          >
+            Password
+          </Typography>
+          <Controller
+            name="password"
+            control={control}
+            render={(props) => (
+              <Input
+                {...props}
+                visible={visible}
+                setVisible={setVisible}
+                value={props.field.value}
+                onChangeValue={(e: React.ChangeEvent) => {
+                  // e.preventDefault();
+                  props.field.onChange(e);
+                }}
+                type="password"
+                placeholder="Password"
+              />
+            )}
+          />
+          <Button
+            sx={{
+              width: "100%",
+              height: 40,
+              borderRadius: 1.5,
+              marginTop: 4,
+              textTransform: "none",
+              fontWeight: "bold",
+            }}
+            variant="contained"
+            disableElevation
+            onClick={() => {
+              history.push("/Overview");
+            }}
+          >
+            Login
+          </Button>
           <Link
             sx={{ textDecoration: "none", cursor: "pointer" }}
             onClick={() => history.push("/ForgetPassword")}
