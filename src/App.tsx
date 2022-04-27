@@ -40,15 +40,28 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
   }, [dispatch]);
 
-  // Socket track changing
+  // Socket connecting changing
   useEffect(() => {
     socket.on("connect", () => {
-      console.log('socket connected')
+      //todo check user auth
+      let admin = true;
+      let projectManager = false;
+      let userId = "6268c93e0b9f6cdb369770bc";
+      if (admin) {
+        // this for admins role only
+        socket.emit("joined admin");
+      }
+
+      if (projectManager) {
+        // this for project managers role only
+        socket.emit("joined manager");
+      }
+
+      // this is for specific user
+      socket.emit("joined user", { id: userId });
     });
-  },[])
-  useEffect(() => {
- 
-  })
+  }, []);
+  useEffect(() => {});
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />

@@ -3,14 +3,15 @@ import { getAllNotifi, updateNotifi } from "./notifi.actions";
 import NotifiState, { Notifis } from "./notifi.state";
 import moment from "moment";
 
-const clientSlice: Slice<Notifis> = createSlice({
+const notifiSlice: Slice<Notifis> = createSlice({
   name: "clients",
   initialState: NotifiState,
   reducers: {
     onSort: (state, { payload }) => {},
     onSearch: (state, { payload }) => {},
     updateCounter:(state,{payload}) => {
-      state.counter = payload
+      state.counter = state.counter + 1
+      state.notifi = [payload,...state.notifi]
     }
   },
   extraReducers: (builder) => {
@@ -37,9 +38,10 @@ const clientSlice: Slice<Notifis> = createSlice({
       updateNotifi.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
+        state.counter = 0
       }
     );
   },
 });
-export const clientsActions = clientSlice.actions;
-export default clientSlice.reducer;
+export const notifiAction = notifiSlice.actions;
+export default notifiSlice.reducer;

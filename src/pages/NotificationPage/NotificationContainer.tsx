@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { getAllNotifi, updateNotifi } from "../../redux/notification";
 import { notifiDataSelector } from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
+import { notifiAction } from "../../redux/notification";
+import { socket } from "../../config/socket/actions";
 
 type Props = {};
 // if
@@ -16,6 +18,16 @@ const NotificationContainer = (props: Props) => {
     dispatch(getAllNotifi("62662912a86a7d5f90a1ff99"));
     dispatch(updateNotifi({id:"62662912a86a7d5f90a1ff99",role:"Operation manager"}))
   }, []);
+
+  // watch notification update
+  useEffect(() => {
+    socket.on("notification update",(data:any) => {
+      dispatch(notifiAction.updateCounter(data))
+    })
+    return () => {
+      socket.off("notification update")
+    }
+  })
 
   const notifiData = useAppSelector(notifiDataSelector);
   console.log({ notifiData });

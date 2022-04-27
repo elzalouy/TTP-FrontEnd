@@ -41,3 +41,4 @@ export const updateCounter = createAsyncThunk<any, any, any>(
     }
   }
 );
+
