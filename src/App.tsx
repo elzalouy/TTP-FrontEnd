@@ -29,8 +29,10 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 
+
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+
   // const clients = useAppSelector(clientsDataSelector);
 
   useEffect(() => {
@@ -50,12 +52,12 @@ const App: React.FC = (props) => {
         <Route key="forgetPassword" path="/forgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
-          path="/resetPassword"
+          path="/resetPassword/:token"
           component={ResetPassword}
         />
         <Route
           key="/newPassword"
-          path="/newPassword"
+          path="/newPassword/:token"
           component={UpdatePassword}
         />
         <LoggedInContainer

@@ -2,7 +2,7 @@ import { createSlice, Slice } from "@reduxjs/toolkit";
 import { forgotPassword, newPassword, signIn } from "./auth.actions";
 import initialState, { UserInterface } from "./auth.state";
 
-const PMSlice: Slice<UserInterface> = createSlice({
+const AuthSlice: Slice<UserInterface> = createSlice({
   name: "Auth",
   initialState: initialState,
   reducers: {
@@ -45,5 +45,5 @@ const PMSlice: Slice<UserInterface> = createSlice({
     });
   },
 });
-export const PMsActions = PMSlice.actions;
-export default PMSlice.reducer;
+export const AuthAction = AuthSlice.actions;
+export default AuthSlice.reducer;

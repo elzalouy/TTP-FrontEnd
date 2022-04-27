@@ -18,6 +18,5 @@ export interface UserInterface {
 const UserState: UserInterface = {
   loading: null,
   User: false,
-
 };
 export default UserState;

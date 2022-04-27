@@ -7,6 +7,8 @@ import pmSlice from "./PM/pm.slice";
 import projectsSlice from "./Projects/projects.slice";
 import techMembersSlice from "./techMember/techMembers.slice";
 import UISlice from "./Ui/UI.slice";
+import authSlice from "./Auth/auth.slice";
+
 const reducers = combineReducers({
   projects: projectsSlice,
   clients: clientsSlice,
@@ -15,6 +17,7 @@ const reducers = combineReducers({
   categories: categoriesSlice,
   techMembers: techMembersSlice,
   Ui: UISlice,
+  Auth:authSlice,
 });
 const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
 export type AppDispatch = typeof store.dispatch;
