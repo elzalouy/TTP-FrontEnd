@@ -11,12 +11,21 @@ export interface User {
   type: MemberType;
   userTeams?: string[];
 }
+
+interface Res{
+  msg:string;
+  status:number | string;
+}
 export interface UserInterface {
   loading: boolean | null;
   User: User | boolean;
+  Payload:Res;
 }
 const UserState: UserInterface = {
   loading: null,
   User: false,
+  Payload:{
+    msg:"",status:""
+  }
 };
 export default UserState;

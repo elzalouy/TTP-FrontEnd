@@ -2,9 +2,12 @@ import { RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, Input, Button } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
+import { selectPayload, selectPMs, updatePMpassword } from "../../redux/PM";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -17,14 +20,61 @@ interface IFormInputs {
   oldPassword: string;
 }
 
+interface IParam {
+  token: string;
+}
+
+interface IFailed {
+  status: number | string | boolean;
+  message: string;
+}
+
 const ResetPassword: React.FC<Props> = () => {
-  const { handleSubmit, control, register , formState : {errors} } = useForm<IFormInputs>();
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
+  const [param, setParam] = useState("");
+  const [failed, setFailed] = useState<IFailed>({
+    status: false,
+    message: "",
+  });
+  const res = useAppSelector(selectPayload);
+  const { token } = useParams<IParam>();
+  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
-    setVisible(true);
+    dispatch(
+      updatePMpassword({
+        id: token,
+        password: data.newPassword,
+        oldPassword: data.oldPassword,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (res.msg === "" && res.status === "") {
+      setVisible(false);
+    } else if (res.msg !== "" && res.status !== 200) {
+      setVisible(false);
+      setFailed({
+        message: res.msg,
+        status: res.status,
+      });
+    } else {
+      setVisible(true);
+    }
+  }, [res]);
+
+  useEffect(() => {
+    if (token) {
+      setParam(token);
+    }
+  }, []);
 
   return (
     <Grid
@@ -61,7 +111,11 @@ const ResetPassword: React.FC<Props> = () => {
           paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-          {visible ? (<p className="success-text">Your password has been changed successfully</p>) :
+          {visible ? (
+            <p className="success-text">
+              Your password has been changed successfully
+            </p>
+          ) : (
             <>
               <Typography
                 variant={"h2"}
@@ -71,6 +125,11 @@ const ResetPassword: React.FC<Props> = () => {
               >
                 Set your new password
               </Typography>
+              {failed.status && (
+                <p className="error-text">
+                  Setting new password was unsuccessful : {failed.message}
+                </p>
+              )}
               <Typography
                 variant={"h5"}
                 fontWeight={"700"}
@@ -84,10 +143,19 @@ const ResetPassword: React.FC<Props> = () => {
                 name="oldPassword"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} {...register("oldPassword",{required:true})} type="password" className="f-inputs" placeholder="Enter your old password"/>
+                  <input
+                    {...field}
+                    {...register("oldPassword", { required: true })}
+                    type="password"
+                    className="f-inputs"
+                    placeholder="Enter your old password"
+                    onChange={()=>setFailed({message:"",status:false})}
+                  />
                 )}
               />
-                {errors.oldPassword?.type === 'required' && (<p className="error-text">Please enter your old password</p>)}
+              {errors.oldPassword?.type === "required" && (
+                <p className="error-text">Please enter your old password</p>
+              )}
               <Typography
                 variant={"h5"}
                 fontWeight={"700"}
@@ -101,10 +169,19 @@ const ResetPassword: React.FC<Props> = () => {
                 name="newPassword"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} {...register("newPassword",{required:true})} type="password" className="f-inputs" placeholder="Enter your new password"/>
+                  <input
+                    {...field}
+                    {...register("newPassword", { required: true })}
+                    type="password"
+                    className="f-inputs"
+                    placeholder="Enter your new password"
+                    onChange={()=>setFailed({message:"",status:false})}
+                  />
                 )}
               />
-                {errors.newPassword?.type === 'required' && (<p className="error-text">Please enter your new password</p>)}
+              {errors.newPassword?.type === "required" && (
+                <p className="error-text">Please enter your new password</p>
+              )}
               <Button
                 sx={{
                   width: "100%",
@@ -121,7 +198,7 @@ const ResetPassword: React.FC<Props> = () => {
                 Set New Password
               </Button>
             </>
-          }
+          )}
         </Grid>
         <Grid
           item

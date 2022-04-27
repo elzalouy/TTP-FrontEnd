@@ -12,14 +12,23 @@ export interface ProjectManager {
   type: MemberType;
   userTeams?: string[];
 }
+
+interface Res {
+  msg: string;
+  status: number | string;
+}
 export interface ProjectManagersInterface {
   loading: boolean | null;
   PMs: ProjectManager[];
-  current_ID:string,
+  current_ID: string,
+  Payload: Res;
 }
 const PMState: ProjectManagersInterface = {
   loading: null,
   PMs: [],
-  current_ID:""
+  current_ID: "",
+  Payload: {
+    msg: "", status: ""
+  }
 };
 export default PMState;

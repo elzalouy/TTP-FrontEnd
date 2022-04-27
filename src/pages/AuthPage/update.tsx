@@ -2,9 +2,12 @@ import { RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, Input, Button } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
-import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { newPassword, selectAuth, selectResponse } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -16,14 +19,63 @@ interface IFormInputs {
   password: string;
 }
 
+interface IParam {
+  token: string;
+}
+
+interface IFailed {
+  status: number | string | boolean;
+  message: string;
+}
+
+
 const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
-  const { handleSubmit, control, register, formState: { errors } } = useForm<IFormInputs>();
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
+  const [param, setParam] = useState("");
+  const [failed, setFailed] = useState<IFailed>({
+    status: false,
+    message: "",
+  });
+  const dispatch = useDispatch();
+  const auth = useAppSelector(selectAuth);
+  const res = useAppSelector(selectResponse);
+  const { token } = useParams<IParam>();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log(data);
-    setVisible(true);
+    dispatch(
+      newPassword({
+        token: token,
+        password: data.password,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (res.msg === "" && res.status === "") {
+      setVisible(false);
+    } else if (res.msg !== "" && res.status !== 200) {
+      setVisible(false);
+      setFailed({
+        message: res.msg,
+        status: res.status,
+      });
+    } else {
+      setVisible(true);
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (token) {
+      setParam(token);
+    }
+  }, []);
 
   return (
     <Grid
@@ -60,7 +112,11 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
           paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-          { visible ? (<p className="success-text">Your password has been set successfully</p>) :
+          {visible ? (
+            <p className="success-text">
+              Your password has been set successfully
+            </p>
+          ) : (
             <>
               <Typography
                 variant={"h2"}
@@ -70,6 +126,11 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
               >
                 Enter your new password
               </Typography>
+              {failed.status && (
+                <p className="error-text">
+                  Setting new password was unsuccessful : {failed.message}
+                </p>
+              )}
               <Typography
                 variant={"h5"}
                 fontWeight={"700"}
@@ -83,10 +144,18 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} {...register("password",{required:true})} type="password" className="f-inputs" placeholder="Enter your new password"/>
+                  <input
+                    {...field}
+                    {...register("password", { required: true })}
+                    type="password"
+                    className="f-inputs"
+                    placeholder="Enter your new password"
+                  />
                 )}
               />
-              {errors.password?.type === 'required' && (<p className="error-text">Please enter your new password</p>)}
+              {errors.password?.type === "required" && (
+                <p className="error-text">Please enter your new password</p>
+              )}
               <Button
                 sx={{
                   width: "100%",
@@ -103,7 +172,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 Set New Password
               </Button>
             </>
-          }
+          )}
         </Grid>
         <Grid
           item

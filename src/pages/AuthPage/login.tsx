@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./auth.css";
 import { RouteComponentProps } from "react-router-dom";
 import { Grid, Button, Link, Typography } from "@mui/material";
@@ -6,26 +6,56 @@ import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { selectAuth, selectIsAuth, selectResponse, signIn } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
 
+interface IFailed {
+  status : number | string | boolean;
+  message : string;
+}
+
 interface IFormInputs {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 const Login: React.FC<Props> = ({ history }) => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    register,
+  } = useForm<IFormInputs>();
+  const dispatch = useDispatch();
+  const [failed , setFailed] = useState<IFailed>({
+    status:false , message:""
+  });
+  const auth = useAppSelector(selectAuth);
+  const res = useAppSelector(selectResponse);
+  
+  useEffect(()=>{
+    if(res.msg && res.status !== 200){
+      setFailed({
+        message:res.msg,status:res.status
+      });
+    }
+  },[auth])
 
-  const { handleSubmit, control,  formState: { errors }, register } = useForm<IFormInputs>();
-
-  const onSubmit:SubmitHandler<IFormInputs> = (data) => {
-      console.log(data);
-      console.log(!!(errors.email || errors.password));
-  }
-
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    console.log(data);
+    dispatch(
+      signIn({
+        email: data.email,
+        password: data.password,
+      })
+    );
+  };
 
   return (
     <Grid
@@ -70,6 +100,7 @@ const Login: React.FC<Props> = ({ history }) => {
           >
             Login to your account
           </Typography>
+          {failed.status && <p className="error-text">Login was unsuccessful : {failed.message}</p>}
           <Typography
             variant={"h5"}
             fontWeight={"700"}
@@ -82,11 +113,19 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="email"
             control={control}
-            render={({field}) => (
-              <input {...field} {...register("email" , {required:true})} type="email" className="f-inputs" placeholder="Example@somemail.com"/>
+            render={({ field }) => (
+              <input
+                {...field}
+                {...register("email", { required: true })}
+                type="email"
+                className="f-inputs"
+                placeholder="Example@somemail.com"
+              />
             )}
           />
-           {errors.email?.type === 'required' && (<p className="error-text">Please enter your email address</p>)}
+          {errors.email?.type === "required" && (
+            <p className="error-text">Please enter your email address</p>
+          )}
           <Typography
             variant={"h5"}
             fontWeight={"700"}
@@ -99,11 +138,19 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="password"
             control={control}
-            render={({field}) => (
-              <input {...field} {...register("password" , {required:true})} type="password" className="f-inputs" placeholder="Enter your password"/>
+            render={({ field }) => (
+              <input
+                {...field}
+                {...register("password", { required: true })}
+                type="password"
+                className="f-inputs"
+                placeholder="Enter your password"
+              />
             )}
           />
-            {errors.password?.type === 'required' && (<p className="error-text">Please enter your password</p>)}
+          {errors.password?.type === "required" && (
+            <p className="error-text">Please enter your password</p>
+          )}
           <Button
             sx={{
               width: "100%",

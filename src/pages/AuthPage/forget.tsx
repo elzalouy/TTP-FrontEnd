@@ -4,7 +4,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { forgotPassword, selectAuth, selectResponse } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -16,13 +19,48 @@ interface IFormInputs {
   email: string;
 }
 
+interface IFailed {
+  status: number | string | boolean;
+  message: string;
+}
+
 const Forget: React.FC<Props> = ({ history }) => {
-  const { register, handleSubmit, formState: { errors }, control } = useForm<IFormInputs>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
+  const [failed, setFailed] = useState<IFailed>({
+    status: false,
+    message: "",
+  });
+  const auth = useAppSelector(selectAuth);
+  const res = useAppSelector(selectResponse);
+
+  useEffect(() => {
+    if (res.msg === "" && res.status === "") {
+      setVisible(false);
+    } else if (res.msg !== "" && res.status !== 200) {
+      setVisible(false);
+      setFailed({
+        message: res.msg,
+        status: res.status,
+      });
+    } else {
+      setVisible(true);
+    }
+  }, [auth]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log(data);
-    setVisible(true);
+    dispatch(
+      forgotPassword({
+        email: data.email,
+      })
+    );
   };
 
   return (
@@ -61,7 +99,11 @@ const Forget: React.FC<Props> = ({ history }) => {
           paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-          { visible ? (<p className="success-text">A reset link has been sent to your email successfully</p>) :
+          {visible ? (
+            <p className="success-text">
+              A reset link has been sent to your email successfully
+            </p>
+          ) : (
             <>
               <Typography
                 variant={"h2"}
@@ -71,6 +113,11 @@ const Forget: React.FC<Props> = ({ history }) => {
               >
                 Forget Password
               </Typography>
+              {failed.status && (
+                <p className="error-text">
+                  Sending email was unsuccessful : {failed.message}
+                </p>
+              )}
               <Typography
                 variant={"h5"}
                 fontWeight={"700"}
@@ -84,10 +131,19 @@ const Forget: React.FC<Props> = ({ history }) => {
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} {...register("email",{required:true})} type="email" className="f-inputs" placeholder="Example@somemail.com"/>
+                  <input
+                    {...field}
+                    {...register("email", { required: true })}
+                    type="email"
+                    className="f-inputs"
+                    placeholder="Example@somemail.com"
+                    onChange={() => setFailed({ message: "", status: false })}
+                  />
                 )}
               />
-                {errors.email?.type === 'required' && (<p className="error-text">Please enter your email</p>)}
+              {errors.email?.type === "required" && (
+                <p className="error-text">Please enter your email</p>
+              )}
               <Button
                 sx={{
                   width: "100%",
@@ -104,7 +160,7 @@ const Forget: React.FC<Props> = ({ history }) => {
                 Send Reset Link
               </Button>
             </>
-          }
+          )}
         </Grid>
         <Grid
           item

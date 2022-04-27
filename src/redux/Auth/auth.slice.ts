@@ -17,9 +17,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = true;
       state.User = false;
     });
-    builder.addCase(signIn.fulfilled, (state, action) => {
+    builder.addCase(signIn.fulfilled, (state, {payload}) => {
       state.loading = false;
-      state.User = action.payload;
+      if(payload.msg && payload.status){
+        state.Payload = {
+          msg:payload.msg,status:payload.status
+        }
+      }else{
+        state.User = payload;
+      }
     });
     builder.addCase(forgotPassword.rejected, (state) => {
       state.loading = false;
@@ -27,9 +33,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     builder.addCase(forgotPassword.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+    builder.addCase(forgotPassword.fulfilled, (state, {payload}) => {
       state.loading = false;
-      state.User = action.payload
+      if(payload.msg && payload.status){
+        state.Payload = {
+          msg:payload.msg,status:payload.status
+        }
+      }else{
+        state.User = payload;
+      }
     });
     builder.addCase(newPassword.rejected, (state) => {
       state.loading = false;
@@ -39,9 +51,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = true;
       state.User = false;
     });
-    builder.addCase(newPassword.fulfilled, (state, action) => {
+    builder.addCase(newPassword.fulfilled, (state, {payload}) => {
       state.loading = false;
-      state.User = action.payload;
+      if(payload.msg && payload.status){
+        state.Payload = {
+          msg:payload.msg,status:payload.status
+        }
+      }else{
+        state.User = payload;
+      }
     });
   },
 });
