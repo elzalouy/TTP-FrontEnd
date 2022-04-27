@@ -24,12 +24,17 @@ import {
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/Auth";
+import { useHistory } from "react-router";
 interface BarProps extends AppBarProps {
   open?: boolean;
 }
 
 const AppDrawer: React.FC = (props: any) => {
   const drawerWidth = "17%";
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -38,6 +43,11 @@ const AppDrawer: React.FC = (props: any) => {
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   }));
+
+  const handleLogout = () => {
+    dispatch(logout(null));
+    setTimeout(()=>history.replace("/"),1000)
+  }
 
   return (
     <>
@@ -216,7 +226,9 @@ const AppDrawer: React.FC = (props: any) => {
                   paddingTop={1.5}
                   sx={{ cursor: "pointer" }}
                 >
-                  <LogoutIcon fontSize={"small"} />
+                  <IconButton onClick={handleLogout}>
+                    <LogoutIcon fontSize={"small"} />
+                  </IconButton>
                 </Box>
               </Box>
             </ListItemText>

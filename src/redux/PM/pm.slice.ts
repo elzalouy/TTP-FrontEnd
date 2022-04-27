@@ -1,17 +1,17 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { getPMs ,createPM,updatePM,deletePM, updatePMpassword} from "./pm.actions";
+import { getPMs, createPM, updatePM, deletePM, updatePMpassword } from "./pm.actions";
 import initialState, { ProjectManagersInterface } from "./pm.state";
 
 const PMSlice: Slice<ProjectManagersInterface> = createSlice({
   name: "PM",
   initialState: initialState,
   reducers: {
-      getPM:(state,{payload})=>{
-        
-      },
-      setId:(state,{payload})=>{
-        state.current_ID = payload._id;
-      }
+    getPM: (state, { payload }) => {
+
+    },
+    setId: (state, { payload }) => {
+      state.current_ID = payload._id;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getPMs.rejected, (state) => {
@@ -34,7 +34,7 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(createPM.fulfilled, (state, action) => {
       state.loading = false;
-      state.PMs = [...state.PMs,action.payload];
+      state.PMs = [...state.PMs, action.payload];
     });
     builder.addCase(deletePM.rejected, (state) => {
       state.loading = false;
@@ -44,7 +44,7 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(deletePM.fulfilled, (state, action) => {
       state.loading = false;
-      state.PMs = state.PMs.filter((pm)=>pm._id!==state.current_ID);
+      state.PMs = state.PMs.filter((pm) => pm._id !== state.current_ID);
     });
     builder.addCase(updatePM.rejected, (state) => {
       state.loading = false;
@@ -55,8 +55,8 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     builder.addCase(updatePM.fulfilled, (state, action) => {
       state.loading = false;
       console.log();
-      let oldData = state.PMs.filter((pm)=>pm._id!==action.payload._id);
-      state.PMs = [...oldData,action.payload];
+      let oldData = state.PMs.filter((pm) => pm._id !== action.payload._id);
+      state.PMs = [...oldData, action.payload];
     });
     builder.addCase(updatePMpassword.rejected, (state) => {
       state.loading = false;
@@ -64,9 +64,15 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     builder.addCase(updatePMpassword.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updatePMpassword.fulfilled, (state, action) => {
+    builder.addCase(updatePMpassword.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.PMs = [...state.PMs,action.payload];
+      if (payload.msg && payload.status) {
+        state.Payload = {
+          msg: payload.msg, status: payload.status
+        }
+      } else {
+        state.PMs = payload;
+      }
     });
   },
 });

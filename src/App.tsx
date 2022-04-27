@@ -27,10 +27,16 @@ import "react-toastify/dist/ReactToastify.css";
 import PopUps from "./pages/PopUps";
 import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
-import { socket } from "./config/socket/actions";
+import UpdatePassword from "./pages/AuthPage/update";
+import { useAppSelector } from "./redux/hooks";
+import { selectIsAuth } from "./redux/Auth";
+
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+  const auth = useAppSelector(selectIsAuth);
+  // const clients = useAppSelector(clientsDataSelector);
+
   useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
@@ -68,11 +74,16 @@ const App: React.FC = (props) => {
       <PopUps />
       <Switch>
         <Route key="/path" exact path="/" component={Login} />
-        <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
+        <Route key="forgetPassword" path="/forgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
-          path="/ResetPassword"
+          path="/resetPassword/:token"
           component={ResetPassword}
+        />
+        <Route
+          key="/newPassword"
+          path="/newPassword/:token"
+          component={UpdatePassword}
         />
         <LoggedInContainer
           key="/projects"
