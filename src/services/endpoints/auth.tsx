@@ -1,7 +1,7 @@
 import api from "../api";
 export default {
   signIn: (data:any) => api.post("signIn",data),
-  signOut: (data: any) => api.post("logout", data),
+  signOut: () => api.post("logout"),
   newPasword: (data: any) => api.put("newPassword", data),
-  forgotPassword: () => api.post("forgetPassword"),
+  forgotPassword: (data:any) => api.post("forgetPassword",data),
 };

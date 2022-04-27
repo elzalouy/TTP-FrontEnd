@@ -1,5 +1,5 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { forgotPassword, newPassword, signIn } from "./auth.actions";
+import { forgotPassword, logout, newPassword, signIn } from "./auth.actions";
 import initialState, { UserInterface } from "./auth.state";
 
 const AuthSlice: Slice<UserInterface> = createSlice({
@@ -43,6 +43,16 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.User = payload;
       }
     });
+    builder.addCase(logout.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(logout.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(logout.fulfilled, (state, {payload}) => {
+      state.loading = false;
+      state.User = false;
+    });
     builder.addCase(newPassword.rejected, (state) => {
       state.loading = false;
       state.User = false;
@@ -58,7 +68,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           msg:payload.msg,status:payload.status
         }
       }else{
-        state.User = payload;
+        state.User = {...payload};
       }
     });
   },

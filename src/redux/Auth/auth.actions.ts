@@ -18,11 +18,11 @@ export const signIn = createAsyncThunk<any, any, any>(
 
 export const logout = createAsyncThunk<any, any, any>(
   "auth/logout",
-  async (args: any, { rejectWithValue }) => {
+  async (args,{ rejectWithValue }) => {
     try {
-      let result = await api.signOut(args);
+      let result = await api.signOut();
       if (result.data) {
-        return args;
+        return false;
       } else return [];
     } catch (error) {
       rejectWithValue(error);
@@ -37,7 +37,7 @@ export const newPassword = createAsyncThunk<any, any, any>(
       let result = await api.newPasword(args);
       if (result.data) {
         return result.data;
-      } else return [];
+      } else return false;
     } catch (error) {
       rejectWithValue(error);
     }
@@ -46,9 +46,9 @@ export const newPassword = createAsyncThunk<any, any, any>(
 
 export const forgotPassword = createAsyncThunk<any, any, any>(
   "auth/forgotPassword",
-  async (_ , { rejectWithValue }) => {
+  async (args :any, { rejectWithValue }) => {
     try {
-      let result = await api.forgotPassword();
+      let result = await api.forgotPassword(args);
       if (result.data) {
         return result.data;
       } else return [];

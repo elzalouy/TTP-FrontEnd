@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./auth.css";
+import { Redirect } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import { Grid, Button, Link, Typography } from "@mui/material";
 import Person from "../../assets/img/person.png";
@@ -36,7 +37,8 @@ const Login: React.FC<Props> = ({ history }) => {
   const [failed , setFailed] = useState<IFailed>({
     status:false , message:""
   });
-  const auth = useAppSelector(selectAuth);
+  const watch = useAppSelector(selectAuth);
+  const auth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
   
   useEffect(()=>{
@@ -45,7 +47,10 @@ const Login: React.FC<Props> = ({ history }) => {
         message:res.msg,status:res.status
       });
     }
-  },[auth])
+    if(auth !== false){
+      history.replace("/Overview");
+    }
+  },[watch]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log(data);
@@ -56,6 +61,10 @@ const Login: React.FC<Props> = ({ history }) => {
       })
     );
   };
+
+  if(auth !== false){
+    return <Redirect to={"/Overview"}/>
+  }
 
   return (
     <Grid
@@ -120,6 +129,9 @@ const Login: React.FC<Props> = ({ history }) => {
                 type="email"
                 className="f-inputs"
                 placeholder="Example@somemail.com"
+                onChange={()=>setFailed({
+                  message:"",status:false
+                })}
               />
             )}
           />
@@ -144,6 +156,9 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...register("password", { required: true })}
                 type="password"
                 className="f-inputs"
+                onChange={()=>setFailed({
+                  message:"",status:false
+                })}
                 placeholder="Enter your password"
               />
             )}

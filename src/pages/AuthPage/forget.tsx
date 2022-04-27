@@ -2,7 +2,7 @@ import { Button, Grid, Link, Typography } from "@mui/material";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../../coreUI/usable-component/Inputs/Input";
-import { RouteComponentProps } from "react-router";
+import { Redirect, RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -62,6 +62,10 @@ const Forget: React.FC<Props> = ({ history }) => {
       })
     );
   };
+
+  if(auth.User !== false){
+    return <Redirect to={"/Overview"}/>
+  }
 
   return (
     <Grid

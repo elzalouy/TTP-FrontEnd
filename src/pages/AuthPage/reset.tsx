@@ -2,12 +2,13 @@ import { RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, Input, Button } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
-import { useHistory, useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { selectPayload, selectPMs, updatePMpassword } from "../../redux/PM";
+import { selectAuth } from "../../redux/Auth";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -29,7 +30,7 @@ interface IFailed {
   message: string;
 }
 
-const ResetPassword: React.FC<Props> = () => {
+const ResetPassword: React.FC<Props> = ({history}) => {
   const {
     handleSubmit,
     control,
@@ -42,6 +43,7 @@ const ResetPassword: React.FC<Props> = () => {
     status: false,
     message: "",
   });
+  const auth = useAppSelector(selectAuth);
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
@@ -49,11 +51,12 @@ const ResetPassword: React.FC<Props> = () => {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     dispatch(
       updatePMpassword({
-        id: token,
+        id: `Bearer ${token}`,
         password: data.newPassword,
         oldPassword: data.oldPassword,
       })
     );
+    history.replace("/");
   };
 
   useEffect(() => {
@@ -75,6 +78,10 @@ const ResetPassword: React.FC<Props> = () => {
       setParam(token);
     }
   }, []);
+
+  if(auth.User !== false){
+    return <Redirect to={"/Overview"}/>
+  }
 
   return (
     <Grid

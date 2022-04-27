@@ -3,7 +3,7 @@ import { Grid, Typography, Input, Button } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { newPassword, selectAuth, selectResponse } from "../../redux/Auth";
@@ -28,7 +28,6 @@ interface IFailed {
   message: string;
 }
 
-
 const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   const {
     handleSubmit,
@@ -48,10 +47,10 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   const { token } = useParams<IParam>();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
+    console.log(data , token);
     dispatch(
       newPassword({
-        token: token,
+        token: `Bearer ${token}`,
         password: data.password,
       })
     );
@@ -68,6 +67,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       });
     } else {
       setVisible(true);
+      setTimeout(()=> history.push("/"),800);
     }
   }, [auth]);
 
@@ -76,6 +76,10 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       setParam(token);
     }
   }, []);
+
+  if (auth.User !== false) {
+    return <Redirect to={"/Overview"} />;
+  }
 
   return (
     <Grid
@@ -146,16 +150,20 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 render={({ field }) => (
                   <input
                     {...field}
-                    {...register("password", { required: true })}
+                    {...register("password", { required: true , minLength : { value : 8 , message : "Your password is less than 8 characters"} })}
                     type="password"
                     className="f-inputs"
                     placeholder="Enter your new password"
+                    onClick={()=>setFailed({
+                      message:"",status:false
+                    })}
                   />
                 )}
               />
               {errors.password?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
               )}
+              {errors.password?.message && <p className="error-text">{errors.password?.message}</p>}
               <Button
                 sx={{
                   width: "100%",

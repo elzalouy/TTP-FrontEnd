@@ -28,11 +28,13 @@ import PopUps from "./pages/PopUps";
 import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
+import { useAppSelector } from "./redux/hooks";
+import { selectIsAuth } from "./redux/Auth";
 
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-
+  const auth = useAppSelector(selectIsAuth);
   // const clients = useAppSelector(clientsDataSelector);
 
   useEffect(() => {
