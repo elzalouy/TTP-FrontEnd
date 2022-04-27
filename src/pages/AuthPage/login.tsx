@@ -5,16 +5,28 @@ import { Grid, Button, Link, Typography } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
 
+interface IFormInputs {
+  email: string
+  password: string
+}
+
 const Login: React.FC<Props> = ({ history }) => {
-  const { register, watch, control } = useForm();
-  const [visible, setVisible] = useState(false);
+
+  const { handleSubmit, control,  formState: { errors }, register } = useForm<IFormInputs>();
+
+  const onSubmit:SubmitHandler<IFormInputs> = (data) => {
+      console.log(data);
+      console.log(!!(errors.email || errors.password));
+  }
+
+
   return (
     <Grid
       container
@@ -30,7 +42,7 @@ const Login: React.FC<Props> = ({ history }) => {
         sm={11}
         md={8}
         lg={8}
-        height={550}
+        height={600}
         container
         direction="row"
         sx={{
@@ -70,21 +82,11 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="email"
             control={control}
-            render={(props) => (
-              <Input
-                {...props}
-                visible
-                setVisible
-                value={props.field.value}
-                onChangeValue={(e: React.ChangeEvent) => {
-                  // e.preventDefault();
-                  props.field.onChange(e);
-                }}
-                type="email"
-                placeholder="Email Address"
-              />
+            render={({field}) => (
+              <input {...field} {...register("email" , {required:true})} type="email" className="f-inputs" placeholder="Example@somemail.com"/>
             )}
           />
+           {errors.email?.type === 'required' && (<p className="error-text">Please enter your email address</p>)}
           <Typography
             variant={"h5"}
             fontWeight={"700"}
@@ -97,21 +99,11 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="password"
             control={control}
-            render={(props) => (
-              <Input
-                {...props}
-                visible={visible}
-                setVisible={setVisible}
-                value={props.field.value}
-                onChangeValue={(e: React.ChangeEvent) => {
-                  // e.preventDefault();
-                  props.field.onChange(e);
-                }}
-                type="password"
-                placeholder="Password"
-              />
+            render={({field}) => (
+              <input {...field} {...register("password" , {required:true})} type="password" className="f-inputs" placeholder="Enter your password"/>
             )}
           />
+            {errors.password?.type === 'required' && (<p className="error-text">Please enter your password</p>)}
           <Button
             sx={{
               width: "100%",
@@ -123,9 +115,7 @@ const Login: React.FC<Props> = ({ history }) => {
             }}
             variant="contained"
             disableElevation
-            onClick={() => {
-              history.push("/Overview");
-            }}
+            onClick={handleSubmit(onSubmit)}
           >
             Login
           </Button>

@@ -6,6 +6,7 @@
   width: 100%;
   height: 100vh;
 }
+
 .main-form {
   min-height: 70%;
   background-color: #ffffff;
@@ -19,6 +20,7 @@
   height: 100%;
   padding: 20px;
 }
+
 .black {
   width: 50%;
   padding: 20px;
@@ -28,9 +30,11 @@
   color: aliceblue;
   text-align: center;
 }
+
 .login-btns {
   margin-top: 1.5em;
 }
+
 .f-inputs {
   display: block;
   margin-top: 10px;
@@ -57,24 +61,44 @@
   border-color: #b4b6c4;
   color: #b4b6c4;
 }
+
 .login-text {
   margin-bottom: 9%;
 }
+
 .person-img {
   margin-top: 70px;
 }
+
 .f-inputs {
   width: 100%;
   color: black;
-  text-align: center;
+  padding: 11px;
+  border: solid 0.5px;
+  border-color: #b4b6c4;
+  text-align: left;
   text-decoration: none;
   margin-top: 10px;
+  border-radius: 5px;
 }
+
 .Image {
   background-color: black;
 }
-.error-text{
+
+.error-text {
   color: red;
   margin: 10px 0px;
   text-transform: capitalize;
+}
+
+.success-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: green;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1rem;
 }

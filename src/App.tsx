@@ -27,6 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PopUps from "./pages/PopUps";
 import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
+import UpdatePassword from "./pages/AuthPage/update";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -46,11 +47,16 @@ const App: React.FC = (props) => {
       <PopUps />
       <Switch>
         <Route key="/path" exact path="/" component={Login} />
-        <Route key="forgetPassword" path="/ForgetPassword" component={Forget} />
+        <Route key="forgetPassword" path="/forgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
-          path="/ResetPassword"
+          path="/resetPassword"
           component={ResetPassword}
+        />
+        <Route
+          key="/newPassword"
+          path="/newPassword"
+          component={UpdatePassword}
         />
         <LoggedInContainer
           key="/projects"

@@ -13,12 +13,11 @@ interface Props {
 }
 
 interface IFormInputs {
-  newPassword: string;
-  oldPassword: string;
+  password: string;
 }
 
-const ResetPassword: React.FC<Props> = () => {
-  const { handleSubmit, control, register , formState : {errors} } = useForm<IFormInputs>();
+const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
+  const { handleSubmit, control, register, formState: { errors } } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -61,7 +60,7 @@ const ResetPassword: React.FC<Props> = () => {
           paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-          {visible ? (<p className="success-text">Your password has been changed successfully</p>) :
+          { visible ? (<p className="success-text">Your password has been set successfully</p>) :
             <>
               <Typography
                 variant={"h2"}
@@ -69,7 +68,7 @@ const ResetPassword: React.FC<Props> = () => {
                 paddingTop={4}
                 fontFamily={"Cairo"}
               >
-                Set your new password
+                Enter your new password
               </Typography>
               <Typography
                 variant={"h5"}
@@ -78,33 +77,16 @@ const ResetPassword: React.FC<Props> = () => {
                 fontFamily={"Cairo"}
                 color="#000000"
               >
-                Old Password
+                Password
               </Typography>
               <Controller
-                name="oldPassword"
+                name="password"
                 control={control}
                 render={({ field }) => (
-                  <input {...field} {...register("oldPassword",{required:true})} type="password" className="f-inputs" placeholder="Enter your old password"/>
+                  <input {...field} {...register("password",{required:true})} type="password" className="f-inputs" placeholder="Enter your new password"/>
                 )}
               />
-                {errors.oldPassword?.type === 'required' && (<p className="error-text">Please enter your old password</p>)}
-              <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-              >
-                New Password
-              </Typography>
-              <Controller
-                name="newPassword"
-                control={control}
-                render={({ field }) => (
-                  <input {...field} {...register("newPassword",{required:true})} type="password" className="f-inputs" placeholder="Enter your new password"/>
-                )}
-              />
-                {errors.newPassword?.type === 'required' && (<p className="error-text">Please enter your new password</p>)}
+              {errors.password?.type === 'required' && (<p className="error-text">Please enter your new password</p>)}
               <Button
                 sx={{
                   width: "100%",
@@ -140,4 +122,4 @@ const ResetPassword: React.FC<Props> = () => {
     </Grid>
   );
 };
-export default ResetPassword;
+export default UpdatePassword;

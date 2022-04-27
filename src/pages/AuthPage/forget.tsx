@@ -1,9 +1,10 @@
 import { Button, Grid, Link, Typography } from "@mui/material";
 import Ttp from "../../assets/img/ttp_logo.png";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
+import { useState } from "react";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -11,8 +12,18 @@ interface Props {
   match: RouteComponentProps["match"];
 }
 
+interface IFormInputs {
+  email: string;
+}
+
 const Forget: React.FC<Props> = ({ history }) => {
-  const { register, watch, control } = useForm();
+  const { register, handleSubmit, formState: { errors }, control } = useForm<IFormInputs>();
+  const [visible, setVisible] = useState(false);
+
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    console.log(data);
+    setVisible(true);
+  };
 
   return (
     <Grid
@@ -50,58 +61,50 @@ const Forget: React.FC<Props> = ({ history }) => {
           paddingBottom={4}
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
-          <Typography
-            variant={"h2"}
-            fontWeight={"900"}
-            paddingTop={4}
-            fontFamily={"Cairo"}
-          >
-            Forget Password
-          </Typography>
-          <Typography
-            variant={"h5"}
-            fontWeight={"700"}
-            paddingTop={3.5}
-            fontFamily={"Cairo"}
-            color="#000000"
-          >
-            Email Address
-          </Typography>
-          <Controller
-            name="email"
-            control={control}
-            render={(props) => (
-              <Input
-                {...props}
-                visible
-                setVisible
-                value={props.field.value}
-                onChangeValue={(e: React.ChangeEvent) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                }}
-                type="email"
-                placeholder="Email Address"
+          { visible ? (<p className="success-text">A reset link has been sent to your email successfully</p>) :
+            <>
+              <Typography
+                variant={"h2"}
+                fontWeight={"900"}
+                paddingTop={4}
+                fontFamily={"Cairo"}
+              >
+                Forget Password
+              </Typography>
+              <Typography
+                variant={"h5"}
+                fontWeight={"700"}
+                paddingTop={3.5}
+                fontFamily={"Cairo"}
+                color="#000000"
+              >
+                Email
+              </Typography>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input {...field} {...register("email",{required:true})} type="email" className="f-inputs" placeholder="Example@somemail.com"/>
+                )}
               />
-            )}
-          />
-          <Button
-            sx={{
-              width: "100%",
-              height: 40,
-              borderRadius: 1.5,
-              marginTop: 10,
-              fontWeight: "bold",
-              textTransform: "none",
-            }}
-            variant="contained"
-            disableElevation
-            onClick={() => {
-              history.push("/Overview");
-            }}
-          >
-            Send
-          </Button>
+                {errors.email?.type === 'required' && (<p className="error-text">Please enter your email</p>)}
+              <Button
+                sx={{
+                  width: "100%",
+                  height: 40,
+                  borderRadius: 1.5,
+                  marginTop: 4,
+                  textTransform: "none",
+                  fontWeight: "bold",
+                }}
+                variant="contained"
+                disableElevation
+                onClick={handleSubmit(onSubmit)}
+              >
+                Send Reset Link
+              </Button>
+            </>
+          }
         </Grid>
         <Grid
           item
