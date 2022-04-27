@@ -30,6 +30,7 @@ import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
 import { selectIsAuth } from "./redux/Auth";
+import { socket } from "./config/socket/actions";
 
 
 const App: React.FC = (props) => {
