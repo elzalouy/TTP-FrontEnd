@@ -56,7 +56,7 @@ const Forget: React.FC<Props> = ({ history }) => {
   }, [auth]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
+    
     dispatch(
       forgotPassword({
         email: data.email,

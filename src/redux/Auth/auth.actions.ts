@@ -8,7 +8,6 @@ export const signIn = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signIn(args);
       if (result.data) {
-        console.log(result.data);
         return result.data;
       } else return [];
     } catch (error) {

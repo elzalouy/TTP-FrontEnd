@@ -53,7 +53,7 @@ const Login: React.FC<Props> = ({ history }) => {
   },[watch]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
+
     dispatch(
       signIn({
         email: data.email,
