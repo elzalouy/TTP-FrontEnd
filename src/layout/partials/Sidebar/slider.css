@@ -358,6 +358,12 @@
   background: #000000 0% 0% no-repeat padding-box;
   color: white;
 }
+.active svg path {
+  stroke: white !important;
+}
+.active svg circle {
+  stroke: white !important;
+}
 .side-bar.collapse {
   width: 256px;
 }

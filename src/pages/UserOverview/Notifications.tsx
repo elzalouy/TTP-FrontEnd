@@ -23,7 +23,7 @@ const UserNotifications: React.FC<Props> = (props) => {
         color="#131523"
         fontFamily={"Cairo"}
       >
-        Last Notifications
+        Shared Tasks
       </Typography>
       <Box sx={{ display: "inline-flex" }} marginTop={2}>
         <Typography
@@ -56,23 +56,48 @@ const UserNotifications: React.FC<Props> = (props) => {
             display: "inline-flex",
           }}
         >
-          <Avatar sx={{ bgcolor: "#57B8FF" }}>EE</Avatar>
-          <Box paddingTop={0.2} paddingLeft={1}>
-            <Typography
-              fontFamily={"Cairo"}
-              fontWeight={"600"}
-              variant={"subtitle1"}
-              color={"#303030"}
-            >
-              Ahmed Ali finished his task in Vcode ...
-            </Typography>
-            <Typography
-              color={"#99A0AA"}
-              fontFamily={"Cairo"}
-              variant={"subtitle2"}
-            >
-              Ahmed Ali finished his task in Vcode ...
-            </Typography>
+          <Box
+            width="100%"
+            justifyContent={"space-between"}
+            sx={{ display: "inline-flex" }}
+          >
+            <Box display={"inline-flex"}>
+              <Typography
+                fontSize={"13px"}
+                color="#FF974A"
+                bgcolor={"#FFF4EC"}
+                margin={1}
+                paddingTop={0.5}
+                paddingX={1}
+                borderRadius={1}
+              >
+                Shared
+              </Typography>
+              <Box paddingTop={0.2} paddingLeft={1}>
+                <Typography
+                  fontFamily={"Cairo"}
+                  fontWeight={"600"}
+                  variant={"subtitle1"}
+                  color={"#303030"}
+                >
+                  Task Title Here
+                </Typography>
+                <Typography
+                  padding={0}
+                  margin={0}
+                  color={"#505050"}
+                  fontFamily={"Cairo"}
+                  variant={"subtitle2"}
+                >
+                  Project Name
+                </Typography>
+              </Box>
+            </Box>
+            <Box>
+              <Typography fontSize={"12px"} color="#9FA1AB" paddingTop={0.5}>
+                10:24 AM
+              </Typography>
+            </Box>
           </Box>
         </Box>
       ))}
@@ -86,7 +111,7 @@ const UserNotifications: React.FC<Props> = (props) => {
           marginLeft: 32,
         }}
         fullWidth={false}
-        onClick={() => props.history.push("/notifications")}
+        onClick={() => props.history.push("/TasksList")}
       >
         <Typography
           fontWeight={"700"}

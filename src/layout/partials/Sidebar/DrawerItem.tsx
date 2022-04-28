@@ -19,7 +19,7 @@ const DrawerItem: React.FC = (props: any) => {
         ":hover": { "& .MuiListItemText-root": { color: "white" } },
       }}
       onClick={() => props.onClick()}
-      className={props.select === props.path ? "active" : ""}
+      className={props.select === props.path ? "active" : "sideItem"}
     >
       <ListItemIcon
         sx={{

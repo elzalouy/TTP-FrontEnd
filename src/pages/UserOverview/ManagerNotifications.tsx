@@ -155,6 +155,113 @@ const ManagerNotifications: React.FC<Props> = (props) => {
           </Typography>
         </Button>
       </Box>
+      <Box
+        role={"tabpanel"}
+        aria-labelledby={"tab-1"}
+        hidden={tab == 1 ? false : true}
+        id={"1"}
+        tabIndex={1}
+      >
+        <Box sx={{ display: "inline-flex" }} marginTop={2}>
+          <Typography
+            variant={"h5"}
+            fontWeight={"600"}
+            paddingRight={2}
+            color="#303030"
+          >
+            Today
+          </Typography>
+          <Typography
+            variant={"h6"}
+            fontSize={10}
+            fontWeight={"600"}
+            color="#929292"
+            paddingTop={0.4}
+          >
+            11 Dec, 2021
+          </Typography>
+        </Box>
+        {notifications.map((item) => (
+          <Box
+            marginTop={2}
+            width={"100%"}
+            height={60}
+            borderRadius={2}
+            sx={{
+              boxShadow: "0px 5px 15px 5px #FAFAFB;",
+              padding: 1.2,
+              display: "inline-flex",
+            }}
+          >
+            <Box
+              width="100%"
+              justifyContent={"space-between"}
+              sx={{ display: "inline-flex" }}
+            >
+              <Box display={"inline-flex"}>
+                <Typography
+                  fontSize={"13px"}
+                  color="#FF974A"
+                  bgcolor={"#FFF4EC"}
+                  margin={1}
+                  paddingTop={0.5}
+                  paddingX={1}
+                  borderRadius={1}
+                >
+                  Shared
+                </Typography>
+                <Box paddingTop={0.2} paddingLeft={1}>
+                  <Typography
+                    fontFamily={"Cairo"}
+                    fontWeight={"600"}
+                    variant={"subtitle1"}
+                    color={"#303030"}
+                  >
+                    Task Title Here
+                  </Typography>
+                  <Typography
+                    color={"#505050"}
+                    fontFamily={"Cairo"}
+                    variant={"subtitle2"}
+                  >
+                    Project Name
+                  </Typography>
+                </Box>
+              </Box>
+              <Box>
+                <Typography fontSize={"12px"} color="#9FA1AB" paddingTop={0.5}>
+                  10:24 AM
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        ))}
+        <Button
+          variant="text"
+          sx={{
+            justifyContent: "flex-start",
+            width: "30%",
+            paddingTop: 1,
+            marginTop: 2,
+            marginLeft: 32,
+          }}
+          fullWidth={false}
+          onClick={() => props.history.push("/TasksList")}
+        >
+          <Typography
+            fontWeight={"700"}
+            variant="h5"
+            fontSize={14}
+            color="#00ACBA"
+          >
+            See More
+            <ArrowIcon
+              fontSize={"small"}
+              sx={{ fontSize: 14, paddingTop: 0.4, fontWeight: "bold" }}
+            />
+          </Typography>
+        </Button>
+      </Box>
     </Stack>
   );
 };

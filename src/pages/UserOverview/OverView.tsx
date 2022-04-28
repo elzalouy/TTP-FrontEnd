@@ -92,7 +92,7 @@ const OverView: FC<Props> = (props) => {
                   <>
                     <UserStatus
                       user={user}
-                      IconBgColor="#EFEFFF"
+                      IconBgColor="#ECFDF1"
                       Icon={() => <img alt="1" src={IMAGES.overviewCheck} />}
                       pt={1.7}
                       title={"Tasks Completed"}
@@ -102,7 +102,7 @@ const OverView: FC<Props> = (props) => {
                     />
                     <UserStatus
                       user={user}
-                      IconBgColor="#ECFDF1"
+                      IconBgColor="#EFEFFF"
                       Icon={() => <img alt="2" src={IMAGES.overViewRevision} />}
                       pt={1.6}
                       title="New Tasks"
@@ -125,7 +125,7 @@ const OverView: FC<Props> = (props) => {
                   <>
                     <UserStatus
                       user={user}
-                      IconBgColor="#EFEFFF"
+                      IconBgColor="#ECFDF1"
                       Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
                       pt={1.5}
                       title={"Organization Capacity"}
@@ -155,13 +155,13 @@ const OverView: FC<Props> = (props) => {
                     />
                     <UserStatus
                       user={user}
-                      IconBgColor="#FFF3EF"
+                      IconBgColor="#FBF5E2"
                       Icon={() => <img src={IMAGES.overviewProjects} alt="3" />}
                       pt={1.7}
                       title="Current Active Projects"
                       count="12"
                       percent="- 8%"
-                      percentColor="#FF2E35"
+                      percentColor="#FFC500"
                     />
                   </>
                 )}
