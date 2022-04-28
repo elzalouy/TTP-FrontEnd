@@ -30,7 +30,7 @@ interface IFailed {
   message: string;
 }
 
-const ResetPassword: React.FC<Props> = ({history}) => {
+const ResetPassword: React.FC<Props> = ({ history }) => {
   const {
     handleSubmit,
     control,
@@ -38,12 +38,12 @@ const ResetPassword: React.FC<Props> = ({history}) => {
     formState: { errors },
   } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
-  const [param, setParam] = useState("");
   const [failed, setFailed] = useState<IFailed>({
     status: false,
     message: "",
   });
-  const auth = useAppSelector(selectIsAuth);
+
+  const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
@@ -73,14 +73,8 @@ const ResetPassword: React.FC<Props> = ({history}) => {
     }
   }, [res]);
 
-  useEffect(() => {
-    if (token) {
-      setParam(token);
-    }
-  }, []);
-
-  if(auth?._id.length !== 0){
-    return <Redirect to={"/Overview"}/>
+  if (isAuth) {
+    return <Redirect to={"/Overview"} />;
   }
 
   return (
@@ -156,7 +150,7 @@ const ResetPassword: React.FC<Props> = ({history}) => {
                     type="password"
                     className="f-inputs"
                     placeholder="Enter your old password"
-                    onChange={()=>setFailed({message:"",status:false})}
+                    onChange={() => setFailed({ message: "", status: false })}
                   />
                 )}
               />
@@ -182,7 +176,7 @@ const ResetPassword: React.FC<Props> = ({history}) => {
                     type="password"
                     className="f-inputs"
                     placeholder="Enter your new password"
-                    onChange={()=>setFailed({message:"",status:false})}
+                    onChange={() => setFailed({ message: "", status: false })}
                   />
                 )}
               />

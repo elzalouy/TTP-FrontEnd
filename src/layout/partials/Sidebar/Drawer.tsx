@@ -25,8 +25,9 @@ import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/Auth";
+import { logout, selectUser } from "../../../redux/Auth";
 import { useHistory } from "react-router";
+import { useAppSelector } from "../../../redux/hooks";
 interface BarProps extends AppBarProps {
   open?: boolean;
 }
@@ -34,7 +35,9 @@ interface BarProps extends AppBarProps {
 const AppDrawer: React.FC = (props: any) => {
   const drawerWidth = "17%";
   const dispatch = useDispatch();
+  const user = useAppSelector(selectUser);
   const history = useHistory();
+  const userImage = user.user?.image === undefined ? user.image : user.user.image; 
 
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -197,7 +200,7 @@ const AppDrawer: React.FC = (props: any) => {
                 justifyContent: props.open ? "space-between" : "center",
               }}
             >
-              <Avatar src={IMAGES.avatar}>AM</Avatar>
+              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>AM</Avatar>
             </ListItemIcon>
             <ListItemText
               sx={{
@@ -213,12 +216,13 @@ const AppDrawer: React.FC = (props: any) => {
                     fontFamily={"Cairo"}
                     fontWeight="600"
                     variant="h5"
+                    textTransform={"capitalize"}
                     color="#11142D"
                   >
-                    Ahmed Ali
+                    {user.user?.name === undefined ? user.name : user.user.name}
                   </Typography>
-                  <Typography fontFamily={"Cairo"} variant="h6" color="#808191">
-                    Admin
+                  <Typography fontFamily={"Cairo"} textTransform={"capitalize"} variant="h6" color="#808191">
+                    {user.user?.role === undefined ? user.role : user.user.role}
                   </Typography>
                 </Box>
                 <Box

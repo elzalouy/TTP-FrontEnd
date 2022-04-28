@@ -10,22 +10,23 @@ export interface User {
   image: string;
   type?: MemberType;
   userTeams?: string[];
+  user?: User
 }
 
-interface Res{
-  msg:string;
-  status:number | string;
+interface Res {
+  msg: string;
+  status: number | string;
 }
 export interface UserInterface {
   loading: boolean | null;
   User: User;
-  Payload:Res;
+  authState: boolean;
+  Payload: Res;
 }
 const UserState: UserInterface = {
   loading: null,
-  User: {_id:"",name:"",email:"",password:"",role:"",trelloMemberId:"",image:""},
-  Payload:{
-    msg:"",status:""
-  }
+  User: { _id: "", name: "", email: "", password: "", role: "", trelloMemberId: "", image: "" },
+  authState: false,
+  Payload: { msg: "", status: "" }
 };
 export default UserState;

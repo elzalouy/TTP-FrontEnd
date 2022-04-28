@@ -38,7 +38,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     message: "",
   });
   const auth = useAppSelector(selectAuth);
-  const user = useAppSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(user?._id.length !== 0){
+  if(isAuth){
     return <Redirect to={"/Overview"}/>
   }
 
