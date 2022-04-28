@@ -22,13 +22,13 @@ const LoggedInContainer: React.FC<Props> = ({
   const history = useHistory();
 
   useEffect(() => {
-    if(isAuth){
+    if(!isAuth){
       history.replace("/")
     }
   }, [isAuth])
   
 
-  if(isAuth){
+  if(!isAuth){
     return <Redirect to={"/"}/>
   }
 

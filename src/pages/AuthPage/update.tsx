@@ -40,7 +40,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     status: false,
     message: "",
   });
-  
+
   const dispatch = useDispatch();
   const auth = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
@@ -72,7 +72,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     }
   }, [auth]);
 
-  if(!isAuth){
+  if(isAuth){
     return <Redirect to={"/Overview"}/>
   }
 

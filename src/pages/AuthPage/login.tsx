@@ -62,7 +62,7 @@ const Login: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(!isAuth){
+  if(isAuth){
     return <Redirect to={"/Overview"}/>
   }
 
