@@ -68,7 +68,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     builder.addCase(getUserInfo.fulfilled, (state, {payload}) => {
       state.loading = false;
       state.User = payload;
-      state.authState = true;
+      state.authState = payload === {} ? false : true;
     });
     builder.addCase(newPassword.rejected, (state) => {
       state.loading = false;
@@ -85,8 +85,8 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           msg:payload.msg,status:payload.status
         }
       }else{
-        state.User = {...payload};
-        state.authState = true;
+        state.User = payload;
+        state.authState = payload.status === 200 ? true : false ;
       }
     });
   },

@@ -23,7 +23,7 @@ const AddNewPM: React.FC<Props> = () => {
     } else {
       let emailArr = PMs.map((pm) => pm.email);
       let validate = emailArr.find((e) => e === email);
-      if(validate){
+      if (validate) {
         setValidationError(true);
         return;
       }
@@ -31,6 +31,7 @@ const AddNewPM: React.FC<Props> = () => {
         createPM({
           name: username,
           email: email,
+          role: "project manager",
         })
       );
       setError(false);

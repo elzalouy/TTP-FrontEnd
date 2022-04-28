@@ -29,7 +29,7 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
+import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
 
 const App: React.FC = (props) => {
@@ -40,10 +40,12 @@ const App: React.FC = (props) => {
   // const clients = useAppSelector(clientsDataSelector);
 
   useEffect(() => {
-    if(token){
-      dispatch(getUserInfo({
-        id:token
-      }));
+    if (token) {
+      dispatch(
+        getUserInfo({
+          id: token,
+        })
+      );
     }
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
@@ -54,14 +56,16 @@ const App: React.FC = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(isAuth){
+    if (isAuth && user._id) {
       localStorage.setItem("token", user._id);
+    }
+    if(isAuth && user.user){
+      localStorage.setItem("token", user.user._id);
     }
   }, [isAuth]);
 
   // Socket connecting changing
   useEffect(() => {
-  
     socket.on("connect", () => {
       //todo check user auth
       let admin = true;
