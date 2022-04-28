@@ -19,11 +19,13 @@ interface Res{
 export interface UserInterface {
   loading: boolean | null;
   User: User;
+  authState:boolean;
   Payload:Res;
 }
 const UserState: UserInterface = {
   loading: null,
   User: {_id:"",name:"",email:"",password:"",role:"",trelloMemberId:"",image:""},
+  authState:false,
   Payload:{
     msg:"",status:""
   }

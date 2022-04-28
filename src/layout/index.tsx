@@ -18,17 +18,17 @@ const LoggedInContainer: React.FC<Props> = ({
   ...rest
 }: any) => {
 
-  const auth = useAppSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
   const history = useHistory();
 
   useEffect(() => {
-    if(auth._id === ""){
+    if(isAuth){
       history.replace("/")
     }
-  }, [auth])
+  }, [isAuth])
   
 
-  if(auth._id === ""){
+  if(isAuth){
     return <Redirect to={"/"}/>
   }
 

@@ -29,15 +29,22 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, selectIsAuth } from "./redux/Auth";
+import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const auth = useAppSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
+  const user = useAppSelector(selectUser);
+  let token = localStorage.getItem("token");
   // const clients = useAppSelector(clientsDataSelector);
 
   useEffect(() => {
+    if(token){
+      dispatch(getUserInfo({
+        id:token
+      }));
+    }
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
     dispatch(getAllClients(null));
@@ -47,19 +54,14 @@ const App: React.FC = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if(auth._id !== ""){
-      localStorage.setItem("token",auth._id)
+    if(isAuth){
+      localStorage.setItem("token", user._id);
     }
-  }, [auth]);
+  }, [isAuth]);
 
   // Socket connecting changing
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    if(token){
-      dispatch(getUserInfo({
-        id:token
-      }));
-    }
+  
     socket.on("connect", () => {
       //todo check user auth
       let admin = true;
