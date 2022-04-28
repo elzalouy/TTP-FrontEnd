@@ -47,8 +47,8 @@ const Login: React.FC<Props> = ({ history }) => {
         message:res.msg,status:res.status
       });
     }
-    if(auth !== false){
-      history.replace("/Overview");
+    if(auth._id !== ""){
+      history.replace("/Overview")
     }
   },[watch]);
 
@@ -62,7 +62,7 @@ const Login: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(auth !== false){
+  if(auth?._id.length !== 0){
     return <Redirect to={"/Overview"}/>
   }
 

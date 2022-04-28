@@ -8,7 +8,7 @@ export interface User {
   role: string;
   trelloMemberId: string;
   image: string;
-  type: MemberType;
+  type?: MemberType;
   userTeams?: string[];
 }
 
@@ -18,12 +18,12 @@ interface Res{
 }
 export interface UserInterface {
   loading: boolean | null;
-  User: User | boolean;
+  User: User;
   Payload:Res;
 }
 const UserState: UserInterface = {
   loading: null,
-  User: false,
+  User: {_id:"",name:"",email:"",password:"",role:"",trelloMemberId:"",image:""},
   Payload:{
     msg:"",status:""
   }

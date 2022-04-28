@@ -1,6 +1,7 @@
 import { CssBaseline } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
+import {useHistory} from "react-router"
 import { Route ,Redirect} from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
@@ -18,8 +19,16 @@ const LoggedInContainer: React.FC<Props> = ({
 }: any) => {
 
   const auth = useAppSelector(selectIsAuth);
+  const history = useHistory();
 
-  if(!!auth===false){
+  useEffect(() => {
+    if(auth._id === ""){
+      history.replace("/")
+    }
+  }, [auth])
+  
+
+  if(auth._id === ""){
     return <Redirect to={"/"}/>
   }
 

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { selectPayload, selectPMs, updatePMpassword } from "../../redux/PM";
-import { selectAuth } from "../../redux/Auth";
+import { selectAuth, selectIsAuth } from "../../redux/Auth";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -43,7 +43,7 @@ const ResetPassword: React.FC<Props> = ({history}) => {
     status: false,
     message: "",
   });
-  const auth = useAppSelector(selectAuth);
+  const auth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const ResetPassword: React.FC<Props> = ({history}) => {
     }
   }, []);
 
-  if(auth.User !== false){
+  if(auth?._id.length !== 0){
     return <Redirect to={"/Overview"}/>
   }
 

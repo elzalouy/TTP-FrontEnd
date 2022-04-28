@@ -6,7 +6,7 @@ import { Redirect, RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { forgotPassword, selectAuth, selectResponse } from "../../redux/Auth";
+import { forgotPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
@@ -38,6 +38,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     message: "",
   });
   const auth = useAppSelector(selectAuth);
+  const user = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(auth.User !== false){
+  if(user?._id.length !== 0){
     return <Redirect to={"/Overview"}/>
   }
 

@@ -29,9 +29,8 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { selectIsAuth } from "./redux/Auth";
+import { getUserInfo, selectIsAuth } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
-
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -47,8 +46,20 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
   }, [dispatch]);
 
+  useEffect(() => {
+    if(auth._id !== ""){
+      localStorage.setItem("token",auth._id)
+    }
+  }, [auth]);
+
   // Socket connecting changing
   useEffect(() => {
+    let token = localStorage.getItem("token");
+    if(token){
+      dispatch(getUserInfo({
+        id:token
+      }));
+    }
     socket.on("connect", () => {
       //todo check user auth
       let admin = true;
@@ -68,7 +79,7 @@ const App: React.FC = (props) => {
       socket.emit("joined user", { id: userId });
     });
   }, []);
-  useEffect(() => {});
+
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer />

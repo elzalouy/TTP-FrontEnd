@@ -1,5 +1,5 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { forgotPassword, logout, newPassword, signIn } from "./auth.actions";
+import { forgotPassword, getUserInfo, logout, newPassword, signIn } from "./auth.actions";
 import initialState, { UserInterface } from "./auth.state";
 
 const AuthSlice: Slice<UserInterface> = createSlice({
@@ -11,11 +11,9 @@ const AuthSlice: Slice<UserInterface> = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signIn.rejected, (state) => {
       state.loading = false;
-      state.User = false;
     });
     builder.addCase(signIn.pending, (state) => {
       state.loading = true;
-      state.User = false;
     });
     builder.addCase(signIn.fulfilled, (state, {payload}) => {
       state.loading = false;
@@ -51,15 +49,25 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     });
     builder.addCase(logout.fulfilled, (state, {payload}) => {
       state.loading = false;
-      state.User = false;
+      state.User = initialState.User;
+    });
+    builder.addCase(getUserInfo.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(getUserInfo.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getUserInfo.fulfilled, (state, {payload}) => {
+      state.loading = false;
+      state.User = payload;
     });
     builder.addCase(newPassword.rejected, (state) => {
       state.loading = false;
-      state.User = false;
+    
     });
     builder.addCase(newPassword.pending, (state) => {
       state.loading = true;
-      state.User = false;
+    
     });
     builder.addCase(newPassword.fulfilled, (state, {payload}) => {
       state.loading = false;

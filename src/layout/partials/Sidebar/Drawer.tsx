@@ -46,7 +46,7 @@ const AppDrawer: React.FC = (props: any) => {
 
   const handleLogout = () => {
     dispatch(logout(null));
-    setTimeout(()=>history.replace("/"),1000)
+    setTimeout(()=>history.replace("/"),1000);
   }
 
   return (

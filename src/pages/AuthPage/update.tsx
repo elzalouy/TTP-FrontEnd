@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { newPassword, selectAuth, selectResponse } from "../../redux/Auth";
+import { newPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
@@ -43,6 +43,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   });
   const dispatch = useDispatch();
   const auth = useAppSelector(selectAuth);
+  const user = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
   const { token } = useParams<IParam>();
 
@@ -77,8 +78,8 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     }
   }, []);
 
-  if (auth.User !== false) {
-    return <Redirect to={"/Overview"} />;
+  if(user?._id.length !== 0){
+    return <Redirect to={"/Overview"}/>
   }
 
   return (
