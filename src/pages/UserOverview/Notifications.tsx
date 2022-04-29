@@ -12,7 +12,7 @@ const UserNotifications: React.FC<Props> = (props) => {
     <Stack
       bgcolor={"white"}
       borderRadius={2}
-      width={{ xs: "90%", sm: "90%", md: "100%", lg: "100%" }}
+      width={{ xs: "100%", sm: "100%", md: "100%", lg: "100%" }}
       padding={1.8}
       paddingTop={2.5}
     >

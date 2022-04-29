@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
@@ -37,6 +39,8 @@ const Tasks: React.FC = (props: any) => {
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const techMembers = useAppSelector(selectAllMembers);
   const [selects, setAllSelected] = React.useState<string[]>([]);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
   React.useEffect(() => {
@@ -73,7 +77,7 @@ const Tasks: React.FC = (props: any) => {
       container
       alignContent={"flex-start"}
       alignSelf="flex-start"
-      padding={4}
+      padding={SM?0:4}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
       <Typography variant="h2" marginBottom={2}>

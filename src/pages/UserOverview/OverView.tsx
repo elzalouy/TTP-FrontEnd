@@ -22,6 +22,10 @@ import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./ManagerNotifications";
 import IMAGES from "../../assets/img";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useAppSelector } from "../../redux/hooks";
+import { selectRole } from "../../redux/Auth";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -29,12 +33,17 @@ interface Props {
 }
 const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
+  const role = useAppSelector(selectRole);
   const [user, setUser] = useState("operation manager");
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+
   useEffect(() => {
     dispatch(getPMs(null));
     dispatch(getAllProjects(null));
     dispatch(getAllTasks(null));
   }, []);
+
   return (
     <>
       <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
@@ -50,7 +59,7 @@ const OverView: FC<Props> = (props) => {
             justifyContent="flex-start"
             alignItems="flex-start"
             paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
-            paddingLeft={4}
+            paddingLeft={SM ? 2 : 4}
             xs={12}
           >
             <Box
@@ -77,7 +86,7 @@ const OverView: FC<Props> = (props) => {
             justifyContent={"flex-start"}
             alignItems="flex-start"
             container
-            paddingLeft={4}
+            paddingLeft={SM ? 0 : 4}
           >
             <Grid item direction="column" xs={12} sm={12} lg={7.5} md={7.5}>
               <Grid
@@ -85,10 +94,10 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
-                paddingRight={user === "project manager" ? 0 : "3%"}
+                paddingRight={SM ? 0 : (role === "PM" ? 0 : "3%")}
                 container
               >
-                {user === "project manager" ? (
+                {role === "PM" ? (
                   <>
                     <UserStatus
                       user={user}
@@ -171,7 +180,8 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={2.5}
-                paddingRight={3.5}
+                overflow="scroll"
+                paddingRight={SM ? 0 : 3.5}
               >
                 <UserProjects {...props} />
               </Grid>
@@ -186,7 +196,7 @@ const OverView: FC<Props> = (props) => {
               justifyContent="center"
               alignItems="center"
             >
-              {user === "operation manager" ? (
+              {role === "OM" ? (
                 <ManagerNotifications {...props} />
               ) : (
                 <UserNotifications {...props} />
@@ -198,7 +208,7 @@ const OverView: FC<Props> = (props) => {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingLeft={4}
+            paddingLeft={SM ? 0 : 4}
             marginBottom={5}
           >
             <UserTasks />

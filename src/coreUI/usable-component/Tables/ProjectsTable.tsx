@@ -14,7 +14,8 @@ import { projectsTableStyle } from "../styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
-import IMAGES from "../../../assets/img";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 
 interface ProjectsTableProps {
@@ -32,6 +33,10 @@ interface ProjectsTableProps {
 
 const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  
   return (
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
