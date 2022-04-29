@@ -37,7 +37,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
-  const isDelete = useAppSelector(selectDeleteProjectId);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
@@ -51,7 +50,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       projectManager: data.projectManager,
       projectStatus: data.projectStatus,
     };
-    console.log(filter);
     dispatch(filterProjects(filter));
   };
   console.log(role);
@@ -61,12 +59,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   };
   useEffect(() => {
     setValue("name", "");
-    dispatch(getAllProjects(null));
-    dispatch(getPMs(null));
   }, []);
-  useEffect(() => {
-    dispatch(getAllProjects(null));
-  }, [isDelete]);
   return (
     <Grid
       width={"100%"}

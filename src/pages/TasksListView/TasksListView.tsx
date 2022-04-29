@@ -1,11 +1,5 @@
-import { Checkbox, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -14,7 +8,7 @@ import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { getAllCategories } from "../../redux/Categories";
-import { getAllClients, clientsDataSelector } from "../../redux/Clients";
+import { getAllClients } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
@@ -39,15 +33,6 @@ const Tasks: React.FC = (props: any) => {
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
-  React.useEffect(() => {
-    dispatch(getAllClients(null));
-    dispatch(getPMs(null));
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllMembers(null));
-    dispatch(getAllTasks(null));
-  }, []);
   const onHandleChange = (e: any) => {
     let filter = watch();
     dispatch(filterTasks(filter));

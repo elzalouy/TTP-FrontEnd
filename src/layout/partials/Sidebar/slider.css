@@ -358,10 +358,35 @@
   background: #000000 0% 0% no-repeat padding-box;
   color: white;
 }
+.active svg {
+  stroke: white !important;
+}
 .active svg path {
   stroke: white !important;
 }
+.active svg .category {
+  stroke: white !important;
+  fill: white !important;
+}
 .active svg circle {
+  stroke: white !important;
+}
+.active svg g {
+  stroke: white !important;
+}
+.sideItem svg {
+  stroke: #9fa1ab !important;
+}
+.sideItem:hover .category {
+  fill: white !important;
+}
+.sideItem:hover svg path {
+  stroke: white !important;
+}
+.sideItem:hover svg circle {
+  stroke: white !important;
+}
+.sideItem:hover svg g {
   stroke: white !important;
 }
 .side-bar.collapse {

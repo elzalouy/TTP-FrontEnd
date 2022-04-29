@@ -143,7 +143,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
         args.dispatch(getAllTasks(null));
-        toast("Tasks deleted first.");
+        toast("Tasks deleted.");
         return true;
       }
       throw "Error happenned";
@@ -204,7 +204,6 @@ export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (args, { rejectWithValue }) => {
     try {
-      console.log(args);
       let newlist = "";
       if (args.list.value === "inProgress")
         newlist = args.department.defaultListId;

@@ -56,7 +56,7 @@ export interface ProjectsInterface {
   selectedProject: {
     loading: boolean | null;
     tasks: Task[];
-    project: Project | null;
+    project: Project | undefined | null;
   };
   allTasks: Task[];
   deleteProject: string | undefined;

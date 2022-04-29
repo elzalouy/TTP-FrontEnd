@@ -30,11 +30,6 @@ interface Props {
 const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState("operation manager");
-  useEffect(() => {
-    dispatch(getPMs(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllTasks(null));
-  }, []);
   return (
     <>
       <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
@@ -65,7 +60,7 @@ const OverView: FC<Props> = (props) => {
               color="#171725"
               paddingTop={7}
               variant="h5"
-              fontSize={18}
+              fontSize={"24px"}
               fontWeight={"900"}
             >
               Overview

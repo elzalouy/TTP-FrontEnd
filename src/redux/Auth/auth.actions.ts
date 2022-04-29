@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/endpoints/auth";
-import apiPM from "../../services/endpoints/PMs"
+import apiPM from "../../services/endpoints/PMs";
 import { User } from "./auth.state";
 
 export const signIn = createAsyncThunk<any, any, any>(
@@ -27,7 +27,7 @@ export const getUserInfo = createAsyncThunk<any, any, any>(
       }
       localStorage.removeItem("token");
     } catch (error) {
-      rejectWithValue(error)
+      rejectWithValue(error);
     }
   }
 );

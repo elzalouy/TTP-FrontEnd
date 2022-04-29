@@ -56,6 +56,7 @@ const Clients: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    e.preventDefault();
     setSearch(e.target.value);
     dispatch(clientsActions.onSearch(e.target.value));
   };

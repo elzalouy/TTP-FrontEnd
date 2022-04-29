@@ -1,5 +1,11 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { forgotPassword, getUserInfo, logout, newPassword, signIn } from "./auth.actions";
+import {
+  forgotPassword,
+  getUserInfo,
+  logout,
+  newPassword,
+  signIn,
+} from "./auth.actions";
 import initialState, { UserInterface } from "./auth.state";
 
 const AuthSlice: Slice<UserInterface> = createSlice({
@@ -19,8 +25,9 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {
-          msg: payload.msg, status: payload.status
-        }
+          msg: payload.msg,
+          status: payload.status,
+        };
         state.authState = false;
       } else {
         state.User = payload;
@@ -37,8 +44,9 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {
-          msg: payload.msg, status: payload.status
-        }
+          msg: payload.msg,
+          status: payload.status,
+        };
       } else {
         state.User = payload;
         state.authState = true;
@@ -80,8 +88,9 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {
-          msg: payload.msg, status: payload.status
-        }
+          msg: payload.msg,
+          status: payload.status,
+        };
       } else {
         state.User = payload;
         state.authState = payload.status === 200 ? true : false;

@@ -84,6 +84,15 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         );
       state.selectedProject.tasks = tasks;
     },
+    onSetSelectedProject: (state, action) => {
+      state.selectedProject.loading = true;
+      let id = action.payload;
+      let tasks = [...state.allTasks].filter((item) => item.projectId === id);
+      let project = state.projects.find((item) => item._id === id);
+      state.selectedProject.project = project;
+      state.selectedProject.tasks = tasks;
+      state.selectedProject.loading = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createProject.rejected, (state) => {
@@ -203,6 +212,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(deleteProject.fulfilled, (state, action) => {
       state.loading = false;
+      state.projects = [...state.projects].filter(
+        (item) => item._id !== state.deleteProject
+      );
       state.deleteProject = "";
     });
     builder.addCase(deleteProject.pending, (state, action) => {
