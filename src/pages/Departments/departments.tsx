@@ -18,9 +18,6 @@ const Departments: React.FC<IProps> = () => {
   let departmentData = useAppSelector(selectAllDepartments);
   let teamsData = useAppSelector(selectAllMembers);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllDepartments(null));
-  }, [teamsData, dispatch]);
 
   useEffect(() => {
     setDepartment(departmentData);

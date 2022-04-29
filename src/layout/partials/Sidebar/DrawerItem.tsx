@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 
-const DrawerItem: React.FC = (props: any) => {
+const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
   return (
     <ListItemButton
       key={props.key}
@@ -28,7 +28,7 @@ const DrawerItem: React.FC = (props: any) => {
           justifyContent: "center",
         }}
       >
-        <img src={props.src} />
+        {Icon && <Icon />}
       </ListItemIcon>
       <ListItemText
         sx={{

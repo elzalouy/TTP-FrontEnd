@@ -92,11 +92,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     fontSize={props.textSize ? 12 : 14}
                     color="#696974"
                   >
-                    {
-                      props.projectManagers?.find(
-                        (item) => item._id === project?.projectManager?._id
-                      )?.name
-                    }
+                    {project.projectManager?.name}
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.tcellCenter} align={props.align}>

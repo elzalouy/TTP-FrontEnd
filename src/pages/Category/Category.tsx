@@ -17,14 +17,6 @@ const Category: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState<string>("");
   const categoriesData = useAppSelector(selectAllCategories);
-  useEffect(() => {
-    dispatch(getAllCategories(null));
-  }, []);
-
-  const [categoryData, setCategoryData] = useState<any[]>([]);
-  useEffect(() => {
-    setCategoryData(categoriesData);
-  }, [categoriesData]);
 
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
@@ -36,7 +28,6 @@ const Category: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log({ value: e.target.value });
     setSearch(e.target.value);
     dispatch(categoriesActions.onSearch(e.target.value));
   };
@@ -52,10 +43,6 @@ const Category: React.FC<Props> = () => {
   };
 
   return (
-    // <Box>
-    //   {isOpen ? (
-    //     <CreateCategoryPopUp handleClose={togglePopup} />
-    //   ) : (
     <Box className="category-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
@@ -68,7 +55,6 @@ const Category: React.FC<Props> = () => {
           Category
         </Typography>
       </Box>
-
       <Grid
         container
         sx={{
@@ -83,7 +69,7 @@ const Category: React.FC<Props> = () => {
         }}
         style={{ marginTop: 40 }}
       >
-        {categoryData?.map((category: any, index: any) => (
+        {categoriesData?.map((category: any, index: any) => (
           <Grid sm={12} xs={12} md={6} lg={4} padding={1}>
             <CategoryCard
               key={index}

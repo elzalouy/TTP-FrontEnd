@@ -19,7 +19,11 @@ import { getAllClients } from "./redux/Clients";
 import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
-import { getAllProjects } from "./redux/Projects";
+import {
+  getAllProjects,
+  getAllTasks,
+  selectAllProjects,
+} from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
 import { getAllMembers } from "./redux/techMember";
 import OverView from "./pages/UserOverview/OverView";
@@ -35,8 +39,6 @@ import { socket } from "./config/socket/actions";
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const auth = useAppSelector(selectIsAuth);
-  // const clients = useAppSelector(clientsDataSelector);
-
   useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
@@ -44,21 +46,22 @@ const App: React.FC = (props) => {
     dispatch(getPMs(null));
     dispatch(getAllMembers(null));
     dispatch(getAllProjects(null));
+    dispatch(getAllTasks(null));
   }, [dispatch]);
-
   useEffect(() => {
-    if(auth._id !== ""){
-      localStorage.setItem("token",auth._id)
+    if (auth._id !== "") {
+      localStorage.setItem("token", auth._id);
     }
   }, [auth]);
 
-  // Socket connecting changing
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if(token){
-      dispatch(getUserInfo({
-        id:token
-      }));
+    if (token) {
+      dispatch(
+        getUserInfo({
+          id: token,
+        })
+      );
     }
     socket.on("connect", () => {
       //todo check user auth

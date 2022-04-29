@@ -36,25 +36,71 @@ const DragField: React.FC = (props: any) => {
   const departments = useAppSelector(selectAllDepartments);
   const [columns, setColumns] = useState({
     [uuidv4()]: {
-      name: "",
-      items: [],
-      header: "",
-      body: "",
-      border: "",
+      name: "In Progress",
+      items: inProgressTasks,
+      header: "in-progress-header",
+      body: "in-progress-task",
+      border: "in-progress-border",
       NewTask: <CreateNewTask />,
-      footer: "",
+      value: "inProgress",
+      footer: "task-card-footer-inprogress",
+    },
+    [uuidv4()]: {
+      name: "Review",
+      items: reviewTasks,
+      header: "done-header",
+      body: "done-task",
+      border: "done-border",
+      value: "review",
+      footer: "task-card-footer-review",
+    },
+    [uuidv4()]: {
+      name: "Shared",
+      items: sharedTasks,
+      header: "canceled-header",
+      body: "canceled-task",
+      border: "canceled-border",
+      value: "shared",
+      footer: "task-card-footer-shared",
+    },
+    [uuidv4()]: {
+      name: "Done",
+      items: doneTasks,
+      header: "done-header",
+      body: "done-task",
+      border: "done-border",
+      value: "done",
+      footer: "task-card-footer-done",
+    },
+    [uuidv4()]: {
+      name: "Not clear",
+      items: notClearTasks,
+      header: "not-clear-header",
+      body: "not-clear-task",
+      border: "not-clear-border",
+      value: "not clear",
+      footer: "task-card-footer-notclear",
+    },
+    [uuidv4()]: {
+      name: "Canceled",
+      items: cancledTasks,
+      header: "canceled-header",
+      body: "canceled-task",
+      border: "canceled-border",
+      value: "cancled",
+      footer: "task-card-footer-cancled",
     },
   });
 
-  useEffect(() => {
-    dispatch(getProject(`?_id=${props.match.params.id}`));
-    dispatch(
-      getTasks({
-        projectId: props.match.params.id,
-        url: `?projectId=${props.match.params.id}`,
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getProject(`?_id=${props.match.params.id}`));
+  //   dispatch(
+  //     getTasks({
+  //       projectId: props.match.params.id,
+  //       url: `?projectId=${props.match.params.id}`,
+  //     })
+  //   );
+  // }, []);
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
@@ -200,7 +246,7 @@ const DragField: React.FC = (props: any) => {
                         return (
                           <Box className={column.border}>
                             <TaskCard
-                              project={selectedProject.project}
+                              project={selectedProject?.project}
                               key={item?._id}
                               item={item}
                               index={index}

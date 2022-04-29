@@ -30,14 +30,14 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const { control, register, reset, watch } = useForm();
   useEffect(() => {
-    dispatch(getProject(`?_id=${props.match.params.id}`));
-    dispatch(
-      getTasks({
-        url: `?projectId=${props?.match?.params.id}`,
-        projectId: props?.match?.params.id,
-      })
-    );
-    dispatch(getPMs(null));
+    // dispatch(getProject(`?_id=${props.match.params.id}`));
+    // dispatch(
+    //   getTasks({
+    //     url: `?projectId=${props?.match?.params.id}`,
+    //     projectId: props?.match?.params.id,
+    //   })
+    // );
+    dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, []);
   const onHandleSort = (e: any) => {
     let data = watch();

@@ -11,7 +11,7 @@ import "./taskCard.css";
 interface DataTypes {
   index: number;
   item: Task;
-  project: Project | null;
+  project: Project | null | undefined;
   footerStyle: string;
 }
 

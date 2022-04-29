@@ -13,20 +13,23 @@ import {
   AppBarProps,
 } from "@mui/material";
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Logo } from "../../../coreUI/usable-elements/images";
-import {
-  ChevronLeft as ChevronLeftIcon,
-  Menu as MenuIcon,
-  Logout as LogoutIcon,
-  PersonOffOutlined as PersonIcon,
-} from "@mui/icons-material";
+import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/Auth";
 import { useHistory } from "react-router";
+import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
+import Overviewicon from "../../../assets/icons/Overview";
+import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
+import PersonIcon from "../../../assets/icons/Person";
+import ClientIcon from "../../../assets/icons/ClientIcon";
+import TaskIcon from "../../../assets/icons/TaskIcon";
+import CategoryIcon from "../../../assets/icons/CategoryIcon";
+import NotificationIcon from "../../../assets/icons/Notification";
 interface BarProps extends AppBarProps {
   open?: boolean;
 }
@@ -92,7 +95,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="0"
               onClick={() => props.history.push("/Overview")}
               path={"/Overview"}
-              src={IMAGES.Overviewicon}
+              Icon={() => <Overviewicon />}
               text="Overview"
             />
             <DrawerItem
@@ -102,7 +105,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="1"
               onClick={() => props.history.push("/projects")}
               path={"/projects"}
-              src={IMAGES.projectsicon}
+              Icon={() => <ProjectsIcon />}
               text="Projects"
             />
             <DrawerItem
@@ -112,7 +115,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="2"
               onClick={() => props.history.push("/Departments")}
               path={"/Departments"}
-              src={IMAGES.departments}
+              Icon={() => <DepartmentIcon />}
               text="Departments"
             />
             <DrawerItem
@@ -122,7 +125,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="7"
               onClick={() => props.history.push("/ProjectManagers")}
               path={"/ProjectManagers"}
-              src={IMAGES.person}
+              Icon={() => <PersonIcon />}
               text="Project Managers"
             />
             <DrawerItem
@@ -133,6 +136,7 @@ const AppDrawer: React.FC = (props: any) => {
               onClick={() => props.history.push("/Clients")}
               path={"/Clients"}
               src={IMAGES.clients}
+              Icon={() => <ClientIcon />}
               text="Clients"
             />
             <DrawerItem
@@ -143,6 +147,7 @@ const AppDrawer: React.FC = (props: any) => {
               onClick={() => props.history.push("/TasksList")}
               path={"/TasksList"}
               src={IMAGES.tasks}
+              Icon={() => <TaskIcon />}
               text="Tasks"
             />
             <DrawerItem
@@ -152,7 +157,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="5"
               onClick={() => props.history.push("/Categories")}
               path={"/Categories"}
-              src={IMAGES.categories}
+              Icon={() => <CategoryIcon />}
               text="Category"
             />
           </List>
@@ -177,6 +182,7 @@ const AppDrawer: React.FC = (props: any) => {
               onClick={() => props.history.push("/notifications")}
               path={"/notifications"}
               src={IMAGES.notification}
+              Icon={() => <NotificationIcon />}
               text="Notifications"
             />
           </List>
