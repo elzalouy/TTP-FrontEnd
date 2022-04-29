@@ -6,8 +6,11 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
   name: "PM",
   initialState: initialState,
   reducers: {
-    getPM: (state, { payload }) => {
-
+    getAllPM: (state) => {
+      let AllPMs = state.PMs.filter((pm)=>{
+        return pm.role === "PM";
+      });
+      state.PMs = AllPMs;
     },
     setId: (state, { payload }) => {
       state.current_ID = payload._id;

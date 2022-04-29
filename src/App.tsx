@@ -56,11 +56,11 @@ const App: React.FC = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isAuth && user._id) {
-      localStorage.setItem("token", user._id);
+    if (isAuth && user?._id) {
+      localStorage.setItem("token", user?._id);
     }
-    if(isAuth && user.user){
-      localStorage.setItem("token", user.user._id);
+    if(isAuth && user?.user){
+      localStorage.setItem("token", user?.user?._id);
     }
   }, [isAuth]);
 

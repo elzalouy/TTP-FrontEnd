@@ -12,10 +12,12 @@ import { useAppSelector } from "../../redux/hooks";
 import { getAllCategories } from "../../redux/Categories";
 import { selectAllCategories } from "../../redux/Categories/categories.selectores";
 import { categoriesActions } from "../../redux/Categories";
+import { selectRole } from "../../redux/Auth";
 type Props = {};
 const Category: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState<string>("");
+  const role = useAppSelector(selectRole);
   const categoriesData = useAppSelector(selectAllCategories);
   useEffect(() => {
     dispatch(getAllCategories(null));
@@ -97,16 +99,16 @@ const Category: React.FC<Props> = () => {
             />
           </Grid>
         ))}
-        <CreateNewCategory />
+       {role !== "PM"  && <CreateNewCategory />}
       </Grid>
       <CreateSubCategory
         display={display}
         handleSetDisplay={handleSetDisplay}
       />
-      <EditCategory
+      {role !== "PM" && <EditCategory
         handleSetEditCatDisplay={handleSetEditCatDisplay}
         editCatDisplay={editCatDisplay}
-      />
+      />}
     </Box>
   );
 };

@@ -26,6 +26,8 @@ import {
   toggleDeleteProjectManagerPopup,
   toggleEditProjectManagerPopup,
 } from "../../../redux/Ui";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectPassword } from "../../../redux/Auth";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -35,6 +37,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const [select, setSelected] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [selects, setAllSelected] = useState<string[]>([]);
+  const password = useAppSelector(selectPassword);
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -197,9 +200,9 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {name}
                       </Typography>
-                      <IconButton onClick={refreshUser}>
-                        <RefreshIcon />
-                      </IconButton>
+                     {/*  <IconButton onClick={refreshUser}>
+                        {password === "" && <RefreshIcon />}
+                      </IconButton> */}
                     </Stack>
                   </TableCell>
                   <TableCell
@@ -231,7 +234,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
                       <IconButton>
-                        <LockOpenIcon />
+                        {password === "" ? <LockOpenIcon /> : <LockIcon/>}
                       </IconButton>
                       <IconButton
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}

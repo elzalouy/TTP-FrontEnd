@@ -12,6 +12,7 @@ import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
 import { clientsActions } from "../../redux/Clients";
+import { selectRole } from "../../redux/Auth";
 
 type Props = {
   id: string;
@@ -43,6 +44,7 @@ const options: { id: string; value: string; text: string }[] = [
 const Clients: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [clients, setClients] = useState<Client[]>([]);
+  const role = useAppSelector(selectRole);
   const clientData = useAppSelector(clientsDataSelector);
   const [filter, setFilter] = useState<{
     sortDate: string;
@@ -121,7 +123,7 @@ const Clients: React.FC<Props> = () => {
               <ClientCard key={clientInfo._id} client={clientInfo} />
             </>
           ))}
-          <CreateNewClient />
+          {role !== "PM" && <CreateNewClient />}
         </Box>
       </Grid>
       {/* </Box> */}

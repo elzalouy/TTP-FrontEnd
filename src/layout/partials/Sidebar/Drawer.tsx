@@ -25,7 +25,7 @@ import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
-import { logout, selectUser } from "../../../redux/Auth";
+import { logout, selectImage, selectRole, selectUser } from "../../../redux/Auth";
 import { useHistory } from "react-router";
 import { useAppSelector } from "../../../redux/hooks";
 interface BarProps extends AppBarProps {
@@ -37,7 +37,8 @@ const AppDrawer: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const history = useHistory();
-  const userImage = user.user?.image === undefined ? user.image : user.user.image; 
+  const userImage = useAppSelector(selectImage); 
+  const role = useAppSelector(selectRole);
 
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -118,7 +119,7 @@ const AppDrawer: React.FC = (props: any) => {
               src={IMAGES.departments}
               text="Departments"
             />
-            <DrawerItem
+            {role !== "PM" && <DrawerItem
               {...props}
               select={props.select}
               open={props.open}
@@ -127,7 +128,7 @@ const AppDrawer: React.FC = (props: any) => {
               path={"/ProjectManagers"}
               src={IMAGES.person}
               text="Project Managers"
-            />
+            />}
             <DrawerItem
               {...props}
               select={props.select}

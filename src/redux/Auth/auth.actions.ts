@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { useHistory } from "react-router";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs"
 import { User } from "./auth.state";
@@ -26,10 +25,7 @@ export const getUserInfo = createAsyncThunk<any, any, any>(
       if (result.data) {
         return result.data;
       }
-      await api.signOut();
       localStorage.removeItem("token");
-      useHistory().replace("/")
-      return {}
     } catch (error) {
       rejectWithValue(error)
     }

@@ -7,6 +7,8 @@ import EditDepartment from "../../components/popups/EditDepartment";
 import { useDispatch } from "react-redux";
 import { departmentsActions } from "../../redux/Departments";
 import DeleteDepartment from "../../components/popups/DeleteDepartment";
+import { selectRole } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {
   backgroundColor: string;
@@ -21,6 +23,7 @@ const DepartmentCard: React.FC<Props> = ({
   const [Show, setShow] = useState("none");
   const [showDelete, setShowDelete] = useState("none");
   const dispatch = useDispatch();
+  const role = useAppSelector(selectRole);
   const handleSetShow = (value: string) => {
     setShow(value);
     dispatch(departmentsActions.selecteDepartment(department));
@@ -38,10 +41,10 @@ const DepartmentCard: React.FC<Props> = ({
       <div className="dp-card-header" style={{ color: fontColor }}>
         <h2>{department.name}</h2>
         <p>
-          <DepartmentDrop
+          {role !== "PM" && <DepartmentDrop
             handleSetShow={handleSetShow}
             handleSetShowDelete={handleSetShowDelete}
-          />
+          />}
         </p>
       </div>
       <div className="teams">

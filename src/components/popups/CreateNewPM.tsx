@@ -31,7 +31,8 @@ const AddNewPM: React.FC<Props> = () => {
         createPM({
           name: username,
           email: email,
-          role: "project manager",
+          role: "PM",
+          type:"user"
         })
       );
       setError(false);
