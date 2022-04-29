@@ -14,27 +14,32 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import { Logo } from "../../../coreUI/usable-elements/images";
 import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
   Logout as LogoutIcon,
   PersonOffOutlined as PersonIcon,
+  Close as Close
 } from "@mui/icons-material";
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
-import { logout, selectImage, selectRole, selectUser } from "../../../redux/Auth";
+import {
+  logout,
+  selectImage,
+  selectRole,
+  selectUser,
+} from "../../../redux/Auth";
 import { RouteComponentProps, useHistory } from "react-router";
 import { useAppSelector } from "../../../redux/hooks";
 
-const AppDrawer: React.FC = (props: any) => {
+const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const history = useHistory();
-  const userImage = useAppSelector(selectImage); 
+  const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
 
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -55,14 +60,14 @@ const AppDrawer: React.FC = (props: any) => {
       <Drawer
         sx={{
           overflow: "hidden",
-          position: "inherit",
-          display: { xs: "none", sm: "none", lg: "block", md: "block" },
-          width: props.open ? "16%" : `calc(2% + 1px)`,
+          position: "absolute",
+          display: { xs: "block", sm: "block", lg: "none", md: "none" },
+          width: props.open ? "16%" : "0%",
           flexShrink: 0,
           transition: " all 0.5s ease !important",
           marginRight: props.open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: props.open ? "16%" : "5%",
+            width: props.open ? "52%" : "0%",
             transition: "all 0.5s ease !important",
           },
         }}
@@ -76,13 +81,8 @@ const AppDrawer: React.FC = (props: any) => {
               cursor: "pointer",
             }}
           >
-            {props.open && <Logo {...props} />}
             <IconButton onClick={() => props.setOpen(!props.open)}>
-              {props?.open ? (
-                <MenuIcon htmlColor="#000000" />
-              ) : (
-                <MenuIcon htmlColor="#000000" />
-              )}
+                <Close htmlColor="#000000" />
             </IconButton>
           </DrawerHeader>
           <List>
@@ -116,16 +116,18 @@ const AppDrawer: React.FC = (props: any) => {
               src={IMAGES.departments}
               text="Departments"
             />
-            {role !== "PM" && <DrawerItem
-              {...props}
-              select={props.select}
-              open={props.open}
-              key="7"
-              onClick={() => history.push("/ProjectManagers")}
-              path={"/ProjectManagers"}
-              src={IMAGES.person}
-              text="Project Managers"
-            />}
+            {role !== "PM" && (
+              <DrawerItem
+                {...props}
+                select={props.select}
+                open={props.open}
+                key="7"
+                onClick={() => history.push("/ProjectManagers")}
+                path={"/ProjectManagers"}
+                src={IMAGES.person}
+                text="Project Managers"
+              />
+            )}
             <DrawerItem
               {...props}
               select={props.select}
@@ -198,7 +200,9 @@ const AppDrawer: React.FC = (props: any) => {
                 justifyContent: props.open ? "space-between" : "center",
               }}
             >
-              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>AM</Avatar>
+              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
+                AM
+              </Avatar>
             </ListItemIcon>
             <ListItemText
               sx={{
@@ -208,7 +212,11 @@ const AppDrawer: React.FC = (props: any) => {
                 pl: 1,
               }}
             >
-              <Box display={"inline-flex"} width={"100%"} justifyContent={"space-around"}>
+              <Box
+                display={"inline-flex"}
+                width={"100%"}
+                justifyContent={"space-around"}
+              >
                 <Box paddingTop={0.5}>
                   <Typography
                     fontFamily={"Cairo"}
@@ -219,13 +227,16 @@ const AppDrawer: React.FC = (props: any) => {
                   >
                     {user.user?.name === undefined ? user.name : user.user.name}
                   </Typography>
-                  <Typography fontFamily={"Cairo"} textTransform={"capitalize"} variant="h6" color="#808191">
+                  <Typography
+                    fontFamily={"Cairo"}
+                    textTransform={"capitalize"}
+                    variant="h6"
+                    color="#808191"
+                  >
                     {user.user?.role === undefined ? user.role : user.user.role}
                   </Typography>
                 </Box>
-                <Box
-                  sx={{ cursor: "pointer" }}
-                >
+                <Box sx={{ cursor: "pointer" }}>
                   <IconButton onClick={handleLogout}>
                     <LogoutIcon fontSize={"small"} />
                   </IconButton>
@@ -239,4 +250,4 @@ const AppDrawer: React.FC = (props: any) => {
   );
 };
 
-export default AppDrawer;
+export default ResponsiveDrawer;
