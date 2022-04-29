@@ -1,33 +1,37 @@
 import { Avatar, Checkbox, IconButton, Stack, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import {useEffect,useState} from "react";
-import IMAGES from "../../assets/img/index";
-import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewPM from "../../components/popups/CreateNewPM";
 import "./projectManagers.css";
 import ProjectManagersTable from "../../coreUI/usable-component/Tables/PMtable";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import { ProjectManager, selectPMs } from "../../redux/PM";
+import { PMsActions, ProjectManager, selectPMs } from "../../redux/PM";
+import { selectRole } from "../../redux/Auth";
+import pmSlice from "../../redux/PM/pm.slice";
+import { Redirect } from "react-router";
 
 type Props = {};
 
 const ProjectManagers: React.FC<Props> = () => {
 
   const [cellsData , setCellsData] = useState<ProjectManager[]>([]);
-  const dispatch = useDispatch(); 
   const productManagerData = useAppSelector(selectPMs);
+  const dispatch = useDispatch();
+  const role = useAppSelector(selectRole);
+
+  useEffect(() => {
+   dispatch(PMsActions.getAllPM(null));
+  }, []);
 
   useEffect(()=>{
     setCellsData(productManagerData);
   },[productManagerData]);
+
+  if(role === "PM"){
+    return <Redirect to={"/Overview"}/>
+  }
 
   return (
     <Box sx={{ backgroundColor: "#FAFAFB", width: "100%" }}>

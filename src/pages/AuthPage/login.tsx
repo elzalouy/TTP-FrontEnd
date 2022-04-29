@@ -44,7 +44,7 @@ const Login: React.FC<Props> = ({ history }) => {
     message: "",
   });
   const watch = useAppSelector(selectAuth);
-  const auth = useAppSelector(selectIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
 
   useEffect(() => {
@@ -54,13 +54,12 @@ const Login: React.FC<Props> = ({ history }) => {
         status: res.status,
       });
     }
-    if (auth._id !== "") {
+    if (isAuth) {
       history.replace("/Overview");
     }
   }, [watch]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
     dispatch(
       signIn({
         email: data.email,
@@ -69,7 +68,7 @@ const Login: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if (auth?._id?.length !== 0) {
+  if (isAuth) {
     return <Redirect to={"/Overview"} />;
   }
 
@@ -138,6 +137,7 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...field}
                 {...register("email", { required: true })}
                 type="email"
+                autoComplete="false"
                 className="f-inputs"
                 placeholder="Example@somemail.com"
                 onChange={() =>

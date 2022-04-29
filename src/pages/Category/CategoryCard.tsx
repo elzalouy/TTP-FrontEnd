@@ -9,6 +9,8 @@ import { categoriesActions } from "../../redux/Categories";
 import { useDispatch } from "react-redux";
 import EditIcon from "../../assets/icons/EditIcon";
 import { styled } from "@mui/material/styles";
+import { selectRole } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {};
 interface IProps {
@@ -36,6 +38,7 @@ const CategoryCard: React.FC<IProps> = ({
   const EditBtn = styled(Button)({
     minWidth: "40px",
   });
+  const role = useAppSelector(selectRole);
   return (
     <Box
       className="category-card"
@@ -153,7 +156,7 @@ const CategoryCard: React.FC<IProps> = ({
             </Button>
           </Grid>
           <Grid xs={2}>
-            <EditBtn
+           {role !== "PM" && <EditBtn
               sx={{
                 borderRadius: 1,
                 border: 1,
@@ -165,7 +168,7 @@ const CategoryCard: React.FC<IProps> = ({
               onClick={() => handleSetEditCatDisplay("flex")}
             >
               <EditIcon width={20} height={20} color={fontColor} />
-            </EditBtn>
+            </EditBtn>}
           </Grid>
         </Grid>
       </Box>

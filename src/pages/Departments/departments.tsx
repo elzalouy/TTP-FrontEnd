@@ -9,6 +9,7 @@ import { Department, getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
+import { selectRole } from "../../redux/Auth";
 
 interface IProps {
   alternatingColor: string[][];
@@ -16,6 +17,7 @@ interface IProps {
 const Departments: React.FC<IProps> = () => {
   const [department, setDepartment] = useState<null | Department[]>(null);
   let departmentData = useAppSelector(selectAllDepartments);
+  const role = useAppSelector(selectRole);
   let teamsData = useAppSelector(selectAllMembers);
   const dispatch = useDispatch();
 
@@ -44,7 +46,7 @@ const Departments: React.FC<IProps> = () => {
         </Typography>
       </Box>
       <div className="department-tools">
-        <CreateNewTeam />
+       {role !== "PM" && <CreateNewTeam />}
       </div>
       <div className="all-departments">
         {department?.map((dep: Department) => (
@@ -56,7 +58,7 @@ const Departments: React.FC<IProps> = () => {
           />
         ))}
 
-        <CreateNewDepartment />
+        {role !== "PM" && <CreateNewDepartment />}
       </div>
     </Box>
   );

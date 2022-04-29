@@ -23,6 +23,7 @@ import { Grid, Typography } from "@mui/material";
 import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
+import { selectRole } from "../../redux/Auth";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -39,6 +40,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
+  const role = useAppSelector(selectRole);
   const { register, watch, control, setValue } = useForm();
   const onHandleChange = (e: any) => {
     let data = watch();
@@ -50,6 +52,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     };
     dispatch(filterProjects(filter));
   };
+  console.log(role);
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjects(data.deadline));
@@ -231,7 +234,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
-        <CreateNewProject />
+
+      {role !== "PM" && <CreateNewProject />}
 
         {loading === false ? (
           <>

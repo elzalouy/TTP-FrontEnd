@@ -5,6 +5,8 @@ import IMAGES from "../../assets/img";
 import { Client } from "./clients";
 import moment from "moment";
 import ClientsPopover from "../../coreUI/usable-component/Popovers/ClientsPopover";
+import { selectRole } from "../../redux/Auth";
+import { useAppSelector } from "../../redux/hooks";
 interface IProps {
   client: Client;
 }
@@ -17,6 +19,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
     inProgressProject,
     inProgressTask,
   } = client;
+  const role = useAppSelector(selectRole);
   return (
     <Box>
       <Box paddingX="18px" paddingTop="18px" className="client-card">
@@ -53,7 +56,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             </Box>
           </Stack>
           <Typography>
-            <ClientsPopover client={client} />
+            {role !=="PM" && <ClientsPopover client={client} />}
           </Typography>
         </Box>
         <Grid
