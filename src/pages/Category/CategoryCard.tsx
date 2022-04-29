@@ -121,7 +121,7 @@ const CategoryCard: React.FC<IProps> = ({
           container
         >
           <Grid xs={10} paddingRight={1.5}>
-            <Button
+         {(role !== "PM" &&  <Button
               sx={{
                 color: fontColor,
                 mb: 8.5,
@@ -153,7 +153,7 @@ const CategoryCard: React.FC<IProps> = ({
               <Typography fontSize={14} fontWeight={"bold"}>
                 New Sub Category
               </Typography>
-            </Button>
+            </Button>)}
           </Grid>
           <Grid xs={2}>
            {role !== "PM" && <EditBtn
