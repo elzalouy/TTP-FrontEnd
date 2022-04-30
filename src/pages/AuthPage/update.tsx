@@ -6,7 +6,13 @@ import { useDispatch } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { newPassword, selectAuth, selectIsAuth, selectResponse, selectUser } from "../../redux/Auth";
+import {
+  newPassword,
+  selectAuth,
+  selectIsAuth,
+  selectResponse,
+  selectUser,
+} from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
@@ -17,6 +23,7 @@ interface Props {
 
 interface IFormInputs {
   password: string;
+  confirmPassword: string;
 }
 
 interface IParam {
@@ -36,6 +43,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     formState: { errors },
   } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [failed, setFailed] = useState<IFailed>({
     status: false,
     message: "",
@@ -46,15 +54,20 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
   const { token } = useParams<IParam>();
-
+  
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data , token);
-    dispatch(
-      newPassword({
-        token: `Bearer ${token}`,
-        password: data.password,
-      })
-    );
+    let pattern = new RegExp(data.password);
+    if (pattern.test(data.confirmPassword)) {
+      setPasswordError(false);
+      dispatch(
+        newPassword({
+          token: `Bearer ${token}`,
+          password: data.password,
+        })
+      );
+    }else {
+      setPasswordError(true);
+    }
   };
 
   useEffect(() => {
@@ -68,12 +81,12 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       });
     } else {
       setVisible(true);
-      setTimeout(()=> history.push("/"),800);
+      setTimeout(() => history.push("/"), 800);
     }
   }, [auth]);
 
-  if(isAuth){
-    return <Redirect to={"/Overview"}/>
+  if (isAuth) {
+    return <Redirect to={"/Overview"} />;
   }
 
   return (
@@ -145,20 +158,77 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 render={({ field }) => (
                   <input
                     {...field}
-                    {...register("password", { required: true , minLength : { value : 8 , message : "Your password is less than 8 characters"} })}
+                    {...register("password", {
+                      required: true,
+                      minLength: {
+                        value: 8,
+                        message: "Your password is less than 8 characters",
+                      },
+                    })}
                     type="password"
                     className="f-inputs"
                     placeholder="Enter your new password"
-                    onClick={()=>setFailed({
-                      message:"",status:false
-                    })}
+                    onClick={() =>
+                      setFailed({
+                        message: "",
+                        status: false,
+                      })
+                    }
                   />
                 )}
               />
               {errors.password?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
               )}
-              {errors.password?.message && <p className="error-text">{errors.password?.message}</p>}
+              {errors.password?.message && (
+                <p className="error-text">{errors.password?.message}</p>
+              )}
+              <Typography
+                variant={"h5"}
+                fontWeight={"700"}
+                paddingTop={3.5}
+                fontFamily={"Cairo"}
+                color="#000000"
+              >
+                Password
+              </Typography>
+              <Controller
+                name="confirmPassword"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    {...register("confirmPassword", {
+                      required: true,
+                      minLength: {
+                        value: 8,
+                        message: "Your password is less than 8 characters",
+                      },
+                    })}
+                    type="password"
+                    className="f-inputs"
+                    placeholder="Enter your new password"
+                    onClick={() =>
+                      setFailed({
+                        message: "",
+                        status: false,
+                      })
+                    }
+                  />
+                )}
+              />
+              {errors.confirmPassword?.type === "required" && (
+                <p className="error-text">Please enter your new password</p>
+              )}
+              {errors.confirmPassword?.message && (
+                <p className="error-text">{errors.confirmPassword?.message}</p>
+              )}
+              {passwordError && (
+                <p className="error-text">
+                  Your passwords do not match , Please Re-enter your new
+                  password
+                </p>
+              )}
               <Button
                 sx={{
                   width: "100%",
