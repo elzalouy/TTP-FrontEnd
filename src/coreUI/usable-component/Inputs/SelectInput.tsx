@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,14 +8,11 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { popOverStyle, SelectInputStyle } from "../styles";
+import { popOverStyle } from "../styles";
 import "../style.css";
-import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
-import IMAGES from "../../../assets/img";
-import {
-  ArrowDropDown as ArrowDownIcon,
-  ArrowDropUp as ArrowUpIcon,
-} from "@mui/icons-material";
+import { ArrowDropUp } from "@mui/icons-material";
+import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";
+import _ from "lodash";
 interface Props {
   handleChange: (e: any) => void;
   options?: {
@@ -40,6 +37,16 @@ const SelectInput: React.FC<Props> = ({
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const [Label, setLabel] = useState(label);
+  const [Value, setValue] = useState(selectText);
+
+  useEffect(() => {
+    if (label && label.length > 10)
+      setValue(_.truncate(selectText, { length: 5, separator: " " }));
+    else if (label && label.length <= 9 && selectText && selectText.length > 10)
+      setValue(_.truncate(selectText, { length: 18, separator: " " }));
+    else setValue(selectText);
+  }, [selectText, selectValue]);
   const open = Boolean(anchorEl);
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
@@ -63,33 +70,43 @@ const SelectInput: React.FC<Props> = ({
       container
     >
       <Grid
-        width="inherit"
+        onClick={handleOpen}
         item
         justifyContent={"flex-start"}
         alignItems="center"
-        paddingX={1}
+        paddingLeft={1}
+        display="inline-flex"
+        xs={10}
       >
         <Typography
+          maxWidth={140}
+          overflow={"hidden"}
           color="#696974"
-          fontSize={12}
-          fontWeight={"600"}
-          width="100%"
+          fontSize={14}
+          fontWeight={"400"}
+          paddingRight={Label && Label?.length <= 10 ? 1 : 0}
         >
-          {label}
+          {Label}
+        </Typography>
+        <Typography
+          lineHeight={1}
+          textOverflow="hidden"
+          overflow={"hidden"}
+          variant="h5"
+          height={40}
+          fontSize={14}
+          fontWeight={"700"}
+          color="#44444F"
+          sx={{
+            paddingTop: 1.5,
+            overflow: "hidden",
+          }}
+        >
+          {Value ? Value : "all"}
         </Typography>
       </Grid>
-      <Grid width="inherit" item>
+      <Grid item>
         <Box display={"inline-flex"} onClick={handleOpen}>
-          <Typography
-            variant="h5"
-            height={40}
-            fontSize={13}
-            fontWeight={"500"}
-            color="#44444F"
-            sx={{ paddingTop: 1.3, paddingRight: 1 }}
-          >
-            {selectText ? selectText : "Select"}
-          </Typography>
           <Box
             height={40}
             sx={{

@@ -1,22 +1,10 @@
-import { Box, Grid, Typography, Stack } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import {
-  AssignmentOutlined as AssignmentIcon,
-  Done as DoneIcon,
-  Circle as DotIcon,
-  DashboardOutlined as DashboardIcon,
-} from "@mui/icons-material";
-import UserName from "./Name";
 import "./overview.css";
+import { Box, Grid, Typography } from "@mui/material";
+import { FC, useState } from "react";
+import UserName from "./Name";
 import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
 import UserTasks from "./UserTasks";
-import { getAllClients } from "../../redux/Clients";
-import { getPMs } from "../../redux/PM";
-import { getAllDepartments } from "../../redux/Departments";
-import { getAllCategories } from "../../redux/Categories";
-import { getAllProjects, getAllTasks } from "../../redux/Projects";
-import { getAllMembers } from "../../redux/techMember";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
@@ -28,8 +16,7 @@ interface Props {
   match: RouteComponentProps["match"];
 }
 const OverView: FC<Props> = (props) => {
-  const dispatch = useDispatch();
-  const [user, setUser] = useState("operation manager");
+  const [user, setUser] = useState("project manager");
   return (
     <>
       <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
@@ -130,7 +117,7 @@ const OverView: FC<Props> = (props) => {
                     />
                     <UserStatus
                       user={user}
-                      IconBgColor="#ECFDF1"
+                      IconBgColor="#EFF1FF"
                       Icon={() => <img src={IMAGES.overViewRevision} alt="3" />}
                       pt={1.5}
                       title="Revision Tasks"

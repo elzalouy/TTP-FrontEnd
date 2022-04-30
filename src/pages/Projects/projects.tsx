@@ -37,8 +37,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
-  const [expanded, setExpanded] = useState<boolean>(false);
-  const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
+  const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
   const { register, watch, control, setValue } = useForm();
@@ -52,7 +52,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     };
     dispatch(filterProjects(filter));
   };
-  console.log(role);
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjects(data.deadline));
@@ -76,7 +75,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid marginX={1} item>
+        <Grid marginX={1} item marginY={1}>
           <Box
             textAlign={"center"}
             sx={{ bgcolor: "white", borderRadius: 4 }}
@@ -87,7 +86,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             <img src={IMAGES.filtericon} alt="FILTER" />
           </Box>
         </Grid>
-        <Grid marginX={1} item>
+        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="deadline"
             control={control}
@@ -110,7 +109,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={1} item>
+        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="projectManager"
             control={control}
@@ -137,7 +136,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={1} item>
+        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="clientId"
             control={control}
@@ -169,14 +168,14 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid marginX={1} item>
+        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="projectStatus"
             control={control}
             render={(props) => (
               <>
                 <SelectInput
-                  label={"Status"}
+                  label={"Status: "}
                   {...props}
                   options={[
                     { id: "all", value: "", text: "All" },
@@ -209,7 +208,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid xs={2.5} marginX={1} item>
+        <Grid xs={12} marginX={1} marginY={1} sm={12} md={2.5} lg={2.5} item>
           <Controller
             name="name"
             control={control}
@@ -234,8 +233,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
-
-      {role !== "PM" && <CreateNewProject />}
+        {role !== "PM" && <CreateNewProject />}
 
         {loading === false ? (
           <>
