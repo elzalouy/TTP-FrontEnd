@@ -21,7 +21,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
-  console.log(PMs);
   React.useEffect(() => {
     dispatch(getPMs(null));
     dispatch(getAllClients(null));

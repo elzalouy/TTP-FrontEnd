@@ -16,18 +16,23 @@ const NotificationContainer = (props: Props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllNotifi("62662912a86a7d5f90a1ff99"));
-    dispatch(updateNotifi({id:"62662912a86a7d5f90a1ff99",role:"Operation manager"}))
+    dispatch(
+      updateNotifi({
+        id: "62662912a86a7d5f90a1ff99",
+        role: "Operation manager",
+      })
+    );
   }, []);
 
   // watch notification update
   useEffect(() => {
-    socket.on("notification update",(data:any) => {
-      dispatch(notifiAction.updateCounter(data))
-    })
+    socket.on("notification update", (data: any) => {
+      dispatch(notifiAction.updateCounter(data));
+    });
     return () => {
-      socket.off("notification update")
-    }
-  })
+      socket.off("notification update");
+    };
+  });
 
   const notifiData = useAppSelector(notifiDataSelector);
   console.log({ notifiData });
