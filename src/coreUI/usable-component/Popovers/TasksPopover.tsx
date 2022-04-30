@@ -5,16 +5,9 @@ import { popOverStyle } from "../styles";
 import IMAGES from "../../../assets/img";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
-import {
-  openDeleteProjectPopup,
-  openEditProjectPopup,
-} from "../../../redux/Ui";
-import { ProjectsActions } from "../../../redux/Projects";
-interface Props {
-  id: string;
-  history: RouteComponentProps["history"];
-}
-const ProjectPopover: React.FC<Props> = (props) => {
+
+interface Props {}
+const TasksPopover: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -27,16 +20,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showDeleteProjectPopup = () => {
-    dispatch(ProjectsActions.onSetDeleteProjectId(props.id));
-    dispatch(openDeleteProjectPopup("flex"));
-    handleClose();
-  };
-  const showEditProjectPopup = () => {
-    dispatch(ProjectsActions.onSetEditProjectId(props.id));
-    dispatch(openEditProjectPopup("flex"));
-    handleClose();
-  };
+
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
@@ -61,28 +45,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
       >
         <Box display={"grid"} padding={1}>
           <Button
-            onClick={() => props.history.push(`/TasksBoard/${props.id}`)}
             variant="text"
-            sx={{
-              width: 180,
-              justifyContent: "flex-start",
-              textTransform: "none",
-              fontFamily: "Cairo",
-              color: "#696974",
-              fontWeight: "700",
-              fontSize: 13,
-            }}
-          >
-            <img
-              src={IMAGES.projectsicon}
-              width={22}
-              style={{ marginRight: 6 }}
-            ></img>
-            Open Tasks
-          </Button>
-          <Button
-            variant="text"
-            onClick={showEditProjectPopup}
             sx={{
               width: 180,
               justifyContent: "flex-start",
@@ -94,10 +57,9 @@ const ProjectPopover: React.FC<Props> = (props) => {
             }}
           >
             <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
-            Edit Project
+            Edit Task
           </Button>
           <Button
-            onClick={showDeleteProjectPopup}
             variant="text"
             sx={{
               width: 180,
@@ -114,11 +76,11 @@ const ProjectPopover: React.FC<Props> = (props) => {
               width={18}
               style={{ marginRight: 10 }}
             ></img>
-            Delete
+            Delete Task
           </Button>
         </Box>
       </Popover>
     </div>
   );
 };
-export default ProjectPopover;
+export default TasksPopover;

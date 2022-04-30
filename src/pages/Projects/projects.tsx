@@ -37,8 +37,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
-  const [expanded, setExpanded] = useState<boolean>(false);
-  const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
+  const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
   const { register, watch, control, setValue } = useForm();

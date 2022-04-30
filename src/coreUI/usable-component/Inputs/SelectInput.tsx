@@ -41,7 +41,6 @@ const SelectInput: React.FC<Props> = ({
   const [Value, setValue] = useState(selectText);
 
   useEffect(() => {
-    console.log("text", selectText, "value", selectValue, "label", label);
     if (label && label.length > 10)
       setValue(_.truncate(selectText, { length: 5, separator: " " }));
     else if (label && label.length <= 9 && selectText && selectText.length > 10)
