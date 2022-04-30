@@ -16,6 +16,8 @@ import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
 import IMAGES from "../../../assets/img";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectRole } from "../../../redux/Auth";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -32,6 +34,8 @@ interface ProjectsTableProps {
 
 const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
+  const role = useAppSelector(selectRole);
+
   return (
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
@@ -157,7 +161,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.tcellRight} align={props.align}>
-                  <ProjectPopover id={project?._id} {...props} />
+                 {role !== "PM" && <ProjectPopover id={project?._id} {...props} />}
                 </TableCell>
               </TableRow>
             );

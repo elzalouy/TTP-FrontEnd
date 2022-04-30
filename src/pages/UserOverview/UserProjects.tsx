@@ -35,6 +35,7 @@ const UserProjects: React.FC<Props> = (props) => {
       );
     setCloseProjects(filtered);
   }, [all]);
+  
   return (
     <TableBox
       title={"Projects Close To Deadline"}

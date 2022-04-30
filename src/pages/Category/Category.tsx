@@ -87,10 +87,10 @@ const Category: React.FC<Props> = () => {
         ))}
        {role !== "PM"  && <CreateNewCategory />}
       </Grid>
-      <CreateSubCategory
+     {role !== "PM" && <CreateSubCategory
         display={display}
         handleSetDisplay={handleSetDisplay}
-      />
+      />}
       {role !== "PM" && <EditCategory
         handleSetEditCatDisplay={handleSetEditCatDisplay}
         editCatDisplay={editCatDisplay}
