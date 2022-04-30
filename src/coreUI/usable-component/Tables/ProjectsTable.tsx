@@ -161,7 +161,9 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.tcellRight} align={props.align}>
-                 {role !== "PM" && <ProjectPopover id={project?._id} {...props} />}
+                  {role !== "PM" && (
+                    <ProjectPopover id={project?._id} {...props} />
+                  )}
                 </TableCell>
               </TableRow>
             );
