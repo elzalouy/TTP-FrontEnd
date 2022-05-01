@@ -17,19 +17,11 @@ const AddNewPM: React.FC<Props> = () => {
   const [validationError, setValidationError] = useState<boolean>(false);
   const dispatch = useDispatch();
   const PMs = useAppSelector(selectPMs);
-  const pattern = new RegExp("/^w+@[a-zA-Z_]+?.[a-zA-Z]{2,3}$/");
+  const pattern = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
-  const isEmailAddress = (email: string) => {
-    let validation = pattern.test(email);
-    if (validation) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const createNewUser = () => {
-    let validate = isEmailAddress(email);
+    let validate = pattern.test(email);
     if (!validate) {
       setEmailFormat(true);
     } else {
@@ -82,6 +74,7 @@ const AddNewPM: React.FC<Props> = () => {
               setError(false);
               setUsername("");
               setEmail("");
+              setEmailFormat(false);
             }}
           />
         </div>

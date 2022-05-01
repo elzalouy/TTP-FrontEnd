@@ -154,7 +154,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
 
           <TableBody>
             {cellsData.map((cellData) => {
-              const { _id, name, email } = cellData;
+              const { _id, name, email,password } = cellData;
 
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -234,7 +234,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
                       <IconButton>
-                        {password === "" ? <LockOpenIcon /> : <LockIcon/>}
+                        {!password ? <LockOpenIcon /> : <LockIcon/>}
                       </IconButton>
                       <IconButton
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}
