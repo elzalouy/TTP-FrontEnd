@@ -41,11 +41,25 @@ export const updatePM = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const updatePMpassword = createAsyncThunk<any, any, any>(
   "PM/updatePMpassword",
   async (data: object, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.updatePassword(data);
+      if (PMs.ok && PMs.data) return PMs.data;
+      else return [];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const resetPMpassword = createAsyncThunk<any, any, any>(
+  "PM/resetPMpassword",
+  async (data: object, { rejectWithValue }) => {
+    try {
+      let PMs = await PMapi.resetPassword(data);
       if (PMs.ok && PMs.data) return PMs.data;
       else return [];
     } catch (error) {

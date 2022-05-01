@@ -7,7 +7,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import { selectPayload, selectPMs, updatePMpassword } from "../../redux/PM";
+import { resetPMpassword, selectPayload, selectPMs } from "../../redux/PM";
 import { selectAuth, selectIsAuth } from "../../redux/Auth";
 
 interface Props {
@@ -18,7 +18,6 @@ interface Props {
 
 interface IFormInputs {
   newPassword: string;
-  oldPassword: string;
   confirmNewPassword: string;
 }
 
@@ -54,10 +53,9 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
     if (pattern.test(data.confirmNewPassword)) {
       setPasswordError(false);
       dispatch(
-        updatePMpassword({
+        resetPMpassword({
           id: `Bearer ${token}`,
           password: data.newPassword,
-          oldPassword: data.oldPassword,
         })
       );
       history.replace("/");
@@ -137,34 +135,6 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                 <p className="error-text">
                   Setting new password was unsuccessful : {failed.message}
                 </p>
-              )}
-              <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-              >
-                Old Password
-              </Typography>
-              <Controller
-                name="oldPassword"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    {...register("oldPassword", {
-                      required: true,
-                    })}
-                    type="password"
-                    className="f-inputs"
-                    placeholder="Enter your old password"
-                    onChange={() => setFailed({ message: "", status: false })}
-                  />
-                )}
-              />
-              {errors.oldPassword?.type === "required" && (
-                <p className="error-text">Please enter your old password</p>
               )}
               <Typography
                 variant={"h5"}
