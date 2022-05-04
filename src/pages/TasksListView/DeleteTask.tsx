@@ -5,7 +5,7 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import "./DeleteTask.css";
 
 type Props = {
-  onDelete: () => void;
+  onDelete?: () => void;
   Show: string;
   setShow: (val: string) => void;
 };

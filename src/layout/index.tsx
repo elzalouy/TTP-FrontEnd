@@ -1,8 +1,8 @@
 import { CssBaseline } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
-import {useHistory} from "react-router"
-import { Route ,Redirect} from "react-router-dom";
+import { useHistory } from "react-router";
+import { Route, Redirect } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
 import { useAppSelector } from "../redux/hooks";
@@ -17,32 +17,33 @@ const LoggedInContainer: React.FC<Props> = ({
   component: Component,
   ...rest
 }: any) => {
-
   const isAuth = useAppSelector(selectIsAuth);
-  const history = useHistory();
 
-  useEffect(() => {
-    if(!isAuth){
-      history.replace("/")
-    }
-  }, [isAuth])
-  
+  // useEffect(() => {
+  //   if(!isAuth){
+  //     history.replace("/")
+  //   }
+  // }, [isAuth])
 
-  if(!isAuth){
-    return <Redirect to={"/"}/>
-  }
+  // if(!isAuth){
+  //   return <Redirect to={"/"}/>
+  // }
 
   return (
     <>
       <Route
         {...rest}
-        render={(props) => (
-          <div key={rest.location.key} style={{ display: "flex" }}>
-            <Sidebar {...rest} {...props} />
-            <Bar {...props} {...rest} />
-            <Component key={rest?.location?.key} {...props} {...rest} />
-          </div>
-        )}
+        render={(props) => {
+          if (!isAuth) return <Redirect to={"/"} />;
+          if (isAuth)
+            return (
+              <div key={rest.location.key} style={{ display: "flex" }}>
+                <Sidebar {...rest} {...props} />
+                <Bar {...props} {...rest} />
+                <Component key={rest?.location?.key} {...props} {...rest} />
+              </div>
+            );
+        }}
       />
     </>
   );

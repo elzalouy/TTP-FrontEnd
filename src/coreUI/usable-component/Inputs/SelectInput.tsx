@@ -41,12 +41,19 @@ const SelectInput: React.FC<Props> = ({
   const [Value, setValue] = useState(selectText);
 
   useEffect(() => {
-    if (label && label.length > 10)
-      setValue(_.truncate(selectText, { length: 5, separator: " " }));
-    else if (label && label.length <= 9 && selectText && selectText.length > 10)
-      setValue(_.truncate(selectText, { length: 18, separator: " " }));
-    else setValue(selectText);
+    if (label && label.length > 10) {
+      console.log("label && label.length > 10");
+      return setValue(_.truncate(selectText, { length: 5, separator: " " }));
+    }
+    if (label && label.length <= 9 && selectText && selectText.length > 10) {
+      console.log(
+        "label && label.length <= 9 && selectText && selectText.length > 10"
+      );
+      return setValue(_.truncate(selectText, { length: 10, separator: " " }));
+    }
+    return setValue(selectText);
   }, [selectText, selectValue]);
+  console.log(Value);
   const open = Boolean(anchorEl);
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);

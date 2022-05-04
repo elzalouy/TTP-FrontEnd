@@ -20,28 +20,32 @@
 
 .inputs-grid {
   display: grid;
+  width: 800px;
   /* grid-template-columns: 1fr 1fr; */
   /* grid-gap: 20px; */
 }
 
 .select-project {
   width: calc(96% - 11px);
-  padding: 11px;
+  padding-left: 11px;
   border: solid 0.5px #b4b6c4;
   border-radius: 5px;
-  color: #1f1f1f;
-  margin-top: 5px;
+  color: #000;
+  margin-top: 7px;
+  background-color: white;
+  height: 43px;
 }
 
 .input-project {
   width: calc(96% - 11px);
+  height: 43px !important;
   font-size: initial;
   padding: 11px;
   border-radius: 5px;
   border: solid 0.5px #b4b6c4;
   color: #b4b6c4;
   margin: 0;
-  margin-top: 5px;
+  margin-top: 7px;
 }
 
 .textarea-project {
@@ -53,7 +57,7 @@
   border-color: #b4b6c4;
   color: #b4b6c4;
   margin: 0;
-  margin-top: 5px;
+  margin-top: 7px;
   font-family: "Cairo", sans-serif;
 }
 .controllers {
@@ -159,4 +163,7 @@ table.allTask-table td.deleteTd {
 .MuiStepLabel-label.Mui-active {
   color: #00acba !important;
   font-weight: bold !important;
+}
+.label-project {
+  font-weight: 600;
 }

@@ -3,7 +3,7 @@ import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import api from "../../services/endpoints/projects";
 import { Project, Task } from "./projects.state";
-
+import _ from "lodash";
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
   async (args, { rejectWithValue }) => {
@@ -144,7 +144,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       if (deleteResult.ok) {
         args.dispatch(getAllTasks(null));
         toast("Tasks deleted.");
-        return true;
+        return args.ids;
       }
       throw "Error happenned";
     } catch (error) {
@@ -224,6 +224,18 @@ export const moveTask = createAsyncThunk<any, any, any>(
       else throw "Error while moving the task";
     } catch (error: any) {
       toast(error);
+      rejectWithValue(error);
+    }
+  }
+);
+export const editTask = createAsyncThunk<any, any, any>(
+  "tasks/editTask",
+  async (args: any, { rejectWithValue }) => {
+    try {
+      let response = await api.editTask(args);
+      if (response.ok && response.data) return response.data;
+      else throw "Task not updated.";
+    } catch (error) {
       rejectWithValue(error);
     }
   }

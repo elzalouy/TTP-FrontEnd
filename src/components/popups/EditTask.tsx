@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
+import { useAppSelector } from "../../redux/hooks";
+import { editTask, selectEditTaskValues, Task } from "../../redux/Projects";
+import { selectAllDepartments } from "../../redux/Departments";
+import { selectAllCategories } from "../../redux/Categories";
+import { useDispatch } from "react-redux";
 
-type Props = {};
+type Props = { Show: string; setShow: (val: string) => any };
 
 interface taskData {
   taskName: string;
@@ -17,31 +22,56 @@ interface taskData {
   files: any;
 }
 
-const EditTask: React.FC<Props> = () => {
-  const [Show, setShow] = useState<string>("none");
-  const [Task, setTask] = useState<taskData>({
-    taskName: "",
-    department: "",
-    deadline: "",
-    Category: "",
-    Description: "",
-    SubCategory: "",
-    AttachCard: "",
-    files: [],
+const EditTask: React.FC<Props> = ({ Show, setShow }) => {
+  const dispatch = useDispatch();
+  const editValues = useAppSelector(selectEditTaskValues);
+  const departments = useAppSelector(selectAllDepartments);
+  const categories = useAppSelector(selectAllCategories);
+  const [Task, setTask] = useState<any>({
+    id: editValues?._id || "",
+    name: editValues?.name || "",
+    boardId: editValues?.boardId || "",
+    deadline: editValues?.deadline || "",
+    categoryId: editValues?.categoryId || "",
+    subCategoryId: editValues?.subCategoryId || "",
+    description: editValues?.description || "",
+    attachedFiles: editValues?.attachedFiles || "",
+    memberId: editValues?.memberId || "",
+    file: editValues?.file || "",
+    listId: editValues?.listId || "",
+    departmentId: departments?.find(
+      (item) => item.boardId === editValues?.boardId
+    )?._id,
   });
-
+  useEffect(() => {
+    setTask({
+      ...editValues,
+      departmentId: departments?.find(
+        (item) => item.boardId === editValues?.boardId
+      )?._id,
+    });
+  }, [editValues]);
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    let data = {
+      id: editValues?._id,
+      name: Task?.name,
+      boardId: Task?.boardId,
+      deadline: Task?.deadline,
+      categoryId: Task?.categoryId,
+      subCategoryId: Task?.subCategoryId,
+      description: Task?.description,
+      attachedFiles: Task?.attachedFiles,
+      memberId: Task?.memberId,
+      file: Task?.file,
+      listId: Task?.listId,
+    };
+    dispatch(editTask(data));
+    setShow("none");
+  };
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-      >
-        Edit Task
-      </button>
-
-      <PopUp show={Show} minWidthSize="50vw">
+      <PopUp show={Show}>
         <div>
           <img
             className="closeIcon"
@@ -55,42 +85,45 @@ const EditTask: React.FC<Props> = () => {
           />
         </div>
         <p className="popup-title">Edit task</p>
-
         <div className="inputs-grid">
           <div>
             <label className="popup-label">Task name</label>
-
             <input
               className="popup-input"
               type="text"
               placeholder="Task name"
-              value={Task.taskName}
+              value={Task.name}
               onChange={(e) => {
-                Task.taskName = e.target.value;
+                Task.name = e.target.value;
                 setTask({ ...Task });
               }}
             />
           </div>
-
           <div>
             <label className="popup-label">Department name</label>
-
             <select
               className="popup-select"
               onChange={(e) => {
-                Task.department = e.target.value;
+                Task.departmentId = e.target.value;
                 setTask({ ...Task });
               }}
+              value={Task.departmentId}
             >
-              <option value="design"> design</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              <option value="">select</option>
+              {departments &&
+                departments?.map((item) => (
+                  <option
+                    key={item._id}
+                    selected={item._id === Task.departmentId}
+                    value={item._id}
+                  >
+                    {item?.name}
+                  </option>
+                ))}
             </select>
           </div>
-
           <div>
             <label className="popup-label">Deadline date</label>
-
             <input
               className="popup-input"
               type="date"
@@ -103,31 +136,37 @@ const EditTask: React.FC<Props> = () => {
           </div>
           <div>
             <label className="popup-label">Category</label>
-
             <select
               className="popup-select"
               onChange={(e) => {
-                Task.Category = e.target.value;
+                Task.categoryId = e.target.value;
                 setTask({ ...Task });
               }}
+              value={Task.categoryId}
             >
-              <option value="0">Graphic design</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              <option value="">select</option>
+              {categories &&
+                categories?.map((item) => (
+                  <option
+                    key={item._id}
+                    value={item._id}
+                    selected={item._id === Task.categoryId}
+                  >
+                    {item.category}
+                  </option>
+                ))}
             </select>
           </div>
-
           <div>
             <label className="popup-label">Description</label>
-
             <textarea
               maxLength={75}
               className="popup-textarea"
               rows={4}
               placeholder="Write about your task"
-              value={Task.Description}
+              value={Task.description}
               onChange={(e) => {
-                Task.Description = e.target.value;
+                Task.description = e.target.value;
                 setTask({ ...Task });
               }}
             />
@@ -139,76 +178,79 @@ const EditTask: React.FC<Props> = () => {
             <select
               className="popup-select"
               onChange={(e) => {
-                Task.SubCategory = e.target.value;
+                Task.subCategoryId = e.target.value;
                 setTask({ ...Task });
               }}
+              value={Task.subCategoryId}
             >
-              <option value="Sub Category">Sub Category</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              <option value="">select</option>
+              {categories &&
+                categories
+                  ?.find((item) => item._id === Task.categoryId)
+                  ?.selectedSubCategory?.map((item) => (
+                    <option
+                      key={item._id}
+                      selected={item._id === Task._id}
+                      value={item._id}
+                    >
+                      {item.subCategory}
+                    </option>
+                  ))}
             </select>
 
-            <label className="popup-label">Attach card</label>
-
+            <label className="popup-label">Memeber</label>
             <select
               className="popup-select"
               onChange={(e) => {
-                Task.AttachCard = e.target.value;
+                Task.memberId = e.target.value;
                 setTask({ ...Task });
               }}
             >
-              <option value="Sub Category">Sub Category</option>
-              <option value="1">option 2 </option>
-              <option value="2">option</option>
+              <option value="">select</option>
+              {departments
+                .find((dep) => dep._id === Task?.departmentId)
+                ?.teamsId.map((item) => (
+                  <option key={item?._id} value={item?._id}>
+                    {item?.name}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
         <div className="row-wrap">
           <div className="upload-btn-wrapper">
             <button className="btnFile">
-              <img src={IMAGES.fileicon} alt="Upload" /> {Task.files.length}
+              <img src={IMAGES.fileicon} alt="Upload" /> {Task?.file ? 1 : 0}
             </button>
             <input
               type="file"
               multiple
               className="custom-file-input"
               onChange={(e) => {
-                console.log(e.target.files);
-                const files = (e.target as HTMLInputElement).files;
-                if (files == null) Task.files = [];
-                else if (files.length != null) {
-                  Task.files = files;
-                }
-
+                Task.file = e.target.value;
                 setTask({ ...Task });
               }}
             />
           </div>
-
-          {Array.from(Task.files).map((el: any, i) => {
-            return (
-              <div key={i} className="added-file">
-                <p className="title-added-file">{el.name}</p>
-                <img
-                  src={IMAGES.closeicon}
-                  alt="close"
-                  width="9"
-                  height="9"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    let newFileList = Array.from(Task.files);
-                    newFileList.splice(i, 1);
-                    Task.files = newFileList;
-                    setTask({ ...Task });
-                    console.log(Task);
-                  }}
-                />
-              </div>
-            );
-          })}
+          {Task?.file && (
+            <div className="added-file">
+              <p className="title-added-file">{Task.file?.name}</p>
+              <img
+                src={IMAGES.closeicon}
+                alt="close"
+                width="9"
+                height="9"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  Task.file = null;
+                  setTask({ ...Task });
+                }}
+              />
+            </div>
+          )}
         </div>
         <div>
-          <button type="submit" className="addTaskBtn">
+          <button onClick={onSubmit} className="addTaskBtn">
             Done
           </button>
         </div>

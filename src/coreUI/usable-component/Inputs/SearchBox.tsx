@@ -16,6 +16,7 @@ export default function Search(props: any) {
         display: "flex",
         borderRadius: 4,
         alignItems: "center",
+        width: "100%",
         height: 42,
       }}
     >

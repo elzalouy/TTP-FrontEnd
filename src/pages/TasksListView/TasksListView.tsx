@@ -7,22 +7,16 @@ import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
-import { getAllCategories } from "../../redux/Categories";
-import { getAllClients } from "../../redux/Clients";
-import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
-import { getPMs, selectPMs } from "../../redux/PM";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
   filterTasks,
-  getAllProjects,
-  getAllTasks,
   selectAllProjects,
   ProjectsInterface,
   ProjectsActions,
   deleteTasks,
 } from "../../redux/Projects";
-import { getAllMembers, selectAllMembers } from "../../redux/techMember";
+import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
 import "./TasksListView.css";
 
@@ -65,7 +59,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -88,7 +82,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -121,7 +115,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -156,7 +150,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -189,14 +183,14 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2.5} marginY={1}>
           <Box
             style={{
               backgroundColor: "#fafafa",
-              width: "160px",
+              width: "100%",
               marginLeft: "20px",
             }}
           >
@@ -239,6 +233,7 @@ const Tasks: React.FC = (props: any) => {
               setAllSelected={setAllSelected}
               projects={projects.projects}
               tasks={projects.allTasks}
+              {...props}
             />
           </Paper>
         </>

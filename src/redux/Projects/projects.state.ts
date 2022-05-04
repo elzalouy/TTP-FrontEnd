@@ -61,7 +61,9 @@ export interface ProjectsInterface {
   allTasks: Task[];
   deleteProject: string | undefined;
   deleteProjectTasks: string[] | undefined;
+  deleteTask: string | undefined;
   editProject: Project | undefined;
+  editTask: Task | undefined;
   sorting: string | null;
 }
 
@@ -119,7 +121,9 @@ const PorjectsState: ProjectsInterface = {
   },
   deleteProject: undefined,
   deleteProjectTasks: undefined,
+  deleteTask: undefined,
   editProject: undefined,
+  editTask: undefined,
   sorting: null,
 };
 export default PorjectsState;
