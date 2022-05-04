@@ -5,9 +5,13 @@ import { popOverStyle } from "../styles";
 import IMAGES from "../../../assets/img";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
+import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
+import { ProjectsActions, Task } from "../../../redux/Projects";
 
-interface Props {}
-const TasksPopover: React.FC<Props> = () => {
+interface Props {
+  item: Task;
+}
+const TasksPopover: React.FC<Props> = ({ item }) => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -20,7 +24,16 @@ const TasksPopover: React.FC<Props> = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const onEditTask = () => {
+    dispatch(ProjectsActions.onEditTask(item));
+    dispatch(toggleEditTaskPopup("flex"));
+    handleClose();
+  };
+  const onDeleteTask = () => {
+    dispatch(ProjectsActions.onDeleteTask(item._id));
+    dispatch(openDeleteTaskPopup("flex"));
+    handleClose();
+  };
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
@@ -46,6 +59,7 @@ const TasksPopover: React.FC<Props> = () => {
         <Box display={"grid"} padding={1}>
           <Button
             variant="text"
+            onClick={onEditTask}
             sx={{
               width: 180,
               justifyContent: "flex-start",
@@ -60,6 +74,7 @@ const TasksPopover: React.FC<Props> = () => {
             Edit Task
           </Button>
           <Button
+            onClick={onDeleteTask}
             variant="text"
             sx={{
               width: 180,

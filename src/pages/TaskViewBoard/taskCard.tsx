@@ -57,7 +57,9 @@ const TaskCard: React.FC<DataTypes> = ({
             alignItems="center"
           >
             <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
-            <TasksPopover />
+            {item.status !== "not clear" && item.status !== "cancled" && (
+              <TasksPopover item={item} />
+            )}
           </Stack>
           <Box>
             <Typography color={"#696974"}>

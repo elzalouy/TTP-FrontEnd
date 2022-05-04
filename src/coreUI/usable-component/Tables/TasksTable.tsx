@@ -10,6 +10,7 @@ import {
 import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
+import { RouteComponentProps, useHistory } from "react-router";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
@@ -23,6 +24,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
   selects,
   setAllSelected,
 }) => {
+  const history = useHistory();
   const [select, setSelected] = React.useState(false);
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -163,8 +165,10 @@ const TasksTable: React.FC<TasksTableProps> = ({
                     </div>
                   </TableCell>
                   <TableCell
+                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
                     align="left"
                     style={{
+                      cursor: "pointer",
                       color: "#323C47",
                       width: "300px",
                       margin: "0px",

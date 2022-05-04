@@ -3,10 +3,11 @@ import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
-import { createProject, Project, ProjectsActions } from "../../redux/Projects";
+import { createProject } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
 import { Button } from "@mui/material";
+import { selectUser } from "../../redux/Auth";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -20,6 +21,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const { register, watch, control } = useForm();
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
+  const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
   React.useEffect(() => {
     dispatch(getPMs(null));
@@ -33,14 +35,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectManager: data?.projectManager,
       projectManagerName: PMs.find((item) => item._id === data?.projectManager)
         ?.name,
-      projectDeadline: data.deadline,
+      projectDeadline: data?.deadline,
       startDate: data?.startDate,
-      clientId: data.clientId,
+      clientId: data?.clientId,
       numberOfFinshedTasks: 0,
       numberOfTasks: 0,
       projectStatus: "inProgress",
       completedDate: null,
-      adminId: "626418935119257872f7cf1c",
+      adminId: user?._id,
     };
     dispatch(createProject(project));
   };
@@ -138,7 +140,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         <div>
           <label className="label-project">Start Date</label>
           <br />
-
           <Controller
             name="startDate"
             control={control}

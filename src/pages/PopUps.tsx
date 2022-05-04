@@ -5,6 +5,8 @@ import DeleteClient from "../components/popups/DeleteClient";
 import DeleteProject from "../components/popups/DeleteProject";
 import EditClient from "../components/popups/EditClient";
 import EditProject from "../components/popups/EditProject";
+import EditTask from "../components/popups/EditTask";
+import LogoutPopup from "../components/popups/LogoutPopup";
 import { useAppSelector } from "../redux/hooks";
 import {
   openDeleteProjectPopup,
@@ -12,8 +14,12 @@ import {
   openEditClientPopup,
   openDeleteClientPopup,
   openCreateTaskPopup,
+  toggleLogOutPopup,
+  toggleEditTaskPopup,
+  openDeleteTaskPopup,
 } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
+import DeleteTask from "../components/popups/DeleteTask";
 
 const PopUps: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,6 +29,9 @@ const PopUps: React.FC = () => {
     editClientPopup,
     deleteClientPopup,
     createTaskPopup,
+    logoutPopup,
+    editTaskPopup,
+    deleteTaskPopup,
   } = useAppSelector(selectUi);
   const showDeleteProjectPopup = (val: string) => {
     dispatch(openDeleteProjectPopup(val));
@@ -39,6 +48,15 @@ const PopUps: React.FC = () => {
   const showCreateTaskPopup = (val: string) => {
     dispatch(openCreateTaskPopup(val));
   };
+  const showLoggoutPopup = (val: string) => {
+    dispatch(toggleLogOutPopup(val));
+  };
+  const showEditTaskPopup = (val: string) => {
+    dispatch(toggleEditTaskPopup(val));
+  };
+  const showDeleteTaskPopup = (val: string) => {
+    dispatch(openDeleteTaskPopup(val));
+  };
   return (
     <>
       <DeleteProject
@@ -49,6 +67,9 @@ const PopUps: React.FC = () => {
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
       <CreateTask setShow={showCreateTaskPopup} show={createTaskPopup} />
+      <LogoutPopup setShow={showLoggoutPopup} show={logoutPopup} />
+      <EditTask Show={editTaskPopup} setShow={showEditTaskPopup} />
+      <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />
     </>
   );
 };

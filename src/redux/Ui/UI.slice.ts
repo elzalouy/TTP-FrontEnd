@@ -24,11 +24,20 @@ const UISlice: Slice<UiInterface> = createSlice({
     openCreateTaskPopup: (state, action) => {
       state.createTaskPopup = action.payload;
     },
-    toggleEditProjectManagerPopup: (state,action) =>{
+    toggleEditProjectManagerPopup: (state, action) => {
       state.editProjectManagerPopup = action.payload;
     },
-    toggleDeleteProjectManagerPopup: (state,action) =>{
+    toggleDeleteProjectManagerPopup: (state, action) => {
       state.deleteProjectManagerPopup = action.payload;
+    },
+    toggleSideMenu: (state, action) => {
+      state.isSideMenuOpened = action.payload;
+    },
+    toggleLogOutPopup: (state, action) => {
+      state.logoutPopup = action.payload;
+    },
+    toggleEditTaskPopup: (state, action) => {
+      state.editTaskPopup = action.payload;
     },
   },
 });
@@ -42,4 +51,7 @@ export const {
   openCreateTaskPopup,
   toggleEditProjectManagerPopup,
   toggleDeleteProjectManagerPopup,
+  toggleSideMenu,
+  toggleLogOutPopup,
+  toggleEditTaskPopup,
 } = UISlice.actions;

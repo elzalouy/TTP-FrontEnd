@@ -36,16 +36,15 @@ import TaskIcon from "../../../assets/icons/TaskIcon";
 import CategoryIcon from "../../../assets/icons/CategoryIcon";
 import NotificationIcon from "../../../assets/icons/Notification";
 import { useAppSelector } from "../../../redux/hooks";
-import {counterNotif} from '../../../redux/notification'
-interface BarProps extends AppBarProps {
-  open?: boolean;
-}
+import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
+import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
+import { counterNotif } from "../../../redux/notification";
+interface BarProps extends AppBarProps {}
 
 const AppDrawer: React.FC = (props: any) => {
-  const drawerWidth = "17%";
+  const open = useAppSelector(selectSideMenuToggle);
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
-  const history = useHistory();
   const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
   const counter = useAppSelector(counterNotif)
@@ -58,8 +57,10 @@ const AppDrawer: React.FC = (props: any) => {
   }));
 
   const handleLogout = () => {
-    dispatch(logout(null));
-    setTimeout(() => history.replace("/"), 1000);
+    dispatch(toggleLogOutPopup("flex"));
+  };
+  const setOpen = () => {
+    dispatch(toggleSideMenu(!open));
   };
 
   return (
@@ -69,27 +70,27 @@ const AppDrawer: React.FC = (props: any) => {
           overflow: "hidden",
           position: "inherit",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
-          width: props.open ? "16%" : `calc(2% + 1px)`,
+          width: open ? "16%" : `calc(2% + 1px)`,
           flexShrink: 0,
           transition: " all 0.5s ease !important",
-          marginRight: props.open ? 0 : 5,
+          marginRight: open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: props.open ? "16%" : "5%",
+            width: open ? "16%" : "5%",
             transition: "all 0.5s ease !important",
           },
         }}
-        open={props.open}
+        open={open}
         variant="permanent"
       >
         <List sx={{ height: "90%", overflowX: "scroll" }}>
           <DrawerHeader
             sx={{
-              justifyContent: props.open ? "space-between" : "center",
+              justifyContent: open ? "space-between" : "center",
               cursor: "pointer",
             }}
           >
-            {props.open && <Logo {...props} />}
-            <IconButton onClick={() => props.setOpen(!props.open)}>
+            {open && <Logo {...props} />}
+            <IconButton onClick={() => setOpen()}>
               {props?.open ? (
                 <MenuIcon htmlColor="#000000" />
               ) : (
@@ -101,7 +102,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="0"
               onClick={() => props.history.push("/Overview")}
               path={"/Overview"}
@@ -111,7 +112,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="1"
               onClick={() => props.history.push("/projects")}
               path={"/projects"}
@@ -121,7 +122,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="2"
               onClick={() => props.history.push("/Departments")}
               path={"/Departments"}
@@ -132,7 +133,7 @@ const AppDrawer: React.FC = (props: any) => {
               <DrawerItem
                 {...props}
                 select={props.select}
-                open={props.open}
+                open={open}
                 key="7"
                 onClick={() => props.history.push("/ProjectManagers")}
                 path={"/ProjectManagers"}
@@ -143,7 +144,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="3"
               onClick={() => props.history.push("/Clients")}
               path={"/Clients"}
@@ -154,7 +155,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="4"
               onClick={() => props.history.push("/TasksList")}
               path={"/TasksList"}
@@ -165,7 +166,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="5"
               onClick={() => props.history.push("/Categories")}
               path={"/Categories"}
@@ -175,7 +176,7 @@ const AppDrawer: React.FC = (props: any) => {
           </List>
           <Divider sx={{ marginX: 2.5 }} />
           <List>
-            {props.open && (
+            {open && (
               <Typography
                 marginLeft={3.5}
                 variant="h6"
@@ -189,7 +190,7 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="6"
               onClick={() => props.history.push("/notifications")}
               path={"/notifications"}
@@ -204,7 +205,7 @@ const AppDrawer: React.FC = (props: any) => {
           <ListItemButton
             sx={{
               ":hover": { bgcolor: "white" },
-              justifyContent: props.open ? "space-between" : "center",
+              justifyContent: open ? "space-between" : "center",
               position: "inherit",
               bgcolor: "white",
               bottom: 0,
@@ -213,7 +214,7 @@ const AppDrawer: React.FC = (props: any) => {
             <ListItemIcon
               sx={{
                 minWidth: 0,
-                justifyContent: props.open ? "space-between" : "center",
+                justifyContent: open ? "space-between" : "center",
               }}
             >
               <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
@@ -224,7 +225,7 @@ const AppDrawer: React.FC = (props: any) => {
               sx={{
                 color: "#808191",
                 ":hover": { color: "white" },
-                opacity: props.open ? 1 : 0,
+                opacity: open ? 1 : 0,
                 pl: 1,
               }}
             >

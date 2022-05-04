@@ -16,4 +16,5 @@ export default {
   deleteTasks: (args: any) => api.delete(`deleteTasks`, {}, { data: args }),
   editProject: (args: any) => api.put("updateProject", args),
   moveTask: (args: any) => api.put("moveTask", args),
+  editTask: (args: any) => api.post("/updateTask", args),
 };
