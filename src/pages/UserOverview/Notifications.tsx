@@ -44,7 +44,7 @@ const UserNotifications: React.FC<Props> = (props) => {
           11 Dec, 2021
         </Typography>
       </Box>
-      {notifications.map((item) => (
+      {notifications.map((item,i) => (
         <Box
           marginTop={2}
           width={"100%"}
@@ -55,6 +55,7 @@ const UserNotifications: React.FC<Props> = (props) => {
             padding: 1.2,
             display: "inline-flex",
           }}
+          key={i}
         >
           <Box
             width="100%"

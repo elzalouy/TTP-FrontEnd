@@ -9,20 +9,25 @@ import { notifiDataSelector } from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { notifiAction } from "../../redux/notification";
 import { socket } from "../../config/socket/actions";
+import { selectRole, selectUser } from "../../redux/Auth";
 
 type Props = {};
 // if
 const NotificationContainer = (props: Props) => {
   const dispatch = useDispatch();
+  const user = useAppSelector(selectUser);
+  const role = useAppSelector(selectRole);
   useEffect(() => {
-    dispatch(getAllNotifi("62662912a86a7d5f90a1ff99"));
-    dispatch(
-      updateNotifi({
-        id: "62662912a86a7d5f90a1ff99",
-        role: "Operation manager",
-      })
-    );
-  }, []);
+    if(user && user._id){
+      dispatch(getAllNotifi(user._id));
+      dispatch(
+        updateNotifi({
+          id: user._id,
+          role: role,
+        })
+        );
+      }
+  }, [user]);
 
   // watch notification update
   useEffect(() => {

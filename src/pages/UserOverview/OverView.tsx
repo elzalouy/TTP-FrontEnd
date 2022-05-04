@@ -28,7 +28,7 @@ const OverView: FC<Props> = (props) => {
         >
           <Grid
             item
-            direction="row"
+            // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
             paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
@@ -55,13 +55,14 @@ const OverView: FC<Props> = (props) => {
           </Grid>
           <Grid
             xs={12}
+            item
             direction="row"
             justifyContent={"flex-start"}
             alignItems="flex-start"
             container
             paddingLeft={4}
           >
-            <Grid item direction="column" xs={12} sm={12} lg={7.5} md={7.5}>
+            <Grid item xs={12} sm={12} lg={7.5} md={7.5}>
               <Grid
                 direction="row"
                 justifyContent="flex-start"
@@ -149,7 +150,7 @@ const OverView: FC<Props> = (props) => {
                 )}
               </Grid>
               <Grid
-                direction="row"
+                // direction="row"
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={2.5}
@@ -176,8 +177,9 @@ const OverView: FC<Props> = (props) => {
             </Grid>
           </Grid>
           <Grid
+          item
             xs={11.5}
-            direction="row"
+            // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
             paddingLeft={4}

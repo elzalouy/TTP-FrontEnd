@@ -13,7 +13,7 @@ export const Logo = (props: any) => (
     src={logo}
     alt="Logo"
     onClick={() => props.history.push("/Overview")}
-    {...props}
+    // {...props}
   />
 );
 
@@ -22,7 +22,7 @@ export const BurgerIcon = (props: any) => (
     style={{ cursor: "pointer" }}
     src={burgerIcon}
     alt="burgerIcon"
-    {...props}
+    // {...props}
   />
 );
 
@@ -31,12 +31,14 @@ export const Categories = (props: any) => (
     style={{ cursor: "pointer" }}
     src={categories}
     alt="categories"
-    {...props}
+    // {...props}
   />
 );
 
 export const Clients = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={clients} alt="clients" {...props} />
+  <img style={{ cursor: "pointer" }} src={clients} alt="clients"
+  //  {...props}
+    />
 );
 
 export const DepartmentIcon = (props: any) => (
@@ -44,7 +46,7 @@ export const DepartmentIcon = (props: any) => (
     style={{ cursor: "pointer" }}
     src={departmentIcon}
     alt="departmentIcon"
-    {...props}
+    // {...props}
   />
 );
 
@@ -53,18 +55,24 @@ export const ProfileImageDemo = (props: any) => (
     style={{ cursor: "pointer" }}
     src={profileImageDemo}
     alt="profileImageDemo"
-    {...props}
+    // {...props}
   />
 );
 
 export const Projects = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={projects} alt="projects" {...props} />
+  <img style={{ cursor: "pointer" }} src={projects} alt="projects"
+  //  {...props}
+    />
 );
 
 export const Tasks = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={tasks} alt="tasks" {...props} />
+  <img style={{ cursor: "pointer" }} src={tasks} alt="tasks" 
+  // {...props}
+   />
 );
 
 export const OverView = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={overView} alt="overView" {...props} />
+  <img style={{ cursor: "pointer" }} src={overView} alt="overView" 
+  // {...props}
+   />
 );

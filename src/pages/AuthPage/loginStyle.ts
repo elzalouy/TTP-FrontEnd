@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
-import { DefaultTheme } from "@mui/private-theming";
+import { DefaultTheme } from "styled-components";
 
 const style = () => {
   const useStyles = makeStyles((theme: DefaultTheme) => ({
