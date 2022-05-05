@@ -24,6 +24,7 @@ import {
   selectSelectedCategory,
 } from "../../redux/Categories";
 import _ from "lodash";
+
 type Props = {
   show: string;
   setShow: (val: string) => void;
@@ -45,6 +46,7 @@ const CreateTask: React.FC<Props> = (props) => {
     attachedFiles: "",
     selectedDepartmentId: "",
   });
+  
   React.useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));
@@ -64,6 +66,7 @@ const CreateTask: React.FC<Props> = (props) => {
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [Task]);
+
   const onSubmit = (data: any) => {
     let newTask = {
       name: Task.name,
@@ -86,6 +89,7 @@ const CreateTask: React.FC<Props> = (props) => {
     dispatch(createTaskFromBoard(newTask));
     props.setShow("none");
   };
+
   const onChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -95,11 +99,13 @@ const CreateTask: React.FC<Props> = (props) => {
     task[e.target.name] = e.target.value;
     setTask(task);
   };
+
   const onDeleteFile = () => {
     let task = { ...Task };
     task.attachedFiles = "";
     setTask(task);
   };
+
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
@@ -135,7 +141,6 @@ const CreateTask: React.FC<Props> = (props) => {
               name="selectedDepartmentId"
               value={Task.selectedDepartmentId}
               onChange={onChange}
-              defaultValue=""
             >
               <option value="" selected key={"0"}>
                 Select
