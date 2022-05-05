@@ -18,6 +18,6 @@ export interface Notifis {
 const NotifiState: Notifis = {
 loading:false,
 notifi:[],
-counter:2
+counter:0
 };
 export default NotifiState;
