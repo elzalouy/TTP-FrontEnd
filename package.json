@@ -2,7 +2,7 @@
   "name": "ttp-frontend",
   "version": "0.1.0",
   "engines": {
-    "node": "16.14.0"
+    "node": "16.14.2"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +32,6 @@
     "@types/react-color": "^3.0.6",
     "@types/react-data-grid": "^4.0.8",
     "@types/react-dom": "^16.9.8",
-    "@types/react-redux": "^7.1.23",
     "@types/react-router-dom": "^5.3.2",
     "@types/react-toastify": "^4.1.0",
     "@types/uuid": "^8.3.4",
@@ -114,6 +113,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.24",
     "@types/styled-components": "^5.1.15",
     "react-error-overlay": "6.0.11"
   },

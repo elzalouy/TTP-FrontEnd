@@ -30,7 +30,7 @@ const notifiSlice: Slice<Notifis> = createSlice({
             : !item.projectManagerViewed
         );
         state.loading = false;
-        state.notifi = action.payload.data;
+        state.notifi = [...state.notifi ,...action.payload.data];
         state.counter = counter.length;
       }
     );

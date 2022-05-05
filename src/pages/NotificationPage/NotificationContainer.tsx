@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationFilter from "./NotificationFilter";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
@@ -10,23 +10,29 @@ import { useAppSelector } from "../../redux/hooks";
 import { notifiAction } from "../../redux/notification";
 import { socket } from "../../config/socket/actions";
 import { selectRole, selectUser } from "../../redux/Auth";
+import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {};
 // if
 const NotificationContainer = (props: Props) => {
+
   const dispatch = useDispatch();
+  const notifiData = useAppSelector(notifiDataSelector);
   const user = useAppSelector(selectUser);
   const role = useAppSelector(selectRole);
+  const [skip, setSkip] = useState(0)
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
-    if(user && user._id){
-      dispatch(getAllNotifi(user._id));
+    if (user && user._id) {
+      dispatch(getAllNotifi({ id: user._id, skip }));
       dispatch(
         updateNotifi({
           id: user._id,
           role: role,
         })
-        );
-      }
+      );
+    }
   }, [user]);
 
   // watch notification update
@@ -39,10 +45,15 @@ const NotificationContainer = (props: Props) => {
     };
   });
 
-  const notifiData = useAppSelector(notifiDataSelector);
-  console.log({ notifiData });
+  const handleLoadMore = async () => {
+    setLoading(true)
+    await dispatch(getAllNotifi({ id: user._id, skip: notifiData.length }));
+    setSkip(notifiData?.length ?? 0)
+    setLoading(false)
+  }
+
   return (
-    <Grid container paddingX={4} spacing={2} bgcolor="#FAFAFB">
+    <Grid container paddingX={4} spacing={4} bgcolor="#FAFAFB">
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>
@@ -54,6 +65,14 @@ const NotificationContainer = (props: Props) => {
           <NotificationItem notifiData={notifiData} />
         </Grid>
       ) : null}
+      <Grid item xs={6} textAlign="center" mb="1em">
+        <LoadingButton loading={loading} variant="contained"
+          sx={{ textTransform: "capitalize", pr: "2em", pl: "2em" }}
+          onClick={handleLoadMore}
+        >
+          Load More
+        </LoadingButton>
+      </Grid>
     </Grid>
   );
 };
