@@ -2,10 +2,18 @@ import { create } from "apisauce";
 import apiUrl from "./api.json";
 
 const api = create({
-  baseURL: apiUrl.API_BASE_URL,
+  baseURL: apiUrl.API_DEV_URL,
   headers: { "Content-Type": "application/json" },
 });
-
+export const checkAuthToken = () => {
+  try {
+    let token = localStorage.getItem("@accessToken");
+    if (token) return true;
+    else return false;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("@accessToken", token);

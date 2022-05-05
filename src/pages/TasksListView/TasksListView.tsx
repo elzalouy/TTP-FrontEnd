@@ -28,6 +28,8 @@ const Tasks: React.FC = (props: any) => {
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
   const onHandleChange = (e: any) => {
+    console.log("called");
+    e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
   };
@@ -199,9 +201,10 @@ const Tasks: React.FC = (props: any) => {
               control={control}
               render={(props) => (
                 <SearchBox
-                  {...props}
-                  onChange={props.field.onChange}
-                  onHandleChange={onHandleChange}
+                  onChange={(e) => {
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
                   value={props.field.value}
                 />
               )}

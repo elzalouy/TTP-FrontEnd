@@ -147,7 +147,8 @@ const App: React.FC = (props) => {
           component={OverView}
           key="/overview"
         />
-        <LoggedInContainer path="/404" component={NotFound} key="/notfound" />
+        <LoggedInContainer path="/404" component={NotFound} key="/notfound2" />
+        <Route path="/404" component={NotFound} key="/notfound" />
         <Redirect from="*" to="/404" key="404" />
       </Switch>
     </Box>

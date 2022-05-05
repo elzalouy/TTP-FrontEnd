@@ -201,7 +201,6 @@ const CreateTask: React.FC<Props> = (props) => {
           <div>
             <label className="popup-label">Assign Member</label>
             <select
-              {...props}
               defaultChecked
               name="memberId"
               onChange={onChange}
