@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
-import { User } from "./auth.state";
 
 export const signIn = createAsyncThunk<any, any, any>(
   "auth/signIn",
@@ -9,6 +9,15 @@ export const signIn = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signIn(args);
       if (result.data) {
+         toast.success("Login successful", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return result.data;
       } else return [];
     } catch (error) {
@@ -38,8 +47,17 @@ export const logout = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signOut();
       localStorage.removeItem("token");
+       toast.success("Logout successful", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       if (result.data) {
-        return;
+        return result.data;
       } else return {};
     } catch (error) {
       rejectWithValue(error);
@@ -53,6 +71,15 @@ export const newPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.newPasword(args);
       if (result.data) {
+         toast.success("New password set successfully", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return result.data;
       } else return false;
     } catch (error) {

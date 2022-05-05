@@ -91,7 +91,17 @@ const App: React.FC = (props) => {
 
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
-      <ToastContainer />
+      <ToastContainer
+       position="top-right"
+       autoClose={1500}
+       hideProgressBar
+       newestOnTop={false}
+       closeOnClick={false}
+       rtl={false}
+       pauseOnFocusLoss
+       draggable={false}
+       pauseOnHover={false}
+      />
       <PopUps />
       <Switch>
         <Route key="/path" exact path="/" component={Login} />

@@ -22,7 +22,15 @@ export const creatClient = createAsyncThunk<any, any, any>(
     try {
       let client = await ClientsApi.createClient(data);
       if (client.ok && client.data) {
-        toast("Client created successfully");
+         toast.success("Client created successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return client.data;
       } else return [];
     } catch (error) {
@@ -42,7 +50,15 @@ export const updateClient = createAsyncThunk<any, any, any>(
       formData.append("createdAt", data.createdAt);
       let client = await ClientsApi.updateClient(formData);
       if (client.ok && client.data) {
-        toast("Client updated successfully");
+         toast.success("Client updated successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return client.data;
       } else return [];
     } catch (error) {
@@ -59,7 +75,15 @@ export const deleteClient = createAsyncThunk<any, any, any>(
       let client = await ClientsApi.deleteClient(data);
       console.log({ client });
       if (client.ok && client.data) {
-        toast("Client deleted successfully");
+         toast.success("Client deleted successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return data;
       } else return [];
     } catch (error) {
