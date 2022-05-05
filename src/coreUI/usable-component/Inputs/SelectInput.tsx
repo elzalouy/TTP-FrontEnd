@@ -140,6 +140,7 @@ const SelectInput: React.FC<Props> = ({
           horizontal: "center",
         }}
       >
+        <select></select>
         <Box display={"grid"} padding={1}>
           {options &&
             options.map((item) => (
