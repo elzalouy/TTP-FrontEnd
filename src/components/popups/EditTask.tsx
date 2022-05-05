@@ -69,6 +69,9 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
     dispatch(editTask(data));
     setShow("none");
   };
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {};
   return (
     <>
       <PopUp show={Show}>
@@ -89,6 +92,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
           <div>
             <label className="popup-label">Task name</label>
             <input
+              name="name"
               className="popup-input"
               type="text"
               placeholder="Task name"
@@ -103,6 +107,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
             <label className="popup-label">Department name</label>
             <select
               className="popup-select"
+              name="departmentId"
               onChange={(e) => {
                 Task.departmentId = e.target.value;
                 setTask({ ...Task });
@@ -125,6 +130,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
           <div>
             <label className="popup-label">Deadline date</label>
             <input
+              name="deadline"
               className="popup-input"
               type="date"
               value={Task.deadline}
@@ -137,6 +143,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
           <div>
             <label className="popup-label">Category</label>
             <select
+              name="categoryId"
               className="popup-select"
               onChange={(e) => {
                 Task.categoryId = e.target.value;
@@ -160,6 +167,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
           <div>
             <label className="popup-label">Description</label>
             <textarea
+              name="description"
               maxLength={75}
               className="popup-textarea"
               rows={4}
@@ -177,6 +185,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
 
             <select
               className="popup-select"
+              name="subCategoryId"
               onChange={(e) => {
                 Task.subCategoryId = e.target.value;
                 setTask({ ...Task });
@@ -201,6 +210,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
             <label className="popup-label">Memeber</label>
             <select
               className="popup-select"
+              name="memberId"
               onChange={(e) => {
                 Task.memberId = e.target.value;
                 setTask({ ...Task });
@@ -223,6 +233,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               <img src={IMAGES.fileicon} alt="Upload" /> {Task?.file ? 1 : 0}
             </button>
             <input
+              name="file"
               type="file"
               multiple
               className="custom-file-input"

@@ -21,7 +21,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const [ImageView, setImageView] = useState<string | null>(null);
   useEffect(() => {
     setData(client);
-  }, [client]);
+  }, [dispatch, client]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -35,23 +35,24 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
       });
       setImageView(null);
       setShow("none");
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    } catch (error: any) {}
   };
 
   const fileUpload = () => {
     fileInput.current?.click();
   };
-
+  useEffect(() => {}, [fileInput]);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    var data = { ...Data };
+    console.log(e.target);
     if (e.target.name === "image") {
       let file: any = e.target.files;
-      setData({ image: file[0], ...Data });
+      data.image = file[0];
       setImageView(URL.createObjectURL(file[0]));
     } else {
-      setData({ ...Data, [e.target.name]: e.target.value });
+      data[e.target.name] = e.target.value;
     }
+    setData(data);
   };
   const handleClose = () => {
     setShow("none");
@@ -97,16 +98,14 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 alt=""
               />
             </Box>
-
             <input
+              required
               className="input-client"
               type="text"
               name="clientName"
               value={Data?.clientName ? Data.clientName : ""}
               onChange={onChange}
-              required
             />
-
             <br />
 
             <Box className="controllers">

@@ -7,7 +7,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import DirectionsIcon from "@mui/icons-material/Directions";
 
-export default function Search(props: any) {
+interface Props {
+  value: string;
+  onChange: (e: any) => void;
+}
+const Search: React.FC<Props> = (props) => {
   return (
     <Paper
       component="form"
@@ -22,7 +26,7 @@ export default function Search(props: any) {
     >
       <IconButton
         type="button"
-        onClick={props.onHandleChange}
+        onClick={props.onChange}
         sx={{ p: "10px" }}
         aria-label="search"
       >
@@ -37,4 +41,6 @@ export default function Search(props: any) {
       />
     </Paper>
   );
-}
+};
+
+export default Search;
