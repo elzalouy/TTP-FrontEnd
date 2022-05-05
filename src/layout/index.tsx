@@ -23,7 +23,7 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => {
-          if (checkAuthToken()) return <Redirect to={"/"} />;
+          if (!checkAuthToken()) return <Redirect to={"/login"} />;
           else
             return (
               <div key={rest.location.key} style={{ display: "flex" }}>
