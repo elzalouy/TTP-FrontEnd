@@ -45,7 +45,7 @@ export const updateCategory = createAsyncThunk<any, any, any>(
     try {
       let result = await api.updateCategory(args);
       if (result.data) {
-         toast.success("Category created successfully",{
+         toast.success("Category updated successfully",{
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,

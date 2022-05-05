@@ -76,7 +76,7 @@ const Category: React.FC<Props> = () => {
             <CategoryCard
               key={index}
               mainCategory={category.category}
-              subCategories={category.selectedSubCategory}
+              subCategories={category.subCategoriesId}
               backgroundColor={alternatingColor[index % 5][1]}
               fontColor={alternatingColor[index % 5][0]}
               handleSetDisplay={handleSetDisplay}
