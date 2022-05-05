@@ -1,12 +1,7 @@
-import { CssBaseline } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useEffect } from "react";
-import { useHistory } from "react-router";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
-import { useAppSelector } from "../redux/hooks";
-import { selectIsAuth } from "../redux/Auth";
 import { checkAuthToken } from "../services/api";
 
 interface Props {
