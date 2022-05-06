@@ -36,7 +36,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
     totalDone: number;
   }>({
     name: "",
-    color: "",
+    color: "blue",
     teams: [],
     mainBoard: false,
     totalInProgress: 0,
@@ -86,6 +86,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalInProgress: 0,
       totalDone: 0,
     });
+    setNames([])
   };
   return (
     <>
@@ -99,6 +100,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <p>Create new department</p>
       </div>
       <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
+        test
         <div>
           <img
             className="closeIcon"

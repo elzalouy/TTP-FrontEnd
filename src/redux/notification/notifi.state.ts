@@ -7,17 +7,17 @@ export interface NotifiData {
   projectID?: string;
   clientName?: string;
   adminUserID?: string;
-  adminViewed?:boolean
-  projectManagerViewed?:boolean
+  adminViewed?: boolean;
+  projectManagerViewed?: boolean;
 }
 export interface Notifis {
   loading: boolean | null;
-  notifi:NotifiData[],
-  counter:number
+  notifi: NotifiData[];
+  counter: number;
 }
 const NotifiState: Notifis = {
-loading:false,
-notifi:[],
-counter:0
+  loading: false,
+  notifi: [],
+  counter: 0,
 };
 export default NotifiState;
