@@ -16,7 +16,7 @@ import ProjectManagers from "./pages/projectManagers/projectManagers";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "./redux/Clients";
-import { getPMs } from "./redux/PM";
+import { getPMs, PMsActions } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
 import {
@@ -59,6 +59,7 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
     dispatch(getAllTasks(null));
   }, [dispatch]);
+  
   useEffect(() => {
     if (isAuth && user?._id) {
       localStorage.setItem("token", user?._id);

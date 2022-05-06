@@ -1,15 +1,13 @@
-import { Avatar, Checkbox, IconButton, Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import {useEffect,useState} from "react";
 import CreateNewPM from "../../components/popups/CreateNewPM";
 import "./projectManagers.css";
 import ProjectManagersTable from "../../coreUI/usable-component/Tables/PMtable";
-import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import { PMsActions, ProjectManager, selectPMs } from "../../redux/PM";
+import { ProjectManager, selectPMs } from "../../redux/PM";
 import { selectRole } from "../../redux/Auth";
-import pmSlice from "../../redux/PM/pm.slice";
 import { Redirect } from "react-router";
 
 type Props = {};
@@ -18,15 +16,11 @@ const ProjectManagers: React.FC<Props> = () => {
 
   const [cellsData , setCellsData] = useState<ProjectManager[]>([]);
   const productManagerData = useAppSelector(selectPMs);
-  const dispatch = useDispatch();
+  const onlyPMS = productManagerData.filter((pm)=>pm.role!=="OM");
   const role = useAppSelector(selectRole);
 
-  useEffect(() => {
-   dispatch(PMsActions.getAllPM(null));
-  }, []);
-
   useEffect(()=>{
-    setCellsData(productManagerData);
+    setCellsData(onlyPMS);
   },[productManagerData]);
 
   if(role === "PM"){

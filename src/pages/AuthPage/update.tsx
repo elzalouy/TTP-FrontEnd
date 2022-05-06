@@ -150,7 +150,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 fontFamily={"Cairo"}
                 color="#000000"
               >
-                Password
+                New Password
               </Typography>
               <Controller
                 name="password"
@@ -190,7 +190,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 fontFamily={"Cairo"}
                 color="#000000"
               >
-                Password
+                Confirm New Password
               </Typography>
               <Controller
                 name="confirmPassword"

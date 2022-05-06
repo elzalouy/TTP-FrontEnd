@@ -1,4 +1,5 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import {
   forgotPassword,
   getUserInfo,
@@ -32,6 +33,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       } else {
         state.User = payload;
         state.authState = true;
+        toast.success("Login successful", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     });
     builder.addCase(forgotPassword.rejected, (state) => {
@@ -64,6 +74,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       state.User = initialState.User;
       state.authState = false;
+      toast.success("Logout successful", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     });
     builder.addCase(getUserInfo.rejected, (state) => {
       state.loading = false;
@@ -92,6 +111,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           status: payload.status,
         };
       } else {
+        toast.success("New password set successfully", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         state.User = payload;
         state.authState = payload.status === 200 ? true : false;
       }

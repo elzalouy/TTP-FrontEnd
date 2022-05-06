@@ -13,12 +13,11 @@ import {
   Box,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { FC, MouseEventHandler, useState } from "react";
+import { FC, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
-import { PMsActions, ProjectManager } from "../../../redux/PM";
+import { PMsActions, ProjectManager, resendMail } from "../../../redux/PM";
 import EditPM from "../../../components/popups/EditPM";
 import DeletePM from "../../../components/popups/DeletePM";
 import { useDispatch } from "react-redux";
@@ -26,8 +25,8 @@ import {
   toggleDeleteProjectManagerPopup,
   toggleEditProjectManagerPopup,
 } from "../../../redux/Ui";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectPassword } from "../../../redux/Auth";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -36,8 +35,8 @@ interface ProjectManagersProps {
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const [select, setSelected] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const [limit, setLimit] = useState<boolean>(false);
   const [selects, setAllSelected] = useState<string[]>([]);
-  const password = useAppSelector(selectPassword);
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -52,8 +51,26 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     }
   };
 
-  const refreshUser = (e: any) => {
-    return;
+  const refreshUser = (id: string) => {
+    //Checking time limit
+    let timeLimit = localStorage.getItem("limit");
+    let currentTime = moment.now().toString();
+    if (timeLimit && timeLimit >= currentTime) {
+      toast.warn("Please try to resend after one hour", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId:"mail"
+      });
+    } else {
+      dispatch(resendMail(id));
+      let duration = moment().add(1, "h").unix().toString();
+      localStorage.setItem("limit", duration);
+    }
   };
 
   const toggleDeletePopUp = (e: any, cellData: ProjectManager) => {
@@ -154,7 +171,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
 
           <TableBody>
             {cellsData.map((cellData) => {
-              const { _id, name, email,password } = cellData;
+              const { _id, name, email, password } = cellData;
 
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -200,9 +217,6 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {name}
                       </Typography>
-                     {/*  <IconButton onClick={refreshUser}>
-                        {password === "" && <RefreshIcon />}
-                      </IconButton> */}
                     </Stack>
                   </TableCell>
                   <TableCell
@@ -233,8 +247,14 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
-                      <IconButton>
-                        {!password ? <LockOpenIcon /> : <LockIcon/>}
+                      <IconButton
+                        onClick={() => {
+                          if (!password) {
+                            refreshUser(_id);
+                          }
+                        }}
+                      >
+                        {!password ? <LockOpenIcon /> : <LockIcon />}
                       </IconButton>
                       <IconButton
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}

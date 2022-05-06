@@ -9,15 +9,6 @@ export const signIn = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signIn(args);
       if (result.data) {
-         toast.success("Login successful", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         return result.data;
       } else return [];
     } catch (error) {
@@ -47,15 +38,6 @@ export const logout = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signOut();
       localStorage.removeItem("token");
-       toast.success("Logout successful", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
       if (result.data) {
         return result.data;
       } else return {};
@@ -71,15 +53,6 @@ export const newPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.newPasword(args);
       if (result.data) {
-         toast.success("New password set successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         return result.data;
       } else return false;
     } catch (error) {
