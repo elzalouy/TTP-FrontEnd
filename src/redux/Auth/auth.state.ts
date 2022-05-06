@@ -24,7 +24,7 @@ export interface UserInterface {
   Payload: Res;
 }
 const UserState: UserInterface = {
-  loading: null,
+  loading: false,
   User: {
     _id: "",
     name: "",

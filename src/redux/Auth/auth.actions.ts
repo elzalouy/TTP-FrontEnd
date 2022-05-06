@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
-import { User } from "./auth.state";
 
 export const signIn = createAsyncThunk<any, any, any>(
   "auth/signIn",
@@ -39,7 +39,7 @@ export const logout = createAsyncThunk<any, any, any>(
       let result = await api.signOut();
       localStorage.removeItem("token");
       if (result.data) {
-        return;
+        return result.data;
       } else return {};
     } catch (error) {
       rejectWithValue(error);

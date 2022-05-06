@@ -70,6 +70,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
       </TableHead>
       <TableBody>
         {props.expanded &&
+          props.projects &&
           props?.projects?.map((project: Project) => {
             return (
               <TableRow className={classes.tbody} key={project._id}>

@@ -8,6 +8,7 @@ export default {
   resetPassword : (data:object) => api.put("resetPassword",data),
   updateUser: (data:object) => api.post("updateUser",data),
   getUser : (data:object) => api.get("getUser",data),
+  resendMail: (data:object) => api.post("createUser/resendMail",data),
   deleteUser: (id:string) => api.delete("deleteUser",{
     _id:id
   }),

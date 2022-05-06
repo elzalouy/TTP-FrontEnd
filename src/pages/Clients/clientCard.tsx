@@ -18,6 +18,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
     doneProject,
     inProgressProject,
     inProgressTask,
+    image,
   } = client;
   const role = useAppSelector(selectRole);
   return (
@@ -30,7 +31,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             alignItems="flex-start"
           >
             <img
-              src={!client.image ? IMAGES.avatarClients : client.image}
+              src={!image ? IMAGES.avatarClients : image}
               alt="avatar"
               style={{
                 width: "52px",
@@ -55,9 +56,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               </Typography>
             </Box>
           </Stack>
-          <Typography>
-            {role !=="PM" && <ClientsPopover client={client} />}
-          </Typography>
+          {role !== "PM" && <ClientsPopover client={client} />}
         </Box>
         <Grid
           container
