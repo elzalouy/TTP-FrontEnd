@@ -27,6 +27,8 @@ import {
 } from "../../../redux/Ui";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectAllProjects, selectTasks } from "../../../redux/Projects";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -34,8 +36,9 @@ interface ProjectManagersProps {
 
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const [select, setSelected] = useState<boolean>(false);
+  const project = useAppSelector(selectAllProjects);
+  const tasks = useAppSelector(selectTasks);
   const dispatch = useDispatch();
-  const [limit, setLimit] = useState<boolean>(false);
   const [selects, setAllSelected] = useState<string[]>([]);
 
   const setSingleSelect = (val: string, checked: boolean) => {
@@ -173,6 +176,32 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
             {cellsData.map((cellData) => {
               const { _id, name, email, password } = cellData;
 
+              const getNumberOfProjectsForPMWithStatus = (name:string,status:string) => {
+                let projects = project.projects.filter((project)=>{
+                  return project.projectManagerName===name
+                });
+                let statusOfProject = projects.filter((project)=>{
+                  return project.projectStatus===status
+                })
+                return statusOfProject.length;
+              }
+              
+              const getNumberOfTasks = (name:string) => {
+                let projects = project.projects.filter((project)=>{
+                  return project.projectManagerName===name
+                });
+                let inProgressTasks = tasks.filter((task)=>{
+                  return task.status==="inProgress"
+                });
+                let pmTasks = inProgressTasks.filter((task)=>{
+                  let inProgressTaskProjects = projects.filter((project)=>{
+                    return project._id === task.projectId
+                  }) 
+                  return inProgressTaskProjects
+                })
+                return pmTasks.length;
+              }
+
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
@@ -230,19 +259,19 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   >
                     {email}
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {progressTask} */} Progress Task
+                      {getNumberOfTasks(name)}
                     </Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {progressProject} */}Progress Project
+                     {getNumberOfProjectsForPMWithStatus(name,"inProgress")}
                     </Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {doneProject} */}Done Project
+                    {getNumberOfProjectsForPMWithStatus(name,"done")}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">

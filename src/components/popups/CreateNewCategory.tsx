@@ -49,6 +49,7 @@ const CreateNewCategory: React.FC<Props> = () => {
     try {
       await dispatch(createCategory(body));
       setShow("none");
+      setsubCategories([]);
     } catch (error: any) {
       setErrors(error.message);
       console.log(error.message);
@@ -96,7 +97,7 @@ const CreateNewCategory: React.FC<Props> = () => {
         </p>
         <form className="form-inputs" onSubmit={handleSubmit}>
           <label className="label">Main category</label>
-          <div className="f-inputs" style={{ display: "flex" }}>
+          <div style={{ display: "flex" ,marginTop:"10px",marginBottom:"10px"}}>
             <input
               className="input-auth"
               type="text"
@@ -107,10 +108,8 @@ const CreateNewCategory: React.FC<Props> = () => {
               required
             />
           </div>
-
           <label className="label">Sub-Category</label>
-
-          <div className="f-inputs" style={{ display: "flex" }}>
+          <div style={{ display: "flex",marginTop:"10px" }}>
             <input
               className="input-auth"
               type="text"

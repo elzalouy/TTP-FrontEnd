@@ -34,6 +34,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const onSubChange = (e: any) => {
     setSubCategory(e.target.value);
   };
+
   const addSubCategory = (e: any) => {
     if (subCategories.length === 0)
       setsubCategories([{ _id: uuidv4(), subCategory }]);
@@ -46,6 +47,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const removeSubCategory = (id: any) => {
     setsubCategories(subCategories.filter((element) => element._id !== id));
   };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const body = {
@@ -57,6 +59,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
     };
     try {
       await dispatch(updateCategory(body));
+      setsubCategories([]);
       handleSetDisplay("none");
     } catch (error: any) {
       setErrors(error.message);
@@ -83,7 +86,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
 
         <div>
           <label className="popup-label">Sub-category</label>
-          <div className="f-inputs" style={{ display: "flex" }}>
+          <div style={{ display: "flex" }}>
             <input
               className="input-auth"
               type="text"
