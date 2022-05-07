@@ -16,15 +16,15 @@ type Props = {
   department: Department;
 };
 const colors: any = {
-  "blue": "#b5b5ff",
-  "orange": "#ffa5009e",
+  "blue": "#E1EDF6",
+  "orange": "#F7F0E7",
   "green": "#00800069",
-  "red": "#ff000052",
-  "purple": "#8000806e",
+  "red":"#F3E8E7",
+  "purple": "#EFEBF2",
   "pink": "pink",
   "lime": "#00ff0036",
-  "sky": "sky",
-  "grey": "#80808063"
+  "sky": "#E1F3F7",
+  "grey": "#E1EDF6"
 }
 const DepartmentCard: React.FC<Props> = ({
   backgroundColor,
