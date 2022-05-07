@@ -16,15 +16,15 @@ type Props = {
   department: Department;
 };
 const colors: any = {
-  "blue": "#E1EDF6",
-  "orange": "#F7F0E7",
-  "green": "#00800069",
-  "red":"#F3E8E7",
-  "purple": "#EFEBF2",
-  "pink": "pink",
-  "lime": "#00ff0036",
-  "sky": "#E1F3F7",
-  "grey": "#E1EDF6"
+  "blue": ["#E1EDF6","#0079BF"],
+  "orange": ["#F7F0E7","#D29034"],
+  "green": ["#00800069","#519839"],
+  "red":["#F3E8E7","#B04632"],
+  "purple": ["#EFEBF2","#89609E"],
+  "pink": ["pink","#CD5A91"],
+  "lime": ["#00ff0036","#4BBF6B"],
+  "sky": ["#E1F3F7","#00AECC"],
+  "grey": ["#E1EDF6","#838C91"]
 }
 const DepartmentCard: React.FC<Props> = ({
   backgroundColor,
@@ -47,9 +47,9 @@ const DepartmentCard: React.FC<Props> = ({
   return (
     <div
       className="department-Card"
-      style={{ backgroundColor: colors[department.color] }}
+      style={{ backgroundColor: colors[department.color][0], }}
     >
-      <div className="dp-card-header" style={{ color: fontColor }}>
+      <div className="dp-card-header" style={{ color: colors[department.color][1]}}>
         <h2>{department.name}</h2>
         <p>
           {role !== "PM" && <DepartmentDrop
@@ -63,7 +63,7 @@ const DepartmentCard: React.FC<Props> = ({
           <div
             className="teamName-badge"
             key={team._id}
-            style={{ borderColor: fontColor }}
+            style={{ borderColor: colors[department.color][1] }}
           >
             {team.name}
           </div>
