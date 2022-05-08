@@ -8,10 +8,11 @@ export const signIn = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let result = await api.signIn(args?.data);
-      if (result.ok === true) {
+      if (result.ok) {
         args.history.push("/Overview");
         return result.data;
-      } else throw "Error happened";
+      }
+      throw "Error happened";
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);

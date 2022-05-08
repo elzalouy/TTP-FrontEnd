@@ -47,17 +47,17 @@ const Login: React.FC<Props> = ({ history }) => {
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
 
-  // useEffect(() => {
-  //   if (res.msg && res.status !== 200) {
-  //     setFailed({
-  //       message: res.msg,
-  //       status: res.status,
-  //     });
-  //   }
-  //   if (isAuth === true) {
-  //     history.replace("/Overview");
-  //   }
-  // }, [watch]);
+  useEffect(() => {
+    if (res.msg && res.status !== 200) {
+      setFailed({
+        message: res.msg,
+        status: res.status,
+      });
+    }
+    if (isAuth === true) {
+      history.replace("/Overview");
+    }
+  }, [watch]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     dispatch(
@@ -71,9 +71,9 @@ const Login: React.FC<Props> = ({ history }) => {
     );
   };
 
-  // if (isAuth) {
-  //   return <Redirect to={"/Overview"} />;
-  // }
+  if (isAuth) {
+    return <Redirect to={"/Overview"} />;
+  }
 
   return (
     <Grid

@@ -12,17 +12,33 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let { start } = getStartEndDayOfWeek(new Date());
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
-      if (projects && tasks) {
+      //projects
+      if (projects && projects?.length > 0) {
         state.NoCompletedProjects = projects.filter(
           (item) => item.projectStatus === "done"
-        ).length;
-        state.NoCompletedTasks = tasks.filter(
-          (item) => item.status === "done"
         ).length;
         state.PercentCompletedProjects =
           (projects.filter((item) => item.projectStatus === "done").length /
             projects.length) *
           100;
+        state.NoCurruntProjects = projects.filter(
+          (item) => item.projectStatus === "inProgress"
+        ).length;
+        state.PercentCurrentProjects =
+          (projects.filter((item) => item.projectStatus === "inProgress")
+            .length /
+            projects.length) *
+          100;
+        state.NoCompletedTasks = tasks.filter(
+          (item) => item.status === "done"
+        ).length;
+      } else {
+        state.NoCompletedProjects = 0;
+        state.NoCurruntProjects = 0;
+        state.PercentCompletedProjects = 0;
+        state.PercentCurrentProjects = 0;
+      }
+      if (tasks && tasks?.length > 0) {
         state.PercentCompletedTasks =
           (tasks.filter((item) => item.status === "done").length /
             tasks.length) *
@@ -33,16 +49,13 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         });
         state.NoNewTasks = newTasks.length;
         state.PercentNoNewTasks = (newTasks.length / tasks.length) * 100;
-        state.NoCurruntProjects = projects.filter(
-          (item) => item.projectStatus === "inProgress"
-        ).length;
-        state.PercentCurrentProjects =
-          (projects.filter((item) => item.projectStatus === "inProgress")
-            .length /
-            projects.length) *
-          100;
-        state.loading = false;
+      } else {
+        state.NoCompletedTasks = 0;
+        state.NoNewTasks = 0;
+        state.PercentCompletedTasks = 0;
+        state.PercentNoNewTasks = 0;
       }
+      state.loading = false;
     },
   },
 });
