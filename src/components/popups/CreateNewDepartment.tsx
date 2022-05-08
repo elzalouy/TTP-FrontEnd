@@ -114,7 +114,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <p>Create new department</p>
       </div>
       <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
-        test
         <div>
           <img
             className="closeIcon"
