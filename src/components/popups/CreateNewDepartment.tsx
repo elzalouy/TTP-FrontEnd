@@ -54,7 +54,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
     })
     setNames([])
     setData("")
-  },[])
+  },[Show])
   const { name, color, teams, mainBoard } = formData;
   let teamsData = useAppSelector(selectAllMembers);
   const handleSelectTeam = () => {
@@ -141,7 +141,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         />
 
         <label className="popup-label">Color</label>
-        <select className="popup-select" name="color" onChange={handleChange}>
+        <select className="popup-select" name="color" onChange={handleChange} value={formData.color}>
           {colors.map((item: string, i: number) => (
             <option key={i} value={item}>
               {item}

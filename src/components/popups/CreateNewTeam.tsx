@@ -26,7 +26,7 @@ const AddNewTeam: React.FC<Props> = () => {
       name: "", department: ""
     })
     setAllTeam([])
-  },[])
+  },[Show])
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
