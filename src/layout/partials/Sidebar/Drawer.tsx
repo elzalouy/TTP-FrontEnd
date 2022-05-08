@@ -128,21 +128,9 @@ const AppDrawer: React.FC = (props: any) => {
               key="2"
               onClick={() => history.push("/Departments")}
               path={"/Departments"}
-              Icon={() => <DepartmentIcon />}
+              Icon={() => <ProjectsIcon />}
               text="Departments"
             />
-            {role !== "PM" && (
-              <DrawerItem
-                {...props}
-                select={props.select}
-                open={props.open}
-                key="7"
-                onClick={() => history.push("/ProjectManagers")}
-                path={"/ProjectManagers"}
-                src={IMAGES.person}
-                text="Project Managers"
-              />
-            )}
             {role !== "PM" && (
               <DrawerItem
                 {...props}

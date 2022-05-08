@@ -18,8 +18,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
   Logout as LogoutIcon,
-  PersonOffOutlined as PersonIcon,
-  Close as Close
+  Close as Close,
 } from "@mui/icons-material";
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
@@ -33,6 +32,13 @@ import {
 } from "../../../redux/Auth";
 import { RouteComponentProps, useHistory } from "react-router";
 import { useAppSelector } from "../../../redux/hooks";
+import Overviewicon from "../../../assets/icons/Overview";
+import PersonIcon from "../../../assets/icons/Person";
+import CategoryIcon from "../../../assets/icons/CategoryIcon";
+import ClientIcon from "../../../assets/icons/ClientIcon";
+import NotificationIcon from "../../../assets/icons/Notification";
+import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
+import TaskIcon from "../../../assets/icons/TaskIcon";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";
@@ -82,7 +88,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
             }}
           >
             <IconButton onClick={() => props.setOpen(!props.open)}>
-                <Close htmlColor="#000000" />
+              <Close htmlColor="#000000" />
             </IconButton>
           </DrawerHeader>
           <List>
@@ -92,6 +98,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               open={props.open}
               key="0"
               onClick={() => history.push("/Overview")}
+              Icon={() => <Overviewicon />}
               path={"/Overview"}
               src={IMAGES.Overviewicon}
               text="Overview"
@@ -102,6 +109,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               open={props.open}
               key="1"
               onClick={() => history.push("/projects")}
+              Icon={() => <ProjectsIcon />}
               path={"/projects"}
               src={IMAGES.projectsicon}
               text="Projects"
@@ -114,6 +122,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               onClick={() => history.push("/Departments")}
               path={"/Departments"}
               src={IMAGES.departments}
+              Icon={() => <ProjectsIcon />}
               text="Departments"
             />
             {role !== "PM" && (
@@ -124,6 +133,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
                 key="7"
                 onClick={() => history.push("/ProjectManagers")}
                 path={"/ProjectManagers"}
+                Icon={() => <PersonIcon />}
                 src={IMAGES.person}
                 text="Project Managers"
               />
@@ -135,6 +145,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               key="3"
               onClick={() => history.push("/Clients")}
               path={"/Clients"}
+              Icon={() => <ClientIcon />}
               src={IMAGES.clients}
               text="Clients"
             />
@@ -145,6 +156,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               key="4"
               onClick={() => history.push("/TasksList")}
               path={"/TasksList"}
+              Icon={() => <TaskIcon />}
               src={IMAGES.tasks}
               text="Tasks"
             />
@@ -155,6 +167,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               key="5"
               onClick={() => history.push("/Categories")}
               path={"/Categories"}
+              Icon={() => <CategoryIcon />}
               src={IMAGES.categories}
               text="Category"
             />
@@ -180,6 +193,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               onClick={() => history.push("/notifications")}
               path={"/notifications"}
               src={IMAGES.notification}
+              Icon={() => <NotificationIcon />}
               text="Notifications"
             />
           </List>

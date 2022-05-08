@@ -162,3 +162,10 @@ select.select-filter {
   height: 0px;
   /* width of the entire scrollbar */
 }
+
+@media (max-width:600px) {
+  .all-departments{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

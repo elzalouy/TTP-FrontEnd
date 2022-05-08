@@ -407,3 +407,13 @@ table.allTeam-table td.deleteTd {
 .input-auth {
   color: #000;
 }
+
+@media (max-width:700px) {
+  .inputs-grid{
+    grid-template-columns: 1fr;
+  } 
+  .controllers{
+    margin-top: 20px;
+  }
+}
+

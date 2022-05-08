@@ -1,6 +1,6 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import UserName from "./Name";
 import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
@@ -13,17 +13,19 @@ import IMAGES from "../../assets/img";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAppSelector } from "../../redux/hooks";
-import { selectRole } from "../../redux/Auth";
+import { selectRole, selectUser } from "../../redux/Auth";
+import { getPMs } from "../../redux/PM";
+import { getAllProjects, getAllTasks } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
 const OverView: FC<Props> = (props) => {
-<<<<<<< HEAD
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const [user, setUser] = useState("operation manager");
+  const userName = useAppSelector(selectUser);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -33,9 +35,6 @@ const OverView: FC<Props> = (props) => {
     dispatch(getAllTasks(null));
   }, []);
 
-=======
-  const [user, setUser] = useState("project manager");
->>>>>>> main
   return (
     <>
       <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
@@ -60,7 +59,7 @@ const OverView: FC<Props> = (props) => {
                 display: "inline-flex",
               }}
             >
-              <UserName loading={false} name="Ezat Elzalouy" />
+              <UserName loading={false} name={userName.user?.name === undefined ? userName.name : userName.user.name} />
             </Box>
             <Typography
               color="#171725"

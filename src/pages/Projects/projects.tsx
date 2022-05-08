@@ -49,6 +49,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const { register, watch, control, setValue } = useForm();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.up("md"));
 
   const onHandleChange = (e: any) => {
     let data = watch();
@@ -84,8 +85,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       paddingTop={SM ? 10 : 6}
     >
       <Grid container xs={12} justifyContent="flex-start" direction={"row"}>
-        <Grid item xs={6} marginBottom={4}>
-          <Typography variant="h3" fontFamily={"Cairo"}>
+        <Grid item xs={6} lg={2} marginBottom={4}>
+          <Typography variant="h3" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
@@ -95,7 +96,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             sx={{ bgcolor: "white", borderRadius: 4 }}
             width={38}
             height={38}
-            paddingTop={1.2}
+            paddingTop={SM ? 1.1 : 1.2}
           >
             <img
               src={IMAGES.filtericon}
@@ -104,7 +105,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             />
           </Box>
         </Grid>
-        {filter && (
+        {filter || MD && (
           <>
             <Grid marginX={1} marginY={1} item>
               <Controller
@@ -160,7 +161,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 )}
               />
             </Grid>
-            <Grid marginX={1} item>
+            <Grid marginX={1} marginY={1} item>
               <Controller
                 name="clientId"
                 control={control}
@@ -192,7 +193,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 )}
               />
             </Grid>
-            <Grid marginX={1} item>
+            <Grid marginX={1} marginY={1} item>
               <Controller
                 name="projectStatus"
                 control={control}
@@ -234,7 +235,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             </Grid>
           </>
         )}
-        <Grid xs={12} marginX={1} marginY={2} item>
+        <Grid xs={12} lg={4} marginX={1} marginY={1} item>
           <Controller
             name="name"
             control={control}
