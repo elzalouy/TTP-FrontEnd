@@ -5,3 +5,4 @@ export const selectAllCategories = (state: RootState) =>
 
 export const selectSelectedCategory = (state: RootState) =>
   state?.categories?.selectedCategory;
+

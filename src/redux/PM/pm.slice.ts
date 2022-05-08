@@ -1,5 +1,5 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { getPMs, createPM, updatePM, deletePM, updatePMpassword } from "./pm.actions";
+import { getPMs, createPM, updatePM, deletePM, updatePMpassword, resetPMpassword, resendMail } from "./pm.actions";
 import initialState, { ProjectManagersInterface } from "./pm.state";
 
 const PMSlice: Slice<ProjectManagersInterface> = createSlice({
@@ -76,6 +76,31 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
       } else {
         state.PMs = payload;
       }
+    });
+    builder.addCase(resetPMpassword.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(resetPMpassword.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(resetPMpassword.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      if (payload.msg && payload.status) {
+        state.Payload = {
+          msg: payload.msg, status: payload.status
+        }
+      } else {
+        state.PMs = payload;
+      }
+    });
+    builder.addCase(resendMail.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(resendMail.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(resendMail.fulfilled, (state, { payload }) => {
+      state.loading = false;
     });
   },
 });

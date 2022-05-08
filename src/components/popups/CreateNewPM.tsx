@@ -12,33 +12,42 @@ const AddNewPM: React.FC<Props> = () => {
   const [show, setShow] = useState("none");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [emailFormat, setEmailFormat] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [validationError, setValidationError] = useState<boolean>(false);
   const dispatch = useDispatch();
   const PMs = useAppSelector(selectPMs);
+  const pattern = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+
 
   const createNewUser = () => {
-    if (!username || !email) {
-      setError(true);
+    let validate = pattern.test(email);
+    if (!validate) {
+      setEmailFormat(true);
     } else {
-      let emailArr = PMs.map((pm) => pm.email);
-      let validate = emailArr.find((e) => e === email);
-      if (validate) {
-        setValidationError(true);
-        return;
+      if (!username || !email) {
+        setError(true);
+      } else {
+        let emailArr = PMs.map((pm) => pm.email);
+        let validate = emailArr.find((e) => e === email);
+        if (validate) {
+          setValidationError(true);
+          return;
+        }
+        dispatch(
+          createPM({
+            name: username,
+            email: email,
+            role: "PM",
+            type: "user",
+          })
+        );
+        setError(false);
+        setShow("none");
+        setUsername("");
+        setEmail("");
+        setEmailFormat(false);
       }
-      dispatch(
-        createPM({
-          name: username,
-          email: email,
-          role: "PM",
-          type:"user"
-        })
-      );
-      setError(false);
-      setShow("none");
-      setUsername("");
-      setEmail("");
     }
   };
 
@@ -65,6 +74,7 @@ const AddNewPM: React.FC<Props> = () => {
               setError(false);
               setUsername("");
               setEmail("");
+              setEmailFormat(false);
             }}
           />
         </div>
@@ -78,6 +88,9 @@ const AddNewPM: React.FC<Props> = () => {
             <p className="popup-error">
               This user already exist , please try a different email
             </p>
+          )}
+          {emailFormat && (
+            <p className="popup-error">Please enter a valid email format</p>
           )}
           <label className="popup-label">Project manager name</label>
           <input
@@ -99,6 +112,7 @@ const AddNewPM: React.FC<Props> = () => {
             onChange={(e) => {
               setEmail(e.target.value);
               setError(false);
+              setEmailFormat(false);
             }}
           />
         </div>

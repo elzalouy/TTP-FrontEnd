@@ -19,6 +19,7 @@ import TasksIcon from "../../assets/icons/TasksIcon";
 import { AssignmentOutlined as AddignmentIcon } from "@mui/icons-material";
 import { getPMs } from "../../redux/PM";
 import { Controller, useForm } from "react-hook-form";
+import TaskIcon from "../../assets/icons/TaskIcon";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -30,14 +31,14 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const { control, register, reset, watch } = useForm();
   useEffect(() => {
-    dispatch(getProject(`?_id=${props.match.params.id}`));
-    dispatch(
-      getTasks({
-        url: `?projectId=${props?.match?.params.id}`,
-        projectId: props?.match?.params.id,
-      })
-    );
-    dispatch(getPMs(null));
+    // dispatch(getProject(`?_id=${props.match.params.id}`));
+    // dispatch(
+    //   getTasks({
+    //     url: `?projectId=${props?.match?.params.id}`,
+    //     projectId: props?.match?.params.id,
+    //   })
+    // );
+    dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, []);
   const onHandleSort = (e: any) => {
     let data = watch();
@@ -103,15 +104,19 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
             sx={{ cursor: "pointer" }}
             onClick={() => props.history.push("/TasksList")}
             className="task-option"
+            justifyContent={"center"}
+            alignItems="center"
           >
-            <span style={{ fontWeight: "bold", padding: "0 10px" }}>
-              <AddignmentIcon
-                htmlColor="#000000"
-                fontSize="inherit"
-                sx={{ marginRight: 1 }}
-              />
+            <TaskIcon stroke="black" />
+            <Typography
+              fontWeight={"600"}
+              fontSize={14}
+              variant="h6"
+              paddingTop={0.5}
+              paddingLeft={1}
+            >
               Task view List
-            </span>
+            </Typography>
           </Box>
         </Box>
       </Grid>

@@ -21,7 +21,15 @@ export const createDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.createDepartment(data);
       if (department.ok && department.data) {
-        toast("Department created successfully");
+         toast.success("Department created successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return { ...data, teamsId: data.teams };
       } else return [];
     } catch (error) {
@@ -36,7 +44,15 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.updateDepartment(data);
       if (department.ok && department.data) {
-        toast("Department updated successfully");
+         toast.success("Department updated successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return { ...data };
       } else return [];
     } catch (error) {
@@ -51,7 +67,15 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.deleteDepartment(data);
       if (department.ok && department.data) {
-        toast("Department updated successfully");
+         toast.success("Department deleted successfully",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         return { ...data };
       } else return [];
     } catch (error) {

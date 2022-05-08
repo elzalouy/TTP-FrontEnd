@@ -4,11 +4,12 @@ import NOtifiApi from "../../services/endpoints/notification";
 
 export const getAllNotifi = createAsyncThunk<any, any, any>(
   "notifi/getAllNotifi",
-  async (id:string, { rejectWithValue }) => {
+  async (data:{id:string,skip:number}, { rejectWithValue,getState}:any) => {
     try {
-      let result = await NOtifiApi.getNotifi(id);
+      const {Auth} = getState()
+      let result = await NOtifiApi.getNotifi(data);
       if (result.data) {
-        return result.data;
+        return {data:result.data,role:Auth.User.role};
       } else return [];
     } catch (error) {
       rejectWithValue(error);

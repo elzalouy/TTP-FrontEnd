@@ -7,7 +7,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import { selectPayload, selectPMs, updatePMpassword } from "../../redux/PM";
+import { resetPMpassword, selectPayload, selectPMs } from "../../redux/PM";
 import { selectAuth, selectIsAuth } from "../../redux/Auth";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
 interface IFormInputs {
   newPassword: string;
-  oldPassword: string;
+  confirmNewPassword: string;
 }
 
 interface IParam {
@@ -38,25 +38,30 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
     formState: { errors },
   } = useForm<IFormInputs>();
   const [visible, setVisible] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [failed, setFailed] = useState<IFailed>({
     status: false,
     message: "",
   });
-
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    dispatch(
-      updatePMpassword({
-        id: `Bearer ${token}`,
-        password: data.newPassword,
-        oldPassword: data.oldPassword,
-      })
-    );
-    history.replace("/");
+    let pattern = new RegExp(data.newPassword);
+    if (pattern.test(data.confirmNewPassword)) {
+      setPasswordError(false);
+      dispatch(
+        resetPMpassword({
+          id: `Bearer ${token}`,
+          password: data.newPassword,
+        })
+      );
+      history.replace("/");
+    } else {
+      setPasswordError(true);
+    }
   };
 
   useEffect(() => {
@@ -92,7 +97,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         sm={11}
         md={8}
         lg={8}
-        height={550}
+        height={650}
         container
         direction="row"
         sx={{
@@ -138,32 +143,6 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                 fontFamily={"Cairo"}
                 color="#000000"
               >
-                Old Password
-              </Typography>
-              <Controller
-                name="oldPassword"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    {...register("oldPassword", { required: true })}
-                    type="password"
-                    className="f-inputs"
-                    placeholder="Enter your old password"
-                    onChange={() => setFailed({ message: "", status: false })}
-                  />
-                )}
-              />
-              {errors.oldPassword?.type === "required" && (
-                <p className="error-text">Please enter your old password</p>
-              )}
-              <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-              >
                 New Password
               </Typography>
               <Controller
@@ -172,7 +151,13 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                 render={({ field }) => (
                   <input
                     {...field}
-                    {...register("newPassword", { required: true })}
+                    {...register("newPassword", {
+                      required: true,
+                      minLength: {
+                        value: 8,
+                        message: "Your password is less than 8 characters",
+                      },
+                    })}
                     type="password"
                     className="f-inputs"
                     placeholder="Enter your new password"
@@ -182,6 +167,43 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
               />
               {errors.newPassword?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
+              )}
+              {errors.newPassword?.message && (
+                <p className="error-text">{errors.newPassword?.message}</p>
+              )}
+              <Typography
+                variant={"h5"}
+                fontWeight={"700"}
+                paddingTop={3.5}
+                fontFamily={"Cairo"}
+                color="#000000"
+              >
+                Confirm New Password
+              </Typography>
+              <Controller
+                name="newPassword"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    {...register("confirmNewPassword", { required: true })}
+                    type="password"
+                    className="f-inputs"
+                    placeholder="Enter your new password"
+                    onChange={() => setFailed({ message: "", status: false })}
+                  />
+                )}
+              />
+              {errors.confirmNewPassword?.type === "required" && (
+                <p className="error-text">
+                  Please enter your new password again
+                </p>
+              )}
+              {passwordError && (
+                <p className="error-text">
+                  Your passwords do not match , Please Re-enter your new
+                  password
+                </p>
               )}
               <Button
                 sx={{

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
-import { useState } from "react";
 import "./popups-style.css";
 import { Controller, useForm } from "react-hook-form";
 import { useAppSelector } from "../../redux/hooks";
@@ -70,7 +69,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    {...props}
+                    // {...props}
                     defaultValue={project?.name}
                     onChange={props.field.onChange}
                     className="popup-input"
@@ -89,17 +88,18 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 render={(props) => (
                   <select
                     defaultChecked
-                    {...props}
+                    // {...props}
                     onChange={props.field.onChange}
                     className="popup-select"
                     defaultValue={project?.clientId}
                   >
                     <option>Select</option>
                     {clients &&
-                      clients.map((item) => (
+                      clients.map((item,i) => (
                         <option
                           selected={props.field.value === item.clientId}
                           value={item.clientId}
+                          key={i}
                         >
                           {item.clientName}
                         </option>
@@ -115,7 +115,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    {...props}
+                    // {...props}
                     defaultValue={
                       project?.projectDeadline
                         ? new Date(project?.projectDeadline).toISOString()
@@ -136,7 +136,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 render={(props) => (
                   <select
                     className="popup-select"
-                    {...props}
+                    // {...props}
                     onChange={props.field.onChange}
                     defaultValue={project?.projectStatus}
                   >
@@ -149,10 +149,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         value: "delivered defore deadline",
                         text: "delivered defore deadline",
                       },
-                    ].map((item) => (
+                    ].map((item,i) => (
                       <option
                         value={item.value}
                         selected={item.value === props.field.value}
+                        key={i}
                       >
                         {item.value}
                       </option>
@@ -168,17 +169,18 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <select
-                    {...props}
+                    // {...props}
                     onChange={props.field.onChange}
                     className="popup-select"
                     defaultValue={project?.projectManager?._id}
                   >
                     <option value=""> Select</option>
                     {PMs?.length > 0 &&
-                      PMs.map((item) => (
+                      PMs.map((item,i) => (
                         <option
                           selected={props.field.value === item._id}
                           value={item?._id}
+                          key={i}
                         >
                           {item?.name}
                         </option>
@@ -194,7 +196,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <textarea
-                    {...props}
+                    // {...props}
                     onChange={props.field.onChange}
                     maxLength={75}
                     className="popup-textarea"

@@ -159,7 +159,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
 
         <p className="popup-title">Edit department</p>
 
-        <label className="popup-label">"Department name"</label>
+        <label className="popup-label">Department name</label>
         <input
           className="popup-input"
           type="text"

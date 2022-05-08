@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
+import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { useAppSelector } from "../../redux/hooks";
 import { Project, Task } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
@@ -11,7 +12,7 @@ import "./taskCard.css";
 interface DataTypes {
   index: number;
   item: Task;
-  project: Project | null;
+  project: Project | null | undefined;
   footerStyle: string;
 }
 
@@ -56,9 +57,9 @@ const TaskCard: React.FC<DataTypes> = ({
             alignItems="center"
           >
             <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
-            <Typography style={{ padding: "12px" }}>
-              <img src={IMAGES.moreGrey} alt="more" />
-            </Typography>
+            {item.status !== "not clear" && item.status !== "cancled" && (
+              <TasksPopover item={item} />
+            )}
           </Stack>
           <Box>
             <Typography color={"#696974"}>

@@ -58,10 +58,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       projectManager: data.projectManager,
       projectStatus: data.projectStatus,
     };
-    console.log(filter);
     dispatch(filterProjects(filter));
   };
-  console.log(role);
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjects(data.deadline));
@@ -69,9 +67,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
 
   useEffect(() => {
     setValue("name", "");
-    dispatch(getAllProjects(null));
-    dispatch(getPMs(null));
   }, []);
+  
   useEffect(() => {
     dispatch(getAllProjects(null));
   }, [isDelete]);
@@ -92,7 +89,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid xs={6} marginX={0} marginY={0} item>
+        <Grid marginX={1} item marginY={1}>
           <Box
             textAlign={"center"}
             sx={{ bgcolor: "white", borderRadius: 4 }}

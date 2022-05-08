@@ -7,7 +7,9 @@ import {
   deleteProject,
   deleteProjectTasks,
   deleteTask,
+  deleteTasks,
   editProject,
+  editTask,
   filterProjects,
   filterTasks,
   getAllProjects,
@@ -83,6 +85,21 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           new Date(a.deadline) > new Date(b.deadline) ? -1 : 1
         );
       state.selectedProject.tasks = tasks;
+    },
+    onSetSelectedProject: (state, action) => {
+      state.selectedProject.loading = true;
+      let id = action.payload;
+      let tasks = [...state.allTasks].filter((item) => item.projectId === id);
+      let project = state.projects.find((item) => item._id === id);
+      state.selectedProject.project = project;
+      state.selectedProject.tasks = tasks;
+      state.selectedProject.loading = false;
+    },
+    onEditTask: (state, action) => {
+      state.editTask = action.payload;
+    },
+    onDeleteTask: (state, action) => {
+      state.deleteTask = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -203,6 +220,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(deleteProject.fulfilled, (state, action) => {
       state.loading = false;
+      state.projects = [...state.projects].filter(
+        (item) => item._id !== state.deleteProject
+      );
       state.deleteProject = "";
     });
     builder.addCase(deleteProject.pending, (state, action) => {
@@ -219,8 +239,16 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(deleteTask.fulfilled, (state, action) => {
       let tasks = [...state.newProject.tasks];
-      tasks = tasks.filter((item) => item._id !== action.payload._id);
+      tasks = tasks.filter((item) => item._id !== action.payload?._id);
       state.newProject.tasks = tasks;
+      let selectedProjectTasks = [...state.selectedProject.tasks];
+      selectedProjectTasks = selectedProjectTasks.filter(
+        (item) => item._id !== action.payload?._id
+      );
+      state.selectedProject.tasks = selectedProjectTasks;
+      state.allTasks = [...state.allTasks].filter(
+        (item) => item._id !== action.payload?._id
+      );
       state.loading = false;
     });
     builder.addCase(editProject.fulfilled, (state, action) => {
@@ -231,6 +259,42 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(editProject.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteTasks.fulfilled, (state, action) => {
+      state.loading = false;
+      let all = [...state.allTasks];
+      all = _(all).keyBy("id").at(action.payload).filter().value();
+      console.log(all);
+    });
+    builder.addCase(deleteTasks.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTasks.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(editTask.fulfilled, (state, action) => {
+      state.editTask = undefined;
+      let tasks = [...state.allTasks];
+      let index = tasks.findIndex((item) => item._id === action.payload?._id);
+      console.log(action.payload, index);
+      if (index >= 0) {
+        tasks[index] = action.payload;
+        state.allTasks = [...tasks];
+      }
+      let selectedProject = { ...state.selectedProject };
+      let i = selectedProject.tasks.findIndex(
+        (item) => item._id === action.payload?._id
+      );
+      if (i >= 0) {
+        selectedProject.tasks[i] = action.payload;
+        state.selectedProject = selectedProject;
+      }
+    });
+    builder.addCase(editTask.rejected, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(editTask.pending, (state, action) => {
       state.loading = true;
     });
   },

@@ -64,3 +64,7 @@ export const selectSharedTasks = (state: RootState) =>
     (item) => item.status === "shared"
   );
 export const selectTasks = (state: RootState) => state.projects.allTasks;
+export const selectEditTaskValues = (state: RootState) =>
+  state.projects.editTask;
+export const selectedDeleteTaskId = (state: RootState) =>
+  state.projects.deleteTask;

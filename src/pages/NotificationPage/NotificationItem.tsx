@@ -66,7 +66,7 @@ const NotificationItem = ({notifiData}: Props) => {
                   component="div"
                   sx={{ fontWeight: "bold" }}
                 >
-                  {item?.projectManagerID?.name}
+                  {item?.title}
                 </Typography>
               </Grid>
               <Grid item container xs={12}>
@@ -95,21 +95,14 @@ const NotificationItem = ({notifiData}: Props) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid item xs={12} sx={{ color: "#403f3f" }}>
+              <Grid item xs={12} sx={{ color: "#403f3f",wordBreak: 'break-all' }}>
                 {item?.description}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       ))}
-      {/* <Grid item xs={6} textAlign="center">
-        <Button
-          variant="contained"
-          sx={{ textTransform: "capitalize", pr: "2em", pl: "2em" }}
-        >
-          Load More
-        </Button>
-      </Grid> */}
+
     </Grid>
   );
 };

@@ -4,9 +4,12 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import Badge from "@mui/material/Badge";
 import * as React from "react";
 
-const DrawerItem: React.FC = (props: any) => {
+
+const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
+
   return (
     <ListItemButton
       key={props.key}
@@ -28,7 +31,9 @@ const DrawerItem: React.FC = (props: any) => {
           justifyContent: "center",
         }}
       >
-        <img src={props.src} />
+        <Badge badgeContent={props.padge} color="error">
+          {Icon && <Icon />}
+        </Badge>
       </ListItemIcon>
       <ListItemText
         sx={{

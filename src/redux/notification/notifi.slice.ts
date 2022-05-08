@@ -9,10 +9,10 @@ const notifiSlice: Slice<Notifis> = createSlice({
   reducers: {
     onSort: (state, { payload }) => {},
     onSearch: (state, { payload }) => {},
-    updateCounter:(state,{payload}) => {
-      state.counter = state.counter + 1
-      state.notifi = [payload,...state.notifi]
-    }
+    updateCounter: (state, { payload }) => {
+      state.counter = state.counter + 1;
+      state.notifi = [payload, ...state.notifi];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllNotifi.rejected, (state) => {
@@ -24,8 +24,14 @@ const notifiSlice: Slice<Notifis> = createSlice({
     builder.addCase(
       getAllNotifi.fulfilled,
       (state, action: PayloadAction<any>) => {
+        let counter = action.payload.data.filter((item: any) =>
+          action.payload.role === "OM"
+            ? !item.adminViewed
+            : !item.projectManagerViewed
+        );
         state.loading = false;
-        state.notifi = action.payload
+        state.notifi = [...state.notifi ,...action.payload.data];
+        state.counter = counter.length;
       }
     );
     builder.addCase(updateNotifi.rejected, (state) => {
@@ -38,7 +44,7 @@ const notifiSlice: Slice<Notifis> = createSlice({
       updateNotifi.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.counter = 0
+        state.counter = 0;
       }
     );
   },

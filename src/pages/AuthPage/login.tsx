@@ -8,7 +8,12 @@ import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { selectAuth, selectIsAuth, selectResponse, signIn } from "../../redux/Auth";
+import {
+  selectAuth,
+  selectIsAuth,
+  selectResponse,
+  signIn,
+} from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 interface Props {
   history: RouteComponentProps["history"];
@@ -17,8 +22,8 @@ interface Props {
 }
 
 interface IFailed {
-  status : number | string | boolean;
-  message : string;
+  status: number | string | boolean;
+  message: string;
 }
 
 interface IFormInputs {
@@ -34,26 +39,27 @@ const Login: React.FC<Props> = ({ history }) => {
     register,
   } = useForm<IFormInputs>();
   const dispatch = useDispatch();
-  const [failed , setFailed] = useState<IFailed>({
-    status:false , message:""
+  const [failed, setFailed] = useState<IFailed>({
+    status: false,
+    message: "",
   });
   const watch = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
-  
-  useEffect(()=>{
-    if(res.msg && res.status !== 200){
+
+  useEffect(() => {
+    if (res.msg && res.status !== 200) {
       setFailed({
-        message:res.msg,status:res.status
+        message: res.msg,
+        status: res.status,
       });
     }
-    if(isAuth){
-      history.replace("/Overview")
+    if (isAuth) {
+      history.replace("/Overview");
     }
-  },[watch]);
+  }, [watch]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-
     dispatch(
       signIn({
         email: data.email,
@@ -62,8 +68,8 @@ const Login: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(isAuth){
-    return <Redirect to={"/Overview"}/>
+  if (isAuth) {
+    return <Redirect to={"/Overview"} />;
   }
 
   return (
@@ -109,7 +115,11 @@ const Login: React.FC<Props> = ({ history }) => {
           >
             Login to your account
           </Typography>
-          {failed.status && <p className="error-text">Login was unsuccessful : {failed.message}</p>}
+          {failed.status && (
+            <p className="error-text">
+              Login was unsuccessful : {failed.message}
+            </p>
+          )}
           <Typography
             variant={"h5"}
             fontWeight={"700"}
@@ -130,9 +140,12 @@ const Login: React.FC<Props> = ({ history }) => {
                 autoComplete="false"
                 className="f-inputs"
                 placeholder="Example@somemail.com"
-                onChange={()=>setFailed({
-                  message:"",status:false
-                })}
+                onChange={() =>
+                  setFailed({
+                    message: "",
+                    status: false,
+                  })
+                }
               />
             )}
           />
@@ -157,9 +170,12 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...register("password", { required: true })}
                 type="password"
                 className="f-inputs"
-                onChange={()=>setFailed({
-                  message:"",status:false
-                })}
+                onChange={() =>
+                  setFailed({
+                    message: "",
+                    status: false,
+                  })
+                }
                 placeholder="Enter your password"
               />
             )}

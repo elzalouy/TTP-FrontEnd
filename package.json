@@ -2,7 +2,7 @@
   "name": "ttp-frontend",
   "version": "0.1.0",
   "engines": {
-    "node": "16.14.0"
+    "node": "16.15.0"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +32,6 @@
     "@types/react-color": "^3.0.6",
     "@types/react-data-grid": "^4.0.8",
     "@types/react-dom": "^16.9.8",
-    "@types/react-redux": "^7.1.23",
     "@types/react-router-dom": "^5.3.2",
     "@types/react-toastify": "^4.1.0",
     "@types/uuid": "^8.3.4",
@@ -47,6 +46,7 @@
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-resources-to-backend": "^1.0.0",
     "install": "^0.13.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-cron": "^3.0.0",
     "npm": "^8.5.5",
@@ -62,7 +62,7 @@
     "react-redux": "^7.2.6",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.0",
     "react-select": "^5.2.2",
     "react-toastify": "^8.1.1",
     "redux-devtools-extension": "^2.13.9",
@@ -113,10 +113,11 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.24",
     "@types/styled-components": "^5.1.15",
-    "react-error-overlay": "^6.0.9"
+    "react-error-overlay": "6.0.11"
   },
   "resolutions": {
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.11"
   }
 }

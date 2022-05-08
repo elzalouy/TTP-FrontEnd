@@ -15,6 +15,17 @@ type Props = {
   fontColor: string;
   department: Department;
 };
+const colors: any = {
+  "blue": ["#E1EDF6","#0079BF"],
+  "orange": ["#F7F0E7","#D29034"],
+  "green": ["#00800069","#519839"],
+  "red":["#F3E8E7","#B04632"],
+  "purple": ["#EFEBF2","#89609E"],
+  "pink": ["pink","#CD5A91"],
+  "lime": ["#00ff0036","#4BBF6B"],
+  "sky": ["#E1F3F7","#00AECC"],
+  "grey": ["#E1EDF6","#838C91"]
+}
 const DepartmentCard: React.FC<Props> = ({
   backgroundColor,
   fontColor,
@@ -36,9 +47,9 @@ const DepartmentCard: React.FC<Props> = ({
   return (
     <div
       className="department-Card"
-      style={{ backgroundColor: backgroundColor }}
+      style={{ backgroundColor: colors[department.color][0], }}
     >
-      <div className="dp-card-header" style={{ color: fontColor }}>
+      <div className="dp-card-header" style={{ color: colors[department.color][1]}}>
         <h2>{department.name}</h2>
         <p>
           {role !== "PM" && <DepartmentDrop
@@ -52,7 +63,7 @@ const DepartmentCard: React.FC<Props> = ({
           <div
             className="teamName-badge"
             key={team._id}
-            style={{ borderColor: fontColor }}
+            style={{ borderColor: colors[department.color][1] }}
           >
             {team.name}
           </div>
@@ -61,14 +72,14 @@ const DepartmentCard: React.FC<Props> = ({
 
       <div className="counter-container">
         <div className="InProgress">
-          <p className="counter-title">In progress Project</p>
+          <p className="counter-title">In progress task</p>
           <p>{department.totalInProgress}</p>
         </div>
 
         <hr className="hrVertical" />
 
         <div className="Done">
-          <p className="counter-title">Done Project</p>
+          <p className="counter-title">Done task</p>
           <p>{department.totalDone}</p>
         </div>
       </div>

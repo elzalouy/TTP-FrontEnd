@@ -17,6 +17,7 @@ const EditCategory: React.FC<Props> = ({
   handleSetEditCatDisplay,
   editCatDisplay,
 }) => {
+
   const dispatch = useDispatch();
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const [title, setTitle] = useState<string | undefined>("");
@@ -24,13 +25,17 @@ const EditCategory: React.FC<Props> = ({
     selectedSubCategory: [],
     subCategoriesId: [],
   });
+
+
   useEffect(() => {
     setSelectedData(selectedCategory);
     setTitle(selectedCategory?.category);
   }, [selectedCategory]);
-  const [Data, setData] = useState<string>("");
-  const [Names, setNames] = useState<string[]>([]);
 
+/*   const [Data, setData] = useState<string>("");
+  const [Names, setNames] = useState<string[]>([]); */
+
+/* 
   const handleAddSubCategory = () => {
     let findIndex = selectedData.selectedSubCategory
       .map((cat: any) => cat.subCategory)
@@ -49,16 +54,16 @@ const EditCategory: React.FC<Props> = ({
       });
     }
     return;
-  };
+  }; */
 
   const handleRemoveSubCategory = (index: number) => {
-    let selectedCategory = selectedData.selectedSubCategory;
+    let selectedCategory = selectedData.subCategoriesId;
     selectedCategory = selectedCategory.filter(
       (item: any, i: number) => i !== index
     );
     setSelectedData({
       ...selectedData,
-      selectedSubCategory: selectedCategory,
+      subCategoriesId: selectedCategory,
     });
   };
 
@@ -108,7 +113,7 @@ const EditCategory: React.FC<Props> = ({
           <label className="popup-label">Sub-category</label>
           <div>
             <div className="add-teams-section">
-              <select
+             {/*  <select
                 className="popup-select"
                 onChange={(e) => {
                   console.log({ value: e.target.value });
@@ -117,15 +122,15 @@ const EditCategory: React.FC<Props> = ({
               >
                 <option value="" selected>
                   Select Sub category
-                </option>
-                {selectedData?.subCategoriesId.map((option: any) => (
+                </option> */}
+             {/*    {selectedData?.subCategoriesId.map((option: any) => (
                   <option key={option._id} value={option.subCategory}>
                     {option.subCategory}
                   </option>
-                ))}
-              </select>
+                ))} */}
+              {/* </select> */}
 
-              <button
+            {/*   <button
                 className="orange-btn"
                 onClick={() => {
                   handleAddSubCategory();
@@ -136,10 +141,10 @@ const EditCategory: React.FC<Props> = ({
                 }}
               >
                 Add
-              </button>
+              </button> */}
             </div>
             <div className="names-container">
-              {selectedData?.selectedSubCategory.map((el: any, index: any) => {
+              {selectedData?.subCategoriesId.map((el: any, index: any) => {
                 return (
                   <div className="team-name-badge" key={el._id}>
                     <p className="name-of-badge">{el.subCategory}</p>

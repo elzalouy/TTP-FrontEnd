@@ -1,11 +1,5 @@
-import { Checkbox, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -19,18 +13,15 @@ import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
-import { getPMs, selectPMs } from "../../redux/PM";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
   filterTasks,
-  getAllProjects,
-  getAllTasks,
   selectAllProjects,
   ProjectsInterface,
   ProjectsActions,
   deleteTasks,
 } from "../../redux/Projects";
-import { getAllMembers, selectAllMembers } from "../../redux/techMember";
+import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
 import "./TasksListView.css";
 
@@ -43,16 +34,9 @@ const Tasks: React.FC = (props: any) => {
   const SM = useMediaQuery(theme.breakpoints.down('sm'));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
-  React.useEffect(() => {
-    dispatch(getAllClients(null));
-    dispatch(getPMs(null));
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllMembers(null));
-    dispatch(getAllTasks(null));
-  }, []);
   const onHandleChange = (e: any) => {
+    console.log("called");
+    e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
   };
@@ -84,7 +68,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -107,7 +91,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -140,7 +124,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -175,7 +159,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -208,14 +192,14 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2.5} marginY={1}>
           <Box
             style={{
               backgroundColor: "#fafafa",
-              width: "160px",
+              width: "100%",
               marginLeft: "20px",
             }}
           >
@@ -224,9 +208,10 @@ const Tasks: React.FC = (props: any) => {
               control={control}
               render={(props) => (
                 <SearchBox
-                  {...props}
-                  onChange={props.field.onChange}
-                  onHandleChange={onHandleChange}
+                  onChange={(e) => {
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
                   value={props.field.value}
                 />
               )}
@@ -258,6 +243,7 @@ const Tasks: React.FC = (props: any) => {
               setAllSelected={setAllSelected}
               projects={projects.projects}
               tasks={projects.allTasks}
+              {...props}
             />
           </Paper>
         </>

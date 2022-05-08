@@ -22,7 +22,7 @@ const UserProjects: React.FC<Props> = (props) => {
   const all = useAppSelector(selectAllProjects);
   const [closeProjects, setCloseProjects] = React.useState<Project[]>([]);
   React.useEffect(() => {
-    let projects = [...all.projects];
+    let projects = [...all?.projects];
     let filtered = projects
       .filter(
         (item) =>
@@ -35,6 +35,7 @@ const UserProjects: React.FC<Props> = (props) => {
       );
     setCloseProjects(filtered);
   }, [all]);
+
   return (
     <TableBox
       title={"Projects Close To Deadline"}

@@ -56,6 +56,7 @@ const Clients: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    e.preventDefault();
     setSearch(e.target.value);
     dispatch(clientsActions.onSearch(e.target.value));
   };
@@ -109,7 +110,7 @@ const Clients: React.FC<Props> = () => {
           />
         </Grid>
         <Grid item xs={4} sm={4} md={2} lg={2}>
-          <SearchBox search={search} handleSearchChange={handleSearchChange} />
+          <SearchBox value={search} onChange={handleSearchChange} />
         </Grid>
       </Grid>
       <Grid
@@ -126,8 +127,6 @@ const Clients: React.FC<Props> = () => {
           {role !== "PM" && <CreateNewClient />}
         </Box>
       </Grid>
-      {/* </Box> */}
-      {/* </Box> */}
     </Grid>
   );
 };

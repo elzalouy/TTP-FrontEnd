@@ -13,30 +13,43 @@ import {
   AppBarProps,
 } from "@mui/material";
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Logo } from "../../../coreUI/usable-elements/images";
-import {
-  ChevronLeft as ChevronLeftIcon,
-  Menu as MenuIcon,
-  Logout as LogoutIcon,
-  PersonOffOutlined as PersonIcon,
-} from "@mui/icons-material";
+import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
 import IMAGES from "../../../assets/img";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
-import { logout, selectImage, selectRole, selectUser } from "../../../redux/Auth";
-import { RouteComponentProps, useHistory } from "react-router";
+import {
+  logout,
+  selectImage,
+  selectRole,
+  selectUser,
+} from "../../../redux/Auth";
+import { useHistory } from "react-router";
+import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
+import Overviewicon from "../../../assets/icons/Overview";
+import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
+import PersonIcon from "../../../assets/icons/Person";
+import ClientIcon from "../../../assets/icons/ClientIcon";
+import TaskIcon from "../../../assets/icons/TaskIcon";
+import CategoryIcon from "../../../assets/icons/CategoryIcon";
+import NotificationIcon from "../../../assets/icons/Notification";
+import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
+import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
+import { counterNotif } from "../../../redux/notification";
 import { useAppSelector } from "../../../redux/hooks";
 
+interface BarProps extends AppBarProps {}
+
 const AppDrawer: React.FC = (props: any) => {
-  // const drawerWidth = "17%";
+  const open = useAppSelector(selectSideMenuToggle);
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
-  const history = useHistory();
-  const userImage = useAppSelector(selectImage); 
+  const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
-
+  const counter = useAppSelector(counterNotif);
+  const history = useHistory();
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -46,8 +59,10 @@ const AppDrawer: React.FC = (props: any) => {
   }));
 
   const handleLogout = () => {
-    dispatch(logout(null));
-    setTimeout(() => history.replace("/"), 1000);
+    dispatch(toggleLogOutPopup("flex"));
+  };
+  const setOpen = () => {
+    dispatch(toggleSideMenu(!open));
   };
 
   return (
@@ -57,27 +72,27 @@ const AppDrawer: React.FC = (props: any) => {
           overflow: "hidden",
           position: "inherit",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
-          width: props.open ? "16%" : `calc(2% + 1px)`,
+          width: open ? "16%" : `calc(2% + 1px)`,
           flexShrink: 0,
           transition: " all 0.5s ease !important",
-          marginRight: props.open ? 0 : 5,
+          marginRight: open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: props.open ? "16%" : "5%",
+            width: open ? "16%" : "5%",
             transition: "all 0.5s ease !important",
           },
         }}
-        open={props.open}
+        open={open}
         variant="permanent"
       >
         <List sx={{ height: "90%", overflowX: "scroll" }}>
           <DrawerHeader
             sx={{
-              justifyContent: props.open ? "space-between" : "center",
+              justifyContent: open ? "space-between" : "center",
               cursor: "pointer",
             }}
           >
-            {props.open && <Logo {...props} />}
-            <IconButton onClick={() => props.setOpen(!props.open)}>
+            {open && <Logo {...props} />}
+            <IconButton onClick={() => setOpen()}>
               {props?.open ? (
                 <MenuIcon htmlColor="#000000" />
               ) : (
@@ -89,77 +104,93 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="0"
               onClick={() => history.push("/Overview")}
               path={"/Overview"}
-              src={IMAGES.Overviewicon}
+              Icon={() => <Overviewicon />}
               text="Overview"
             />
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="1"
               onClick={() => history.push("/projects")}
               path={"/projects"}
-              src={IMAGES.projectsicon}
+              Icon={() => <ProjectsIcon />}
               text="Projects"
             />
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="2"
               onClick={() => history.push("/Departments")}
               path={"/Departments"}
-              src={IMAGES.departments}
+              Icon={() => <DepartmentIcon />}
               text="Departments"
             />
-            {role !== "PM" && <DrawerItem
-              {...props}
-              select={props.select}
-              open={props.open}
-              key="7"
-              onClick={() => history.push("/ProjectManagers")}
-              path={"/ProjectManagers"}
-              src={IMAGES.person}
-              text="Project Managers"
-            />}
+            {role !== "PM" && (
+              <DrawerItem
+                {...props}
+                select={props.select}
+                open={props.open}
+                key="7"
+                onClick={() => history.push("/ProjectManagers")}
+                path={"/ProjectManagers"}
+                src={IMAGES.person}
+                text="Project Managers"
+              />
+            )}
+            {role !== "PM" && (
+              <DrawerItem
+                {...props}
+                select={props.select}
+                open={open}
+                key="7"
+                onClick={() => history.push("/ProjectManagers")}
+                path={"/ProjectManagers"}
+                Icon={() => <PersonIcon />}
+                text="Project Managers"
+              />
+            )}
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="3"
               onClick={() => history.push("/Clients")}
               path={"/Clients"}
               src={IMAGES.clients}
+              Icon={() => <ClientIcon />}
               text="Clients"
             />
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="4"
               onClick={() => history.push("/TasksList")}
               path={"/TasksList"}
               src={IMAGES.tasks}
+              Icon={() => <TaskIcon />}
               text="Tasks"
             />
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="5"
               onClick={() => history.push("/Categories")}
               path={"/Categories"}
-              src={IMAGES.categories}
+              Icon={() => <CategoryIcon />}
               text="Category"
             />
           </List>
           <Divider sx={{ marginX: 2.5 }} />
           <List>
-            {props.open && (
+            {open && (
               <Typography
                 marginLeft={3.5}
                 variant="h6"
@@ -173,12 +204,14 @@ const AppDrawer: React.FC = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="6"
               onClick={() => history.push("/notifications")}
               path={"/notifications"}
               src={IMAGES.notification}
+              Icon={() => <NotificationIcon />}
               text="Notifications"
+              padge={counter}
             />
           </List>
         </List>
@@ -186,7 +219,7 @@ const AppDrawer: React.FC = (props: any) => {
           <ListItemButton
             sx={{
               ":hover": { bgcolor: "white" },
-              justifyContent: props.open ? "space-between" : "center",
+              justifyContent: open ? "space-between" : "center",
               position: "inherit",
               bgcolor: "white",
               bottom: 0,
@@ -195,20 +228,26 @@ const AppDrawer: React.FC = (props: any) => {
             <ListItemIcon
               sx={{
                 minWidth: 0,
-                justifyContent: props.open ? "space-between" : "center",
+                justifyContent: open ? "space-between" : "center",
               }}
             >
-              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>AM</Avatar>
+              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
+                AM
+              </Avatar>
             </ListItemIcon>
             <ListItemText
               sx={{
                 color: "#808191",
                 ":hover": { color: "white" },
-                opacity: props.open ? 1 : 0,
+                opacity: open ? 1 : 0,
                 pl: 1,
               }}
             >
-              <Box display={"inline-flex"} width={"100%"} justifyContent={"space-around"}>
+              <Box
+                display={"inline-flex"}
+                width={"100%"}
+                justifyContent={"space-around"}
+              >
                 <Box paddingTop={0.5}>
                   <Typography
                     fontFamily={"Cairo"}
@@ -217,15 +256,22 @@ const AppDrawer: React.FC = (props: any) => {
                     textTransform={"capitalize"}
                     color="#11142D"
                   >
-                    {user.user?.name === undefined ? user.name : user.user.name}
+                    {user?.user?.name === undefined
+                      ? user?.name
+                      : user?.user?.name}
                   </Typography>
-                  <Typography fontFamily={"Cairo"} textTransform={"capitalize"} variant="h6" color="#808191">
-                    {user.user?.role === undefined ? user.role : user.user.role}
+                  <Typography
+                    fontFamily={"Cairo"}
+                    textTransform={"capitalize"}
+                    variant="h6"
+                    color="#808191"
+                  >
+                    {user?.user?.role === undefined
+                      ? user?.role
+                      : user?.user?.role}
                   </Typography>
                 </Box>
-                <Box
-                  sx={{ cursor: "pointer" }}
-                >
+                <Box sx={{ cursor: "pointer" }}>
                   <IconButton onClick={handleLogout}>
                     <LogoutIcon fontSize={"small"} />
                   </IconButton>

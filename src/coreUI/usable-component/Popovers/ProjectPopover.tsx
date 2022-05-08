@@ -41,7 +41,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
         <Typography variant="h3" fontWeight={"bold"}>
-          ...
+          <img src={IMAGES.moreGrey} alt="more" />
         </Typography>
       </Box>
       <Popover

@@ -17,6 +17,8 @@ import ProjectPopover from "../Popovers/ProjectPopover";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectRole } from "../../../redux/Auth";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -37,6 +39,8 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const SM = useMediaQuery(theme.breakpoints.down('sm'));
 
   
+  const role = useAppSelector(selectRole);
+
   return (
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
@@ -71,6 +75,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
       </TableHead>
       <TableBody>
         {props.expanded &&
+          props.projects &&
           props?.projects?.map((project: Project) => {
             return (
               <TableRow className={classes.tbody} key={project._id}>
@@ -97,11 +102,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     fontSize={props.textSize ? 12 : 14}
                     color="#696974"
                   >
-                    {
-                      props.projectManagers?.find(
-                        (item) => item._id === project?.projectManager?._id
-                      )?.name
-                    }
+                    {project.projectManager?.name}
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.tcellCenter} align={props.align}>
@@ -166,7 +167,9 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.tcellRight} align={props.align}>
-                  <ProjectPopover id={project?._id} {...props} />
+                  {role !== "PM" && (
+                    <ProjectPopover id={project?._id} {...props} />
+                  )}
                 </TableCell>
               </TableRow>
             );

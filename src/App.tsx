@@ -16,10 +16,14 @@ import ProjectManagers from "./pages/projectManagers/projectManagers";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "./redux/Clients";
-import { getPMs } from "./redux/PM";
+import { getPMs, PMsActions } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
-import { getAllProjects } from "./redux/Projects";
+import {
+  getAllProjects,
+  getAllTasks,
+  selectAllProjects,
+} from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
 import { getAllMembers } from "./redux/techMember";
 import OverView from "./pages/UserOverview/OverView";
@@ -53,18 +57,18 @@ const App: React.FC = (props) => {
     dispatch(getPMs(null));
     dispatch(getAllMembers(null));
     dispatch(getAllProjects(null));
+    dispatch(getAllTasks(null));
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (isAuth && user?._id) {
       localStorage.setItem("token", user?._id);
     }
-    if(isAuth && user?.user){
+    if (isAuth && user?.user) {
       localStorage.setItem("token", user?.user?._id);
     }
   }, [isAuth]);
 
-  // Socket connecting changing
   useEffect(() => {
     socket.on("connect", () => {
       //todo check user auth
@@ -88,10 +92,20 @@ const App: React.FC = (props) => {
 
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
-      <ToastContainer />
+      <ToastContainer
+       position="top-right"
+       autoClose={1500}
+       hideProgressBar
+       newestOnTop={false}
+       closeOnClick={false}
+       rtl={false}
+       pauseOnFocusLoss
+       draggable={false}
+       pauseOnHover={false}
+      />
       <PopUps />
       <Switch>
-        <Route key="/path" exact path="/" component={Login} />
+        <Route key="/path" exact path="/login" component={Login} />
         <Route key="forgetPassword" path="/forgetPassword" component={Forget} />
         <Route
           key="/resetPassword"
@@ -144,7 +158,9 @@ const App: React.FC = (props) => {
           component={OverView}
           key="/overview"
         />
-        <LoggedInContainer path="/404" component={NotFound} key="/notfound" />
+        <Redirect from="/" to="Overview" />
+        <LoggedInContainer path="/404" component={NotFound} key="/notfound2" />
+        <Route path="/404" component={NotFound} key="/notfound" />
         <Redirect from="*" to="/404" key="404" />
       </Switch>
     </Box>

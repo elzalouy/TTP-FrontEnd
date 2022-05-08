@@ -13,12 +13,11 @@ import {
   Box,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { FC, MouseEventHandler, useState } from "react";
+import { FC, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
-import { PMsActions, ProjectManager } from "../../../redux/PM";
+import { PMsActions, ProjectManager, resendMail } from "../../../redux/PM";
 import EditPM from "../../../components/popups/EditPM";
 import DeletePM from "../../../components/popups/DeletePM";
 import { useDispatch } from "react-redux";
@@ -26,8 +25,10 @@ import {
   toggleDeleteProjectManagerPopup,
   toggleEditProjectManagerPopup,
 } from "../../../redux/Ui";
+import { toast } from "react-toastify";
+import moment from "moment";
 import { useAppSelector } from "../../../redux/hooks";
-import { selectPassword } from "../../../redux/Auth";
+import { selectAllProjects, selectTasks } from "../../../redux/Projects";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -35,9 +36,10 @@ interface ProjectManagersProps {
 
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const [select, setSelected] = useState<boolean>(false);
+  const project = useAppSelector(selectAllProjects);
+  const tasks = useAppSelector(selectTasks);
   const dispatch = useDispatch();
   const [selects, setAllSelected] = useState<string[]>([]);
-  const password = useAppSelector(selectPassword);
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -52,8 +54,26 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     }
   };
 
-  const refreshUser = (e: any) => {
-    return;
+  const refreshUser = (id: string) => {
+    //Checking time limit
+    let timeLimit = localStorage.getItem("limit");
+    let currentTime = moment.now().toString();
+    if (timeLimit && timeLimit >= currentTime) {
+      toast.warn("Please try to resend after one hour", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId:"mail"
+      });
+    } else {
+      dispatch(resendMail(id));
+      let duration = moment().add(1, "h").unix().toString();
+      localStorage.setItem("limit", duration);
+    }
   };
 
   const toggleDeletePopUp = (e: any, cellData: ProjectManager) => {
@@ -154,7 +174,33 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
 
           <TableBody>
             {cellsData.map((cellData) => {
-              const { _id, name, email } = cellData;
+              const { _id, name, email, password } = cellData;
+
+              const getNumberOfProjectsForPMWithStatus = (name:string,status:string) => {
+                let projects = project.projects.filter((project)=>{
+                  return project.projectManagerName===name
+                });
+                let statusOfProject = projects.filter((project)=>{
+                  return project.projectStatus===status
+                })
+                return statusOfProject.length;
+              }
+              
+              const getNumberOfTasks = (name:string) => {
+                let projects = project.projects.filter((project)=>{
+                  return project.projectManagerName===name
+                });
+                let inProgressTasks = tasks.filter((task)=>{
+                  return task.status==="inProgress"
+                });
+                let pmTasks = inProgressTasks.filter((task)=>{
+                  let inProgressTaskProjects = projects.filter((project)=>{
+                    return project._id === task.projectId
+                  }) 
+                  return inProgressTaskProjects
+                })
+                return pmTasks.length;
+              }
 
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -200,9 +246,6 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {name}
                       </Typography>
-                     {/*  <IconButton onClick={refreshUser}>
-                        {password === "" && <RefreshIcon />}
-                      </IconButton> */}
                     </Stack>
                   </TableCell>
                   <TableCell
@@ -216,25 +259,31 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   >
                     {email}
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {progressTask} */} Progress Task
+                      {getNumberOfTasks(name)}
                     </Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {progressProject} */}Progress Project
+                     {getNumberOfProjectsForPMWithStatus(name,"inProgress")}
                     </Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center">
                     <Typography color="#707683">
-                      {/* {doneProject} */}Done Project
+                    {getNumberOfProjectsForPMWithStatus(name,"done")}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
-                      <IconButton>
-                        {password === "" ? <LockOpenIcon /> : <LockIcon/>}
+                      <IconButton
+                        onClick={() => {
+                          if (!password) {
+                            refreshUser(_id);
+                          }
+                        }}
+                      >
+                        {!password ? <LockOpenIcon /> : <LockIcon />}
                       </IconButton>
                       <IconButton
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}
