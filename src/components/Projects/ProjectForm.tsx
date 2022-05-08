@@ -57,7 +57,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             name="name"
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="text"
                 placeholder="Project name"
@@ -74,7 +73,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <select
-                {...props}
                 className="select-project"
                 onChange={props.field.onChange}
                 defaultChecked={true}
@@ -101,7 +99,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="date"
                 onChange={props.field.onChange}
@@ -117,7 +114,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <select
-                {...props}
                 className="select-project"
                 onChange={props.field.onChange}
                 defaultChecked={true}
@@ -145,7 +141,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="date"
                 onChange={props.field.onChange}

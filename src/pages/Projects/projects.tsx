@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
-import SearchBar from "../Category/SearchBar";
+import SearchBar from "../../coreUI/usable-component/Inputs/SearchBox";
 import Box from "@mui/material/Box";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../redux/hooks";
@@ -69,7 +69,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       paddingX={4}
       paddingTop={6}
     >
-      <Grid container xs={12} justifyContent="flex-start" direction={"row"}>
+      <Grid container justifyContent="flex-start" direction={"row"}>
         <Grid item xs={12} marginBottom={4}>
           <Typography variant="h3" fontFamily={"Cairo"}>
             Projects
@@ -208,18 +208,17 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           />
         </Grid>
-        <Grid xs={12} marginX={1} marginY={1} sm={12} md={2.5} lg={2.5} item>
+        <Grid item xs={12} marginX={1} marginY={1} sm={12} md={2.5} lg={2.5}>
           <Controller
             name="name"
             control={control}
             render={(props) => (
               <SearchBar
-                {...props}
                 value={props.field.value}
                 onChange={(e: any) => {
                   props.field.onChange(e);
+                  onHandleChange(e);
                 }}
-                onHandleChange={onHandleChange}
               />
             )}
           />

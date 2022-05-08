@@ -46,7 +46,7 @@ const Departments: React.FC<IProps> = () => {
         </Typography>
       </Box>
       <div className="department-tools">
-       {role !== "PM" && <CreateNewTeam />}
+        {role !== "PM" && <CreateNewTeam />}
       </div>
       <div className="all-departments">
         {department?.map((dep: Department) => (

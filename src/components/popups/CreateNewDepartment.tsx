@@ -86,7 +86,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalInProgress: 0,
       totalDone: 0,
     });
-    setNames([])
+    setNames([]);
   };
   return (
     <>
@@ -100,7 +100,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <p>Create new department</p>
       </div>
       <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
-        test
         <div>
           <img
             className="closeIcon"
@@ -134,7 +133,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             </option>
           ))}
         </select>
-
+        {/* 
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
           <select
@@ -188,7 +187,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             );
           })}
         </div>
-        <br />
+        <br /> */}
 
         <div className="controllers">
           <button
