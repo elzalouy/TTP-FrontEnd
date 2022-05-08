@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
@@ -42,6 +42,19 @@ const CreateNewDepartment: React.FC<Props> = () => {
     totalInProgress: 0,
     totalDone: 0,
   });
+
+  useEffect(() => {
+    setFormData({
+      name: "",
+      color: "blue",
+      teams: [],
+      mainBoard: false,
+      totalInProgress: 0,
+      totalDone: 0,
+    })
+    setNames([])
+    setData("")
+  },[])
   const { name, color, teams, mainBoard } = formData;
   let teamsData = useAppSelector(selectAllMembers);
   const handleSelectTeam = () => {
@@ -86,6 +99,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalDone: 0,
     });
     setNames([])
+    setData("")
     setShow("none");
   };
   return (

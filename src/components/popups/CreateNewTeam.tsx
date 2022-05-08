@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import "./popups-style.css";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
@@ -21,6 +21,12 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
+  useEffect(() => {
+    setTeam({
+      name: "", department: ""
+    })
+    setAllTeam([])
+  },[])
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
