@@ -62,7 +62,7 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
     dispatch(getAllTasks(null));
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (isAuth === true && user?._id) {
       localStorage.setItem("token", user?._id);

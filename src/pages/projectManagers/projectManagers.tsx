@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import {useEffect,useState} from "react";
@@ -18,6 +18,9 @@ const ProjectManagers: React.FC<Props> = () => {
   const productManagerData = useAppSelector(selectPMs);
   const onlyPMS = productManagerData.filter((pm)=>pm.role!=="OM");
   const role = useAppSelector(selectRole);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(()=>{
     setCellsData(onlyPMS);
@@ -28,19 +31,19 @@ const ProjectManagers: React.FC<Props> = () => {
   }
 
   return (
-    <Box sx={{ backgroundColor: "#FAFAFB", width: "100%" }}>
+    <Box sx={SM ? {paddingTop:"20px",backgroundColor: "#FAFAFB", width: "100%" } : { backgroundColor: "#FAFAFB", width: "100%" }}>
       <Box
         width={"100%"}
-        paddingLeft={3.8}
-        paddingRight={12.5}
-        paddingTop={6}
-        paddingBottom={12}
+        paddingLeft={ MD ? 4 : 3.8}
+        paddingRight={ MD ? 4 : 12.5}
+        paddingTop={ MD ? 8 :  6}
+        paddingBottom={ MD ? 4 :  12}
         flexDirection="row"
         display="inline-flex"
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography variant="h2">Project Managers</Typography>
+        <Typography variant={SM ? "h3" : "h2"}>Project Managers</Typography>
         <CreateNewPM />
       </Box>
       <Paper className="pm-container">

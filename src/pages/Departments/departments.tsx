@@ -3,7 +3,7 @@ import DepartmentCard from "./departmentCard";
 import "./departments.css";
 import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
 import CreateNewTeam from "../../components/popups/CreateNewTeam";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Department, getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
@@ -18,6 +18,8 @@ const Departments: React.FC<IProps> = () => {
   const [department, setDepartment] = useState<null | Department[]>(null);
   let departmentData = useAppSelector(selectAllDepartments);
   const role = useAppSelector(selectRole);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   let teamsData = useAppSelector(selectAllMembers);
   const dispatch = useDispatch();
 
@@ -37,7 +39,8 @@ const Departments: React.FC<IProps> = () => {
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
-          style={{
+          style={SM ? { margin: "50px 0",
+          paddingBottom: "0px",} : {
             margin: "10px 0",
             paddingBottom: "20px",
           }}

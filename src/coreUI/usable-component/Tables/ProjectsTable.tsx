@@ -14,7 +14,8 @@ import { projectsTableStyle } from "../styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
-import IMAGES from "../../../assets/img";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
@@ -36,6 +37,8 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const role = useAppSelector(selectRole);
   const projects = useAppSelector(selectAllProjects);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Table className={classes.table} aria-label="simple table">

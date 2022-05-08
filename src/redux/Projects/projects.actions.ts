@@ -245,15 +245,15 @@ export const moveTask = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const editTask = createAsyncThunk<any, any, any>(
   "tasks/editTask",
   async (args: any, { rejectWithValue }) => {
     try {
       let response = await api.editTask(args);
       if (response.ok && response.data) return response.data;
-      else throw response.problem;
-    } catch (error: any) {
-      toast(error);
+      else throw "Task not updated.";
+    } catch (error) {
       rejectWithValue(error);
     }
   }

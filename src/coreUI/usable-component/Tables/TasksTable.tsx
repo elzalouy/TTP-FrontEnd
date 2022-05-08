@@ -39,7 +39,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
     }
   };
   return (
-    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
+    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2  }}>
       <Table>
         <TableHead>
           <TableRow>

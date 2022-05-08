@@ -6,13 +6,32 @@ import departmentIcon from "../../assets/img/departmentIcon.svg";
 import profileImageDemo from "../../assets/img/profileImageDemo.png";
 import projects from "../../assets/img/projects.svg";
 import tasks from "../../assets/img/tasks.svg";
+import img from '../../assets/img/index'
 import overView from "../../assets/img/taskviewiconCopy.svg";
+import { RouteComponentProps } from "react-router";
 
-export const Logo = (props: any) => (
+interface Props {
+  history?: RouteComponentProps["history"];
+  alt?:string
+  src?:string
+}
+
+export const Logo = (props: Props) => (
   <img
     src={logo}
     alt="Logo"
-    onClick={() => props.history.push("/Overview")}
+    onClick={() => props?.history?.push("/Overview")}
+    // {...props}
+  />
+);
+
+export const Notification = (props: Props) => (
+  <img
+    src={img.notification}
+    alt="Logo"
+    width={"25px"}
+    onClick={() => props?.history?.push("/Overview")}
+    {...props}
     // {...props}
   />
 );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Category.css";
 import CategoryCard from "./CategoryCard";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import CreateNewCategory from "../../components/popups/CreateNewCategory";
@@ -13,12 +13,16 @@ import { getAllCategories } from "../../redux/Categories";
 import { selectAllCategories } from "../../redux/Categories/categories.selectores";
 import { categoriesActions } from "../../redux/Categories";
 import { selectRole } from "../../redux/Auth";
+
 type Props = {};
+
 const Category: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState<string>("");
   const role = useAppSelector(selectRole);
   const categoriesData = useAppSelector(selectAllCategories);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
@@ -49,7 +53,10 @@ const Category: React.FC<Props> = () => {
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
-          style={{
+          style={SM ? 
+            {margin: "40px 0",
+          paddingBottom: "20px"} 
+          : {
             margin: "10px 0",
             paddingBottom: "20px",
           }}
@@ -72,7 +79,7 @@ const Category: React.FC<Props> = () => {
         style={{ marginTop: 40 }}
       >
         {categoriesData?.map((category: any, index: any) => (
-          <Grid sm={12} xs={12} md={6} lg={4} padding={1}>
+          <Grid sm={6} xs={12} md={6} lg={4} padding={1}>
             <CategoryCard
               key={index}
               mainCategory={category.category}

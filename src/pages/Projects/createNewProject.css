@@ -128,6 +128,8 @@ tr {
 
 table.allTask-table th {
   text-align: left;
+  padding : 0 5px;
+  text-transform: capitalize;
 }
 table.allTask-table td.deleteTd {
   text-align: center;
@@ -166,4 +168,54 @@ table.allTask-table td.deleteTd {
 }
 .label-project {
   font-weight: 600;
+}
+
+@media (max-width:800px) {
+  .blackBtn {
+    cursor: pointer;
+    width: 150px;
+    max-width: 45%;
+    background-color: black;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  .addTaskBtn{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .input-project{
+    width: 80%;
+  }
+  .select-project{
+    width: 80%;
+  }
+  .files{
+    margin:20px 0px;
+  }
+}
+@media (max-width:700px) {
+  .input-project{
+    width: 100%;
+  }
+  .select-project{
+    width: 100%;
+  }
+  .textarea-project{
+    width: 100%;
+  }
+}
+@media (max-width:600px) {
+  .input-project{
+    width: 100%;
+  }
+  .select-project{
+    width: 100%;
+  }
+  .textarea-project{
+    width: 100%;
+  }
 }
