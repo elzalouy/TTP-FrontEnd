@@ -77,7 +77,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const handleSubmit = async () => {
     console.log({ formData });
     await dispatch(createDepartment(formData));
-    setShow("none");
     setFormData({
       name: "",
       color: "",
@@ -87,6 +86,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalDone: 0,
     });
     setNames([]);
+    setShow("none");
   };
   return (
     <>
@@ -133,7 +133,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             </option>
           ))}
         </select>
-        {/* 
+
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
           <select
@@ -187,7 +187,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             );
           })}
         </div>
-        <br /> */}
+        <br />
 
         <div className="controllers">
           <button

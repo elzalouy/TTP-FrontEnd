@@ -34,6 +34,7 @@ const AddNewTeam: React.FC<Props> = () => {
       }
     }
     setTeam({ name: "", department: "" });
+    setAllTeam([])
     setShow("none");
   };
   return (
@@ -78,9 +79,9 @@ const AddNewTeam: React.FC<Props> = () => {
         <select
           className="popup-select"
           onChange={(e) => {
-            console.log(e.target.value);
             setTeam({ ...Team, department: e.target.value });
           }}
+          value={Team.department}
         >
           <option value="">Select Department</option>
           {departments?.map((dep: any) => (
