@@ -2,8 +2,8 @@ import * as React from "react";
 import { Typography, Skeleton } from "@mui/material";
 
 interface UserNameProps {
-  loading: boolean;
-  name: string;
+  loading: boolean | null;
+  name: string | undefined;
 }
 const UserName: React.FC<UserNameProps> = (props) => {
   return (
@@ -14,8 +14,8 @@ const UserName: React.FC<UserNameProps> = (props) => {
       {props?.loading ? (
         <Skeleton
           variant="text"
-          width={100}
-          height={25}
+          width={200}
+          height={35}
           sx={{ marginLeft: 1 }}
         />
       ) : (

@@ -38,7 +38,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectDeadline: data?.deadline,
       startDate: data?.startDate,
       clientId: data?.clientId,
-      numberOfFinshedTasks: 0,
+      numberOfFinishedTasks: 0,
       numberOfTasks: 0,
       projectStatus: "inProgress",
       completedDate: null,

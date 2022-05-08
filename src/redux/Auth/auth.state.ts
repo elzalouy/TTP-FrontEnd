@@ -19,7 +19,7 @@ interface Res {
 }
 export interface UserInterface {
   loading: boolean | null;
-  User: User;
+  User: User | null;
   authState: boolean;
   Payload: Res;
 }

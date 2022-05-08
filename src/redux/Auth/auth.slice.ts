@@ -86,6 +86,8 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     });
     builder.addCase(getUserInfo.rejected, (state) => {
       state.loading = false;
+      state.authState = false;
+      state.User = null;
     });
     builder.addCase(getUserInfo.pending, (state) => {
       state.loading = true;

@@ -23,6 +23,7 @@ const Tasks: React.FC<TasksProps> = () => {
   const onDeleteTask = (task: Task) => {
     dispatch(deleteTask({ id: task._id }));
   };
+  console.log(newProject.tasks);
   return (
     <div>
       <h4>All tasks</h4>

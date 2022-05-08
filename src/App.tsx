@@ -35,13 +35,16 @@ import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
 import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
+import projectsSlice from "./redux/Projects/projects.slice";
+import { selectAllSatistics, setStatistics } from "./redux/Statistics";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuth = useAppSelector(selectIsAuth);
   const user = useAppSelector(selectUser);
+  const projects = useAppSelector(selectAllProjects);
+
   let token = localStorage.getItem("token");
-  // const clients = useAppSelector(clientsDataSelector);
 
   useEffect(() => {
     if (token) {
@@ -59,12 +62,12 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
     dispatch(getAllTasks(null));
   }, [dispatch]);
-  
+
   useEffect(() => {
-    if (isAuth && user?._id) {
+    if (isAuth === true && user?._id) {
       localStorage.setItem("token", user?._id);
     }
-    if (isAuth && user?.user) {
+    if (isAuth === true && user?.user) {
       localStorage.setItem("token", user?.user?._id);
     }
   }, [isAuth]);
@@ -89,19 +92,25 @@ const App: React.FC = (props) => {
       socket.emit("joined user", { id: userId });
     });
   }, []);
-
+  // calculations of the statistics must be changed in the future, it's the backend responsibilty.
+  useEffect(() => {
+    if (projects.loading === false)
+      dispatch(
+        setStatistics({ projects: projects.projects, tasks: projects.allTasks })
+      );
+  }, [projects?.projects, projects?.allTasks, dispatch, projects?.loading]);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <ToastContainer
-       position="top-right"
-       autoClose={1500}
-       hideProgressBar
-       newestOnTop={false}
-       closeOnClick={false}
-       rtl={false}
-       pauseOnFocusLoss
-       draggable={false}
-       pauseOnHover={false}
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover={false}
       />
       <PopUps />
       <Switch>

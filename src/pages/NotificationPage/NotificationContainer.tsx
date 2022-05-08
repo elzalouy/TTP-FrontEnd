@@ -11,18 +11,17 @@ import { notifiAction } from "../../redux/notification";
 import { socket } from "../../config/socket/actions";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 
 type Props = {};
 // if
 const NotificationContainer = (props: Props) => {
-
   const dispatch = useDispatch();
   const notifiData = useAppSelector(notifiDataSelector);
   const user = useAppSelector(selectUser);
   const role = useAppSelector(selectRole);
-  const [skip, setSkip] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [skip, setSkip] = useState(0);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (user && user._id) {
       dispatch(getAllNotifi({ id: user._id, skip }));
@@ -46,11 +45,11 @@ const NotificationContainer = (props: Props) => {
   });
 
   const handleLoadMore = async () => {
-    setLoading(true)
-    await dispatch(getAllNotifi({ id: user._id, skip: notifiData.length }));
-    setSkip(notifiData?.length ?? 0)
-    setLoading(false)
-  }
+    setLoading(true);
+    await dispatch(getAllNotifi({ id: user?._id, skip: notifiData.length }));
+    setSkip(notifiData?.length ?? 0);
+    setLoading(false);
+  };
 
   return (
     <Grid container paddingX={4} spacing={4} bgcolor="#FAFAFB">
@@ -66,7 +65,9 @@ const NotificationContainer = (props: Props) => {
         </Grid>
       ) : null}
       <Grid item xs={6} textAlign="center" mb="1em">
-        <LoadingButton loading={loading} variant="contained"
+        <LoadingButton
+          loading={loading}
+          variant="contained"
           sx={{ textTransform: "capitalize", pr: "2em", pl: "2em" }}
           onClick={handleLoadMore}
         >

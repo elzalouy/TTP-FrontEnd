@@ -7,11 +7,13 @@ export const signIn = createAsyncThunk<any, any, any>(
   "auth/signIn",
   async (args: any, { rejectWithValue }) => {
     try {
-      let result = await api.signIn(args);
-      if (result.data) {
+      let result = await api.signIn(args?.data);
+      if (result.ok === true) {
+        args.history.push("/Overview");
         return result.data;
-      } else return [];
-    } catch (error) {
+      } else throw "Error happened";
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }
@@ -22,10 +24,11 @@ export const getUserInfo = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let result = await apiPM.getUser(args);
-      if (result.data) {
+      if (result.ok === true) {
         return result.data;
       }
       localStorage.removeItem("token");
+      throw "error happened";
     } catch (error) {
       rejectWithValue(error);
     }
@@ -38,9 +41,9 @@ export const logout = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signOut();
       localStorage.removeItem("token");
-      if (result.data) {
+      if (result.ok === true) {
         return result.data;
-      } else return {};
+      } else throw "error happenned";
     } catch (error) {
       rejectWithValue(error);
     }
@@ -52,7 +55,7 @@ export const newPassword = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let result = await api.newPasword(args);
-      if (result.data) {
+      if (result.ok === true) {
         return result.data;
       } else return false;
     } catch (error) {
@@ -66,7 +69,7 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let result = await api.forgotPassword(args);
-      if (result.data) {
+      if (result.ok === true) {
         return result.data;
       } else return {};
     } catch (error) {

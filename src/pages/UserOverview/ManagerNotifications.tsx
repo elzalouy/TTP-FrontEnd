@@ -97,8 +97,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             11 Dec, 2021
           </Typography>
         </Box>
-        {notifications.map((item) => (
+        {notifications?.map((item, index) => (
           <Box
+            key={index}
             marginTop={2}
             width={"100%"}
             height={60}
@@ -181,8 +182,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             11 Dec, 2021
           </Typography>
         </Box>
-        {notifications.map((item) => (
+        {notifications.map((item, index) => (
           <Box
+            key={index}
             marginTop={2}
             width={"100%"}
             height={60}

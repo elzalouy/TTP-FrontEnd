@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { ProjectManager } from "../../../redux/PM";
-import { Project } from "../../../redux/Projects";
+import { Project, selectAllProjects } from "../../../redux/Projects";
 import { projectsTableStyle } from "../styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
@@ -35,6 +35,7 @@ interface ProjectsTableProps {
 const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const role = useAppSelector(selectRole);
+  const projects = useAppSelector(selectAllProjects);
 
   return (
     <Table className={classes.table} aria-label="simple table">
@@ -72,6 +73,12 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded &&
           props.projects &&
           props?.projects?.map((project: Project) => {
+            let NoOfFinished = projects.allTasks.filter(
+              (item) => item.projectId === project._id && item.status === "done"
+            ).length;
+            let NoOfTasks = projects.allTasks.filter(
+              (item) => item.projectId === project._id
+            ).length;
             return (
               <TableRow className={classes.tbody} key={project._id}>
                 <TableCell
@@ -125,10 +132,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#00ACBA"
                       fontSize={props.textSize === "small" ? 12 : 14}
                     >
-                      {Math.round(
-                        project.numberOfFinshedTasks / project.numberOfTasks
-                      ) * 100 || 0}
-                      %
+                      {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
                     </Typography>
                   ) : (
                     <Box sx={{ display: "inline-flex" }}>
@@ -139,7 +143,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                         color="#00ACBA"
                         fontSize={props.textSize === "small" ? 12 : 14}
                       >
-                        {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                        {NoOfFinished}/{NoOfTasks}
                       </Typography>
                     </Box>
                   )}

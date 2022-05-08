@@ -7,8 +7,9 @@ import pmSlice from "./PM/pm.slice";
 import projectsSlice from "./Projects/projects.slice";
 import techMembersSlice from "./techMember/techMembers.slice";
 import UISlice from "./Ui/UI.slice";
-import NotifiSlice from "./notification/notifi.slice"
+import NotifiSlice from "./notification/notifi.slice";
 import authSlice from "./Auth/auth.slice";
+import statisticsSlice from "./Statistics/statistics.slice";
 
 const reducers = combineReducers({
   projects: projectsSlice,
@@ -18,8 +19,9 @@ const reducers = combineReducers({
   categories: categoriesSlice,
   techMembers: techMembersSlice,
   Ui: UISlice,
-  notifi:NotifiSlice,
-  Auth:authSlice,
+  notifi: NotifiSlice,
+  Auth: authSlice,
+  Statistics: statisticsSlice,
 });
 const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
 export type AppDispatch = typeof store.dispatch;

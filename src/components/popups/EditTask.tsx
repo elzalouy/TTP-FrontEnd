@@ -28,20 +28,18 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const [Task, setTask] = useState<any>({
-    id: editValues?._id || "",
-    name: editValues?.name || "",
-    boardId: editValues?.boardId || "",
-    deadline: editValues?.deadline || "",
-    categoryId: editValues?.categoryId || "",
-    subCategoryId: editValues?.subCategoryId || "",
-    description: editValues?.description || "",
-    attachedFiles: editValues?.attachedFiles || "",
-    memberId: editValues?.memberId || "",
-    file: editValues?.file || "",
-    listId: editValues?.listId || "",
-    departmentId: departments?.find(
-      (item) => item.boardId === editValues?.boardId
-    )?._id,
+    id: "",
+    name: "",
+    boardId: "",
+    deadline: "",
+    categoryId: "",
+    subCategoryId: "",
+    description: "",
+    attachedFiles: "",
+    memberId: "",
+    file: "",
+    listId: "",
+    departmentId: "",
   });
   useEffect(() => {
     setTask({
@@ -96,7 +94,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               className="popup-input"
               type="text"
               placeholder="Task name"
-              value={Task.name}
+              value={Task?.name}
               onChange={(e) => {
                 Task.name = e.target.value;
                 setTask({ ...Task });
@@ -133,7 +131,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               name="deadline"
               className="popup-input"
               type="date"
-              value={Task.deadline}
+              value={Task?.deadline}
               onChange={(e) => {
                 Task.deadline = e.target.value;
                 setTask({ ...Task });
@@ -172,7 +170,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               className="popup-textarea"
               rows={4}
               placeholder="Write about your task"
-              value={Task.description}
+              value={Task?.description}
               onChange={(e) => {
                 Task.description = e.target.value;
                 setTask({ ...Task });
@@ -190,7 +188,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.subCategoryId = e.target.value;
                 setTask({ ...Task });
               }}
-              value={Task.subCategoryId}
+              value={Task?.subCategoryId}
             >
               <option value="">select</option>
               {categories &&
@@ -237,6 +235,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               type="file"
               multiple
               className="custom-file-input"
+              value={Task?.file}
               onChange={(e) => {
                 Task.file = e.target.value;
                 setTask({ ...Task });

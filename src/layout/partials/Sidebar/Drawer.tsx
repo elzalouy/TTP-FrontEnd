@@ -47,7 +47,7 @@ const AppDrawer: React.FC = (props: any) => {
   const user = useAppSelector(selectUser);
   const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
-  const counter = useAppSelector(counterNotif)
+  const counter = useAppSelector(counterNotif);
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -238,7 +238,9 @@ const AppDrawer: React.FC = (props: any) => {
                     textTransform={"capitalize"}
                     color="#11142D"
                   >
-                    {user?.user?.name === undefined ? user?.name : user?.user?.name}
+                    {user?.user?.name === undefined
+                      ? user?.name
+                      : user?.user?.name}
                   </Typography>
                   <Typography
                     fontFamily={"Cairo"}
@@ -246,7 +248,9 @@ const AppDrawer: React.FC = (props: any) => {
                     variant="h6"
                     color="#808191"
                   >
-                    {user?.user?.role === undefined ? user?.role : user?.user?.role}
+                    {user?.user?.role === undefined
+                      ? user?.role
+                      : user?.user?.role}
                   </Typography>
                 </Box>
                 <Box
