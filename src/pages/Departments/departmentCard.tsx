@@ -51,7 +51,7 @@ const DepartmentCard: React.FC<Props> = ({
     >
       <div className="dp-card-header" style={{ color: colors[department.color][1]}}>
         <h2>{department.name}</h2>
-        <p>
+        <p> 
           {role !== "PM" && <DepartmentDrop
             handleSetShow={handleSetShow}
             handleSetShowDelete={handleSetShowDelete}

@@ -77,7 +77,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const handleSubmit = async () => {
     console.log({ formData });
     await dispatch(createDepartment(formData));
-    setShow("none");
     setFormData({
       name: "",
       color: "",
@@ -87,6 +86,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalDone: 0,
     });
     setNames([])
+    setShow("none");
   };
   return (
     <>
