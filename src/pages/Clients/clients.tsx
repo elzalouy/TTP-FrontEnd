@@ -1,4 +1,4 @@
-import { Box, SelectChangeEvent, Typography } from "@mui/material";
+import { Box, SelectChangeEvent, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
@@ -46,6 +46,8 @@ const Clients: React.FC<Props> = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const role = useAppSelector(selectRole);
   const clientData = useAppSelector(clientsDataSelector);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const [filter, setFilter] = useState<{
     sortDate: string;
   }>({
@@ -67,13 +69,16 @@ const Clients: React.FC<Props> = () => {
     });
     dispatch(clientsActions.onSort(e.target.value));
   };
+
   useEffect(() => {
     if (clientData) {
       setClients(clientData);
     }
   }, [clientData]);
+
   return (
-    <Grid container paddingX={4}>
+
+    <Grid container paddingX={4} paddingY={SM ? 8 : 4}>
       <Grid container xs={12} mt="2em">
         <Typography variant="h2">Clients</Typography>
       </Grid>
@@ -109,7 +114,7 @@ const Clients: React.FC<Props> = () => {
             selectText={filter.sortDate}
           />
         </Grid>
-        <Grid item xs={4} sm={4} md={2} lg={2}>
+        <Grid item xs={12} sm={4} md={2} lg={2}>
           <SearchBox value={search} onChange={handleSearchChange} />
         </Grid>
       </Grid>

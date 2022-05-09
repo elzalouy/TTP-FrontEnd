@@ -358,17 +358,35 @@
   background: #000000 0% 0% no-repeat padding-box;
   color: white;
 }
-.active svg {
+.active svg :not(.dep) {
   stroke: white !important;
-}
-.active svg path {
+} 
+ .active svg path {
   stroke: white !important;
 }
 .active svg .category {
   stroke: white !important;
   fill: white !important;
 }
-.active svg circle {
+.active svg circle :not(.dep) {
+  stroke: white !important;
+}
+.active svg g :not(.dep) {
+  stroke: white !important;
+} 
+.sideItem svg:not(.dep) {
+  stroke: #9fa1ab !important;
+}
+.sideItem:hover .category {
+  fill: white !important;
+}
+.sideItem:hover svg path  {
+  stroke: white !important;
+}
+.sideItem:hover svg circle :not(.dep)  {
+  stroke: white !important;
+}
+.sideItem:hover svg g :not(.dep)  {
   stroke: white !important;
 }
 .active svg g {

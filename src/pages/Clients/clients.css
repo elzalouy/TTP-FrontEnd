@@ -64,3 +64,10 @@
   top: 0;
   height: 35px;
 }
+
+@media (max-width:700px) {
+  .all-clients{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

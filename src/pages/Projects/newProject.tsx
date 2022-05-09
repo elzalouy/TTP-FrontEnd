@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+/* import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp"; */
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions } from "../../redux/Projects";

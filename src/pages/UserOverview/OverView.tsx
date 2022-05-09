@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import "./overview.css";
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import UserName from "./Name";
 import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
@@ -9,19 +10,32 @@ import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./ManagerNotifications";
 import IMAGES from "../../assets/img";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAppSelector } from "../../redux/hooks";
-import { selectAuth, selectUser } from "../../redux/Auth";
+import { selectRole, selectUser } from "../../redux/Auth";
+import { getPMs } from "../../redux/PM";
+import { getAllProjects, getAllTasks } from "../../redux/Projects";
 import { selectAllSatistics } from "../../redux/Statistics";
-import "./overview.css";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
 const OverView: FC<Props> = (props) => {
-  const user = useAppSelector(selectUser);
-  const auth = useAppSelector(selectAuth);
+  const dispatch = useDispatch();
+  const role = useAppSelector(selectRole);
+  const userName = useAppSelector(selectUser);
+  const theme = useTheme();
   const statistics = useAppSelector(selectAllSatistics);
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    dispatch(getPMs(null));
+    dispatch(getAllProjects(null));
+    dispatch(getAllTasks(null));
+  }, []);
+
   return (
     <>
       <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
@@ -33,10 +47,11 @@ const OverView: FC<Props> = (props) => {
         >
           <Grid
             item
+            // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
             paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
-            paddingLeft={4}
+            paddingLeft={SM ? 2 : 4}
             xs={12}
           >
             <Box
@@ -45,7 +60,7 @@ const OverView: FC<Props> = (props) => {
                 display: "inline-flex",
               }}
             >
-              <UserName loading={auth?.loading} name={user?.name} />
+              <UserName loading={false} name={userName?.user?.name === undefined ? userName?.name : userName?.user?.name} />
             </Box>
             <Typography
               color="#171725"
@@ -64,7 +79,7 @@ const OverView: FC<Props> = (props) => {
             justifyContent={"flex-start"}
             alignItems="flex-start"
             container
-            paddingLeft={4}
+            paddingLeft={SM ? 0 : 4}
           >
             <Grid item xs={12} sm={12} lg={7.5} md={7.5}>
               <Grid
@@ -72,10 +87,10 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
-                paddingRight={user?.role === "PM" ? 0 : "3%"}
+                paddingRight={SM ? 0 : (role === "PM" ? 0 : "3%")}
                 container
               >
-                {!user || auth.loading === true ? (
+                {role === "PM" ? (
                   <>
                     <Grid
                       direction="row"
@@ -112,11 +127,11 @@ const OverView: FC<Props> = (props) => {
                   </>
                 ) : (
                   <>
-                    {user.role === "PM" && (
+                    {role === "PM" && (
                       <>
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#ECFDF1"
                           Icon={() => (
                             <img alt="1" src={IMAGES.overviewCheck} />
@@ -129,7 +144,7 @@ const OverView: FC<Props> = (props) => {
                         />
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#EFEFFF"
                           Icon={() => (
                             <img alt="2" src={IMAGES.overViewRevision} />
@@ -142,7 +157,7 @@ const OverView: FC<Props> = (props) => {
                         />
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#FFF3EF"
                           Icon={() => (
                             <img src={IMAGES.overViewDeadline} alt="3" />
@@ -155,11 +170,11 @@ const OverView: FC<Props> = (props) => {
                         />
                       </>
                     )}
-                    {user.role === "OM" && (
+                    {role === "OM" && (
                       <>
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#ECFDF1"
                           Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
                           pt={1.5}
@@ -170,7 +185,7 @@ const OverView: FC<Props> = (props) => {
                         />
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#EFF1FF"
                           Icon={() => (
                             <img src={IMAGES.overViewRevision} alt="3" />
@@ -183,7 +198,7 @@ const OverView: FC<Props> = (props) => {
                         />
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#FFF3EF"
                           Icon={() => (
                             <img src={IMAGES.overViewDeadline} alt="3" />
@@ -196,7 +211,7 @@ const OverView: FC<Props> = (props) => {
                         />
                         <UserStatus
                           loading={statistics.loading}
-                          user={user.role}
+                          user={role}
                           IconBgColor="#FBF5E2"
                           Icon={() => (
                             <img src={IMAGES.overviewProjects} alt="3" />
@@ -217,7 +232,8 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={2.5}
-                paddingRight={3.5}
+                overflow="scroll"
+                paddingRight={SM ? 0 : 3.5}
               >
                 <UserProjects {...props} />
               </Grid>
@@ -232,7 +248,7 @@ const OverView: FC<Props> = (props) => {
               justifyContent="center"
               alignItems="center"
             >
-              {user?.role === "OM" ? (
+              {role === "OM" ? (
                 <ManagerNotifications {...props} />
               ) : (
                 <UserNotifications {...props} />
@@ -240,12 +256,12 @@ const OverView: FC<Props> = (props) => {
             </Grid>
           </Grid>
           <Grid
-            item
+          item
             xs={11.5}
             // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingLeft={4}
+            paddingLeft={SM ? 0 : 4}
             marginBottom={5}
           >
             <UserTasks />

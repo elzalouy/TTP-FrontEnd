@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import NotificationFilter from "./NotificationFilter";
 import NotificationHeader from "./NotificationHeader";
@@ -16,10 +16,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 type Props = {};
 // if
 const NotificationContainer = (props: Props) => {
+
   const dispatch = useDispatch();
   const notifiData = useAppSelector(notifiDataSelector);
   const user = useAppSelector(selectUser);
   const role = useAppSelector(selectRole);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -52,7 +55,7 @@ const NotificationContainer = (props: Props) => {
   };
 
   return (
-    <Grid container paddingX={4} spacing={4} bgcolor="#FAFAFB">
+    <Grid container paddingX={4} paddingY={SM ? 10 : 0} spacing={4} bgcolor="#FAFAFB">
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>

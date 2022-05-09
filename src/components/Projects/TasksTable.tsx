@@ -25,7 +25,7 @@ const Tasks: React.FC<TasksProps> = () => {
   };
   return (
     <div>
-      <h4>All tasks</h4>
+      <h4 style={{margin:"10px 0px" , textTransform:"capitalize"}}>All tasks</h4>
       <table
         className="allTask-table"
         style={{

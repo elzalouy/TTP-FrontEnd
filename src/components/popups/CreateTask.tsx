@@ -47,6 +47,7 @@ const CreateTask: React.FC<Props> = (props) => {
     selectedDepartmentId: "",
   });
 
+  
   React.useEffect(() => {
     dispatch(getAllDepartments(null));
     dispatch(getAllCategories(null));

@@ -37,6 +37,7 @@ const TableBox: React.FC<TableBoxProps> = (props) => {
           mb: 5,
           font: "normal normal 600 16px/30px Cairo",
           color: "#505050",
+          overflow:"scroll"
         }}
       >
         {!props.outTitled && (
