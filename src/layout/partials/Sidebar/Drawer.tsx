@@ -128,7 +128,7 @@ const AppDrawer: React.FC = (props: any) => {
               key="2"
               onClick={() => history.push("/Departments")}
               path={"/Departments"}
-              Icon={() => <ProjectsIcon />}
+              Icon={() => <DepartmentIcon />}
               text="Departments"
             />
             {role !== "PM" && (

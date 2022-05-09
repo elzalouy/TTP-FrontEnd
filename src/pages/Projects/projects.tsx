@@ -61,10 +61,20 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     };
     dispatch(filterProjects(filter));
   };
+
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
+  
+  useEffect(() => {
+   if(MD){
+     setFilter(true);
+   }else{
+     setFilter(false);
+   }
+  }, [MD])
+  
 
   useEffect(() => {
     setValue("name", "");
@@ -105,7 +115,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             />
           </Box>
         </Grid>
-        {filter || MD && (
+        {filter && (
           <>
             <Grid marginX={1} marginY={1} item>
               <Controller
