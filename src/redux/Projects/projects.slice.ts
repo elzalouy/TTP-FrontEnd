@@ -303,6 +303,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(moveTask.rejected, (state, action) => {
       console.log(action.payload);
     });
+    // builder.addCase(moveTask.)
   },
 });
 export const ProjectsActions = projectsSlice.actions;

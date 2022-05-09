@@ -19,8 +19,8 @@ export const selectSortingValue = (state: RootState) => state.projects.sorting;
 export const selectDoneProjects = (state: RootState) =>
   state?.projects?.projects?.filter(
     (item) =>
-      item.projectStatus === "delivered on time" ||
-      item.projectStatus === "delivered before deadline" ||
+      item.projectStatus === "deliver on time" ||
+      item.projectStatus === "deliver before deadline" ||
       item.projectStatus === "delivered after deadline" ||
       item.projectStatus === "late"
   );

@@ -70,7 +70,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.expanded &&
+        {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
             let NoOfFinished = projects.allTasks.filter(
