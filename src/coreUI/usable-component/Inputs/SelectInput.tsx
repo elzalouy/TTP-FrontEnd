@@ -166,9 +166,8 @@ const SelectInput: React.FC<Props> = ({
                   paddingBottom: 5,
                   borderRadius: 0,
                 }}
-              >
-                {item.text}
-              </option>
+                label={item.text}
+              />
             ))}
         </Box>
       </Popover>

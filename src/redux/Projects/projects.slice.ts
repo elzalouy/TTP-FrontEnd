@@ -118,14 +118,17 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(getAllProjects.rejected, (state) => {
       state.loading = false;
       state.projects = [];
+      state.filteredProjects = [];
     });
     builder.addCase(getAllProjects.pending, (state) => {
       state.loading = true;
       state.projects = [];
+      state.filteredProjects = [];
     });
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
       state.loading = false;
       state.projects = action?.payload;
+      state.filteredProjects = action?.payload;
     });
     builder.addCase(createProjectTask.rejected, (state) => {
       state.loading = false;
@@ -153,15 +156,15 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;
-      state.projects = [];
+      state.filteredProjects = [];
     });
     builder.addCase(filterProjects.pending, (state) => {
       state.loading = true;
-      state.projects = [];
+      state.filteredProjects = [];
     });
     builder.addCase(filterProjects.fulfilled, (state, action) => {
       state.loading = false;
-      state.projects = action.payload;
+      state.filteredProjects = action.payload;
     });
     builder.addCase(getTasks.rejected, (state) => {
       state.selectedProject.loading = false;
