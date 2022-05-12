@@ -96,7 +96,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     <option>Select</option>
                     {clients &&
                       clients.map((item, i) => (
-                        <option defaultValue={item.clientId} key={i}>
+                        <option value={item.clientId} key={i}>
                           {item.clientName}
                         </option>
                       ))}
@@ -144,7 +144,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         text: "deliver before deadline",
                       },
                     ].map((item, i) => (
-                      <option defaultValue={item.value} key={i}>
+                      <option value={item.value} key={i}>
                         {item.value}
                       </option>
                     ))}
@@ -166,7 +166,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     <option value=""> Select</option>
                     {PMs?.length > 0 &&
                       PMs.map((item, i) => (
-                        <option defaultValue={item?._id} key={i}>
+                        <option value={item?._id} key={i}>
                           {item?.name}
                         </option>
                       ))}
