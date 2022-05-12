@@ -52,6 +52,7 @@ export interface ProjectsInterface {
     tasks: Task[];
     newTask: Task;
     selectedDepartment: Department | null;
+    newProjectHook: boolean;
   };
   selectedProject: {
     loading: boolean | null;
@@ -73,6 +74,7 @@ const PorjectsState: ProjectsInterface = {
   projects: [],
   allTasks: [],
   newProject: {
+    newProjectHook: false,
     showPopUp: "none",
     project: {
       _id: "",

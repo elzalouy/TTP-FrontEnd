@@ -40,7 +40,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
-  const isDelete = useAppSelector(selectDeleteProjectId);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
@@ -48,8 +47,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const role = useAppSelector(selectRole);
   const { register, watch, control, setValue } = useForm();
   const theme = useTheme();
-  // const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  // const MD = useMediaQuery(theme.breakpoints.up("md"));
 
   const onHandleChange = (e: any) => {
     let data = watch();
@@ -84,7 +81,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid marginX={0.5} item marginY={1}>
+        <Grid item margin={1}>
           <Box
             onClick={() => setFilter(!filter)}
             textAlign={"center"}
@@ -97,8 +94,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         </Grid>
         <>
           <Grid
-            marginX={0.5}
-            marginY={1}
+            margin={1}
             item
             xs={5}
             sm={5}
@@ -125,13 +121,12 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               md: "block",
               lg: "block",
             }}
-            marginX={0.5}
-            marginY={1}
+            margin={1}
             item
             xs={5}
             sm={4}
-            md={1.8}
-            lg={1.8}
+            md={2}
+            lg={2}
           >
             <Controller
               name="deadline"
@@ -162,8 +157,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               md: "block",
               lg: "block",
             }}
-            marginX={0.5}
-            marginY={1}
+            margin={1}
             item
             xs={5}
             sm={4.5}
@@ -207,8 +201,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               md: "block",
               lg: "block",
             }}
-            marginX={0.5}
-            marginY={1}
+            margin={1}
             item
             xs={5}
             sm={4}
@@ -253,8 +246,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               md: "block",
               lg: "block",
             }}
-            marginX={0.5}
-            marginY={1}
+            margin={1}
             item
             xs={5}
             sm={4}
@@ -301,8 +293,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           </Grid>
         </>
         <Grid
-          marginX={0.5}
-          marginY={1}
+          margin={1}
           item
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
           md={2}

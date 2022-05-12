@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
+import { fireUpdateDepartmentHook } from "../Ui";
 
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
@@ -21,7 +22,7 @@ export const createDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.createDepartment(data);
       if (department.ok && department.data) {
-         toast.success("Department created successfully",{
+        toast.success("Department created successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -29,10 +30,12 @@ export const createDepartment = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
-        return { ...data, teamsId: data.teams };
-      } else return [];
-    } catch (error) {
+        });
+        return department.data;
+      }
+      throw "Department not creacted, error hapenned";
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }
@@ -40,11 +43,12 @@ export const createDepartment = createAsyncThunk<any, any, any>(
 
 export const updateDepartment = createAsyncThunk<any, any, any>(
   "departments/updateDepartment",
-  async (data: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.updateDepartment(data);
+      let department = await DepartmentsApi.updateDepartment(args.data);
       if (department.ok && department.data) {
-         toast.success("Department updated successfully",{
+        args.dispatch(fireUpdateDepartmentHook(""));
+        toast.success("Department updated successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -52,8 +56,9 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
-        return { ...data };
+        });
+        console.log(department.data);
+        return department.data;
       } else return [];
     } catch (error) {
       rejectWithValue(error);
@@ -67,7 +72,7 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.deleteDepartment(data);
       if (department.ok && department.data) {
-         toast.success("Department deleted successfully",{
+        toast.success("Department deleted successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -75,7 +80,7 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
+        });
         return { ...data };
       } else return [];
     } catch (error) {

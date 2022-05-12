@@ -24,12 +24,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
-  React.useEffect(() => {
-    dispatch(getPMs(null));
-    dispatch(getAllClients(null));
-  }, []);
+
   const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setcurrentStep(1);
     let data = watch();
     let project = {
       name: data?.name,
@@ -45,7 +41,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       completedDate: null,
       adminId: user?._id,
     };
-    dispatch(createProject(project));
+    dispatch(createProject({ data: project, setcurrentStep }));
   };
   return (
     <>
@@ -92,22 +88,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                     : []
                 }
               />
-              // <select
-              //   className="select-project"
-              //   onChange={props.field.onChange}
-              //   defaultChecked={true}
-              // >
-              //   <option value="">Select Client</option>
-              //   {clients && clients.length > 0 ? (
-              //     clients.map((item) => (
-              //       <option key={item.clientId} value={item?.clientId}>
-              //         {item.clientName}
-              //       </option>
-              //     ))
-              //   ) : (
-              //     <></>
-              //   )}
-              // </select>
             )}
           />
         </div>

@@ -11,6 +11,7 @@ import {
   editProject as editProjectAction,
 } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
+import { fireUpdateProjectHook } from "../../redux/Ui";
 
 type Props = {
   show: string;
@@ -29,6 +30,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("deadline", project?.projectDeadline);
     setValue("name", project?.name);
     setValue("status", project?.projectStatus);
+    console.log(watch());
   }, [project]);
   const onSubmitEdit = () => {
     let data = watch();
@@ -41,7 +43,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.projectDeadline = data.deadline;
     editProject.clientId = data.clientId;
     editProject.projectStatus = data.status;
-    dispatch(editProjectAction(editProject));
+
+    dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
   };
   return (
@@ -69,12 +72,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    // {...props}
-                    defaultValue={project?.name}
-                    onChange={props.field.onChange}
+                    value={props.field.value}
                     className="popup-input"
                     type="text"
                     placeholder="Project name"
+                    onChange={props.field.onChange}
                   />
                 )}
               />
@@ -87,16 +89,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <select
-                    defaultChecked
-                    // {...props}
-                    onChange={props.field.onChange}
+                    value={props.field.value}
                     className="popup-select"
-                    defaultValue={project?.clientId}
+                    onChange={props.field.onChange}
                   >
                     <option>Select</option>
                     {clients &&
                       clients.map((item, i) => (
-                        <option value={item.clientId} key={i}>
+                        <option defaultValue={item.clientId} key={i}>
                           {item.clientName}
                         </option>
                       ))}
@@ -111,30 +111,24 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    // {...props}
-                    defaultValue={
-                      project?.projectDeadline
-                        ? new Date(project?.projectDeadline).toISOString()
-                        : new Date().toISOString()
-                    }
-                    onChange={props.field.onChange}
+                    value={props.field.value}
                     className="popup-input"
                     type="date"
+                    onChange={props.field.onChange}
                   />
                 )}
               />
             </div>
             <div>
-              <label className="popup-label">Project title</label>
+              <label className="popup-label">Project Status</label>
               <Controller
                 name="status"
                 control={control}
                 render={(props) => (
                   <select
+                    value={props.field.value}
                     className="popup-select"
-                    // {...props}
                     onChange={props.field.onChange}
-                    defaultValue={project?.projectStatus}
                   >
                     <option>Select</option>
                     {[
@@ -150,7 +144,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         text: "deliver before deadline",
                       },
                     ].map((item, i) => (
-                      <option value={item.value} key={i}>
+                      <option defaultValue={item.value} key={i}>
                         {item.value}
                       </option>
                     ))}
@@ -165,15 +159,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <select
-                    // {...props}
+                    value={props.field.value}
                     onChange={props.field.onChange}
                     className="popup-select"
-                    defaultValue={project?.projectManager?._id}
                   >
                     <option value=""> Select</option>
                     {PMs?.length > 0 &&
                       PMs.map((item, i) => (
-                        <option value={item?._id} key={i}>
+                        <option defaultValue={item?._id} key={i}>
                           {item?.name}
                         </option>
                       ))}
@@ -188,12 +181,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <textarea
-                    // {...props}
-                    onChange={props.field.onChange}
                     maxLength={75}
                     className="popup-textarea"
                     rows={3}
                     placeholder="Write about your project"
+                    onChange={props.field.onChange}
                   />
                 )}
               />

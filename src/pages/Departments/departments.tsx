@@ -20,8 +20,6 @@ const Departments: React.FC<IProps> = () => {
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  let teamsData = useAppSelector(selectAllMembers);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setDepartment(departmentData);
@@ -39,11 +37,14 @@ const Departments: React.FC<IProps> = () => {
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
-          style={SM ? { margin: "50px 0",
-          paddingBottom: "0px",} : {
-            margin: "10px 0",
-            paddingBottom: "20px",
-          }}
+          style={
+            SM
+              ? { margin: "50px 0", paddingBottom: "0px" }
+              : {
+                  margin: "10px 0",
+                  paddingBottom: "20px",
+                }
+          }
         >
           Departments
         </Typography>

@@ -20,8 +20,8 @@ const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
   const id = useAppSelector(selectDeleteProjectId);
   const dispatch = useDispatch();
   const onDeleteProject = () => {
-    dispatch(deleteProjectTasks({ id: id }));
-    dispatch(deleteProject({ id: id }));
+    dispatch(deleteProjectTasks({ data: { id: id }, dispatch }));
+    dispatch(deleteProject({ data: { id: id }, dispatch }));
     setShow("none");
   };
   return (
