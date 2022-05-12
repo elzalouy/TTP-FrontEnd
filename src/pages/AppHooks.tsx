@@ -24,6 +24,8 @@ const AppHooks: React.FC = (props) => {
     deleteProjectHook,
     createTeamHook,
     updateDepartmentHook,
+    createDepartmentHook,
+    editTaskHook,
   } = useAppSelector(selectUi);
   /*
   1- Create an app hook
@@ -76,14 +78,18 @@ const AppHooks: React.FC = (props) => {
     console.log("update department hook");
     dispatch(getAllDepartments(null));
   }, [updateDepartmentHook]);
-  // update statistics hook
+  // create department hook
   React.useEffect(() => {
-    console.log("Update statistics hook");
-    if (projects.loading === false)
-      dispatch(
-        setStatistics({ projects: projects.projects, tasks: projects.allTasks })
-      );
-  }, [projects?.projects, projects?.allTasks]);
+    console.log("create department hook");
+    dispatch(getAllDepartments(null));
+  }, [createDepartmentHook]);
+  // Edit Task hook
+  React.useEffect(() => {
+    console.log("edit Task hook");
+    dispatch(getAllTasks(null));
+  }, [editTaskHook]);
+  // update statistics hook
+
   return <>{props.children}</>;
 };
 

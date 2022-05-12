@@ -32,10 +32,10 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const all = useAppSelector(selectAllProjects);
   const { control, register, reset, watch } = useForm();
+  console.log(selectedProject);
   useEffect(() => {
-    console.log("entered");
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
-  }, [dispatch, props?.match?.params?.id, all.loading === false]);
+  }, [props.match.params.id, all.projects]);
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjectTasks(data.deadline));

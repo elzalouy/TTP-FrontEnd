@@ -37,12 +37,10 @@ const DepartmentCard: React.FC<Props> = ({
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const projects = useAppSelector(selectAllProjects);
-
   const handleSetShow = (value: string) => {
     setShow(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
-
   const handleSetShowDelete = (value: string) => {
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
@@ -75,7 +73,6 @@ const DepartmentCard: React.FC<Props> = ({
           </div>
         ))}
       </div>
-
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">In progress task</p>
@@ -94,7 +91,7 @@ const DepartmentCard: React.FC<Props> = ({
           <p className="counter-title">Done task</p>
           <p>
             {
-              projects.allTasks.filter(
+              projects?.allTasks?.filter(
                 (item) =>
                   item.boardId === department.boardId && item.status === "done"
               ).length

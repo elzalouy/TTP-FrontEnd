@@ -89,7 +89,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
 
   const handleSubmit = async () => {
     console.log({ formData });
-    await dispatch(createDepartment(formData));
+    dispatch(createDepartment({ data: formData, dispatch }));
     setFormData({
       name: "",
       color: "",

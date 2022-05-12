@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
-import { fireUpdateDepartmentHook } from "../Ui";
+import { fireCreateDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
 
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
@@ -18,10 +18,11 @@ export const getAllDepartments = createAsyncThunk<any, any, any>(
 
 export const createDepartment = createAsyncThunk<any, any, any>(
   "departments/createDepartment",
-  async (data: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.createDepartment(data);
+      let department = await DepartmentsApi.createDepartment(args.data);
       if (department.ok && department.data) {
+        args.dispatch(fireCreateDepartmentHook(""));
         toast.success("Department created successfully", {
           position: "top-right",
           autoClose: 1500,

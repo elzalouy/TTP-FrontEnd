@@ -65,6 +65,13 @@ const UISlice: Slice<UiInterface> = createSlice({
       state.updateDepartmentHook =
         state.updateDepartmentHook === true ? false : true;
     },
+    fireCreateDepartmentHook: (state = UiState) => {
+      state.createDepartmentHook =
+        state.createDepartmentHook === true ? false : true;
+    },
+    fireEditTaskHook: (state = UiState) => {
+      state.editTaskHook = state.editTaskHook === true ? false : true;
+    },
   },
 });
 export default UISlice.reducer;
@@ -86,5 +93,7 @@ export const {
   fireDeleteProjectHook,
   fireNewTeamHook,
   fireUpdateDepartmentHook,
+  fireCreateDepartmentHook,
+  fireEditTaskHook,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

@@ -94,7 +94,13 @@ const App: React.FC = (props) => {
     });
   }, []);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
-
+  React.useEffect(() => {
+    console.log("Update statistics hook");
+    if (projects.loading === false)
+      dispatch(
+        setStatistics({ projects: projects.projects, tasks: projects.allTasks })
+      );
+  }, [projects?.projects, projects?.allTasks]);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>

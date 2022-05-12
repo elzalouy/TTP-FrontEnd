@@ -6,6 +6,7 @@ import { Project } from "./projects.state";
 import {
   fireDeleteProjectHook,
   fireDeleteTaskHook,
+  fireEditTaskHook,
   fireUpdateProjectHook,
 } from "../Ui";
 export const getAllProjects = createAsyncThunk<any, any, any>(
@@ -59,8 +60,9 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
     try {
-      let result: ApiResponse<any> = await api.createTask(args);
+      let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
+        args.dispatch(fireEditTaskHook(""));
         toast("Task have been save to the Database");
         return result.data?.task;
       }
@@ -163,6 +165,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
     try {
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
+        args.dispatch(fireEditTaskHook(""));
         toast("Tasks deleted.");
         return args.ids;
       }
@@ -195,8 +198,9 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-      let deleteResult = await api.deleteTask(args);
+      let deleteResult = await api.deleteTask(args.data);
       if (deleteResult.ok) {
+        args.dispatch(fireDeleteTaskHook(""));
         toast("Tasks deleted from DB and Trello");
         return deleteResult.data;
       } else throw deleteResult.problem;
@@ -256,9 +260,11 @@ export const editTask = createAsyncThunk<any, any, any>(
   "tasks/editTask",
   async (args: any, { rejectWithValue }) => {
     try {
-      let response = await api.editTask(args);
-      if (response.ok && response.data) return response.data;
-      else throw "Task not updated.";
+      let response = await api.editTask(args.data);
+      if (response.ok && response.data) {
+        args.dispatch(fireEditTaskHook(""));
+        return response.data;
+      } else throw "Task not updated.";
     } catch (error) {
       rejectWithValue(error);
     }
