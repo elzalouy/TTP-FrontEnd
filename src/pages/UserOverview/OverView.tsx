@@ -10,8 +10,8 @@ import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./ManagerNotifications";
 import IMAGES from "../../assets/img";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";
 import { selectRole, selectUser } from "../../redux/Auth";
 import { getPMs } from "../../redux/PM";
@@ -27,7 +27,8 @@ const OverView: FC<Props> = (props) => {
   const [user, setUser] = useState("operation manager");
   const userName = useAppSelector(selectUser);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     dispatch(getPMs(null));
@@ -41,7 +42,7 @@ const OverView: FC<Props> = (props) => {
         <Grid
           justifyContent={"space-between"}
           alignItems={"normal"}
-          direction="row"
+          direction={MD ? "column" : "row"}
           container
         >
           <Grid
@@ -59,7 +60,14 @@ const OverView: FC<Props> = (props) => {
                 display: "inline-flex",
               }}
             >
-              <UserName loading={false} name={userName.user?.name === undefined ? userName.name : userName.user.name} />
+              <UserName
+                loading={false}
+                name={
+                  userName.user?.name === undefined
+                    ? userName.name
+                    : userName.user.name
+                }
+              />
             </Box>
             <Typography
               color="#171725"
@@ -86,7 +94,7 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
-                paddingRight={SM ? 0 : (role === "PM" ? 0 : "3%")}
+                paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
                 container
               >
                 {role === "PM" ? (
@@ -167,6 +175,37 @@ const OverView: FC<Props> = (props) => {
                   </>
                 )}
               </Grid>
+              {MD ? (
+                <Grid
+                  marginTop={5}
+                  item
+                  lg={4}
+                  md={4}
+                  sm={12}
+                  xs={12}
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {role === "OM" ? (
+                    <ManagerNotifications {...props} />
+                  ) : (
+                    <UserNotifications {...props} />
+                  )}
+                </Grid>
+              ) : (
+                <Grid
+                  // direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  paddingTop={2.5}
+                  overflow="scroll"
+                  paddingRight={SM ? 0 : 3.5}
+                >
+                  <UserProjects {...props} />
+                </Grid>
+              )}
+            </Grid>
+            {MD ? (
               <Grid
                 // direction="row"
                 justifyContent="flex-start"
@@ -174,29 +213,31 @@ const OverView: FC<Props> = (props) => {
                 paddingTop={2.5}
                 overflow="scroll"
                 paddingRight={SM ? 0 : 3.5}
+                width={"100%"}
               >
                 <UserProjects {...props} />
               </Grid>
-            </Grid>
-            <Grid
-              marginTop={5}
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              justifyContent="center"
-              alignItems="center"
-            >
-              {role === "OM" ? (
-                <ManagerNotifications {...props} />
-              ) : (
-                <UserNotifications {...props} />
-              )}
-            </Grid>
+            ) : (
+              <Grid
+                marginTop={5}
+                item
+                lg={4}
+                md={4}
+                sm={12}
+                xs={12}
+                justifyContent="center"
+                alignItems="center"
+              >
+                {role === "OM" ? (
+                  <ManagerNotifications {...props} />
+                ) : (
+                  <UserNotifications {...props} />
+                )}
+              </Grid>
+            )}
           </Grid>
           <Grid
-          item
+            item
             xs={11.5}
             // direction="row"
             justifyContent="flex-start"

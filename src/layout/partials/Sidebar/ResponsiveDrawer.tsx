@@ -39,6 +39,7 @@ import ClientIcon from "../../../assets/icons/ClientIcon";
 import NotificationIcon from "../../../assets/icons/Notification";
 import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
 import TaskIcon from "../../../assets/icons/TaskIcon";
+import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";
@@ -122,7 +123,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               onClick={() => history.push("/Departments")}
               path={"/Departments"}
               src={IMAGES.departments}
-              Icon={() => <ProjectsIcon />}
+              Icon={() => <DepartmentIcon />}
               text="Departments"
             />
             {role !== "PM" && (

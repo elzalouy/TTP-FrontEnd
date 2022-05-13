@@ -8,6 +8,7 @@ import { selectSelectedCategory } from "../../redux/Categories/categories.select
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
+import { useMediaQuery,useTheme } from "@mui/material";
 type Props = {
   display: string;
   handleSetDisplay: (value: string) => void;
@@ -17,6 +18,9 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
   const [errors, setErrors] = useState("");
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategory, setSubCategory] = useState("");
   const [subCategories, setsubCategories] = useState<
     { _id: string; subCategory: string }[]
@@ -68,7 +72,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   };
   return (
     <>
-      <PopUp show={display} minWidthSize="30vw" maxWidthSize="300px">
+      <PopUp show={display} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "400px" : "320px"}>
         <div>
           <img
             className="closeIcon"

@@ -32,8 +32,13 @@ const Tasks: React.FC = (props: any) => {
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down('sm'));
+  const MD = useMediaQuery(theme.breakpoints.down('md'));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
+
+  console.log(SM, MD);
+  
+
   const onHandleChange = (e: any) => {
     console.log("called");
     e.preventDefault();
@@ -64,11 +69,11 @@ const Tasks: React.FC = (props: any) => {
       padding={SM?0:4}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2}>
+      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={4} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -91,7 +96,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -124,7 +129,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -159,7 +164,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={4} md={2.5} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -195,7 +200,7 @@ const Tasks: React.FC = (props: any) => {
         <Grid marginX={0.5} item marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={5} md={5} lg={2.5} marginY={1}>
           <Box
             style={{
               backgroundColor: "#fafafa",

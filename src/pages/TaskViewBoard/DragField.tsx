@@ -204,7 +204,7 @@ const DragField: React.FC = (props: any) => {
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
-      <Box sx={{ minWidth: 1200, overflowX: "scroll" }} display="inline-flex">
+      <Box sx={{ minWidth: 1200, overflowX: "scroll",height:"100%" }} display="inline-flex">
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
             <Droppable droppableId={columnId} key={index}>

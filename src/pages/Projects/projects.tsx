@@ -100,7 +100,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid marginX={1} item marginY={1}>
+        <Grid marginX={1} item marginY={1} sm={2 -}>
           <Box
             textAlign={"center"}
             sx={{ bgcolor: "white", borderRadius: 4 }}
@@ -245,7 +245,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             </Grid>
           </>
         )}
-        <Grid xs={12} lg={4} marginX={1} marginY={1} item>
+        <Grid xs={12} sm={2} lg={4} marginX={1} marginY={1} item>
           <Controller
             name="name"
             control={control}

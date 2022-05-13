@@ -168,7 +168,7 @@ table.allTask-table td.deleteTd {
   font-weight: 600;
 }
 
-@media (max-width:800px) {
+@media (max-width:900px) {
   .blackBtn {
     cursor: pointer;
     width: 150px;
@@ -181,39 +181,45 @@ table.allTask-table td.deleteTd {
     font-weight: bold;
     margin: 10px 0;
   }
+  .inputs-grid{
+    grid-template-columns: 1fr;
+  }
   .addTaskBtn{
     margin-top: 10px;
     margin-bottom: 10px;
   }
   .input-project{
-    width: 80%;
+    width: 38%;
   }
   .select-project{
-    width: 80%;
+    width: 38%;
+  }
+  .textarea-project{
+    width: 38%;
   }
   .files{
     margin:20px 0px;
   }
 }
-@media (max-width:700px) {
+@media (max-width:800px) {
   .input-project{
-    width: 65%;
+    width: 100%;
   }
   .select-project{
-    width: 65%;
+    width: 100%;
   }
   .textarea-project{
-    width: 65%;
+    width: 100%;
   }
 }
 @media (max-width:600px) {
   .input-project{
-    width: 50%;
+    width: 100%;
   }
   .select-project{
-    width: 50%;
+    width: 100%;
   }
   .textarea-project{
-    width: 50%;
+    width: 100%;
   }
 }

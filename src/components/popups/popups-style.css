@@ -408,12 +408,29 @@ table.allTeam-table td.deleteTd {
   color: #000;
 }
 
-@media (max-width:700px) {
+@media (max-width:800px) {
   .inputs-grid{
     grid-template-columns: 1fr;
+    width: 55vw !important;
   } 
   .controllers{
     margin-top: 20px;
+  }
+  .controllers-done{
+    width: 150px;
+  }
+}
+
+@media (max-width:600px) {
+  .inputs-grid{
+    grid-template-columns: 1fr;
+    width: 70vw !important;
+  } 
+  .controllers{
+    margin-top: 20px;
+  }
+  .controllers-done{
+    width: 150px;
   }
 }
 

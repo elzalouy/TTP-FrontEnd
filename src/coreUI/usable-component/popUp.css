@@ -38,21 +38,47 @@
   0% {
     transform: scale(0.2);
   }
+
   100% {
     transform: scale(1);
   }
 }
 
-@media (max-width:800px) {
-  .pop-up{
-    width: 90vw !important;
+@media (max-width:1000px) {
+  .pop-up {
+    width: 40vw !important;
     background-color: white;
     margin-top: 50px;
-    min-height: 200px;
-    max-height: 75vh;
+    min-height: 150px;
+    max-height: 65vh;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
   }
 }
 
+@media (max-width:800px) {
+  .pop-up {
+    width: 60vw !important;
+    background-color: white;
+    margin-top: 50px;
+    min-height: 150px;
+    max-height: 65vh;
+    padding: 20px;
+    animation: zoomIn 0.3s;
+    overflow: auto;
+  }
+}
+
+@media (max-width:600px) {
+  .pop-up {
+    width: 80vw !important;
+    background-color: white;
+    margin-top: 50px;
+    min-height: 150px;
+    max-height: 65vh;
+    padding: 20px;
+    animation: zoomIn 0.3s;
+    overflow: auto;
+  }
+}
