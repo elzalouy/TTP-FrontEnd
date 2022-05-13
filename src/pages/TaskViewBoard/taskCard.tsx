@@ -150,46 +150,73 @@ const TaskCard: React.FC<DataTypes> = ({
             </Stack>
           )} */}
           {item.status !== "cancled" ? (
-            <Stack
-              direction="row"
-              marginTop="12px"
-              justifyContent="flex-start"
-              alignItems="center"
-              className="aft-red"
-              sx={{
-                color: daysColor,
-                bgcolor: daysBgColor,
-              }}
-            >
-              <img
-                src={
-                  remainingDays <= 2
-                    ? IMAGES.scheduleRed
-                    : remainingDays > 2 && remainingDays <= 5
-                    ? IMAGES.scheduleOrange
-                    : IMAGES.scheduleNotClear
-                }
-                alt="more"
-              />
-              <Typography style={{ paddingLeft: "5px", fontSize: 14 }}>
-                {remainingDays > 0 ? `${remainingDays} Days left` : "Late"}
-              </Typography>
-            </Stack>
+            <>
+              {item.status === "done" ? (
+                <>
+                  <Stack
+                    direction="row"
+                    marginTop="12px"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    className="aft-red"
+                    sx={{
+                      color: "#0079BF",
+                      bgcolor: "#B4D6EB",
+                    }}
+                  >
+                    <img src={IMAGES.scheduleOn} alt="more" />
+                    <Typography style={{ paddingLeft: "5px" }}>done</Typography>
+                  </Stack>
+                </>
+              ) : (
+                <>
+                  <Stack
+                    direction="row"
+                    marginTop="12px"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    className="aft-red"
+                    sx={{
+                      color: daysColor,
+                      bgcolor: daysBgColor,
+                    }}
+                  >
+                    <img
+                      src={
+                        remainingDays <= 2
+                          ? IMAGES.scheduleRed
+                          : remainingDays > 2 && remainingDays <= 5
+                          ? IMAGES.scheduleOrange
+                          : IMAGES.scheduleNotClear
+                      }
+                      alt="more"
+                    />
+                    <Typography style={{ paddingLeft: "5px", fontSize: 14 }}>
+                      {remainingDays > 0
+                        ? `${remainingDays} Days left`
+                        : "Late"}
+                    </Typography>
+                  </Stack>
+                </>
+              )}
+            </>
           ) : (
-            <Stack
-              direction="row"
-              marginTop="12px"
-              justifyContent="flex-start"
-              alignItems="center"
-              className="aft-red"
-              sx={{
-                color: "#B04632",
-                bgcolor: "#ECDAD7",
-              }}
-            >
-              <img src={IMAGES.scheduleRed} alt="more" />
-              <Typography style={{ paddingLeft: "5px" }}>Canceled</Typography>
-            </Stack>
+            <>
+              <Stack
+                direction="row"
+                marginTop="12px"
+                justifyContent="flex-start"
+                alignItems="center"
+                className="aft-red"
+                sx={{
+                  color: "#B04632",
+                  bgcolor: "#ECDAD7",
+                }}
+              >
+                <img src={IMAGES.scheduleRed} alt="more" />
+                <Typography style={{ paddingLeft: "5px" }}>Canceled</Typography>
+              </Stack>
+            </>
           )}
           <Stack
             direction="row"

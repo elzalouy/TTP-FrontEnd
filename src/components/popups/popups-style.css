@@ -108,6 +108,7 @@
   border-radius: 5px;
   color: #1f1f1f;
   margin-top: 5px;
+  transition: all 0.5s ease-in-out !important;
 }
 
 .addTaskBtn {

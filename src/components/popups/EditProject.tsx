@@ -140,10 +140,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     {[
                       { value: "inProgress", text: "In Progress" },
                       { value: "late", text: "Late" },
-                      { value: "delivered on time", text: "delivered on time" },
+                      { value: "deliver on time", text: "deliver on time" },
                       {
-                        value: "delivered defore deadline",
-                        text: "delivered defore deadline",
+                        value: "delivered after deadline",
+                        text: "delivered after deadline",
+                      },
+                      {
+                        value: "deliver before deadline",
+                        text: "deliver before deadline",
                       },
                     ].map((item, i) => (
                       <option value={item.value} key={i}>

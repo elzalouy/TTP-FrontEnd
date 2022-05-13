@@ -124,11 +124,12 @@ const Clients: React.FC<Props> = () => {
         sx={{ height: "-webkit-fill-available", maxHeight: "100vh" }}
       >
         <Box className="all-clients">
-          {clients?.map((clientInfo: Client) => (
-            <>
-              <ClientCard key={clientInfo._id} client={clientInfo} />
-            </>
-          ))}
+          {clients &&
+            clients?.map((clientInfo: Client) => (
+              <>
+                <ClientCard key={clientInfo._id} client={clientInfo} />
+              </>
+            ))}
           {role !== "PM" && <CreateNewClient />}
         </Box>
       </Grid>
