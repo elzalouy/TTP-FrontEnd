@@ -9,6 +9,7 @@ import { departmentsActions } from "../../redux/Departments";
 import DeleteDepartment from "../../components/popups/DeleteDepartment";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
+import { selectAllProjects } from "../../redux/Projects";
 
 type Props = {
   backgroundColor: string;
@@ -35,11 +36,11 @@ const DepartmentCard: React.FC<Props> = ({
   const [showDelete, setShowDelete] = useState("none");
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
+  const projects = useAppSelector(selectAllProjects);
   const handleSetShow = (value: string) => {
     setShow(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
-
   const handleSetShowDelete = (value: string) => {
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
@@ -54,14 +55,12 @@ const DepartmentCard: React.FC<Props> = ({
         style={{ color: colors[department.color][1] }}
       >
         <h2>{department.name}</h2>
-        <p>
-          {role !== "PM" && (
-            <DepartmentDrop
-              handleSetShow={handleSetShow}
-              handleSetShowDelete={handleSetShowDelete}
-            />
-          )}
-        </p>
+        {role !== "PM" && (
+          <DepartmentDrop
+            handleSetShow={handleSetShow}
+            handleSetShowDelete={handleSetShowDelete}
+          />
+        )}
       </div>
       <div className="teams">
         {department?.teamsId?.map((team: any) => (
@@ -74,18 +73,30 @@ const DepartmentCard: React.FC<Props> = ({
           </div>
         ))}
       </div>
-
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">In progress task</p>
-          <p>{department.totalInProgress}</p>
+          <p>
+            {
+              projects.allTasks.filter(
+                (item) =>
+                  item.boardId === department.boardId &&
+                  item.status === "inProgress"
+              ).length
+            }
+          </p>
         </div>
-
         <hr className="hrVertical" />
-
         <div className="Done">
           <p className="counter-title">Done task</p>
-          <p>{department.totalDone}</p>
+          <p>
+            {
+              projects?.allTasks?.filter(
+                (item) =>
+                  item.boardId === department.boardId && item.status === "done"
+              ).length
+            }
+          </p>
         </div>
       </div>
       <EditDepartment Show={Show} handleSetShow={handleSetShow} />

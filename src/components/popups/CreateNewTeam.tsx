@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import "./popups-style.css";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
@@ -23,10 +23,11 @@ const AddNewTeam: React.FC<Props> = () => {
   const departments = useAppSelector(selectAllDepartments);
   useEffect(() => {
     setTeam({
-      name: "", department: ""
-    })
-    setAllTeam([])
-  },[Show])
+      name: "",
+      department: "",
+    });
+    setAllTeam([]);
+  }, [Show]);
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
@@ -36,11 +37,11 @@ const AddNewTeam: React.FC<Props> = () => {
         boardId: depData[1],
       };
       if (AllTeam[i]) {
-        await dispatch(createTeam(data));
+        dispatch(createTeam({ data: data, dispatch }));
       }
     }
     setTeam({ name: "", department: "" });
-    setAllTeam([])
+    setAllTeam([]);
     setShow("none");
   };
   return (
@@ -88,6 +89,7 @@ const AddNewTeam: React.FC<Props> = () => {
             setTeam({ ...Team, department: e.target.value });
           }}
           value={Team.department}
+          defaultValue=""
         >
           <option value="">Select Department</option>
           {departments?.map((dep: any) => (

@@ -64,7 +64,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
       file: Task?.file,
       listId: Task?.listId,
     };
-    dispatch(editTask(data));
+    dispatch(editTask({ data: data, dispatch }));
     setShow("none");
   };
   const onChange = (
@@ -110,7 +110,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.departmentId = e.target.value;
                 setTask({ ...Task });
               }}
-              defaultValue={Task?.departmentId ? Task?.departmentId : ""}
+              value={Task?.departmentId}
             >
               <option value="">select</option>
               {departments &&
@@ -127,7 +127,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               name="deadline"
               className="popup-input"
               type="date"
-              defaultValue={Task?.deadline ? Task?.deadline : ""}
+              value={Task?.deadline}
               onChange={(e) => {
                 Task.deadline = e.target.value;
                 setTask({ ...Task });
@@ -143,7 +143,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.categoryId = e.target.value;
                 setTask({ ...Task });
               }}
-              defaultValue={Task?.categoryId ? Task?.categoryId : ""}
+              value={Task?.categoryId ? Task?.categoryId : ""}
             >
               <option value="">select</option>
               {categories &&
@@ -178,7 +178,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.subCategoryId = e.target.value;
                 setTask({ ...Task });
               }}
-              defaultValue={Task?.subCategoryId}
+              value={Task?.subCategoryId}
             >
               <option value="">select</option>
               {categories &&
@@ -198,6 +198,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.memberId = e.target.value;
                 setTask({ ...Task });
               }}
+              value={Task?.memberId}
             >
               <option value="">select</option>
               {departments
@@ -220,7 +221,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               type="file"
               multiple
               className="custom-file-input"
-              value={Task?.file ? Task?.file : ""}
+              value={Task?.file}
               onChange={(e) => {
                 Task.file = e.target.value;
                 setTask({ ...Task });

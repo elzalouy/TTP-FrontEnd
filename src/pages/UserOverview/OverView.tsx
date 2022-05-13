@@ -10,8 +10,8 @@ import UserNotifications from "./Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./ManagerNotifications";
 import IMAGES from "../../assets/img";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";
 import { selectRole, selectUser } from "../../redux/Auth";
 import { getPMs } from "../../redux/PM";
@@ -28,13 +28,13 @@ const OverView: FC<Props> = (props) => {
   const userName = useAppSelector(selectUser);
   const theme = useTheme();
   const statistics = useAppSelector(selectAllSatistics);
-  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
-  useEffect(() => {
-    dispatch(getPMs(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllTasks(null));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getPMs(null));
+  //   dispatch(getAllProjects(null));
+  //   dispatch(getAllTasks(null));
+  // }, []);
 
   return (
     <>
@@ -60,7 +60,14 @@ const OverView: FC<Props> = (props) => {
                 display: "inline-flex",
               }}
             >
-              <UserName loading={false} name={userName?.user?.name === undefined ? userName?.name : userName?.user?.name} />
+              <UserName
+                loading={false}
+                name={
+                  userName?.user?.name === undefined
+                    ? userName?.name
+                    : userName?.user?.name
+                }
+              />
             </Box>
             <Typography
               color="#171725"
@@ -87,7 +94,7 @@ const OverView: FC<Props> = (props) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 paddingTop={5}
-                paddingRight={SM ? 0 : (role === "PM" ? 0 : "3%")}
+                paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
                 container
               >
                 {role === "PM" ? (
@@ -256,7 +263,7 @@ const OverView: FC<Props> = (props) => {
             </Grid>
           </Grid>
           <Grid
-          item
+            item
             xs={11.5}
             // direction="row"
             justifyContent="flex-start"

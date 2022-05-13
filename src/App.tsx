@@ -37,6 +37,7 @@ import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
 import projectsSlice from "./redux/Projects/projects.slice";
 import { selectAllSatistics, setStatistics } from "./redux/Statistics";
+import AppHooks from "./pages/AppHooks";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const App: React.FC = (props) => {
     dispatch(getAllProjects(null));
     dispatch(getAllTasks(null));
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (isAuth === true && user?._id) {
       localStorage.setItem("token", user?._id);
@@ -93,85 +94,100 @@ const App: React.FC = (props) => {
     });
   }, []);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
-  useEffect(() => {
+  React.useEffect(() => {
+    console.log("Update statistics hook");
     if (projects.loading === false)
       dispatch(
         setStatistics({ projects: projects.projects, tasks: projects.allTasks })
       );
-  }, [projects?.projects, projects?.allTasks, dispatch, projects?.loading]);
+  }, [projects?.projects, projects?.allTasks]);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover={false}
-      />
-      <PopUps />
-      <Switch>
-        <Route key="/path" exact path="/login" component={Login} />
-        <Route key="forgetPassword" path="/forgetPassword" component={Forget} />
-        <Route
-          key="/resetPassword"
-          path="/resetPassword/:token"
-          component={ResetPassword}
+      <AppHooks>
+        <ToastContainer
+          position="top-right"
+          autoClose={1500}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover={false}
         />
-        <Route
-          key="/newPassword"
-          path="/newPassword/:token"
-          component={UpdatePassword}
-        />
-        <LoggedInContainer
-          key="/projects"
-          path="/Projects"
-          component={Projects}
-        />
-        <LoggedInContainer
-          path="/TasksList"
-          key="tasksList"
-          component={TasksListView}
-        />
-        <LoggedInContainer
-          key="/tasksBoard"
-          path="/TasksBoard/:id"
-          component={TasksBoardView}
-        />
-        <LoggedInContainer key="/clients" path="/Clients" component={Clients} />
-        <LoggedInContainer
-          path="/Departments"
-          key="/departments"
-          component={Departments}
-        />
-        <LoggedInContainer
-          path="/Categories"
-          key="/categories"
-          component={Category}
-        />
-        <LoggedInContainer
-          path="/ProjectManagers"
-          key="/projectManagers"
-          component={ProjectManagers}
-        />
-        <LoggedInContainer
-          path="/notifications"
-          key="/notifications"
-          component={NotificationContainer}
-        />
-        <LoggedInContainer
-          path="/Overview"
-          component={OverView}
-          key="/overview"
-        />
-        <Redirect from="/" to="Overview" />
-        <LoggedInContainer path="/404" component={NotFound} key="/notfound2" />
-        <Route path="/404" component={NotFound} key="/notfound" />
-        <Redirect from="*" to="/404" key="404" />
-      </Switch>
+        <PopUps />
+        <Switch>
+          <Route key="/path" exact path="/login" component={Login} />
+          <Route
+            key="forgetPassword"
+            path="/forgetPassword"
+            component={Forget}
+          />
+          <Route
+            key="/resetPassword"
+            path="/resetPassword/:token"
+            component={ResetPassword}
+          />
+          <Route
+            key="/newPassword"
+            path="/newPassword/:token"
+            component={UpdatePassword}
+          />
+          <LoggedInContainer
+            key="/projects"
+            path="/Projects"
+            component={Projects}
+          />
+          <LoggedInContainer
+            path="/TasksList"
+            key="tasksList"
+            component={TasksListView}
+          />
+          <LoggedInContainer
+            key="/tasksBoard"
+            path="/TasksBoard/:id"
+            component={TasksBoardView}
+          />
+          <LoggedInContainer
+            key="/clients"
+            path="/Clients"
+            component={Clients}
+          />
+          <LoggedInContainer
+            path="/Departments"
+            key="/departments"
+            component={Departments}
+          />
+          <LoggedInContainer
+            path="/Categories"
+            key="/categories"
+            component={Category}
+          />
+          <LoggedInContainer
+            path="/ProjectManagers"
+            key="/projectManagers"
+            component={ProjectManagers}
+          />
+          <LoggedInContainer
+            path="/notifications"
+            key="/notifications"
+            component={NotificationContainer}
+          />
+          <LoggedInContainer
+            path="/Overview"
+            component={OverView}
+            key="/overview"
+          />
+          <Redirect from="/" to="Overview" />
+          <LoggedInContainer
+            path="/404"
+            component={NotFound}
+            key="/notfound2"
+          />
+          <Route path="/404" component={NotFound} key="/notfound" />
+          <Redirect from="*" to="/404" key="404" />
+        </Switch>
+      </AppHooks>
     </Box>
   );
 };

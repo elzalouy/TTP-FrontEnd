@@ -6,14 +6,10 @@ import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import {
   categoriesActions,
-  getAllCategories,
   selectAllCategories,
   selectSelectedCategory,
 } from "../../redux/Categories";
-import {
-  getAllDepartments,
-  selectAllDepartments,
-} from "../../redux/Departments";
+import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
@@ -21,10 +17,8 @@ import {
   selectNewProject,
   selectSelectedDepartment,
 } from "../../redux/Projects";
-import {
-  getTechMembersByDeptId,
-  selectDepartmentMembers,
-} from "../../redux/techMember";
+
+import { UiActions } from "../../redux/Ui";
 
 interface TaskFormProps {
   setCurrentStep: any;
@@ -42,11 +36,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const { register, handleSubmit, watch, control, reset } = useForm();
 
   React.useEffect(() => {
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-  }, []);
-
-  React.useEffect(() => {
     let values = watch();
     if (values?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === values.categoryId);
@@ -62,7 +51,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
     }
   }, [watch(), reset]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -85,14 +74,15 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   };
 
   const onCancel = () => {
+    dispatch(UiActions.fireNewProjectHook(""));
     setShow("none");
     setCurrentStep(0);
   };
   const onSaveProject = () => {
+    dispatch(UiActions.fireNewProjectHook(""));
     toast("Project and Its Tasks have been saved.");
     setShow("none");
     setCurrentStep(0);
-    window.location.reload();
   };
   return (
     <>

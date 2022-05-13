@@ -47,12 +47,6 @@ const CreateTask: React.FC<Props> = (props) => {
     selectedDepartmentId: "",
   });
 
-  
-  React.useEffect(() => {
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-  }, []);
-
   React.useEffect(() => {
     if (Task?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === Task?.categoryId);
@@ -87,7 +81,7 @@ const CreateTask: React.FC<Props> = (props) => {
       )?.listId,
       boardId: selectedDepartment?.boardId,
     };
-    dispatch(createTaskFromBoard(newTask));
+    dispatch(createTaskFromBoard({ data: newTask, dispatch }));
     props.setShow("none");
   };
 
@@ -140,7 +134,7 @@ const CreateTask: React.FC<Props> = (props) => {
             <select
               className="popup-select"
               name="selectedDepartmentId"
-              value={Task.selectedDepartmentId}
+              defaultValue={Task.selectedDepartmentId}
               onChange={onChange}
             >
               <option value="" key={"0"}>
@@ -170,7 +164,7 @@ const CreateTask: React.FC<Props> = (props) => {
               className="popup-select"
               onChange={onChange}
               name="categoryId"
-              value={Task.categoryId}
+              defaultValue={Task.categoryId}
             >
               <option value="" key="">
                 Select
@@ -187,6 +181,7 @@ const CreateTask: React.FC<Props> = (props) => {
             <div>
               <label className="popup-label">Sub category</label>
               <select
+                defaultValue={Task?.subCategoryId}
                 className="popup-select"
                 name="subCategoryId"
                 onChange={onChange}

@@ -4,7 +4,7 @@ export const selectLoading = (state: RootState) => state?.projects?.loading;
 export const selectNewProject = (state: RootState) =>
   state?.projects?.newProject;
 export const selectInprogressProjects = (state: RootState) =>
-  state?.projects?.projects
+  state?.projects?.filteredProjects
     ?.filter((item) => item.projectStatus === "inProgress")
     .sort((a, b) =>
       state.projects.sorting === "asc"
@@ -15,9 +15,8 @@ export const selectInprogressProjects = (state: RootState) =>
         ? 1
         : -1
     );
-export const selectSortingValue = (state: RootState) => state.projects.sorting;
 export const selectDoneProjects = (state: RootState) =>
-  state?.projects?.projects?.filter(
+  state?.projects?.filteredProjects?.filter(
     (item) =>
       item.projectStatus === "deliver on time" ||
       item.projectStatus === "deliver before deadline" ||
@@ -26,7 +25,9 @@ export const selectDoneProjects = (state: RootState) =>
   );
 
 export const selectLateProjects = (state: RootState) =>
-  state?.projects?.projects?.filter((item) => item.projectStatus === "late");
+  state?.projects?.filteredProjects?.filter(
+    (item) => item.projectStatus === "late"
+  );
 
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
@@ -37,6 +38,7 @@ export const selectDeleteProjectId = (state: RootState) =>
   state?.projects.deleteProject;
 export const selectEditProject = (state: RootState) =>
   state.projects.editProject;
+export const selectSortingValue = (state: RootState) => state.projects.sorting;
 
 // tasks
 export const selectInProgressTasks = (state: RootState) =>
