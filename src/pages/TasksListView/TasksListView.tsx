@@ -74,7 +74,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -97,7 +97,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -111,10 +111,10 @@ const Tasks: React.FC = (props: any) => {
                     {
                       id: "inProgress",
                       value: "inProgress",
-                      text: "In Progres",
+                      text: "In Progress",
                     },
                     { id: "shared", value: "shared", text: "Shared" },
-                    { id: "late", value: "late", text: "late" },
+                    { id: "late", value: "late", text: "Late" },
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
@@ -130,7 +130,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -165,7 +165,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -198,10 +198,10 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} marginY={1}>
+        <Grid marginX={0.5} item xs={2} sm={4} md={1} marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item xs={8} sm={8} md={4} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={8} md={2.5} lg={2.5} marginY={1}>
           <Box
             style={SM ? { backgroundColor: "#fafafa",
             width: "100%",
@@ -221,6 +221,7 @@ const Tasks: React.FC = (props: any) => {
                     onHandleChange(e);
                   }}
                   value={props.field.value}
+                  placeholder="Search"
                 />
               )}
             />
