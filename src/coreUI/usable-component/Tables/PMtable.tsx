@@ -72,7 +72,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
       <EditPM hideButton />
       <DeletePM hideButton />
       <TableContainer>
-        <Table size="small" aria-label="a dense table">
+        <Table size="small" aria-label="a dense table" style={{borderColor:"#EBEFF2"}}>
           <TableHead>
             <TableRow>
               <TableCell
@@ -152,7 +152,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       alignItems="center"
                       spacing={1}
                     >
-                      <Avatar sx={{ width: 20, height: 20 }} />
+                     {/*  <Avatar sx={{ width: 20, height: 20 }} /> */}
                       <Typography
                         fontWeight={"700"}
                         fontSize={15}
@@ -184,7 +184,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={() => {
                           if (!password) {
                             refreshUser(_id);
@@ -193,12 +193,12 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {!password ? <LockOpenIcon /> : <LockIcon />}
                       </IconButton>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}
                       >
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={(e) => toggleDeletePopUp(e, cellData)}
                       >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
