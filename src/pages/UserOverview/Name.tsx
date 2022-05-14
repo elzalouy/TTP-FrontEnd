@@ -2,20 +2,20 @@ import * as React from "react";
 import { Typography, Skeleton } from "@mui/material";
 
 interface UserNameProps {
-  loading: boolean;
-  name: string;
+  loading: boolean | null;
+  name: string | undefined;
 }
 const UserName: React.FC<UserNameProps> = (props) => {
   return (
     <>
-      <Typography variant="h4" component="h4" fontSize={"24px"} color="#11142D">
+      <Typography variant="h4" component="h4" textTransform={"capitalize"} fontSize={"24px"} color="#11142D">
         Hi
       </Typography>
       {props?.loading ? (
         <Skeleton
           variant="text"
-          width={100}
-          height={25}
+          width={200}
+          height={35}
           sx={{ marginLeft: 1 }}
         />
       ) : (
@@ -26,6 +26,7 @@ const UserName: React.FC<UserNameProps> = (props) => {
             color={"#FFC500"}
             paddingLeft={1}
             fontWeight={"600"}
+            textTransform={"capitalize"}
             fontSize={"24px"}
           >
             {props.name},

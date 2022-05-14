@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
 import { Button } from "@mui/material";
 import { selectUser } from "../../redux/Auth";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -38,7 +39,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectDeadline: data?.deadline,
       startDate: data?.startDate,
       clientId: data?.clientId,
-      numberOfFinshedTasks: 0,
+      numberOfFinishedTasks: 0,
       numberOfTasks: 0,
       projectStatus: "inProgress",
       completedDate: null,
@@ -57,7 +58,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             name="name"
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="text"
                 placeholder="Project name"
@@ -73,23 +73,41 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             name="clientId"
             control={control}
             render={(props) => (
-              <select
-                {...props}
-                className="select-project"
-                onChange={props.field.onChange}
-                defaultChecked={true}
-              >
-                <option value="">Select Client</option>
-                {clients && clients.length > 0 ? (
-                  clients.map((item) => (
-                    <option key={item.clientId} value={item?.clientId}>
-                      {item.clientName}
-                    </option>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </select>
+              <SelectInput2
+                handleChange={props.field.onChange}
+                selectText={
+                  clients.find((item) => item.clientId === props.field.value)
+                    ?.clientName
+                }
+                selectValue={props.field.value}
+                options={
+                  clients
+                    ? clients?.map((item) => {
+                        return {
+                          id: item.clientId,
+                          value: item.clientId,
+                          text: item.clientName,
+                        };
+                      })
+                    : []
+                }
+              />
+              // <select
+              //   className="select-project"
+              //   onChange={props.field.onChange}
+              //   defaultChecked={true}
+              // >
+              //   <option value="">Select Client</option>
+              //   {clients && clients.length > 0 ? (
+              //     clients.map((item) => (
+              //       <option key={item.clientId} value={item?.clientId}>
+              //         {item.clientName}
+              //       </option>
+              //     ))
+              //   ) : (
+              //     <></>
+              //   )}
+              // </select>
             )}
           />
         </div>
@@ -101,7 +119,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="date"
                 onChange={props.field.onChange}
@@ -116,24 +133,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             name="projectManager"
             control={control}
             render={(props) => (
-              <select
-                {...props}
-                className="select-project"
-                onChange={props.field.onChange}
-                defaultChecked={true}
-              >
-                <option value="">Select Manager</option>
-
-                {PMs && PMs.length > 0 ? (
-                  PMs.map((item) => (
-                    <option key={item._id} value={item?._id}>
-                      {item.name}
-                    </option>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </select>
+              <SelectInput2
+                handleChange={props.field.onChange}
+                selectText={
+                  PMs.find((item) => item._id === props.field.value)?.name
+                }
+                selectValue={props.field.value}
+                options={
+                  PMs
+                    ? PMs?.map((item) => {
+                        return {
+                          id: item._id,
+                          value: item._id,
+                          text: item.name,
+                        };
+                      })
+                    : []
+                }
+              />
             )}
           />
         </div>
@@ -145,7 +162,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <input
-                {...props}
                 className="input-project"
                 type="date"
                 onChange={props.field.onChange}

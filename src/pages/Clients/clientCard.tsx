@@ -64,7 +64,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
           justifyContent={"space-between"}
           alignItems="center"
         >
-          <Grid item style={{ textAlign: "center" }}>
+          {/* <Grid item style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"
@@ -74,10 +74,10 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               In Progress Task
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressTask?.length}
+              {inProgressTask}
             </Typography>
-          </Grid>
-          <Grid
+          </Grid> */}
+          {/* <Grid
             item
             width="1px !important"
             paddingTop={0.5}
@@ -89,8 +89,8 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               style={{ width: "1px !important" }}
               className="hrVertical"
             />
-          </Grid>
-          <Grid item style={{ textAlign: "center" }}>
+          </Grid> */}
+          <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"
@@ -100,7 +100,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               In Progress Project
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressProject?.length}
+              {inProgressProject}
             </Typography>
           </Grid>
           <Grid
@@ -117,7 +117,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             />
           </Grid>
 
-          <Grid item style={{ textAlign: "center" }}>
+          <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
               variant="caption"
@@ -126,9 +126,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             >
               Done Project
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {doneProject?.length}
-            </Typography>
+            <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
           </Grid>
         </Grid>
       </Box>

@@ -28,20 +28,18 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const [Task, setTask] = useState<any>({
-    id: editValues?._id || "",
-    name: editValues?.name || "",
-    boardId: editValues?.boardId || "",
-    deadline: editValues?.deadline || "",
-    categoryId: editValues?.categoryId || "",
-    subCategoryId: editValues?.subCategoryId || "",
-    description: editValues?.description || "",
-    attachedFiles: editValues?.attachedFiles || "",
-    memberId: editValues?.memberId || "",
-    file: editValues?.file || "",
-    listId: editValues?.listId || "",
-    departmentId: departments?.find(
-      (item) => item.boardId === editValues?.boardId
-    )?._id,
+    id: "",
+    name: "",
+    boardId: "",
+    deadline: "",
+    categoryId: "",
+    subCategoryId: "",
+    description: "",
+    attachedFiles: "",
+    memberId: "",
+    file: "",
+    listId: "",
+    departmentId: "",
   });
   useEffect(() => {
     setTask({
@@ -96,7 +94,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               className="popup-input"
               type="text"
               placeholder="Task name"
-              value={Task.name}
+              value={Task?.name ? Task?.name : ""}
               onChange={(e) => {
                 Task.name = e.target.value;
                 setTask({ ...Task });
@@ -112,16 +110,12 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.departmentId = e.target.value;
                 setTask({ ...Task });
               }}
-              value={Task.departmentId}
+              defaultValue={Task?.departmentId ? Task?.departmentId : ""}
             >
               <option value="">select</option>
               {departments &&
                 departments?.map((item) => (
-                  <option
-                    key={item._id}
-                    selected={item._id === Task.departmentId}
-                    value={item._id}
-                  >
+                  <option key={item._id} value={item?._id ? item?._id : ""}>
                     {item?.name}
                   </option>
                 ))}
@@ -133,7 +127,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               name="deadline"
               className="popup-input"
               type="date"
-              value={Task.deadline}
+              defaultValue={Task?.deadline ? Task?.deadline : ""}
               onChange={(e) => {
                 Task.deadline = e.target.value;
                 setTask({ ...Task });
@@ -149,16 +143,12 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.categoryId = e.target.value;
                 setTask({ ...Task });
               }}
-              value={Task.categoryId}
+              defaultValue={Task?.categoryId ? Task?.categoryId : ""}
             >
               <option value="">select</option>
               {categories &&
                 categories?.map((item) => (
-                  <option
-                    key={item._id}
-                    value={item._id}
-                    selected={item._id === Task.categoryId}
-                  >
+                  <option key={item._id} value={item?._id ? item?._id : ""}>
                     {item.category}
                   </option>
                 ))}
@@ -172,17 +162,15 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               className="popup-textarea"
               rows={4}
               placeholder="Write about your task"
-              value={Task.description}
+              value={Task?.description ? Task?.description : ""}
               onChange={(e) => {
                 Task.description = e.target.value;
                 setTask({ ...Task });
               }}
             />
           </div>
-
           <div>
             <label className="popup-label">Sub category</label>
-
             <select
               className="popup-select"
               name="subCategoryId"
@@ -190,23 +178,18 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
                 Task.subCategoryId = e.target.value;
                 setTask({ ...Task });
               }}
-              value={Task.subCategoryId}
+              defaultValue={Task?.subCategoryId}
             >
               <option value="">select</option>
               {categories &&
                 categories
                   ?.find((item) => item._id === Task.categoryId)
                   ?.selectedSubCategory?.map((item) => (
-                    <option
-                      key={item._id}
-                      selected={item._id === Task._id}
-                      value={item._id}
-                    >
+                    <option key={item._id} value={item?._id}>
                       {item.subCategory}
                     </option>
                   ))}
             </select>
-
             <label className="popup-label">Memeber</label>
             <select
               className="popup-select"
@@ -220,7 +203,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               {departments
                 .find((dep) => dep._id === Task?.departmentId)
                 ?.teamsId.map((item) => (
-                  <option key={item?._id} value={item?._id}>
+                  <option key={item?._id} value={item?._id ? item?._id : ""}>
                     {item?.name}
                   </option>
                 ))}
@@ -237,6 +220,7 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
               type="file"
               multiple
               className="custom-file-input"
+              value={Task?.file ? Task?.file : ""}
               onChange={(e) => {
                 Task.file = e.target.value;
                 setTask({ ...Task });

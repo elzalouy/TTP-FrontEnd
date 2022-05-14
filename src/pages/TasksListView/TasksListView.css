@@ -81,3 +81,9 @@
   text-align: center;
   border-radius: 5px;
 }
+
+@media (max-width:600px) {
+  .tsk-container{
+    overflow: scroll;
+  }
+}

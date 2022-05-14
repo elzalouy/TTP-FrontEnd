@@ -7,6 +7,11 @@ import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { getAllCategories } from "../../redux/Categories";
+import { getAllClients, clientsDataSelector } from "../../redux/Clients";
+import { getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
@@ -25,14 +30,19 @@ const Tasks: React.FC = (props: any) => {
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const techMembers = useAppSelector(selectAllMembers);
   const [selects, setAllSelected] = React.useState<string[]>([]);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down('sm'));
+  const MD = useMediaQuery(theme.breakpoints.down('md'));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
+
   const onHandleChange = (e: any) => {
     console.log("called");
     e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
   };
+
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -42,10 +52,12 @@ const Tasks: React.FC = (props: any) => {
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
   };
+
   React.useEffect(() => {
     console.log("changed");
     console.log(projects.allTasks);
   }, [projects.allTasks]);
+
   return (
     <Grid
       bgcolor={"#FAFAFB"}
@@ -54,7 +66,8 @@ const Tasks: React.FC = (props: any) => {
       container
       alignContent={"flex-start"}
       alignSelf="flex-start"
-      padding={4}
+      padding={SM ? 2 : 4}
+      marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
       <Typography variant="h2" marginBottom={2}>
@@ -185,12 +198,14 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item marginY={1}>
+        <Grid marginX={0.5} item xs={2} sm={4} marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={8} md={4} lg={2.5} marginY={1}>
           <Box
-            style={{
+            style={SM ? { backgroundColor: "#fafafa",
+            width: "100%",
+            marginLeft: "5px",} : {
               backgroundColor: "#fafafa",
               width: "100%",
               marginLeft: "20px",

@@ -10,6 +10,7 @@ import {
   getProject,
   getTasks,
   ProjectsActions,
+  selectAllProjects,
   selectSelectedProject,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
@@ -29,17 +30,12 @@ interface TasksViewBoard {
 const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
+  const all = useAppSelector(selectAllProjects);
   const { control, register, reset, watch } = useForm();
   useEffect(() => {
-    // dispatch(getProject(`?_id=${props.match.params.id}`));
-    // dispatch(
-    //   getTasks({
-    //     url: `?projectId=${props?.match?.params.id}`,
-    //     projectId: props?.match?.params.id,
-    //   })
-    // );
+    console.log("entered");
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
-  }, []);
+  }, [dispatch, props?.match?.params?.id, all.loading === false]);
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjectTasks(data.deadline));

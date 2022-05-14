@@ -20,7 +20,7 @@ interface Res {
 export interface ProjectManagersInterface {
   loading: boolean | null;
   PMs: ProjectManager[];
-  current_ID: string,
+  current_ID: string;
   Payload: Res;
 }
 const PMState: ProjectManagersInterface = {
@@ -28,7 +28,8 @@ const PMState: ProjectManagersInterface = {
   PMs: [],
   current_ID: "",
   Payload: {
-    msg: "", status: ""
-  }
+    msg: "",
+    status: "",
+  },
 };
 export default PMState;

@@ -39,6 +39,8 @@ import { useAppSelector } from "../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
 import { counterNotif } from "../../../redux/notification";
+
+
 interface BarProps extends AppBarProps {}
 
 const AppDrawer: React.FC = (props: any) => {
@@ -47,7 +49,8 @@ const AppDrawer: React.FC = (props: any) => {
   const user = useAppSelector(selectUser);
   const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
-  const counter = useAppSelector(counterNotif)
+  const counter = useAppSelector(counterNotif);
+  const history = useHistory();
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -104,7 +107,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="0"
-              onClick={() => props.history.push("/Overview")}
+              onClick={() => history.push("/Overview")}
               path={"/Overview"}
               Icon={() => <Overviewicon />}
               text="Overview"
@@ -114,7 +117,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="1"
-              onClick={() => props.history.push("/projects")}
+              onClick={() => history.push("/projects")}
               path={"/projects"}
               Icon={() => <ProjectsIcon />}
               text="Projects"
@@ -124,7 +127,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="2"
-              onClick={() => props.history.push("/Departments")}
+              onClick={() => history.push("/Departments")}
               path={"/Departments"}
               Icon={() => <DepartmentIcon />}
               text="Departments"
@@ -135,7 +138,7 @@ const AppDrawer: React.FC = (props: any) => {
                 select={props.select}
                 open={open}
                 key="7"
-                onClick={() => props.history.push("/ProjectManagers")}
+                onClick={() => history.push("/ProjectManagers")}
                 path={"/ProjectManagers"}
                 Icon={() => <PersonIcon />}
                 text="Project Managers"
@@ -146,7 +149,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="3"
-              onClick={() => props.history.push("/Clients")}
+              onClick={() => history.push("/Clients")}
               path={"/Clients"}
               src={IMAGES.clients}
               Icon={() => <ClientIcon />}
@@ -157,7 +160,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="4"
-              onClick={() => props.history.push("/TasksList")}
+              onClick={() => history.push("/TasksList")}
               path={"/TasksList"}
               src={IMAGES.tasks}
               Icon={() => <TaskIcon />}
@@ -168,7 +171,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="5"
-              onClick={() => props.history.push("/Categories")}
+              onClick={() => history.push("/Categories")}
               path={"/Categories"}
               Icon={() => <CategoryIcon />}
               text="Category"
@@ -192,7 +195,7 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="6"
-              onClick={() => props.history.push("/notifications")}
+              onClick={() => history.push("/notifications")}
               path={"/notifications"}
               src={IMAGES.notification}
               Icon={() => <NotificationIcon />}
@@ -229,7 +232,11 @@ const AppDrawer: React.FC = (props: any) => {
                 pl: 1,
               }}
             >
-              <Box display={"inline-flex"}>
+              <Box
+                display={"inline-flex"}
+                width={"100%"}
+                justifyContent={"space-around"}
+              >
                 <Box paddingTop={0.5}>
                   <Typography
                     fontFamily={"Cairo"}
@@ -238,7 +245,9 @@ const AppDrawer: React.FC = (props: any) => {
                     textTransform={"capitalize"}
                     color="#11142D"
                   >
-                    {user?.user?.name === undefined ? user?.name : user?.user?.name}
+                    {user?.user?.name === undefined
+                      ? user?.name
+                      : user?.user?.name}
                   </Typography>
                   <Typography
                     fontFamily={"Cairo"}
@@ -246,14 +255,12 @@ const AppDrawer: React.FC = (props: any) => {
                     variant="h6"
                     color="#808191"
                   >
-                    {user?.user?.role === undefined ? user?.role : user?.user?.role}
+                    {user?.user?.role === undefined
+                      ? user?.role
+                      : user?.user?.role}
                   </Typography>
                 </Box>
-                <Box
-                  paddingLeft={7}
-                  paddingTop={1.5}
-                  sx={{ cursor: "pointer" }}
-                >
+                <Box sx={{ cursor: "pointer" }}>
                   <IconButton onClick={handleLogout}>
                     <LogoutIcon fontSize={"small"} />
                   </IconButton>

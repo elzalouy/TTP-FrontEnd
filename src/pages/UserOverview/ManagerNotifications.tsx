@@ -22,7 +22,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
     <Stack
       bgcolor={"white"}
       borderRadius={2}
-      width={{ xs: "90%", sm: "90%", md: "100%", lg: "100%" }}
+      width={{ xs: "100%", sm: "100%", md: "100%", lg: "100%" }}
       padding={1.8}
       paddingTop={2.5}
     >
@@ -97,8 +97,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             11 Dec, 2021
           </Typography>
         </Box>
-        {notifications.map((item) => (
+        {notifications?.map((item, index) => (
           <Box
+            key={index}
             marginTop={2}
             width={"100%"}
             height={60}
@@ -181,8 +182,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             11 Dec, 2021
           </Typography>
         </Box>
-        {notifications.map((item) => (
+        {notifications.map((item, index) => (
           <Box
+            key={index}
             marginTop={2}
             width={"100%"}
             height={60}

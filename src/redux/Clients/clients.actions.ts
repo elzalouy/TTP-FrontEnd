@@ -22,7 +22,7 @@ export const creatClient = createAsyncThunk<any, any, any>(
     try {
       let client = await ClientsApi.createClient(data);
       if (client.ok && client.data) {
-         toast.success("Client created successfully",{
+        toast.success("Client created successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -30,7 +30,7 @@ export const creatClient = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
+        });
         return client.data;
       } else return [];
     } catch (error) {
@@ -50,7 +50,7 @@ export const updateClient = createAsyncThunk<any, any, any>(
       formData.append("createdAt", data.createdAt);
       let client = await ClientsApi.updateClient(formData);
       if (client.ok && client.data) {
-         toast.success("Client updated successfully",{
+        toast.success("Client updated successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -58,7 +58,7 @@ export const updateClient = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
+        });
         return client.data;
       } else return [];
     } catch (error) {
@@ -71,11 +71,10 @@ export const deleteClient = createAsyncThunk<any, any, any>(
   "client/deletClient",
   async (data: any, { rejectWithValue }) => {
     try {
-      console.log({ data });
       let client = await ClientsApi.deleteClient(data);
       console.log({ client });
       if (client.ok && client.data) {
-         toast.success("Client deleted successfully",{
+        toast.success("Client deleted successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: true,
@@ -83,10 +82,12 @@ export const deleteClient = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
+        });
         return data;
-      } else return [];
-    } catch (error) {
+      }
+      throw "Error hapenned while deleting the client";
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }

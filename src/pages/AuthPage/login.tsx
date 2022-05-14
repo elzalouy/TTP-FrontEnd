@@ -54,7 +54,7 @@ const Login: React.FC<Props> = ({ history }) => {
         status: res.status,
       });
     }
-    if (isAuth) {
+    if (isAuth === true) {
       history.replace("/Overview");
     }
   }, [watch]);
@@ -62,8 +62,11 @@ const Login: React.FC<Props> = ({ history }) => {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     dispatch(
       signIn({
-        email: data.email,
-        password: data.password,
+        data: {
+          email: data.email,
+          password: data.password,
+        },
+        history,
       })
     );
   };

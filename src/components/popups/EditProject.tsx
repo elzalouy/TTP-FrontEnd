@@ -95,12 +95,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   >
                     <option>Select</option>
                     {clients &&
-                      clients.map((item,i) => (
-                        <option
-                          selected={props.field.value === item.clientId}
-                          value={item.clientId}
-                          key={i}
-                        >
+                      clients.map((item, i) => (
+                        <option value={item.clientId} key={i}>
                           {item.clientName}
                         </option>
                       ))}
@@ -144,17 +140,17 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     {[
                       { value: "inProgress", text: "In Progress" },
                       { value: "late", text: "Late" },
-                      { value: "delivered on time", text: "delivered on time" },
+                      { value: "deliver on time", text: "deliver on time" },
                       {
-                        value: "delivered defore deadline",
-                        text: "delivered defore deadline",
+                        value: "delivered after deadline",
+                        text: "delivered after deadline",
                       },
-                    ].map((item,i) => (
-                      <option
-                        value={item.value}
-                        selected={item.value === props.field.value}
-                        key={i}
-                      >
+                      {
+                        value: "deliver before deadline",
+                        text: "deliver before deadline",
+                      },
+                    ].map((item, i) => (
+                      <option value={item.value} key={i}>
                         {item.value}
                       </option>
                     ))}
@@ -176,12 +172,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   >
                     <option value=""> Select</option>
                     {PMs?.length > 0 &&
-                      PMs.map((item,i) => (
-                        <option
-                          selected={props.field.value === item._id}
-                          value={item?._id}
-                          key={i}
-                        >
+                      PMs.map((item, i) => (
+                        <option value={item?._id} key={i}>
                           {item?.name}
                         </option>
                       ))}

@@ -46,6 +46,7 @@ const CreateTask: React.FC<Props> = (props) => {
     attachedFiles: "",
     selectedDepartmentId: "",
   });
+
   
   React.useEffect(() => {
     dispatch(getAllDepartments(null));
@@ -142,7 +143,7 @@ const CreateTask: React.FC<Props> = (props) => {
               value={Task.selectedDepartmentId}
               onChange={onChange}
             >
-              <option value="" selected key={"0"}>
+              <option value="" key={"0"}>
                 Select
               </option>
               {departments &&
@@ -171,7 +172,7 @@ const CreateTask: React.FC<Props> = (props) => {
               name="categoryId"
               value={Task.categoryId}
             >
-              <option value="" key="" selected>
+              <option value="" key="">
                 Select
               </option>
               {categories &&
@@ -190,7 +191,7 @@ const CreateTask: React.FC<Props> = (props) => {
                 name="subCategoryId"
                 onChange={onChange}
               >
-                <option value="" key="" selected>
+                <option value="" key="">
                   Select
                 </option>
                 {selectedCategory &&

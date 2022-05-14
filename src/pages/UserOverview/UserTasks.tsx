@@ -26,6 +26,7 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         fontWeight={"800"}
         color="#505050"
         paddingBottom={2}
+        paddingX={2}
         marginTop={2}
       >
         Tasks Closed to deadline

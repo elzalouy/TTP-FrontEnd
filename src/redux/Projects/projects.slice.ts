@@ -16,6 +16,7 @@ import {
   getAllTasks,
   getProject,
   getTasks,
+  moveTask,
 } from "./projects.actions";
 import projectsState, { ProjectsInterface, Task } from "./projects.state";
 import _ from "lodash";
@@ -87,6 +88,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.selectedProject.tasks = tasks;
     },
     onSetSelectedProject: (state, action) => {
+      console.log(action.payload);
       state.selectedProject.loading = true;
       let id = action.payload;
       let tasks = [...state.allTasks].filter((item) => item.projectId === id);
@@ -132,8 +134,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
+      console.log("fullfilled");
       state.loading = false;
-      action.payload !== null && state.newProject.tasks.push(action.payload);
+      if (action.payload) state.newProject.tasks.push(action.payload);
     });
 
     builder.addCase(createTaskFromBoard.rejected, (state) => {
@@ -274,7 +277,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(editTask.fulfilled, (state, action) => {
-      state.editTask = undefined;
+      state.editTask = null;
       let tasks = [...state.allTasks];
       let index = tasks.findIndex((item) => item._id === action.payload?._id);
       console.log(action.payload, index);
@@ -297,6 +300,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTask.pending, (state, action) => {
       state.loading = true;
     });
+    builder.addCase(moveTask.rejected, (state, action) => {
+      console.log(action.payload);
+    });
+    // builder.addCase(moveTask.)
   },
 });
 export const ProjectsActions = projectsSlice.actions;

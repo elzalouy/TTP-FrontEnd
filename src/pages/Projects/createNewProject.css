@@ -30,20 +30,23 @@
   padding-left: 11px;
   border: solid 0.5px #b4b6c4;
   border-radius: 5px;
-  color: #000;
+  color: #44444f;
   margin-top: 7px;
   background-color: white;
+  font-weight: 600;
+  font-size: 13px;
   height: 43px;
 }
 
 .input-project {
   width: calc(96% - 11px);
   height: 43px !important;
-  font-size: initial;
+  font-size: 13px;
   padding: 11px;
   border-radius: 5px;
   border: solid 0.5px #b4b6c4;
-  color: #b4b6c4;
+  color: #44444f;
+  font-weight: 600;
   margin: 0;
   margin-top: 7px;
 }
@@ -128,6 +131,8 @@ tr {
 
 table.allTask-table th {
   text-align: left;
+  padding : 0 5px;
+  text-transform: capitalize;
 }
 table.allTask-table td.deleteTd {
   text-align: center;
@@ -166,4 +171,54 @@ table.allTask-table td.deleteTd {
 }
 .label-project {
   font-weight: 600;
+}
+
+@media (max-width:800px) {
+  .blackBtn {
+    cursor: pointer;
+    width: 150px;
+    max-width: 45%;
+    background-color: black;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  .addTaskBtn{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .input-project{
+    width: 80%;
+  }
+  .select-project{
+    width: 80%;
+  }
+  .files{
+    margin:20px 0px;
+  }
+}
+@media (max-width:700px) {
+  .input-project{
+    width: 100%;
+  }
+  .select-project{
+    width: 100%;
+  }
+  .textarea-project{
+    width: 100%;
+  }
+}
+@media (max-width:600px) {
+  .input-project{
+    width: 100%;
+  }
+  .select-project{
+    width: 100%;
+  }
+  .textarea-project{
+    width: 100%;
+  }
 }

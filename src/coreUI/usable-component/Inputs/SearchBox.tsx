@@ -33,9 +33,8 @@ const Search: React.FC<Props> = (props) => {
         <SearchIcon />
       </IconButton>
       <InputBase
-        {...props}
         sx={{ ml: 1, flex: 1 }}
-        value={props.value}
+        value={props?.value ? props?.value : ""}
         onChange={props.onChange}
         inputProps={{ "aria-label": "" }}
       />

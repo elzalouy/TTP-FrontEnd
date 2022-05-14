@@ -162,18 +162,22 @@ const DragField: React.FC = (props: any) => {
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
-      console.log(removed);
       destItems.splice(destination.index, 0, removed);
-      let department = departments.find(
+      let department = departments?.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
       );
-      dispatch(
-        moveTask({
-          department: department,
-          list: destColumn,
-          task: sourceColumn.items[source.index],
-        })
-      );
+      // dispatch(
+      //   moveTask({
+      //     department: department,
+      //     list: destColumn,
+      //     task: sourceColumn.items[source.index],
+      //   })
+      // );
+      move({
+        department: department,
+        list: destColumn,
+        task: sourceColumn.items[source.index],
+      });
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -199,6 +203,9 @@ const DragField: React.FC = (props: any) => {
         },
       });
     }
+  };
+  const move = (obj: any) => {
+    dispatch(moveTask(obj));
   };
   return (
     <DragDropContext

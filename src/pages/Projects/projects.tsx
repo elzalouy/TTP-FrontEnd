@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
 import IMAGES from "../../assets/img/index";
-import SearchBar from "../Category/SearchBar";
+import SearchBar from "../../coreUI/usable-component/Inputs/SearchBox";
 import Box from "@mui/material/Box";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../redux/hooks";
@@ -24,12 +24,15 @@ import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { selectRole } from "../../redux/Auth";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
+
 const Projects: React.FC<ProjectsProps> = (props) => {
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
@@ -37,11 +40,17 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
-  const [expanded, setExpanded] = useState<boolean>(true);
-  const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
+  const isDelete = useAppSelector(selectDeleteProjectId);
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const [doneExpanded, setDoneExpanded] = useState<boolean>(false);
+  const [filter, setFilter] = useState(false);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
   const { register, watch, control, setValue } = useForm();
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.up("md"));
+
   const onHandleChange = (e: any) => {
     let data = watch();
     let filter = {
@@ -56,6 +65,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
+
   useEffect(() => {
     setValue("name", "");
   }, []);
@@ -66,12 +76,12 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       justifyContent={"center"}
       alignItems={"center"}
       container
-      paddingX={4}
-      paddingTop={6}
+      paddingX={SM ? 2 : 4}
+      paddingTop={SM ? 10 : 6}
     >
       <Grid container xs={12} justifyContent="flex-start" direction={"row"}>
-        <Grid item xs={12} marginBottom={4}>
-          <Typography variant="h3" fontFamily={"Cairo"}>
+        <Grid item xs={6} lg={2} marginBottom={4}>
+          <Typography variant="h3" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
@@ -81,145 +91,156 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             sx={{ bgcolor: "white", borderRadius: 4 }}
             width={38}
             height={38}
-            paddingTop={1.2}
+            paddingTop={SM ? 1.1 : 1.2}
           >
-            <img src={IMAGES.filtericon} alt="FILTER" />
+            <img
+              src={IMAGES.filtericon}
+              alt="FILTER"
+              onClick={() => setFilter((state) => !state)}
+            />
           </Box>
         </Grid>
-        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
-          <Controller
-            name="deadline"
-            control={control}
-            render={(props) => (
-              <SelectInput
-                {...props}
-                label="Due Date: "
-                options={[
-                  { id: "asc", text: "Ascending", value: "asc" },
-                  { id: "desc", text: "Descending", value: "desc" },
-                ]}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                  onHandleSort(e);
-                }}
-                selectValue={props.field.value}
-                selectText={props.field.value}
+        {(filter || MD) && (
+          <>
+            <Grid marginX={1} marginY={1} item>
+              <Controller
+                name="deadline"
+                control={control}
+                render={(props) => (
+                  <SelectInput
+                    {...props}
+                    label="Due Date: "
+                    options={[
+                      { id: "asc", text: "Ascending", value: "asc" },
+                      { id: "desc", text: "Descending", value: "desc" },
+                    ]}
+                    handleChange={(e) => {
+                      e.preventDefault();
+                      props.field.onChange(e);
+                      onHandleSort(e);
+                    }}
+                    selectValue={props.field.value}
+                    selectText={props.field.value}
+                  />
+                )}
               />
-            )}
-          />
-        </Grid>
-        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
-          <Controller
-            name="projectManager"
-            control={control}
-            render={(props) => (
-              <SelectInput
-                label="Project Manager: "
-                {...props}
-                options={[
-                  { id: "all", value: "", text: "All" },
-                  ...PMs.map((item) => {
-                    return { id: item._id, value: item._id, text: item.name };
-                  }),
-                ]}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                selectValue={props.field.value}
-                selectText={
-                  PMs?.find((val) => val._id === props.field.value)?.name
-                }
+            </Grid>
+            <Grid marginX={1} marginY={1} item>
+              <Controller
+                name="projectManager"
+                control={control}
+                render={(props) => (
+                  <SelectInput
+                    label="Project Manager: "
+                    {...props}
+                    options={[
+                      { id: "all", value: "", text: "All" },
+                      ...PMs.map((item) => {
+                        return {
+                          id: item._id,
+                          value: item._id,
+                          text: item.name,
+                        };
+                      }),
+                    ]}
+                    handleChange={(e) => {
+                      e.preventDefault();
+                      props.field.onChange(e);
+                      onHandleChange(e);
+                    }}
+                    selectValue={props.field.value}
+                    selectText={
+                      PMs?.find((val) => val._id === props.field.value)?.name
+                    }
+                  />
+                )}
               />
-            )}
-          />
-        </Grid>
-        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
-          <Controller
-            name="clientId"
-            control={control}
-            render={(props) => (
-              <SelectInput
-                label={"Client: "}
-                {...props}
-                options={[
-                  { id: "all", value: "", text: "All" },
-                  ...clients?.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.clientName,
-                    };
-                  }),
-                ]}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                selectValue={props.field.value}
-                selectText={
-                  clients.find((val) => val._id === props.field.value)
-                    ?.clientName
-                }
+            </Grid>
+            <Grid marginX={1} marginY={1} item>
+              <Controller
+                name="clientId"
+                control={control}
+                render={(props) => (
+                  <SelectInput
+                    label={"Client: "}
+                    {...props}
+                    options={[
+                      { id: "all", value: "", text: "All" },
+                      ...clients?.map((item) => {
+                        return {
+                          id: item._id,
+                          value: item._id,
+                          text: item.clientName,
+                        };
+                      }),
+                    ]}
+                    handleChange={(e) => {
+                      e.preventDefault();
+                      props.field.onChange(e);
+                      onHandleChange(e);
+                    }}
+                    selectValue={props.field.value}
+                    selectText={
+                      clients.find((val) => val._id === props.field.value)
+                        ?.clientName
+                    }
+                  />
+                )}
               />
-            )}
-          />
-        </Grid>
-        <Grid marginX={1} item xs={12} sm={12} md={4} lg={2} marginY={1}>
-          <Controller
-            name="projectStatus"
-            control={control}
-            render={(props) => (
-              <>
-                <SelectInput
-                  label={"Status: "}
-                  {...props}
-                  options={[
-                    { id: "all", value: "", text: "All" },
-                    {
-                      id: "delivered",
-                      value: "delivered on time",
-                      text: "delivered on time",
-                    },
-                    {
-                      id: "delivered before time",
-                      value: "delivered before time",
-                      text: "delivered before time",
-                    },
-                    { id: "late", value: "late", text: "late" },
-                    {
-                      id: "inProgress",
-                      value: "inProgress",
-                      text: "inProgress",
-                    },
-                  ]}
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectText={props.field.value}
-                />
-              </>
-            )}
-          />
-        </Grid>
-        <Grid xs={12} marginX={1} marginY={1} sm={12} md={2.5} lg={2.5} item>
+            </Grid>
+            <Grid marginX={1} marginY={1} item>
+              <Controller
+                name="projectStatus"
+                control={control}
+                render={(props) => (
+                  <>
+                    <SelectInput
+                      label={"Status"}
+                      {...props}
+                      options={[
+                        { id: "all", value: "", text: "All" },
+                        {
+                          id: "delivered",
+                          value: "delivered on time",
+                          text: "delivered on time",
+                        },
+                        {
+                          id: "delivered before time",
+                          value: "delivered before time",
+                          text: "delivered before time",
+                        },
+                        { id: "late", value: "late", text: "late" },
+                        {
+                          id: "inProgress",
+                          value: "inProgress",
+                          text: "inProgress",
+                        },
+                      ]}
+                      handleChange={(e) => {
+                        e.preventDefault();
+                        props.field.onChange(e);
+                        onHandleChange(e);
+                      }}
+                      selectValue={props.field.value}
+                      selectText={props.field.value}
+                    />
+                  </>
+                )}
+              />
+            </Grid>
+          </>
+        )}
+        <Grid xs={12} lg={4} marginX={1} marginY={1} item>
           <Controller
             name="name"
             control={control}
             render={(props) => (
               <SearchBar
-                {...props}
                 value={props.field.value}
                 onChange={(e: any) => {
                   props.field.onChange(e);
+                  onHandleChange(e);
                 }}
-                onHandleChange={onHandleChange}
               />
             )}
           />
