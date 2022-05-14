@@ -15,7 +15,7 @@ type Props = {
 const NotificationItem = ({notifiData}: Props) => {
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Typography
           variant="h4"
           gutterBottom
@@ -24,7 +24,7 @@ const NotificationItem = ({notifiData}: Props) => {
         >
           Recent Notification
         </Typography>
-      </Grid>
+      </Grid> */}
       {notifiData.map((item:any) => (
         <Grid item container xs={12} key={item._id}>
           <Grid
@@ -37,7 +37,7 @@ const NotificationItem = ({notifiData}: Props) => {
             md={6}
             lg={6}
             sx={{
-              background: "#f4f4f4",
+              // background: "#f4f4f4",
               borderRadius: "1em",
             }}
           >
