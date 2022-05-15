@@ -37,7 +37,7 @@ const NotificationItem = ({notifiData}: Props) => {
             md={6}
             lg={6}
             sx={{
-              // background: "#f4f4f4",
+              background: "#fff",
               borderRadius: "1em",
             }}
           >
@@ -59,7 +59,7 @@ const NotificationItem = ({notifiData}: Props) => {
               </Badge>
             </Grid> */}
             <Grid item container xs={10}>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
@@ -69,20 +69,7 @@ const NotificationItem = ({notifiData}: Props) => {
                   {item?.title}
                 </Typography>
               </Grid>
-              <Grid item container xs={12}>
-                <Grid item xs={2}>
-                  <Typography
-                    variant="caption"
-                    gutterBottom
-                    component="div"
-                    sx={{
-                      color: "#acabab",
-                    }}
-                  >
-                    {item?.adminUserID?.name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
+              <Grid item xs={2}>
                   <Typography
                     variant="caption"
                     gutterBottom
@@ -94,6 +81,20 @@ const NotificationItem = ({notifiData}: Props) => {
                     {moment(item?.createdAt).fromNow(true)}
                   </Typography>
                 </Grid>
+              <Grid item container xs={12} spacing={2}>
+                <Grid item xs={"auto"}>
+                  <Typography
+                    variant="caption"
+                    gutterBottom
+                    component="div"
+                    sx={{
+                      color: "#acabab",
+                    }}
+                  >
+                    {item?.adminUserID?.name}
+                  </Typography>
+                </Grid>
+             
               </Grid>
               <Grid item xs={12} sx={{ color: "#403f3f",wordBreak: 'break-all' }}>
                 {item?.description}

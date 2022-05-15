@@ -2,10 +2,12 @@ import React,{useRef,useEffect} from "react";
 import { useState } from "react";
 import IMAGES from "../../assets/img";
 import "./dropdowns-style.css";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 type Props = {
   handleSetShow: (value: string) => void;
   handleSetShowDelete: (value: string) => void;
+  color?:string
 };
 
 /**
@@ -19,6 +21,7 @@ type Props = {
 const DepartmentDrop: React.FC<Props> = ({
   handleSetShow,
   handleSetShowDelete,
+  color
 }) => {
   const [Show, setShow] = useState<string>("none");
 
@@ -49,7 +52,7 @@ const DepartmentDrop: React.FC<Props> = ({
           else setShow("none");
         }}
       >
-        <img src={IMAGES.more} alt="more" />
+        <MoreHorizIcon style={{color:color}}/>
       </button>
 
       <div className="dropdown-container" style={{ display: Show }} ref={wrapperRef}>
