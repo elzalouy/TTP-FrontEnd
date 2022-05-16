@@ -145,7 +145,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 render={(props) => (
                   <input
                     onChange={props.field.onChange}
-                    className="input-project"
+                    className="date-project"
                     type="date"
                   />
                 )}

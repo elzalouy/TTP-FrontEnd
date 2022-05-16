@@ -53,13 +53,14 @@ const Category: React.FC<Props> = () => {
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
           variant="h2"
-          style={SM ? 
-            {margin: "40px 0",
-          paddingBottom: "20px"} 
-          : {
-            margin: "10px 0",
-            paddingBottom: "20px",
-          }}
+          style={
+            SM
+              ? { margin: "40px 0", paddingBottom: "20px" }
+              : {
+                  margin: "10px 0",
+                  paddingBottom: "20px",
+                }
+          }
         >
           Category
         </Typography>
@@ -79,7 +80,14 @@ const Category: React.FC<Props> = () => {
         style={{ marginTop: 40 }}
       >
         {categoriesData?.map((category: any, index: any) => (
-          <Grid sm={6} xs={12} md={6} lg={4} padding={1}>
+          <Grid
+            // width={{ lg: "32%", md: "32%", xs: "100%", sm: "100%" }}
+            sm={12}
+            xs={12}
+            md={4}
+            lg={4}
+            padding={1}
+          >
             <CategoryCard
               key={index}
               mainCategory={category.category}
@@ -92,16 +100,20 @@ const Category: React.FC<Props> = () => {
             />
           </Grid>
         ))}
-       {role !== "PM"  && <CreateNewCategory />}
+        {role !== "PM" && <CreateNewCategory />}
       </Grid>
-     {role !== "PM" && <CreateSubCategory
-        display={display}
-        handleSetDisplay={handleSetDisplay}
-      />}
-      {role !== "PM" && <EditCategory
-        handleSetEditCatDisplay={handleSetEditCatDisplay}
-        editCatDisplay={editCatDisplay}
-      />}
+      {role !== "PM" && (
+        <CreateSubCategory
+          display={display}
+          handleSetDisplay={handleSetDisplay}
+        />
+      )}
+      {role !== "PM" && (
+        <EditCategory
+          handleSetEditCatDisplay={handleSetEditCatDisplay}
+          editCatDisplay={editCatDisplay}
+        />
+      )}
     </Box>
   );
 };

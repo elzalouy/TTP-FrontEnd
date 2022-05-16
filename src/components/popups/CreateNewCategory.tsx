@@ -52,7 +52,6 @@ const CreateNewCategory: React.FC<Props> = () => {
       setsubCategories([]);
     } catch (error: any) {
       setErrors(error.message);
-      console.log(error.message);
     }
   };
   return (
@@ -75,10 +74,10 @@ const CreateNewCategory: React.FC<Props> = () => {
       >
         <img src={IMAGES.plus} alt="add" width={30} height={30} />
         <Typography fontSize={16} color={"#272727"}>
-          Create new category
+          Add new category
         </Typography>
       </Box>
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="320px">
+      <PopUp show={Show}>
         <div>
           <img
             className="closeIcon"
@@ -96,8 +95,8 @@ const CreateNewCategory: React.FC<Props> = () => {
           Create new category
         </p>
         <form className="form-inputs" onSubmit={handleSubmit}>
-          <label className="label">Main category</label>
-          <div style={{ display: "flex" ,marginTop:"10px",marginBottom:"10px"}}>
+          <label className="popup-label">Main category</label>
+          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
             <input
               className="input-auth"
               type="text"
@@ -108,8 +107,8 @@ const CreateNewCategory: React.FC<Props> = () => {
               required
             />
           </div>
-          <label className="label">Sub-Category</label>
-          <div style={{ display: "flex",marginTop:"10px" }}>
+          <label className="popup-label">Sub-Category</label>
+          <div style={{ display: "flex", marginTop: "10px" }}>
             <input
               className="input-auth"
               type="text"

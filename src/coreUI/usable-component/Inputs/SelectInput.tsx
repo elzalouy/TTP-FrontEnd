@@ -60,8 +60,8 @@ const SelectInput: React.FC<Props> = ({
       sx={{
         width: "inherit",
         height: 40,
-        background: "white",
-        borderRadius: 3,
+        background: "#FFFFFF",
+        borderRadius: "10px",
         overflow: "hidden",
         cursor: "pointer",
       }}
@@ -85,7 +85,7 @@ const SelectInput: React.FC<Props> = ({
           color="#696974"
           fontSize={14}
           fontWeight={"400"}
-          paddingRight={Label && Label?.length <= 10 ? 1 : 0}
+          paddingRight={1}
         >
           {Label}
         </Typography>

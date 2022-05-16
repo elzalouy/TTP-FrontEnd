@@ -17,7 +17,7 @@
 .client-card {
   background-color: #efebf2;
   border-radius: 20px;
-  padding-bottom: 10px;
+  padding: 20px;
 }
 
 .cl-card-header {
@@ -65,8 +65,8 @@
   height: 35px;
 }
 
-@media (max-width:700px) {
-  .all-clients{
+@media (max-width: 700px) {
+  .all-clients {
     display: flex;
     flex-direction: column-reverse;
   }

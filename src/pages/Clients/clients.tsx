@@ -84,10 +84,10 @@ const Clients: React.FC<Props> = () => {
 
   return (
     <Grid container paddingX={4} paddingY={SM ? 8 : 4}>
-      <Grid container xs={12} mt="2em">
+      <Grid container xs={12} my={1}>
         <Typography variant="h2">Clients</Typography>
       </Grid>
-      <Grid
+      {/* <Grid
         justifyItems={"flex-start"}
         alignItems="flex-start"
         marginTop={4}
@@ -126,7 +126,7 @@ const Clients: React.FC<Props> = () => {
             onChange={handleSearchChange}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid
         xs={12}
         item

@@ -57,7 +57,7 @@ const SelectInput2: React.FC<Props> = ({
   return (
     <Grid
       sx={{
-        width: "calc(96% - 11px)",
+        width: "calc(100%)",
         height: 43,
         background: "white",
         borderRadius: 1.5,
@@ -89,32 +89,51 @@ const SelectInput2: React.FC<Props> = ({
         >
           {label}
         </Typography>
-        <Typography
-          lineHeight={1}
-          textOverflow="hidden"
-          overflow={"hidden"}
-          variant="h5"
-          height={40}
-          fontSize={14}
-          fontWeight={"700"}
-          color="#44444F"
-          sx={{
-            paddingTop: 1.5,
-            overflow: "hidden",
-          }}
-        >
-          {selectText ? selectText : "Select"}
-        </Typography>
+        {selectText ? (
+          <Typography
+            lineHeight={1}
+            textOverflow="hidden"
+            overflow={"hidden"}
+            variant="h5"
+            height={40}
+            fontSize={14}
+            fontWeight={"700"}
+            color="#44444F"
+            sx={{
+              paddingTop: 1.5,
+              overflow: "hidden",
+            }}
+          >
+            {selectText}
+          </Typography>
+        ) : (
+          <Typography
+            lineHeight={1}
+            textOverflow="hidden"
+            overflow={"hidden"}
+            variant="h5"
+            height={40}
+            fontSize={14}
+            fontWeight={"500"}
+            color="#B4B6C4"
+            sx={{
+              paddingTop: 1.5,
+              overflow: "hidden",
+            }}
+          >
+            Select
+          </Typography>
+        )}
       </Grid>
       <Grid item>
         <Box display={"inline-flex"} onClick={handleOpen}>
           <Box
             height={40}
             sx={{
-              borderLeft: "1px solid #F1F1F5",
               justifyContent: "center",
               alignItems: "center",
               paddingTop: 1,
+              paddingRight: 1,
             }}
           >
             {open ? (

@@ -1,15 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import "./i18n/i18n";
-import { Provider } from "react-redux";
 import store from "./redux/store";
-import { ThemeProvider } from "@mui/material/styles";
-import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import themes from "./themes";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter } from "react-router-dom";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import "./i18n/i18n";
+import "./assets/fonts/Cairo-Black.ttf";
+import "./assets/fonts/Cairo-Bold.ttf";
+import "./assets/fonts/Cairo-Regular.ttf";
 
 ReactDOM.render(
   <React.StrictMode>

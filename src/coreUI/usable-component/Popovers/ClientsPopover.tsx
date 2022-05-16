@@ -6,6 +6,7 @@ import IMAGES from "../../../assets/img";
 import { useDispatch } from "react-redux";
 import { openEditClientPopup, openDeleteClientPopup } from "../../../redux/Ui";
 import { Client, clientsActions } from "../../../redux/Clients";
+import MoreIcon from "../../../assets/icons/moreIcon";
 interface Props {
   client: Client;
 }
@@ -35,9 +36,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
-        <Typography variant="h3" fontWeight={"bold"}>
-          <img src={IMAGES.more} alt="more" />
-        </Typography>
+        <MoreIcon color="#783DBD" />
       </Box>
       <Popover
         className={styles.root}

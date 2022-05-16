@@ -45,7 +45,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
-  const { register, watch, control, setValue } = useForm();
+  const { watch, control } = useForm();
   const theme = useTheme();
 
   const onHandleChange = (e: any) => {
@@ -63,9 +63,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
 
-  useEffect(() => {
-    setValue("name", "");
-  }, []);
   return (
     <Grid
       overflow={"hidden"}
@@ -125,8 +122,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={2.1}
+            lg={2.1}
           >
             <Controller
               name="deadline"
@@ -161,8 +158,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4.5}
-            md={2}
-            lg={2}
+            md={2.1}
+            lg={2.1}
           >
             <Controller
               name="projectManager"
@@ -205,8 +202,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={2.1}
+            lg={2.1}
           >
             <Controller
               name="clientId"
@@ -250,8 +247,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={2.1}
+            lg={2.1}
           >
             <Controller
               name="projectStatus"
@@ -296,8 +293,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           margin={1}
           item
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
-          md={2}
-          lg={2}
+          md={2.1}
+          lg={2.1}
         >
           <Controller
             name="name"
@@ -309,6 +306,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
+                placeholder="Search"
               />
             )}
           />
@@ -326,7 +324,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         {loading === false ? (
           <>
             <TableBox
-              title={"In Progress"}
+              title={"In progress"}
               outTitled={false}
               expanded={expanded}
               setExpanded={setExpanded}

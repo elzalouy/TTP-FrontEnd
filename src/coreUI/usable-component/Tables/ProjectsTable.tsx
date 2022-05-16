@@ -51,16 +51,16 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
               borderBottomLeftRadius: "10px",
             }}
           >
-            Project Title
+            Project title
           </TableCell>
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-            Start Date
+            Start date
           </TableCell>
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
             {props.progress ? "Progress" : "Tasks"}
           </TableCell>
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-            Deadline Date
+            Deadline date
           </TableCell>
           <TableCell
             sx={{
@@ -105,20 +105,18 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                 >
                   <Typography
                     fontWeight={"700"}
+                    variant="h5"
                     fontSize={14}
-                    fontFamily={"Cairo"}
+                    fontFamily={"Cairo, Regular"}
                     style={{
+                      marginBottom: 1,
                       textDecorationLine:
                         props.status === "Done" ? "line-through" : "none",
                     }}
                   >
                     {project?.name}
                   </Typography>
-                  <Typography
-                    variant={props.textSize === "small" ? "h6" : "h5"}
-                    fontSize={props.textSize ? 12 : 14}
-                    color="#696974"
-                  >
+                  <Typography variant={"h5"} fontSize={14} color="#696974">
                     {project.projectManager?.name}
                   </Typography>
                 </TableCell>
@@ -140,7 +138,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                 >
                   <Typography
                     variant={props.textSize === "small" ? "h6" : "h5"}
-                    fontSize={props.textSize ? 12 : 14}
+                    fontSize={14}
                     color="#696974"
                   >
                     {new Date(project.startDate).toLocaleDateString("en-US", {
@@ -172,7 +170,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       paddingLeft={0.3}
                       variant="h4"
                       color="#00ACBA"
-                      fontSize={props.textSize === "small" ? 12 : 14}
+                      fontSize={14}
                     >
                       {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
                     </Typography>
@@ -183,7 +181,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                         paddingLeft={0.3}
                         variant="h4"
                         color="#00ACBA"
-                        fontSize={props.textSize === "small" ? 12 : 14}
+                        fontSize={14}
                       >
                         {NoOfFinished}/{NoOfTasks}
                       </Typography>
@@ -209,7 +207,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   <Typography
                     variant={props.textSize === "small" ? "h6" : "h5"}
                     color="#696974"
-                    fontSize={props.textSize === "small" ? 12 : 14}
+                    fontSize={14}
                   >
                     {new Date(project.projectDeadline).toLocaleDateString(
                       "en-US",

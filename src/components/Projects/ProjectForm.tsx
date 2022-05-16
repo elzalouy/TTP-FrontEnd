@@ -92,20 +92,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           />
         </div>
         <div>
-          <label className="label-project">Deadline date</label>
+          <label className="label-project">Start Date</label>
           <br />
           <Controller
-            name="deadline"
+            name="startDate"
             control={control}
             render={(props) => (
               <input
-                className="input-project"
+                className="date-project"
                 type="date"
                 onChange={props.field.onChange}
               />
             )}
           />
         </div>
+
         <div>
           <label className="label-project">Project manager</label>
           <br />
@@ -135,14 +136,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           />
         </div>
         <div>
-          <label className="label-project">Start Date</label>
+          <label className="label-project">Deadline date</label>
           <br />
           <Controller
-            name="startDate"
+            name="deadline"
             control={control}
             render={(props) => (
               <input
-                className="input-project"
+                className="date-project"
                 type="date"
                 onChange={props.field.onChange}
               />

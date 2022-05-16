@@ -1,15 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import PMapi from "../../services/endpoints/PMs";
-
-
+import { fireCreatePMHook, fireEditPMHook } from "../Ui";
 
 export const resendMail = createAsyncThunk<any, any, any>(
   "PM/resendMail",
-  async (data:object, { rejectWithValue }) => {
+  async (data: object, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.resendMail({
-        id:data
+        id: data,
       });
       if (PMs.ok && PMs.data) {
         toast.success("New email sent successfully", {
@@ -21,8 +20,7 @@ export const resendMail = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-      }
-      else return [];
+      } else return [];
     } catch (error) {
       rejectWithValue(error);
     }
@@ -44,9 +42,9 @@ export const getPMs = createAsyncThunk<any, any, any>(
 
 export const createPM = createAsyncThunk<any, any, any>(
   "PM/createPM",
-  async (data: object, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let PMs = await PMapi.createUser(data);
+      let PMs = await PMapi.createUser(args.data);
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager created successfully", {
           position: "top-right",
@@ -57,10 +55,14 @@ export const createPM = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        args.dispatch(fireCreatePMHook(""));
         return PMs.data;
       }
-      else return [];
-    } catch (error) {
+      throw new Error(
+        "Error happened while creating the project manager, please try again"
+      );
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }
@@ -68,9 +70,9 @@ export const createPM = createAsyncThunk<any, any, any>(
 
 export const updatePM = createAsyncThunk<any, any, any>(
   "PM/updatePM",
-  async (data: object, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let PMs = await PMapi.updateUser(data);
+      let PMs = await PMapi.updateUser(args.data);
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager updated successfully", {
           position: "top-right",
@@ -81,10 +83,12 @@ export const updatePM = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        args.dispatch(fireEditPMHook(""));
         return PMs.data;
       }
-      else return [];
-    } catch (error) {
+      throw new Error(PMs?.originalError?.message);
+    } catch (error: any) {
+      toast(error);
       rejectWithValue(error);
     }
   }
@@ -105,7 +109,7 @@ export const updatePMpassword = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        return PMs.data
+        return PMs.data;
       } else return [];
     } catch (error) {
       rejectWithValue(error);
@@ -129,8 +133,7 @@ export const resetPMpassword = createAsyncThunk<any, any, any>(
           progress: undefined,
         });
         return PMs.data;
-      }
-      else return [];
+      } else return [];
     } catch (error) {
       rejectWithValue(error);
     }
@@ -153,8 +156,7 @@ export const deletePM = createAsyncThunk<any, any, any>(
           progress: undefined,
         });
         return PMs.data;
-      }
-      else return [];
+      } else return [];
     } catch (error) {
       rejectWithValue(error);
     }

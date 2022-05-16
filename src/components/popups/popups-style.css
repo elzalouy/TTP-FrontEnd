@@ -60,8 +60,9 @@
 }
 
 .popup-title {
+  font-size: 18px;
   color: #30bcc7;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: capitalize;
 }
 .popup-error {
@@ -73,9 +74,10 @@
 
 .popup-label {
   display: block;
-  font-weight: bold;
+  font-weight: bold !important;
   margin: 10px 0 5px 0 !important;
   text-transform: capitalize;
+  margin-top: 40px !important;
 }
 
 .popup-input {
@@ -99,6 +101,7 @@
 .closeIcon {
   float: right;
   cursor: pointer;
+  margin-top: 4px;
 }
 
 .popup-select {
@@ -182,7 +185,7 @@
 }
 
 .warning-text {
-  margin: 20px 10px;
+  margin: 20px 8px 0px;
   color: black;
 }
 
@@ -409,13 +412,12 @@ table.allTeam-table td.deleteTd {
   color: #000;
 }
 
-@media (max-width:700px) {
-  .inputs-grid{
+@media (max-width: 700px) {
+  .inputs-grid {
     grid-template-columns: 1fr;
     width: 100% !important;
-  } 
-  .controllers{
+  }
+  .controllers {
     margin-top: 20px;
   }
 }
-

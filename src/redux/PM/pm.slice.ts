@@ -25,14 +25,8 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getPMs.rejected, (state) => {
-      state.loading = false;
-      state.PMs = [];
-    });
-    builder.addCase(getPMs.pending, (state) => {
-      state.loading = true;
-      state.PMs = [];
-    });
+    builder.addCase(getPMs.rejected, (state) => {});
+    builder.addCase(getPMs.pending, (state) => {});
     builder.addCase(getPMs.fulfilled, (state, action) => {
       state.loading = false;
       state.PMs = action.payload;
