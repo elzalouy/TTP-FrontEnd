@@ -3,9 +3,9 @@
 }
 .pm-container {
   background-color: #ffffff;
-  margin: -20px 100px 50px 30px;
+  margin: -20px 100px 50px 80px;
   border-radius: 0;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 1px 1px 0px;
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
 .pm-header {
   margin: 50px 100px 50px 30px;

@@ -1,7 +1,7 @@
-import { Button, Grid, Link, Typography } from "@mui/material";
+import { Button, Grid , Typography } from "@mui/material";
 import Ttp from "../../assets/img/ttp_logo.png";
+import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Redirect, RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
 import { useEffect, useState } from "react";
@@ -71,12 +71,11 @@ const Forget: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
-      height={"100%"}
+      height={"90vh"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
       alignContent={"center"}
-      marginTop={5}
     >
       <Grid
         item
@@ -88,7 +87,7 @@ const Forget: React.FC<Props> = ({ history }) => {
         container
         direction="row"
         sx={{
-          boxShadow: "0px 60px 350px 20px #888888;",
+         boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
         }}
       >
         <Grid
@@ -113,8 +112,9 @@ const Forget: React.FC<Props> = ({ history }) => {
               <Typography
                 variant={"h2"}
                 fontWeight={"900"}
-                paddingTop={4}
+                paddingTop={12}
                 fontFamily={"Cairo"}
+                className="bold"
               >
                 Forget Password
               </Typography>
@@ -129,8 +129,9 @@ const Forget: React.FC<Props> = ({ history }) => {
                 paddingTop={3.5}
                 fontFamily={"Cairo"}
                 color="#000000"
+                className="bold"
               >
-                Email
+                Email Address
               </Typography>
               <Controller
                 name="email"
@@ -162,7 +163,7 @@ const Forget: React.FC<Props> = ({ history }) => {
                 disableElevation
                 onClick={handleSubmit(onSubmit)}
               >
-                Send Reset Link
+                Send
               </Button>
             </>
           )}

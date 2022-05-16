@@ -39,7 +39,7 @@ const ProjectManagers: React.FC<Props> = () => {
     >
       <Box
         width={"100%"}
-        paddingLeft={MD ? 4 : 3.8}
+        paddingLeft={MD ? 4 : 10.5}
         paddingRight={MD ? 4 : 12.5}
         paddingTop={MD ? 8 : 6}
         paddingBottom={MD ? 4 : 12}

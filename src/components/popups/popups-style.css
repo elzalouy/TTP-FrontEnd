@@ -1,3 +1,8 @@
+.bold{
+  font-family: "Cairo-Bold" !important;
+  font-weight: bolder !important;
+}
+
 .black-btn {
   cursor: pointer;
   text-transform: capitalize;
@@ -14,11 +19,12 @@
 .controllers {
   display: flex;
   justify-content: space-between;
+  margin-top: 50px;
 }
 
 .controllers-cancel {
   cursor: pointer;
-  width: 210px;
+  width: 190px;
   max-width: 48%;
   height: 45px;
   background-color: #f4f4f4;
@@ -32,7 +38,7 @@
 
 .controllers-done {
   cursor: pointer;
-  width: 210px;
+  width: 190px;
   max-width: 48%;
   height: 45px;
   background-color: black;
@@ -64,6 +70,7 @@
   color: #30bcc7;
   font-weight: 600;
   text-transform: capitalize;
+  margin-bottom: 20px;
 }
 .popup-error {
   color: red;
@@ -81,11 +88,10 @@
 
 .popup-input {
   width: 100%;
-  font-size: initial;
-  padding: 11px;
-  border-radius: 5px;
-  border: solid 0.5px;
-  border-color: #b4b6c4;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: solid 0.5px #B4B6C4;
   color: #000;
   margin: 0;
   margin-top: 5px;

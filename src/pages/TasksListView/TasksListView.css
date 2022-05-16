@@ -55,8 +55,17 @@
   color: #777;
 } */
 .sharedStatus {
-  color: #ff974a;
-  background-color: #fff4ec;
+  color: #fa565c;
+  background-color: #F7E6E7;
+  width: auto;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+.reviewStatus {
+  color: #0f6b74;
+  background-color: #d9f3f5;
   width: auto;
   margin: 0px;
   padding: 2px 15px;
@@ -64,8 +73,35 @@
   border-radius: 5px;
 }
 .doneStatus {
-  color: #30aab4;
+  color: #0f6b74;
   background-color: #d9f3f5;
+  width: auto;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+.inProgressStatus{
+  background-color:#fff8dd;
+  color: #ffc400;
+  width: auto;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+.notClearStatus{
+  background-color:#F7F0E7;
+  color: #ffac38;
+  width: auto;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+.notStartedStatus{
+  background-color:#f0f0f0;
+  color: #919090;
   width: auto;
   margin: 0px;
   padding: 2px 15px;

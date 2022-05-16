@@ -12,6 +12,7 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
+import "../style.css"
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { FC, useState } from "react";
@@ -72,19 +73,22 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
       <EditPM hideButton />
       <DeletePM hideButton />
       <TableContainer>
-        <Table size="small" aria-label="a dense table">
+        <Table size="small" aria-label="a dense table" style={{borderColor:"#EBEFF2"}}>
           <TableHead>
             <TableRow>
               <TableCell
+              className="thead"
                 style={{
                   color: "#334D6E",
                   width: "300px",
                   margin: "0px",
                 }}
+
               >
                 PM Name
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "300px",
@@ -95,6 +99,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Email
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "250px",
@@ -105,6 +110,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 In Progress Projects
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "158px",
@@ -115,6 +121,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Done Project
               </TableCell>
               <TableCell
+               className="thead"
                 align="center"
                 style={{ color: "#334D6E", width: "50px", margin: "0px" }}
               >
@@ -152,7 +159,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       alignItems="center"
                       spacing={1}
                     >
-                      <Avatar sx={{ width: 20, height: 20 }} />
+                     {/*  <Avatar sx={{ width: 20, height: 20 }} /> */}
                       <Typography
                         fontWeight={"700"}
                         fontSize={15}
@@ -176,15 +183,15 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   >
                     {email}
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <Typography color="#707683">{inProgress}</Typography>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <Typography color="#707683">{done}</Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={() => {
                           if (!password) {
                             refreshUser(_id);
@@ -193,12 +200,12 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {!password ? <LockOpenIcon /> : <LockIcon />}
                       </IconButton>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}
                       >
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-                      <IconButton
+                      <IconButton disableRipple
                         onClick={(e) => toggleDeletePopUp(e, cellData)}
                       >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />

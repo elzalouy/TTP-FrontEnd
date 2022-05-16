@@ -57,6 +57,10 @@ export const selectNotClearTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "not clear"
   );
+export const selectNotStartedTasks = (state: RootState) =>
+  state.projects.selectedProject.tasks?.filter(
+    (item) => item.status === "not started"
+  );
 export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "cancled"

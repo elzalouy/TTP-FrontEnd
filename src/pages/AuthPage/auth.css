@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Cairo-Bold";
+  src: url(../../assets/fonts/Cairo-Bold.ttf);
+}
+
+.bold{
+  font-family: "Cairo-Bold" !important;
+  font-weight: bolder !important;
+}
+
 .content {
   display: flex;
   justify-content: center;
@@ -35,9 +45,34 @@
   margin-top: 1.5em;
 }
 
+.password-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin-top: 10px;
+  border: solid 0.5px #b4b6c4;
+  padding-right: 10px;
+}
+
+.password-input{
+  display: block;
+  font-family: "Cairo",sans-serif;
+  width: 100%;
+  color: black;
+  padding: 11px;
+  border: none;
+  outline: none;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
 .f-inputs {
   display: block;
   margin-top: 10px;
+  font-family: "Cairo",sans-serif;
 }
 
 .btn-auth {
@@ -74,8 +109,7 @@
   width: 100%;
   color: black;
   padding: 11px;
-  border: solid 0.5px;
-  border-color: #b4b6c4;
+  border: solid 0.5px #b4b6c4;
   text-align: left;
   text-decoration: none;
   margin-top: 10px;
