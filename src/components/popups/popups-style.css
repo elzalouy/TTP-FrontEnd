@@ -19,7 +19,7 @@
 .controllers {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 50px;
 }
 
 .controllers-cancel {
@@ -69,6 +69,7 @@
   color: #30bcc7;
   font-weight: 600;
   text-transform: capitalize;
+  margin-bottom: 20px;
 }
 .popup-error {
   color: red;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./auth.css";
 import { Redirect } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Button, Link, Typography, IconButton } from "@mui/material";
+import { Grid, Button, Link, Typography, IconButton, CircularProgress } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
@@ -16,6 +16,7 @@ import {
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { selectLoading } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -47,6 +48,7 @@ const Login: React.FC<Props> = ({ history }) => {
   });
   const watch = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
+  const loading = useAppSelector(selectLoading);
   const res = useAppSelector(selectResponse);
 
   useEffect(() => {
@@ -187,7 +189,7 @@ const Login: React.FC<Props> = ({ history }) => {
                   placeholder="Enter your password"
                 />
                 <IconButton onClick={()=>setVisiblity(state=>!state)}>
-                  {visible ? <VisibilityOff style={{ color: "#b4b6c4" }} /> : <Visibility style={{ color: "#b4b6c4" }} />}
+                  {!visible ? <VisibilityOff style={{ color: "#b4b6c4" }} /> : <Visibility style={{ color: "#b4b6c4" }} />}
                 </IconButton>
               </div>
             )}
@@ -208,7 +210,7 @@ const Login: React.FC<Props> = ({ history }) => {
             disableElevation
             onClick={handleSubmit(onSubmit)}
           >
-            Login
+            {loading ?<CircularProgress sx={{color:"white",padding:"10px"}}/> : "Login"}
           </Button>
           <Link
             sx={{ textDecoration: "none", cursor: "pointer" }}

@@ -12,6 +12,7 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
+import "../style.css"
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { FC, useState } from "react";
@@ -76,15 +77,18 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
           <TableHead>
             <TableRow>
               <TableCell
+              className="thead"
                 style={{
                   color: "#334D6E",
                   width: "300px",
                   margin: "0px",
                 }}
+
               >
                 PM Name
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "300px",
@@ -95,6 +99,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Email
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "250px",
@@ -105,6 +110,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 In Progress Projects
               </TableCell>
               <TableCell
+               className="thead"
                 style={{
                   color: "#334D6E",
                   width: "158px",
@@ -115,6 +121,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Done Project
               </TableCell>
               <TableCell
+               className="thead"
                 align="center"
                 style={{ color: "#334D6E", width: "50px", margin: "0px" }}
               >
@@ -176,10 +183,10 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   >
                     {email}
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <Typography color="#707683">{inProgress}</Typography>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <Typography color="#707683">{done}</Typography>
                   </TableCell>
                   <TableCell align="center">

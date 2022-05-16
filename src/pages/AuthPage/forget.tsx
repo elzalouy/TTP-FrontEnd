@@ -131,7 +131,7 @@ const Forget: React.FC<Props> = ({ history }) => {
                 color="#000000"
                 className="bold"
               >
-                Email
+                Email Address
               </Typography>
               <Controller
                 name="email"
