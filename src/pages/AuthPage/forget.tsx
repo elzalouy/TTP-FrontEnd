@@ -142,7 +142,7 @@ const Forget: React.FC<Props> = ({ history }) => {
                     {...register("email", { required: true })}
                     type="email"
                     className="f-inputs"
-                    placeholder="Example@somemail.com"
+                    placeholder="Email Address"
                     onChange={() => setFailed({ message: "", status: false })}
                   />
                 )}

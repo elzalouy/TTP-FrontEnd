@@ -69,6 +69,7 @@ const Tasks: React.FC = (props: any) => {
       alignContent={"flex-start"}
       alignSelf="flex-start"
       padding={SM ? 2 : 4}
+      marginLeft={6}
       marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
