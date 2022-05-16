@@ -78,6 +78,8 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             alt="closeIcon"
             onClick={() => {
               handleSetDisplay("none");
+              setSubCategory("");
+              setsubCategories([]);
             }}
           />
         </div>
@@ -122,6 +124,8 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             className="controllers-cancel"
             onClick={() => {
               handleSetDisplay("none");
+              setSubCategory("");
+              setsubCategories([]);
             }}
           >
             Cancel

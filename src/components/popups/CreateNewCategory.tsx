@@ -49,6 +49,7 @@ const CreateNewCategory: React.FC<Props> = () => {
     try {
       await dispatch(createCategory(body));
       setShow("none");
+      setSubCategory("");
       setsubCategories([]);
     } catch (error: any) {
       setErrors(error.message);
@@ -88,11 +89,13 @@ const CreateNewCategory: React.FC<Props> = () => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setSubCategory("");
+              setsubCategories([]);
             }}
           />
         </div>
         <p style={{ color: "red" }}>{errors}</p>
-        <p className="popup-title" style={{ marginBottom: 2 }}>
+        <p className="popup-title" >
           Create new category
         </p>
         <form className="form-inputs" onSubmit={handleSubmit}>
@@ -143,6 +146,8 @@ const CreateNewCategory: React.FC<Props> = () => {
                 className="controllers-cancel"
                 onClick={() => {
                   setShow("none");
+                  setSubCategory("");
+                  setsubCategories([]);
                 }}
               >
                 Cancel
