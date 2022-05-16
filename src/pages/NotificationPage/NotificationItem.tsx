@@ -4,7 +4,7 @@ import React from "react";
 import Badge from "@mui/material/Badge";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import Avatar from "@mui/material/Avatar";
-import profileImg from "./test.jpg";
+import profileImg from "./avatar.png";
 import Button from "@mui/material/Button";
 import moment from 'moment'
 
@@ -41,7 +41,7 @@ const NotificationItem = ({notifiData}: Props) => {
               borderRadius: "1em",
             }}
           >
-            {/* <Grid marginX={1} item xs={1}>
+            <Grid marginX={1} item xs={1}>
               <Badge
                 overlap="circular"
                 badgeContent={
@@ -53,11 +53,11 @@ const NotificationItem = ({notifiData}: Props) => {
                     }}
                   />
                 }
-                invisible={false}
+                invisible={true}
               >
-                <Avatar alt="Remy Sharp" src={profileImg} />
+                <Avatar alt="test img" src={profileImg} />
               </Badge>
-            </Grid> */}
+            </Grid>
             <Grid item container xs={10}>
               <Grid item xs={10}>
                 <Typography
