@@ -17,15 +17,15 @@ type Props = {
   department: Department;
 };
 const colors: any = {
-  blue: ["#E1EDF6", "#0079BF"],
-  orange: ["#F7F0E7", "#D29034"],
-  green: ["#00800069", "#519839"],
-  red: ["#F3E8E7", "#B04632"],
-  purple: ["#EFEBF2", "#89609E"],
-  pink: ["pink", "#CD5A91"],
-  lime: ["#00ff0036", "#4BBF6B"],
-  sky: ["#E1F3F7", "#00AECC"],
-  grey: ["#E1EDF6", "#838C91"],
+  blue: ["#0079BF1A", "#0079BF"],
+  orange: ["#D290341A", "#D29034"],
+  green: ["#5198391A", "#519839"],
+  red: ["#B046321A", "#B04632"],
+  purple: ["#89609E1A", "#89609E"],
+  pink: ["#CD5A911A", "#CD5A91"],
+  lime: ["#4BBF6B1A", "#4BBF6B"],
+  sky: ["#00AECC1A", "#00AECC"],
+  grey: ["#838C911A", "#838C91"],
 };
 const DepartmentCard: React.FC<Props> = ({
   backgroundColor,
@@ -55,12 +55,15 @@ const DepartmentCard: React.FC<Props> = ({
         style={{ color: colors[department.color][1] }}
       >
         <h2>{department.name}</h2>
-        {role !== "PM" && (
-          <DepartmentDrop
-            handleSetShow={handleSetShow}
-            handleSetShowDelete={handleSetShowDelete}
-          />
-        )}
+        <p>
+          {role !== "PM" && (
+            <DepartmentDrop
+              handleSetShow={handleSetShow}
+              handleSetShowDelete={handleSetShowDelete}
+              color={colors[department.color][1]}
+            />
+          )}
+        </p>
       </div>
       <div className="teams">
         {department?.teamsId?.map((team: any) => (

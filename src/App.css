@@ -31,5 +31,5 @@ body {
   background-color: #fafafb;
 }
 ::-webkit-scrollbar {
-  display: none !important;
+  /* display: none !important; */
 }
