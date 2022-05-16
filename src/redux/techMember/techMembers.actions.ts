@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/endpoints/techMembers";
 import { toast } from "react-toastify";
+import { fireNewTeamHook } from "../Ui";
 
 export const getTechMembersByDeptId = createAsyncThunk<any, any, any>(
   "techMembers/getByDeptId",
@@ -29,14 +30,13 @@ export const getAllMembers = createAsyncThunk<any, any, any>(
 
 export const createTeam = createAsyncThunk<any, any, any>(
   "techMembers/createTeam",
-  async (data: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      console.log({ data });
-      let team = await api.createTechMember(data);
-      console.log({ team });
+      let team = await api.createTechMember(args.data);
       if (team.ok && team.data) {
+        args.dispatch(fireNewTeamHook(""));
         toast("team created successfully");
-        return data;
+        return args.data;
       } else return [];
     } catch (error) {
       rejectWithValue(error);

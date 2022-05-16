@@ -1,4 +1,4 @@
-import { createSlice, Slice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import {
   getAllDepartments,
   createDepartment,
@@ -11,18 +11,21 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
   name: "departments",
   initialState: initialState,
   reducers: {
-    selecteDepartment: (state, { payload }) => {
+    selecteDepartment: (
+      state = initialState,
+      { payload }: PayloadAction<any>
+    ) => {
       state.selectedDepart = payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllDepartments.rejected, (state) => {
       state.loading = false;
-      state.departments = [];
+      // state.departments = [];
     });
     builder.addCase(getAllDepartments.pending, (state) => {
-      state.loading = true;
-      state.departments = [];
+      // state.loading = true;
+      // state.departments = [];
     });
     builder.addCase(getAllDepartments.fulfilled, (state, action) => {
       state.loading = false;
@@ -32,7 +35,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createDepartment.pending, (state) => {
-      state.loading = true;
+      // state.loading = true;
     });
     builder.addCase(createDepartment.fulfilled, (state, action) => {
       state.loading = false;
@@ -42,17 +45,21 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(updateDepartment.pending, (state) => {
-      state.loading = true;
+      // state.loading = true;
     });
     builder.addCase(updateDepartment.fulfilled, (state, action) => {
       state.loading = false;
-      state.departments = [...state.departments, action.payload];
+      console.log(action.payload);
+      let dep = state.departments.findIndex(
+        (item) => item._id === action.payload?._id
+      );
+      state.departments[dep] = action.payload;
     });
     builder.addCase(deleteDepartment.rejected, (state) => {
       state.loading = false;
     });
     builder.addCase(deleteDepartment.pending, (state) => {
-      state.loading = true;
+      // state.loading = true;
     });
     builder.addCase(deleteDepartment.fulfilled, (state, { payload }) => {
       state.loading = false;

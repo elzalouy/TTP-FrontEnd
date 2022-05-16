@@ -21,12 +21,15 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
+  
   useEffect(() => {
     setTeam({
-      name: "", department: ""
-    })
-    setAllTeam([])
-  }, [Show])
+      name: "",
+      department: "",
+    });
+    setAllTeam([]);
+  }, [Show]);
+
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
@@ -36,11 +39,11 @@ const AddNewTeam: React.FC<Props> = () => {
         boardId: depData[1],
       };
       if (AllTeam[i]) {
-        await dispatch(createTeam(data));
+        dispatch(createTeam({ data: data, dispatch }));
       }
     }
     setTeam({ name: "", department: "" });
-    setAllTeam([])
+    setAllTeam([]);
     setShow("none");
   };
   return (

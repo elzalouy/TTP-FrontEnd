@@ -1,4 +1,10 @@
-import { Box, SelectChangeEvent, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  SelectChangeEvent,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
@@ -77,7 +83,6 @@ const Clients: React.FC<Props> = () => {
   }, [clientData]);
 
   return (
-
     <Grid container paddingX={4} paddingY={SM ? 8 : 4}>
       <Grid container xs={12} mt="2em">
         <Typography variant="h2">Clients</Typography>
@@ -115,7 +120,11 @@ const Clients: React.FC<Props> = () => {
           />
         </Grid>
         <Grid item xs={12} sm={4} md={2} lg={2}>
-          <SearchBox value={search} onChange={handleSearchChange} />
+          <SearchBox
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+          />
         </Grid>
       </Grid>
       <Grid

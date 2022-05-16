@@ -89,7 +89,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
 
   const handleSubmit = async () => {
     console.log({ formData });
-    await dispatch(createDepartment(formData));
+    dispatch(createDepartment({ data: formData, dispatch }));
     setFormData({
       name: "",
       color: "",
@@ -164,9 +164,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             }}
             value={Data}
           >
-            <option value="" selected>
-              Select Team
-            </option>
+            <option value="">Select Team</option>
             {teamsData?.techMembers?.map((team: any) => (
               <option key={team._id} value={`${team._id},${team.name}`}>
                 {team.name}

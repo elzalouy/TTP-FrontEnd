@@ -1,4 +1,4 @@
-import React,{useRef,useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import { useState } from "react";
 import IMAGES from "../../assets/img";
 import "./dropdowns-style.css";
@@ -13,10 +13,7 @@ type Props = {
 /**
  * Hook that alerts clicks outside of the passed ref
  */
- function useOutsideAlerter(ref:any) {
-
-}
-
+function useOutsideAlerter(ref: any) {}
 
 const DepartmentDrop: React.FC<Props> = ({
   handleSetShow,
@@ -25,14 +22,11 @@ const DepartmentDrop: React.FC<Props> = ({
 }) => {
   const [Show, setShow] = useState<string>("none");
 
-  const wrapperRef:React.MutableRefObject<any> = useRef(null);
+  const wrapperRef: React.MutableRefObject<any> = useRef(null);
   useEffect(() => {
-    function handleClickOutside(event:any) {
-      console.log('out')
+    function handleClickOutside(event: any) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      console.log('in')
-
-      setShow('none')
+        setShow("none");
       }
     }
     // Bind the event listener
@@ -55,7 +49,11 @@ const DepartmentDrop: React.FC<Props> = ({
         <MoreHorizIcon style={{color:color}}/>
       </button>
 
-      <div className="dropdown-container" style={{ display: Show }} ref={wrapperRef}>
+      <div
+        className="dropdown-container"
+        style={{ display: Show }}
+        ref={wrapperRef}
+      >
         <button
           className="dropdown-btn"
           onClick={() => {

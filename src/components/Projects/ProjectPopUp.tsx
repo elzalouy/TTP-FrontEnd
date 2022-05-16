@@ -10,13 +10,15 @@ import {
 import { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useAppSelector } from "../../redux/hooks";
-import { selectNewProject } from "../../redux/Projects";
+import { ProjectsActions, selectNewProject } from "../../redux/Projects";
 import IMAGES from ".././../assets/img/index";
 import TaskForm from "./TaskForm";
 import Tasks from "./TasksTable";
 import ProjectForm from "./ProjectForm";
 import { styled } from "@mui/material/styles";
 import { Check } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { UiActions } from "../../redux/Ui";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;
@@ -24,6 +26,7 @@ interface NewProjectPopUpProps {
 
 const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const steps = ["Project", "Tasks"];
+  const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const [currentStep, setcurrentStep] = useState(0);
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
@@ -86,6 +89,13 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </QontoStepIconRoot>
     );
   }
+  const onClose = () => {
+    if (currentStep === 1) {
+      dispatch(UiActions.fireNewProjectHook(""));
+    }
+    setcurrentStep(0);
+    setShow("none");
+  };
   return (
     <PopUp show={newProject?.showPopUp ? newProject.showPopUp : "none"}>
       <div>
@@ -95,10 +105,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
           height="9"
           src={IMAGES.closeicon}
           alt="closeIcon"
-          onClick={() => {
-            setcurrentStep(0);
-            setShow("none");
-          }}
+          onClick={onClose}
         />
       </div>
       <Grid

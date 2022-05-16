@@ -12,7 +12,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
   name: "clients",
   initialState: clientState,
   reducers: {
-    onSort: (state, { payload }) => {
+    onSort: (state = clientState, { payload }: PayloadAction<any>) => {
       let clientData = state.clientsData;
       if (payload === "asc") {
         clientData.sort(
@@ -27,7 +27,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       }
       state.clientsData = clientData;
     },
-    onSearch: (state, { payload }) => {
+    onSearch: (state = clientState, { payload }: PayloadAction<any>) => {
       let clientData = state.selectedClient;
       if (payload === "") {
         state.clientsData = state.selectedClient;
@@ -38,8 +38,20 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         state.clientsData = clientData;
       }
     },
-    setEditClient: (state, action) => {
-      state.editClient = action.payload;
+    setEditClient: (state = clientState, { payload }: PayloadAction<any>) => {
+      state.editClient = payload;
+    },
+    createProjectHook: (
+      state = clientState,
+      { payload }: PayloadAction<any>
+    ) => {
+      let index = state.clientsData.findIndex((item) => item._id === payload);
+      console.log(index);
+      if (index) {
+        let client = { ...state.clientsData[index] };
+        client.inProgressProject = client.inProgressProject + 1;
+        state.clientsData[index] = client;
+      }
     },
   },
   extraReducers: (builder) => {

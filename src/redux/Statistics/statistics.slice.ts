@@ -17,18 +17,20 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.NoCompletedProjects = projects.filter(
           (item) => item.projectStatus === "done"
         ).length;
-        state.PercentCompletedProjects =
+        state.PercentCompletedProjects = Math.round(
           (projects.filter((item) => item.projectStatus === "done").length /
             projects.length) *
-          100;
+            100
+        );
         state.NoCurruntProjects = projects.filter(
           (item) => item.projectStatus === "inProgress"
         ).length;
-        state.PercentCurrentProjects =
+        state.PercentCurrentProjects = Math.round(
           (projects.filter((item) => item.projectStatus === "inProgress")
             .length /
             projects.length) *
-          100;
+            100
+        );
         state.NoCompletedTasks = tasks.filter(
           (item) => item.status === "done"
         ).length;
@@ -39,16 +41,19 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.PercentCurrentProjects = 0;
       }
       if (tasks && tasks?.length > 0) {
-        state.PercentCompletedTasks =
+        state.PercentCompletedTasks = Math.round(
           (tasks.filter((item) => item.status === "done").length /
             tasks.length) *
-          100;
+            100
+        );
         let newTasks = tasks.filter((item) => {
           let { start: TaskStart } = getStartEndDayOfWeek(item.start);
           if (TaskStart.getTime() >= start.getTime()) return item;
         });
         state.NoNewTasks = newTasks.length;
-        state.PercentNoNewTasks = (newTasks.length / tasks.length) * 100;
+        state.PercentNoNewTasks = Math.round(
+          (newTasks.length / tasks.length) * 100
+        );
       } else {
         state.NoCompletedTasks = 0;
         state.NoNewTasks = 0;

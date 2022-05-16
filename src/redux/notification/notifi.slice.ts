@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { getAllNotifi, updateNotifi } from "./notifi.actions";
 import NotifiState, { Notifis } from "./notifi.state";
 import moment from "moment";
@@ -7,9 +7,9 @@ const notifiSlice: Slice<Notifis> = createSlice({
   name: "clients",
   initialState: NotifiState,
   reducers: {
-    onSort: (state, { payload }) => {},
-    onSearch: (state, { payload }) => {},
-    updateCounter: (state, { payload }) => {
+    onSort: (state = NotifiState, { payload }: AnyAction) => {},
+    onSearch: (state = NotifiState, { payload }: AnyAction) => {},
+    updateCounter: (state = NotifiState, { payload }: AnyAction) => {
       state.counter = state.counter + 1;
       state.notifi = [payload, ...state.notifi];
     },
@@ -30,7 +30,7 @@ const notifiSlice: Slice<Notifis> = createSlice({
             : !item.projectManagerViewed
         );
         state.loading = false;
-        state.notifi = [...state.notifi ,...action.payload.data];
+        state.notifi = [...state.notifi, ...action.payload.data];
         state.counter = counter.length;
       }
     );

@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
+import { selectPMs } from "../../redux/PM/pm.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
@@ -29,10 +30,11 @@ const Tasks: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const techMembers = useAppSelector(selectAllMembers);
+  const pMs = useAppSelector(selectPMs);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down('sm'));
-  const MD = useMediaQuery(theme.breakpoints.down('md'));
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
 
@@ -67,6 +69,7 @@ const Tasks: React.FC = (props: any) => {
       alignContent={"flex-start"}
       alignSelf="flex-start"
       padding={SM ? 2 : 4}
+      marginLeft={6}
       marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
@@ -74,7 +77,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -97,7 +100,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -111,10 +114,10 @@ const Tasks: React.FC = (props: any) => {
                     {
                       id: "inProgress",
                       value: "inProgress",
-                      text: "In Progres",
+                      text: "In Progress",
                     },
                     { id: "shared", value: "shared", text: "Shared" },
-                    { id: "late", value: "late", text: "late" },
+                    { id: "late", value: "late", text: "Late" },
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
@@ -130,7 +133,34 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={4} marginY={1}>
+          <Box className="tasks-option">
+            <Controller
+              name="projectManager"
+              control={control}
+              render={(props) => (
+                <SelectInput
+                  label={"Project Manager: "}
+                  {...props}
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    ...pMs.map((pm) => {
+                      return { id: pm._id, value: pm.name, text: pm.name };
+                    }),
+                  ]}
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectText={props.field.value}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -165,7 +195,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -198,18 +228,24 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} marginY={1}>
+        <Grid marginX={0.5} item xs={2} sm={4} md={1} marginY={1}>
           <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
-        <Grid marginX={0.5} item xs={8} sm={8} md={4} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={8} md={2.5} lg={2.5} marginY={1}>
           <Box
-            style={SM ? { backgroundColor: "#fafafa",
-            width: "100%",
-            marginLeft: "5px",} : {
-              backgroundColor: "#fafafa",
-              width: "100%",
-              marginLeft: "20px",
-            }}
+            style={
+              SM
+                ? {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "5px",
+                  }
+                : {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "20px",
+                  }
+            }
           >
             <Controller
               name="name"
@@ -221,6 +257,7 @@ const Tasks: React.FC = (props: any) => {
                     onHandleChange(e);
                   }}
                   value={props.field.value}
+                  placeholder="Search"
                 />
               )}
             />
