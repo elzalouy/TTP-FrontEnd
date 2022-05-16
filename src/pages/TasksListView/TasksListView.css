@@ -64,7 +64,7 @@
   border-radius: 5px;
 }
 .reviewStatus {
-  color: #30aab4;
+  color: #0f6b74;
   background-color: #d9f3f5;
   width: auto;
   margin: 0px;
@@ -93,6 +93,15 @@
 .notClearStatus{
   background-color:#F7F0E7;
   color: #ffac38;
+  width: auto;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+.notStartedStatus{
+  background-color:#f0f0f0;
+  color: #919090;
   width: auto;
   margin: 0px;
   padding: 2px 15px;

@@ -16,6 +16,7 @@ import {
   selectDoneTasks,
   selectInProgressTasks,
   selectNotClearTasks,
+  selectNotStartedTasks,
   selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
@@ -31,17 +32,28 @@ const DragField: React.FC = (props: any) => {
   const doneTasks = useAppSelector(selectDoneTasks);
   const reviewTasks = useAppSelector(selectReviewTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
+  const notStartedTasks = useAppSelector(selectNotStartedTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
   const departments = useAppSelector(selectAllDepartments);
+  
   const [columns, setColumns] = useState({
+    [uuidv4()]: {
+      name: "Not Started",
+      items: notStartedTasks,
+      header: "not-started-header",
+      body: "not-started-task",
+      border: "not-started-border",
+      NewTask: <CreateNewTask />,
+      value: "not started",
+      footer: "task-card-footer-notstarted",
+    },
     [uuidv4()]: {
       name: "In Progress",
       items: inProgressTasks,
       header: "in-progress-header",
       body: "in-progress-task",
       border: "in-progress-border",
-      NewTask: <CreateNewTask />,
       value: "inProgress",
       footer: "task-card-footer-inprogress",
     },
@@ -95,12 +107,21 @@ const DragField: React.FC = (props: any) => {
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
+        name: "Not Started",
+        items: notStartedTasks,
+        header: "not-started-header",
+        body: "not-started-task",
+        border: "not-started-border",
+        NewTask: <CreateNewTask />,
+        value: "not started",
+        footer: "task-card-footer-notstarted",
+      },
+      [uuidv4()]: {
         name: "In Progress",
         items: inProgressTasks,
         header: "in-progress-header",
         body: "in-progress-task",
         border: "in-progress-border",
-        NewTask: <CreateNewTask />,
         value: "inProgress",
         footer: "task-card-footer-inprogress",
       },

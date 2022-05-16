@@ -69,7 +69,7 @@ const CreateTask: React.FC<Props> = (props) => {
       subCategoryId: Task?.subCategoryId,
       memberId: Task?.memberId,
       projectId: selectedProject?.project?._id,
-      status: "inProgress",
+      status: "not started",
       start: new Date().toUTCString(),
       deadline: Task?.deadline,
       deliveryDate: null,

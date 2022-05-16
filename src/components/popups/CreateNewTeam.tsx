@@ -21,6 +21,7 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
+  
   useEffect(() => {
     setTeam({
       name: "",
@@ -28,6 +29,7 @@ const AddNewTeam: React.FC<Props> = () => {
     });
     setAllTeam([]);
   }, [Show]);
+
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");

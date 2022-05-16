@@ -163,6 +163,8 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           ? "reviewStatus"
                           : status === "not clear" 
                           ? "notClearStatus" 
+                          : status === "not started"
+                          ? "notStartedStatus" 
                           : status === "done"
                           ? "doneStatus" 
                           : status === "shared" 
