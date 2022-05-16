@@ -181,7 +181,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
           ))}
         </select>
 
-        {/* <label className="popup-label">Teams</label>
+        <label className="popup-label">Teams</label>
         <div className="add-teams-section">
           <select
             className="popup-select"
@@ -236,7 +236,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
               </div>
             );
           })}
-        </div> */}
+        </div>
 
         <br />
 

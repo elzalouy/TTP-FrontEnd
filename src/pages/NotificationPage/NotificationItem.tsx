@@ -69,7 +69,7 @@ const NotificationItem = ({notifiData}: Props) => {
                   {item?.title}
                 </Typography>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} textAlign='right'>
                   <Typography
                     variant="caption"
                     gutterBottom
