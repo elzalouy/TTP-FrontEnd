@@ -113,7 +113,7 @@ const DragField: React.FC = (props: any) => {
         body: "not-started-task",
         border: "not-started-border",
         NewTask: <CreateNewTask />,
-        value: "not started",
+        value: "Not Started",
         footer: "task-card-footer-notstarted",
       },
       [uuidv4()]: {
@@ -131,7 +131,7 @@ const DragField: React.FC = (props: any) => {
         header: "done-header",
         body: "done-task",
         border: "done-border",
-        value: "review",
+        value: "Review",
         footer: "task-card-footer-review",
       },
       [uuidv4()]: {
@@ -140,7 +140,7 @@ const DragField: React.FC = (props: any) => {
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
-        value: "shared",
+        value: "Shared",
         footer: "task-card-footer-shared",
       },
       [uuidv4()]: {
@@ -149,7 +149,7 @@ const DragField: React.FC = (props: any) => {
         header: "done-header",
         body: "done-task",
         border: "done-border",
-        value: "done",
+        value: "Done",
         footer: "task-card-footer-done",
       },
       [uuidv4()]: {
@@ -158,7 +158,7 @@ const DragField: React.FC = (props: any) => {
         header: "not-clear-header",
         body: "not-clear-task",
         border: "not-clear-border",
-        value: "not clear",
+        value: "Not Clear",
         footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
@@ -167,7 +167,7 @@ const DragField: React.FC = (props: any) => {
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
-        value: "cancled",
+        value: "Cancled",
         footer: "task-card-footer-cancled",
       },
     };
