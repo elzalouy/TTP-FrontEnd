@@ -235,15 +235,15 @@ export const moveTask = createAsyncThunk<any, any, any>(
       let newlist = "";
       if (args.list.value === "inProgress")
         newlist = args.department.defaultListId;
-      if (args.list.value === "review") newlist = args.department.reviewListId;
-      if (args?.list?.value === "shared")
+      if (args.list.value === "Review") newlist = args.department.reviewListId;
+      if (args?.list?.value === "Shared")
         newlist = args.department.sharedListID;
-      if (args?.list?.value === "done") newlist = args.department.doneListId;
-      if (args?.list?.value === "not clear")
+      if (args?.list?.value === "Done") newlist = args.department.doneListId;
+      if (args?.list?.value === "Not Clear")
         newlist = args.department.notClearListId;
-      if (args.list.value === "cancled")
+      if (args.list.value === "Cancled")
         newlist = args.department.canceldListId;
-      if (args.list.value === "not started")
+      if (args.list.value === "Not Started")
         newlist = args.department.notStartedListId;
       let data: any = {
         cardId: args?.task?.cardId,
