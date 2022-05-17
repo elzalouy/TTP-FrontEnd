@@ -44,6 +44,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
+      console.log({createProjectTask:args.data})
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
         toast("Task have been saved to the Database");
@@ -60,6 +61,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
     try {
+      console.log({createTaskFromBoard:args.data})
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
