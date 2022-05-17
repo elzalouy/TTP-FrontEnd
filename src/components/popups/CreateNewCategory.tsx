@@ -100,7 +100,7 @@ const CreateNewCategory: React.FC<Props> = () => {
         <p className="popup-title" >
           Create new category
         </p>
-        <form className="form-inputs" onSubmit={handleSubmit}>
+        <form className="form-inputs">
           <label className="label">Main category</label>
           <div style={{ display: "flex" ,marginTop:"10px",marginBottom:"10px"}}>
             <input
@@ -146,15 +146,17 @@ const CreateNewCategory: React.FC<Props> = () => {
             <div className="controllers">
               <button
                 className="controllers-cancel"
-                onClick={() => {
+                onClick={(e:any) => {
+                  e.preventDefault();
                   setShow("none");
+                  setMainCategory("");
                   setSubCategory("");
                   setsubCategories([]);
                 }}
               >
                 Cancel
               </button>
-              <button className="controllers-done">Done</button>
+              <button className="controllers-done" onClick={(e)=>handleSubmit(e)}>Done</button>
             </div>
           </div>
         </form>
