@@ -49,6 +49,15 @@ const DragField: React.FC = (props: any) => {
       footer: "task-card-footer-notstarted",
     },
     [uuidv4()]: {
+      name: "Not clear",
+      items: notClearTasks,
+      header: "not-clear-header",
+      body: "not-clear-task",
+      border: "not-clear-border",
+      value: "not clear",
+      footer: "task-card-footer-notclear",
+    },
+    [uuidv4()]: {
       name: "In Progress",
       items: inProgressTasks,
       header: "in-progress-header",
@@ -84,15 +93,7 @@ const DragField: React.FC = (props: any) => {
       value: "done",
       footer: "task-card-footer-done",
     },
-    [uuidv4()]: {
-      name: "Not clear",
-      items: notClearTasks,
-      header: "not-clear-header",
-      body: "not-clear-task",
-      border: "not-clear-border",
-      value: "not clear",
-      footer: "task-card-footer-notclear",
-    },
+    
     [uuidv4()]: {
       name: "Canceled",
       items: cancledTasks,
@@ -115,6 +116,15 @@ const DragField: React.FC = (props: any) => {
         NewTask: <CreateNewTask />,
         value: "not started",
         footer: "task-card-footer-notstarted",
+      },
+      [uuidv4()]: {
+        name: "Not clear",
+        items: notClearTasks,
+        header: "not-clear-header",
+        body: "not-clear-task",
+        border: "not-clear-border",
+        value: "not clear",
+        footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
         name: "In Progress",
@@ -151,15 +161,6 @@ const DragField: React.FC = (props: any) => {
         border: "done-border",
         value: "done",
         footer: "task-card-footer-done",
-      },
-      [uuidv4()]: {
-        name: "Not clear",
-        items: notClearTasks,
-        header: "not-clear-header",
-        body: "not-clear-task",
-        border: "not-clear-border",
-        value: "not clear",
-        footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
         name: "Canceled",
