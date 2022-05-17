@@ -35,7 +35,7 @@ const TaskCard: React.FC<DataTypes> = ({
   const checkStatusAndSetBackground = (status : string) => {
     if(status==="Not Started"){
       return "#F1F1F2";
-    }else if(status==="Not Clear"){
+    }else if(status==="Not clear"){
       return "#E1F3F5";
     }else if(status==="Review"){
       return "#E1F3F5";
