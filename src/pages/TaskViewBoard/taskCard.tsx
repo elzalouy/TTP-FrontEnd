@@ -33,19 +33,19 @@ const TaskCard: React.FC<DataTypes> = ({
     (1000 * 60 * 60 * 24);
 
   const checkStatusAndSetBackground = (status : string) => {
-    if(status==="not started"){
+    if(status==="Not Started"){
       return "#F1F1F2";
-    }else if(status==="not clear"){
+    }else if(status==="Not Clear"){
       return "#E1F3F5";
-    }else if(status==="review"){
+    }else if(status==="Review"){
       return "#E1F3F5";
-    }else if(status==="done"){
+    }else if(status==="Done"){
       return "#E1F3F5";
     }else if(status==="inProgress"){
       return "#FBF5E2";
-    }else if(status==="canceled"){
+    }else if(status==="Canceled"){
       return "#F7E6E7";
-    }else if(status==="shared"){
+    }else if(status==="Shared"){
       return "#F7E6E7";
     }
   }
