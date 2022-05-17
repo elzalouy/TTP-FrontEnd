@@ -56,6 +56,8 @@ const CreateNewCategory: React.FC<Props> = () => {
       console.log(error.message);
     }
   };
+
+  
   return (
     <>
       <Box

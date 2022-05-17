@@ -103,7 +103,7 @@ const AddNewPM: React.FC<Props> = () => {
               setError(false);
             }}
           />
-          <label className="popup-label bold">Email</label>
+          <label className="popup-label">Email</label>
           <input
             className="popup-input"
             type="email"

@@ -22,6 +22,7 @@ interface Props {
   }[];
   label?: string | undefined;
   selectValue: string | undefined;
+  customValue?: string;
   selectText: string | undefined;
 }
 
@@ -29,6 +30,7 @@ const SelectInput: React.FC<Props> = ({
   handleChange,
   options = [],
   selectValue,
+  customValue,
   label,
   selectText,
 }) => {
@@ -103,7 +105,7 @@ const SelectInput: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-          {Value ? Value : "all"}
+         {Value ? Value : customValue ? customValue : "all"}
         </Typography>
       </Grid>
       <Grid item>

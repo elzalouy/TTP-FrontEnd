@@ -33,13 +33,16 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const all = useAppSelector(selectAllProjects);
   const { control, register, reset, watch } = useForm();
   console.log(selectedProject);
+
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
+
   const onHandleSort = (e: any) => {
     let data = watch();
     dispatch(ProjectsActions.onSortProjectTasks(data.deadline));
   };
+
   return (
     <Grid
       container
@@ -74,12 +77,13 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <Box marginLeft={2}>
+          <Box marginLeft={2} className="select-task-board">
             <Controller
               name="deadline"
               control={control}
               render={(props) => (
                 <SelectInput
+                customValue="Due date"
                   {...props}
                   options={[
                     { id: "asc", text: "Ascending", value: "asc" },
@@ -90,8 +94,8 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
                     props.field.onChange(e);
                     onHandleSort(e);
                   }}
-                  selectValue="Due date:"
-                  label="Due date:"
+                  selectValue="duedate"
+                  label="Sort By:"
                 />
               )}
             />

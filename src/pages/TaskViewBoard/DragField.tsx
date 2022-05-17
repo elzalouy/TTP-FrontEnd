@@ -225,9 +225,11 @@ const DragField: React.FC = (props: any) => {
       });
     }
   };
+
   const move = (obj: any) => {
     dispatch(moveTask(obj));
   };
+
   return (
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
@@ -252,13 +254,13 @@ const DragField: React.FC = (props: any) => {
                       justifyContent="space-between"
                       alignItems="center"
                     >
-                      <Typography style={{ paddingLeft: "12px" }}>
+                      <Typography style={{ padding: "14px" }}>
                         <span className={column?.header}>{column.name}</span>{" "}
                         {column.items.length}
                       </Typography>
-                      <Typography style={{ padding: "12px" }}>
+                     {/*  <Typography style={{ padding: "12px" }}>
                         <img src={IMAGES.taskFilter} alt="more" />
-                      </Typography>
+                      </Typography> */}
                     </Stack>
                     {column &&
                       column?.items?.map((item: Task, index) => {
@@ -270,6 +272,7 @@ const DragField: React.FC = (props: any) => {
                               item={item}
                               index={index}
                               footerStyle={column?.footer}
+                              column={column}
                             />
                           </Box>
                         );
