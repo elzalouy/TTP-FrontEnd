@@ -241,6 +241,8 @@ export const moveTask = createAsyncThunk<any, any, any>(
         newlist = args.department.notClearListId;
       if (args.list.value === "cancled")
         newlist = args.department.canceldListId;
+      if (args.list.value === "not started")
+        newlist = args.department.notStartedListId;
       let data: any = {
         cardId: args?.task?.cardId,
         listId: newlist,
