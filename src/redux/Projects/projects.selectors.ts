@@ -47,27 +47,27 @@ export const selectInProgressTasks = (state: RootState) =>
   );
 export const selectDoneTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "done"
+    (item) => item.status === "Done"
   );
 export const selectReviewTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "review"
+    (item) => item.status === "Review"
   );
 export const selectNotClearTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "not clear"
+    (item) => item.status === "Not Clear"
   );
 export const selectNotStartedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "not started"
+    (item) => item.status === "Not Started"
   );
 export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "cancled"
+    (item) => item.status === "Cancled"
   );
 export const selectSharedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "shared"
+    (item) => item.status === "Shared"
   );
 export const selectTasks = (state: RootState) => state.projects.allTasks;
 export const selectEditTaskValues = (state: RootState) =>
