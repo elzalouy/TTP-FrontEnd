@@ -54,7 +54,7 @@ const DragField: React.FC = (props: any) => {
       header: "not-clear-header",
       body: "not-clear-task",
       border: "not-clear-border",
-      value: "not clear",
+      value: "Not Clear",
       footer: "task-card-footer-notclear",
     },
     [uuidv4()]: {
@@ -123,7 +123,7 @@ const DragField: React.FC = (props: any) => {
         header: "not-clear-header",
         body: "not-clear-task",
         border: "not-clear-border",
-        value: "not clear",
+        value: "Not Clear",
         footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
