@@ -1,20 +1,28 @@
-import { createSlice, Slice } from "@reduxjs/toolkit";
-import { getPMs, createPM, updatePM, deletePM, updatePMpassword, resetPMpassword, resendMail } from "./pm.actions";
+import { AnyAction, createSlice, Slice } from "@reduxjs/toolkit";
+import {
+  getPMs,
+  createPM,
+  updatePM,
+  deletePM,
+  updatePMpassword,
+  resetPMpassword,
+  resendMail,
+} from "./pm.actions";
 import initialState, { ProjectManagersInterface } from "./pm.state";
 
 const PMSlice: Slice<ProjectManagersInterface> = createSlice({
   name: "PM",
   initialState: initialState,
   reducers: {
-    getAllPM: (state) => {
-      let AllPMs = state.PMs.filter((pm)=>{
+    getAllPM: (state = initialState) => {
+      let AllPMs = state.PMs.filter((pm) => {
         return pm.role === "PM";
       });
       state.PMs = AllPMs;
     },
-    setId: (state, { payload }) => {
+    setId: (state = initialState, { payload }: AnyAction) => {
       state.current_ID = payload._id;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getPMs.rejected, (state) => {
@@ -71,8 +79,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {
-          msg: payload.msg, status: payload.status
-        }
+          msg: payload.msg,
+          status: payload.status,
+        };
       } else {
         state.PMs = payload;
       }
@@ -87,8 +96,9 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {
-          msg: payload.msg, status: payload.status
-        }
+          msg: payload.msg,
+          status: payload.status,
+        };
       } else {
         state.PMs = payload;
       }

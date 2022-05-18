@@ -15,7 +15,7 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({ show, setShow }) => {
   const disptach = useDispatch();
   const onDeleteTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    disptach(deleteTask({ id: id }));
+    disptach(deleteTask({ data: { id: id }, disptach }));
     disptach(openDeleteTaskPopup("none"));
   };
   return (

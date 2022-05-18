@@ -3,16 +3,13 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import {
   categoriesActions,
-  getAllCategories,
   selectAllCategories,
   selectSelectedCategory,
 } from "../../redux/Categories";
-import {
-  getAllDepartments,
-  selectAllDepartments,
-} from "../../redux/Departments";
+import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
@@ -20,10 +17,8 @@ import {
   selectNewProject,
   selectSelectedDepartment,
 } from "../../redux/Projects";
-import {
-  getTechMembersByDeptId,
-  selectDepartmentMembers,
-} from "../../redux/techMember";
+
+import { UiActions } from "../../redux/Ui";
 
 interface TaskFormProps {
   setCurrentStep: any;
@@ -41,11 +36,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const { register, handleSubmit, watch, control, reset } = useForm();
 
   React.useEffect(() => {
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-  }, []);
-
-  React.useEffect(() => {
     let values = watch();
     if (values?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === values.categoryId);
@@ -61,7 +51,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
     }
   }, [watch(), reset]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -84,14 +74,15 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   };
 
   const onCancel = () => {
+    dispatch(UiActions.fireNewProjectHook(""));
     setShow("none");
     setCurrentStep(0);
   };
   const onSaveProject = () => {
+    dispatch(UiActions.fireNewProjectHook(""));
     toast("Project and Its Tasks have been saved.");
     setShow("none");
     setCurrentStep(0);
-    window.location.reload();
   };
   return (
     <>
@@ -106,7 +97,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    {...props}
                     className="input-project"
                     type="text"
                     placeholder="Task name"
@@ -122,24 +112,25 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 name="selectedDepartmentId"
                 control={control}
                 render={(props) => (
-                  <select
-                    className="select-project"
-                    {...props}
-                    onChange={props.field.onChange}
-                    defaultChecked
-                  >
-                    <option>select</option>
-
-                    {departments && departments.length > 0 ? (
-                      departments.map((item) => (
-                        <option key={item._id} value={item._id}>
-                          {item?.name}
-                        </option>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={
+                      departments.find((item) => item._id === props.field.value)
+                        ?.name
+                    }
+                    selectValue={props.field.value}
+                    options={
+                      departments
+                        ? departments?.map((item) => {
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
             </div>
@@ -153,7 +144,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
-                    {...props}
                     onChange={props.field.onChange}
                     className="input-project"
                     type="date"
@@ -168,22 +158,25 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 name="categoryId"
                 control={control}
                 render={(props) => (
-                  <select
-                    className="select-project"
-                    {...props}
-                    onChange={props.field.onChange}
-                    defaultChecked
-                  >
-                    <option>select</option>
-
-                    {categories &&
-                      categories?.length > 0 &&
-                      categories?.map((item) => (
-                        <option key={item?._id} value={item._id}>
-                          {item.category}
-                        </option>
-                      ))}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={
+                      categories?.find((item) => item._id === props.field.value)
+                        ?.category
+                    }
+                    selectValue={props.field.value}
+                    options={
+                      categories
+                        ? categories?.map((item) => {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.category,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
             </div>
@@ -195,7 +188,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <textarea
-                    {...props}
                     className="textarea-project"
                     rows={3}
                     placeholder="Write about your task"
@@ -211,23 +203,26 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 name="subCategoryId"
                 control={control}
                 render={(props) => (
-                  <select
-                    className="select-project"
-                    {...props}
-                    onChange={props.field.onChange}
-                    defaultChecked
-                  >
-                    <option>select</option>
-                    {selectedCategory?.selectedSubCategory &&
-                      selectedCategory?.selectedSubCategory.length > 0 &&
-                      selectedCategory.selectedSubCategory.map(
-                        (item, index) => (
-                          <option key={item._id} value={item._id}>
-                            {item.subCategory}
-                          </option>
-                        )
-                      )}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={
+                      selectedCategory?.selectedSubCategory?.find(
+                        (item) => item._id === props.field.value
+                      )?.subCategory
+                    }
+                    selectValue={props.field.value}
+                    options={
+                      selectedCategory?.selectedSubCategory
+                        ? selectedCategory?.selectedSubCategory?.map((item) => {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.subCategory,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
               <br />
@@ -238,18 +233,26 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 defaultValue=""
                 render={(props) => (
-                  <select
-                    {...props}
-                    defaultChecked
-                    onChange={props.field.onChange}
-                    className="select-project"
-                  >
-                    <option value="">select</option>
-                    {selectedDepartment &&
-                      selectedDepartment?.teamsId?.map((item) => (
-                        <option value={item._id}>{item.name}</option>
-                      ))}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={
+                      selectedDepartment?.teamsId?.find(
+                        (item) => item._id === props.field.value
+                      )?.name
+                    }
+                    selectValue={props.field.value}
+                    options={
+                      selectedDepartment?.teamsId
+                        ? selectedDepartment?.teamsId?.map((item) => {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.name,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
             </div>
@@ -259,7 +262,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               name="file"
               control={control}
               render={(props) => (
-                <input {...props} onChange={props.field.onChange} type="file" />
+                <input onChange={props.field.onChange} type="file" />
               )}
             />
           </div>

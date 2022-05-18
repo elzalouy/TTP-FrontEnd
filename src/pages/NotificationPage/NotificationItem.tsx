@@ -4,7 +4,7 @@ import React from "react";
 import Badge from "@mui/material/Badge";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import Avatar from "@mui/material/Avatar";
-import profileImg from "./test.jpg";
+import profileImg from "./avatar.png";
 import Button from "@mui/material/Button";
 import moment from 'moment'
 
@@ -15,7 +15,7 @@ type Props = {
 const NotificationItem = ({notifiData}: Props) => {
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Typography
           variant="h4"
           gutterBottom
@@ -24,7 +24,7 @@ const NotificationItem = ({notifiData}: Props) => {
         >
           Recent Notification
         </Typography>
-      </Grid>
+      </Grid> */}
       {notifiData.map((item:any) => (
         <Grid item container xs={12} key={item._id}>
           <Grid
@@ -37,11 +37,11 @@ const NotificationItem = ({notifiData}: Props) => {
             md={6}
             lg={6}
             sx={{
-              background: "#f4f4f4",
+              background: "#fff",
               borderRadius: "1em",
             }}
           >
-            {/* <Grid marginX={1} item xs={1}>
+            <Grid marginX={1} item xs={1}>
               <Badge
                 overlap="circular"
                 badgeContent={
@@ -53,13 +53,13 @@ const NotificationItem = ({notifiData}: Props) => {
                     }}
                   />
                 }
-                invisible={false}
+                invisible={true}
               >
-                <Avatar alt="Remy Sharp" src={profileImg} />
+                <Avatar alt="test img" src={profileImg} />
               </Badge>
-            </Grid> */}
+            </Grid>
             <Grid item container xs={10}>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <Typography
                   variant="subtitle2"
                   gutterBottom
@@ -69,20 +69,7 @@ const NotificationItem = ({notifiData}: Props) => {
                   {item?.title}
                 </Typography>
               </Grid>
-              <Grid item container xs={12}>
-                <Grid item xs={2}>
-                  <Typography
-                    variant="caption"
-                    gutterBottom
-                    component="div"
-                    sx={{
-                      color: "#acabab",
-                    }}
-                  >
-                    {item?.adminUserID?.name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={2}>
+              <Grid item xs={2} textAlign='right'>
                   <Typography
                     variant="caption"
                     gutterBottom
@@ -94,6 +81,20 @@ const NotificationItem = ({notifiData}: Props) => {
                     {moment(item?.createdAt).fromNow(true)}
                   </Typography>
                 </Grid>
+              <Grid item container xs={12} spacing={2}>
+                <Grid item xs={"auto"}>
+                  <Typography
+                    variant="caption"
+                    gutterBottom
+                    component="div"
+                    sx={{
+                      color: "#acabab",
+                    }}
+                  >
+                    {item?.adminUserID?.name}
+                  </Typography>
+                </Grid>
+             
               </Grid>
               <Grid item xs={12} sx={{ color: "#403f3f",wordBreak: 'break-all' }}>
                 {item?.description}

@@ -127,8 +127,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         addTeam: addTeam,
         removeTeam: removeTeam,
       };
-      await dispatch(updateDepartment(depData));
-      await dispatch(getAllDepartments(null));
+      dispatch(updateDepartment({ data: depData, dispatch }));
       handleSetShow("none");
       setFormData({
         name: "",
@@ -238,6 +237,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
             );
           })}
         </div>
+
         <br />
 
         <div className="controllers">

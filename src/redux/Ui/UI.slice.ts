@@ -1,4 +1,4 @@
-import { createSlice, Slice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, Slice } from "@reduxjs/toolkit";
 import { start } from "repl";
 import UiState, { UiInterface } from "./UI.state";
 
@@ -6,38 +6,71 @@ const UISlice: Slice<UiInterface> = createSlice({
   name: "ui",
   initialState: UiState,
   reducers: {
-    openDeleteTaskPopup: (state, action) => {
+    openDeleteTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.deleteTaskPopup = action.payload;
     },
-    openDeleteProjectPopup: (state, action) => {
+    openDeleteProjectPopup: (state = UiState, action: PayloadAction<any>) => {
       state.deleteProjectPopup = action.payload;
     },
-    openEditProjectPopup: (state, action) => {
+    openEditProjectPopup: (state = UiState, action: PayloadAction<any>) => {
       state.editProjectPopup = action.payload;
     },
-    openEditClientPopup: (state, action) => {
+    openEditClientPopup: (state = UiState, action: PayloadAction<any>) => {
       state.editClientPopup = action.payload;
     },
-    openDeleteClientPopup: (state, action) => {
+    openDeleteClientPopup: (state = UiState, action: PayloadAction<any>) => {
       state.deleteClientPopup = action.payload;
     },
-    openCreateTaskPopup: (state, action) => {
+    openCreateTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.createTaskPopup = action.payload;
     },
-    toggleEditProjectManagerPopup: (state, action) => {
+    toggleEditProjectManagerPopup: (
+      state = UiState,
+      action: PayloadAction<any>
+    ) => {
       state.editProjectManagerPopup = action.payload;
     },
-    toggleDeleteProjectManagerPopup: (state, action) => {
+    toggleDeleteProjectManagerPopup: (
+      state = UiState,
+      action: PayloadAction<any>
+    ) => {
       state.deleteProjectManagerPopup = action.payload;
     },
-    toggleSideMenu: (state, action) => {
+    toggleSideMenu: (state = UiState, action: PayloadAction<any>) => {
       state.isSideMenuOpened = action.payload;
     },
-    toggleLogOutPopup: (state, action) => {
+    toggleLogOutPopup: (state = UiState, action: PayloadAction<any>) => {
       state.logoutPopup = action.payload;
     },
-    toggleEditTaskPopup: (state, action) => {
+    toggleEditTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.editTaskPopup = action.payload;
+    },
+    // hooks
+    fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
+      state.newProjectHook = state.newProjectHook === true ? false : true;
+    },
+    fireUpdateProjectHook: (state = UiState, action: PayloadAction<any>) => {
+      state.updateProjectHook = state.updateProjectHook === true ? false : true;
+    },
+    fireDeleteTaskHook: (state = UiState, action: PayloadAction<any>) => {
+      state.deleteTasksHook = state.deleteTasksHook === true ? false : true;
+    },
+    fireDeleteProjectHook: (state = UiState) => {
+      state.deleteProjectHook = state.deleteProjectHook === true ? false : true;
+    },
+    fireNewTeamHook: (state = UiState) => {
+      state.createTeamHook = state.createTeamHook === true ? false : true;
+    },
+    fireUpdateDepartmentHook: (state = UiState) => {
+      state.updateDepartmentHook =
+        state.updateDepartmentHook === true ? false : true;
+    },
+    fireCreateDepartmentHook: (state = UiState) => {
+      state.createDepartmentHook =
+        state.createDepartmentHook === true ? false : true;
+    },
+    fireEditTaskHook: (state = UiState) => {
+      state.editTaskHook = state.editTaskHook === true ? false : true;
     },
   },
 });
@@ -54,4 +87,13 @@ export const {
   toggleSideMenu,
   toggleLogOutPopup,
   toggleEditTaskPopup,
+  fireNewProjectHook,
+  fireUpdateProjectHook,
+  fireDeleteTaskHook,
+  fireDeleteProjectHook,
+  fireNewTeamHook,
+  fireUpdateDepartmentHook,
+  fireCreateDepartmentHook,
+  fireEditTaskHook,
 } = UISlice.actions;
+export const UiActions = UISlice.actions;

@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { ProjectManager } from "../../../redux/PM";
-import { Project } from "../../../redux/Projects";
+import { Project, selectAllProjects } from "../../../redux/Projects";
 import { projectsTableStyle } from "../styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
@@ -35,11 +35,10 @@ interface ProjectsTableProps {
 
 const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
-  const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  
   const role = useAppSelector(selectRole);
+  const projects = useAppSelector(selectAllProjects);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Table className={classes.table} aria-label="simple table">
@@ -74,14 +73,32 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.expanded &&
+        {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
+            let NoOfFinished = projects.allTasks.filter(
+              (item) => item.projectId === project._id && item.status === "done"
+            ).length;
+            let NoOfTasks = projects.allTasks.filter(
+              (item) => item.projectId === project._id
+            ).length;
             return (
               <TableRow className={classes.tbody} key={project._id}>
                 <TableCell
                   className={classes.tcellLeft}
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    borderColor:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "#00ACBA !important"
+                        : "",
+                    borderWidth:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "2px !important"
+                        : "",
+                  }}
                   onClick={() =>
                     props.history.push(`/TasksBoard/${project._id}`)
                   }
@@ -105,7 +122,22 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     {project.projectManager?.name}
                   </Typography>
                 </TableCell>
-                <TableCell className={classes.tcellCenter} align={props.align}>
+                <TableCell
+                  sx={{
+                    borderColor:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "#00ACBA !important"
+                        : "",
+                    borderWidth:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "2px !important"
+                        : "",
+                  }}
+                  className={classes.tcellCenter}
+                  align={props.align}
+                >
                   <Typography
                     variant={props.textSize === "small" ? "h6" : "h5"}
                     fontSize={props.textSize ? 12 : 14}
@@ -120,6 +152,18 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell
+                  sx={{
+                    borderColor:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "#00ACBA !important"
+                        : "",
+                    borderWidth:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "2px !important"
+                        : "",
+                  }}
                   className={classes.tcellCenterTask}
                   align={props.align}
                 >
@@ -130,10 +174,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#00ACBA"
                       fontSize={props.textSize === "small" ? 12 : 14}
                     >
-                      {Math.round(
-                        project.numberOfFinshedTasks / project.numberOfTasks
-                      ) * 100 || 0}
-                      %
+                      {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
                     </Typography>
                   ) : (
                     <Box sx={{ display: "inline-flex" }}>
@@ -144,15 +185,30 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                         color="#00ACBA"
                         fontSize={props.textSize === "small" ? 12 : 14}
                       >
-                        {project.numberOfFinshedTasks}/{project.numberOfTasks}
+                        {NoOfFinished}/{NoOfTasks}
                       </Typography>
                     </Box>
                   )}
                 </TableCell>
-                <TableCell className={classes.tcellCenter} align={props.align}>
+                <TableCell
+                  sx={{
+                    borderColor:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "#00ACBA !important"
+                        : "",
+                    borderWidth:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "2px !important"
+                        : "",
+                  }}
+                  className={classes.tcellCenter}
+                  align={props.align}
+                >
                   <Typography
-                    variant="h4"
-                    color="#00ACBA"
+                    variant={props.textSize === "small" ? "h6" : "h5"}
+                    color="#696974"
                     fontSize={props.textSize === "small" ? 12 : 14}
                   >
                     {new Date(project.projectDeadline).toLocaleDateString(
@@ -166,7 +222,22 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     )}
                   </Typography>
                 </TableCell>
-                <TableCell className={classes.tcellRight} align={props.align}>
+                <TableCell
+                  sx={{
+                    borderColor:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "#00ACBA !important"
+                        : "",
+                    borderWidth:
+                      project.projectStatus === "inProgress" &&
+                      NoOfFinished === NoOfTasks
+                        ? "2px !important"
+                        : "",
+                  }}
+                  className={classes.tcellRight}
+                  align={props.align}
+                >
                   {role !== "PM" && (
                     <ProjectPopover id={project?._id} {...props} />
                   )}

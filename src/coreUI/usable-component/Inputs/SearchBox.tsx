@@ -10,6 +10,7 @@ import DirectionsIcon from "@mui/icons-material/Directions";
 interface Props {
   value: string;
   onChange: (e: any) => void;
+  placeholder?: string;
 }
 const Search: React.FC<Props> = (props) => {
   return (
@@ -18,7 +19,7 @@ const Search: React.FC<Props> = (props) => {
       sx={{
         p: "2px 4px",
         display: "flex",
-        borderRadius: 4,
+        borderRadius: "10px",
         alignItems: "center",
         width: "100%",
         height: 42,
@@ -33,11 +34,11 @@ const Search: React.FC<Props> = (props) => {
         <SearchIcon />
       </IconButton>
       <InputBase
-        {...props}
         sx={{ ml: 1, flex: 1 }}
-        value={props.value}
+        value={props?.value ? props?.value : ""}
         onChange={props.onChange}
         inputProps={{ "aria-label": "" }}
+        placeholder={props?.placeholder ? props.placeholder : ""}
       />
     </Paper>
   );

@@ -85,9 +85,9 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     }
   }, [auth]);
 
-  if (isAuth) {
+/*   if (isAuth) {
     return <Redirect to={"/Overview"} />;
-  }
+  } */
 
   return (
     <Grid

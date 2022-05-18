@@ -1,14 +1,15 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { FC } from "react";
 
 import { Done as DoneIcon, Circle as DotIcon } from "@mui/icons-material";
 interface UserStatusProps {
+  loading: boolean;
   Icon: any;
   IconBgColor: string;
   title: string;
-  count: string;
-  percent: string;
+  count: string | undefined;
+  percent: string | undefined;
   percentColor: string;
   user: string;
   pt: number;
@@ -18,10 +19,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
   return (
     <Grid
       xs={12}
-      sm={props.user === "project manager" ? 4 : 3}
-      md={props.user === "project manager" ? 4 : 3}
-      lg={props.user === "project manager" ? 4 : 3}
-      paddingRight={props.user === "project manager" ? "4%" : "1%"}
+      sm={props.user === "PM" ? 4 : 3}
+      md={props.user === "PM" ? 4 : 3}
+      lg={props.user === "PM" ? 4 : 3}
+      paddingRight={props.user === "PM" ? "4%" : "1%"}
       item
     >
       <Card
@@ -56,21 +57,43 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           >
             {props.title}
           </Typography>
-          <Typography
-            color={"InfoText"}
-            variant="h1"
-            fontWeight={"500"}
-            paddingTop={3.5}
-          >
-            {props.count}
-          </Typography>
-          <Typography color={props.percentColor} paddingTop={2.5} variant="h5">
-            <DotIcon
-              sx={{ fontSize: 8, marginRight: 0.7 }}
-              htmlColor={props.percentColor}
+          {props.loading === true ? (
+            <Skeleton
+              variant="text"
+              width={100}
+              height={35}
+              sx={{ marginLeft: 1, marginTop: 3.5 }}
             />
-            {props.percent}
-          </Typography>
+          ) : (
+            <Typography
+              color={"InfoText"}
+              variant="h1"
+              fontWeight={"500"}
+              paddingTop={3.5}
+            >
+              {props.count}
+            </Typography>
+          )}
+          {props.loading === true ? (
+            <Skeleton
+              variant="text"
+              width={100}
+              height={35}
+              sx={{ marginLeft: 1, marginTop: 2.5 }}
+            />
+          ) : (
+            <Typography
+              color={props.percentColor}
+              paddingTop={2.5}
+              variant="h5"
+            >
+              <DotIcon
+                sx={{ fontSize: 8, marginRight: 0.7 }}
+                htmlColor={props.percentColor}
+              />
+              {props.percent}%
+            </Typography>
+          )}
         </CardContent>
       </Card>
     </Grid>

@@ -35,10 +35,11 @@ import ClientIcon from "../../../assets/icons/ClientIcon";
 import TaskIcon from "../../../assets/icons/TaskIcon";
 import CategoryIcon from "../../../assets/icons/CategoryIcon";
 import NotificationIcon from "../../../assets/icons/Notification";
+import { useAppSelector } from "../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
 import { counterNotif } from "../../../redux/notification";
-import { useAppSelector } from "../../../redux/hooks";
+
 
 interface BarProps extends AppBarProps {}
 

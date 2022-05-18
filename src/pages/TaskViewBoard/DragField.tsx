@@ -16,6 +16,7 @@ import {
   selectDoneTasks,
   selectInProgressTasks,
   selectNotClearTasks,
+  selectNotStartedTasks,
   selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
@@ -31,17 +32,37 @@ const DragField: React.FC = (props: any) => {
   const doneTasks = useAppSelector(selectDoneTasks);
   const reviewTasks = useAppSelector(selectReviewTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
+  const notStartedTasks = useAppSelector(selectNotStartedTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
   const departments = useAppSelector(selectAllDepartments);
+  
   const [columns, setColumns] = useState({
+    [uuidv4()]: {
+      name: "Not Started",
+      items: notStartedTasks,
+      header: "not-started-header",
+      body: "not-started-task",
+      border: "not-started-border",
+      NewTask: <CreateNewTask />,
+      value: "Not Started",
+      footer: "task-card-footer-notstarted",
+    },
+    [uuidv4()]: {
+      name: "Not clear",
+      items: notClearTasks,
+      header: "not-clear-header",
+      body: "not-clear-task",
+      border: "not-clear-border",
+      value: "Not Clear",
+      footer: "task-card-footer-notclear",
+    },
     [uuidv4()]: {
       name: "In Progress",
       items: inProgressTasks,
       header: "in-progress-header",
       body: "in-progress-task",
       border: "in-progress-border",
-      NewTask: <CreateNewTask />,
       value: "inProgress",
       footer: "task-card-footer-inprogress",
     },
@@ -51,7 +72,7 @@ const DragField: React.FC = (props: any) => {
       header: "done-header",
       body: "done-task",
       border: "done-border",
-      value: "review",
+      value: "Review",
       footer: "task-card-footer-review",
     },
     [uuidv4()]: {
@@ -60,7 +81,7 @@ const DragField: React.FC = (props: any) => {
       header: "canceled-header",
       body: "canceled-task",
       border: "canceled-border",
-      value: "shared",
+      value: "Shared",
       footer: "task-card-footer-shared",
     },
     [uuidv4()]: {
@@ -69,25 +90,17 @@ const DragField: React.FC = (props: any) => {
       header: "done-header",
       body: "done-task",
       border: "done-border",
-      value: "done",
+      value: "Done",
       footer: "task-card-footer-done",
     },
-    [uuidv4()]: {
-      name: "Not clear",
-      items: notClearTasks,
-      header: "not-clear-header",
-      body: "not-clear-task",
-      border: "not-clear-border",
-      value: "not clear",
-      footer: "task-card-footer-notclear",
-    },
+    
     [uuidv4()]: {
       name: "Canceled",
       items: cancledTasks,
       header: "canceled-header",
       body: "canceled-task",
       border: "canceled-border",
-      value: "cancled",
+      value: "Cancled",
       footer: "task-card-footer-cancled",
     },
   });
@@ -95,12 +108,30 @@ const DragField: React.FC = (props: any) => {
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
+        name: "Not Started",
+        items: notStartedTasks,
+        header: "not-started-header",
+        body: "not-started-task",
+        border: "not-started-border",
+        NewTask: <CreateNewTask />,
+        value: "Not Started",
+        footer: "task-card-footer-notstarted",
+      },
+      [uuidv4()]: {
+        name: "Not clear",
+        items: notClearTasks,
+        header: "not-clear-header",
+        body: "not-clear-task",
+        border: "not-clear-border",
+        value: "Not Clear",
+        footer: "task-card-footer-notclear",
+      },
+      [uuidv4()]: {
         name: "In Progress",
         items: inProgressTasks,
         header: "in-progress-header",
         body: "in-progress-task",
         border: "in-progress-border",
-        NewTask: <CreateNewTask />,
         value: "inProgress",
         footer: "task-card-footer-inprogress",
       },
@@ -110,7 +141,7 @@ const DragField: React.FC = (props: any) => {
         header: "done-header",
         body: "done-task",
         border: "done-border",
-        value: "review",
+        value: "Review",
         footer: "task-card-footer-review",
       },
       [uuidv4()]: {
@@ -119,7 +150,7 @@ const DragField: React.FC = (props: any) => {
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
-        value: "shared",
+        value: "Shared",
         footer: "task-card-footer-shared",
       },
       [uuidv4()]: {
@@ -128,17 +159,8 @@ const DragField: React.FC = (props: any) => {
         header: "done-header",
         body: "done-task",
         border: "done-border",
-        value: "done",
+        value: "Done",
         footer: "task-card-footer-done",
-      },
-      [uuidv4()]: {
-        name: "Not clear",
-        items: notClearTasks,
-        header: "not-clear-header",
-        body: "not-clear-task",
-        border: "not-clear-border",
-        value: "not clear",
-        footer: "task-card-footer-notclear",
       },
       [uuidv4()]: {
         name: "Canceled",
@@ -146,7 +168,7 @@ const DragField: React.FC = (props: any) => {
         header: "canceled-header",
         body: "canceled-task",
         border: "canceled-border",
-        value: "cancled",
+        value: "Cancled",
         footer: "task-card-footer-cancled",
       },
     };
@@ -162,18 +184,22 @@ const DragField: React.FC = (props: any) => {
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
-      console.log(removed);
       destItems.splice(destination.index, 0, removed);
-      let department = departments.find(
+      let department = departments?.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
       );
-      dispatch(
-        moveTask({
-          department: department,
-          list: destColumn,
-          task: sourceColumn.items[source.index],
-        })
-      );
+      // dispatch(
+      //   moveTask({
+      //     department: department,
+      //     list: destColumn,
+      //     task: sourceColumn.items[source.index],
+      //   })
+      // );
+      move({
+        department: department,
+        list: destColumn,
+        task: sourceColumn.items[source.index],
+      });
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -200,6 +226,11 @@ const DragField: React.FC = (props: any) => {
       });
     }
   };
+
+  const move = (obj: any) => {
+    dispatch(moveTask(obj));
+  };
+
   return (
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
@@ -224,13 +255,13 @@ const DragField: React.FC = (props: any) => {
                       justifyContent="space-between"
                       alignItems="center"
                     >
-                      <Typography style={{ paddingLeft: "12px" }}>
+                      <Typography style={{ padding: "14px" }}>
                         <span className={column?.header}>{column.name}</span>{" "}
                         {column.items.length}
                       </Typography>
-                      <Typography style={{ padding: "12px" }}>
+                     {/*  <Typography style={{ padding: "12px" }}>
                         <img src={IMAGES.taskFilter} alt="more" />
-                      </Typography>
+                      </Typography> */}
                     </Stack>
                     {column &&
                       column?.items?.map((item: Task, index) => {
@@ -242,6 +273,7 @@ const DragField: React.FC = (props: any) => {
                               item={item}
                               index={index}
                               footerStyle={column?.footer}
+                              column={column}
                             />
                           </Box>
                         );

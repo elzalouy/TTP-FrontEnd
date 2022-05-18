@@ -21,7 +21,7 @@ export const Logo = (props: Props) => (
     src={logo}
     alt="Logo"
     onClick={() => props?.history?.push("/Overview")}
-    {...props}
+    // {...props}
   />
 );
 

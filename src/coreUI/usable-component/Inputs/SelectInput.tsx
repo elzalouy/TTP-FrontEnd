@@ -22,6 +22,7 @@ interface Props {
   }[];
   label?: string | undefined;
   selectValue: string | undefined;
+  customValue?: string;
   selectText: string | undefined;
 }
 
@@ -29,6 +30,7 @@ const SelectInput: React.FC<Props> = ({
   handleChange,
   options = [],
   selectValue,
+  customValue,
   label,
   selectText,
 }) => {
@@ -103,7 +105,7 @@ const SelectInput: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-          {Value ? Value : "all"}
+         {Value ? Value : customValue ? customValue : "all"}
         </Typography>
       </Grid>
       <Grid item>
@@ -128,6 +130,7 @@ const SelectInput: React.FC<Props> = ({
       <Popover
         className={styles.root}
         open={open}
+        sx={{ borderRadius: 0 }}
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}
@@ -140,7 +143,7 @@ const SelectInput: React.FC<Props> = ({
           horizontal: "center",
         }}
       >
-        <Box display={"grid"} padding={1}>
+        <Box display={"grid"} padding={1} borderRadius={0}>
           {options &&
             options.map((item) => (
               <option
@@ -163,10 +166,10 @@ const SelectInput: React.FC<Props> = ({
                   fontSize: 13,
                   paddingTop: 5,
                   paddingBottom: 5,
+                  borderRadius: 0,
                 }}
-              >
-                {item.text}
-              </option>
+                label={item.text}
+              />
             ))}
         </Box>
       </Popover>

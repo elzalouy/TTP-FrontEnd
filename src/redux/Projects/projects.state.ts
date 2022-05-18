@@ -30,7 +30,7 @@ export interface Project {
   projectManagerName: string | null;
   teamsId?: any[];
   numberOfTasks?: any;
-  numberOfFinshedTasks?: any;
+  numberOfFinishedTasks?: any;
   projectDeadline: any;
   startDate?: Date | any;
   completedDate?: any;
@@ -52,6 +52,7 @@ export interface ProjectsInterface {
     tasks: Task[];
     newTask: Task;
     selectedDepartment: Department | null;
+    newProjectHook: boolean;
   };
   selectedProject: {
     loading: boolean | null;
@@ -63,8 +64,9 @@ export interface ProjectsInterface {
   deleteProjectTasks: string[] | undefined;
   deleteTask: string | undefined;
   editProject: Project | undefined;
-  editTask: Task | undefined;
+  editTask: Task | null;
   sorting: string | null;
+  filteredProjects: Project[] | null;
 }
 
 const PorjectsState: ProjectsInterface = {
@@ -72,6 +74,7 @@ const PorjectsState: ProjectsInterface = {
   projects: [],
   allTasks: [],
   newProject: {
+    newProjectHook: false,
     showPopUp: "none",
     project: {
       _id: "",
@@ -80,7 +83,7 @@ const PorjectsState: ProjectsInterface = {
       projectManagerName: null,
       teamsId: [],
       numberOfTasks: 0,
-      numberOfFinshedTasks: 0,
+      numberOfFinishedTasks: 0,
       projectDeadline: new Date(),
       startDate: new Date(),
       completedDate: new Date(),
@@ -123,7 +126,8 @@ const PorjectsState: ProjectsInterface = {
   deleteProjectTasks: undefined,
   deleteTask: undefined,
   editProject: undefined,
-  editTask: undefined,
+  editTask: null,
   sorting: null,
+  filteredProjects: null,
 };
 export default PorjectsState;

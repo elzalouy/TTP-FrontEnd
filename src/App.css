@@ -22,6 +22,12 @@ body {
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .main-container {
   display: flex;
   flex-direction: row;
@@ -31,5 +37,5 @@ body {
   background-color: #fafafb;
 }
 ::-webkit-scrollbar {
-  display: none !important;
+  /* display: none !important; */
 }

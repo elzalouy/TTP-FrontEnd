@@ -46,11 +46,6 @@ const CreateTask: React.FC<Props> = (props) => {
     attachedFiles: "",
     selectedDepartmentId: "",
   });
-  
-  React.useEffect(() => {
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-  }, []);
 
   React.useEffect(() => {
     if (Task?.categoryId !== selectedCategory?._id) {
@@ -72,9 +67,9 @@ const CreateTask: React.FC<Props> = (props) => {
       name: Task.name,
       categoryId: Task?.categoryId,
       subCategoryId: Task?.subCategoryId,
-      memberId: Task?.memberId,
+      memberId:  Task?.memberId,
       projectId: selectedProject?.project?._id,
-      status: "inProgress",
+      status: "Not Started",
       start: new Date().toUTCString(),
       deadline: Task?.deadline,
       deliveryDate: null,
@@ -86,7 +81,7 @@ const CreateTask: React.FC<Props> = (props) => {
       )?.listId,
       boardId: selectedDepartment?.boardId,
     };
-    dispatch(createTaskFromBoard(newTask));
+    dispatch(createTaskFromBoard({ data: newTask, dispatch }));
     props.setShow("none");
   };
 
@@ -139,10 +134,10 @@ const CreateTask: React.FC<Props> = (props) => {
             <select
               className="popup-select"
               name="selectedDepartmentId"
-              value={Task.selectedDepartmentId}
+              defaultValue={Task.selectedDepartmentId}
               onChange={onChange}
             >
-              <option value="" selected key={"0"}>
+              <option value="" key={"0"}>
                 Select
               </option>
               {departments &&
@@ -169,9 +164,9 @@ const CreateTask: React.FC<Props> = (props) => {
               className="popup-select"
               onChange={onChange}
               name="categoryId"
-              value={Task.categoryId}
+              defaultValue={Task.categoryId}
             >
-              <option value="" key="" selected>
+              <option value="" key="">
                 Select
               </option>
               {categories &&
@@ -186,11 +181,12 @@ const CreateTask: React.FC<Props> = (props) => {
             <div>
               <label className="popup-label">Sub category</label>
               <select
+                defaultValue={Task?.subCategoryId}
                 className="popup-select"
                 name="subCategoryId"
                 onChange={onChange}
               >
-                <option value="" key="" selected>
+                <option value="" key="">
                   Select
                 </option>
                 {selectedCategory &&

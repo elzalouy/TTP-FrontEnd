@@ -16,7 +16,6 @@ const CreateNewProject: React.FC<Props> = () => {
     project.showPopUp = value;
     dispatch(ProjectsActions.onChangeNewProject(project));
   };
-
   return (
     <div>
       <Box

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./auth.css";
 import { Redirect } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Button, Link, Typography } from "@mui/material";
+import { Grid, Button, Link, Typography, IconButton, CircularProgress } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
@@ -15,6 +15,8 @@ import {
   signIn,
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { selectLoading } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -39,12 +41,14 @@ const Login: React.FC<Props> = ({ history }) => {
     register,
   } = useForm<IFormInputs>();
   const dispatch = useDispatch();
+  const [visible, setVisiblity] = useState<boolean>(false);
   const [failed, setFailed] = useState<IFailed>({
     status: false,
     message: "",
   });
   const watch = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
+  const loading = useAppSelector(selectLoading);
   const res = useAppSelector(selectResponse);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ const Login: React.FC<Props> = ({ history }) => {
         status: res.status,
       });
     }
-    if (isAuth) {
+    if (isAuth === true) {
       history.replace("/Overview");
     }
   }, [watch]);
@@ -62,8 +66,11 @@ const Login: React.FC<Props> = ({ history }) => {
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     dispatch(
       signIn({
-        email: data.email,
-        password: data.password,
+        data: {
+          email: data.email,
+          password: data.password,
+        },
+        history,
       })
     );
   };
@@ -75,11 +82,10 @@ const Login: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
-      height={"100%"}
+      height={"90vh"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
-      marginTop={5}
     >
       <Grid
         item
@@ -91,7 +97,7 @@ const Login: React.FC<Props> = ({ history }) => {
         container
         direction="row"
         sx={{
-          boxShadow: "0px 60px 350px 20px #888888;",
+          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
         <Grid
@@ -109,9 +115,9 @@ const Login: React.FC<Props> = ({ history }) => {
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
           <Typography
             variant={"h2"}
-            fontWeight={"900"}
+            fontWeight={"bolder"}
             paddingTop={4}
-            fontFamily={"Cairo"}
+            className="bold"
           >
             Login to your account
           </Typography>
@@ -126,6 +132,7 @@ const Login: React.FC<Props> = ({ history }) => {
             paddingTop={3.5}
             fontFamily={"Cairo"}
             color="#000000"
+            className="bold"
           >
             Email Address
           </Typography>
@@ -137,9 +144,9 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...field}
                 {...register("email", { required: true })}
                 type="email"
-                autoComplete="false"
+                autoComplete="off"
                 className="f-inputs"
-                placeholder="Example@somemail.com"
+                placeholder="Email Address"
                 onChange={() =>
                   setFailed({
                     message: "",
@@ -158,6 +165,7 @@ const Login: React.FC<Props> = ({ history }) => {
             paddingTop={3.5}
             fontFamily={"Cairo"}
             color="#000000"
+            className="bold"
           >
             Password
           </Typography>
@@ -165,19 +173,25 @@ const Login: React.FC<Props> = ({ history }) => {
             name="password"
             control={control}
             render={({ field }) => (
-              <input
-                {...field}
-                {...register("password", { required: true })}
-                type="password"
-                className="f-inputs"
-                onChange={() =>
-                  setFailed({
-                    message: "",
-                    status: false,
-                  })
-                }
-                placeholder="Enter your password"
-              />
+              <div className="password-container">
+                <input
+                  {...field}
+                  {...register("password", { required: true })}
+                  type={visible ? "text" : "password"}
+                  autoComplete="off"
+                  className="password-input"
+                  onChange={() =>
+                    setFailed({
+                      message: "",
+                      status: false,
+                    })
+                  }
+                  placeholder="Enter your password"
+                />
+                <IconButton onClick={()=>setVisiblity(state=>!state)}>
+                  {!visible ? <VisibilityOff style={{ color: "#b4b6c4" }} /> : <Visibility style={{ color: "#b4b6c4" }} />}
+                </IconButton>
+              </div>
             )}
           />
           {errors.password?.type === "required" && (
@@ -196,7 +210,7 @@ const Login: React.FC<Props> = ({ history }) => {
             disableElevation
             onClick={handleSubmit(onSubmit)}
           >
-            Login
+            {loading ?<CircularProgress sx={{color:"white",padding:"10px"}}/> : "Login"}
           </Button>
           <Link
             sx={{ textDecoration: "none", cursor: "pointer" }}
@@ -209,6 +223,7 @@ const Login: React.FC<Props> = ({ history }) => {
               paddingTop={3.5}
               fontFamily={"Cairo"}
               color="black"
+              className="bold"
             >
               Forget Password?
             </Typography>

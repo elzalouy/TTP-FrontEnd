@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
@@ -42,6 +42,19 @@ const CreateNewDepartment: React.FC<Props> = () => {
     totalInProgress: 0,
     totalDone: 0,
   });
+
+  useEffect(() => {
+    setFormData({
+      name: "",
+      color: "blue",
+      teams: [],
+      mainBoard: false,
+      totalInProgress: 0,
+      totalDone: 0,
+    });
+    setNames([]);
+    setData("");
+  }, [Show]);
   const { name, color, teams, mainBoard } = formData;
   let teamsData = useAppSelector(selectAllMembers);
   const handleSelectTeam = () => {
@@ -76,8 +89,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
 
   const handleSubmit = async () => {
     console.log({ formData });
-    await dispatch(createDepartment(formData));
-    setShow("none");
+    dispatch(createDepartment({ data: formData, dispatch }));
     setFormData({
       name: "",
       color: "",
@@ -86,7 +98,9 @@ const CreateNewDepartment: React.FC<Props> = () => {
       totalInProgress: 0,
       totalDone: 0,
     });
-    setNames([])
+    setNames([]);
+    setData("");
+    setShow("none");
   };
   return (
     <>
@@ -126,7 +140,12 @@ const CreateNewDepartment: React.FC<Props> = () => {
         />
 
         <label className="popup-label">Color</label>
-        <select className="popup-select" name="color" onChange={handleChange}>
+        <select
+          className="popup-select"
+          name="color"
+          onChange={handleChange}
+          value={formData.color}
+        >
           {colors.map((item: string, i: number) => (
             <option key={i} value={item}>
               {item}
@@ -145,9 +164,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             }}
             value={Data}
           >
-            <option value="" selected>
-              Select Team
-            </option>
+            <option value="">Select Team</option>
             {teamsData?.techMembers?.map((team: any) => (
               <option key={team._id} value={`${team._id},${team.name}`}>
                 {team.name}

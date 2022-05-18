@@ -5,8 +5,8 @@
   position: fixed;
   /* width: calc(100vw - 230px); */
   /* left: 230px; */
-  width: 100vw;
-  left: 0px;
+  width: 84vw;
+  left: 16%;
   top: 0;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
@@ -47,38 +47,49 @@
 @media (max-width:1000px) {
   .pop-up {
     width: 40vw !important;
-    background-color: white;
-    margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
-    padding: 20px;
-    animation: zoomIn 0.3s;
-    overflow: auto;
   }
 }
 
-@media (max-width:800px) {
-  .pop-up {
-    width: 60vw !important;
-    background-color: white;
-    margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
-    padding: 20px;
-    animation: zoomIn 0.3s;
-    overflow: auto;
-  }
-}
+  @media (max-width:900px) {
+    .container-popup {
+      width: 100vw;
+      left: 0;
+    }
 
-@media (max-width:600px) {
-  .pop-up {
-    width: 80vw !important;
-    background-color: white;
-    margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
-    padding: 20px;
-    animation: zoomIn 0.3s;
-    overflow: auto;
+    .pop-up {
+      width: 90vw !important;
+      background-color: white;
+      margin-top: 50px;
+      min-height: 150px;
+      max-height: 65vh;
+      padding: 20px;
+      animation: zoomIn 0.3s;
+      overflow: auto;
+    }
   }
-}
+
+  @media (max-width:800px) {
+    .pop-up {
+      width: 60vw !important;
+      background-color: white;
+      margin-top: 50px;
+      min-height: 150px;
+      max-height: 65vh;
+      padding: 20px;
+      animation: zoomIn 0.3s;
+      overflow: auto;
+    }
+  }
+
+  @media (max-width:600px) {
+    .pop-up {
+      width: 80vw !important;
+      background-color: white;
+      margin-top: 50px;
+      min-height: 150px;
+      max-height: 65vh;
+      padding: 20px;
+      animation: zoomIn 0.3s;
+      overflow: auto;
+    }
+  }

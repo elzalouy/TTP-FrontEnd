@@ -5,8 +5,7 @@ import IMAGES from "../../assets/img";
 import { openCreateTaskPopup } from "../../redux/Ui";
 
 import "./taskViewBoard.css";
-type Props = {};
-const CreateNewTask = () => {
+const CreateNewTask: React.FC = () => {
   const disptach = useDispatch();
   const handleOpenCreateTaskPopup = () => {
     disptach(openCreateTaskPopup("flex"));

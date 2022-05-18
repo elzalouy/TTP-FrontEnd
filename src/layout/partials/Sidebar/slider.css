@@ -4,7 +4,7 @@
   --grey-color: #b5b5be;
   --dark-grey-color: #292932;
 }
-::-webkit-scrollbar {
+.side-bar::-webkit-scrollbar {
   display: none;
 }
 .side-bar {
@@ -387,6 +387,24 @@
   stroke: white !important;
 }
 .sideItem:hover svg g :not(.dep)  {
+  stroke: white !important;
+}
+.active svg g {
+  stroke: white !important;
+}
+.sideItem svg {
+  stroke: #9fa1ab !important;
+}
+.sideItem:hover .category {
+  fill: white !important;
+}
+.sideItem:hover svg path {
+  stroke: white !important;
+}
+.sideItem:hover svg circle {
+  stroke: white !important;
+}
+.sideItem:hover svg g {
   stroke: white !important;
 }
 .side-bar.collapse {

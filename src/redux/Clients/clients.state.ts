@@ -2,8 +2,8 @@ export interface Client {
   _id: string;
   clientName: string;
   doneProject: string[];
-  inProgressProject: string[];
-  inProgressTask: string[];
+  inProgressProject: any;
+  inProgressTask: any;
   createdAt: string;
   image: string;
 }
