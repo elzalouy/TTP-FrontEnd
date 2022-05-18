@@ -45,7 +45,6 @@ const Tasks: React.FC = (props: any) => {
     dispatch(filterTasks(filter));
   };
   
-
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -86,6 +85,7 @@ const Tasks: React.FC = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
+                  { id: "", text: "All", value: "all" },
                   { id: "asc", text: "Ascending", value: "asc" },
                   { id: "desc", text: "Descending", value: "desc" },
                 ]}
