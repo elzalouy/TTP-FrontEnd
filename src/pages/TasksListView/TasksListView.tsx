@@ -75,8 +75,8 @@ const Tasks: React.FC = (props: any) => {
       <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
         Tasks
       </Typography>
-      <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+      <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1} flex={1}>
           <Controller
             control={control}
             name="deadline"
@@ -139,7 +139,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
@@ -234,10 +234,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} md={1} marginY={1}>
-          <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
-        </Grid>
-        <Grid marginX={0.5} item xs={8} sm={8} md={2.5} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={8} md={2} lg={2} marginY={1}>
           <Box
             style={
               SM
@@ -249,7 +246,7 @@ const Tasks: React.FC = (props: any) => {
                 : {
                     backgroundColor: "#fafafa",
                     width: "100%",
-                    marginLeft: "20px",
+                    marginLeft: "0px",
                   }
             }
           >
@@ -268,6 +265,9 @@ const Tasks: React.FC = (props: any) => {
               )}
             />
           </Box>
+        </Grid>
+        <Grid marginX={0.5} item xs={2} sm={4} md={1}>
+          <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
       </Grid>
       {projects.loading === true ? (

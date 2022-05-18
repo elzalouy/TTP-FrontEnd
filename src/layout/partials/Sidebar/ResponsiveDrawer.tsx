@@ -250,7 +250,9 @@ const ResponsiveDrawer: React.FC = (props: any) => {
                     variant="h6"
                     color="#808191"
                   >
-                    {user?.user?.role === undefined ? user?.role : user?.user?.role}
+                    {user?.user?.role === undefined
+                      ? user?.role === "OM" ? "Admin" : "Project Manager"
+                      : user?.user?.role  === "OM" ? "Admin" : "Project Manager"}
                   </Typography>
                 </Box>
                 <Box sx={{ cursor: "pointer" }}>
