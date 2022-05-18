@@ -45,7 +45,6 @@ const Tasks: React.FC = (props: any) => {
     dispatch(filterTasks(filter));
   };
   
-
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -73,7 +72,7 @@ const Tasks: React.FC = (props: any) => {
       marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2}>
+      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
@@ -86,6 +85,7 @@ const Tasks: React.FC = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
+                  { id: "", text: "All", value: "all" },
                   { id: "asc", text: "Ascending", value: "asc" },
                   { id: "desc", text: "Descending", value: "desc" },
                 ]}
@@ -139,7 +139,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={4} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
