@@ -22,6 +22,7 @@ interface Props {
   }[];
   label?: string | undefined;
   selectValue: string | undefined;
+  customValue?: string;
   selectText: string | undefined;
   placeholder?: string;
 }
@@ -30,6 +31,7 @@ const SelectInput: React.FC<Props> = ({
   handleChange,
   options = [],
   selectValue,
+  customValue,
   label,
   selectText,
   placeholder,

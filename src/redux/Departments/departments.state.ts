@@ -7,6 +7,7 @@ export interface Department {
   sharedListID: string;
   doneListId: string;
   notClearListId: string;
+  notStartedListId: string;
   canceldListId: string;
   color: string;
   mainBoard: boolean;

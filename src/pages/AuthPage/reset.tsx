@@ -78,9 +78,9 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
     }
   }, [res]);
 
-  if (isAuth) {
+/*   if (isAuth) {
     return <Redirect to={"/Overview"} />;
-  }
+  } */
 
   return (
     <Grid

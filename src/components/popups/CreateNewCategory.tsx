@@ -49,11 +49,13 @@ const CreateNewCategory: React.FC<Props> = () => {
     try {
       await dispatch(createCategory(body));
       setShow("none");
+      setSubCategory("");
       setsubCategories([]);
     } catch (error: any) {
       setErrors(error.message);
     }
   };
+
   return (
     <>
       <Box
@@ -85,6 +87,8 @@ const CreateNewCategory: React.FC<Props> = () => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setSubCategory("");
+              setsubCategories([]);
             }}
           />
           <p style={{ color: "red" }}>{errors}</p>

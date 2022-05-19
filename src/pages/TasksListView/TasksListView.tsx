@@ -12,6 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
+import { selectPMs } from "../../redux/PM/pm.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
@@ -29,6 +30,7 @@ const Tasks: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const techMembers = useAppSelector(selectAllMembers);
+  const pMs = useAppSelector(selectPMs);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -70,7 +72,7 @@ const Tasks: React.FC = (props: any) => {
       marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2}>
+      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
@@ -83,6 +85,7 @@ const Tasks: React.FC = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
+                  { id: "", text: "All", value: "all" },
                   { id: "asc", text: "Ascending", value: "asc" },
                   { id: "desc", text: "Descending", value: "desc" },
                 ]}
@@ -110,13 +113,23 @@ const Tasks: React.FC = (props: any) => {
                   options={[
                     { id: "", value: "", text: "All" },
                     {
+                      id: "not started",
+                      value: "not started",
+                      text: "Not Started",
+                    },
+                    { id: "not clear", value: "not clear", text: "Not Clear" },
+                    {
                       id: "inProgress",
                       value: "inProgress",
-                      text: "In Progres",
+                      text: "In Progress",
                     },
+                    { id: "review", value: "review", text: "Review" },
                     { id: "shared", value: "shared", text: "Shared" },
-                    { id: "late", value: "late", text: "late" },
-                    { id: "not clear", value: "not clear", text: "Not Clear" },
+                    {
+                      id: "done",
+                      value: "done",
+                      text: "Done",
+                    },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
                   handleChange={(e) => {
@@ -131,7 +144,34 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
+          <Box className="tasks-option">
+            <Controller
+              name="projectManager"
+              control={control}
+              render={(props) => (
+                <SelectInput
+                  label={"Project Manager: "}
+                  {...props}
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    ...pMs.map((pm) => {
+                      return { id: pm._id, value: pm.name, text: pm.name };
+                    }),
+                  ]}
+                  handleChange={(e) => {
+                    e.preventDefault();
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  selectValue={props.field.value}
+                  selectText={props.field.value}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -166,7 +206,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -225,13 +265,19 @@ const Tasks: React.FC = (props: any) => {
                     onHandleChange(e);
                   }}
                   value={props.field.value}
+                  placeholder="Search"
                 />
               )}
             />
           </Box>
         </Grid>
         <Grid marginX={0.5} item xs={1} sm={4} md={1} lg={1} marginY={1}>
-          <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
+          <DeleteTask
+            task={selects}
+            Show={Show}
+            setShow={setShow}
+            onDelete={onDeleteTasks}
+          />
         </Grid>
       </Grid>
       {projects.loading === true ? (

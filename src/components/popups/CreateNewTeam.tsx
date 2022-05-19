@@ -21,6 +21,7 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
+
   useEffect(() => {
     setTeam({
       name: "",

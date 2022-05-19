@@ -32,7 +32,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
-  const [currentStep, setcurrentStep] = useState(1);
+  const [currentStep, setcurrentStep] = useState(0);
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 12,
