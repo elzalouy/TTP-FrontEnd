@@ -1,4 +1,4 @@
-/* import Joi from "joi";
+import Joi from "joi";
 
 const createProjectSchema = Joi.object({
   name: Joi.string().required().min(4).max(20).messages({
@@ -118,4 +118,3 @@ const valdiateCreateTask = (data: any) => {
   return { error, value, warning };
 };
 export { validateCreateProject, valdiateCreateTask };
- */
