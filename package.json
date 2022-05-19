@@ -6,6 +6,7 @@
   },
   "private": true,
   "dependencies": {
+    "@date-io/moment": "^2.14.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -46,6 +47,7 @@
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-resources-to-backend": "^1.0.0",
     "install": "^0.13.0",
+    "joi": "^17.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-cron": "^3.0.0",

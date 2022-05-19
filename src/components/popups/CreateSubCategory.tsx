@@ -8,6 +8,7 @@ import { selectSelectedCategory } from "../../redux/Categories/categories.select
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
+import { Grid, TextField, Typography } from "@mui/material";
 type Props = {
   display: string;
   handleSetDisplay: (value: string) => void;
@@ -68,72 +69,92 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   };
   return (
     <>
-      <PopUp show={display} minWidthSize="30vw" maxWidthSize="300px">
-        <div>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
-            onClick={() => {
-              handleSetDisplay("none");
-              setSubCategory("");
-              setsubCategories([]);
-            }}
-          />
-        </div>
-
-        <p className="popup-title">Add sub-category</p>
-
-        <div>
-          <label className="popup-label">Sub-category</label>
-          <div style={{ display: "flex" }}>
-            <input
-              className="input-auth"
-              type="text"
-              name="subCategory"
-              value={subCategory}
-              onChange={onSubChange}
-              placeholder="Sub category"
-            />
-            <div className="add-subcategory" onClick={addSubCategory}>
-              Add
+      <PopUp show={display} minWidthSize="500px" maxWidthSize="500px">
+        <Grid padding={1} paddingX={2}>
+          <Grid justifyContent={"space-between"} direction={"row"}>
+            <div>
+              <img
+                className="closeIcon"
+                width="9"
+                height="9"
+                src={IMAGES.closeicon}
+                alt="closeIcon"
+                onClick={() => {
+                  handleSetDisplay("none");
+                }}
+              />
+            </div>
+            <Typography
+              fontWeight={"500"}
+              fontSize={18}
+              paddingTop={1}
+              color="#00ACBA"
+            >
+              Add sub-category
+            </Typography>
+          </Grid>
+          <div>
+            <Typography
+              fontWeight={"700"}
+              fontSize={16}
+              paddingTop={2}
+              paddingBottom={1}
+              color="black"
+            >
+              Sub-category
+            </Typography>
+            <Grid direction="row">
+              <TextField
+                type="text"
+                name="subCategory"
+                value={subCategory}
+                onChange={onSubChange}
+                placeholder="Sub category"
+                sx={{
+                  height: 50,
+                  width: 310,
+                  borderRadius: "6px",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderRadius: "6px",
+                  },
+                }}
+              />
+              <div className="add-subcategory" onClick={addSubCategory}>
+                Add
+              </div>
+            </Grid>
+            <div className="subcategories">
+              {subCategories &&
+                subCategories.map(({ _id, subCategory }: any) => (
+                  <div className="subcategory" key={_id}>
+                    {subCategory}
+                    <span
+                      className="remove-category"
+                      onClick={() => {
+                        removeSubCategory(_id);
+                      }}
+                    >
+                      x
+                    </span>
+                  </div>
+                ))}
             </div>
           </div>
-          <div className="subcategories">
-            {subCategories &&
-              subCategories.map(({ _id, subCategory }: any) => (
-                <div className="subcategory" key={_id}>
-                  {subCategory}
-                  <span
-                    className="remove-category"
-                    onClick={() => {
-                      removeSubCategory(_id);
-                    }}
-                  >
-                    x
-                  </span>
-                </div>
-              ))}
+          <br />
+          <div className="controllers">
+            <button
+              className="controllers-cancel"
+              onClick={() => {
+                handleSetDisplay("none");
+              }}
+            >
+              Cancel
+            </button>
+            <button className="controllers-done" onClick={handleSubmit}>
+              Done
+            </button>
           </div>
-        </div>
-        <br />
-        <div className="controllers">
-          <button
-            className="controllers-cancel"
-            onClick={() => {
-              handleSetDisplay("none");
-              setSubCategory("");
-              setsubCategories([]);
-            }}
-          >
-            Cancel
-          </button>
-          <button className="controllers-done" onClick={handleSubmit}>
-            Done
-          </button>
-        </div>
+        </Grid>
       </PopUp>
     </>
   );

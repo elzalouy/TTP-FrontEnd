@@ -44,7 +44,7 @@ const Tasks: React.FC = (props: any) => {
     let filter = watch();
     dispatch(filterTasks(filter));
   };
-  
+
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -76,7 +76,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+        {/* <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -99,8 +99,8 @@ const Tasks: React.FC = (props: any) => {
               />
             )}
           />
-        </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+        </Grid> */}
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={1.2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -108,10 +108,15 @@ const Tasks: React.FC = (props: any) => {
               render={(props) => (
                 <SelectInput
                   label="Status: "
+                  placeholder="All"
                   {...props}
                   options={[
                     { id: "", value: "", text: "All" },
-                    { id: "not started", value: "not started", text: "Not Started" },
+                    {
+                      id: "not started",
+                      value: "not started",
+                      text: "Not Started",
+                    },
                     { id: "not clear", value: "not clear", text: "Not Clear" },
                     {
                       id: "inProgress",
@@ -234,10 +239,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} md={1} marginY={1}>
-          <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
-        </Grid>
-        <Grid marginX={0.5} item xs={8} sm={8} md={2.5} lg={2.5} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={8} md={4} lg={2.5} marginY={1}>
           <Box
             style={
               SM
@@ -268,6 +270,14 @@ const Tasks: React.FC = (props: any) => {
               )}
             />
           </Box>
+        </Grid>
+        <Grid marginX={0.5} item xs={1} sm={4} md={1} lg={1} marginY={1}>
+          <DeleteTask
+            task={selects}
+            Show={Show}
+            setShow={setShow}
+            onDelete={onDeleteTasks}
+          />
         </Grid>
       </Grid>
       {projects.loading === true ? (

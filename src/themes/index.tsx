@@ -1,10 +1,16 @@
-import { createTheme } from "@mui/material/styles";
+import { createMuiTheme, createTheme } from "@mui/material/styles";
 
 // project imports
 import componentStyleOverrides from "./compStyleOverride";
 import themePalette from "./palette";
 import themeTypography from "./typography";
-
+export const TypoTheme = createTheme({
+  typography: {
+    allVariants: {
+      textTransform: "none",
+    },
+  },
+});
 export const theme = () => {
   const themeOption = {
     heading: "#000000",
@@ -19,7 +25,7 @@ export const theme = () => {
     divider: "#eeeeee",
   };
 
-  const themeOptions:any = {
+  const themeOptions: any = {
     direction: "ltr",
     palette: themePalette(themeOption),
     mixins: {
@@ -36,7 +42,6 @@ export const theme = () => {
 
   const themes = createTheme(themeOptions);
   themes.components = componentStyleOverrides(themeOption);
-
   return themes;
 };
 

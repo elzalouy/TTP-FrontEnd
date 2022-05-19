@@ -1,10 +1,23 @@
+import {
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import IMAGES from "../../assets/img";
 import { selectAllCategories } from "../../redux/Categories";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
+  deleteProject,
   deleteTask,
   ProjectsActions,
   selectNewProject,
@@ -12,75 +25,131 @@ import {
   Task,
 } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
+import { UiActions } from "../../redux/Ui";
 
-interface TasksProps {}
+interface TasksProps {
+  setCurrentStep: any;
+  setShow: any;
+}
 
-const Tasks: React.FC<TasksProps> = () => {
+const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
   const newProject = useAppSelector(selectNewProject);
   const deps = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const dispatch = useDispatch();
   const onDeleteTask = (task: Task) => {
-    dispatch(deleteTask({ id: task._id }));
+    dispatch(deleteTask({ data: { id: task._id }, dispatch }));
+  };
+
+  const onCancel = () => {
+    dispatch(
+      deleteProject({ data: { _id: newProject.project._id }, dispatch })
+    );
+    setShow("none");
+    setCurrentStep(0);
+  };
+  const onSaveProject = () => {
+    dispatch(UiActions.fireNewProjectHook(""));
+    toast("Project and Its Tasks have been saved.");
+    setShow("none");
+    setCurrentStep(0);
   };
   return (
-    <div>
-      <h4 style={{margin:"10px 0px" , textTransform:"capitalize"}}>All tasks</h4>
-      <table
-        className="allTask-table"
-        style={{
-          borderWidth: "1px",
-          borderColor: "#aaaaaa",
-          borderStyle: "solid",
-        }}
-      >
-        <thead>
-          <tr>
-            <th>Task name</th>
-            <th>member name</th>
-            <th>Category</th>
-            <th>Deadline date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {newProject &&
-            newProject.tasks &&
-            newProject?.tasks?.map((task, index: any) => {
-              return (
-                <tr key={task._id}>
-                  <td width={"30%"}>{task && task?.name}</td>
-                  <td width={"20%"}>
-                    {task &&
-                      deps
-                        .find((item) =>
-                          item.teamsId.findIndex((i) => i._id === task._id)
-                        )
-                        ?.teamsId?.find((item) => item._id === task.memberId)
-                        ?.name}
-                  </td>
-                  <td width={"20%"}>
-                    {task &&
-                      categories.find((item) => item._id === task?.categoryId)
-                        ?.category}
-                  </td>
-                  <td width={"20%"}>
-                    {task && new Date(task?.deadline).toDateString()}
-                  </td>
-                  <td
-                    className="deleteTd"
-                    width={"10%"}
-                    onClick={() => onDeleteTask(task)}
-                    style={{ cursor: "pointer" }}
+    <Grid container width="800px">
+      <Grid xs={12} margin={2} item>
+        <h4 style={{ textTransform: "capitalize", fontWeight: "500" }}>
+          All tasks
+        </h4>
+      </Grid>
+      <Grid xs={12} item>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography color="#334D6E" fontSize={14}>
+                    Task name
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="#334D6E" fontSize={14}>
+                    Team name
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="#334D6E" fontSize={14}>
+                    Category
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="#334D6E" fontSize={14}>
+                    Deadline date
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {newProject &&
+                newProject.tasks &&
+                newProject?.tasks?.map((task, index: any) => (
+                  <TableRow
+                    key={task?._id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <img src={IMAGES.deleteicon} alt="delete" />
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
+                    <TableCell component="th" scope="row">
+                      <Typography color="#323C47" fontSize={15}>
+                        {task?.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography color="#707683" fontSize={14}>
+                        {task &&
+                          deps
+                            .find((item) =>
+                              item.teamsId.findIndex((i) => i._id === task._id)
+                            )
+                            ?.teamsId?.find(
+                              (item) => item._id === task.memberId
+                            )?.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography color="#707683" fontSize={14}>
+                        {task &&
+                          categories.find(
+                            (item) => item._id === task?.categoryId
+                          )?.category}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography color="#707683" fontSize={14}>
+                        {task && new Date(task?.deadline).toDateString()}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => onDeleteTask(task)}
+                    >
+                      <img src={IMAGES.deleteicon} alt="delete" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+      <Grid item xs={12}>
+        <div className="controllers">
+          <button className="cancelBtn" onClick={() => onCancel()}>
+            Cancel
+          </button>
+          <button className="blackBtn" onClick={() => onSaveProject()}>
+            Done
+          </button>
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 

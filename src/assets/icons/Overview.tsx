@@ -12,7 +12,7 @@ const Overviewicon = (props: SVGProps<SVGSVGElement>) => (
     <g
       transform="translate(2.778 2.278)"
       fill="none"
-      stroke="#9fa1ab"
+      stroke="#9FA1AB"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeMiterlimit={10}

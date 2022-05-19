@@ -45,6 +45,9 @@ const UISlice: Slice<UiInterface> = createSlice({
     toggleEditTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.editTaskPopup = action.payload;
     },
+    toggleCreateProjectPopup: (state = UiState, action: PayloadAction<any>) => {
+      state.createProjectPopup = action.payload;
+    },
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
       state.newProjectHook = state.newProjectHook === true ? false : true;
@@ -72,6 +75,12 @@ const UISlice: Slice<UiInterface> = createSlice({
     fireEditTaskHook: (state = UiState) => {
       state.editTaskHook = state.editTaskHook === true ? false : true;
     },
+    fireCreatePMHook: (state = UiState) => {
+      state.createPMHook = state.createPMHook === true ? false : true;
+    },
+    fireEditPMHook: (state = UiState) => {
+      state.editPMHook = state.createPMHook === true ? false : true;
+    },
   },
 });
 export default UISlice.reducer;
@@ -87,6 +96,7 @@ export const {
   toggleSideMenu,
   toggleLogOutPopup,
   toggleEditTaskPopup,
+  toggleCreateProjectPopup,
   fireNewProjectHook,
   fireUpdateProjectHook,
   fireDeleteTaskHook,
@@ -95,5 +105,7 @@ export const {
   fireUpdateDepartmentHook,
   fireCreateDepartmentHook,
   fireEditTaskHook,
+  fireCreatePMHook,
+  fireEditPMHook,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

@@ -10,6 +10,7 @@ export interface UiInterface {
   deleteProjectManagerPopup: string;
   isSideMenuOpened: boolean;
   logoutPopup: string;
+  createProjectPopup: string;
   /*
     this hooks shouldn't be used except for updating
     the state of the project while a certain exndpoint or function called 
@@ -23,6 +24,8 @@ export interface UiInterface {
   updateDepartmentHook: boolean | undefined;
   createDepartmentHook: boolean | undefined;
   editTaskHook: boolean | undefined;
+  createPMHook: boolean | undefined;
+  editPMHook: boolean | undefined;
 }
 const UiState: UiInterface = {
   deleteProjectPopup: "none",
@@ -36,10 +39,11 @@ const UiState: UiInterface = {
   deleteProjectManagerPopup: "none",
   logoutPopup: "none",
   isSideMenuOpened: true,
+  createProjectPopup: "none",
   /*
-    this hooks shouldn't be used except for updating
-    the state of the project while a certain exndpoint or function called 
-    and the state must be changed after.
+  this hooks shouldn't be used except for updating
+  the state of the project while a certain exndpoint or function called 
+  and the state must be changed after.
   */
   newProjectHook: undefined,
   updateProjectHook: undefined,
@@ -49,6 +53,8 @@ const UiState: UiInterface = {
   updateDepartmentHook: undefined,
   createDepartmentHook: undefined,
   editTaskHook: undefined,
+  createPMHook: undefined,
+  editPMHook: undefined,
 };
 
 export default UiState;

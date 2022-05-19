@@ -63,8 +63,8 @@ const CreateNewClient: React.FC<Props> = () => {
         <Typography>Create new client</Typography>
       </Box>
 
-      <PopUp show={Show} widthSize="30vw">
-        <Box sx={{ paddingLeft: "15px" }}>
+      <PopUp show={Show} widthSize="491px">
+        <Box>
           <Box>
             <img
               className="closeIcon"
@@ -115,7 +115,6 @@ const CreateNewClient: React.FC<Props> = () => {
               onChange={onChange}
               required
             />
-
             <br />
 
             <Box className="controllers">

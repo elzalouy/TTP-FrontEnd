@@ -24,6 +24,7 @@ interface Props {
   selectValue: string | undefined;
   customValue?: string;
   selectText: string | undefined;
+  placeholder?: string;
 }
 
 const SelectInput: React.FC<Props> = ({
@@ -33,6 +34,7 @@ const SelectInput: React.FC<Props> = ({
   customValue,
   label,
   selectText,
+  placeholder,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const styles = popOverStyle()();
@@ -42,11 +44,8 @@ const SelectInput: React.FC<Props> = ({
   const [Label, setLabel] = useState(label);
   const [Value, setValue] = useState(selectText);
   useEffect(() => {
-    if (label && label.length > 10) {
-      return setValue(_.truncate(selectText, { length: 5, separator: " " }));
-    }
-    if (label && label.length <= 9 && selectText && selectText.length > 10) {
-      return setValue(_.truncate(selectText, { length: 10, separator: " " }));
+    if (selectText && selectText.length > 8) {
+      return setValue(_.truncate(selectText, { length: 8, separator: " " }));
     }
     return setValue(selectText);
   }, [selectText, selectValue]);
@@ -60,26 +59,34 @@ const SelectInput: React.FC<Props> = ({
   return (
     <Grid
       sx={{
-        width: "inherit",
+        width: "100%",
         height: 40,
-        background: "white",
-        borderRadius: 3,
+        background: "#FFFFFF",
+        borderRadius: "10px",
         overflow: "hidden",
         cursor: "pointer",
       }}
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"
+      onClick={anchorEl === null ? handleOpen : handleClose}
       container
     >
-      <Grid
+      {/* <Grid
         onClick={handleOpen}
         item
         justifyContent={"flex-start"}
         alignItems="center"
         paddingLeft={1}
         display="inline-flex"
-        xs={10}
+        width={"80%"}
+      > */}
+      <Box
+        minWidth={"calc(100%-28px)"}
+        display={"inline-flex"}
+        justifyContent="flex-start"
+        alignItems={"center"}
+        paddingLeft={1}
       >
         <Typography
           maxWidth={140}
@@ -87,7 +94,7 @@ const SelectInput: React.FC<Props> = ({
           color="#696974"
           fontSize={14}
           fontWeight={"400"}
-          paddingRight={Label && Label?.length <= 10 ? 1 : 0}
+          paddingRight={1}
         >
           {Label}
         </Typography>
@@ -105,28 +112,26 @@ const SelectInput: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-         {Value ? Value : customValue ? customValue : "all"}
+          {Value ? Value : placeholder || "All"}
         </Typography>
-      </Grid>
-      <Grid item>
-        <Box display={"inline-flex"} onClick={handleOpen}>
-          <Box
-            height={40}
-            sx={{
-              borderLeft: "1px solid #F1F1F5",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 1,
-            }}
-          >
-            {open ? (
-              <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
-            ) : (
-              <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
-            )}
-          </Box>
+      </Box>
+      <Box display={"inline-flex"} maxWidth="28px" onClick={handleOpen}>
+        <Box
+          height={40}
+          sx={{
+            borderLeft: "1px solid #F1F1F5",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: 1,
+          }}
+        >
+          {open ? (
+            <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
+          ) : (
+            <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
+          )}
         </Box>
-      </Grid>
+      </Box>
       <Popover
         className={styles.root}
         open={open}

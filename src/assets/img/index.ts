@@ -6,7 +6,7 @@ const IMAGES = {
   personicon: require("./personicon.svg").default,
   clients: require("./clients.svg").default,
   tasks: require("./tasks.svg").default,
-  notification: require("./notification.svg").default,
+  notification: require("./Notification.svg").default,
   categories: require("./categories.svg").default,
   taskviewicon: require("./taskviewicon.svg").default,
   ttp_log: require("./ttp-logo.SVG").default,
@@ -47,5 +47,7 @@ const IMAGES = {
   overviewProjects: require("./OverviewProjects.svg").default,
   overViewRevision: require("./OverviewRevision.svg").default,
   overviewCheck: require("./OverviewCheck.svg").default,
+  departmentsIcon: require("./Departments.svg"),
+  searchIcon: require("./Iconly-Light-outline-Search.svg"),
 };
 export default IMAGES;

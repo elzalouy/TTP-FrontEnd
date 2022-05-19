@@ -1,3 +1,4 @@
+import { Box, Button, TextField, TextFieldProps, Typography } from "@mui/material";
 import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,22 +18,35 @@ import {
   selectNewProject,
   selectSelectedDepartment,
 } from "../../redux/Projects";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 import { UiActions } from "../../redux/Ui";
+import IMAGES from "../../assets/img";
+import { valdiateCreateTask } from "../../helpers/validation";
+import Joi from "joi";
+import moment from "moment";
+import { createProjectPopup } from "../../redux/Ui/UI.selectors";
+// import {createProjectPopup} from '../../'
 
-interface TaskFormProps {
-  setCurrentStep: any;
-  setShow: any;
-}
+interface TaskFormProps {}
 
-const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
+const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
+  const files = React.useRef<HTMLInputElement>(null);
+  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [error, setError] = React.useState<{
+    error: Joi.ValidationError | undefined;
+    value: any;
+    warning: Joi.ValidationError | undefined;
+  }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
+  const createProjectPopuptrack = useAppSelector(createProjectPopup);
   const { register, handleSubmit, watch, control, reset } = useForm({
     defaultValues: {
       name: "",
@@ -64,7 +78,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   }, [watch(), reset]);
   React.useEffect(() => {
     reset()
-  }, [setShow])
+  }, [createProjectPopuptrack])
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -74,7 +88,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
       projectId: newProject?.project?._id,
       status: "inProgress",
       start: new Date().toUTCString(),
-      deadline: data?.deadline,
+      deadline: moment(data?.deadline).toDate(),
       deliveryDate: null,
       done: null,
       turnoverTime: null,
@@ -83,20 +97,32 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
         (item) => item._id === data.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
+      description: data?.description,
     };
-    dispatch(createProjectTask(newTask));
+    // console.log(newTask);
+    let validateResult = valdiateCreateTask(newTask);
+    if (validateResult.error) {
+      setError(validateResult);
+      toast(validateResult.error.message);
+    } else dispatch(createProjectTask(newTask));
   };
-
-  const onCancel = () => {
-    dispatch(UiActions.fireNewProjectHook(""));
-    setShow("none");
-    setCurrentStep(0);
+  const onChangeFiles = () => {
+    files.current?.click();
   };
-  const onSaveProject = () => {
-    dispatch(UiActions.fireNewProjectHook(""));
-    toast("Project and Its Tasks have been saved.");
-    setShow("none");
-    setCurrentStep(0);
+  const onSetFiles = () => {
+    let newfiles = files.current?.files;
+    if (newfiles) {
+      let items = [];
+      for (let i = 0; i < newfiles.length; i++) {
+        items.push(newfiles.item(i));
+      }
+      setFiles(items);
+    }
+  };
+  const onRemoveFile = (item: File | null) => {
+    let newFiles = Files;
+    newFiles = newFiles?.filter((file) => file !== item);
+    setFiles(newFiles);
   };
   return (
     <>
@@ -110,9 +136,21 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 name="name"
                 control={control}
                 render={(props) => (
-                  <input
-                    className="input-project"
-                    type="text"
+                  <TextField
+                    error={error.error?.details[0].path.includes("name")}
+                    id="outlined-error"
+                    sx={{
+                      width: "100%",
+                      marginTop: 1,
+                      "& .MuiOutlinedInput-input": {
+                        height: "13px !important",
+                        borderRadius: "6px",
+                        background: "white !important",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderRadius: "6px",
+                      },
+                    }}
                     placeholder="Task name"
                     {...register("name")}
                     onChange={props.field.onChange}
@@ -128,6 +166,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    error={error.error?.details[0].path.includes("listId")}
                     handleChange={props.field.onChange}
                     selectText={
                       departments.find((item) => item._id === props.field.value)
@@ -151,19 +190,40 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               />
             </div>
             <div>
-              <label className="label-project" {...register("deadline")}>
-                Deadline date
-              </label>
+              <label className="label-project">Deadline date</label>
               <br />
               <Controller
                 name="deadline"
                 control={control}
                 render={(props) => (
-                  <input
-                  {...register("deadline")}
+                  <MobileDatePicker
+                    inputFormat="YYYY-MM-DD"
+                    value={props.field.value}
                     onChange={props.field.onChange}
-                    className="input-project"
-                    type="date"
+                    leftArrowButtonText="arrow"
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
+                      <TextField
+                        error={error.error?.details[0].path.includes(
+                          "deadline"
+                        )}
+                        {...register("deadline")}
+                        {...params}
+                        defaultValue=""
+                        onChange={params.onChange}
+                        sx={{
+                          width: "100%",
+                          paddingTop: 1,
+                          "& .MuiOutlinedInput-input": {
+                            height: "13px !important",
+                            borderRadius: "6px",
+                            background: "white !important",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderRadius: "6px",
+                          },
+                        }}
+                      />
+                    )}
                   />
                 )}
               />
@@ -176,6 +236,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    error={error?.error?.details[0].path.includes("categoryId")}
                     handleChange={props.field.onChange}
                     selectText={
                       categories?.find((item) => item._id === props.field.value)
@@ -205,11 +266,22 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 name="description"
                 control={control}
                 render={(props) => (
-                  <textarea
-                    className="textarea-project"
-                    rows={3}
+                  <TextField
+                    error={error.error?.details[0]?.path.includes(
+                      "description"
+                    )}
                     {...register("description")}
-                    placeholder="Write about your task"
+                    id="outlined-multiline-static"
+                    multiline
+                    sx={{
+                      paddingTop: 1,
+                      width: "100%",
+                      "& .MuiOutlinedInput-input": {
+                        borderRadius: "6px",
+                        background: "white !important",
+                      },
+                    }}
+                    rows={5}
                     onChange={props.field.onChange}
                   />
                 )}
@@ -223,6 +295,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    error={error?.error?.details[0].path.includes(
+                      "subCategoryId"
+                    )}
                     handleChange={props.field.onChange}
                     selectText={
                       selectedCategory?.selectedSubCategory?.find(
@@ -251,9 +326,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               <Controller
                 name="memberId"
                 control={control}
-                defaultValue=""
                 render={(props) => (
                   <SelectInput2
+                    error={error?.error?.details[0]?.path.includes("listId")}
                     handleChange={props.field.onChange}
                     selectText={
                       selectedDepartment?.teamsId?.find(
@@ -277,15 +352,62 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 )}
               />
             </div>
-          </div>
-          <div className="files">
-            <Controller
-              name="file"
-              control={control}
-              render={(props) => (
-                <input  {...register("file")} onChange={props.field.onChange} type="file" />
-              )}
-            />
+            <Box alignItems="center" display={"inline-flex"} className="files">
+              <input
+                {...register("file")}
+                onChange={onSetFiles}
+                ref={files}
+                type="file"
+                style={{ display: "none" }}
+                multiple
+              />
+              <Button
+                onClick={onChangeFiles}
+                sx={{
+                  backgroundColor: "#00ACBA",
+                  width: "40px",
+                  height: "32px",
+                  borderRadius: "5px",
+                  ":hover": {
+                    backgroundColor: "#00ACBA",
+                  },
+                  "& .MuiButton-root": {
+                    ":hover": {
+                      backgroundColor: "#00ACBA",
+                      color: "white",
+                    },
+                  },
+                }}
+              >
+                <img src={IMAGES.fileicon} alt="Upload" />
+              </Button>
+              {Files &&
+                Files.length > 0 &&
+                Files?.map((item, index) => (
+                  <Typography
+                    key={index}
+                    marginX={0.5}
+                    bgcolor={"#F1F1F5"}
+                    padding={0.5}
+                    borderRadius={1}
+                    color="#92929D"
+                    sx={{
+                      cursor: "pointer",
+                      height: "35px",
+                      textAlign: "center",
+                      alignContent: "center",
+                      paddingTop: 1,
+                    }}
+                    onClick={() => onRemoveFile(item)}
+                  >
+                    {item?.name}
+                    <CloseIcon
+                      sx={{ fontSize: "14px", marginLeft: 0.5 }}
+                      htmlColor="#92929D"
+                    />
+                  </Typography>
+                ))}
+            </Box>
           </div>
           <div>
             <button type="submit" className="addTaskBtn">
@@ -293,14 +415,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
             </button>
           </div>
         </form>
-        <div className="controllers">
-          <button className="cancelBtn" onClick={() => {reset(); onCancel();}}>
-            Cancel
-          </button>
-          <button className="blackBtn" onClick={() => onSaveProject()}>
-            Done
-          </button>
-        </div>
       </div>
     </>
   );

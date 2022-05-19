@@ -17,9 +17,12 @@ import {
   toggleLogOutPopup,
   toggleEditTaskPopup,
   openDeleteTaskPopup,
+  toggleCreateProjectPopup,
 } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
 import DeleteTask from "../components/popups/DeleteTask";
+import { Grid } from "@mui/material";
+import NewProjectPopUp from "../components/Projects/ProjectPopUp";
 
 const PopUps: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,6 +60,9 @@ const PopUps: React.FC = () => {
   const showDeleteTaskPopup = (val: string) => {
     dispatch(openDeleteTaskPopup(val));
   };
+  const showCreateProject = (val: string) => {
+    dispatch(toggleCreateProjectPopup(val));
+  };
   return (
     <>
       <DeleteProject
@@ -70,6 +76,9 @@ const PopUps: React.FC = () => {
       <LogoutPopup setShow={showLoggoutPopup} show={logoutPopup} />
       <EditTask Show={editTaskPopup} setShow={showEditTaskPopup} />
       <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />
+      <Grid marginLeft={50}>
+        <NewProjectPopUp setShow={showCreateProject} />
+      </Grid>
     </>
   );
 };

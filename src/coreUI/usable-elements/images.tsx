@@ -6,14 +6,14 @@ import departmentIcon from "../../assets/img/departmentIcon.svg";
 import profileImageDemo from "../../assets/img/profileImageDemo.png";
 import projects from "../../assets/img/projects.svg";
 import tasks from "../../assets/img/tasks.svg";
-import img from '../../assets/img/index'
+import img from "../../assets/img/index";
 import overView from "../../assets/img/taskviewiconCopy.svg";
 import { RouteComponentProps } from "react-router";
 
 interface Props {
   history?: RouteComponentProps["history"];
-  alt?:string
-  src?:string
+  alt?: string;
+  src?: string;
 }
 
 export const Logo = (props: Props) => (
@@ -55,9 +55,12 @@ export const Categories = (props: any) => (
 );
 
 export const Clients = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={clients} alt="clients"
-  //  {...props}
-    />
+  <img
+    style={{ cursor: "pointer" }}
+    src={clients}
+    alt="clients"
+    //  {...props}
+  />
 );
 
 export const DepartmentIcon = (props: any) => (
@@ -79,19 +82,28 @@ export const ProfileImageDemo = (props: any) => (
 );
 
 export const Projects = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={projects} alt="projects"
-  //  {...props}
-    />
+  <img
+    style={{ cursor: "pointer" }}
+    src={projects}
+    alt="projects"
+    //  {...props}
+  />
 );
 
 export const Tasks = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={tasks} alt="tasks" 
-  // {...props}
-   />
+  <img
+    style={{ cursor: "pointer" }}
+    src={tasks}
+    alt="tasks"
+    // {...props}
+  />
 );
 
 export const OverView = (props: any) => (
-  <img style={{ cursor: "pointer" }} src={overView} alt="overView" 
-  // {...props}
-   />
+  <img
+    style={{ cursor: "pointer" }}
+    src={overView}
+    alt="overView"
+    // {...props}
+  />
 );
