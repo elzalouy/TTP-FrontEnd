@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Typography, Input, Button, IconButton } from "@mui/material";
+import { Grid, Typography, Input, Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { Redirect, useHistory, useParams } from "react-router";
@@ -51,6 +51,8 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     let pattern = new RegExp(data.newPassword);
@@ -103,9 +105,10 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         lg={8}
         height={550}
         bgcolor={"white"}
+        justifyContent={SM? "flex-start" : "center"}
         container
         direction="row"
-        sx={{
+        sx={SM ? {boxShadow:"none"} :{
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >

@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Typography, Input, Button, IconButton } from "@mui/material";
+import { Grid, Typography, Input, Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { useDispatch } from "react-redux";
@@ -58,6 +58,8 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
   const { token } = useParams<IParam>();
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     let pattern = new RegExp(data.password);
@@ -109,9 +111,10 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
         md={8}
         lg={8}
         height={550}
+        justifyContent={SM? "flex-start" : "center"}
         container
         direction="row"
-        sx={{
+        sx={SM ? {boxShadow:"none"} :{
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
