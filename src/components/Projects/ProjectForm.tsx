@@ -9,6 +9,7 @@ import { getAllClients } from "../../redux/Clients";
 import { Button } from "@mui/material";
 import { selectUser } from "../../redux/Auth";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import { Restore } from "@mui/icons-material";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -19,12 +20,23 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch, control } = useForm();
+  const { register, watch, control, reset} = useForm({
+    defaultValues: {
+      name: "",
+      projectManager: "",
+      deadline: "",
+      startDate: "",
+      clientId: ""
+    }
+  });
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
 
+React.useEffect(() => {
+  reset()
+},[setShow])
   const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let data = watch();
     let project = {
@@ -57,6 +69,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 className="input-project"
                 type="text"
                 placeholder="Project name"
+                {...register("name")}
                 onChange={props.field.onChange}
               />
             )}
@@ -75,6 +88,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   clients.find((item) => item.clientId === props.field.value)
                     ?.clientName
                 }
+                {...register("clientId")}
                 selectValue={props.field.value}
                 options={
                   clients
@@ -101,6 +115,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               <input
                 className="input-project"
                 type="date"
+                {...register("deadline")}
                 onChange={props.field.onChange}
               />
             )}
@@ -118,6 +133,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 selectText={
                   PMs.find((item) => item._id === props.field.value)?.name
                 }
+                {...register("projectManager")}
                 selectValue={props.field.value}
                 options={
                   PMs
@@ -144,6 +160,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               <input
                 className="input-project"
                 type="date"
+                {...register("startDate")}
                 onChange={props.field.onChange}
               />
             )}
@@ -155,6 +172,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           className="cancelBtn"
           onClick={() => {
             setcurrentStep(0);
+            reset()
             setShow("none");
           }}
         >

@@ -33,7 +33,19 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
-  const { register, handleSubmit, watch, control, reset } = useForm();
+  const { register, handleSubmit, watch, control, reset } = useForm({
+    defaultValues: {
+      name: "",
+      categoryId: "",
+      subCategoryId: "",
+      memberId: "",
+      deadline: "",
+      attachedFiles: "",
+      selectedDepartmentId:"",
+      description:"",
+      file:""
+    }
+  });
 
   React.useEffect(() => {
     let values = watch();
@@ -50,7 +62,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [watch(), reset]);
-
+  React.useEffect(() => {
+    reset()
+  }, [setShow])
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -100,6 +114,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                     className="input-project"
                     type="text"
                     placeholder="Task name"
+                    {...register("name")}
                     onChange={props.field.onChange}
                   />
                 )}
@@ -118,6 +133,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                       departments.find((item) => item._id === props.field.value)
                         ?.name
                     }
+                    {...register("selectedDepartmentId")}
                     selectValue={props.field.value}
                     options={
                       departments
@@ -144,6 +160,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                 control={control}
                 render={(props) => (
                   <input
+                  {...register("deadline")}
                     onChange={props.field.onChange}
                     className="input-project"
                     type="date"
@@ -164,6 +181,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                       categories?.find((item) => item._id === props.field.value)
                         ?.category
                     }
+                    {...register("categoryId")}
                     selectValue={props.field.value}
                     options={
                       categories
@@ -190,6 +208,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                   <textarea
                     className="textarea-project"
                     rows={3}
+                    {...register("description")}
                     placeholder="Write about your task"
                     onChange={props.field.onChange}
                   />
@@ -210,6 +229,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                         (item) => item._id === props.field.value
                       )?.subCategory
                     }
+                    {...register("subCategoryId")}
                     selectValue={props.field.value}
                     options={
                       selectedCategory?.selectedSubCategory
@@ -240,6 +260,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
                         (item) => item._id === props.field.value
                       )?.name
                     }
+                    {...register("memberId")}
                     selectValue={props.field.value}
                     options={
                       selectedDepartment?.teamsId
@@ -262,7 +283,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
               name="file"
               control={control}
               render={(props) => (
-                <input onChange={props.field.onChange} type="file" />
+                <input  {...register("file")} onChange={props.field.onChange} type="file" />
               )}
             />
           </div>
@@ -273,7 +294,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ setCurrentStep, setShow }) => {
           </div>
         </form>
         <div className="controllers">
-          <button className="cancelBtn" onClick={() => onCancel()}>
+          <button className="cancelBtn" onClick={() => {reset(); onCancel();}}>
             Cancel
           </button>
           <button className="blackBtn" onClick={() => onSaveProject()}>
