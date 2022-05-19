@@ -6,10 +6,21 @@ import { getPMs, selectPMs } from "../../redux/PM";
 import { createProject } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
-import { Button } from "@mui/material";
+import {
+  Button,
+  ButtonBase,
+  Grid,
+  Input,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { selectUser } from "../../redux/Auth";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-
+import moment from "moment";
+import { validateCreateProject } from "../../helpers/validation";
+import { toast } from "react-toastify";
+import Joi from "joi";
 interface ProjectFormProps {
   setcurrentStep: any;
   setShow: any;
@@ -24,7 +35,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
-
+  const [validateError, setError] = React.useState<{
+    error: Joi.ValidationError | undefined;
+    value: any;
+    warning: Joi.ValidationError | undefined;
+  }>({ error: undefined, value: undefined, warning: undefined });
   const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let data = watch();
     let project = {
@@ -32,8 +47,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectManager: data?.projectManager,
       projectManagerName: PMs.find((item) => item._id === data?.projectManager)
         ?.name,
-      projectDeadline: data?.deadline,
-      startDate: data?.startDate,
+      projectDeadline: moment(data?.deadline).toDate(),
+      startDate: moment(data?.startDate).toDate(),
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
@@ -41,28 +56,44 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       completedDate: null,
       adminId: user?._id,
     };
-    dispatch(createProject({ data: project, setcurrentStep }));
+    let isValid = validateCreateProject(project);
+    if (isValid.error) {
+      setError(isValid);
+      toast(isValid.error.message);
+    } else dispatch(createProject({ data: project, setcurrentStep }));
   };
   return (
     <>
-      <div className="inputs-grid">
-        <div>
+      <Grid width="800px" container justifyContent={"space-between"}>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Project title</label>
           <br />
           <Controller
             control={control}
             name="name"
             render={(props) => (
-              <input
-                className="input-project"
-                type="text"
-                placeholder="Project name"
+              <TextField
+                error={validateError.error?.details[0]?.path?.includes("name")}
+                id="outlined-error"
+                sx={{
+                  width: "100%",
+                  marginTop: 1,
+                  "& .MuiOutlinedInput-input": {
+                    height: "13px !important",
+                    borderRadius: "6px",
+                    background: "white !important",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderRadius: "6px",
+                  },
+                }}
+                placeholder="project name"
                 onChange={props.field.onChange}
               />
             )}
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Client name</label>
           <br />
           <Controller
@@ -70,6 +101,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <SelectInput2
+                error={validateError.error?.details[0].path.includes(
+                  "clientId"
+                )}
                 handleChange={props.field.onChange}
                 selectText={
                   clients.find((item) => item.clientId === props.field.value)
@@ -90,24 +124,80 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               />
             )}
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8} paddingY={3.5}>
           <label className="label-project">Start Date</label>
           <br />
           <Controller
             name="startDate"
             control={control}
             render={(props) => (
-              <input
-                className="date-project"
-                type="date"
+              <MobileDatePicker
+                inputFormat="YYYY-MM-DD"
+                value={props.field.value}
                 onChange={props.field.onChange}
+                leftArrowButtonText="arrow"
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={validateError.error?.details[0].path.includes(
+                      "startDate"
+                    )}
+                    defaultValue=""
+                    onChange={params.onChange}
+                    sx={{
+                      paddingTop: 1,
+                      "& .MuiOutlinedInput-input": {
+                        height: "13px !important",
+                        borderRadius: "6px",
+                        background: "white !important",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderRadius: "6px",
+                      },
+                    }}
+                  />
+                )}
               />
             )}
           />
-        </div>
-
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8} paddingY={3.5}>
+          <label className="label-project">Deadline date</label>
+          <br />
+          <Controller
+            name="deadline"
+            control={control}
+            render={(props) => (
+              <MobileDatePicker
+                inputFormat="YYYY-MM-DD"
+                value={props.field.value}
+                onChange={props.field.onChange}
+                leftArrowButtonText="arrow"
+                renderInput={({ className, classes, sx, style, ...params }) => (
+                  <TextField
+                    {...params}
+                    error={validateError.error?.details[0].path.includes(
+                      "deadline"
+                    )}
+                    sx={{
+                      paddingTop: 1,
+                      "& .MuiOutlinedInput-input": {
+                        height: "13px !important",
+                        borderRadius: "6px",
+                        background: "white !important",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderRadius: "6px",
+                      },
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8} paddingY={3.5}>
           <label className="label-project">Project manager</label>
           <br />
           <Controller
@@ -115,6 +205,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <SelectInput2
+                error={validateError.error?.details[0].path.includes(
+                  "projectManager"
+                )}
                 handleChange={props.field.onChange}
                 selectText={
                   PMs.find((item) => item._id === props.field.value)?.name
@@ -134,42 +227,53 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               />
             )}
           />
-        </div>
-        <div>
-          <label className="label-project">Deadline date</label>
-          <br />
-          <Controller
-            name="deadline"
-            control={control}
-            render={(props) => (
-              <input
-                className="date-project"
-                type="date"
-                onChange={props.field.onChange}
-              />
-            )}
-          />
-        </div>
-      </div>
-      <div className="controllers">
-        <button
-          className="cancelBtn"
-          onClick={() => {
-            setcurrentStep(0);
-            setShow("none");
-          }}
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          lg={6}
+          md={6}
+          paddingX={1.8}
+          paddingY={2}
+          marginBottom={1}
         >
-          Cancel
-        </button>
-        <Button
-          type="button"
-          variant="contained"
-          className="blackBtn"
-          onClick={onsubmit}
+          <ButtonBase
+            className="cancelBtn"
+            onClick={() => {
+              setcurrentStep(0);
+              setShow("none");
+            }}
+          >
+            Cancel
+          </ButtonBase>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          lg={6}
+          md={6}
+          paddingX={1.8}
+          textAlign="right"
+          marginBottom={1}
+          paddingY={2}
         >
-          Next
-        </Button>
-      </div>
+          <Button
+            type="button"
+            variant="contained"
+            className="blackBtn"
+            onClick={onsubmit}
+            sx={{
+              "@ .MuiButtonBase-root": {
+                width: "100%",
+              },
+            }}
+          >
+            Next
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 };

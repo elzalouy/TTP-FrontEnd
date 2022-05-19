@@ -7,6 +7,7 @@ import {
   stepConnectorClasses,
   StepIconProps,
   Typography,
+  stepIconClasses,
 } from "@mui/material";
 import { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
@@ -20,6 +21,7 @@ import { styled } from "@mui/material/styles";
 import { Check } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { UiActions } from "../../redux/Ui";
+import { selectUi } from "../../redux/Ui/UI.selectors";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;
@@ -29,61 +31,70 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const steps = ["Project", "Tasks"];
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
-  const [currentStep, setcurrentStep] = useState(0);
+  const { createProjectPopup } = useAppSelector(selectUi);
+  const [currentStep, setcurrentStep] = useState(1);
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
-      top: 10,
-      left: "calc(-50% + 12px)",
-      right: "calc(50% + 12px)",
+      top: 12,
+      left: "calc(-50% + 13px)",
+      right: "calc(50% + 13px)",
     },
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        borderColor: "#00ACBA",
+        borderColor: "#707070",
       },
     },
     [`&.${stepConnectorClasses.completed}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        borderColor: "#00ACBA",
+        borderColor: "#707070",
       },
     },
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor: theme.palette.mode === "dark" ? "#F6F6F6" : "#F6F6F6",
-      borderTopWidth: 2,
+      borderColor: theme.palette.mode === "dark" ? "#707070" : "#707070",
+      borderTopWidth: 0.5,
+      borderWidth: 0.5,
       borderRadius: 1,
+      opacity: 0.3,
     },
   }));
-  const QontoStepIconRoot = styled("div")<{ ownerState: { active?: boolean } }>(
-    ({ theme, ownerState }) => ({
-      color: "transparent",
-      backgroundColor: "#F6F6F6",
-      padding: 8,
+  const QontoStepIconRoot = styled("div")<{
+    ownerState: { active?: boolean; completed?: boolean };
+  }>(({ theme, ownerState }) => ({
+    color: "transparent",
+    backgroundColor: "#F6F6F6",
+    borderRadius: "100%",
+    display: "flex",
+    height: 26,
+    width: 26,
+    justifyContent: "center",
+    alignItems: "center",
+    ...(ownerState.active && {
+      color: "#00ACBA",
+    }),
+    ...(ownerState.completed && {
+      backgroundColor: "#00ACBA",
+    }),
+    "& .QontoStepIcon-completedIcon": {
+      color: "white",
+      fontSize: 18,
+      backgroundColor: "#00ACBA",
+    },
+    "& .QontoStepIcon-circle": {
+      width: 8,
+      height: 8,
       borderRadius: "100%",
-      display: "flex",
-      height: 25,
-      alignItems: "center",
-      ...(ownerState.active && {
-        color: "#00ACBA",
-      }),
-      "& .QontoStepIcon-completedIcon": {
-        color: "#00ACBA",
-        zIndex: 1,
-        fontSize: 14,
-      },
-      "& .QontoStepIcon-circle": {
-        width: 8,
-        height: 8,
-        borderRadius: "100%",
-        backgroundColor: "currentColor",
-      },
-    })
-  );
+      backgroundColor: ownerState.active ? "#00ACBA" : "",
+    },
+  }));
   function QontoStepIcon(props: StepIconProps) {
     const { active, completed, className } = props;
-
     return (
-      <QontoStepIconRoot ownerState={{ active }} className={className}>
+      <QontoStepIconRoot
+        ownerState={{ active, completed: completed }}
+        className={className}
+      >
         {completed ? (
-          <Check className="QontoStepIcon-completedIcon" sx={{ width: 10 }} />
+          <Check className="QontoStepIcon-completedIcon" />
         ) : (
           <div className="QontoStepIcon-circle" />
         )}
@@ -98,18 +109,18 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
     setShow("none");
   };
   return (
-    <PopUp show={newProject?.showPopUp ? newProject.showPopUp : "none"}>
+    <PopUp show={createProjectPopup}>
       <Grid container direction="row">
         <Grid
           item
           xs={8}
           justifyContent={"center"}
-          paddingLeft={20}
+          paddingLeft={24}
           marginBottom={5}
         >
           <Stepper
             connector={<QontoConnector />}
-            style={{ width: "430px" }}
+            style={{ width: "400px" }}
             activeStep={currentStep}
             alternativeLabel
           >
@@ -145,8 +156,8 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       )}
       {currentStep === 1 && (
         <>
-          <TaskForm setCurrentStep={setcurrentStep} setShow={setShow} />
-          <Tasks />
+          <TaskForm />
+          <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />
         </>
       )}
     </PopUp>

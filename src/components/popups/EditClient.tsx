@@ -23,7 +23,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     setData(client);
   }, [dispatch, client]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     try {
       e.preventDefault();
       dispatch(updateClient(Data));
@@ -41,7 +41,6 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const fileUpload = () => {
     fileInput.current?.click();
   };
-  useEffect(() => {}, [fileInput]);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     var data = { ...Data };
     console.log(e.target);
@@ -60,62 +59,61 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   return (
     <>
       <PopUp show={show} widthSize="30vw">
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ paddingLeft: "15px" }}>
-            <Box>
-              <img
-                className="closeIcon"
-                width="9"
-                height="9"
-                src={IMAGES.closeicon}
-                alt="closeIcon"
-                onClick={handleClose}
-              />
-            </Box>
-            <Typography className="new-client-title">Edit Client</Typography>
-            <Box
-              style={{
-                marginBottom: "20px",
-                marginTop: "20px",
-                cursor: "pointer",
-              }}
-              onClick={fileUpload}
-            >
-              <input
-                type="file"
-                ref={fileInput}
-                name="image"
-                id="file"
-                onChange={onChange}
-                hidden
-              />
-              <img
-                src={ImageView ? ImageView : Data?.image}
-                style={{
-                  width: "9em",
-                  height: "9em",
-                }}
-                alt=""
-              />
-            </Box>
-            <input
-              required
-              className="input-client"
-              type="text"
-              name="clientName"
-              value={Data?.clientName ? Data.clientName : ""}
-              onChange={onChange}
+        <Box sx={{ paddingLeft: "15px" }}>
+          <Box>
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+              onClick={handleClose}
             />
-            <br />
-
-            <Box className="controllers">
-              <button className="cancelBtn" onClick={handleClose}>
-                Cancel
-              </button>
-              <button className="blackBtn">Done</button>
-            </Box>
           </Box>
-        </form>
+          <Typography className="new-client-title">Edit Client</Typography>
+          <Box
+            style={{
+              marginBottom: "20px",
+              marginTop: "20px",
+              cursor: "pointer",
+            }}
+            onClick={fileUpload}
+          >
+            <input
+              type="file"
+              ref={fileInput}
+              name="image"
+              id="file"
+              onChange={onChange}
+              hidden
+            />
+            <img
+              src={ImageView ? ImageView : Data?.image}
+              style={{
+                width: "9em",
+                height: "9em",
+              }}
+              alt=""
+            />
+          </Box>
+          <input
+            required
+            className="input-client"
+            type="text"
+            name="clientName"
+            value={Data?.clientName ? Data.clientName : ""}
+            onChange={onChange}
+          />
+          <br />
+          <Box className="controllers">
+            <button className="cancelBtn" onClick={handleClose}>
+              Cancel
+            </button>
+            <button className="blackBtn" onClick={handleSubmit}>
+              Done
+            </button>
+          </Box>
+        </Box>
       </PopUp>
     </>
   );

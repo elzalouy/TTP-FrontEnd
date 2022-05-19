@@ -120,7 +120,7 @@ const CategoryCard: React.FC<IProps> = ({
           width="100%"
           container
         >
-          <Grid xs={10} paddingRight={1.5}>
+          <Grid xs={12}>
             {role !== "PM" && (
               <Button
                 sx={{
@@ -151,12 +151,12 @@ const CategoryCard: React.FC<IProps> = ({
                   <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
                 </Box>
                 <Typography fontSize={14} fontWeight={"bold"}>
-                  New Sub Category
+                  Manage sub category
                 </Typography>
               </Button>
             )}
           </Grid>
-          <Grid xs={2}>
+          {/* <Grid xs={2}>
             {role !== "PM" && (
               <EditBtn
                 sx={{
@@ -172,7 +172,7 @@ const CategoryCard: React.FC<IProps> = ({
                 <EditIcon width={20} height={20} color={fontColor} />
               </EditBtn>
             )}
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Box>

@@ -12,7 +12,7 @@ const NotificationHeader = (props: Props) => {
           Notificaiton
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Typography
           variant="subtitle1"
           gutterBottom
@@ -24,7 +24,7 @@ const NotificationHeader = (props: Props) => {
           The page contains project notifications. "Ex: Move the project to
           shared box."
         </Typography>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

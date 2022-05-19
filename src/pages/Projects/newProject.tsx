@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-/* import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp"; */
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions } from "../../redux/Projects";
@@ -11,6 +8,7 @@ import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
 import { Grid } from "@mui/material";
+import { toggleCreateProjectPopup } from "../../redux/Ui";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
@@ -18,9 +16,7 @@ const CreateNewProject: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const setShow = (value: string) => {
-    let project = { ...newProject };
-    project.showPopUp = value;
-    dispatch(ProjectsActions.onChangeNewProject(project));
+    dispatch(toggleCreateProjectPopup(value));
   };
 
   return (
@@ -81,9 +77,6 @@ const CreateNewProject: React.FC<Props> = () => {
           </h5>
         </Box>
       </Box>
-      <Grid marginLeft={50}>
-        <NewProjectPopUp setShow={setShow} />
-      </Grid>
     </div>
   );
 };

@@ -47,5 +47,7 @@ const IMAGES = {
   overviewProjects: require("./OverviewProjects.svg").default,
   overViewRevision: require("./OverviewRevision.svg").default,
   overviewCheck: require("./OverviewCheck.svg").default,
+  departmentsIcon: require("./Departments.svg"),
+  searchIcon: require("./Iconly-Light-outline-Search.svg"),
 };
 export default IMAGES;

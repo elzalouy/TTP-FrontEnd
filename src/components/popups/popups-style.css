@@ -61,6 +61,7 @@
 
 .popup-title {
   font-size: 18px;
+  margin-bottom: 3em;
   color: #30bcc7;
   font-weight: 500;
   text-transform: capitalize;
@@ -215,13 +216,14 @@
   text-align: center;
   cursor: pointer;
   border: none;
-  border-radius: 10px;
-  margin-left: 1.5em;
+  border-radius: 6px;
+  margin-left: 17px;
   padding: 0px 40px;
-  height: 55px;
+  height: 50px;
   color: black;
   background-color: #ffc500;
   font-weight: bold;
+  width: 100px;
 }
 
 .names-container {
@@ -280,7 +282,7 @@ tr {
 
 tr {
   border: 0px solid;
-  border-bottom: 1px solid rgb(197, 197, 197);
+  border-bottom: 1px solid #ebeff2;
 }
 
 table.allTask-table th {
@@ -340,10 +342,10 @@ tr {
   border-collapse: collapse;
 }
 
-tr {
+.allTeam-table tr {
   border: 0px solid;
-  border-bottom: 1px solid rgb(197, 197, 197);
-  height: 35px;
+  border-bottom: 1px solid #ebeff2;
+  height: 3.5em;
 }
 
 table.allTeam-table th {
@@ -410,6 +412,7 @@ table.allTeam-table td.deleteTd {
 
 .input-auth {
   color: #000;
+  border-color: #e4e4e4;
 }
 
 @media (max-width: 700px) {

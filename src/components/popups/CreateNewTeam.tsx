@@ -80,6 +80,9 @@ const AddNewTeam: React.FC<Props> = () => {
             setTeam({ ...Team, name: e.target.value });
           }}
           value={Team.name}
+          style={{
+            marginBottom: "1em",
+          }}
         />
 
         <label className="popup-label">Department</label>
@@ -90,6 +93,9 @@ const AddNewTeam: React.FC<Props> = () => {
           }}
           value={Team.department}
           defaultValue=""
+          style={{
+            marginBottom: "1em",
+          }}
         >
           <option value="">Select Department</option>
           {departments?.map((dep: any) => (
@@ -105,17 +111,20 @@ const AddNewTeam: React.FC<Props> = () => {
             setAllTeam([...AllTeam, Team]);
             setTeam({ name: "", department: "" });
           }}
-          disabled={AllTeam.length === 1 || Team.department === ""}
+          disabled={Team.department === "" || Team.name === ""}
           style={{
             background:
-              AllTeam.length === 1 || Team.department === ""
-                ? "#ccc"
-                : "#ffc500",
+              Team.department === "" || Team.name === ""
+                ? "#FFC500"
+                : "#FFC500",
+            marginBottom: "3em",
           }}
         >
           Add
         </button>
-
+        <label style={{ fontWeight: "light", fontSize: "1rem" }}>
+          All Team
+        </label>
         <table className="allTeam-table">
           <tr>
             <th>Team name</th>
@@ -126,7 +135,7 @@ const AddNewTeam: React.FC<Props> = () => {
             return (
               <tr key={index}>
                 <td>{el.name}</td>
-                <td>Ust ID</td>
+                <td>@{el.name}</td>
                 <td>
                   <img
                     src={IMAGES.deleteicon}

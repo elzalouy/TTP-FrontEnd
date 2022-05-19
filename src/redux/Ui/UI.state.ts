@@ -10,6 +10,7 @@ export interface UiInterface {
   deleteProjectManagerPopup: string;
   isSideMenuOpened: boolean;
   logoutPopup: string;
+  createProjectPopup: string;
   /*
     this hooks shouldn't be used except for updating
     the state of the project while a certain exndpoint or function called 
@@ -38,6 +39,7 @@ const UiState: UiInterface = {
   deleteProjectManagerPopup: "none",
   logoutPopup: "none",
   isSideMenuOpened: true,
+  createProjectPopup: "none",
   /*
   this hooks shouldn't be used except for updating
   the state of the project while a certain exndpoint or function called 

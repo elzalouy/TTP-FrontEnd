@@ -23,6 +23,7 @@ interface Props {
   label?: string;
   selectValue: string;
   selectText: string | undefined;
+  error?: Boolean | undefined;
 }
 
 const SelectInput2: React.FC<Props> = ({
@@ -31,22 +32,13 @@ const SelectInput2: React.FC<Props> = ({
   selectValue,
   label,
   selectText,
+  error,
 }) => {
-  const [expanded, setExpanded] = useState(false);
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
 
-  //   useEffect(() => {
-  //     if (label && label.length > 10) {
-  //       return setValue(_.truncate(selectText, { length: 5, separator: " " }));
-  //     }
-  //     if (label && label.length <= 9 && selectText && selectText.length > 10) {
-  //       return setValue(_.truncate(selectText, { length: 10, separator: " " }));
-  //     }
-  //     return setValue(selectText);
-  //   }, [selectText, selectValue]);
   const open = Boolean(anchorEl);
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
@@ -63,7 +55,7 @@ const SelectInput2: React.FC<Props> = ({
         borderRadius: 1.5,
         overflow: "hidden",
         cursor: "pointer",
-        border: "1px solid #B4B6C4",
+        border: error ? "1px solid red" : "1px solid #E4E4E4",
         marginTop: "7px",
       }}
       justifyContent="space-between"

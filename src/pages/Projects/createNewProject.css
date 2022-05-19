@@ -20,7 +20,7 @@
 
 .inputs-grid {
   display: grid;
-  width: 800px;
+  width: 800px !important;
   /* grid-template-columns: 1fr 1fr; */
   /* grid-gap: 20px; */
 }
@@ -68,11 +68,10 @@
   font-weight: 300;
 }
 .date-project {
-  width: calc(100%);
+  width: calc(100%) !important;
   height: 43px !important;
   font-size: 13px;
-  padding: 11px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: solid 0.5px #b4b6c4;
   color: #707683;
   font-weight: 500;
@@ -117,9 +116,8 @@ input.date-project::-webkit-calendar-picker-indicator {
 
 .cancelBtn {
   cursor: pointer;
-  width: 200px;
-  max-width: 45%;
-  height: 45px;
+  width: 220px;
+  height: 42px;
   background-color: #f4f4f4;
   color: black;
   padding: 10px;
@@ -131,9 +129,8 @@ input.date-project::-webkit-calendar-picker-indicator {
 
 .blackBtn {
   cursor: pointer;
-  width: 200px;
-  max-width: 45%;
-  height: 45px;
+  width: 220px;
+  height: 42px;
   background-color: black;
   color: #ffffff;
   padding: 10px;
@@ -147,15 +144,16 @@ input.date-project::-webkit-calendar-picker-indicator {
   display: block;
   margin: 5px auto;
   cursor: pointer;
-  width: 263px;
+  width: 400px;
   max-width: 80%;
-  height: 45px;
+  height: 40px;
   background-color: black;
   color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 table.allTask-table {
@@ -224,7 +222,6 @@ table.allTask-table td.deleteTd {
   .blackBtn {
     cursor: pointer;
     width: 150px;
-    max-width: 45%;
     background-color: black;
     color: #ffffff;
     padding: 10px;

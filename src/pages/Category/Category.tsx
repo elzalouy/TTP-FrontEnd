@@ -52,6 +52,7 @@ const Category: React.FC<Props> = () => {
     <Box className="category-page" sx={{ width: "100%" }}>
       <Box sx={{ paddingTop: "30px" }}>
         <Typography
+          fontSize={24}
           variant="h2"
           style={
             SM
@@ -76,18 +77,11 @@ const Category: React.FC<Props> = () => {
           border: 1,
           borderRadius: "16px",
           borderColor: "#e2e2ea",
+          marginTop: 4,
         }}
-        style={{ marginTop: 40 }}
       >
         {categoriesData?.map((category: any, index: any) => (
-          <Grid
-            // width={{ lg: "32%", md: "32%", xs: "100%", sm: "100%" }}
-            sm={12}
-            xs={12}
-            md={4}
-            lg={4}
-            padding={1}
-          >
+          <Grid sm={6} xs={12} md={4} lg={4} padding={1}>
             <CategoryCard
               key={index}
               mainCategory={category.category}
@@ -100,7 +94,9 @@ const Category: React.FC<Props> = () => {
             />
           </Grid>
         ))}
-        {role !== "PM" && <CreateNewCategory />}
+        <Grid sm={6} xs={12} md={4} lg={4} padding={1}>
+          {role !== "PM" && <CreateNewCategory />}
+        </Grid>
       </Grid>
       {role !== "PM" && (
         <CreateSubCategory

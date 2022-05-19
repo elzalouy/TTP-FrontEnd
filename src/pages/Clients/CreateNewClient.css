@@ -19,7 +19,9 @@
 
 .new-client-title {
   color: #30bcc7;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 16px;
+  padding-top: 8px;
 }
 
 .label-client {

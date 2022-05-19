@@ -76,10 +76,10 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
-            let NoOfFinished = projects.allTasks.filter(
+            let NoOfFinished = projects?.allTasks?.filter(
               (item) => item.projectId === project._id && item.status === "done"
             ).length;
-            let NoOfTasks = projects.allTasks.filter(
+            let NoOfTasks = projects?.allTasks?.filter(
               (item) => item.projectId === project._id
             ).length;
             return (
@@ -90,12 +90,14 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     cursor: "pointer",
                     borderColor:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "#00ACBA !important"
                         : "",
                     borderWidth:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "2px !important"
                         : "",
                   }}
@@ -124,12 +126,14 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   sx={{
                     borderColor:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "#00ACBA !important"
                         : "",
                     borderWidth:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "2px !important"
                         : "",
                   }}
@@ -153,12 +157,14 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   sx={{
                     borderColor:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "#00ACBA !important"
                         : "",
                     borderWidth:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "2px !important"
                         : "",
                   }}
@@ -192,12 +198,14 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   sx={{
                     borderColor:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "#00ACBA !important"
                         : "",
                     borderWidth:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "2px !important"
                         : "",
                   }}
@@ -224,12 +232,14 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   sx={{
                     borderColor:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "#00ACBA !important"
                         : "",
                     borderWidth:
                       project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks
+                      NoOfFinished === NoOfTasks &&
+                      NoOfTasks !== 0
                         ? "2px !important"
                         : "",
                   }}

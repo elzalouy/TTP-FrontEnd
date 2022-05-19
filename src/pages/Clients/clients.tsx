@@ -84,49 +84,24 @@ const Clients: React.FC<Props> = () => {
 
   return (
     <Grid container paddingX={4} paddingY={SM ? 8 : 4}>
-      <Grid container xs={12} my={1}>
+      <Grid container xs={12} my={1} marginX={0} px={0}>
         <Typography variant="h2">Clients</Typography>
       </Grid>
-      {/* <Grid
+      <Grid
         justifyItems={"flex-start"}
         alignItems="flex-start"
         marginTop={4}
         marginBottom={1}
         container
       >
-        <Grid item xs={1} sm={1} md={0.3} lg={0.3}>
-          <Box
-            sx={{
-              borderRadius: "10px",
-              display: "flex",
-            }}
-          >
-            <img src={IMAGES.sortout} alt="sortout" />
-          </Box>
-        </Grid>
-        <Grid
-          item
-          marginBottom={1}
-          sx={{ bgcolor: "transparent" }}
-          marginLeft={4}
-          marginRight={2.8}
-        >
-          <SelectInput
-            options={options}
-            handleChange={handleChangeFilter}
-            selectValue={filter.sortDate}
-            label="Sort : "
-            selectText={filter.sortDate}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={2} lg={2}>
+        <Grid item xs={12} sm={4} md={2} lg={2} marginLeft={1}>
           <SearchBox
             placeholder="Search"
             value={search}
             onChange={handleSearchChange}
           />
         </Grid>
-      </Grid> */}
+      </Grid>
       <Grid
         xs={12}
         item

@@ -73,23 +73,25 @@ const AppHooks: React.FC = (props) => {
   }, [createTeamHook]);
   // update Depertment
   React.useEffect(() => {
-    console.log("update department hook fired.");
-    dispatch(getAllDepartments(null));
+    if (updateDepartmentHook !== undefined) {
+      console.log("update department hook fired.");
+      dispatch(getAllDepartments(null));
+    }
   }, [updateDepartmentHook]);
   // create department hook
   React.useEffect(() => {
-    console.log("create department hook fired.");
-    dispatch(getAllDepartments(null));
+    if (createDepartmentHook !== undefined) {
+      console.log("create department hook fired.");
+      dispatch(getAllDepartments(null));
+    }
   }, [createDepartmentHook]);
   // Edit Task hook
   React.useEffect(() => {
-    console.log("edit Task hook fired.");
-    dispatch(getAllTasks(null));
+    if (editTaskHook !== undefined) {
+      console.log("edit Task hook fired.");
+      dispatch(getAllTasks(null));
+    }
   }, [editTaskHook]);
-  // React.useEffect(() => {
-  //   console.log("create PM hook fired");
-  //   dispatch(getPMs(null));
-  // }, []);
   return <>{props.children}</>;
 };
 

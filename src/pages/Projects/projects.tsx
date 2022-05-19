@@ -78,11 +78,11 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid item margin={1}>
+        <Grid item margin={1} marginLeft={0}>
           <Box
             onClick={() => setFilter(!filter)}
             textAlign={"center"}
-            sx={{ bgcolor: "white", borderRadius: 4, paddingTop: 1.2 }}
+            sx={{ bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }}
             width={38}
             height={38}
           >
@@ -130,8 +130,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               control={control}
               render={(props) => (
                 <SelectInput
-                  {...props}
-                  label="Due Date: "
+                  placeholder="Due Date"
+                  label="Sort By: "
                   options={[
                     { id: "asc", text: "Ascending", value: "asc" },
                     { id: "desc", text: "Descending", value: "desc" },
@@ -158,8 +158,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4.5}
-            md={2.1}
-            lg={2.1}
+            md={2.5}
+            lg={2.5}
           >
             <Controller
               name="projectManager"
@@ -202,16 +202,15 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2.1}
-            lg={2.1}
+            md={1.5}
+            lg={1.5}
           >
             <Controller
               name="clientId"
               control={control}
               render={(props) => (
                 <SelectInput
-                  label={"Client: "}
-                  {...props}
+                  placeholder="Client name"
                   options={[
                     { id: "all", value: "", text: "All" },
                     ...clients?.map((item) => {
@@ -247,8 +246,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2.1}
-            lg={2.1}
+            md={1.1}
+            lg={1.1}
           >
             <Controller
               name="projectStatus"
@@ -256,7 +255,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               render={(props) => (
                 <>
                   <SelectInput
-                    label="Status"
+                    placeholder="Status"
                     options={[
                       { id: "all", value: "", text: "All" },
                       {

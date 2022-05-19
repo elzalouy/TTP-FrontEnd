@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/index";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients, clientsDataSelector } from "../../redux/Clients";
 import { getAllDepartments } from "../../redux/Departments";
@@ -31,8 +31,8 @@ const Tasks: React.FC = (props: any) => {
   const techMembers = useAppSelector(selectAllMembers);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down('sm'));
-  const MD = useMediaQuery(theme.breakpoints.down('md'));
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control } = useForm();
 
@@ -74,7 +74,7 @@ const Tasks: React.FC = (props: any) => {
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        {/* <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
           <Controller
             control={control}
             name="deadline"
@@ -96,8 +96,8 @@ const Tasks: React.FC = (props: any) => {
               />
             )}
           />
-        </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+        </Grid> */}
+        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={1.2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -105,6 +105,7 @@ const Tasks: React.FC = (props: any) => {
               render={(props) => (
                 <SelectInput
                   label="Status: "
+                  placeholder="All"
                   {...props}
                   options={[
                     { id: "", value: "", text: "All" },
@@ -198,18 +199,21 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} marginY={1}>
-          <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
-        </Grid>
         <Grid marginX={0.5} item xs={8} sm={8} md={4} lg={2.5} marginY={1}>
           <Box
-            style={SM ? { backgroundColor: "#fafafa",
-            width: "100%",
-            marginLeft: "5px",} : {
-              backgroundColor: "#fafafa",
-              width: "100%",
-              marginLeft: "20px",
-            }}
+            style={
+              SM
+                ? {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "5px",
+                  }
+                : {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "20px",
+                  }
+            }
           >
             <Controller
               name="name"
@@ -225,6 +229,9 @@ const Tasks: React.FC = (props: any) => {
               )}
             />
           </Box>
+        </Grid>
+        <Grid marginX={0.5} item xs={1} sm={4} md={1} lg={1} marginY={1}>
+          <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
       </Grid>
       {projects.loading === true ? (

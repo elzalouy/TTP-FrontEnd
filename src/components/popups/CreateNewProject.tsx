@@ -2,7 +2,7 @@ import React from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
+import NewProjectPopUp from "../Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
