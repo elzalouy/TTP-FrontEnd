@@ -33,10 +33,9 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
+import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
-import projectsSlice from "./redux/Projects/projects.slice";
-import { selectAllSatistics, setStatistics } from "./redux/Statistics";
+import { setStatistics } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 
 const App: React.FC = (props) => {
@@ -178,12 +177,12 @@ const App: React.FC = (props) => {
             component={OverView}
             key="/overview"
           />
-          <Redirect from="/" to="Overview" />
           <LoggedInContainer
             path="/404"
             component={NotFound}
             key="/notfound2"
           />
+          <Redirect from="/" to="Overview" />
           <Route path="/404" component={NotFound} key="/notfound" />
           <Redirect from="*" to="/404" key="404" />
         </Switch>

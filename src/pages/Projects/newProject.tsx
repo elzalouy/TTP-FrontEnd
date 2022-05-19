@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-/* import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp"; */
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions } from "../../redux/Projects";
 import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
+import { Grid } from "@mui/material";
+import { toggleCreateProjectPopup } from "../../redux/Ui";
 
 type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
@@ -17,9 +16,7 @@ const CreateNewProject: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const setShow = (value: string) => {
-    let project = { ...newProject };
-    project.showPopUp = value;
-    dispatch(ProjectsActions.onChangeNewProject(project));
+    dispatch(toggleCreateProjectPopup(value));
   };
 
   return (
@@ -32,8 +29,9 @@ const CreateNewProject: React.FC<Props> = () => {
           width: "100%",
           borderRadius: "12px",
           backgroundColor: "#F1F1F4",
-          p: 3,
-          mb: 5,
+          py: 1,
+          px: 2,
+          mb: 4,
           font: "normal normal 600 16px/30px Cairo",
           color: "#505050",
         }}
@@ -46,7 +44,9 @@ const CreateNewProject: React.FC<Props> = () => {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            mb: 3,
+            paddingLeft: 1,
+            paddingBottom: 2.5,
+            fontWeight: "600",
           }}
         >
           Not started yet
@@ -57,13 +57,13 @@ const CreateNewProject: React.FC<Props> = () => {
           }}
           sx={{
             backgroundColor: "#E8E8E8",
-            border: "2px solid #9FA1AB",
+            border: "1px solid #9FA1AB",
             borderRadius: "10px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
-            py: 0.6,
+            py: 1,
           }}
         >
           <img
@@ -77,7 +77,6 @@ const CreateNewProject: React.FC<Props> = () => {
           </h5>
         </Box>
       </Box>
-      <NewProjectPopUp setShow={setShow} />
     </div>
   );
 };

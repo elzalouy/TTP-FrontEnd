@@ -23,41 +23,45 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
   const role = useAppSelector(selectRole);
   return (
     <Box>
-      <Box paddingX="18px" paddingTop="18px" className="client-card">
-        <Box display={"flex"} justifyContent="space-between">
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <img
-              src={!image ? IMAGES.avatarClients : image}
-              alt="avatar"
-              style={{
-                width: "52px",
-                height: "52px",
-                borderRadius: "10px",
-              }}
-            />
-            <Box
-              style={{
-                marginLeft: "10px",
-                color: "#783DBD",
-              }}
+      <Grid container direction="column" className="client-card">
+        <Grid container justifyContent="space-between" marginBottom={1.5}>
+          <Box alignItems={"center"}>
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
             >
-              <Typography sx={{ fontWeight: "bold", fontSize: 16 }}>
-                {clientName}
-              </Typography>
-              <Typography
-                variant="body2"
-                style={{ color: "#808191", fontSize: "12px" }}
+              <img
+                src={!image ? IMAGES.avatarClients : image}
+                alt="avatar"
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  borderRadius: "8px",
+                }}
+              />
+              <Box
+                style={{
+                  marginLeft: "12px",
+                  color: "#783DBD",
+                }}
               >
-                {moment(createdAt).format("d MMMM yyyy")}
-              </Typography>
-            </Box>
-          </Stack>
-          {role !== "PM" && <ClientsPopover client={client} />}
-        </Box>
+                <Typography
+                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+                >
+                  {clientName}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{ color: "#808191", fontSize: "12px" }}
+                >
+                  {moment(createdAt).format("DD MMMM yyyy")}
+                </Typography>
+              </Box>
+            </Stack>
+          </Box>
+          <Box>{role !== "PM" && <ClientsPopover client={client} />}</Box>
+        </Grid>
         <Grid
           container
           className="counter-container"
@@ -129,7 +133,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
     </Box>
   );
 };

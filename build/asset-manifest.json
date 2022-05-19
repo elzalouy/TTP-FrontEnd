@@ -1,10 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.315acba4.css",
-    "main.js": "/static/js/main.7c0b54aa.js",
+    "main.css": "/static/css/main.6bcddfa7.css",
+    "main.js": "/static/js/main.7fe77647.js",
     "static/js/377.f2451b9c.chunk.js": "/static/js/377.f2451b9c.chunk.js",
     "static/media/picTask.svg": "/static/media/picTask.dff3f45f90a7316d11fc54176eb402c9.svg",
     "static/media/avatar.svg": "/static/media/avatar.ae5088bd8f8611a2fd5b4b22c9d15d68.svg",
+    "static/media/Cairo-Black.ttf": "/static/media/Cairo-Black.9851b4d11fb6b245a054.ttf",
+    "static/media/Cairo-Bold.ttf": "/static/media/Cairo-Bold.d9ac079285f24e8808ac.ttf",
     "static/media/Cairo-Regular.ttf": "/static/media/Cairo-Regular.8d7a1db4de873515385e.ttf",
     "static/media/avatarClients.svg": "/static/media/avatarClients.9ce10b63c29e6ba0e59811d7dc2f6670.svg",
     "static/media/personicon.svg": "/static/media/personicon.a9ee20f999109a746c0abfc07ce9b442.svg",
@@ -21,6 +23,7 @@
     "static/media/OverviewRevision.svg": "/static/media/OverviewRevision.54ffa43a5b02443e2303dc8751fed883.svg",
     "static/media/taskviewicon.svg": "/static/media/taskviewicon.38bc569cd07d881d4c011261140a1915.svg",
     "static/media/taskviewiconCopy.svg": "/static/media/taskviewiconCopy.38bc569cd07d881d4c011261140a1915.svg",
+    "static/media/Departments.svg": "/static/media/Departments.1fab380de06156579a24097f266d42e3.svg",
     "static/media/deleteicon2.svg": "/static/media/deleteicon2.b4d5aff069ff00244b2ce6fc22da1ffa.svg",
     "static/media/departmentIcon.svg": "/static/media/departmentIcon.82c275ab549813bbec9a6b84526db5a9.svg",
     "static/media/more.svg": "/static/media/more.459cd1370db0386f26e0f988081e24e1.svg",
@@ -33,6 +36,7 @@
     "static/media/notification.svg": "/static/media/notification.4423fddafe484f89578e9f828f781b24.svg",
     "static/media/tasks.svg": "/static/media/tasks.d697675615ea34108a00c7736b3e7832.svg",
     "static/media/logouticon.svg": "/static/media/logouticon.76180bd3ca1eee6be51e83d66f09994b.svg",
+    "static/media/Iconly-Light-outline-Search.svg": "/static/media/Iconly-Light-outline-Search.a24acbf77fb0e5930d8ac00fcad6bf9c.svg",
     "static/media/serachicon.SVG": "/static/media/serachicon.fa2af809bf65455d8a50.SVG",
     "index.html": "/index.html",
     "static/media/fileicon.svg": "/static/media/fileicon.0780e7741fa20ca4c1e723a487977edf.svg",
@@ -57,13 +61,14 @@
     "static/media/moreClient.svg": "/static/media/moreClient.353811fc1f3cb02a43af1dc73bf7e76b.svg",
     "static/media/arrowHeader.svg": "/static/media/arrowHeader.4138efc974d482e92eab04e33e0b27b5.svg",
     "static/media/moreGrey.svg": "/static/media/moreGrey.ddc5c341f307950130a6aa8296f48b13.svg",
+    "static/media/dropdownIcon.svg": "/static/media/dropdownIcon.a414677dfa22a0682382.svg",
     "static/media/burgerIcon.svg": "/static/media/burgerIcon.86db76e87fe958e25d86ebf4fa4c7f79.svg",
-    "main.315acba4.css.map": "/static/css/main.315acba4.css.map",
-    "main.7c0b54aa.js.map": "/static/js/main.7c0b54aa.js.map",
+    "main.6bcddfa7.css.map": "/static/css/main.6bcddfa7.css.map",
+    "main.7fe77647.js.map": "/static/js/main.7fe77647.js.map",
     "377.f2451b9c.chunk.js.map": "/static/js/377.f2451b9c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.315acba4.css",
-    "static/js/main.7c0b54aa.js"
+    "static/css/main.6bcddfa7.css",
+    "static/js/main.7fe77647.js"
   ]
 }

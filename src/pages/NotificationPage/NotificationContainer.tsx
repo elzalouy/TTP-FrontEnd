@@ -71,10 +71,10 @@ const NotificationContainer = (props: Props) => {
         <LoadingButton
           loading={loading}
           variant="contained"
-          sx={{ textTransform: "capitalize", pr: "2em", pl: "2em" }}
+          sx={{ textTransform: "capitalize", pr: "2em", pl: "2em",color:"#fff !important" }}
           onClick={handleLoadMore}
         >
-         {!loading && 'Load More'}
+         {'Load More'}
         </LoadingButton>
       </Grid>
     </Grid>

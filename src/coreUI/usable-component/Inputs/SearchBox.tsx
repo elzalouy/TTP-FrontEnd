@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import DirectionsIcon from "@mui/icons-material/Directions";
+import IMAGES from "../../../assets/img";
 
 interface Props {
   value: string;
@@ -31,7 +32,7 @@ const Search: React.FC<Props> = (props) => {
         sx={{ p: "10px" }}
         aria-label="search"
       >
-        <SearchIcon />
+        <img src={IMAGES.search} />
       </IconButton>
       <InputBase
         sx={{ ml: 1, flex: 1 }}

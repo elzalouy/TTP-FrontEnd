@@ -17,8 +17,8 @@ const AddNewPM: React.FC<Props> = () => {
   const [validationError, setValidationError] = useState<boolean>(false);
   const dispatch = useDispatch();
   const PMs = useAppSelector(selectPMs);
-  const pattern = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-
+  const pattern =
+    /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
   const createNewUser = () => {
     let validate = pattern.test(email);
@@ -36,10 +36,13 @@ const AddNewPM: React.FC<Props> = () => {
         }
         dispatch(
           createPM({
-            name: username,
-            email: email,
-            role: "PM",
-            type: "user",
+            data: {
+              name: username,
+              email: email,
+              role: "PM",
+              type: "user",
+            },
+            dispatch,
           })
         );
         setError(false);

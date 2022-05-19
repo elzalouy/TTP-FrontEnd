@@ -20,11 +20,13 @@
 
 .inputs-grid {
   display: grid;
-  width: 800px;
+  width: 800px !important;
   /* grid-template-columns: 1fr 1fr; */
   /* grid-gap: 20px; */
 }
-
+.inputs-grid > div {
+  margin-inline: 8px;
+}
 .select-project {
   width: calc(96% - 11px);
   padding-left: 11px;
@@ -39,11 +41,11 @@
 }
 
 .input-project {
-  width: calc(96% - 11px);
+  width: calc(100%);
   height: 43px !important;
   font-size: 13px;
   padding: 11px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: solid 0.5px #b4b6c4;
   color: #44444f;
   font-weight: 600;
@@ -51,11 +53,39 @@
   margin-top: 7px;
 }
 
+.input-project::-webkit-input-placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
+
+.input-project:-ms-input-placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
+
+.input-project::placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
+.date-project {
+  width: calc(100%) !important;
+  height: 43px !important;
+  font-size: 13px;
+  border-radius: 6px;
+  border: solid 0.5px #b4b6c4;
+  color: #707683;
+  font-weight: 500;
+  margin: 0;
+  margin-top: 7px;
+}
+input.date-project::-webkit-calendar-picker-indicator {
+  background: url("../../assets/img/dropdownIcon.svg") no-repeat;
+}
 .textarea-project {
   width: calc(96% - 11px);
   font-size: initial;
   padding: 11px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: solid 0.5px;
   border-color: #b4b6c4;
   color: #b4b6c4;
@@ -63,16 +93,31 @@
   margin-top: 7px;
   font-family: "Cairo", sans-serif;
 }
+
+.textarea-project::-webkit-input-placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
+
+.textarea-project:-ms-input-placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
+
+.textarea-project::placeholder {
+  color: #b4b6c4;
+  font-weight: 300;
+}
 .controllers {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
 .cancelBtn {
   cursor: pointer;
-  width: 200px;
-  max-width: 45%;
-  height: 45px;
+  width: 220px;
+  height: 42px;
   background-color: #f4f4f4;
   color: black;
   padding: 10px;
@@ -84,9 +129,8 @@
 
 .blackBtn {
   cursor: pointer;
-  width: 200px;
-  max-width: 45%;
-  height: 45px;
+  width: 220px;
+  height: 42px;
   background-color: black;
   color: #ffffff;
   padding: 10px;
@@ -100,15 +144,16 @@
   display: block;
   margin: 5px auto;
   cursor: pointer;
-  width: 263px;
+  width: 400px;
   max-width: 80%;
-  height: 45px;
+  height: 40px;
   background-color: black;
   color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 table.allTask-table {
@@ -131,7 +176,7 @@ tr {
 
 table.allTask-table th {
   text-align: left;
-  padding : 0 5px;
+  padding: 0 5px;
   text-transform: capitalize;
 }
 table.allTask-table td.deleteTd {
@@ -173,11 +218,10 @@ table.allTask-table td.deleteTd {
   font-weight: 600;
 }
 
-@media (max-width:800px) {
+@media (max-width: 800px) {
   .blackBtn {
     cursor: pointer;
     width: 150px;
-    max-width: 45%;
     background-color: black;
     color: #ffffff;
     padding: 10px;
@@ -186,39 +230,39 @@ table.allTask-table td.deleteTd {
     font-weight: bold;
     margin: 10px 0;
   }
-  .addTaskBtn{
+  .addTaskBtn {
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .input-project{
+  .input-project {
     width: 80%;
   }
-  .select-project{
+  .select-project {
     width: 80%;
   }
-  .files{
-    margin:20px 0px;
+  .files {
+    margin: 20px 0px;
   }
 }
-@media (max-width:700px) {
-  .input-project{
+@media (max-width: 700px) {
+  .input-project {
     width: 100%;
   }
-  .select-project{
+  .select-project {
     width: 100%;
   }
-  .textarea-project{
+  .textarea-project {
     width: 100%;
   }
 }
-@media (max-width:600px) {
-  .input-project{
+@media (max-width: 600px) {
+  .input-project {
     width: 100%;
   }
-  .select-project{
+  .select-project {
     width: 100%;
   }
-  .textarea-project{
+  .textarea-project {
     width: 100%;
   }
 }

@@ -50,7 +50,7 @@ const CategoryCard: React.FC<IProps> = ({
         width: "100%",
         height: 210,
         maxHeight: 350,
-        borderRadius: 3,
+        borderRadius: "20px",
         cursor: "pointer",
         backgroundColor: backgroundColor,
         overflow: "hidden",
@@ -62,7 +62,7 @@ const CategoryCard: React.FC<IProps> = ({
           fontWeight: "bold",
           mt: 1,
           mb: 0.2,
-          fontSize: 18,
+          fontSize: 22,
           letterSpacing: 0.2,
           textAlign: "left",
           textTransform: "capitalize",
@@ -105,7 +105,7 @@ const CategoryCard: React.FC<IProps> = ({
                   color: "#5C5C5C",
                   fontFamily: "font: normal normal normal 14px/26px Cairo",
                   letterSpacing: "0.1px",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   height: "fit-content",
                 }}
               >
@@ -120,56 +120,59 @@ const CategoryCard: React.FC<IProps> = ({
           width="100%"
           container
         >
-          <Grid xs={10} paddingRight={1.5}>
-         {(role !== "PM" &&  <Button
-              sx={{
-                color: fontColor,
-                mb: 8.5,
-                width: "100%",
-                fontWeight: "bold",
-                textTransform: "capitalize",
-                border: 1,
-                borderRadius: 1,
-                borderColor: fontColor,
-                mr: 1,
-                height: "40px",
-              }}
-              onClick={() => handleSetDisplay("flex")}
-            >
-              <Box
+          <Grid xs={12}>
+            {role !== "PM" && (
+              <Button
                 sx={{
+                  color: fontColor,
+                  mb: 8.5,
+                  width: "100%",
+                  fontWeight: "bold",
+                  textTransform: "capitalize",
+                  border: 1,
+                  borderRadius: 1,
+                  borderColor: fontColor,
                   mr: 1,
-                  border: 2,
-                  textAlign: "center",
-                  borderRadius: 1.5,
-                  display: "flex",
-                  fontSize: "15px",
-                  paddingX: 0.5,
-                  paddingY: 0.4,
                 }}
+                onClick={() => handleSetDisplay("flex")}
               >
-                <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
-              </Box>
-              <Typography fontSize={14} fontWeight={"bold"}>
-                New Sub Category
-              </Typography>
-            </Button>)}
+                <Box
+                  sx={{
+                    mr: 1,
+                    border: 2,
+                    textAlign: "center",
+                    borderRadius: 1.5,
+                    display: "flex",
+                    fontSize: "15px",
+                    paddingX: 0.5,
+                    paddingY: 0.1,
+                  }}
+                >
+                  <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
+                </Box>
+                <Typography fontSize={14} fontWeight={"bold"}>
+                  Manage sub category
+                </Typography>
+              </Button>
+            )}
           </Grid>
-          <Grid xs={2}>
-           {role !== "PM" && <EditBtn
-              sx={{
-                borderRadius: 1,
-                border: 1,
-                mb: 8.5,
-                borderColor: fontColor,
-                color: fontColor,
-                height: "40px",
-              }}
-              onClick={() => handleSetEditCatDisplay("flex")}
-            >
-              <EditIcon width={20} height={20} color={fontColor} />
-            </EditBtn>}
-          </Grid>
+          {/* <Grid xs={2}>
+            {role !== "PM" && (
+              <EditBtn
+                sx={{
+                  borderRadius: 1,
+                  border: 1,
+                  mb: 8.5,
+                  borderColor: fontColor,
+                  color: fontColor,
+                  height: "17%",
+                }}
+                onClick={() => handleSetEditCatDisplay("flex")}
+              >
+                <EditIcon width={20} height={20} color={fontColor} />
+              </EditBtn>
+            )}
+          </Grid> */}
         </Grid>
       </Box>
     </Box>

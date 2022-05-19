@@ -36,9 +36,12 @@ const EditPM: React.FC<Props> = (props: Props) => {
     } else {
       dispatch(
         updatePM({
-          id: _id,
-          name: username,
-          email: email,
+          data: {
+            id: _id,
+            name: username,
+            email: email,
+          },
+          dispatch,
         })
       );
       setError(false);

@@ -3,7 +3,7 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/Categories";
@@ -53,20 +53,16 @@ const CreateNewCategory: React.FC<Props> = () => {
       setsubCategories([]);
     } catch (error: any) {
       setErrors(error.message);
-      console.log(error.message);
     }
   };
 
-  
   return (
     <>
       <Box
         sx={{
-          mx: 1,
-          my: 1.7,
           py: 1,
           px: 1,
-          width: 370,
+          width: "100%",
           height: 210,
           maxHeight: 350,
           borderRadius: 3,
@@ -78,11 +74,11 @@ const CreateNewCategory: React.FC<Props> = () => {
       >
         <img src={IMAGES.plus} alt="add" width={30} height={30} />
         <Typography fontSize={16} color={"#272727"}>
-          Create new category
+          Add new category
         </Typography>
       </Box>
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="320px">
-        <div>
+      <PopUp show={Show}>
+        <div style={{ marginTop: 10 }}>
           <img
             className="closeIcon"
             width="9"
@@ -95,70 +91,105 @@ const CreateNewCategory: React.FC<Props> = () => {
               setsubCategories([]);
             }}
           />
+          <p style={{ color: "red" }}>{errors}</p>
+          <p className="popup-title" style={{ marginBottom: 2 }}>
+            Add new category
+          </p>
         </div>
-        <p style={{ color: "red" }}>{errors}</p>
-        <p className="popup-title" >
-          Create new category
-        </p>
-        <form className="form-inputs">
-          <label className="label">Main category</label>
-          <div style={{ display: "flex" ,marginTop:"10px",marginBottom:"10px"}}>
-            <input
-              className="input-auth"
-              type="text"
-              name="mainCategory"
-              placeholder="Ex: Al-shaqran"
-              value={mainCategory}
-              onChange={onMainChange}
-              required
-            />
-          </div>
-          <label className="label">Sub-Category</label>
-          <div style={{ display: "flex",marginTop:"10px" }}>
-            <input
-              className="input-auth"
-              type="text"
-              name="subCategory"
-              value={subCategory}
-              onChange={onSubChange}
-              placeholder="Sub category"
-            />
-            <div className="add-subcategory" onClick={addSubCategory}>
-              Add
-            </div>
-          </div>
-          <div className="subcategories">
-            {subCategories &&
-              subCategories.map(({ _id, subCategory }: any) => (
-                <div className="subcategory" key={_id}>
-                  {subCategory}
-                  <span
-                    className="remove-category"
-                    onClick={() => {
-                      removeSubCategory(_id);
-                    }}
-                  >
-                    x
-                  </span>
-                </div>
-              ))}
-            <br />
-            <div className="controllers">
-              <button
-                className="controllers-cancel"
-                onClick={(e:any) => {
-                  e.preventDefault();
-                  setShow("none");
-                  setMainCategory("");
-                  setSubCategory("");
-                  setsubCategories([]);
-                }}
+        <form className="form-inputs" onSubmit={handleSubmit}>
+          <Grid width="448px" container>
+            <Grid item xs={12}>
+              <Typography
+                fontWeight={"700"}
+                fontSize={14}
+                paddingTop={4}
+                paddingBottom={1}
               >
-                Cancel
-              </button>
-              <button className="controllers-done" onClick={(e)=>handleSubmit(e)}>Done</button>
+                Main category
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                <TextField
+                  type="text"
+                  name="mainCategory"
+                  placeholder="Ex: Al-shaqran"
+                  value={mainCategory}
+                  onChange={onMainChange}
+                  required
+                  sx={{
+                    height: 50,
+                    width: 450,
+                    borderRadius: "6px",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderRadius: "6px",
+                    },
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                fontWeight={"700"}
+                fontSize={14}
+                paddingTop={1}
+                paddingBottom={1}
+                color="black"
+              >
+                Sub-category
+              </Typography>{" "}
+            </Grid>
+            <Grid item xs={9} style={{ marginTop: "10px" }}>
+              <TextField
+                type="text"
+                name="subCategory"
+                value={subCategory}
+                onChange={onSubChange}
+                placeholder="Sub category"
+                sx={{
+                  height: 50,
+                  width: 335,
+                  borderRadius: "6px",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderRadius: "6px",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={3} style={{ marginTop: "10px" }}>
+              <div className="add-subcategory" onClick={addSubCategory}>
+                Add
+              </div>
+            </Grid>
+            <div className="subcategories">
+              {subCategories &&
+                subCategories.map(({ _id, subCategory }: any) => (
+                  <div className="subcategory" key={_id}>
+                    {subCategory}
+                    <span
+                      className="remove-category"
+                      onClick={() => {
+                        removeSubCategory(_id);
+                      }}
+                    >
+                      x
+                    </span>
+                  </div>
+                ))}
+              <br />
+              <div className="controllers">
+                <button
+                  className="controllers-cancel"
+                  onClick={() => {
+                    setShow("none");
+                  }}
+                >
+                  Cancel
+                </button>
+                <button className="controllers-done">Done</button>
+              </div>
             </div>
-          </div>
+          </Grid>
         </form>
       </PopUp>
     </>

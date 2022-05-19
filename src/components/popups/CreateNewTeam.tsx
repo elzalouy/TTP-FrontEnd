@@ -21,7 +21,7 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
-  
+
   useEffect(() => {
     setTeam({
       name: "",
@@ -29,7 +29,6 @@ const AddNewTeam: React.FC<Props> = () => {
     });
     setAllTeam([]);
   }, [Show]);
-
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
@@ -83,7 +82,7 @@ const AddNewTeam: React.FC<Props> = () => {
           }}
           value={Team.name}
           style={{
-            marginBottom: '1em'
+            marginBottom: "1em",
           }}
         />
 
@@ -94,8 +93,9 @@ const AddNewTeam: React.FC<Props> = () => {
             setTeam({ ...Team, department: e.target.value });
           }}
           value={Team.department}
+          defaultValue=""
           style={{
-            marginBottom: '1em'
+            marginBottom: "1em",
           }}
         >
           <option value="">Select Department</option>
@@ -112,18 +112,20 @@ const AddNewTeam: React.FC<Props> = () => {
             setAllTeam([...AllTeam, Team]);
             setTeam({ name: "", department: "" });
           }}
-          disabled={Team.department === '' || Team.name === ""}
+          disabled={Team.department === "" || Team.name === ""}
           style={{
             background:
-              Team.department === '' || Team.name === ""
+              Team.department === "" || Team.name === ""
                 ? "#FFC500"
                 : "#FFC500",
-            marginBottom: '3em'
+            marginBottom: "3em",
           }}
         >
           Add
         </button>
-        <label style={{ fontWeight: 'light', fontSize: '1rem' }}>All Team</label>
+        <label style={{ fontWeight: "light", fontSize: "1rem" }}>
+          All Team
+        </label>
         <table className="allTeam-table">
           <tr>
             <th>Team name</th>

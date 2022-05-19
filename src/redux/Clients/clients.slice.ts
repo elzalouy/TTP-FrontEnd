@@ -107,11 +107,8 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
     builder.addCase(deleteClient.fulfilled, (state, { payload }) => {
       state.loading = false;
       let clientData = state.clientsData;
-      let clientIndex = clientData
-        .map((client) => client._id)
-        .indexOf(payload._id);
-      clientData.splice(clientIndex, 1);
-      state.clientsData = clientData;
+      let clients = clientData.filter((item) => item._id !== payload?.id);
+      state.clientsData = clients;
     });
   },
 });

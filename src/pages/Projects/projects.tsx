@@ -45,7 +45,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
-  const { register, watch, control, setValue } = useForm();
+  const { watch, control } = useForm();
   const theme = useTheme();
 
   const onHandleChange = (e: any) => {
@@ -63,9 +63,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
 
-  useEffect(() => {
-    setValue("name", "");
-  }, []);
   return (
     <Grid
       overflow={"hidden"}
@@ -81,11 +78,11 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid item margin={1}>
+        <Grid item margin={1} marginLeft={0}>
           <Box
             onClick={() => setFilter(!filter)}
             textAlign={"center"}
-            sx={{ bgcolor: "white", borderRadius: 4, paddingTop: 1.2 }}
+            sx={{ bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }}
             width={38}
             height={38}
           >
@@ -125,16 +122,16 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={2.1}
+            lg={2.1}
           >
             <Controller
               name="deadline"
               control={control}
               render={(props) => (
                 <SelectInput
-                  {...props}
-                  label="Due Date: "
+                  placeholder="Due Date"
+                  label="Sort By: "
                   options={[
                     { id: "asc", text: "Ascending", value: "asc" },
                     { id: "desc", text: "Descending", value: "desc" },
@@ -161,8 +158,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4.5}
-            md={2}
-            lg={2}
+            md={2.5}
+            lg={2.5}
           >
             <Controller
               name="projectManager"
@@ -205,16 +202,15 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={1.5}
+            lg={1.5}
           >
             <Controller
               name="clientId"
               control={control}
               render={(props) => (
                 <SelectInput
-                  label={"Client: "}
-                  {...props}
+                  placeholder="Client name"
                   options={[
                     { id: "all", value: "", text: "All" },
                     ...clients?.map((item) => {
@@ -250,8 +246,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={5}
             sm={4}
-            md={2}
-            lg={2}
+            md={1.1}
+            lg={1.1}
           >
             <Controller
               name="projectStatus"
@@ -259,7 +255,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               render={(props) => (
                 <>
                   <SelectInput
-                    label="Status"
+                    placeholder="Status"
                     options={[
                       { id: "all", value: "", text: "All" },
                       {
@@ -296,8 +292,8 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           margin={1}
           item
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
-          md={2}
-          lg={2}
+          md={2.1}
+          lg={2.1}
         >
           <Controller
             name="name"
@@ -309,6 +305,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
+                placeholder="Search"
               />
             )}
           />
@@ -326,7 +323,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         {loading === false ? (
           <>
             <TableBox
-              title={"In Progress"}
+              title={"In progress"}
               outTitled={false}
               expanded={expanded}
               setExpanded={setExpanded}

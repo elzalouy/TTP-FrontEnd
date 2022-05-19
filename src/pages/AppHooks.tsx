@@ -16,7 +16,6 @@ import { fireDeleteTaskHook } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
-  const projects = useAppSelector(selectAllProjects);
   const {
     newProjectHook,
     updateProjectHook,
@@ -45,7 +44,7 @@ const AppHooks: React.FC = (props) => {
   // update project hook
   React.useEffect(() => {
     if (updateProjectHook !== undefined) {
-      console.log("update project hook fired");
+      console.log("update project hook fired.");
       dispatch(getAllClients(null));
       dispatch(getAllProjects(null));
     }
@@ -53,14 +52,14 @@ const AppHooks: React.FC = (props) => {
   // Delete task hook
   React.useEffect(() => {
     if (deleteTasksHook !== undefined) {
-      console.log("delete tasks hook fired");
+      console.log("delete tasks hook fired.");
       dispatch(getAllTasks(null));
     }
   }, [deleteTasksHook]);
   // Delete project hook
   React.useEffect(() => {
     if (deleteProjectHook !== undefined) {
-      console.log("delete project hook fired");
+      console.log("delete project hook fired.");
       dispatch(getAllProjects(null));
       dispatch(getAllClients(null));
     }
@@ -68,28 +67,31 @@ const AppHooks: React.FC = (props) => {
   // new Tech member to department
   React.useEffect(() => {
     if (createTeamHook !== undefined) {
-      console.log("new member hook fired");
+      console.log("new member hook fired.");
       dispatch(getAllDepartments(null));
     }
   }, [createTeamHook]);
   // update Depertment
-
   React.useEffect(() => {
-    console.log("update department hook");
-    dispatch(getAllDepartments(null));
+    if (updateDepartmentHook !== undefined) {
+      console.log("update department hook fired.");
+      dispatch(getAllDepartments(null));
+    }
   }, [updateDepartmentHook]);
   // create department hook
   React.useEffect(() => {
-    console.log("create department hook");
-    dispatch(getAllDepartments(null));
+    if (createDepartmentHook !== undefined) {
+      console.log("create department hook fired.");
+      dispatch(getAllDepartments(null));
+    }
   }, [createDepartmentHook]);
   // Edit Task hook
   React.useEffect(() => {
-    console.log("edit Task hook");
-    dispatch(getAllTasks(null));
+    if (editTaskHook !== undefined) {
+      console.log("edit Task hook fired.");
+      dispatch(getAllTasks(null));
+    }
   }, [editTaskHook]);
-  // update statistics hook
-
   return <>{props.children}</>;
 };
 

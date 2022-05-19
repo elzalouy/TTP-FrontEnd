@@ -72,7 +72,6 @@ export const deleteClient = createAsyncThunk<any, any, any>(
   async (data: any, { rejectWithValue }) => {
     try {
       let client = await ClientsApi.deleteClient(data);
-      console.log({ client });
       if (client.ok && client.data) {
         toast.success("Client deleted successfully", {
           position: "top-right",

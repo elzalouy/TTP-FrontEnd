@@ -55,15 +55,12 @@ const DepartmentCard: React.FC<Props> = ({
         style={{ color: colors[department.color][1] }}
       >
         <h2>{department.name}</h2>
-        <p>
-          {role !== "PM" && (
-            <DepartmentDrop
-              handleSetShow={handleSetShow}
-              handleSetShowDelete={handleSetShowDelete}
-              color={colors[department.color][1]}
-            />
-          )}
-        </p>
+        {role !== "PM" && (
+          <DepartmentDrop
+            handleSetShow={handleSetShow}
+            handleSetShowDelete={handleSetShowDelete}
+          />
+        )}
       </div>
       <div className="teams">
         {department?.teamsId?.map((team: any) => (

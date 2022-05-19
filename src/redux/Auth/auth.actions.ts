@@ -10,9 +10,10 @@ export const signIn = createAsyncThunk<any, any, any>(
       let result = await api.signIn(args?.data);
       if (result.ok) {
         args.history.push("/Overview");
+        //This return below returns the error message and status for displaying on login UI
         return result.data;
       }
-      throw "Error happened";
+      return result.data;
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);
@@ -29,7 +30,7 @@ export const getUserInfo = createAsyncThunk<any, any, any>(
         return result.data;
       }
       localStorage.removeItem("token");
-      throw "error happened";
+      throw "Error happened";
     } catch (error) {
       rejectWithValue(error);
     }
@@ -44,7 +45,7 @@ export const logout = createAsyncThunk<any, any, any>(
       localStorage.removeItem("token");
       if (result.ok === true) {
         return result.data;
-      } else throw "error happenned";
+      } else return result.data;
     } catch (error) {
       rejectWithValue(error);
     }
@@ -58,7 +59,7 @@ export const newPassword = createAsyncThunk<any, any, any>(
       let result = await api.newPasword(args);
       if (result.ok === true) {
         return result.data;
-      } else return false;
+      } else return result.data;
     } catch (error) {
       rejectWithValue(error);
     }
@@ -72,7 +73,7 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
       let result = await api.forgotPassword(args);
       if (result.ok === true) {
         return result.data;
-      } else return {};
+      } else return result.data;
     } catch (error) {
       rejectWithValue(error);
     }

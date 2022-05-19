@@ -18,7 +18,7 @@ export const projectsTableStyle = (status: string) => {
       color: "black",
       backgroundColor:
         status === "In progress" ? borderColor[0] : borderColor[1],
-      font: "normal normal normal 14px/35px Cairo",
+      fontFamily: "Cairo, Regular",
     },
     tbody: {
       backgroundColor: status === "In progress" ? "#FBF5E2" : "#E1F3F5",

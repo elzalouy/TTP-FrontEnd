@@ -69,9 +69,10 @@
 }
 
 .popup-title {
+  font-size: 18px;
   margin-bottom: 3em;
   color: #30bcc7;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: capitalize;
   margin-bottom: 20px;
 }
@@ -84,9 +85,10 @@
 
 .popup-label {
   display: block;
-  font-weight: bold;
+  font-weight: bold !important;
   margin: 10px 0 5px 0 !important;
   text-transform: capitalize;
+  margin-top: 40px !important;
 }
 
 .popup-input {
@@ -109,6 +111,7 @@
 .closeIcon {
   float: right;
   cursor: pointer;
+  margin-top: 4px;
 }
 
 .popup-select {
@@ -192,7 +195,7 @@
 }
 
 .warning-text {
-  margin: 20px 10px;
+  margin: 20px 8px 0px;
   color: black;
 }
 
@@ -222,13 +225,14 @@
   text-align: center;
   cursor: pointer;
   border: none;
-  border-radius: 10px;
-  margin-left: 1.5em;
+  border-radius: 6px;
+  margin-left: 17px;
   padding: 0px 40px;
-  height: 55px;
+  height: 50px;
   color: black;
   background-color: #ffc500;
   font-weight: bold;
+  width: 100px;
 }
 
 .names-container {
@@ -287,7 +291,7 @@ tr {
 
 tr {
   border: 0px solid;
-  border-bottom: 1px solid #EBEFF2;
+  border-bottom: 1px solid #ebeff2;
 }
 
 table.allTask-table th {
@@ -349,7 +353,7 @@ tr {
 
 .allTeam-table tr {
   border: 0px solid;
-  border-bottom: 1px solid #EBEFF2;
+  border-bottom: 1px solid #ebeff2;
   height: 3.5em;
 }
 
@@ -417,15 +421,15 @@ table.allTeam-table td.deleteTd {
 
 .input-auth {
   color: #000;
+  border-color: #e4e4e4;
 }
 
-@media (max-width:700px) {
-  .inputs-grid{
+@media (max-width: 700px) {
+  .inputs-grid {
     grid-template-columns: 1fr;
     width: 100% !important;
-  } 
-  .controllers{
+  }
+  .controllers {
     margin-top: 20px;
   }
 }
-
