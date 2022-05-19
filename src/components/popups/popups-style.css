@@ -34,6 +34,9 @@
   border: none;
   font-weight: bold;
   margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .controllers-done {

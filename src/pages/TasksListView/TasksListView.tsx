@@ -44,7 +44,7 @@ const Tasks: React.FC = (props: any) => {
     let filter = watch();
     dispatch(filterTasks(filter));
   };
-
+  
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -72,7 +72,7 @@ const Tasks: React.FC = (props: any) => {
       marginTop={MD ? 10 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2}>
+      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
         Tasks
       </Typography>
       <Grid marginBottom={2} container direction={"row"}>
@@ -85,6 +85,7 @@ const Tasks: React.FC = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
+                  { id: "", text: "All", value: "all" },
                   { id: "asc", text: "Ascending", value: "asc" },
                   { id: "desc", text: "Descending", value: "desc" },
                 ]}
@@ -110,14 +111,20 @@ const Tasks: React.FC = (props: any) => {
                   {...props}
                   options={[
                     { id: "", value: "", text: "All" },
+                    { id: "not started", value: "not started", text: "Not Started" },
+                    { id: "not clear", value: "not clear", text: "Not Clear" },
                     {
                       id: "inProgress",
                       value: "inProgress",
                       text: "In Progress",
                     },
+                    { id: "review", value: "review", text: "Review" },
                     { id: "shared", value: "shared", text: "Shared" },
-                    { id: "late", value: "late", text: "Late" },
-                    { id: "not clear", value: "not clear", text: "Not Clear" },
+                    {
+                      id: "done",
+                      value: "done",
+                      text: "Done",
+                    },
                     { id: "canceled", value: "canceled", text: "Canceled" },
                   ]}
                   handleChange={(e) => {
@@ -132,7 +139,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={4} marginY={1}>
+        <Grid marginX={0.5} item xs={12} sm={3} md={2.5} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
@@ -228,7 +235,7 @@ const Tasks: React.FC = (props: any) => {
           />
         </Grid>
         <Grid marginX={0.5} item xs={2} sm={4} md={1} marginY={1}>
-          <DeleteTask Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
+          <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
         <Grid marginX={0.5} item xs={8} sm={8} md={2.5} lg={2.5} marginY={1}>
           <Box

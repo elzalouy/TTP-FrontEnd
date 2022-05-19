@@ -7,6 +7,7 @@ import "./DeleteTask.css";
 type Props = {
   onDelete?: () => void;
   Show: string;
+  task: string[];
   setShow: (val: string) => void;
 };
 
@@ -16,7 +17,9 @@ const DeleteTask: React.FC<Props> = (props) => {
       <Box style={{ width: "35px", padding: "0 10px" }} className="filter-icon">
         <IconButton
           onClick={() => {
-            props.setShow("flex");
+            if (props.task.length !== 0) {
+              props.setShow("flex");
+            }
           }}
         >
           <img src={IMAGES.deleteicon} alt="sortout" />
