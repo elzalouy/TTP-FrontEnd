@@ -190,4 +190,7 @@ select.select-filter {
   .all-departments{
     grid-template-columns: 1fr;
   }
+  .department-tools{
+    margin-top: 50px;
+  }
 }

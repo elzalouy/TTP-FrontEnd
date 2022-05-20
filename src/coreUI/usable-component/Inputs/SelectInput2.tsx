@@ -64,11 +64,13 @@ const SelectInput2: React.FC<Props> = ({
         overflow: "hidden",
         cursor: "pointer",
         border: "1px solid #B4B6C4",
+        padding:"0px !important",
         marginTop: "7px",
       }}
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"
+      className="input-project"
       container
     >
       <Grid

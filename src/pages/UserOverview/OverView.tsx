@@ -98,42 +98,6 @@ const OverView: FC<Props> = (props) => {
                 paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
                 container
               >
-                {role === "PM" ? (
-                  <>
-                    <Grid
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      paddingRight={"3%"}
-                      container
-                    >
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </>
-                ) : (
                   <>
                     {role === "PM" && (
                       <>
@@ -233,7 +197,6 @@ const OverView: FC<Props> = (props) => {
                       </>
                     )}
                   </>
-                )}
               </Grid>
               {MD ? (
                 <Grid

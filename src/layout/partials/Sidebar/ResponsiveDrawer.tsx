@@ -180,6 +180,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
                 marginLeft={3.5}
                 variant="h6"
                 fontSize={12}
+                marginBottom={1.5}
                 color="#B2B3BD"
                 fontWeight={"700"}
               >
