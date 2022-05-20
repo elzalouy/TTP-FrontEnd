@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectAllProjects, selectTasks } from "../../../redux/Projects";
+import { useMediaQuery,useTheme } from "@mui/material";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -37,7 +38,9 @@ interface ProjectManagersProps {
 
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const project = useAppSelector(selectAllProjects);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [selects, setAllSelected] = useState<string[]>([]);
   const refreshUser = (id: string) => {
     //Checking time limit
@@ -72,7 +75,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     <>
       <EditPM hideButton />
       <DeletePM hideButton />
-      <TableContainer style={{paddingLeft:"40px"}}>
+      <TableContainer style={MD ? {paddingLeft:"20px"}:{paddingLeft:"40px"}}>
         <Table size="small" aria-label="a dense table" style={{borderColor:"#EBEFF2"}}>
           <TableHead>
             <TableRow>
