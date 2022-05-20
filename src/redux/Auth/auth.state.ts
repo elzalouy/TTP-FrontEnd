@@ -16,6 +16,7 @@ export interface User {
 interface Res {
   msg: string;
   status: number | string;
+  page?:string;
 }
 export interface UserInterface {
   loading: boolean | null;

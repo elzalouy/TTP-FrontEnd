@@ -53,10 +53,12 @@ const Login: React.FC<Props> = ({ history }) => {
 
   useEffect(() => {
     if (res.msg && res.status !== 200) {
-      setFailed({
-        message: res.msg,
-        status: res.status,
-      });
+      if(res.page==="login"){
+        setFailed({
+          message: res.msg,
+          status: res.status,
+        });
+      }
     }
     if (isAuth === true) {
       history.replace("/Overview");

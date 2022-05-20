@@ -46,10 +46,12 @@ const Forget: React.FC<Props> = ({ history }) => {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
       setVisible(false);
-      setFailed({
-        message: res.msg,
-        status: res.status,
-      });
+      if(res.page==="forgetPassword"){
+        setFailed({
+          message: res.msg,
+          status: res.status,
+        });
+      }
     } else {
       setVisible(true);
     }

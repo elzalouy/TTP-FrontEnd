@@ -75,10 +75,12 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
       setVisible(false);
-      setFailed({
-        message: res.msg,
-        status: res.status,
-      });
+      if(res.page==="newPassword"){
+        setFailed({
+          message: res.msg,
+          status: res.status,
+        });
+      }
     } else {
       setVisible(true);
       setTimeout(() => history.push("/"), 800);
