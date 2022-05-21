@@ -76,7 +76,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
       <EditPM hideButton />
       <DeletePM hideButton />
       <TableContainer style={MD ? {paddingLeft:"20px"}:{paddingLeft:"40px"}}>
-        <Table size="small" aria-label="a dense table" style={{borderColor:"#EBEFF2"}}>
+        <Table size="small" aria-label="a dense table" style={MD? {width:"130%",borderColor:"#EBEFF2"} : {width:"100%",borderColor:"#EBEFF2"}} >
           <TableHead>
             <TableRow>
               <TableCell
