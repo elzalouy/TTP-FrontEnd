@@ -36,7 +36,7 @@ const DragField: React.FC = (props: any) => {
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
   const departments = useAppSelector(selectAllDepartments);
-  
+
   const [columns, setColumns] = useState({
     [uuidv4()]: {
       name: "Not Started",
@@ -93,7 +93,7 @@ const DragField: React.FC = (props: any) => {
       value: "Done",
       footer: "task-card-footer-done",
     },
-    
+
     [uuidv4()]: {
       name: "Canceled",
       items: cancledTasks,
@@ -228,7 +228,7 @@ const DragField: React.FC = (props: any) => {
   };
 
   const move = (obj: any) => {
-    dispatch(moveTask(obj));
+    dispatch(moveTask({ data: obj, dispatch }));
   };
 
   return (
@@ -259,7 +259,7 @@ const DragField: React.FC = (props: any) => {
                         <span className={column?.header}>{column.name}</span>{" "}
                         {column.items.length}
                       </Typography>
-                     {/*  <Typography style={{ padding: "12px" }}>
+                      {/*  <Typography style={{ padding: "12px" }}>
                         <img src={IMAGES.taskFilter} alt="more" />
                       </Typography> */}
                     </Stack>

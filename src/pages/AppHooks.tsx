@@ -25,6 +25,7 @@ const AppHooks: React.FC = (props) => {
     updateDepartmentHook,
     createDepartmentHook,
     editTaskHook,
+    moveTaskHook,
   } = useAppSelector(selectUi);
   /*
   1- Create an app hook
@@ -92,6 +93,12 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [editTaskHook]);
+  React.useEffect(() => {
+    if (moveTaskHook !== undefined) {
+      console.log("move task hook fired");
+      dispatch(getAllDepartments(null));
+    }
+  }, [moveTaskHook]);
   return <>{props.children}</>;
 };
 

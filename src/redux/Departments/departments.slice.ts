@@ -29,6 +29,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
     });
     builder.addCase(getAllDepartments.fulfilled, (state, action) => {
       state.loading = false;
+      console.log(action.payload);
       state.departments = action.payload;
     });
     builder.addCase(createDepartment.rejected, (state) => {

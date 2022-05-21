@@ -45,6 +45,7 @@ const DepartmentCard: React.FC<Props> = ({
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
+  console.log(department);
   return (
     <div
       className="department-Card"
@@ -76,27 +77,12 @@ const DepartmentCard: React.FC<Props> = ({
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">In progress task</p>
-          <p>
-            {
-              projects.allTasks.filter(
-                (item) =>
-                  item.boardId === department.boardId &&
-                  item.status === "inProgress"
-              ).length
-            }
-          </p>
+          <p>{department?.totalInProgress}</p>
         </div>
         <hr className="hrVertical" />
         <div className="Done">
           <p className="counter-title">Done task</p>
-          <p>
-            {
-              projects?.allTasks?.filter(
-                (item) =>
-                  item.boardId === department.boardId && item.status === "done"
-              ).length
-            }
-          </p>
+          <p>{department?.totalDone}</p>
         </div>
       </div>
       <EditDepartment Show={Show} handleSetShow={handleSetShow} />
