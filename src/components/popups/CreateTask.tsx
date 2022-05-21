@@ -82,6 +82,15 @@ const CreateTask: React.FC<Props> = (props) => {
       boardId: selectedDepartment?.boardId,
     };
     dispatch(createTaskFromBoard({ data: newTask, dispatch }));
+    setTask({
+      name: "",
+    categoryId: "",
+    subCategoryId: "",
+    memberId: "",
+    deadline: "",
+    attachedFiles: "",
+    selectedDepartmentId: "",
+    })
     props.setShow("none");
   };
 
@@ -110,6 +119,15 @@ const CreateTask: React.FC<Props> = (props) => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
+              setTask({
+                name: "",
+              categoryId: "",
+              subCategoryId: "",
+              memberId: "",
+              deadline: "",
+              attachedFiles: "",
+              selectedDepartmentId: "",
+              })
               props.setShow("none");
             }}
           />

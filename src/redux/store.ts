@@ -24,6 +24,7 @@ const reducers = combineReducers({
   Statistics: statisticsSlice,
 });
 const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
+export const myReducer = store.getState()
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export default store;

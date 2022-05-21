@@ -13,14 +13,18 @@ import {
   Input,
   InputAdornment,
   TextField,
+  TextFieldProps,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { selectUser } from "../../redux/Auth";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+// import { Restore } from "@mui/icons-material";
+
 import moment from "moment";
 import { validateCreateProject } from "../../helpers/validation";
 import { toast } from "react-toastify";
 import Joi from "joi";
+
 interface ProjectFormProps {
   setcurrentStep: any;
   setShow: any;
@@ -30,11 +34,24 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch, control } = useForm();
+  const { register, watch, control, reset} = useForm({
+    defaultValues: {
+      name: "",
+      projectManager: "",
+      deadline: "",
+      startDate: "",
+      clientId: ""
+    }
+  });
+  // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
+
+React.useEffect(() => {
+  reset()
+},[setShow])
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -75,6 +92,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               <TextField
                 error={validateError.error?.details[0]?.path?.includes("name")}
                 id="outlined-error"
+                {...register("name")}
                 sx={{
                   width: "100%",
                   marginTop: 1,
@@ -109,6 +127,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   clients.find((item) => item.clientId === props.field.value)
                     ?.clientName
                 }
+                {...register("clientId")}
                 selectValue={props.field.value}
                 options={
                   clients
@@ -137,12 +156,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 value={props.field.value}
                 onChange={props.field.onChange}
                 leftArrowButtonText="arrow"
-                renderInput={(params) => (
+                renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
                   <TextField
                     {...params}
                     error={validateError.error?.details[0].path.includes(
                       "startDate"
                     )}
+                    {...register("name")}
                     defaultValue=""
                     onChange={params.onChange}
                     sx={{
@@ -174,12 +194,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 value={props.field.value}
                 onChange={props.field.onChange}
                 leftArrowButtonText="arrow"
-                renderInput={({ className, classes, sx, style, ...params }) => (
+                renderInput={({ className, classes, sx, style, ...params }:any) => (
                   <TextField
                     {...params}
                     error={validateError.error?.details[0].path.includes(
                       "deadline"
                     )}
+                    {...register("deadline")}
                     sx={{
                       paddingTop: 1,
                       "& .MuiOutlinedInput-input": {
@@ -212,6 +233,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 selectText={
                   PMs.find((item) => item._id === props.field.value)?.name
                 }
+                {...register("projectManager")}
                 selectValue={props.field.value}
                 options={
                   PMs

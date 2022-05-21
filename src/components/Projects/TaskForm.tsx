@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, TextFieldProps, Typography } from "@mui/material";
 import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -26,6 +26,8 @@ import IMAGES from "../../assets/img";
 import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
+import { createProjectPopup } from "../../redux/Ui/UI.selectors";
+// import {createProjectPopup} from '../../'
 
 interface TaskFormProps {}
 
@@ -44,7 +46,20 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
-  const { register, handleSubmit, watch, control, reset } = useForm();
+  const createProjectPopuptrack = useAppSelector(createProjectPopup);
+  const { register, handleSubmit, watch, control, reset } = useForm({
+    defaultValues: {
+      name: "",
+      categoryId: "",
+      subCategoryId: "",
+      memberId: "",
+      deadline: "",
+      attachedFiles: "",
+      selectedDepartmentId:"",
+      description:"",
+      file:""
+    }
+  });
 
   React.useEffect(() => {
     let values = watch();
@@ -61,7 +76,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [watch(), reset]);
-
+  React.useEffect(() => {
+    reset()
+  }, [createProjectPopuptrack])
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -135,6 +152,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                       },
                     }}
                     placeholder="Task name"
+                    {...register("name")}
                     onChange={props.field.onChange}
                   />
                 )}
@@ -154,6 +172,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                       departments.find((item) => item._id === props.field.value)
                         ?.name
                     }
+                    {...register("selectedDepartmentId")}
                     selectValue={props.field.value}
                     options={
                       departments
@@ -182,11 +201,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     value={props.field.value}
                     onChange={props.field.onChange}
                     leftArrowButtonText="arrow"
-                    renderInput={(params) => (
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
                       <TextField
                         error={error.error?.details[0].path.includes(
                           "deadline"
                         )}
+                        {...register("deadline")}
                         {...params}
                         defaultValue=""
                         onChange={params.onChange}
@@ -222,6 +242,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                       categories?.find((item) => item._id === props.field.value)
                         ?.category
                     }
+                    {...register("categoryId")}
                     selectValue={props.field.value}
                     options={
                       categories
@@ -249,6 +270,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     error={error.error?.details[0]?.path.includes(
                       "description"
                     )}
+                    {...register("description")}
                     id="outlined-multiline-static"
                     multiline
                     sx={{
@@ -282,6 +304,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         (item) => item._id === props.field.value
                       )?.subCategory
                     }
+                    {...register("subCategoryId")}
                     selectValue={props.field.value}
                     options={
                       selectedCategory?.selectedSubCategory
@@ -312,6 +335,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         (item) => item._id === props.field.value
                       )?.name
                     }
+                    {...register("memberId")}
                     selectValue={props.field.value}
                     options={
                       selectedDepartment?.teamsId
@@ -330,6 +354,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
             </div>
             <Box alignItems="center" display={"inline-flex"} className="files">
               <input
+                {...register("file")}
                 onChange={onSetFiles}
                 ref={files}
                 type="file"
