@@ -1,8 +1,9 @@
 .AppBar{
-    width: 100%;
+    width: 100vw;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
+    margin-right: 0px;
 }
 

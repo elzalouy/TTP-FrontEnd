@@ -181,9 +181,16 @@ select.select-filter {
   background: #555 !important; 
 }
 
+@media (max-width:900px) {
+  .all-departments{
+    grid-template-columns: 1fr 1fr;
+  }
+}
 @media (max-width:600px) {
   .all-departments{
-    display: flex;
-    flex-direction: column-reverse;
+    grid-template-columns: 1fr;
+  }
+  .department-tools{
+    margin-top: 50px;
   }
 }

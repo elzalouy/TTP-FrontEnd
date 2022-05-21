@@ -23,6 +23,7 @@ const Category: React.FC<Props> = () => {
   const categoriesData = useAppSelector(selectAllCategories);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
@@ -50,7 +51,7 @@ const Category: React.FC<Props> = () => {
 
   return (
     <Box className="category-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: "30px" }}>
+      <Box sx={MD ? {paddingTop:"50px"} : { paddingTop: "0px" }}>
         <Typography
           fontSize={24}
           variant="h2"

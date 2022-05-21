@@ -82,6 +82,8 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
     builder.addCase(creatClient.fulfilled, (state, action) => {
       state.loading = false;
       state.clientsData = [...state.clientsData, action.payload];
+      //Updating selected client list with latest created client
+      state.selectedClient = [...state.clientsData, action.payload];
     });
     builder.addCase(updateClient.rejected, (state) => {
       state.loading = false;
@@ -97,6 +99,9 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         .indexOf(payload._id);
       clientData.splice(clientIndex, 1, payload);
       state.clientsData = clientData;
+
+      //Updating selected client list with latest updated data
+      state.selectedClient = clientData;
     });
     builder.addCase(deleteClient.rejected, (state) => {
       state.loading = false;
@@ -109,6 +114,8 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       let clientData = state.clientsData;
       let clients = clientData.filter((item) => item._id !== payload?.id);
       state.clientsData = clients;
+      //Updating selected client list with latest deleted data
+      state.selectedClient = clients;
     });
   },
 });

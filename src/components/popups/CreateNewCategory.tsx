@@ -3,7 +3,8 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { useState, useEffect } from "react";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
+import { Box ,useMediaQuery, useTheme } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/Categories";
@@ -16,6 +17,9 @@ const CreateNewCategory: React.FC<Props> = () => {
   const [mainCategory, setMainCategory] = useState("");
   const [errors, setErrors] = useState("");
   const [subCategory, setSubCategory] = useState("");
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategories, setsubCategories] = useState<
     { _id: string; subCategory: string }[]
   >([]);
@@ -77,7 +81,7 @@ const CreateNewCategory: React.FC<Props> = () => {
           Add new category
         </Typography>
       </Box>
-      <PopUp show={Show}>
+      <PopUp show={Show} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "400px" : "320px"}>
         <div style={{ marginTop: 10 }}>
           <img
             className="closeIcon"

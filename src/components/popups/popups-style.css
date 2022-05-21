@@ -424,12 +424,31 @@ table.allTeam-table td.deleteTd {
   border-color: #e4e4e4;
 }
 
-@media (max-width: 700px) {
-  .inputs-grid {
+@media (max-width:800px) {
+  .inputs-grid{
     grid-template-columns: 1fr;
-    width: 100% !important;
-  }
-  .controllers {
+    width: 55vw !important;
+  } 
+  .controllers{
     margin-top: 20px;
+  }
+  .controllers-done{
+    width: 150px;
+  }
+}
+
+@media (max-width:600px) {
+  .black-btn{
+    font-size: 15px;
+  }
+  .inputs-grid{
+    grid-template-columns: 1fr;
+    width: 70vw !important;
+  } 
+  .controllers{
+    margin-top: 20px;
+  }
+  .controllers-done{
+    width: 150px;
   }
 }

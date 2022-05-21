@@ -1,8 +1,9 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, useTheme } from "@mui/system";
 import React, { FC } from "react";
 
 import { Done as DoneIcon, Circle as DotIcon } from "@mui/icons-material";
+import { useMediaQuery } from "@mui/material";
 interface UserStatusProps {
   loading: boolean;
   Icon: any;
@@ -16,13 +17,20 @@ interface UserStatusProps {
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
+
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Grid
       xs={12}
       sm={props.user === "PM" ? 4 : 3}
       md={props.user === "PM" ? 4 : 3}
       lg={props.user === "PM" ? 4 : 3}
-      paddingRight={props.user === "PM" ? "4%" : "1%"}
+      flexBasis={"50%"}
+      marginTop={"15px"}
+      paddingRight={props.user === "PM" ? "4%" : "2%"}
+      paddingLeft={SM ? "2%" : "0%"}
       item
     >
       <Card

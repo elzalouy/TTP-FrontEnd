@@ -22,7 +22,7 @@ const NotificationContainer = (props: Props) => {
   const user = useAppSelector(selectUser);
   const role = useAppSelector(selectRole);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -55,7 +55,7 @@ const NotificationContainer = (props: Props) => {
   };
 
   return (
-    <Grid container paddingX={4} paddingY={SM ? 10 : 0} spacing={4} bgcolor="#FAFAFB">
+    <Grid container paddingX={4} paddingY={MD ? 10 : 0} spacing={4} bgcolor="#FAFAFB">
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>

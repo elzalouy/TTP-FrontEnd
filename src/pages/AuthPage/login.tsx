@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./auth.css";
 import { Redirect } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Button, Link, Typography, IconButton, CircularProgress } from "@mui/material";
+import { Grid, Button, Link, Typography, IconButton, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import Person from "../../assets/img/person.png";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
@@ -50,7 +50,9 @@ const Login: React.FC<Props> = ({ history }) => {
   const isAuth = useAppSelector(selectIsAuth);
   const loading = useAppSelector(selectLoading);
   const res = useAppSelector(selectResponse);
-
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  
   useEffect(() => {
     if (res.msg && res.status !== 200) {
       if(res.page==="login"){
@@ -84,7 +86,7 @@ const Login: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
-      height={"90vh"}
+      height={SM ? "100vh":"90vh"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
@@ -96,9 +98,10 @@ const Login: React.FC<Props> = ({ history }) => {
         md={8}
         lg={8}
         height={600}
+        justifyContent={SM? "flex-start" : "center"}
         container
         direction="row"
-        sx={{
+        sx={SM ? {boxShadow:"none"} :{
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
@@ -108,7 +111,7 @@ const Login: React.FC<Props> = ({ history }) => {
           sm={12}
           lg={6}
           md={6}
-          height={"100%"}
+          height={"100%"}          
           bgcolor={"white"}
           paddingX={5}
           paddingTop={6}

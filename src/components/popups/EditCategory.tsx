@@ -7,6 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectSelectedCategory } from "../../redux/Categories/categories.selectores";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
+import { useMediaQuery,useTheme } from "@mui/material";
 
 type Props = {
   handleSetEditCatDisplay: (value: string) => void;
@@ -21,6 +22,8 @@ const EditCategory: React.FC<Props> = ({
   const dispatch = useDispatch();
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const [title, setTitle] = useState<string | undefined>("");
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [selectedData, setSelectedData] = useState<any>({
     selectedSubCategory: [],
     subCategoriesId: [],
@@ -56,6 +59,8 @@ const EditCategory: React.FC<Props> = ({
     return;
   }; */
 
+  console.log(MD);
+  
   const handleRemoveSubCategory = (index: number) => {
     let selectedCategory = selectedData.subCategoriesId;
     selectedCategory = selectedCategory.filter(
@@ -85,7 +90,7 @@ const EditCategory: React.FC<Props> = ({
 
   return (
     <>
-      <PopUp show={editCatDisplay} minWidthSize="30vw" maxWidthSize="300px">
+      <PopUp show={editCatDisplay} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "50vw" : "30vw"}>
         <div>
           <img
             className="closeIcon"
