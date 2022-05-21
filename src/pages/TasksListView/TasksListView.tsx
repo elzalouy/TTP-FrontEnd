@@ -69,14 +69,14 @@ const Tasks: React.FC = (props: any) => {
       alignContent={"flex-start"}
       alignSelf="flex-start"
       padding={SM ? 2 : 4}
-      marginTop={MD ? 10 : 0}
+      marginTop={MD ? 6 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 4 : 0}>
+      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 2 : 0}>
         Tasks
       </Typography>
-      <Grid marginBottom={2} container direction={"row"}>
-        {/* <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={2} marginY={1}>
+      <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
+        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1} flex={1}>
           <Controller
             control={control}
             name="deadline"
@@ -99,8 +99,8 @@ const Tasks: React.FC = (props: any) => {
               />
             )}
           />
-        </Grid> */}
-        <Grid marginX={0.5} item xs={12} sm={12} md={4} lg={1.2} marginY={1}>
+        </Grid>
+        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="status"
@@ -144,7 +144,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
@@ -171,7 +171,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={4} sm={3} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectId"
@@ -206,7 +206,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={12} sm={12} md={2} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -239,7 +239,7 @@ const Tasks: React.FC = (props: any) => {
             )}
           />
         </Grid>
-        <Grid marginX={0.5} item xs={8} sm={8} md={2} lg={2} marginY={1}>
+        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Box
             style={
               SM
@@ -271,7 +271,7 @@ const Tasks: React.FC = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={2} sm={4} md={1}>
+        <Grid marginX={0.5} item xs={2} sm={2} md={1}>
           <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
         </Grid>
       </Grid>

@@ -33,24 +33,24 @@ const Departments: React.FC<IProps> = () => {
   ];
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
-      <Box sx={{ paddingTop: "30px" }}>
+      <Box sx={SM ?{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop: "30px"} :{ paddingTop: "60px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <Typography
           variant="h2"
           style={
             SM
-              ? { margin: "50px 0", paddingBottom: "0px" }
+              ? { marginTop: "50px", paddingBottom: "0px" }
               : {
-                  margin: "10px 0",
-                  paddingBottom: "20px",
+                  marginTop: "0px",
+                  paddingBottom: "0px",
                 }
           }
         >
           Departments
         </Typography>
+        <div className="department-tools">
+          {role !== "PM" && <CreateNewTeam />}
+        </div>
       </Box>
-      <div className="department-tools">
-        {role !== "PM" && <CreateNewTeam />}
-      </div>
       <div className="all-departments">
         {department?.map((dep: Department) => (
           <DepartmentCard

@@ -65,6 +65,20 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
       listId: Task?.listId,
     };
     dispatch(editTask({ data: data, dispatch }));
+    setTask({
+      id: "",
+      name: "",
+      boardId: "",
+      deadline: "",
+      categoryId: "",
+      subCategoryId: "",
+      description: "",
+      attachedFiles: "",
+      memberId: "",
+      file: "",
+      listId: "",
+      departmentId: "",
+    })
     setShow("none");
   };
   const onChange = (
@@ -81,6 +95,20 @@ const EditTask: React.FC<Props> = ({ Show, setShow }) => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
+              setTask({
+                id: "",
+                name: "",
+                boardId: "",
+                deadline: "",
+                categoryId: "",
+                subCategoryId: "",
+                description: "",
+                attachedFiles: "",
+                memberId: "",
+                file: "",
+                listId: "",
+                departmentId: "",
+              })
               setShow("none");
             }}
           />

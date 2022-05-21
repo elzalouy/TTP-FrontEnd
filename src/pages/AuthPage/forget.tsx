@@ -1,4 +1,4 @@
-import { Button, Grid , Typography } from "@mui/material";
+import { Button, Grid , Typography, useMediaQuery, useTheme } from "@mui/material";
 import Ttp from "../../assets/img/ttp_logo.png";
 import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -40,23 +40,26 @@ const Forget: React.FC<Props> = ({ history }) => {
   const auth = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (res.msg === "" && res.status === "") {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
       setVisible(false);
-      setFailed({
-        message: res.msg,
-        status: res.status,
-      });
+      if(res.page==="forgetPassword"){
+        setFailed({
+          message: res.msg,
+          status: res.status,
+        });
+      }
     } else {
       setVisible(true);
     }
   }, [auth]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    
     dispatch(
       forgotPassword({
         email: data.email,
@@ -71,7 +74,7 @@ const Forget: React.FC<Props> = ({ history }) => {
   return (
     <Grid
       container
-      height={"90vh"}
+      height={SM ? "100vh":"90vh"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
@@ -84,10 +87,11 @@ const Forget: React.FC<Props> = ({ history }) => {
         md={8}
         lg={8}
         height={550}
+        justifyContent={SM? "flex-start" : "center"}
         container
         direction="row"
-        sx={{
-         boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
+        sx={SM ? {boxShadow:"none"} :{
+          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
         <Grid

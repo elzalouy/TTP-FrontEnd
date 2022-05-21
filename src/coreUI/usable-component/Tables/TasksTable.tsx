@@ -12,6 +12,7 @@ import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
+import { useMediaQuery,useTheme } from "@mui/material";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
@@ -26,6 +27,8 @@ const TasksTable: React.FC<TasksTableProps> = ({
   setAllSelected,
 }) => {
   const history = useHistory();
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -41,7 +44,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
   };
   return (
     <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
-      <Table>
+      <Table style={MD? {width:"150%"} : {width:"100%"}}>
         <TableHead>
           <TableRow>
             <TableCell

@@ -7,3 +7,5 @@ export const selectDeletePMPopup = (state: RootState) =>
   state.Ui.deleteProjectManagerPopup;
 export const selectSideMenuToggle = (state: RootState) =>
   state.Ui.isSideMenuOpened;
+
+export const createProjectPopup = (state:RootState) => state.Ui.createProjectPopup

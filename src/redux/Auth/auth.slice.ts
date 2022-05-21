@@ -28,6 +28,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
+          page:"login"
         };
         state.authState = false;
       } else {
@@ -56,6 +57,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
+          page:"forgotPassword"
         };
       } else {
         state.User = payload;
@@ -111,6 +113,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
+          page:"newPassword"
         };
       } else {
         toast.success("New password set successfully", {

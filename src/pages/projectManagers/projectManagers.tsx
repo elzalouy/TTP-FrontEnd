@@ -48,7 +48,7 @@ const ProjectManagers: React.FC<Props> = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography variant={SM ? "h3" : "h2"}>Project Managers</Typography>
+        <Typography variant={SM ? "h4" : "h2"}>Project Managers</Typography>
         <CreateNewPM />
       </Box>
       <Paper className="pm-container">

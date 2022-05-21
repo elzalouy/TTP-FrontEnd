@@ -12,7 +12,7 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import "../style.css"
+import "../style.css";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { FC, useState } from "react";
@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectAllProjects, selectTasks } from "../../../redux/Projects";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 interface ProjectManagersProps {
   cellsData: ProjectManager[];
@@ -38,6 +39,8 @@ interface ProjectManagersProps {
 const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const project = useAppSelector(selectAllProjects);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [selects, setAllSelected] = useState<string[]>([]);
   const refreshUser = (id: string) => {
     //Checking time limit
@@ -72,23 +75,40 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     <>
       <EditPM hideButton />
       <DeletePM hideButton />
-      <TableContainer style={{paddingLeft:"40px"}}>
-        <Table size="small" aria-label="a dense table" style={{borderColor:"#EBEFF2"}}>
+      <TableContainer style={{paddingTop:"10px"}}>
+        <Table
+          size="small"
+          aria-label="a dense table"
+          style={
+            MD
+              ? { width: "140%", borderColor: "#EBEFF2" }
+              : { width: "100%", borderColor: "#EBEFF2" }
+          }
+        >
           <TableHead>
             <TableRow>
               <TableCell
-              className="thead"
-                style={{
-                  color: "#334D6E",
-                  width: "300px",
-                  margin: "0px",
-                }}
-
+                className="thead"
+                style={
+                  MD
+                    ? {
+                        paddingLeft: "20px",
+                        color: "#334D6E",
+                        width: "300px",
+                        margin: "0px",
+                      }
+                    : {
+                        paddingLeft: "40px",
+                        color: "#334D6E",
+                        width: "300px",
+                        margin: "0px",
+                      }
+                }
               >
                 PM Name
               </TableCell>
               <TableCell
-               className="thead"
+                className="thead"
                 style={{
                   color: "#334D6E",
                   width: "300px",
@@ -99,7 +119,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Email
               </TableCell>
               <TableCell
-               className="thead"
+                className="thead"
                 style={{
                   color: "#334D6E",
                   width: "250px",
@@ -110,7 +130,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 In Progress Projects
               </TableCell>
               <TableCell
-               className="thead"
+                className="thead"
                 style={{
                   color: "#334D6E",
                   width: "158px",
@@ -121,7 +141,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                 Done Project
               </TableCell>
               <TableCell
-               className="thead"
+                className="thead"
                 align="center"
                 style={{ color: "#334D6E", width: "50px", margin: "0px" }}
               >
@@ -145,12 +165,17 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     item.projectStatus === "delivered after deadline")
               )?.length;
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
+                <TableRow className="trow" role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
                     align="left"
-                    style={{
+                    style={MD ? {
                       width: "300px",
                       margin: "0px",
+                      paddingLeft:"20px"
+                    }: {
+                      width: "300px",
+                      margin: "0px",
+                      paddingLeft:"40px"
                     }}
                   >
                     <Stack
@@ -159,7 +184,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       alignItems="center"
                       spacing={1}
                     >
-                     {/*  <Avatar sx={{ width: 20, height: 20 }} /> */}
+                      {/*  <Avatar sx={{ width: 20, height: 20 }} /> */}
                       <Typography
                         fontWeight={"700"}
                         fontSize={15}
@@ -191,7 +216,8 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
-                      <IconButton disableRipple
+                      <IconButton
+                        disableRipple
                         onClick={() => {
                           if (!password) {
                             refreshUser(_id);
@@ -200,12 +226,14 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       >
                         {!password ? <LockOpenIcon /> : <LockIcon />}
                       </IconButton>
-                      <IconButton disableRipple
+                      <IconButton
+                        disableRipple
                         onClick={(e) => toggleUpdatePopUp(e, cellData)}
                       >
                         <img src={IMAGES.editicon} alt="editicon" />
                       </IconButton>
-                      <IconButton disableRipple
+                      <IconButton
+                        disableRipple
                         onClick={(e) => toggleDeletePopUp(e, cellData)}
                       >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />

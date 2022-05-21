@@ -27,8 +27,9 @@ const OverView: FC<Props> = (props) => {
   const role = useAppSelector(selectRole);
   const userName = useAppSelector(selectUser);
   const theme = useTheme();
-  const statistics = useAppSelector(selectAllSatistics);
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
+  const statistics = useAppSelector(selectAllSatistics);
 
   // useEffect(() => {
   //   dispatch(getPMs(null));
@@ -42,7 +43,7 @@ const OverView: FC<Props> = (props) => {
         <Grid
           justifyContent={"space-between"}
           alignItems={"normal"}
-          direction="row"
+          direction={MD ? "column" : "row"}
           container
         >
           <Grid
@@ -97,42 +98,6 @@ const OverView: FC<Props> = (props) => {
                 paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
                 container
               >
-                {role === "PM" ? (
-                  <>
-                    <Grid
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      paddingRight={"3%"}
-                      container
-                    >
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                      <Grid item xs={3} sm={2} lg={3} md={3} marginRight={"5%"}>
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={200}
-                          sx={{ borderRadius: 2 }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </>
-                ) : (
                   <>
                     {role === "PM" && (
                       <>
@@ -232,8 +197,38 @@ const OverView: FC<Props> = (props) => {
                       </>
                     )}
                   </>
-                )}
               </Grid>
+              {MD ? (
+                <Grid
+                  marginTop={5}
+                  item
+                  lg={4}
+                  md={4}
+                  sm={12}
+                  xs={12}
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {role === "OM" ? (
+                    <ManagerNotifications {...props} />
+                  ) : (
+                    <UserNotifications {...props} />
+                  )}
+                </Grid>
+              ) : (
+                <Grid
+                  // direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  paddingTop={2.5}
+                  overflow="scroll"
+                  paddingRight={SM ? 0 : 3.5}
+                >
+                  <UserProjects {...props} />
+                </Grid>
+              )}
+            </Grid>
+            {MD ? (
               <Grid
                 // direction="row"
                 justifyContent="flex-start"
@@ -241,26 +236,28 @@ const OverView: FC<Props> = (props) => {
                 paddingTop={2.5}
                 overflow="scroll"
                 paddingRight={SM ? 0 : 3.5}
+                width={"100%"}
               >
                 <UserProjects {...props} />
               </Grid>
-            </Grid>
-            <Grid
-              marginTop={5}
-              item
-              lg={4}
-              md={4}
-              sm={12}
-              xs={12}
-              justifyContent="center"
-              alignItems="center"
-            >
-              {role === "OM" ? (
-                <ManagerNotifications {...props} />
-              ) : (
-                <UserNotifications {...props} />
-              )}
-            </Grid>
+            ) : (
+              <Grid
+                marginTop={5}
+                item
+                lg={4}
+                md={4}
+                sm={12}
+                xs={12}
+                justifyContent="center"
+                alignItems="center"
+              >
+                {role === "OM" ? (
+                  <ManagerNotifications {...props} />
+                ) : (
+                  <UserNotifications {...props} />
+                )}
+              </Grid>
+            )}
           </Grid>
           <Grid
             item
