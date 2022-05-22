@@ -10,6 +10,7 @@ import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
 import { useMediaQuery,useTheme } from "@mui/material";
 import { Grid } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 type Props = {
@@ -117,6 +118,8 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 onChange={onSubChange}
                 placeholder="Sub category"
                 sx={{
+                  paddingRight:"10px",
+                  flex:1,
                   height: 50,
                   width: 210,
                   borderRadius: "6px",
@@ -140,7 +143,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                         removeSubCategory(_id);
                       }}
                     >
-                      x
+                      <CloseIcon style={{width:"16px" , height:"16px"}}/>
                     </span>
                   </div>
                 ))}

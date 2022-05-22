@@ -129,7 +129,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <img src={IMAGES.plus} alt="add" />
         <p>Create new department</p>
       </div>
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
+      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px" padding="30px">
         <div>
           <img
             className="closeIcon"

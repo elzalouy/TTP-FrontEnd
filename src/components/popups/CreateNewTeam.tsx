@@ -53,7 +53,7 @@ const AddNewTeam: React.FC<Props> = () => {
           setShow("flex");
         }}
       >
-        Add new team
+        Add new teams
       </button>
 
       <PopUp show={Show} minWidthSize="30vw">
@@ -127,7 +127,7 @@ const AddNewTeam: React.FC<Props> = () => {
           All Team
         </label>
         <table className="allTeam-table">
-          <tr>
+          <tr className="th">
             <th>Team name</th>
             <th>List ID</th>
             <th></th>

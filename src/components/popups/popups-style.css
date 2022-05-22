@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
+  width: 100%;
 }
 
 .controllers-cancel {
@@ -305,6 +306,10 @@ table.allTask-table {
   background-color: #fcfcfc;
   border: 0px !important;
   color: rgb(83, 83, 83);
+}
+
+.th{
+  color:#334D6E
 }
 
 table.allTask-table,

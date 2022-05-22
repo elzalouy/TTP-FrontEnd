@@ -133,6 +133,7 @@ const CategoryCard: React.FC<IProps> = ({
                   borderRadius: 1,
                   borderColor: fontColor,
                   mr: 1,
+                  paddingY:1.5,
                 }}
                 onClick={() => handleSetDisplay("flex")}
               >
@@ -145,7 +146,7 @@ const CategoryCard: React.FC<IProps> = ({
                     display: "flex",
                     fontSize: "15px",
                     paddingX: 0.5,
-                    paddingY: 0.1,
+                    paddingY: 0.2,
                   }}
                 >
                   <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>

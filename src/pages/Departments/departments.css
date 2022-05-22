@@ -19,9 +19,13 @@
 }
 
 .department-Card {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   background-color: #e1edf6;
   border-radius: 20px;
   padding: 15px;
+  min-height: 200px;
   overflow: hidden;
 }
 
@@ -29,6 +33,7 @@
   display: flex;
   justify-content: space-between;
   font-weight: bold;
+  text-transform: capitalize;
   color: #0079bf;
 }
 
@@ -101,7 +106,8 @@
 
 .hrVertical {
   height: 2.5rem;
-  /* border: 0.2px solid #B9B9B9; */
+  width: 0px;
+  border: 0.2px solid #b9b9b952;
 }
 
 .InProgress {

@@ -57,6 +57,7 @@ const DepartmentCard: React.FC<Props> = ({
         <h2>{department.name}</h2>
         {role !== "PM" && (
           <DepartmentDrop
+          color={colors[department.color][1]}
             handleSetShow={handleSetShow}
             handleSetShowDelete={handleSetShowDelete}
           />
@@ -86,7 +87,7 @@ const DepartmentCard: React.FC<Props> = ({
             }
           </p>
         </div>
-        <hr className="hrVertical" />
+        <div className="hrVertical"></div> 
         <div className="Done">
           <p className="counter-title">Done task</p>
           <p>
