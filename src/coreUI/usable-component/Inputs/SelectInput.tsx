@@ -44,9 +44,9 @@ const SelectInput: React.FC<Props> = ({
   const [Label, setLabel] = useState(label);
   const [Value, setValue] = useState(selectText);
   useEffect(() => {
-    if (selectText && selectText.length > 8) {
+   /*  if (selectText && selectText.length > 8) {
       return setValue(_.truncate(selectText, { length: 8, separator: " " }));
-    }
+    } */
     return setValue(selectText);
   }, [selectText, selectValue]);
   const open = Boolean(anchorEl);
