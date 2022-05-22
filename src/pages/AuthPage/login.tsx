@@ -148,13 +148,12 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="email"
             control={control}
-            defaultValue={""}
             render={({ field }) => (
               <input
                 {...field}
                 {...register("email", { required: true })}
                 type="email"
-                autoComplete="off"
+                autoComplete="new-password"
                 className="f-inputs"
                 placeholder="Email Address"
                 onChange={() =>
