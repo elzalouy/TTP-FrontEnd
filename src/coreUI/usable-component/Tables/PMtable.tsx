@@ -13,8 +13,8 @@ import {
   Box,
 } from "@mui/material";
 import "../style.css";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockResetIcon from '@mui/icons-material/LockReset';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { FC, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
@@ -164,6 +164,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     item.projectStatus === "deliver on time" ||
                     item.projectStatus === "delivered after deadline")
               )?.length;
+
               return (
                 <TableRow className="trow" role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
@@ -224,7 +225,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                           }
                         }}
                       >
-                        {!password ? <LockOpenIcon /> : <LockIcon />}
+                        {!password ? <LockResetIcon /> : <MarkEmailReadIcon />}
                       </IconButton>
                       <IconButton
                         disableRipple

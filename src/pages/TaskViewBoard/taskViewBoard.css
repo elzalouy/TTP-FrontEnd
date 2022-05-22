@@ -20,6 +20,23 @@
   width: 312px !important;
   margin-left: 30px;
 }
+.shared-border {
+  border: #9fa1ab1a solid 2px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
+}
+.shared-header {
+  background-color: #ECDAD7;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
+}
+.shared-task {
+  border-radius: 20px;
+  background-color: #F4EDEC;
+  width: 312px !important;
+}
 
 .in-progress-border {
   border: #ffc500 solid 1px;
@@ -46,6 +63,19 @@
   background-color: #e1f3f5;
   width: 312px !important;
   margin-inline: 10px;
+}
+.review-task {
+  border-radius: 20px;
+  background-color: #E1EDF4;
+  width: 312px !important;
+  margin-inline: 10px;
+}
+.review-header{
+  background-color: #B3D5E9;
+  font-weight: bold;
+  border-radius: 15%;
+  padding: 0 5px;
+  margin: 0 5px 0 0;
 }
 .not-clear-task {
   border-radius: 20px;
