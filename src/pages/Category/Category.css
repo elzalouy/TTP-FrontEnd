@@ -24,7 +24,17 @@
 .subcategories {
   display: flex;
   max-width: 90%;
+  width: 100%;
   flex-flow: row wrap;
+  margin-top: 10px;
+}
+.css-298dy0-MuiFormControl-root-MuiTextField-root{
+  width: 100%;
+  min-width: 150px;
+}
+.css-108j1xz-MuiFormControl-root-MuiTextField-root{
+  width: 100%;
+  min-width: 150px;
 }
 .subcategory {
   position: relative;
@@ -35,27 +45,57 @@
   font: normal normal normal 13px/24px Cairo;
   font-weight: 650;
   background-color: #e0e0e0;
-  padding-right: 10px;
+  padding-right: 30px;
   padding-left: 10px;
   border-radius: 4px;
   opacity: 1;
 }
 .remove-category {
   content: "x";
-  color: red;
+  color: #92929D;
   cursor: pointer;
   font-size: 20px;
   position: absolute;
-  right: -3px;
-  top: -12px;
+  right: 6px;
+  top: 1px;
 }
 .MuiTypography-root {
   font-family: "Cairo";
 }
 .category-card {
-  transition: transform 0.5s, box-shadow 1s;
+  transition: transform 0.5s, box-shadow 0.5s;
 }
-/* .category-card:hover {
-  transform: scale(1.02) perspective(0px);
-  box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
+.category-card:hover {
+  box-shadow: 0px 6px 20px #0000001A;
+}
+
+/* @media (max-width:900px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 80%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 80%;
+    min-width: 150px;
+  }
+}
+@media (max-width:600px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 60%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 60%;
+    min-width: 150px;
+  }
+}
+@media (max-width:400px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 100%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 100%;
+    min-width: 150px;
+  }
 } */

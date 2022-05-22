@@ -40,7 +40,7 @@ const Departments: React.FC<IProps> = () => {
             SM
               ? { marginTop: "50px", paddingBottom: "0px" }
               : {
-                  marginTop: "0px",
+                  marginBottom: "100px",
                   paddingBottom: "0px",
                 }
           }

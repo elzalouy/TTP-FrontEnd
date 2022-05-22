@@ -10,6 +10,11 @@
   justify-content: space-between;
   font-weight: bold;
 }
+.task-card-header-shared{
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
 .task-card-header-not-clear {
   display: flex;
   justify-content: space-between;
@@ -28,6 +33,13 @@
   margin: 0 10px 0 0px;
 }
 .task-card-footer-not-clear {
+  background-color: #f0ddc3;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-shared {
   background-color: #f0ddc3;
   font-weight: bold;
   border-radius: 5px;

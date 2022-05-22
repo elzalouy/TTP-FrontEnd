@@ -171,7 +171,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
+        {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
@@ -197,7 +197,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               )}
             />
           </Box>
-        </Grid>
+        </Grid> */}
         <Grid marginX={0.5} item xs={4} sm={3} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -233,7 +233,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
-        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
+       {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -265,7 +265,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               />
             )}
           />
-        </Grid>
+        </Grid> */}
         <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Box
             style={

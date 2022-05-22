@@ -6,6 +6,7 @@ type Props = {
   widthSize?: string;
   minWidthSize?: string;
   maxWidthSize?: string;
+  padding?:string;
   children: object;
 };
 
@@ -13,6 +14,7 @@ const popUp: React.FC<Props> = ({
   show,
   children,
   widthSize,
+  padding,
   minWidthSize,
   maxWidthSize,
 }) => {
@@ -20,10 +22,13 @@ const popUp: React.FC<Props> = ({
     <div className="container-popup" style={{ display: show }}>
       <div
         className="pop-up"
-        style={{
+        style={padding ?{ width: widthSize,
+          minWidth: minWidthSize,
+          maxWidth: maxWidthSize,padding:padding} : {
           width: widthSize,
           minWidth: minWidthSize,
           maxWidth: maxWidthSize,
+          
         }}
       >
         {children}

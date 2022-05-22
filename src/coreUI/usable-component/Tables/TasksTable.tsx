@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import "../../../pages/TasksListView/TasksListView.css"
 import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
@@ -124,7 +125,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
         </TableHead>
         <TableBody>
           {tasks &&
-            tasks?.map((item) => {
+            tasks?.map((item,index) => {
               const { _id, status, name, projectId, start, deadline } = item;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -162,15 +163,15 @@ const TasksTable: React.FC<TasksTableProps> = ({
                       className={
                         status === "inProgress"
                           ? "inProgressStatus"
-                          : status === "review"
+                          : status === "Review"
                           ? "reviewStatus"
-                          : status === "not clear" 
+                          : status === "Not Clear" 
                           ? "notClearStatus" 
-                          : status === "not started"
+                          : status === "Not Started"
                           ? "notStartedStatus" 
-                          : status === "done"
+                          : status === "Done"
                           ? "doneStatus" 
-                          : status === "shared" 
+                          : status === "Shared" 
                           ? "sharedStatus" 
                           : "endedStatus"
                       }

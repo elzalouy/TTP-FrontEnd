@@ -55,8 +55,8 @@
   color: #777;
 } */
 .sharedStatus {
-  color: #fa565c;
-  background-color: #F7E6E7;
+  color: #ECDAD7;
+  background-color: #F4EDEC;
   width: auto;
   margin: 0px;
   padding: 2px 15px;
@@ -64,8 +64,8 @@
   border-radius: 5px;
 }
 .reviewStatus {
-  color: #0f6b74;
-  background-color: #d9f3f5;
+  color: #40b4f7;
+  background-color: #d1e6f3;
   width: auto;
   margin: 0px;
   padding: 2px 15px;

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 import { Box ,useMediaQuery, useTheme } from "@mui/material";
 import axios from "axios";
+import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
@@ -77,8 +78,8 @@ const CreateNewCategory: React.FC<Props> = () => {
         }}
       >
         <img src={IMAGES.plus} alt="add" width={30} height={30} />
-        <Typography fontSize={16} color={"#272727"}>
-          Add new category
+        <Typography fontSize={18} color={"#272727"}>
+          Create new category
         </Typography>
       </Box>
       <PopUp show={Show} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "400px" : "320px"}>
@@ -100,8 +101,8 @@ const CreateNewCategory: React.FC<Props> = () => {
             Add new category
           </p>
         </div>
-        <form className="form-inputs" onSubmit={handleSubmit}>
-          <Grid width="448px" container>
+        <form className="form-inputs">
+          <Grid container>
             <Grid item xs={12}>
               <Typography
                 fontWeight={"700"}
@@ -143,7 +144,7 @@ const CreateNewCategory: React.FC<Props> = () => {
                 Sub-category
               </Typography>{" "}
             </Grid>
-            <Grid item xs={9} style={{ marginTop: "10px" }}>
+            <Grid item xs={9} style={{ marginTop: "10px" ,paddingRight:"20px"}}>
               <TextField
                 type="text"
                 name="subCategory"
@@ -161,7 +162,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               />
             </Grid>
             <Grid item xs={3} style={{ marginTop: "10px" }}>
-              <div className="add-subcategory" onClick={addSubCategory}>
+              <div className="add-subcategory-cnc" onClick={addSubCategory}>
                 Add
               </div>
             </Grid>
@@ -176,12 +177,13 @@ const CreateNewCategory: React.FC<Props> = () => {
                         removeSubCategory(_id);
                       }}
                     >
-                      x
+                      <CloseIcon style={{width:"16px" , height:"16px"}}/>
                     </span>
                   </div>
                 ))}
               <br />
-              <div className="controllers">
+            </div>
+            <div className="controllers">
                 <button
                   className="controllers-cancel"
                   onClick={() => {
@@ -190,9 +192,8 @@ const CreateNewCategory: React.FC<Props> = () => {
                 >
                   Cancel
                 </button>
-                <button className="controllers-done">Done</button>
+                <button className="controllers-done" onClick={handleSubmit}>Done</button>
               </div>
-            </div>
           </Grid>
         </form>
       </PopUp>
