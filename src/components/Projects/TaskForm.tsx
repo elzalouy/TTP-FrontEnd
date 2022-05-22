@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import "./projectForm.css"
 import {
   categoriesActions,
   selectAllCategories,

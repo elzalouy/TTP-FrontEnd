@@ -105,7 +105,7 @@ React.useEffect(() => {
                     borderRadius: "6px",
                   },
                 }}
-                placeholder="project name"
+                placeholder="Project name"
                 onChange={props.field.onChange}
               />
             )}
