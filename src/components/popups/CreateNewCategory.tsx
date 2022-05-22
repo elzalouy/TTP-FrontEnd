@@ -78,7 +78,7 @@ const CreateNewCategory: React.FC<Props> = () => {
       >
         <img src={IMAGES.plus} alt="add" width={30} height={30} />
         <Typography fontSize={16} color={"#272727"}>
-          Add new category
+          Create new category
         </Typography>
       </Box>
       <PopUp show={Show} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "400px" : "320px"}>
@@ -101,7 +101,7 @@ const CreateNewCategory: React.FC<Props> = () => {
           </p>
         </div>
         <form className="form-inputs" onSubmit={handleSubmit}>
-          <Grid width="448px" container>
+          <Grid container>
             <Grid item xs={12}>
               <Typography
                 fontWeight={"700"}
@@ -161,7 +161,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               />
             </Grid>
             <Grid item xs={3} style={{ marginTop: "10px" }}>
-              <div className="add-subcategory" onClick={addSubCategory}>
+              <div className="add-subcategory-cnc" onClick={addSubCategory}>
                 Add
               </div>
             </Grid>

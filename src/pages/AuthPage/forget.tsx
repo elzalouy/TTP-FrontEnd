@@ -4,7 +4,7 @@ import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Redirect, RouteComponentProps } from "react-router";
 import Person from "../../assets/img/person.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { forgotPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
@@ -42,7 +42,7 @@ const Forget: React.FC<Props> = ({ history }) => {
   const res = useAppSelector(selectResponse);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
+  
   useEffect(() => {
     if (res.msg === "" && res.status === "") {
       setVisible(false);
@@ -145,6 +145,7 @@ const Forget: React.FC<Props> = ({ history }) => {
                     {...field}
                     {...register("email", { required: true })}
                     type="email"
+                    autoComplete="off"
                     className="f-inputs"
                     placeholder="Email Address"
                     onChange={() => setFailed({ message: "", status: false })}

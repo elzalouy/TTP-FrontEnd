@@ -24,7 +24,17 @@
 .subcategories {
   display: flex;
   max-width: 90%;
+  width: 100%;
   flex-flow: row wrap;
+  justify-content: space-between;
+}
+.css-298dy0-MuiFormControl-root-MuiTextField-root{
+  width: 100%;
+  min-width: 150px;
+}
+.css-108j1xz-MuiFormControl-root-MuiTextField-root{
+  width: 100%;
+  min-width: 150px;
 }
 .subcategory {
   position: relative;
@@ -58,4 +68,35 @@
 /* .category-card:hover {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
+} */
+
+/* @media (max-width:900px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 80%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 80%;
+    min-width: 150px;
+  }
+}
+@media (max-width:600px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 60%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 60%;
+    min-width: 150px;
+  }
+}
+@media (max-width:400px) {
+  .css-298dy0-MuiFormControl-root-MuiTextField-root{
+    width: 100%;
+    min-width: 150px;
+  }
+  .css-108j1xz-MuiFormControl-root-MuiTextField-root{
+    width: 100%;
+    min-width: 150px;
+  }
 } */

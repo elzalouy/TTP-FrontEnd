@@ -5,13 +5,14 @@ import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import { useDispatch } from "react-redux";
 import { getAllNotifi, updateNotifi } from "../../redux/notification";
-import { notifiDataSelector } from "../../redux/notification/notifi.selectors";
+import { notifiDataSelector,loadingNotification } from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { notifiAction } from "../../redux/notification";
 import { socket } from "../../config/socket/actions";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { CircularProgress } from "@mui/material";
 
 type Props = {};
 // if
@@ -25,6 +26,8 @@ const NotificationContainer = (props: Props) => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
+  const buttonLoading = useAppSelector(loadingNotification);
+
   useEffect(() => {
     if (user && user._id) {
       dispatch(getAllNotifi({ id: user._id, skip }));
@@ -74,7 +77,7 @@ const NotificationContainer = (props: Props) => {
           sx={{ textTransform: "capitalize", pr: "2em", pl: "2em",color:"#fff !important" }}
           onClick={handleLoadMore}
         >
-         {'Load More'}
+         {buttonLoading ? <CircularProgress sx={{color:"white",padding:"10px"}}/> : 'Load More'}
         </LoadingButton>
       </Grid>
     </Grid>

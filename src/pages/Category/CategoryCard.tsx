@@ -151,7 +151,7 @@ const CategoryCard: React.FC<IProps> = ({
                   <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
                 </Box>
                 <Typography fontSize={14} fontWeight={"bold"}>
-                  Manage sub category
+                  Manage Category
                 </Typography>
               </Button>
             )}

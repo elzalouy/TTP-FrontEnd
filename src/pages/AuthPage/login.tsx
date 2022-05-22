@@ -66,8 +66,12 @@ const Login: React.FC<Props> = ({ history }) => {
       history.replace("/Overview");
     }
   }, [watch]);
-
+  
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    setFailed({
+      message: "",
+      status: false,
+    })
     dispatch(
       signIn({
         data: {
@@ -144,6 +148,7 @@ const Login: React.FC<Props> = ({ history }) => {
           <Controller
             name="email"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <input
                 {...field}
@@ -183,7 +188,7 @@ const Login: React.FC<Props> = ({ history }) => {
                   {...field}
                   {...register("password", { required: true })}
                   type={visible ? "text" : "password"}
-                  autoComplete="off"
+                  autoComplete="new-password"
                   className="password-input"
                   onChange={() =>
                     setFailed({
@@ -191,7 +196,7 @@ const Login: React.FC<Props> = ({ history }) => {
                       status: false,
                     })
                   }
-                  placeholder="Enter your password"
+                  placeholder="Password"
                 />
                 <IconButton onClick={()=>setVisiblity(state=>!state)}>
                   {!visible ? <VisibilityOff style={{ color: "#b4b6c4" }} /> : <Visibility style={{ color: "#b4b6c4" }} />}

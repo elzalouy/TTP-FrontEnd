@@ -205,69 +205,81 @@ const AppDrawer: React.FC = (props: any) => {
           </List>
         </List>
         <List>
-          <ListItemButton
-            sx={{
-              ":hover": { bgcolor: "white" },
-              justifyContent: open ? "space-between" : "center",
-              position: "inherit",
-              bgcolor: "white",
-              bottom: 0,
-            }}
-          >
-            <ListItemIcon
+          {open ? (
+            <ListItemButton
               sx={{
-                minWidth: 0,
+                ":hover": { bgcolor: "white" },
                 justifyContent: open ? "space-between" : "center",
+                position: "inherit",
+                bgcolor: "white",
+                bottom: 0,
               }}
             >
-              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
-                AM
-              </Avatar>
-            </ListItemIcon>
-            <ListItemText
-              sx={{
-                color: "#808191",
-                ":hover": { color: "white" },
-                opacity: open ? 1 : 0,
-                pl: 1,
-              }}
-            >
-              <Box
-                display={"inline-flex"}
-                width={"100%"}
-                justifyContent={"space-around"}
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  justifyContent: open ? "space-between" : "center",
+                }}
               >
-                <Box paddingTop={0.5}>
-                  <Typography
-                    fontFamily={"Cairo"}
-                    fontWeight="600"
-                    variant="h5"
-                    textTransform={"capitalize"}
-                    color="#11142D"
-                  >
-                    {user?.user?.name === undefined
-                      ? user?.name
-                      : user?.user?.name}
-                  </Typography>
-                  <Typography
-                    fontFamily={"Cairo"}
-                    textTransform={"capitalize"}
-                    variant="h6"
-                    color="#808191"
-                  >
-                    {user?.user?.role === undefined
-                      ? user?.role === "OM" ? "Admin" : "Project Manager"
-                      : user?.user?.role  === "OM" ? "Admin" : "Project Manager"}
-                  </Typography>
+                <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
+                  AM
+                </Avatar>
+              </ListItemIcon>
+              <ListItemText
+                sx={{
+                  color: "#808191",
+                  ":hover": { color: "white" },
+                  opacity: open ? 1 : 0,
+                  pl: 1,
+                }}
+              >
+                <Box
+                  display={"inline-flex"}
+                  width={"100%"}
+                  justifyContent={"space-around"}
+                >
+                  <Box paddingTop={0.5}>
+                    <Typography
+                      fontFamily={"Cairo"}
+                      fontWeight="600"
+                      variant="h5"
+                      textTransform={"capitalize"}
+                      color="#11142D"
+                    >
+                      {user?.user?.name === undefined
+                        ? user?.name
+                        : user?.user?.name}
+                    </Typography>
+                    <Typography
+                      fontFamily={"Cairo"}
+                      textTransform={"capitalize"}
+                      variant="h6"
+                      color="#808191"
+                    >
+                      {user?.user?.role === undefined
+                        ? user?.role === "OM"
+                          ? "Admin"
+                          : "Project Manager"
+                        : user?.user?.role === "OM"
+                        ? "Admin"
+                        : "Project Manager"}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ cursor: "pointer" }}>
+                    <IconButton onClick={handleLogout}>
+                      <LogoutIcon fontSize={"small"} />
+                    </IconButton>
+                  </Box>
                 </Box>
-                <Box sx={{ cursor: "pointer" }}>
-                  <IconButton onClick={handleLogout}>
-                    <LogoutIcon fontSize={"small"} />
-                  </IconButton>
-                </Box>
-              </Box>
-            </ListItemText>
-          </ListItemButton>
+              </ListItemText>
+            </ListItemButton>
+          ) : (
+            <Box sx={{ cursor: "pointer", marginLeft:"15px"}}>
+              <IconButton onClick={handleLogout}>
+                <LogoutIcon fontSize={"small"} />
+              </IconButton>
+            </Box>
+          )}
         </List>
       </Drawer>
     </>

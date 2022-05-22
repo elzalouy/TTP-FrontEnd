@@ -109,7 +109,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             >
               Sub-category
             </Typography>
-            <Grid direction="row">
+            <Grid direction="row" justifyContent="space-between" display="flex">
               <TextField
                 type="text"
                 name="subCategory"
@@ -118,14 +118,14 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 placeholder="Sub category"
                 sx={{
                   height: 50,
-                  width: 310,
+                  width: 210,
                   borderRadius: "6px",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderRadius: "6px",
                   },
                 }}
               />
-              <div className="add-subcategory" onClick={addSubCategory}>
+              <div className="add-subcategory-cnc" onClick={addSubCategory}>
                 Add
               </div>
             </Grid>

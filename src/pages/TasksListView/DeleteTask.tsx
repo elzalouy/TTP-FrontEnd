@@ -1,5 +1,6 @@
 import { Box, IconButton } from "@mui/material";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./DeleteTask.css";
@@ -19,6 +20,16 @@ const DeleteTask: React.FC<Props> = (props) => {
           onClick={() => {
             if (props.task.length !== 0) {
               props.setShow("flex");
+            }else{
+              toast.warn("Please select a task you wish to delete", {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
             }
           }}
         >
