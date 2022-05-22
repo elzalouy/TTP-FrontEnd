@@ -7,7 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectSelectedCategory } from "../../redux/Categories/categories.selectores";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
-import { useMediaQuery,useTheme } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 type Props = {
   handleSetEditCatDisplay: (value: string) => void;
@@ -18,7 +18,6 @@ const EditCategory: React.FC<Props> = ({
   handleSetEditCatDisplay,
   editCatDisplay,
 }) => {
-
   const dispatch = useDispatch();
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const [title, setTitle] = useState<string | undefined>("");
@@ -29,16 +28,15 @@ const EditCategory: React.FC<Props> = ({
     subCategoriesId: [],
   });
 
-
   useEffect(() => {
     setSelectedData(selectedCategory);
     setTitle(selectedCategory?.category);
   }, [selectedCategory]);
 
-/*   const [Data, setData] = useState<string>("");
+  /*   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]); */
 
-/* 
+  /* 
   const handleAddSubCategory = () => {
     let findIndex = selectedData.selectedSubCategory
       .map((cat: any) => cat.subCategory)
@@ -59,8 +57,6 @@ const EditCategory: React.FC<Props> = ({
     return;
   }; */
 
-  console.log(MD);
-  
   const handleRemoveSubCategory = (index: number) => {
     let selectedCategory = selectedData.subCategoriesId;
     selectedCategory = selectedCategory.filter(
@@ -73,7 +69,6 @@ const EditCategory: React.FC<Props> = ({
   };
 
   const handleSubmit = async () => {
-    console.log({ selectedData });
     const subCatData = {
       subCategoriesId: selectedData.subCategoriesId.map(
         (item: any) => item._id
@@ -90,7 +85,11 @@ const EditCategory: React.FC<Props> = ({
 
   return (
     <>
-      <PopUp show={editCatDisplay} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "50vw" : "30vw"}>
+      <PopUp
+        show={editCatDisplay}
+        minWidthSize={MD ? "50vw" : "30vw"}
+        maxWidthSize={MD ? "50vw" : "30vw"}
+      >
         <div>
           <img
             className="closeIcon"
@@ -118,24 +117,23 @@ const EditCategory: React.FC<Props> = ({
           <label className="popup-label">Sub-category</label>
           <div>
             <div className="add-teams-section">
-             {/*  <select
+              {/*  <select
                 className="popup-select"
                 onChange={(e) => {
-                  console.log({ value: e.target.value });
                   setData(e.target.value);
                 }}
               >
                 <option value="" selected>
                   Select Sub category
                 </option> */}
-             {/*    {selectedData?.subCategoriesId.map((option: any) => (
+              {/*    {selectedData?.subCategoriesId.map((option: any) => (
                   <option key={option._id} value={option.subCategory}>
                     {option.subCategory}
                   </option>
                 ))} */}
               {/* </select> */}
 
-            {/*   <button
+              {/*   <button
                 className="orange-btn"
                 onClick={() => {
                   handleAddSubCategory();

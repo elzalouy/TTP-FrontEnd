@@ -78,7 +78,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     },
     onSortTasks: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
-      let tasks = [...state.allTasks];
+      let tasks = [...state.filteredTasks];
       if (action.payload === "asc")
         tasks = tasks.sort((a, b) =>
           new Date(a.deadline) < new Date(b.deadline) ? -1 : 1
@@ -109,9 +109,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.selectedProject.loading = true;
       let id = action.payload;
       let tasks = [...state.allTasks].filter((item) => item.projectId === id);
-      console.log(state.projects);
       let project = state.projects.find((item) => item._id === id);
-      console.log("iddd", id, tasks, project);
       state.selectedProject.project = project;
       state.selectedProject.tasks = tasks;
       state.selectedProject.loading = false;
@@ -230,18 +228,17 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.allTasks = action.payload;
+      state.filteredTasks = action.payload;
     });
     builder.addCase(filterTasks.rejected, (state) => {
       state.loading = false;
-      state.allTasks = [];
     });
     builder.addCase(filterTasks.pending, (state) => {
       // state.loading = true;
-      state.allTasks = [];
     });
     builder.addCase(filterTasks.fulfilled, (state, action) => {
       state.loading = false;
-      state.allTasks = action.payload;
+      state.filteredTasks = action.payload;
     });
     builder.addCase(deleteProjectTasks.rejected, (state, action) => {
       state.loading = false;

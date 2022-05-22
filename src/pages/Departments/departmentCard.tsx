@@ -45,7 +45,6 @@ const DepartmentCard: React.FC<Props> = ({
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
-  console.log(department);
   return (
     <div
       className="department-Card"

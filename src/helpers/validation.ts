@@ -77,7 +77,7 @@ const createTaskSchema = Joi.object({
     "string.min": "Member should be selected",
     "any.required": "Member is required",
   }),
-  status: Joi.string().valid("inProgress").required().messages({
+  status: Joi.string().valid("inProgress", "Not Started").required().messages({
     "string.base": "Status is required",
     "string.empty": "Status should be string with min 4 chars",
     "string.min": "Status length should be Min 4 chars",
@@ -97,11 +97,11 @@ const createTaskSchema = Joi.object({
     "string.max": "Department length should be Max 20 chars",
     "any.required": "Department is required",
   }),
-  description: Joi.string().required().min(10).max(70).messages({
+  description: Joi.string().required().min(10).max(120).messages({
     "string.base": "Description is required",
     "string.empty": "Description should be string with min 10 chars",
     "string.min": "Description length should be Min 10 chars",
-    "string.max": "Description length should be Max 70 chars",
+    "string.max": "Description length should be Max 120 chars",
     "any.required": "Description is required",
   }),
   deliveryDate: Joi.any().allow(null),

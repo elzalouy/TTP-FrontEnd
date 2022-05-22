@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import CreateTask from "../components/popups/CreateTask";
 import DeleteClient from "../components/popups/DeleteClient";
 import DeleteProject from "../components/popups/DeleteProject";
 import EditClient from "../components/popups/EditClient";
@@ -23,6 +22,7 @@ import { selectUi } from "../redux/Ui/UI.selectors";
 import DeleteTask from "../components/popups/DeleteTask";
 import { Grid } from "@mui/material";
 import NewProjectPopUp from "../components/Projects/ProjectPopUp";
+import CreateNewTask from "../components/popups/CreateNewTask";
 
 const PopUps: React.FC = () => {
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ const PopUps: React.FC = () => {
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
-      <CreateTask setShow={showCreateTaskPopup} show={createTaskPopup} />
+      <CreateNewTask setShow={showCreateTaskPopup} show={createTaskPopup} />
       <LogoutPopup setShow={showLoggoutPopup} show={logoutPopup} />
       <EditTask Show={editTaskPopup} setShow={showEditTaskPopup} />
       <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />

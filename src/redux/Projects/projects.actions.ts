@@ -34,9 +34,8 @@ export const createProject = createAsyncThunk<any, any, any>(
         toast("Project created successfully");
         return result.data;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
-      toast(error);
       rejectWithValue(error);
     }
   }
@@ -45,16 +44,14 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
-      console.log({ createProjectTask: args.data });
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
         toast("Task have been saved to the Database");
         return result.data?.task;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
       rejectWithValue(error);
-      toast(error);
     }
   }
 );
@@ -62,14 +59,13 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
     try {
-      console.log({ createTaskFromBoard: args.data });
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
         toast("Task have been save to the Database");
         return result.data?.task;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);
@@ -168,7 +164,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
     try {
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
-        args.dispatch(fireEditTaskHook(""));
+        args.dispatch(fireDeleteTaskHook(""));
         toast("Tasks deleted.");
         return args.ids;
       }

@@ -60,6 +60,7 @@ export interface ProjectsInterface {
     project: Project | undefined | null;
   };
   allTasks: Task[];
+  filteredTasks: Task[];
   deleteProject: string | undefined;
   deleteProjectTasks: string[] | undefined;
   deleteTask: string | undefined;
@@ -73,6 +74,7 @@ const PorjectsState: ProjectsInterface = {
   loading: true,
   projects: [],
   allTasks: [],
+  filteredTasks: [],
   newProject: {
     newProjectHook: false,
     showPopUp: "none",

@@ -43,7 +43,6 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     var data = { ...Data };
-    console.log(e.target);
     if (e.target.name === "image") {
       let file: any = e.target.files;
       data.image = file[0];

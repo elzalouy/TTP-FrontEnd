@@ -1,4 +1,4 @@
-import { createSlice, Slice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
 import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import { Project, Task } from "../Projects";
@@ -7,14 +7,14 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,
   reducers: {
-    setStatistics: (state, action) => {
+    setStatistics: (state = StatisticsState, action: PayloadAction<any>) => {
       state.loading = true;
       let { start } = getStartEndDayOfWeek(new Date());
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
       //projects
       if (projects && projects?.length > 0) {
-        state.NoCompletedProjects = projects.filter(
+        state.NoCompletedProjects = projects?.filter(
           (item) => item.projectStatus === "done"
         ).length;
         state.PercentCompletedProjects = Math.round(
@@ -22,7 +22,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
             projects.length) *
             100
         );
-        state.NoCurruntProjects = projects.filter(
+        state.NoCurruntProjects = projects?.filter(
           (item) => item.projectStatus === "inProgress"
         ).length;
         state.PercentCurrentProjects = Math.round(
@@ -31,9 +31,6 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
             projects.length) *
             100
         );
-        state.NoCompletedTasks = tasks.filter(
-          (item) => item.status === "done"
-        ).length;
       } else {
         state.NoCompletedProjects = 0;
         state.NoCurruntProjects = 0;
@@ -54,6 +51,9 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.PercentNoNewTasks = Math.round(
           (newTasks.length / tasks.length) * 100
         );
+        state.NoCompletedTasks = tasks?.filter(
+          (item) => item.status === "done"
+        ).length;
       } else {
         state.NoCompletedTasks = 0;
         state.NoNewTasks = 0;

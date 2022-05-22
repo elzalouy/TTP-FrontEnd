@@ -46,7 +46,6 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       { payload }: PayloadAction<any>
     ) => {
       let index = state.clientsData.findIndex((item) => item._id === payload);
-      console.log(index);
       if (index) {
         let client = { ...state.clientsData[index] };
         client.inProgressProject = client.inProgressProject + 1;

@@ -24,6 +24,9 @@ import {
   selectSelectedCategory,
 } from "../../redux/Categories";
 import _ from "lodash";
+import { selectUi } from "../../redux/Ui/UI.selectors";
+import { valdiateCreateTask } from "../../helpers/validation";
+import { toast } from "react-toastify";
 
 type Props = {
   show: string;
@@ -37,16 +40,29 @@ const CreateTask: React.FC<Props> = (props) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedCategory = useAppSelector(selectSelectedCategory);
+  const { createTaskPopup } = useAppSelector(selectUi);
   const [Task, setTask] = useState<any>({
     name: "",
     categoryId: "",
     subCategoryId: "",
     memberId: "",
     deadline: "",
-    attachedFiles: "",
+    attachedFiles: [],
     selectedDepartmentId: "",
   });
-
+  React.useEffect(() => {
+    if (createTaskPopup === "flex") {
+      setTask({
+        name: "",
+        categoryId: "",
+        subCategoryId: "",
+        memberId: "",
+        deadline: "",
+        attachedFiles: [],
+        selectedDepartmentId: "",
+      });
+    }
+  }, [createTaskPopup]);
   React.useEffect(() => {
     if (Task?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === Task?.categoryId);
@@ -67,7 +83,7 @@ const CreateTask: React.FC<Props> = (props) => {
       name: Task.name,
       categoryId: Task?.categoryId,
       subCategoryId: Task?.subCategoryId,
-      memberId:  Task?.memberId,
+      memberId: Task?.memberId,
       projectId: selectedProject?.project?._id,
       status: "Not Started",
       start: new Date().toUTCString(),
@@ -75,23 +91,28 @@ const CreateTask: React.FC<Props> = (props) => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: Task?.attachedFiles,
+      attachedFiles: [],
       listId: selectedDepartment?.teamsId?.find(
         (item) => item._id === Task?.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
+      description: "description value until we upgrade the design.",
     };
-    dispatch(createTaskFromBoard({ data: newTask, dispatch }));
-    setTask({
-      name: "",
-    categoryId: "",
-    subCategoryId: "",
-    memberId: "",
-    deadline: "",
-    attachedFiles: "",
-    selectedDepartmentId: "",
-    })
-    props.setShow("none");
+    let validate = valdiateCreateTask(newTask);
+    if (validate.error) toast(validate.error.details[0].message);
+    else {
+      dispatch(createTaskFromBoard({ data: newTask, dispatch }));
+      setTask({
+        name: "",
+        categoryId: "",
+        subCategoryId: "",
+        memberId: "",
+        deadline: "",
+        attachedFiles: "",
+        selectedDepartmentId: "",
+      });
+      props.setShow("none");
+    }
   };
 
   const onChange = (
@@ -106,7 +127,7 @@ const CreateTask: React.FC<Props> = (props) => {
 
   const onDeleteFile = () => {
     let task = { ...Task };
-    task.attachedFiles = "";
+    task.attachedFiles = [];
     setTask(task);
   };
 
@@ -121,13 +142,13 @@ const CreateTask: React.FC<Props> = (props) => {
             onClick={() => {
               setTask({
                 name: "",
-              categoryId: "",
-              subCategoryId: "",
-              memberId: "",
-              deadline: "",
-              attachedFiles: "",
-              selectedDepartmentId: "",
-              })
+                categoryId: "",
+                subCategoryId: "",
+                memberId: "",
+                deadline: "",
+                attachedFiles: "",
+                selectedDepartmentId: "",
+              });
               props.setShow("none");
             }}
           />
@@ -247,10 +268,10 @@ const CreateTask: React.FC<Props> = (props) => {
               type="file"
               className="custom-file-input"
               name="attachedFiles"
-              onChange={onChange}
+              // onChange={onChange}
             />
           </div>
-          {Task?.attachedFiles?.length > 0 && (
+          {/* {Task?.attachedFiles?.length > 0 && (
             <div className="added-file">
               <p className="title-added-file">
                 {_.truncate(`${Task?.attachedFiles}`, {
@@ -267,7 +288,7 @@ const CreateTask: React.FC<Props> = (props) => {
                 onClick={onDeleteFile}
               />
             </div>
-          )}
+          )} */}
         </div>
         <div>
           <button type="submit" className="addTaskBtn" onClick={onSubmit}>

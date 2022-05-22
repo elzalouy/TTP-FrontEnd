@@ -83,7 +83,6 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       let targetTeam = formData.teams.find(
         (team: any) => team._id === teamData[0]
       );
-      console.log({ targetTeam, teamData: teamData[0] });
       if (!targetTeam) {
         setAddTeam([...addTeam, { _id: teamData[0], name: teamData[1] }]);
       }
