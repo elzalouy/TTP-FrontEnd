@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+.closeIcon{
+    position: absolute;
+    right: 0;
+    top: -5px;
+}
+
 .date{
     width: 100%;
 }
