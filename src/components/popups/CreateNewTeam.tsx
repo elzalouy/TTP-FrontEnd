@@ -7,6 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
 import { useDispatch } from "react-redux";
 import { createTeam } from "../../redux/techMember";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 
 type Props = {};
 
@@ -22,6 +23,16 @@ const AddNewTeam: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
 
+  const getDepartmentName = (id: teamData) => {
+    const departmentID = id.department.split(",");
+    const departmentName = departments.filter((department) => {
+      if (departmentID[0] === department._id) {
+        return department.name;
+      }
+    });
+    return departmentName[0]?.name;
+  };
+
   useEffect(() => {
     setTeam({
       name: "",
@@ -29,6 +40,7 @@ const AddNewTeam: React.FC<Props> = () => {
     });
     setAllTeam([]);
   }, [Show]);
+
   const handleAddTeam = async () => {
     for (let i = 0; i < AllTeam.length; i++) {
       let depData = AllTeam[i].department.split(",");
@@ -53,7 +65,7 @@ const AddNewTeam: React.FC<Props> = () => {
           setShow("flex");
         }}
       >
-        Add new teams
+        Manage Teams
       </button>
 
       <PopUp show={Show} minWidthSize="30vw">
@@ -69,9 +81,7 @@ const AddNewTeam: React.FC<Props> = () => {
             }}
           />
         </div>
-
-        <p className="popup-title">Add new team</p>
-
+        <p className="popup-title">Manage teams</p>
         <label className="popup-label">Team name</label>
         <input
           className="popup-input"
@@ -87,7 +97,7 @@ const AddNewTeam: React.FC<Props> = () => {
         />
 
         <label className="popup-label">Department</label>
-        <select
+    {/*     <select
           className="popup-select"
           onChange={(e) => {
             setTeam({ ...Team, department: e.target.value });
@@ -101,11 +111,28 @@ const AddNewTeam: React.FC<Props> = () => {
           <option value="">Select Department</option>
           {departments?.map((dep: any) => (
             <option key={dep._id} value={`${dep._id},${dep.boardId}`}>
-              {dep.name}{" "}
+              {dep.name}
             </option>
           ))}
-        </select>
-
+        </select> */}
+        <SelectInput2
+          handleChange={(e) => {
+            setTeam({ ...Team, department: e.target.value });
+          }}
+          selectText={getDepartmentName(Team)}
+          selectValue={getDepartmentName(Team)}
+          options={
+            departments
+              ? departments.map((dep) => {
+                  return {
+                    id: dep._id,
+                    value: `${dep._id},${dep.boardId}`,
+                    text: dep.name,
+                  };
+                })
+              : []
+          }
+        />
         <button
           className="add-team-btn"
           onClick={() => {
@@ -124,19 +151,19 @@ const AddNewTeam: React.FC<Props> = () => {
           Add
         </button>
         <label style={{ fontWeight: "light", fontSize: "1rem" }}>
-          All Team
+          Added Team
         </label>
         <table className="allTeam-table">
           <tr className="th">
-            <th>Team name</th>
-            <th>List ID</th>
+            <th>Team Name</th>
+            <th>Department Name</th>
             <th></th>
           </tr>
           {AllTeam.map((el, index) => {
             return (
               <tr key={index}>
                 <td>{el.name}</td>
-                <td>@{el.name}</td>
+                <td>{getDepartmentName(el)}</td>
                 <td>
                   <img
                     src={IMAGES.deleteicon}

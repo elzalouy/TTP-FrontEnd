@@ -31,14 +31,19 @@ const CategoryCard: React.FC<IProps> = ({
   handleSetEditCatDisplay,
   category,
 }) => {
+
   const dispatch = useDispatch();
+
   const handleSetSelect = () => {
     dispatch(categoriesActions.setSelectedCategory(category));
   };
+
   const EditBtn = styled(Button)({
     minWidth: "40px",
   });
+
   const role = useAppSelector(selectRole);
+
   return (
     <Box
       className="category-card"
@@ -55,7 +60,6 @@ const CategoryCard: React.FC<IProps> = ({
         backgroundColor: backgroundColor,
         overflow: "hidden",
       }}
-      onClick={handleSetSelect}
     >
       <Typography
         sx={{
@@ -133,9 +137,12 @@ const CategoryCard: React.FC<IProps> = ({
                   borderRadius: 1,
                   borderColor: fontColor,
                   mr: 1,
-                  paddingY:1.5,
+                  paddingY:1,
                 }}
-                onClick={() => handleSetDisplay("flex")}
+                onClick={() => {
+                  handleSetDisplay("flex");
+                  handleSetSelect();
+                }}
               >
                 <Box
                   sx={{
@@ -145,8 +152,8 @@ const CategoryCard: React.FC<IProps> = ({
                     borderRadius: 1.5,
                     display: "flex",
                     fontSize: "15px",
-                    paddingX: 0.5,
-                    paddingY: 0.2,
+                    paddingX: 0.45,
+                    paddingY: 0.4,
                   }}
                 >
                   <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>

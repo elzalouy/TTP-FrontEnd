@@ -135,7 +135,7 @@ const SelectInput: React.FC<Props> = ({
       <Popover
         className={styles.root}
         open={open}
-        sx={{ borderRadius: 0 }}
+        sx={{ borderRadius: 0 , width:"100%"}}
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}
@@ -148,7 +148,7 @@ const SelectInput: React.FC<Props> = ({
           horizontal: "center",
         }}
       >
-        <Box display={"grid"} padding={1} borderRadius={0}>
+        <Box display={"grid"} padding={1} borderRadius={0} width="100%">
           {options &&
             options.map((item) => (
               <option

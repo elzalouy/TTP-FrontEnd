@@ -58,7 +58,7 @@ const NotificationContainer = (props: Props) => {
   };
 
   return (
-    <Grid container paddingX={4} paddingY={MD ? 10 : 0} spacing={4} bgcolor="#FAFAFB">
+    <Grid container paddingX={4} paddingY={MD ? 10 : 0} spacing={4} bgcolor="#FAFAFB" >
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>
@@ -70,7 +70,7 @@ const NotificationContainer = (props: Props) => {
           <NotificationItem notifiData={notifiData} />
         </Grid>
       ) : null}
-      <Grid item xs={6} textAlign="center" mb="1em">
+      <Grid item xs={12} lg={6} textAlign="center" mb="1em">
         <LoadingButton
           loading={loading}
           variant="contained"

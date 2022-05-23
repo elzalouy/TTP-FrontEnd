@@ -11,6 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import "./projectForm.css"
 import {
   categoriesActions,
   selectAllCategories,
@@ -53,6 +54,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
   const { createProjectPopup } = useAppSelector(selectUi);
+  
   const { register, handleSubmit, watch, control, reset } = useForm({
     defaultValues: {
       name: "",
@@ -82,9 +84,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [watch(), reset]);
+
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -144,6 +148,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                   <TextField
                     error={error.error?.details[0].path.includes("name")}
                     id="outlined-error"
+                    className="textfield"
                     sx={{
                       width: "100%",
                       marginTop: 1,

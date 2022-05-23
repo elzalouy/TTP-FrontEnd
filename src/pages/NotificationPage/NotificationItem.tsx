@@ -7,12 +7,17 @@ import Avatar from "@mui/material/Avatar";
 import profileImg from "./avatar.png";
 import Button from "@mui/material/Button";
 import moment from 'moment'
+import { useMediaQuery,useTheme } from "@mui/material";
 
 type Props = {
   notifiData:object[]
 };
 
 const NotificationItem = ({notifiData}: Props) => {
+
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
+  
   return (
     <Grid container spacing={3}>
       {/* <Grid item xs={12}>
@@ -36,6 +41,7 @@ const NotificationItem = ({notifiData}: Props) => {
             sm={12}
             md={6}
             lg={6}
+            justifyContent={MD ? "space-between" : "flex-start"}
             sx={{
               background: "#fff",
               borderRadius: "1em",

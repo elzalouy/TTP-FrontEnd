@@ -85,7 +85,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   };
   return (
     <>
-      <Grid width="800px" container justifyContent={"space-between"}>
+      <Grid className="projectFormContainer" container justifyContent={"space-between"}>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Project title</label>
           <br />
@@ -94,6 +94,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             name="name"
             render={(props) => (
               <TextField
+                className="textfield"
                 error={validateError.error?.details[0]?.path?.includes("name")}
                 id="outlined-error"
                 {...register("name")}
@@ -109,7 +110,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                     borderRadius: "6px",
                   },
                 }}
-                placeholder="project name"
+                placeholder="Project name"
                 onChange={props.field.onChange}
               />
             )}
@@ -156,6 +157,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <MobileDatePicker
+               
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
@@ -164,6 +166,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   params: JSX.IntrinsicAttributes & TextFieldProps
                 ) => (
                   <TextField
+                  className="date"
                     {...params}
                     error={validateError.error?.details[0].path.includes(
                       "startDate"
@@ -196,6 +199,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <MobileDatePicker
+                
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
@@ -209,6 +213,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 }: any) => (
                   <TextField
                     {...params}
+                    className="date"
                     error={validateError.error?.details[0].path.includes(
                       "deadline"
                     )}
@@ -265,7 +270,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         </Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
           sm={6}
           lg={6}
           md={6}
@@ -285,7 +290,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         </Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
           sm={6}
           lg={6}
           md={6}

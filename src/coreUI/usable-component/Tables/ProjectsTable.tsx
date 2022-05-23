@@ -54,7 +54,9 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
     }
   };
   return (
-    <Table className={classes.table} aria-label="simple table">
+    <Table className={classes.table} style={ SM
+              ? { width: "140%", borderColor: "#EBEFF2" }
+              : { width: "100%", borderColor: "#EBEFF2" }} aria-label="simple table">
       <TableHead>
         <TableRow className={classes.thead}>
           <TableCell

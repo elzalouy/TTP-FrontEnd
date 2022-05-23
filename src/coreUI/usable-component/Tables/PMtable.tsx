@@ -13,7 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import "../style.css";
-import LockResetIcon from '@mui/icons-material/LockReset';
+import MailLockIcon from '@mui/icons-material/MailLock';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { FC, useState } from "react";
 import IMAGES from "../../../assets/img";
@@ -225,7 +225,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                           }
                         }}
                       >
-                        {!password ? <LockResetIcon /> : <MarkEmailReadIcon />}
+                        {!password ? <MailLockIcon /> : <MarkEmailReadIcon />}
                       </IconButton>
                       <IconButton
                         disableRipple

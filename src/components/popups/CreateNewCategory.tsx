@@ -92,6 +92,7 @@ const CreateNewCategory: React.FC<Props> = () => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setMainCategory("");
               setSubCategory("");
               setsubCategories([]);
             }}
@@ -101,7 +102,6 @@ const CreateNewCategory: React.FC<Props> = () => {
             Add new category
           </p>
         </div>
-        <form className="form-inputs">
           <Grid container>
             <Grid item xs={12}>
               <Typography
@@ -117,6 +117,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 <TextField
                   type="text"
+                  className="text-input"
                   name="mainCategory"
                   placeholder="Ex: Al-shaqran"
                   value={mainCategory}
@@ -124,7 +125,7 @@ const CreateNewCategory: React.FC<Props> = () => {
                   required
                   sx={{
                     height: 50,
-                    width: 450,
+                    width: "100%",
                     borderRadius: "6px",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderRadius: "6px",
@@ -153,7 +154,7 @@ const CreateNewCategory: React.FC<Props> = () => {
                 placeholder="Sub category"
                 sx={{
                   height: 50,
-                  width: 335,
+                  width: "100%",
                   borderRadius: "6px",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderRadius: "6px",
@@ -188,6 +189,9 @@ const CreateNewCategory: React.FC<Props> = () => {
                   className="controllers-cancel"
                   onClick={() => {
                     setShow("none");
+                    setMainCategory("");
+                    setSubCategory("");
+                    setsubCategories([]);
                   }}
                 >
                   Cancel
@@ -195,7 +199,6 @@ const CreateNewCategory: React.FC<Props> = () => {
                 <button className="controllers-done" onClick={handleSubmit}>Done</button>
               </div>
           </Grid>
-        </form>
       </PopUp>
     </>
   );
