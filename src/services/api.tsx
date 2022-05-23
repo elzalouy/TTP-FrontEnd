@@ -11,6 +11,12 @@ export const checkAuthToken = () => {
     else return false;
   } catch (error) {}
 };
+export const removeAuthToken = () => {
+  try {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+  } catch (error) {}
+};
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("token", token);

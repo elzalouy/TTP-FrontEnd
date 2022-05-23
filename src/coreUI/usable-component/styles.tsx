@@ -4,7 +4,7 @@ import { DefaultTheme } from "styled-components";
 
 export const projectsTableStyle = (status: string) => {
   const borderColor = ["#FCEFC0", "#00ACBA33"];
-  const useStyles = makeStyles((theme: DefaultTheme) => ({
+  const NotStartedStyle = makeStyles((theme: DefaultTheme) => ({
     root: {
       width: "100%",
       marginTop: 3,
@@ -16,31 +16,24 @@ export const projectsTableStyle = (status: string) => {
     },
     thead: {
       color: "black",
-      backgroundColor:
-        status === "In progress" ? borderColor[0] : borderColor[1],
+      backgroundColor: borderColor[1],
       fontFamily: "Cairo, Regular",
     },
     tbody: {
-      backgroundColor: status === "In progress" ? "#FBF5E2" : "#E1F3F5",
+      backgroundColor: "#E1F3F5",
     },
     tcellLeft: {
-      borderBottom:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
-      borderLeft:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
-      borderTop:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
+      borderBottom: "2px solid #00ACBA",
+      borderLeft: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
 
       borderTopLeftRadius: "10px",
       borderBottomLeftRadius: "10px",
     },
     tcellRight: {
-      borderBottom:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
-      borderRight:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
-      borderTop:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
+      borderBottom: "2px solid #00ACBA",
+      borderRight: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
       borderTopRightRadius: "10px",
       borderBottomRightRadius: "10px",
       fontWeight: 600,
@@ -48,23 +41,119 @@ export const projectsTableStyle = (status: string) => {
       color: "#707683",
     },
     tcellCenter: {
-      borderBottom:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
-      borderTop:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
+      borderBottom: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
       color: "#707683",
     },
     tcellCenterTask: {
-      borderBottom:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
+      borderBottom: "2px solid #00ACBA",
 
-      borderTop:
-        status === "In progress" ? "1px solid #FFC500" : "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
       color: "#00ACBA",
       fontWeight: "bold",
     },
   }));
-  return useStyles;
+  const inProgressStyle = makeStyles((theme: DefaultTheme) => ({
+    root: {
+      width: "100%",
+      marginTop: 3,
+      overflowX: "auto",
+    },
+    table: {
+      borderCollapse: "separate",
+      borderSpacing: "0px 10px",
+    },
+    thead: {
+      color: "black",
+      backgroundColor: borderColor[0],
+      fontFamily: "Cairo, Regular",
+    },
+    tbody: {
+      backgroundColor: "#FBF5E2",
+    },
+    tcellLeft: {
+      borderBottom: "1px solid #FFC500",
+      borderLeft: "1px solid #FFC500",
+      borderTop: "1px solid #FFC500",
+
+      borderTopLeftRadius: "10px",
+      borderBottomLeftRadius: "10px",
+    },
+    tcellRight: {
+      borderBottom: "1px solid #FFC500",
+      borderRight: "1px solid #FFC500",
+      borderTop: "1px solid #FFC500",
+      borderTopRightRadius: "10px",
+      borderBottomRightRadius: "10px",
+      fontWeight: 600,
+      fontSize: "26px",
+      color: "#707683",
+    },
+    tcellCenter: {
+      borderBottom: "1px solid #FFC500",
+      borderTop: "1px solid #FFC500",
+      color: "#707683",
+    },
+    tcellCenterTask: {
+      borderBottom: "1px solid #FFC500",
+
+      borderTop: "1px solid #FFC500",
+      color: "#00ACBA",
+      fontWeight: "bold",
+    },
+  }));
+  const DoneStyle = makeStyles((theme: DefaultTheme) => ({
+    root: {
+      width: "100%",
+      marginTop: 3,
+      overflowX: "auto",
+    },
+    table: {
+      borderCollapse: "separate",
+      borderSpacing: "0px 10px",
+    },
+    thead: {
+      color: "black",
+      backgroundColor: borderColor[1],
+      fontFamily: "Cairo, Regular",
+    },
+    tbody: {
+      backgroundColor: "#E1F3F5",
+    },
+    tcellLeft: {
+      borderBottom: "2px solid #00ACBA",
+      borderLeft: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
+
+      borderTopLeftRadius: "10px",
+      borderBottomLeftRadius: "10px",
+    },
+    tcellRight: {
+      borderBottom: "2px solid #00ACBA",
+      borderRight: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
+      borderTopRightRadius: "10px",
+      borderBottomRightRadius: "10px",
+      fontWeight: 600,
+      fontSize: "26px",
+      color: "#707683",
+    },
+    tcellCenter: {
+      borderBottom: "2px solid #00ACBA",
+      borderTop: "2px solid #00ACBA",
+      color: "#707683",
+    },
+    tcellCenterTask: {
+      borderBottom: "2px solid #00ACBA",
+
+      borderTop: "2px solid #00ACBA",
+      color: "#00ACBA",
+      fontWeight: "bold",
+    },
+  }));
+  if (status === "Not Started") return NotStartedStyle;
+  if (status === "In progress") return inProgressStyle;
+  return DoneStyle;
 };
 
 export const popOverStyle = () => {

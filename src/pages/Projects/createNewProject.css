@@ -46,7 +46,8 @@
   font-size: 13px;
   padding: 11px;
   border-radius: 6px;
-  border: solid 0.5px #b4b6c4;
+  /* Please don't change the border color, and use it instead with other inputs */
+  border: solid 0.5px #e4e4e4;
   color: #44444f;
   font-weight: 600;
   margin: 0;
@@ -218,7 +219,7 @@ table.allTask-table td.deleteTd {
   font-weight: 600;
 }
 
-@media (max-width:900px) {
+@media (max-width: 900px) {
   .blackBtn {
     cursor: pointer;
     width: 150px;
@@ -230,28 +231,28 @@ table.allTask-table td.deleteTd {
     font-weight: bold;
     margin: 10px 0;
   }
-  .inputs-grid{
+  .inputs-grid {
     grid-template-columns: 1fr;
   }
-  .addTaskBtn{
+  .addTaskBtn {
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .input-project{
+  .input-project {
     width: 38%;
   }
-  .select-project{
+  .select-project {
     width: 38%;
   }
-  .textarea-project{
+  .textarea-project {
     width: 38%;
   }
   .files {
     margin: 20px 0px;
   }
 }
-@media (max-width:800px) {
-  .input-project{
+@media (max-width: 800px) {
+  .input-project {
     width: 100%;
   }
   .select-project {

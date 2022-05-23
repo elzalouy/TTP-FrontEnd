@@ -12,6 +12,7 @@ export const signIn = createAsyncThunk<any, any, any>(
       if (result.ok) {
         args.history.push("/Overview");
         localStorage.setItem("token", result?.data?.token);
+        localStorage.setItem("id", result?.data?._id);
         //This return below returns the error message and status for displaying on login UI
         return result?.data;
       }

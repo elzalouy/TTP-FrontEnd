@@ -17,7 +17,7 @@ import { useAppSelector } from "../../redux/hooks";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
-import { clientsActions } from "../../redux/Clients";
+import { clientsActions, getAllClients } from "../../redux/Clients";
 import { selectRole } from "../../redux/Auth";
 
 type Props = {
@@ -54,6 +54,9 @@ const Clients: React.FC<Props> = () => {
   const clientData = useAppSelector(clientsDataSelector);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  useEffect(() => {
+    dispatch(getAllClients(null));
+  }, [dispatch]);
   const [filter, setFilter] = useState<{
     sortDate: string;
   }>({

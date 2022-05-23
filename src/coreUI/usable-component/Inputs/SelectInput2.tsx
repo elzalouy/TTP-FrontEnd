@@ -21,7 +21,7 @@ interface Props {
     text: string;
   }[];
   label?: string;
-  selectValue: string;
+  selectValue: string | undefined;
   selectText: string | undefined;
   error?: Boolean | undefined;
 }
@@ -55,8 +55,8 @@ const SelectInput2: React.FC<Props> = ({
         borderRadius: 1.5,
         overflow: "hidden",
         cursor: "pointer",
-        border: "1px solid #B4B6C4",
-        padding:"0px !important",
+        border: "1px solid #E4E4E4",
+        padding: "0px !important",
         marginTop: "7px",
       }}
       justifyContent="space-between"

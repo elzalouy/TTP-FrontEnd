@@ -18,6 +18,7 @@ import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   deleteProject,
+  deleteProjectTasks,
   deleteTask,
   ProjectsActions,
   selectNewProject,
@@ -43,8 +44,9 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
 
   const onCancel = () => {
     dispatch(
-      deleteProject({ data: { _id: newProject.project._id }, dispatch })
+      deleteProjectTasks({ data: { id: newProject.project._id }, dispatch })
     );
+    dispatch(deleteProject({ data: { id: newProject.project._id }, dispatch }));
     setShow("none");
     setCurrentStep(0);
   };

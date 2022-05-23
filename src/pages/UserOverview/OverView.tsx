@@ -21,6 +21,7 @@ import { getAllDepartments } from "../../redux/Departments";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllClients } from "../../redux/Clients";
 import { getAllMembers } from "../../redux/techMember";
+import { checkAuthToken } from "../../services/api";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -35,30 +36,16 @@ const OverView: FC<Props> = (props) => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const statistics = useAppSelector(selectAllSatistics);
 
-  // useEffect(() => {
-  //   dispatch(getPMs(null));
-  //   dispatch(getAllProjects(null));
-  //   dispatch(getAllTasks(null));
-  // }, []);
-
-  let token = localStorage.getItem("id");
-
   useEffect(() => {
-    if (token) {
+    let id = localStorage.getItem("id");
+    if (checkAuthToken() && id) {
       dispatch(
         getUserInfo({
-          id: token,
+          id: id,
         })
       );
-    }
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-    dispatch(getAllClients(null));
-    dispatch(getPMs(null));
-    dispatch(getAllMembers(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllTasks(null));
-  }, [dispatch]);
+    } else props.history.push("/login");
+  }, [dispatch, props.history]);
 
   return (
     <>

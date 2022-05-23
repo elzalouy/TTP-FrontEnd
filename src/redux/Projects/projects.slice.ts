@@ -108,7 +108,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     ) => {
       state.selectedProject.loading = true;
       let id = action.payload;
-      let tasks = [...state.allTasks].filter((item) => item.projectId === id);
+      let tasks = [...state?.allTasks].filter((item) => item.projectId === id);
       let project = state.projects.find((item) => item._id === id);
       state.selectedProject.project = project;
       state.selectedProject.tasks = tasks;
@@ -127,8 +127,8 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     createProjectHook: (state = projectsState, action: PayloadAction<any>) => {
       let newproject = { ...state.newProject.project };
       if (state.projects.findIndex((item) => item._id === newproject._id) < 0) {
-        newproject.numberOfTasks = state?.newProject?.tasks?.length;
-        newproject.numberOfFinishedTasks = state.newProject?.tasks?.filter(
+        newproject.NoOfTasks = state?.newProject?.tasks?.length;
+        newproject.NoOfFinishedTasks = state.newProject?.tasks?.filter(
           (item) => item.status === "done"
         );
         state.projects.push(newproject);
@@ -305,7 +305,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       // state.loading = true;
     });
     builder.addCase(editTask.fulfilled, (state, action) => {
-      state.editTask = null;
+      state.editTask = undefined;
       let tasks = [...state.allTasks];
       let index = tasks.findIndex((item) => item._id === action.payload?._id);
       if (index >= 0) {

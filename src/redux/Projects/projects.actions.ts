@@ -10,16 +10,22 @@ import {
   fireMoveTaskHook,
   fireUpdateProjectHook,
 } from "../Ui";
+import { removeAuthToken } from "../../services/api";
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
   async (args, { rejectWithValue }) => {
     try {
       let projects = await api.getHttpProjects();
+      if (projects?.status === 401 || projects?.status === 403) {
+        return rejectWithValue("Un Authorized");
+        removeAuthToken();
+      }
+
       if (projects.ok) return projects.data;
       throw projects.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -34,9 +40,9 @@ export const createProject = createAsyncThunk<any, any, any>(
         toast("Project created successfully");
         return result.data;
       }
-      rejectWithValue(result.data);
+      return rejectWithValue(result.data);
     } catch (error: any) {
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -44,14 +50,14 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
-      let result: ApiResponse<any> = await api.createTask(args);
+      let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         toast("Task have been saved to the Database");
         return result.data?.task;
       }
-      rejectWithValue(result.data);
+      return rejectWithValue(result.data);
     } catch (error: any) {
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -62,13 +68,16 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
+        args.setShow("none");
         toast("Task have been save to the Database");
         return result.data?.task;
+      } else {
+        toast(result?.data[0]?.message);
+        return rejectWithValue(result.data);
       }
-      rejectWithValue(result.data);
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -82,7 +91,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       throw projects.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -96,7 +105,7 @@ export const getTasks = createAsyncThunk<any, any, any>(
       throw tasks.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -110,7 +119,7 @@ export const getProject = createAsyncThunk<any, any, any>(
       throw projects.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -119,11 +128,16 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let tasks = await api.getTasks("");
+      if (tasks?.status === 401 || tasks?.status === 403) {
+        return rejectWithValue("Un Authorized");
+        removeAuthToken();
+      }
+
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -137,7 +151,7 @@ export const filterTasks = createAsyncThunk<any, any, any>(
       throw tasks.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -154,7 +168,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       throw deleteResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -171,7 +185,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       throw deleteResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -188,7 +202,7 @@ export const deleteProject = createAsyncThunk<any, any, any>(
       throw deleteResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -205,7 +219,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
       } else throw deleteResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -221,7 +235,7 @@ export const editProject = createAsyncThunk<any, any, any>(
       } else throw editResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -255,7 +269,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
       } else throw moveResult.problem;
     } catch (error: any) {
       toast(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -268,9 +282,9 @@ export const editTask = createAsyncThunk<any, any, any>(
       if (response.ok && response.data) {
         args.dispatch(fireEditTaskHook(""));
         return response.data;
-      } else throw "Task not updated.";
+      } else throw new Error("Task not updated.");
     } catch (error) {
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );

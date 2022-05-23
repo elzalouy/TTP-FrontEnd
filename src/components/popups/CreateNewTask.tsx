@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonBase,
   Grid,
   TextField,
   TextFieldProps,
@@ -23,6 +24,7 @@ import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
+  createTaskFromBoard,
   ProjectsActions,
   selectNewProject,
   selectSelectedDepartment,
@@ -66,7 +68,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       categoryId: "",
       subCategoryId: "",
       memberId: "",
-      deadline: "",
+      deadline: null,
       attachedFiles: "",
       selectedDepartmentId: "",
       description: "",
@@ -99,9 +101,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
       subCategoryId: data?.subCategoryId,
       memberId: data?.memberId,
       projectId: selectedProject?.project?._id,
-      status: "Not Started",
+      status:
+        data?.deadline !== null && data?.deadline !== ""
+          ? "inProgress"
+          : "Not Started",
       start: new Date().toUTCString(),
-      deadline: moment(data?.deadline).toDate(),
+      deadline:
+        data?.deadline === "" || data?.deadline === null
+          ? null
+          : moment(data?.deadline).toDate(),
       deliveryDate: null,
       done: null,
       turnoverTime: null,
@@ -116,7 +124,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
     if (validateResult.error) {
       setError(validateResult);
       toast(validateResult.error.message);
-    } else dispatch(createProjectTask(newTask));
+    } else {
+      dispatch(
+        createTaskFromBoard({
+          data: newTask,
+          dispatch: dispatch,
+          setShow: props.setShow,
+        })
+      );
+    }
   };
   const onChangeFiles = () => {
     files.current?.click();
@@ -169,6 +185,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <TextField
+                      {...register("name")}
                       error={error.error?.details[0].path.includes("name")}
                       id="outlined-error"
                       sx={{
@@ -184,7 +201,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
                         },
                       }}
                       placeholder="Task name"
-                      {...register("name")}
                       onChange={props.field.onChange}
                     />
                   )}
@@ -198,6 +214,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <SelectInput2
+                      {...register("selectedDepartmentId")}
                       error={error.error?.details[0].path.includes("listId")}
                       handleChange={props.field.onChange}
                       selectText={
@@ -205,7 +222,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           (item) => item._id === props.field.value
                         )?.name
                       }
-                      {...register("selectedDepartmentId")}
                       selectValue={props.field.value}
                       options={
                         departments
@@ -230,6 +246,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <MobileDatePicker
+                      {...register("deadline")}
                       inputFormat="YYYY-MM-DD"
                       value={props.field.value}
                       onChange={props.field.onChange}
@@ -238,12 +255,11 @@ const CreateNewTask: React.FC<Props> = (props) => {
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
                         <TextField
+                          placeholder="deadline"
                           error={error.error?.details[0].path.includes(
                             "deadline"
                           )}
-                          {...register("deadline")}
                           {...params}
-                          defaultValue=""
                           onChange={params.onChange}
                           sx={{
                             width: "100%",
@@ -271,6 +287,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <SelectInput2
+                      {...register("categoryId")}
                       error={error?.error?.details[0].path.includes(
                         "categoryId"
                       )}
@@ -280,7 +297,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           (item) => item._id === props.field.value
                         )?.category
                       }
-                      {...register("categoryId")}
                       selectValue={props.field.value}
                       options={
                         categories
@@ -311,6 +327,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       {...register("description")}
                       id="outlined-multiline-static"
                       multiline
+                      placeholder="Write about your task"
                       sx={{
                         paddingTop: 1,
                         width: "100%",
@@ -392,67 +409,75 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   )}
                 />
               </div>
-              <Box
-                alignItems="center"
-                display={"inline-flex"}
-                className="files"
-              >
-                <input
-                  {...register("file")}
-                  onChange={onSetFiles}
-                  ref={files}
-                  type="file"
-                  style={{ display: "none" }}
-                  multiple
-                />
-                <Button
-                  onClick={onChangeFiles}
-                  sx={{
+            </div>
+            <Box
+              marginX={1}
+              marginY={3}
+              alignItems="center"
+              width={"100%"}
+              overflow="scroll"
+              display={"inline-flex"}
+              className="files"
+            >
+              <input
+                {...register("file")}
+                onChange={onSetFiles}
+                ref={files}
+                type="file"
+                style={{ display: "none" }}
+                multiple
+              />
+              <ButtonBase
+                onClick={onChangeFiles}
+                sx={{
+                  backgroundColor: "#00ACBA",
+                  width: "46px !important",
+                  height: "32px",
+                  borderRadius: "5px",
+                  ":hover": {
                     backgroundColor: "#00ACBA",
-                    width: "40px",
-                    height: "32px",
-                    borderRadius: "5px",
+                  },
+                  "& .MuiButton-root": {
+                    width: "46px !important",
                     ":hover": {
                       backgroundColor: "#00ACBA",
+                      color: "white",
                     },
-                    "& .MuiButton-root": {
-                      ":hover": {
-                        backgroundColor: "#00ACBA",
-                        color: "white",
-                      },
-                    },
-                  }}
-                >
-                  <img src={IMAGES.fileicon} alt="Upload" />
-                </Button>
-                {Files &&
-                  Files.length > 0 &&
-                  Files?.map((item, index) => (
-                    <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={0.5}
-                      borderRadius={1}
-                      color="#92929D"
-                      sx={{
-                        cursor: "pointer",
-                        height: "35px",
-                        textAlign: "center",
-                        alignContent: "center",
-                        paddingTop: 1,
-                      }}
-                      onClick={() => onRemoveFile(item)}
-                    >
-                      {item?.name}
-                      <CloseIcon
-                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                        htmlColor="#92929D"
-                      />
-                    </Typography>
-                  ))}
-              </Box>
-            </div>
+                  },
+                }}
+              >
+                <img src={IMAGES.fileicon} alt="Upload" />
+              </ButtonBase>
+              {Files &&
+                Files.length > 0 &&
+                Files?.map((item, index) => (
+                  <Box
+                    key={index}
+                    marginLeft={1}
+                    bgcolor={"#F1F1F5"}
+                    padding={0.5}
+                    borderRadius={1}
+                    display={"inline-flex"}
+                    color="#92929D"
+                    sx={{
+                      cursor: "pointer",
+                      height: "32px",
+                      textAlign: "center",
+                      alignContent: "center",
+                      justifySelf: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={() => onRemoveFile(item)}
+                  >
+                    <Typography>{item?.name}</Typography>
+                    <CloseIcon
+                      sx={{ fontSize: "14px", marginLeft: 0.5 }}
+                      htmlColor="#92929D"
+                    />
+                  </Box>
+                ))}
+            </Box>
             <div>
               <button
                 style={{ marginBottom: "20px" }}

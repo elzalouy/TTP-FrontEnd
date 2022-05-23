@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { removeAuthToken } from "../../services/api";
 import ClientsApi from "../../services/endpoints/clients";
 
 export const getAllClients = createAsyncThunk<any, any, any>(
@@ -7,6 +8,10 @@ export const getAllClients = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let result = await ClientsApi.getClients();
+      if (result?.status === 401 || result?.status === 403) {
+        rejectWithValue("Un Authorized");
+        removeAuthToken();
+      }
       if (result.data) {
         return result.data;
       } else return [];
@@ -84,7 +89,7 @@ export const deleteClient = createAsyncThunk<any, any, any>(
         });
         return data;
       }
-      throw "Error hapenned while deleting the client";
+      throw new Error("Error hapenned while deleting the client");
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);
