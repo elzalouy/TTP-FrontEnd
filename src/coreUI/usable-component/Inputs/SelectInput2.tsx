@@ -16,11 +16,12 @@ import _ from "lodash";
 interface Props {
   handleChange: (e: any) => void;
   options?: {
-    id: string;
+    id?: string;
     value: string;
     text: string;
   }[];
   label?: string;
+  default?: string;
   selectValue: string;
   selectText: string | undefined;
   error?: Boolean | undefined;
@@ -40,12 +41,14 @@ const SelectInput2: React.FC<Props> = ({
   );
 
   const open = Boolean(anchorEl);
+
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <Grid
       sx={{
@@ -56,7 +59,7 @@ const SelectInput2: React.FC<Props> = ({
         overflow: "hidden",
         cursor: "pointer",
         border: "1px solid #B4B6C4",
-        padding:"0px !important",
+        padding: "0px !important",
         marginTop: "7px",
       }}
       justifyContent="space-between"
@@ -91,6 +94,7 @@ const SelectInput2: React.FC<Props> = ({
             variant="h5"
             height={40}
             fontSize={14}
+            textTransform="capitalize"
             fontWeight={"700"}
             color="#44444F"
             sx={{
@@ -170,7 +174,7 @@ const SelectInput2: React.FC<Props> = ({
                   paddingInline: 10,
                   width: "340px",
                   justifyContent: "flex-start",
-                  textTransform: "none",
+                  textTransform: "capitalize",
                   fontFamily: "Cairo",
                   color: "#696974",
                   fontWeight: "700",

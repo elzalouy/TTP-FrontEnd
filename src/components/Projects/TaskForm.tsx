@@ -54,6 +54,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
   const { createProjectPopup } = useAppSelector(selectUi);
+  
   const { register, handleSubmit, watch, control, reset } = useForm({
     defaultValues: {
       name: "",
@@ -83,9 +84,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [watch(), reset]);
+
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,

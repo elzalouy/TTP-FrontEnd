@@ -8,6 +8,10 @@ import { selectedDepart } from "../../redux/Departments/departments.selectors";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 import { useDispatch } from "react-redux";
 import { updateDepartment, getAllDepartments } from "../../redux/Departments";
+import { error } from "console";
+import { useForm, Controller } from "react-hook-form";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import departments from "../../services/endpoints/departments";
 
 type Props = {
   Show: string;
@@ -34,6 +38,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   const [addTeam, setAddTeam] = useState<{ _id: string; name: string }[]>([]);
   const selectedDepartment = useAppSelector(selectedDepart);
   let teamsData = useAppSelector(selectAllMembers);
+  const { register, control} = useForm();
   const [formData, setFormData] = useState<{
     name: string;
     color: string;
@@ -70,6 +75,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   }, [selectedDepartment]);
 
   let { name, color, teams, mainBoard } = formData;
+
   const handleSelectTeam = () => {
     // let value = e.target.value;
     let teamData = Data.split(",");
@@ -112,7 +118,11 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if(e.target.name){
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }else{
+      setFormData({ ...formData, color: e.target.value });
+    }
   };
 
   const handleSubmit = async () => {
@@ -167,19 +177,27 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
           name="name"
         />
         <label className="popup-label">Color</label>
-        <select
-          className="popup-select"
-          name="color"
-          onChange={handleChange}
-          value={color}
-        >
-          {colors.map((item: string, i: number) => (
-            <option key={i} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-
+        <Controller
+                name="EditDepartmentColors"
+                control={control}
+                render={(props) => (
+                  <SelectInput2
+                    handleChange={handleChange}
+                    selectText={color}
+                    {...register("color")}
+                    selectValue={color}
+                    options={
+                     colors ? colors.map((color)=>{
+                      return {
+                        id: color,
+                        value: color,
+                        text: color,
+                      };
+                     })
+                    : []}
+                  />
+                )}
+              />
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
           <select

@@ -10,12 +10,13 @@ import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Grid } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
 type Props = {
   display: string;
   handleSetDisplay: (value: string) => void;
+  subCategories?: string[];
 };
 
 const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
@@ -100,19 +101,30 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
               paddingTop={1}
               color="#00ACBA"
             >
-              Add sub-category
+              Manage Category
             </Typography>
           </Grid>
           <div>
-            <Typography
-              fontWeight={"700"}
-              fontSize={16}
-              paddingTop={2}
-              paddingBottom={1}
-              color="black"
-            >
-              Sub-category
-            </Typography>
+            <label className="popup-label">Main Category</label>
+            <Grid item xs={12}>
+              <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                <TextField
+                  type="text"
+                  name="mainCategory"
+                  placeholder="Ex: Al-shaqran"
+                  required
+                  sx={{
+                    height: 50,
+                    width: 450,
+                    borderRadius: "6px",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderRadius: "6px",
+                    },
+                  }}
+                />
+              </div>
+            </Grid>
+            <label className="popup-label">Sub-Category</label>
             <Grid direction="row" justifyContent="space-between" display="flex">
               <TextField
                 type="text"
@@ -121,8 +133,8 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 onChange={onSubChange}
                 placeholder="Sub category"
                 sx={{
-                  paddingRight:"10px",
-                  flex:1,
+                  paddingRight: "10px",
+                  flex: 1,
                   height: 50,
                   width: 210,
                   borderRadius: "6px",
@@ -146,7 +158,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                         removeSubCategory(_id);
                       }}
                     >
-                      <CloseIcon style={{width:"16px" , height:"16px"}}/>
+                      <CloseIcon style={{ width: "16px", height: "16px" }} />
                     </span>
                   </div>
                 ))}

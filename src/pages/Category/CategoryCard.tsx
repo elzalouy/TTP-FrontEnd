@@ -31,14 +31,19 @@ const CategoryCard: React.FC<IProps> = ({
   handleSetEditCatDisplay,
   category,
 }) => {
+
   const dispatch = useDispatch();
+
   const handleSetSelect = () => {
     dispatch(categoriesActions.setSelectedCategory(category));
   };
+
   const EditBtn = styled(Button)({
     minWidth: "40px",
   });
+
   const role = useAppSelector(selectRole);
+
   return (
     <Box
       className="category-card"
@@ -55,7 +60,6 @@ const CategoryCard: React.FC<IProps> = ({
         backgroundColor: backgroundColor,
         overflow: "hidden",
       }}
-      onClick={handleSetSelect}
     >
       <Typography
         sx={{
@@ -135,7 +139,10 @@ const CategoryCard: React.FC<IProps> = ({
                   mr: 1,
                   paddingY:1,
                 }}
-                onClick={() => handleSetDisplay("flex")}
+                onClick={() => {
+                  handleSetDisplay("flex");
+                  handleSetSelect();
+                }}
               >
                 <Box
                   sx={{

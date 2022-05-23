@@ -13,6 +13,7 @@ import { getAllCategories } from "../../redux/Categories";
 import { selectAllCategories } from "../../redux/Categories/categories.selectores";
 import { categoriesActions } from "../../redux/Categories";
 import { selectRole } from "../../redux/Auth";
+import categories from "../../services/endpoints/categories";
 
 type Props = {};
 
@@ -35,16 +36,19 @@ const Category: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    
     setSearch(e.target.value);
     dispatch(categoriesActions.onSearch(e.target.value));
   };
 
   const [display, setDisplay] = useState<string>("none");
+  const [editCatDisplay, setEditCatDisply] = useState<string>("none");
+
   const handleSetDisplay = (value: string) => {
     setDisplay(value);
   };
 
-  const [editCatDisplay, setEditCatDisply] = useState<string>("none");
+
   const handleSetEditCatDisplay = (value: string) => {
     setEditCatDisply(value);
   };

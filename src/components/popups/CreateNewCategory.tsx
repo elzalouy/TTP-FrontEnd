@@ -92,6 +92,7 @@ const CreateNewCategory: React.FC<Props> = () => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setMainCategory("");
               setSubCategory("");
               setsubCategories([]);
             }}
@@ -187,6 +188,9 @@ const CreateNewCategory: React.FC<Props> = () => {
                   className="controllers-cancel"
                   onClick={() => {
                     setShow("none");
+                    setMainCategory("");
+                    setSubCategory("");
+                    setsubCategories([]);
                   }}
                 >
                   Cancel

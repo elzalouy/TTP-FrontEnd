@@ -14,7 +14,7 @@ type Props = {
 
 const DeleteTask: React.FC<Props> = (props) => {
   return (
-    <Box style={{ height: "30px" }}>
+    <Box style={{ height: "30px",marginBottom:"5px" }}>
       <Box style={{ width: "35px", padding: "0 10px" }} className="filter-icon">
         <IconButton
           onClick={() => {

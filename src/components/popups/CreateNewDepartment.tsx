@@ -12,6 +12,9 @@ import {
   selectAllDepartments,
 } from "../../redux/Departments";
 import { toast } from "react-toastify";
+import { Controller, useForm } from "react-hook-form";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import { register } from "../../serviceWorkerRegistration";
 
 type Props = {};
 
@@ -31,7 +34,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const department = useSelector(selectAllDepartments);
   const [Show, setShow] = useState("none");
-  const [Data, setData] = useState<string>("");
+  const [Data, setData] = useState<string>("Select Team");
   const [Names, setNames] = useState<string[]>([]);
   const [formData, setFormData] = useState<{
     name: string;
@@ -62,6 +65,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
     setData("");
   }, [Show]);
   const { name, color, teams, mainBoard } = formData;
+  const { register, control } = useForm();
   let teamsData = useAppSelector(selectAllMembers);
   const handleSelectTeam = () => {
     // let value = e.target.value;
@@ -75,6 +79,11 @@ const CreateNewDepartment: React.FC<Props> = () => {
       setData("");
     }
   };
+
+  const getTeamName = (value:string) => {
+    let target = value.split(",");
+    return target[1];
+  }
 
   const handleRemoveTeam = (index: number) => {
     Names.splice(index, 1);
@@ -90,7 +99,11 @@ const CreateNewDepartment: React.FC<Props> = () => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name) {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    } else {
+      setFormData({ ...formData, color: e.target.value });
+    }
   };
 
   const handleSubmit = async () => {
@@ -131,7 +144,12 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <img src={IMAGES.plus} alt="add" />
         <p>Create new department</p>
       </div>
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px" padding="30px">
+      <PopUp
+        show={Show}
+        minWidthSize="30vw"
+        maxWidthSize="300px"
+        padding="30px"
+      >
         <div>
           <img
             className="closeIcon"
@@ -158,7 +176,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         />
 
         <label className="popup-label">Color</label>
-        <select
+        {/*   <select
           className="popup-select"
           name="color"
           onChange={handleChange}
@@ -169,11 +187,33 @@ const CreateNewDepartment: React.FC<Props> = () => {
               {item}
             </option>
           ))}
-        </select>
-
+        </select> */}
+        <Controller
+          name="CreateDepartmentColors"
+          control={control}
+          render={(props) => (
+            <SelectInput2
+              handleChange={handleChange}
+              selectText={color}
+              {...register("color")}
+              selectValue={color}
+              options={
+                colors
+                  ? colors.map((color) => {
+                      return {
+                        id: color,
+                        value: color,
+                        text: color,
+                      };
+                    })
+                  : []
+              }
+            />
+          )}
+        />
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
-          <select
+    {/*       <select
             className="popup-select"
             onChange={(e) => {
               if (e.target.value !== "") {
@@ -188,8 +228,34 @@ const CreateNewDepartment: React.FC<Props> = () => {
                 {team.name}
               </option>
             ))}
-          </select>
-
+          </select> */}
+          <Controller
+            name="CreateDepartmentTeam"
+            control={control}
+            render={(props) => (
+              <SelectInput2
+                handleChange={(e:any)=>{
+                  if (e.target.value !== "") {
+                   setData(e.target.value);
+                  }
+                }}
+                selectText={getTeamName(Data)}
+                {...register("team")}
+                selectValue={getTeamName(Data)}
+                options={
+                  teamsData
+                    ? teamsData?.techMembers?.map((team) => {
+                        return {
+                          id: team._id,
+                          value: `${team._id},${team.name}`,
+                          text: team.name,
+                        };
+                      })
+                    : []
+                }
+              />
+            )}
+          />
           <button
             className="orange-btn"
             onClick={() => {
