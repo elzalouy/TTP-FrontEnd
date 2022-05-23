@@ -34,14 +34,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch, control, reset} = useForm({
+  const { register, watch, control, reset } = useForm({
     defaultValues: {
       name: "",
       projectManager: "",
       deadline: "",
       startDate: "",
-      clientId: ""
-    }
+      clientId: "",
+    },
   });
   // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
@@ -49,9 +49,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
 
-React.useEffect(() => {
-  reset()
-},[setShow])
+  React.useEffect(() => {
+    reset();
+  }, [setShow]);
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -81,7 +81,7 @@ React.useEffect(() => {
   };
   return (
     <>
-      <Grid width="800px" container justifyContent={"space-between"}>
+      <Grid className="projectFormContainer" container justifyContent={"space-between"}>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Project title</label>
           <br />
@@ -90,6 +90,7 @@ React.useEffect(() => {
             name="name"
             render={(props) => (
               <TextField
+                className="textfield"
                 error={validateError.error?.details[0]?.path?.includes("name")}
                 id="outlined-error"
                 {...register("name")}
@@ -152,12 +153,16 @@ React.useEffect(() => {
             control={control}
             render={(props) => (
               <MobileDatePicker
+               
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
                 leftArrowButtonText="arrow"
-                renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
+                renderInput={(
+                  params: JSX.IntrinsicAttributes & TextFieldProps
+                ) => (
                   <TextField
+                  className="date"
                     {...params}
                     error={validateError.error?.details[0].path.includes(
                       "startDate"
@@ -190,13 +195,21 @@ React.useEffect(() => {
             control={control}
             render={(props) => (
               <MobileDatePicker
+                
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
                 leftArrowButtonText="arrow"
-                renderInput={({ className, classes, sx, style, ...params }:any) => (
+                renderInput={({
+                  className,
+                  classes,
+                  sx,
+                  style,
+                  ...params
+                }: any) => (
                   <TextField
                     {...params}
+                    className="date"
                     error={validateError.error?.details[0].path.includes(
                       "deadline"
                     )}
@@ -252,7 +265,7 @@ React.useEffect(() => {
         </Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
           sm={6}
           lg={6}
           md={6}
@@ -272,7 +285,7 @@ React.useEffect(() => {
         </Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
           sm={6}
           lg={6}
           md={6}

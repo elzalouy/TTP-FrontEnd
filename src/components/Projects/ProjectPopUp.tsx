@@ -9,6 +9,7 @@ import {
   Typography,
   stepIconClasses,
 } from "@mui/material";
+import "./projectForm.css"
 import { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useAppSelector } from "../../redux/hooks";
@@ -22,6 +23,7 @@ import { Check } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { UiActions } from "../../redux/Ui";
 import { selectUi } from "../../redux/Ui/UI.selectors";
+import { immerable } from "immer";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;
@@ -110,7 +112,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   };
   return (
     <PopUp show={createProjectPopup}>
-      <Grid container direction="row">
+      <Grid container direction="row" className="projectFormHeader">
         <Grid
           item
           xs={8}
@@ -120,7 +122,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
         >
           <Stepper
             connector={<QontoConnector />}
-            style={{ width: "400px" }}
+            className="stepper"
             activeStep={currentStep}
             alternativeLabel
           >

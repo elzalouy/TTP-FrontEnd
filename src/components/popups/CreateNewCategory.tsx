@@ -101,7 +101,6 @@ const CreateNewCategory: React.FC<Props> = () => {
             Add new category
           </p>
         </div>
-        <form className="form-inputs">
           <Grid container>
             <Grid item xs={12}>
               <Typography
@@ -195,7 +194,6 @@ const CreateNewCategory: React.FC<Props> = () => {
                 <button className="controllers-done" onClick={handleSubmit}>Done</button>
               </div>
           </Grid>
-        </form>
       </PopUp>
     </>
   );

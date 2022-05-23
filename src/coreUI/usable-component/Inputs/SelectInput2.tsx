@@ -62,7 +62,7 @@ const SelectInput2: React.FC<Props> = ({
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"
-      className="input-project"
+      className="select"
       container
     >
       <Grid

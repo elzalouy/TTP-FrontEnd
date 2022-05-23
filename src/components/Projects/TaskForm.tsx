@@ -140,6 +140,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                   <TextField
                     error={error.error?.details[0].path.includes("name")}
                     id="outlined-error"
+                    className="textfield"
                     sx={{
                       width: "100%",
                       marginTop: 1,

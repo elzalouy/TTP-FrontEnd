@@ -79,7 +79,7 @@ const DepartmentCard: React.FC<Props> = ({
           <p className="counter-title">In progress task</p>
           <p>
             {
-              projects.allTasks.filter(
+              projects?.allTasks?.filter(
                 (item) =>
                   item.boardId === department.boardId &&
                   item.status === "inProgress"

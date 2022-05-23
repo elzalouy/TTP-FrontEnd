@@ -22,6 +22,8 @@ const AddNewTeam: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
 
+  console.log(Team);
+
   useEffect(() => {
     setTeam({
       name: "",
@@ -124,19 +126,20 @@ const AddNewTeam: React.FC<Props> = () => {
           Add
         </button>
         <label style={{ fontWeight: "light", fontSize: "1rem" }}>
-          All Team
+          Added Team
         </label>
         <table className="allTeam-table">
           <tr className="th">
-            <th>Team name</th>
-            <th>List ID</th>
+            <th>Team Name</th>
+            <th>Department Name</th>
             <th></th>
           </tr>
           {AllTeam.map((el, index) => {
+            
             return (
               <tr key={index}>
                 <td>{el.name}</td>
-                <td>@{el.name}</td>
+                <td>{el.department}</td>
                 <td>
                   <img
                     src={IMAGES.deleteicon}
