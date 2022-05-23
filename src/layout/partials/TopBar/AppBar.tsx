@@ -21,7 +21,8 @@ const Bar: FC = (props: any) => {
       sx={{
         display: { lg: "none", md: "none", sm: "block", xs: "block" },
         bgcolor: "white",
-        margin:"0px"
+        margin:"0px",
+        boxShadow:"none"
       }}
     >
       <Toolbar

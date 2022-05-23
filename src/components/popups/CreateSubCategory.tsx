@@ -98,7 +98,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             <Typography
               fontWeight={"500"}
               fontSize={18}
-              paddingTop={1}
               color="#00ACBA"
             >
               Manage Category
@@ -110,12 +109,13 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
               <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 <TextField
                   type="text"
+                  className="text-input"
                   name="mainCategory"
                   placeholder="Ex: Al-shaqran"
                   required
                   sx={{
                     height: 50,
-                    width: 450,
+                    width: "100%",
                     borderRadius: "6px",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderRadius: "6px",
@@ -129,6 +129,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
               <TextField
                 type="text"
                 name="subCategory"
+                className="text-input"
                 value={subCategory}
                 onChange={onSubChange}
                 placeholder="Sub category"
@@ -136,7 +137,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   paddingRight: "10px",
                   flex: 1,
                   height: 50,
-                  width: 210,
+                  width: "100%",
                   borderRadius: "6px",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderRadius: "6px",
