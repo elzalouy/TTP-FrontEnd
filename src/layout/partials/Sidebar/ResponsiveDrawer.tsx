@@ -40,6 +40,7 @@ import NotificationIcon from "../../../assets/icons/Notification";
 import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
 import TaskIcon from "../../../assets/icons/TaskIcon";
 import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
+import { toggleLogOutPopup } from "../../../redux/Ui";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";
@@ -58,8 +59,8 @@ const ResponsiveDrawer: React.FC = (props: any) => {
   }));
 
   const handleLogout = () => {
-    dispatch(logout(null));
-    setTimeout(() => history.replace("/"), 1000);
+    dispatch(toggleLogOutPopup("flex"));
+    props.setOpen(false);
   };
 
   return (

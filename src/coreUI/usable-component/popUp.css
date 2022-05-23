@@ -11,7 +11,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   align-items: center;
-  z-index: 2;
+  z-index: 999999;
 }
 
 .pop-up {
