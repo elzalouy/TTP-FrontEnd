@@ -8,7 +8,7 @@ import { selectSelectedCategory } from "../../redux/Categories/categories.select
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
-import { useMediaQuery,useTheme } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { Grid } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography } from "@mui/material";
@@ -71,12 +71,15 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
       handleSetDisplay("none");
     } catch (error: any) {
       setErrors(error.message);
-      console.log(error.message);
     }
   };
   return (
     <>
-       <PopUp show={display} minWidthSize={MD ? "50vw" : "30vw"} maxWidthSize={MD ? "400px" : "320px"}>
+      <PopUp
+        show={display}
+        minWidthSize={MD ? "50vw" : "30vw"}
+        maxWidthSize={MD ? "400px" : "320px"}
+      >
         <Grid padding={1} paddingX={2}>
           <Grid justifyContent={"space-between"} direction={"row"}>
             <div>

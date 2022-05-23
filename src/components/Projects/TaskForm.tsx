@@ -1,4 +1,10 @@
-import { Box, Button, TextField, TextFieldProps, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from "@mui/material";
 import { Dispatch } from "@reduxjs/toolkit";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,7 +33,7 @@ import IMAGES from "../../assets/img";
 import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
-import { createProjectPopup } from "../../redux/Ui/UI.selectors";
+import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
 // import {createProjectPopup} from '../../'
 
 interface TaskFormProps {}
@@ -47,7 +53,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const selectedDepartment = useAppSelector(selectSelectedDepartment);
-  const createProjectPopuptrack = useAppSelector(createProjectPopup);
+  const { createProjectPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, watch, control, reset } = useForm({
     defaultValues: {
       name: "",
@@ -56,10 +62,10 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       memberId: "",
       deadline: "",
       attachedFiles: "",
-      selectedDepartmentId:"",
-      description:"",
-      file:""
-    }
+      selectedDepartmentId: "",
+      description: "",
+      file: "",
+    },
   });
 
   React.useEffect(() => {
@@ -78,8 +84,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     }
   }, [watch(), reset]);
   React.useEffect(() => {
-    reset()
-  }, [createProjectPopuptrack])
+    reset();
+  }, [createProjectPopup]);
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -87,20 +93,19 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       subCategoryId: data?.subCategoryId,
       memberId: data?.memberId,
       projectId: newProject?.project?._id,
-      status: "inProgress",
+      status: "Not Started",
       start: new Date().toUTCString(),
       deadline: moment(data?.deadline).toDate(),
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: data.file,
+      attachedFiles: [],
       listId: selectedDepartment?.teamsId?.find(
         (item) => item._id === data.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
-    // console.log(newTask);
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
@@ -203,7 +208,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     value={props.field.value}
                     onChange={props.field.onChange}
                     leftArrowButtonText="arrow"
-                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & TextFieldProps
+                    ) => (
                       <TextField
                         error={error.error?.details[0].path.includes(
                           "deadline"

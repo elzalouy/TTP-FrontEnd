@@ -9,16 +9,12 @@ export const checkAuthToken = () => {
     let token = localStorage.getItem("token");
     if (token) return true;
     else return false;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("token", token);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 api.axiosInstance.interceptors.request.use(

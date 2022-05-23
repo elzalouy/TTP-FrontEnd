@@ -32,7 +32,6 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const all = useAppSelector(selectAllProjects);
   const { control, register, reset, watch } = useForm();
-  console.log(selectedProject);
 
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
@@ -63,7 +62,13 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
         sx={{ marginBottom: "20px", overflow: "hidden" }}
       >
         <Stack direction="row" justifyContent="flex-start" alignItems="center">
-          <Typography variant="h2" fontFamily={"Cairo"} fontSize={20}>
+          <Typography
+            sx={{ cursor: "pointer" }}
+            variant="h2"
+            fontFamily={"Cairo"}
+            fontSize={20}
+            onClick={() => props?.history?.push("/Projects")}
+          >
             Projects
             <img
               style={{ margin: "0 20px" }}
@@ -77,7 +82,7 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          <Box marginLeft={2} className="select-task-board">
+          {/* <Box marginLeft={2} className="select-task-board">
             <Controller
               name="deadline"
               control={control}
@@ -99,10 +104,14 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
                 />
               )}
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{ cursor: "pointer" }}
-            onClick={() => props.history.push("/TasksList")}
+            onClick={() =>
+              props.history.push("/TasksList", {
+                projectId: selectedProject.project?._id,
+              })
+            }
             className="task-option"
             justifyContent={"center"}
             alignItems="center"
@@ -110,7 +119,7 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
             <TaskIcon stroke="black" />
             <Typography
               fontWeight={"600"}
-              fontSize={14}
+              fontSize={16}
               variant="h6"
               paddingTop={0.5}
               paddingLeft={1}

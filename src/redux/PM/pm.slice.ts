@@ -59,7 +59,6 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(updatePM.fulfilled, (state, action) => {
       state.loading = false;
-      console.log();
       let oldData = state.PMs.filter((pm) => pm._id !== action.payload._id);
       state.PMs = [...oldData, action.payload];
     });

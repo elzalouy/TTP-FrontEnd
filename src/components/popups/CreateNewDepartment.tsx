@@ -6,8 +6,11 @@ import { useState } from "react";
 import { color } from "@mui/system";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 import { useAppSelector } from "../../redux/hooks";
-import { useDispatch ,useSelector} from "react-redux";
-import { createDepartment, selectAllDepartments } from "../../redux/Departments";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createDepartment,
+  selectAllDepartments,
+} from "../../redux/Departments";
 import { toast } from "react-toastify";
 
 type Props = {};
@@ -26,7 +29,7 @@ const colors: string[] = [
 
 const CreateNewDepartment: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const department = useSelector(selectAllDepartments)
+  const department = useSelector(selectAllDepartments);
   const [Show, setShow] = useState("none");
   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]);
@@ -47,7 +50,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
   });
 
   useEffect(() => {
-    console.log({department})
     setFormData({
       name: "",
       color: "blue",
@@ -92,7 +94,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
   };
 
   const handleSubmit = async () => {
-    let checkMatch = department.find((dep: any) => dep.name === formData.name)
+    let checkMatch = department.find((dep: any) => dep.name === formData.name);
     if (!checkMatch) {
       dispatch(createDepartment({ data: formData, dispatch }));
       setFormData({

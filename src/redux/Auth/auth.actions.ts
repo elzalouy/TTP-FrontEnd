@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
@@ -7,11 +8,12 @@ export const signIn = createAsyncThunk<any, any, any>(
   "auth/signIn",
   async (args: any, { rejectWithValue }) => {
     try {
-      let result = await api.signIn(args?.data);
+      let result: ApiResponse<any> = await api.signIn(args?.data);
       if (result.ok) {
         args.history.push("/Overview");
+        localStorage.setItem("token", result?.data?.token);
         //This return below returns the error message and status for displaying on login UI
-        return result.data;
+        return result?.data;
       }
       return result.data;
     } catch (error: any) {

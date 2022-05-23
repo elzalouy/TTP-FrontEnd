@@ -24,6 +24,7 @@ import moment from "moment";
 import { validateCreateProject } from "../../helpers/validation";
 import { toast } from "react-toastify";
 import Joi from "joi";
+import { selectUi } from "../../redux/Ui/UI.selectors";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -48,10 +49,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
-
+  const { createProjectPopup } = useAppSelector(selectUi);
   React.useEffect(() => {
     reset();
-  }, [setShow]);
+  }, [createProjectPopup]);
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -167,8 +168,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                     error={validateError.error?.details[0].path.includes(
                       "startDate"
                     )}
-                    {...register("name")}
-                    defaultValue=""
+                    {...register("startDate")}
                     onChange={params.onChange}
                     sx={{
                       paddingTop: 1,

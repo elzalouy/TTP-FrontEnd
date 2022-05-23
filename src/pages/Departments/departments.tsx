@@ -31,7 +31,6 @@ const Departments: React.FC<IProps> = () => {
     ["#783DBD", "#EFEBF2"],
     ["#00AECC", "#E1F3F7"],
   ];
-
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
       <Box sx={SM ?{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop: "30px"} :{ paddingTop: "60px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>

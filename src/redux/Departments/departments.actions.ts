@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
 import { fireCreateDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
-import {myReducer} from '../store'
+import { myReducer } from "../store";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
   async (args: any, { rejectWithValue }) => {
@@ -58,7 +58,6 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        console.log(department.data);
         return department.data;
       } else return [];
     } catch (error) {

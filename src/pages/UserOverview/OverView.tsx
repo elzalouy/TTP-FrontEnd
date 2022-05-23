@@ -13,10 +13,14 @@ import IMAGES from "../../assets/img";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";
-import { selectRole, selectUser } from "../../redux/Auth";
+import { getUserInfo, selectRole, selectUser } from "../../redux/Auth";
 import { getPMs } from "../../redux/PM";
 import { getAllProjects, getAllTasks } from "../../redux/Projects";
 import { selectAllSatistics } from "../../redux/Statistics";
+import { getAllDepartments } from "../../redux/Departments";
+import { getAllCategories } from "../../redux/Categories";
+import { getAllClients } from "../../redux/Clients";
+import { getAllMembers } from "../../redux/techMember";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -36,6 +40,25 @@ const OverView: FC<Props> = (props) => {
   //   dispatch(getAllProjects(null));
   //   dispatch(getAllTasks(null));
   // }, []);
+
+  let token = localStorage.getItem("id");
+
+  useEffect(() => {
+    if (token) {
+      dispatch(
+        getUserInfo({
+          id: token,
+        })
+      );
+    }
+    dispatch(getAllDepartments(null));
+    dispatch(getAllCategories(null));
+    dispatch(getAllClients(null));
+    dispatch(getPMs(null));
+    dispatch(getAllMembers(null));
+    dispatch(getAllProjects(null));
+    dispatch(getAllTasks(null));
+  }, [dispatch]);
 
   return (
     <>
@@ -98,105 +121,103 @@ const OverView: FC<Props> = (props) => {
                 paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
                 container
               >
-                  <>
-                    {role === "PM" && (
-                      <>
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#ECFDF1"
-                          Icon={() => (
-                            <img alt="1" src={IMAGES.overviewCheck} />
-                          )}
-                          pt={1.7}
-                          title={"Tasks Completed"}
-                          count={statistics?.NoCompletedTasks?.toString()}
-                          percent={statistics?.PercentCompletedTasks?.toString()}
-                          percentColor="#260EFF"
-                        />
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#EFEFFF"
-                          Icon={() => (
-                            <img alt="2" src={IMAGES.overViewRevision} />
-                          )}
-                          pt={1.6}
-                          title="New Tasks"
-                          count={statistics?.PercentNoNewTasks?.toString()}
-                          percent={statistics?.PercentNoNewTasks?.toString()}
-                          percentColor="#30CF47"
-                        />
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#FFF3EF"
-                          Icon={() => (
-                            <img src={IMAGES.overViewDeadline} alt="3" />
-                          )}
-                          pt={1.5}
-                          title="Projects Completed"
-                          count={statistics?.PercentCompletedProjects?.toString()}
-                          percent={statistics?.PercentCompletedProjects?.toString()}
-                          percentColor="#FF2E35"
-                        />
-                      </>
-                    )}
-                    {role === "OM" && (
-                      <>
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#ECFDF1"
-                          Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
-                          pt={1.5}
-                          title={"Organization Capacity"}
-                          count={"0"}
-                          percent="0"
-                          percentColor="#260EFF"
-                        />
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#EFF1FF"
-                          Icon={() => (
-                            <img src={IMAGES.overViewRevision} alt="3" />
-                          )}
-                          pt={1.5}
-                          title="Revision Tasks"
-                          count="0"
-                          percent="0"
-                          percentColor="#30CF47"
-                        />
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#FFF3EF"
-                          Icon={() => (
-                            <img src={IMAGES.overViewDeadline} alt="3" />
-                          )}
-                          pt={1.5}
-                          title="Meeting deadlines"
-                          count="0"
-                          percent="0"
-                          percentColor="#FF2E35"
-                        />
-                        <UserStatus
-                          loading={statistics.loading}
-                          user={role}
-                          IconBgColor="#FBF5E2"
-                          Icon={() => (
-                            <img src={IMAGES.overviewProjects} alt="3" />
-                          )}
-                          pt={1.7}
-                          title="Current Active Projects"
-                          count={statistics.NoCurruntProjects?.toString()}
-                          percent={statistics.PercentCurrentProjects?.toString()}
-                          percentColor="#FFC500"
-                        />
-                      </>
-                    )}
-                  </>
+                <>
+                  {role === "PM" && (
+                    <>
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#ECFDF1"
+                        Icon={() => <img alt="1" src={IMAGES.overviewCheck} />}
+                        pt={1.7}
+                        title={"Tasks Completed"}
+                        count={statistics?.NoCompletedTasks?.toString()}
+                        percent={statistics?.PercentCompletedTasks?.toString()}
+                        percentColor="#260EFF"
+                      />
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#EFEFFF"
+                        Icon={() => (
+                          <img alt="2" src={IMAGES.overViewRevision} />
+                        )}
+                        pt={1.6}
+                        title="New Tasks"
+                        count={statistics?.PercentNoNewTasks?.toString()}
+                        percent={statistics?.PercentNoNewTasks?.toString()}
+                        percentColor="#30CF47"
+                      />
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#FFF3EF"
+                        Icon={() => (
+                          <img src={IMAGES.overViewDeadline} alt="3" />
+                        )}
+                        pt={1.5}
+                        title="Projects Completed"
+                        count={statistics?.PercentCompletedProjects?.toString()}
+                        percent={statistics?.PercentCompletedProjects?.toString()}
+                        percentColor="#FF2E35"
+                      />
+                    </>
+                  )}
+                  {role === "OM" && (
+                    <>
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#ECFDF1"
+                        Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
+                        pt={1.5}
+                        title={"Organization Capacity"}
+                        count={"0"}
+                        percent="0"
+                        percentColor="#260EFF"
+                      />
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#EFF1FF"
+                        Icon={() => (
+                          <img src={IMAGES.overViewRevision} alt="3" />
+                        )}
+                        pt={1.5}
+                        title="Revision Tasks"
+                        count="0"
+                        percent="0"
+                        percentColor="#30CF47"
+                      />
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#FFF3EF"
+                        Icon={() => (
+                          <img src={IMAGES.overViewDeadline} alt="3" />
+                        )}
+                        pt={1.5}
+                        title="Meeting deadlines"
+                        count="0"
+                        percent="0"
+                        percentColor="#FF2E35"
+                      />
+                      <UserStatus
+                        loading={statistics.loading}
+                        user={role}
+                        IconBgColor="#FBF5E2"
+                        Icon={() => (
+                          <img src={IMAGES.overviewProjects} alt="3" />
+                        )}
+                        pt={1.7}
+                        title="Current Active Projects"
+                        count={statistics.NoCurruntProjects?.toString()}
+                        percent={statistics.PercentCurrentProjects?.toString()}
+                        percentColor="#FFC500"
+                      />
+                    </>
+                  )}
+                </>
               </Grid>
               {MD ? (
                 <Grid

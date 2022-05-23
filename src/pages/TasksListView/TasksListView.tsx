@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import * as React from "react";
@@ -9,9 +9,6 @@ import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { getAllCategories } from "../../redux/Categories";
-import { getAllClients, clientsDataSelector } from "../../redux/Clients";
-import { getAllDepartments } from "../../redux/Departments";
 import { selectPMs } from "../../redux/PM/pm.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
@@ -25,8 +22,10 @@ import {
 import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
 import "./TasksListView.css";
-
-const Tasks: React.FC = (props: any) => {
+interface Props {
+  projectId?: string;
+}
+const Tasks: React.FC<Props> = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const techMembers = useAppSelector(selectAllMembers);
@@ -36,10 +35,15 @@ const Tasks: React.FC = (props: any) => {
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [Show, setShow] = React.useState("none");
-  const { register, watch, control } = useForm();
-
+  const { register, watch, control, setValue } = useForm();
+  React.useEffect(() => {
+    if (props?.location?.state?.projectId) {
+      setValue("projectId", props?.location?.state?.projectId);
+      let filter = watch();
+      dispatch(filterTasks(filter));
+    }
+  }, []);
   const onHandleChange = (e: any) => {
-    console.log("called");
     e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
@@ -55,11 +59,6 @@ const Tasks: React.FC = (props: any) => {
     setShow("none");
   };
 
-  React.useEffect(() => {
-    console.log("changed");
-    console.log(projects.allTasks);
-  }, [projects.allTasks]);
-
   return (
     <Grid
       bgcolor={"#FAFAFB"}
@@ -72,11 +71,39 @@ const Tasks: React.FC = (props: any) => {
       marginTop={MD ? 6 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Typography variant="h2" marginBottom={2} marginTop={SM ? 5 : MD ? 2 : 0}>
-        Tasks
-      </Typography>
+      <Stack direction="row" justifyContent="flex-start" alignItems="center">
+        <Typography
+          variant="h2"
+          marginBottom={2}
+          marginTop={SM ? 5 : MD ? 2 : 0}
+        >
+          Tasks
+          {props.projectId && (
+            <>
+              <img
+                style={{ margin: "0 20px" }}
+                src={IMAGES.arrowHeader}
+                alt="more"
+              />
+              {
+                projects?.projects?.find((item) => item._id === props.projectId)
+                  ?.name
+              }
+            </>
+          )}
+        </Typography>
+      </Stack>
       <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
-        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1} flex={1}>
+        <Grid
+          marginX={0.5}
+          item
+          xs={6}
+          sm={3}
+          md={2}
+          lg={2}
+          marginY={1}
+          flex={1}
+        >
           <Controller
             control={control}
             name="deadline"
@@ -272,7 +299,12 @@ const Tasks: React.FC = (props: any) => {
           </Box>
         </Grid>
         <Grid marginX={0.5} item xs={2} sm={2} md={1}>
-          <DeleteTask task={selects} Show={Show} setShow={setShow} onDelete={onDeleteTasks} />
+          <DeleteTask
+            task={selects}
+            Show={Show}
+            setShow={setShow}
+            onDelete={onDeleteTasks}
+          />
         </Grid>
       </Grid>
       {projects.loading === true ? (
@@ -298,7 +330,7 @@ const Tasks: React.FC = (props: any) => {
               selects={selects}
               setAllSelected={setAllSelected}
               projects={projects.projects}
-              tasks={projects.allTasks}
+              tasks={projects.filteredTasks}
               {...props}
             />
           </Paper>

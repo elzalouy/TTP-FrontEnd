@@ -7,6 +7,7 @@ import {
   fireDeleteProjectHook,
   fireDeleteTaskHook,
   fireEditTaskHook,
+  fireMoveTaskHook,
   fireUpdateProjectHook,
 } from "../Ui";
 export const getAllProjects = createAsyncThunk<any, any, any>(
@@ -33,9 +34,8 @@ export const createProject = createAsyncThunk<any, any, any>(
         toast("Project created successfully");
         return result.data;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
-      toast(error);
       rejectWithValue(error);
     }
   }
@@ -44,16 +44,14 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
-      console.log({createProjectTask:args.data})
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
         toast("Task have been saved to the Database");
         return result.data?.task;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
       rejectWithValue(error);
-      toast(error);
     }
   }
 );
@@ -61,14 +59,13 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
     try {
-      console.log({createTaskFromBoard:args.data})
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
         toast("Task have been save to the Database");
         return result.data?.task;
       }
-      throw result.problem;
+      rejectWithValue(result.data);
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);
@@ -167,7 +164,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
     try {
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
-        args.dispatch(fireEditTaskHook(""));
+        args.dispatch(fireDeleteTaskHook(""));
         toast("Tasks deleted.");
         return args.ids;
       }
@@ -232,27 +229,30 @@ export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (args, { rejectWithValue }) => {
     try {
+      let data: any = args?.data;
       let newlist = "";
-      if (args.list.value === "inProgress")
-        newlist = args.department.defaultListId;
-      if (args.list.value === "Review") newlist = args.department.reviewListId;
+      if (data.list.value === "inProgress")
+        newlist = data.department.defaultListId;
+      if (data.list.value === "Review") newlist = data.department.reviewListId;
       if (args?.list?.value === "Shared")
-        newlist = args.department.sharedListID;
-      if (args?.list?.value === "Done") newlist = args.department.doneListId;
+        newlist = data.department.sharedListID;
+      if (args?.list?.value === "Done") newlist = data.department.doneListId;
       if (args?.list?.value === "Not Clear")
-        newlist = args.department.notClearListId;
-      if (args.list.value === "Cancled")
-        newlist = args.department.canceldListId;
-      if (args.list.value === "Not Started")
-        newlist = args.department.notStartedListId;
-      let data: any = {
-        cardId: args?.task?.cardId,
+        newlist = data.department.notClearListId;
+      if (data.list.value === "Cancled")
+        newlist = data.department.canceldListId;
+      if (data.list.value === "Not Started")
+        newlist = data.department.notStartedListId;
+      let Data: any = {
+        cardId: data?.task?.cardId,
         listId: newlist,
-        status: args.list.value,
+        status: data.list.value,
       };
-      let moveResult = await api.moveTask(data);
-      if (moveResult.ok) return moveResult.data;
-      else throw moveResult.problem;
+      let moveResult = await api.moveTask(Data);
+      if (moveResult.ok) {
+        args.dispatch(fireMoveTaskHook(""));
+        return moveResult.data;
+      } else throw moveResult.problem;
     } catch (error: any) {
       toast(error);
       rejectWithValue(error);

@@ -30,7 +30,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("deadline", project?.projectDeadline);
     setValue("name", project?.name);
     setValue("status", project?.projectStatus);
-    console.log(watch());
   }, [project]);
   const onSubmitEdit = () => {
     let data = watch();

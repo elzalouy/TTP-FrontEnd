@@ -49,7 +49,6 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
     });
     builder.addCase(updateDepartment.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       let dep = state.departments.findIndex(
         (item) => item._id === action.payload?._id
       );

@@ -13,6 +13,7 @@ const TaskIcon = (props: any) => (
         strokeLinecap="round"
         stroke="#9fa1ab"
         strokeWidth={1.5}
+        width={16}
         strokeLinejoin="round"
         {...props}
       />

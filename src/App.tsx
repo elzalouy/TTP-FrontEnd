@@ -44,7 +44,7 @@ const App: React.FC = (props) => {
   const user = useAppSelector(selectUser);
   const projects = useAppSelector(selectAllProjects);
 
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem("id");
 
   useEffect(() => {
     if (token) {
@@ -65,10 +65,7 @@ const App: React.FC = (props) => {
 
   useEffect(() => {
     if (isAuth === true && user?._id) {
-      localStorage.setItem("token", user?._id);
-    }
-    if (isAuth === true && user?.user) {
-      localStorage.setItem("token", user?.user?._id);
+      localStorage.setItem("id", user?._id);
     }
   }, [isAuth]);
 
