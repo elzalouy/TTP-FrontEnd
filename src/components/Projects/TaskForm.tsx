@@ -72,14 +72,18 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     let values = watch();
     if (values?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === values.categoryId);
-      dispatch(
-        categoriesActions.setSelectedCategory(category ? category : null)
-      );
+      if(category){
+        console.log("Dispatching Selected Category");
+        dispatch(
+          categoriesActions.setSelectedCategory(category)
+        );
+      }
     }
     if (values.selectedDepartmentId !== selectedDepartment?._id) {
       let dep = departments.find(
         (item) => item._id === values.selectedDepartmentId
       );
+      console.log("Dispatching Selected Department");
       dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
     }
   }, [watch(), reset]);

@@ -77,12 +77,17 @@ const CreateNewTask: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     let values = watch();
+    console.log("This is called on form change");
     if (values?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === values.categoryId);
-      dispatch(
-        categoriesActions.setSelectedCategory(category ? category : null)
-      );
+      if(category){
+        console.log("Dispatching Selected Category");
+        dispatch(
+          categoriesActions.setSelectedCategory(category)
+        );
+      }
     }
+    
     if (values.selectedDepartmentId !== selectedDepartment?._id) {
       let dep = departments.find(
         (item) => item._id === values.selectedDepartmentId
