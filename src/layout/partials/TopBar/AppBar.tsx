@@ -47,7 +47,7 @@ const Bar: FC = (props: any) => {
         }}>
           <Logo />
         </IconButton>
-        <IconButton  style={{padding:"0px"}} onClick={()=>{
+        <IconButton style={{padding:"0px"}} onClick={()=>{
           history.push("/notifications")
         }}>
           <Notification />

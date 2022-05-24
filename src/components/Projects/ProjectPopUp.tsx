@@ -144,7 +144,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
           </Stepper>
         </Grid>
           <img
-            className="closeIcon"
+            className="closeIconProject"
             width="9"
             height="9"
             src={IMAGES.closeicon}
@@ -152,10 +152,10 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
             onClick={onClose}
           />
       </Grid>
-      {currentStep === 1 && (
+      {currentStep === 0 && (
         <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
       )}
-      {currentStep === 0 && (
+      {currentStep === 1 && (
         <>
           <TaskForm />
           <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />

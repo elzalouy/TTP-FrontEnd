@@ -232,8 +232,6 @@
   cursor: pointer;
   border: none;
   border-radius: 6px;
-  margin-left: 17px;
-  margin-top: 15px;
   margin-bottom: 10px;
   padding: 0px 40px;
   height: 50px;
@@ -252,12 +250,12 @@
   margin-top: 0px;
   margin-left: 5px;
   margin-bottom: 0px;
-  padding: 0px 40px;
+  justify-content: center;
   height: 50px;
   color: black;
   background-color: #ffc500;
   font-weight: bold;
-  width: 100px;
+  width: 100%;
 }
 
 .names-container {

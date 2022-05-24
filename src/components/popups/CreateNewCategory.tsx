@@ -143,7 +143,7 @@ const CreateNewCategory: React.FC<Props> = () => {
                 color="black"
               >
                 Sub-category
-              </Typography>{" "}
+              </Typography>
             </Grid>
             <Grid item xs={9} style={{ marginTop: "10px" ,paddingRight:"20px"}}>
               <TextField

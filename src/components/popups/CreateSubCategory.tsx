@@ -32,10 +32,12 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   >([]);
 
   const selectedCategory = useAppSelector(selectSelectedCategory);
+  
   const [selectedData, setSelectedData] = useState<any>({
     selectedSubCategory: [],
     subCategoriesId: [],
   });
+
   useEffect(() => {
     setSelectedData(selectedCategory);
   }, [selectedCategory]);
@@ -134,7 +136,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 onChange={onSubChange}
                 placeholder="Sub category"
                 sx={{
-                  paddingRight: "10px",
+                  paddingRight: "20px",
                   flex: 1,
                   height: 50,
                   width: "100%",
@@ -144,7 +146,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   },
                 }}
               />
-              <div className="add-subcategory-cnc" onClick={addSubCategory}>
+              <div className="add-subcategory" onClick={addSubCategory}>
                 Add
               </div>
             </Grid>

@@ -134,7 +134,7 @@ const SelectInput2: React.FC<Props> = ({
               paddingRight: 1,
             }}
           >
-            {open ? (
+            {open && options.length>1 ? (
               <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
             ) : (
               <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
@@ -144,7 +144,7 @@ const SelectInput2: React.FC<Props> = ({
       </Grid>
       <Popover
         className={styles.root}
-        open={open}
+        open={options.length > 0 ? open : false}
         sx={{ borderRadius: 0, width: "calc(96% - 11px) !important;" }}
         anchorEl={anchorEl}
         anchorReference="anchorEl"

@@ -50,14 +50,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
   const { createProjectPopup } = useAppSelector(selectUi);
+
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
+
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
     warning: Joi.ValidationError | undefined;
   }>({ error: undefined, value: undefined, warning: undefined });
+
   const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let data = watch();
     let project = {
@@ -77,15 +80,22 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       completedDate: null,
       adminId: localStorage.getItem("id"),
     };
+
     let isValid = validateCreateProject(project);
+
     if (isValid.error) {
       setError(isValid);
       toast(isValid.error.message);
     } else dispatch(createProject({ data: project, setcurrentStep }));
   };
+
   return (
     <>
-      <Grid className="projectFormContainer" container justifyContent={"space-between"}>
+      <Grid
+        className="projectFormContainer"
+        container
+        justifyContent={"space-between"}
+      >
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Project title</label>
           <br />
@@ -157,7 +167,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <MobileDatePicker
-               
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
@@ -166,7 +175,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   params: JSX.IntrinsicAttributes & TextFieldProps
                 ) => (
                   <TextField
-                  className="date"
+                    className="date"
                     {...params}
                     error={validateError.error?.details[0].path.includes(
                       "startDate"
@@ -199,7 +208,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             control={control}
             render={(props) => (
               <MobileDatePicker
-                
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
                 onChange={props.field.onChange}
