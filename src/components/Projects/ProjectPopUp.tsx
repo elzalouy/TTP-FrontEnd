@@ -9,7 +9,7 @@ import {
   Typography,
   stepIconClasses,
 } from "@mui/material";
-import "./projectForm.css"
+import "./projectForm.css";
 import { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useAppSelector } from "../../redux/hooks";
@@ -34,7 +34,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
-  const [currentStep, setcurrentStep] = useState(0);
+  const [currentStep, setcurrentStep] = useState(1);
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 12,

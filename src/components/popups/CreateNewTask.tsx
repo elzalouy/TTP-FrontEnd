@@ -17,10 +17,11 @@ import PopUp from "../../coreUI/usable-component/popUp";
 
 import {
   categoriesActions,
+  Category,
   selectAllCategories,
   selectSelectedCategory,
 } from "../../redux/Categories";
-import { selectAllDepartments } from "../../redux/Departments";
+import { Department, selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
@@ -57,13 +58,14 @@ const CreateNewTask: React.FC<Props> = (props) => {
   }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
-  const selectedCategory = useAppSelector(selectSelectedCategory);
   const selectedProject = useAppSelector(selectSelectedProject);
   const newProject = useAppSelector(selectNewProject);
-  const selectedDepartment = useAppSelector(selectSelectedDepartment);
   const { createProjectPopup } = useAppSelector(selectUi);
-  
-  const { register, handleSubmit, watch, control, reset } = useForm({
+  const [selectedDepartment, setSelectedDepartment] =
+    React.useState<Department>();
+  const [selectedCategory, setSelectCategory] = React.useState<Category>();
+
+  const { register, handleSubmit, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
       categoryId: "",
@@ -76,22 +78,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
       file: "",
     },
   });
-
-  React.useEffect(() => {
-    let values = watch();
-    if (values?.categoryId !== selectedCategory?._id) {
-      let category = categories.find((item) => item._id === values.categoryId);
-      dispatch(
-        categoriesActions.setSelectedCategory(category ? category : null)
-      );
-    }
-    if (values.selectedDepartmentId !== selectedDepartment?._id) {
-      let dep = departments.find(
-        (item) => item._id === values.selectedDepartmentId
-      );
-      dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
-    }
-  }, [watch(), reset]);
 
   React.useEffect(() => {
     reset();
@@ -155,6 +141,21 @@ const CreateNewTask: React.FC<Props> = (props) => {
     newFiles = newFiles?.filter((file) => file !== item);
     setFiles(newFiles);
   };
+
+  const onChangeDepartment = (e: any) => {
+    console.log("changes happend");
+    setValue("selectedDepartmentId", e.target.value);
+    let dep = departments.find((item) => item._id === e.target.value);
+    setSelectedDepartment(dep);
+  };
+  const onChangeCategory = (e: any) => {
+    console.log("changes happend");
+
+    setValue("categoryId", e.target.value);
+    const cat = categories.find((item) => item._id === e.target.value);
+    setSelectCategory(cat);
+  };
+
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
@@ -219,7 +220,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                     <SelectInput2
                       {...register("selectedDepartmentId")}
                       error={error.error?.details[0].path.includes("listId")}
-                      handleChange={props.field.onChange}
+                      handleChange={onChangeDepartment}
                       selectText={
                         departments.find(
                           (item) => item._id === props.field.value
@@ -294,7 +295,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       error={error?.error?.details[0].path.includes(
                         "categoryId"
                       )}
-                      handleChange={props.field.onChange}
+                      handleChange={onChangeCategory}
                       selectText={
                         categories?.find(
                           (item) => item._id === props.field.value
