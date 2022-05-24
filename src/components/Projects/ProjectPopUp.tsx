@@ -9,7 +9,7 @@ import {
   Typography,
   stepIconClasses,
 } from "@mui/material";
-import "./projectForm.css"
+import "./projectForm.css";
 import { FC, useState } from "react";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useAppSelector } from "../../redux/hooks";

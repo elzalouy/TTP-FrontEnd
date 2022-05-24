@@ -11,13 +11,14 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-import "./projectForm.css"
+import "./projectForm.css";
 import {
   categoriesActions,
+  Category,
   selectAllCategories,
   selectSelectedCategory,
 } from "../../redux/Categories";
-import { selectAllDepartments } from "../../redux/Departments";
+import { Department, selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
@@ -49,12 +50,14 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
-  const selectedCategory = useAppSelector(selectSelectedCategory);
+  // const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
-  const selectedDepartment = useAppSelector(selectSelectedDepartment);
+  const [selectedDepartment, setSelectedDepartment] =
+    React.useState<Department>();
+  const [selectedCategory, setSelectCategory] = React.useState<Category>();
   const { createProjectPopup } = useAppSelector(selectUi);
-  
-  const { register, handleSubmit, watch, control, reset } = useForm({
+
+  const { register, handleSubmit, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
       categoryId: "",
@@ -68,25 +71,21 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     },
   });
 
-  React.useEffect(() => {
-    let values = watch();
-    if (values?.categoryId !== selectedCategory?._id) {
-      let category = categories.find((item) => item._id === values.categoryId);
-      if(category){
-        console.log("Dispatching Selected Category");
-        dispatch(
-          categoriesActions.setSelectedCategory(category)
-        );
-      }
-    }
-    if (values.selectedDepartmentId !== selectedDepartment?._id) {
-      let dep = departments.find(
-        (item) => item._id === values.selectedDepartmentId
-      );
-      console.log("Dispatching Selected Department");
-      dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
-    }
-  }, [watch(), reset]);
+  // React.useEffect(() => {
+  //   let values = watch();
+  //   if (values?.categoryId !== selectedCategory?._id) {
+  //     let category = categories.find((item) => item._id === values.categoryId);
+  //     dispatch(
+  //       categoriesActions.setSelectedCategory(category ? category : null)
+  //     );
+  //   }
+  //   if (values.selectedDepartmentId !== selectedDepartment?._id) {
+  //     let dep = departments.find(
+  //       (item) => item._id === values.selectedDepartmentId
+  //     );
+  //     dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
+  //   }
+  // }, [watch(), reset]);
 
   React.useEffect(() => {
     reset();
@@ -136,6 +135,19 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     newFiles = newFiles?.filter((file) => file !== item);
     setFiles(newFiles);
   };
+  const onChangeDepartment = (e: any) => {
+    console.log("changes happend");
+    setValue("selectedDepartmentId", e.target.value);
+    let dep = departments.find((item) => item._id === e.target.value);
+    setSelectedDepartment(dep);
+  };
+  const onChangeCategory = (e: any) => {
+    console.log(selectedDepartment, selectedCategory);
+    setValue("categoryId", e.target.value);
+    const cat = categories.find((item) => item._id === e.target.value);
+    setSelectCategory(cat);
+  };
+
   return (
     <>
       <div className="step2">
@@ -180,11 +192,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <SelectInput2
                     error={error.error?.details[0].path.includes("listId")}
-                    handleChange={props.field.onChange}
-                    selectText={
-                      departments.find((item) => item._id === props.field.value)
-                        ?.name
-                    }
+                    handleChange={onChangeDepartment}
+                    selectText={selectedDepartment?.name}
                     {...register("selectedDepartmentId")}
                     selectValue={props.field.value}
                     options={
@@ -218,7 +227,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                       params: JSX.IntrinsicAttributes & TextFieldProps
                     ) => (
                       <TextField
-                      {...params}
+                        {...params}
                         error={error.error?.details[0].path.includes(
                           "deadline"
                         )}
@@ -251,7 +260,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <SelectInput2
                     error={error?.error?.details[0].path.includes("categoryId")}
-                    handleChange={props.field.onChange}
+                    handleChange={onChangeCategory}
                     selectText={
                       categories?.find((item) => item._id === props.field.value)
                         ?.category
