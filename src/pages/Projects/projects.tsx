@@ -13,6 +13,7 @@ import {
   getAllProjects,
   selectDeleteProjectId,
   ProjectsActions,
+  selectNotStartedProjects,
 } from "../../redux/Projects";
 import { getPMs, selectPMs } from "../../redux/PM";
 import { clientsDataSelector } from "../../redux/Clients";
@@ -38,6 +39,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
+  const notStartedProjects = useAppSelector(selectNotStartedProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
   const [expanded, setExpanded] = useState<boolean>(true);
@@ -48,7 +50,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const { watch, control } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-
+  useEffect(() => {
+    dispatch(getAllProjects(null));
+  }, []);
   const onHandleChange = (e: any) => {
     let data = watch();
     let filter = {
@@ -374,6 +378,25 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   status={"Done"}
                   expanded={doneExpanded}
                   projects={doneProjects}
+                  projectManagers={PMs}
+                  {...props}
+                />
+              </Box>
+            </TableBox>
+            <TableBox
+              title={"Not Started"}
+              outTitled={false}
+              expanded={doneExpanded}
+              setExpanded={setDoneExpanded}
+              bgColor={backgroundColor[1]}
+            >
+              <Box id="project-title">
+                <ProjectsTable
+                  align="center"
+                  textSize="medium"
+                  status={"Not Started"}
+                  expanded={doneExpanded}
+                  projects={notStartedProjects}
                   projectManagers={PMs}
                   {...props}
                 />

@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
@@ -37,37 +37,36 @@ import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
 import { socket } from "./config/socket/actions";
 import { setStatistics } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
+import { checkAuthToken } from "./services/api";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuth = useAppSelector(selectIsAuth);
   const user = useAppSelector(selectUser);
   const projects = useAppSelector(selectAllProjects);
-
-  let token = localStorage.getItem("id");
-
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    if (token) {
+    let id = localStorage.getItem("id");
+    if (checkAuthToken() && id) {
       dispatch(
         getUserInfo({
-          id: token,
+          id: id,
         })
       );
     }
-    dispatch(getAllDepartments(null));
-    dispatch(getAllCategories(null));
-    dispatch(getAllClients(null));
-    dispatch(getPMs(null));
-    dispatch(getAllMembers(null));
-    dispatch(getAllProjects(null));
-    dispatch(getAllTasks(null));
   }, [dispatch]);
-
   useEffect(() => {
-    if (isAuth === true && user?._id) {
-      localStorage.setItem("id", user?._id);
+    if (!mounted && checkAuthToken()) {
+      dispatch(getAllDepartments(null));
+      dispatch(getAllCategories(null));
+      dispatch(getAllClients(null));
+      dispatch(getPMs(null));
+      dispatch(getAllMembers(null));
+      dispatch(getAllProjects(null));
+      dispatch(getAllTasks(null));
+      setMounted(true);
     }
-  }, [isAuth]);
+  }, [dispatch, checkAuthToken(), dispatch]);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -91,7 +90,6 @@ const App: React.FC = (props) => {
   }, []);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
-    console.log("Update statistics hook");
     if (projects.loading === false)
       dispatch(
         setStatistics({ projects: projects.projects, tasks: projects.allTasks })

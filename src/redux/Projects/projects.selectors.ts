@@ -23,6 +23,10 @@ export const selectDoneProjects = (state: RootState) =>
       item.projectStatus === "delivered after deadline" ||
       item.projectStatus === "late"
   );
+export const selectNotStartedProjects = (state: RootState) =>
+  state?.projects?.filteredProjects?.filter(
+    (item) => item.projectStatus === "Not Started"
+  );
 
 export const selectLateProjects = (state: RootState) =>
   state?.projects?.filteredProjects?.filter(

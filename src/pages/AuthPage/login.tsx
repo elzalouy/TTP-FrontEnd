@@ -20,12 +20,12 @@ import { useDispatch } from "react-redux";
 import {
   selectAuth,
   selectIsAuth,
+  selectLoading,
   selectResponse,
   signIn,
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { selectLoading } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -75,12 +75,12 @@ const Login: React.FC<Props> = ({ history }) => {
       history.replace("/Overview");
     }
   }, [watch]);
-  
+
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     setFailed({
       message: "",
       status: false,
-    })
+    });
     dispatch(
       signIn({
         data: {

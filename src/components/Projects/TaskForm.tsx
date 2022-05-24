@@ -60,7 +60,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       categoryId: "",
       subCategoryId: "",
       memberId: "",
-      deadline: "",
+      deadline: null,
       attachedFiles: "",
       selectedDepartmentId: "",
       description: "",
@@ -218,12 +218,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                       params: JSX.IntrinsicAttributes & TextFieldProps
                     ) => (
                       <TextField
+                      {...params}
                         error={error.error?.details[0].path.includes(
                           "deadline"
                         )}
                         {...register("deadline")}
-                        {...params}
-                        defaultValue=""
                         onChange={params.onChange}
                         sx={{
                           width: "100%",

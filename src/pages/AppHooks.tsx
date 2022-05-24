@@ -62,7 +62,7 @@ const AppHooks: React.FC = (props) => {
     if (deleteProjectHook !== undefined) {
       console.log("delete project hook fired.");
       dispatch(getAllProjects(null));
-      dispatch(getAllClients(null));
+      // dispatch(getAllClients(null));
     }
   }, [deleteProjectHook]);
   // new Tech member to department
@@ -96,7 +96,7 @@ const AppHooks: React.FC = (props) => {
   React.useEffect(() => {
     if (moveTaskHook !== undefined) {
       console.log("move task hook fired");
-      dispatch(getAllDepartments(null));
+      dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
   return <>{props.children}</>;

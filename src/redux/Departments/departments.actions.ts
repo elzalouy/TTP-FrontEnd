@@ -3,11 +3,16 @@ import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
 import { fireCreateDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
 import { myReducer } from "../store";
+import { removeAuthToken } from "../../services/api";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
   async (args: any, { rejectWithValue }) => {
     try {
       let departments = await DepartmentsApi.getDepartments();
+      if (departments?.status === 401 || departments?.status === 403) {
+        rejectWithValue("Un Authorized");
+        removeAuthToken();
+      }
       if (departments.ok && departments.data) return departments.data;
       else return [];
     } catch (error) {

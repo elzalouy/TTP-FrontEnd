@@ -74,7 +74,7 @@ const PopUps: React.FC = () => {
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
       <CreateNewTask setShow={showCreateTaskPopup} show={createTaskPopup} />
       <LogoutPopup setShow={showLoggoutPopup} show={logoutPopup} />
-      <EditTask Show={editTaskPopup} setShow={showEditTaskPopup} />
+      <EditTask show={editTaskPopup} setShow={showEditTaskPopup} />
       <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />
       <Grid marginLeft={50}>
         <NewProjectPopUp setShow={showCreateProject} />

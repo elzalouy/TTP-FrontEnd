@@ -29,14 +29,14 @@ export interface Project {
   projectManager: { _id: string; name: string } | null;
   projectManagerName: string | null;
   teamsId?: any[];
-  numberOfTasks?: any;
-  numberOfFinishedTasks?: any;
   projectDeadline: any;
   startDate?: Date | any;
   completedDate?: any;
   projectStatus?: string;
   clientId: string;
   tasks: Task[];
+  NoOfFinishedTasks: any;
+  NoOfTasks: any;
 }
 export interface TasksStatistics {
   numberOfTasks: number | null;
@@ -65,7 +65,7 @@ export interface ProjectsInterface {
   deleteProjectTasks: string[] | undefined;
   deleteTask: string | undefined;
   editProject: Project | undefined;
-  editTask: Task | null;
+  editTask: Task | any;
   sorting: string | null;
   filteredProjects: Project[] | null;
 }
@@ -82,10 +82,10 @@ const PorjectsState: ProjectsInterface = {
       _id: "",
       name: "",
       projectManager: null,
+      NoOfFinishedTasks: null,
+      NoOfTasks: null,
       projectManagerName: null,
       teamsId: [],
-      numberOfTasks: 0,
-      numberOfFinishedTasks: 0,
       projectDeadline: new Date(),
       startDate: new Date(),
       completedDate: new Date(),
@@ -128,7 +128,7 @@ const PorjectsState: ProjectsInterface = {
   deleteProjectTasks: undefined,
   deleteTask: undefined,
   editProject: undefined,
-  editTask: null,
+  editTask: undefined,
   sorting: null,
   filteredProjects: null,
 };

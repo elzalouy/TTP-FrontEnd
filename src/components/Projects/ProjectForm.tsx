@@ -39,8 +39,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     defaultValues: {
       name: "",
       projectManager: "",
-      deadline: "",
-      startDate: "",
+      deadline: null,
+      startDate: null,
       clientId: "",
     },
   });
@@ -65,14 +65,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       projectManager: data?.projectManager,
       projectManagerName: PMs.find((item) => item._id === data?.projectManager)
         ?.name,
-      projectDeadline: moment(data?.deadline).toDate(),
+      projectDeadline:
+        data?.deadline !== "" && data?.deadline !== null
+          ? moment(data?.deadline).toDate()
+          : null,
       startDate: moment(data?.startDate).toDate(),
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
-      projectStatus: "inProgress",
+      projectStatus: data?.deadline !== null ? "inProgress" : "Not Started",
       completedDate: null,
-      adminId: user?._id,
+      adminId: localStorage.getItem("id"),
     };
     let isValid = validateCreateProject(project);
     if (isValid.error) {
@@ -169,6 +172,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       "startDate"
                     )}
                     {...register("startDate")}
+                    placeholder="start date"
                     onChange={params.onChange}
                     sx={{
                       paddingTop: 1,
@@ -214,6 +218,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       "deadline"
                     )}
                     {...register("deadline")}
+                    placeholder="deadline"
                     sx={{
                       paddingTop: 1,
                       "& .MuiOutlinedInput-input": {

@@ -20,7 +20,10 @@ const Departments: React.FC<IProps> = () => {
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllDepartments(null));
+  }, []);
   useEffect(() => {
     setDepartment(departmentData);
   }, [departmentData]);
@@ -33,7 +36,23 @@ const Departments: React.FC<IProps> = () => {
   ];
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
-      <Box sx={SM ?{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop: "30px"} :{ paddingTop: "60px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+      <Box
+        sx={
+          SM
+            ? {
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingTop: "30px",
+              }
+            : {
+                paddingTop: "60px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }
+        }
+      >
         <Typography
           variant="h2"
           style={

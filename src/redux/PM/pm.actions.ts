@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { removeAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
 
@@ -32,6 +33,11 @@ export const getPMs = createAsyncThunk<any, any, any>(
   async (_, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.getUsers();
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        rejectWithValue("Un Authorized");
+        removeAuthToken();
+      }
+
       if (PMs.ok && PMs.data) return PMs.data;
       else return [];
     } catch (error) {

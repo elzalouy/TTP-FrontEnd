@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import { Box, style } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
 import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
@@ -25,52 +25,79 @@ const TaskCard: React.FC<DataTypes> = ({
   footerStyle,
 }) => {
   const techMembers = useAppSelector(selectAllMembers);
+  const { _id, name, deadline, status } = item;
+  const [remainingDays, setRemaningDays] = useState<any>(0);
+  const [daysColor, setDaysColor] = useState("");
+  const [daysBgColor, setDaysBgColor] = useState("");
 
-  const { _id, name, deadline } = item;
-
-  const floatDays =
-    (new Date(deadline).getTime() - new Date().getTime()) /
-    (1000 * 60 * 60 * 24);
-
+  useEffect(() => {
+    if (status !== "Not Started") {
+      const floatDays =
+        (new Date(deadline).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24);
+      const remainingDays = Math.round(floatDays);
+      setRemaningDays(remainingDays);
+      const daysColor =
+        remainingDays <= 2
+          ? "#FF0000"
+          : remainingDays > 2 && remainingDays <= 5
+          ? "#FF974A"
+          : "#0079BF";
+      setDaysColor(daysColor);
+      const daysBgColor =
+        remainingDays <= 2
+          ? "#F1CBCC"
+          : remainingDays > 2 && remainingDays <= 5
+          ? "#FF974A1A"
+          : "#DAE6EF";
+      setDaysBgColor(daysBgColor);
+    } else {
+      setRemaningDays("Set Deadline");
+      setDaysBgColor("#9FA1AB33");
+      setDaysColor("#2C2C2C");
+    }
+  }, []);
+  const checkStatusAndSetBorder = (status: string) => {
+    if (status === "Not Started") {
+      return "#9fa1ab1a solid 2px";
+    } else if (status === "Not Clear") {
+      return "#d2903456 solid 1px";
+    } else if (status === "Review") {
+      return "#0079bf solid 1px";
+    } else if (status === "Done") {
+      return "#00aaba4b solid 1px";
+    } else if (status === "inProgress") {
+      return "#ffc500 solid 1px";
+    } else if (status === "Cancled") {
+      return "#d2343441 solid 1px";
+    } else if (status === "Shared") {
+      return "#9fa1ab1a solid 2px";
+    }
+  };
   const checkStatusAndSetBackground = (status: string) => {
     if (status === "Not Started") {
       return "#F1F1F2";
-    } else if (status === "Not clear") {
-      return "#E1F3F5";
+    } else if (status === "Not Clear") {
+      return "#f7f0e7";
     } else if (status === "Review") {
       return "#E1F3F5";
     } else if (status === "Done") {
       return "#E1F3F5";
     } else if (status === "inProgress") {
       return "#FBF5E2";
-    } else if (status === "Canceled") {
+    } else if (status === "Cancled") {
       return "#F7E6E7";
     } else if (status === "Shared") {
       return "#F7E6E7";
     }
   };
 
-  const remainingDays = Math.round(floatDays);
-
-  const daysColor =
-    remainingDays <= 2
-      ? "#FF0000"
-      : remainingDays > 2 && remainingDays <= 5
-      ? "#FF974A"
-      : "#0079BF";
-
-  const daysBgColor =
-    remainingDays <= 2
-      ? "#F1CBCC"
-      : remainingDays > 2 && remainingDays <= 5
-      ? "#FF974A1A"
-      : "#DAE6EF";
-
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
         const afterDropStyle = {
           backgroundColor: checkStatusAndSetBackground(column?.value),
+          border: checkStatusAndSetBorder(column?.value),
           ...provided.draggableProps.style,
         };
 
@@ -119,68 +146,7 @@ const TaskCard: React.FC<DataTypes> = ({
                 </Stack>
               </>
             )}
-            {/* {picUrl ? (
-          <>
-            <img
-              style={{ width: "100%", marginTop: "10px" }}
-              src={IMAGES.picTask}
-              alt="more"
-            />{" "}
-            <Stack
-              direction="row"
-              marginTop="12px"
-              justifyContent="flex-start"
-              alignItems="center"
-            >
-              <img src={IMAGES.attachment} alt="more" />
-              <Typography style={{ paddingLeft: "5px" }}>1</Typography>{" "}
-              <Typography className="fileUpload">TTP Project.pdf</Typography>{" "}
-            </Stack>
-            <Stack
-              direction="row"
-              marginTop="12px"
-              justifyContent="flex-start"
-              alignItems="center"
-              className="onTime"
-            >
-              <img src={IMAGES.scheduleOn} alt="more" />
-              <Typography style={{ paddingLeft: "5px" }}>
-                On time
-              </Typography>{" "}
-            </Stack>
-          </>
-        )  */}
-            {/* {status === "cancled" ? (
-          <Typography
-            className={"task-card-timeline-not-clear"}
-            style={{ paddingLeft: "5px" }}
-          >
-            {status}
-          </Typography>
-        ) : status === "inProgress" ? (
-          <Stack
-            direction="row"
-            marginTop="12px"
-            justifyContent="flex-start"
-            alignItems="center"
-            className="aft-red "
-          >
-            <img src={IMAGES.scheduleRed} alt="more" />
-            <Typography style={{ paddingLeft: "5px" }}>{status}</Typography>
-          </Stack>
-        ) : (
-          <Stack
-            direction="row"
-            width="100px"
-            marginTop="12px"
-            justifyContent="flex-start"
-            alignItems="center"
-            className={"task-card-timeline-not-clear"}
-          >
-            <img src={IMAGES.scheduleNotClear} alt="more" />
-            <Typography style={{ paddingLeft: "5px" }}>{status}</Typography>
-          </Stack>
-        )} */}
+
             {item.status !== "cancled" ? (
               <>
                 {item.status === "done" ? (
@@ -215,21 +181,33 @@ const TaskCard: React.FC<DataTypes> = ({
                         bgcolor: daysBgColor,
                       }}
                     >
-                      <img
-                        src={
-                          remainingDays <= 2
-                            ? IMAGES.scheduleRed
-                            : remainingDays > 2 && remainingDays <= 5
-                            ? IMAGES.scheduleOrange
-                            : IMAGES.scheduleNotClear
-                        }
-                        alt="more"
-                      />
-                      <Typography style={{ paddingLeft: "5px", fontSize: 14 }}>
-                        {remainingDays > 0
-                          ? `${remainingDays} Days left`
-                          : "Late"}
-                      </Typography>
+                      {status !== "Not Started" && (
+                        <img
+                          src={
+                            remainingDays <= 2
+                              ? IMAGES.scheduleRed
+                              : remainingDays > 2 && remainingDays <= 5
+                              ? IMAGES.scheduleOrange
+                              : IMAGES.scheduleNotClear
+                          }
+                          alt="more"
+                        />
+                      )}
+                      {status !== "Not Started" ? (
+                        <Typography
+                          style={{ paddingLeft: "5px", fontSize: 14 }}
+                        >
+                          {remainingDays > 0
+                            ? `${remainingDays} Days left`
+                            : `${Math.abs(remainingDays)} Days ago`}
+                        </Typography>
+                      ) : (
+                        <Typography
+                          style={{ paddingLeft: "5px", fontSize: 14 }}
+                        >
+                          Set deadline now
+                        </Typography>
+                      )}
                     </Stack>
                   </>
                 )}

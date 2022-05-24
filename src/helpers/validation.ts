@@ -20,7 +20,7 @@ const createProjectSchema = Joi.object({
     "string.min": "Project Manager Name length should be Min 2 chars",
     "string.required": "Project Manager is required",
   }),
-  projectDeadline: Joi.date().required().messages({
+  projectDeadline: Joi.date().optional().allow(null, "").messages({
     "any.required": "Project Deadline is required",
   }),
   startDate: Joi.date().required().messages({
@@ -34,9 +34,12 @@ const createProjectSchema = Joi.object({
   }),
   numberOfFinishedTasks: Joi.number().optional().allow(null, 0),
   numberOfTasks: Joi.number().optional().allow(null, 0),
-  projectStatus: Joi.string().optional().allow("", null),
+  projectStatus: Joi.string()
+    .optional()
+    .allow("", null)
+    .valid("inProgress", "Not Started"),
   completedDate: Joi.date().optional().allow(null),
-  adminId: Joi.string().required().messages({
+  adminId: Joi.string().messages({
     "any.required": "Admin id is required for creating a project",
   }),
 });
@@ -87,7 +90,7 @@ const createTaskSchema = Joi.object({
   start: Joi.date().required().messages({
     "any.required": "Task start date is required",
   }),
-  deadline: Joi.date().required().messages({
+  deadline: Joi.date().required().optional().allow(null, "").messages({
     "any.required": "Task Deadline is required",
   }),
   boardId: Joi.string().required().min(4).messages({
@@ -97,11 +100,9 @@ const createTaskSchema = Joi.object({
     "string.max": "Department length should be Max 20 chars",
     "any.required": "Department is required",
   }),
-  description: Joi.string().required().min(10).max(120).messages({
+  description: Joi.string().optional().allow("", null).messages({
     "string.base": "Description is required",
-    "string.empty": "Description should be string with min 10 chars",
-    "string.min": "Description length should be Min 10 chars",
-    "string.max": "Description length should be Max 120 chars",
+    "string.empty": "Description is required",
     "any.required": "Description is required",
   }),
   deliveryDate: Joi.any().allow(null),

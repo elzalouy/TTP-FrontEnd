@@ -39,7 +39,20 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const setBorder = (project: Project) => {
+    let date = new Date(project.projectDeadline);
+    if (
+      date <= new Date() &&
+      project.projectStatus === "inProgress" &&
+      project.NoOfTasks !== project.NoOfFinishedTasks
+    )
+      return "#FF2E35 !important";
+    if (project.projectStatus === "inProgress") {
+      if (project.NoOfTasks === project.NoOfFinishedTasks)
+        return "#00ACBA !important";
+      else return "";
+    }
+  };
   return (
     <Table className={classes.table} style={ SM
               ? { width: "140%", borderColor: "#EBEFF2" }
@@ -78,30 +91,15 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
-            let NoOfFinished = projects?.allTasks?.filter(
-              (item) => item.projectId === project._id && item.status === "done"
-            ).length;
-            let NoOfTasks = projects?.allTasks?.filter(
-              (item) => item.projectId === project._id
-            ).length;
+            let NoOfTasks = project.NoOfTasks;
+            let NoOfFinished = project.NoOfFinishedTasks;
             return (
               <TableRow className={classes.tbody} key={project._id}>
                 <TableCell
                   className={classes.tcellLeft}
                   sx={{
                     cursor: "pointer",
-                    borderColor:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "#00ACBA !important"
-                        : "",
-                    borderWidth:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "2px !important"
-                        : "",
+                    borderColor: setBorder(project),
                   }}
                   onClick={() =>
                     props.history.push(`/TasksBoard/${project._id}`)
@@ -125,19 +123,12 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
                   sx={{
-                    borderColor:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "#00ACBA !important"
-                        : "",
-                    borderWidth:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "2px !important"
-                        : "",
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
                   }}
                   className={classes.tcellCenter}
                   align={props.align}
@@ -156,19 +147,12 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
                   sx={{
-                    borderColor:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "#00ACBA !important"
-                        : "",
-                    borderWidth:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "2px !important"
-                        : "",
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
                   }}
                   className={classes.tcellCenterTask}
                   align={props.align}
@@ -197,19 +181,12 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                   )}
                 </TableCell>
                 <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
                   sx={{
-                    borderColor:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "#00ACBA !important"
-                        : "",
-                    borderWidth:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "2px !important"
-                        : "",
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
                   }}
                   className={classes.tcellCenter}
                   align={props.align}
@@ -232,18 +209,8 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                 </TableCell>
                 <TableCell
                   sx={{
-                    borderColor:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "#00ACBA !important"
-                        : "",
-                    borderWidth:
-                      project.projectStatus === "inProgress" &&
-                      NoOfFinished === NoOfTasks &&
-                      NoOfTasks !== 0
-                        ? "2px !important"
-                        : "",
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
                   }}
                   className={classes.tcellRight}
                   align={props.align}

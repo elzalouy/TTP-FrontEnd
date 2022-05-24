@@ -25,8 +25,9 @@
   border-radius: 20px;
   margin: 0 10px 10px 10px;
 }
+
 .shared-header {
-  background-color: #ECDAD7;
+  background-color: #ecdad7;
   font-weight: bold;
   border-radius: 15%;
   padding: 0 5px;
@@ -34,7 +35,7 @@
 }
 .shared-task {
   border-radius: 20px;
-  background-color: #F4EDEC;
+  background-color: #f4edec;
   width: 312px !important;
 }
 
@@ -66,16 +67,21 @@
 }
 .review-task {
   border-radius: 20px;
-  background-color: #E1EDF4;
+  background-color: #e1edf4;
   width: 312px !important;
   margin-inline: 10px;
 }
-.review-header{
-  background-color: #B3D5E9;
+.review-header {
+  background-color: #b3d5e9;
   font-weight: bold;
   border-radius: 15%;
   padding: 0 5px;
   margin: 0 5px 0 0;
+}
+.review-border {
+  border: #0079bf solid 1px;
+  border-radius: 20px;
+  margin: 0 10px 10px 10px;
 }
 .not-clear-task {
   border-radius: 20px;
@@ -130,7 +136,7 @@
   align-items: center;
   margin-top: 15px;
 }
-.select-task-board{
+.select-task-board {
   width: 180px;
 }
 /* filters */
@@ -194,6 +200,12 @@
 }
 .task-card-footer-shared {
   background-color: #ecdad7;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 10px 0 0px;
+}
+.task-card-footer-notstarted {
+  background-color: #9fa1ab33;
   border-radius: 5px;
   padding: 5px 8px;
   margin: 0 10px 0 0px;
