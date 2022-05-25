@@ -23,6 +23,7 @@ const IMAGES = {
   moreGrey: require("./moreGrey.svg").default,
   plus: require("./Plus.svg").default,
   filtericon: require("./filtericon.svg").default,
+  filtericonwhite: require("./filtericonwhite.svg").default,
   editicon: require("./editicon.svg").default,
   sortout: require("./sortout.svg").default,
   imgupload: require("./imgupload.svg").default,

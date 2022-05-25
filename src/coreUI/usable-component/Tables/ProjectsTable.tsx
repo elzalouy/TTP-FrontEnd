@@ -54,9 +54,15 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
     }
   };
   return (
-    <Table className={classes.table} style={ SM
-              ? { width: "140%", borderColor: "#EBEFF2" }
-              : { width: "100%", borderColor: "#EBEFF2" }} aria-label="simple table">
+    <Table
+      className={classes.table}
+      style={
+        SM
+          ? { width: "140%", borderColor: "#EBEFF2" }
+          : { width: "100%", borderColor: "#EBEFF2" }
+      }
+      aria-label="simple table"
+    >
       <TableHead>
         <TableRow className={classes.thead}>
           <TableCell
@@ -77,6 +83,11 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
             Deadline date
           </TableCell>
+          {props.status === "Done" && (
+            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+              End status
+            </TableCell>
+          )}
           <TableCell
             sx={{
               borderBottom: "none",
@@ -207,6 +218,35 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     )}
                   </Typography>
                 </TableCell>
+                {props.status === "Done" && (
+                  <TableCell
+                    onClick={() =>
+                      props.history.push(`/TasksBoard/${project._id}`)
+                    }
+                    sx={{
+                      cursor: "pointer",
+                      borderColor: setBorder(project),
+                    }}
+                    className={classes.tcellCenter}
+                    align={props.align}
+                  >
+                    <Typography
+                      variant={props.textSize === "small" ? "h6" : "h5"}
+                      color="#696974"
+                      fontSize={14}
+                    >
+                      {new Date(project.projectDeadline).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
+                    </Typography>
+                  </TableCell>
+                )}
                 <TableCell
                   sx={{
                     cursor: "pointer",

@@ -50,9 +50,11 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const { watch, control } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
     dispatch(getAllProjects(null));
   }, []);
+
   const onHandleChange = (e: any) => {
     let data = watch();
     let filter = {
@@ -101,11 +103,11 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           <Box
             onClick={() => setFilter(!filter)}
             textAlign={"center"}
-            sx={{ bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }}
+            sx={!filter ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 } : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }}
             width={38}
             height={38}
           >
-            <img src={IMAGES.filtericon} alt="FILTER" />
+            <img src={!filter ? IMAGES.filtericonwhite :IMAGES.filtericon } alt="FILTER" />
           </Box>
         </Grid>
         <Grid
@@ -277,24 +279,24 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 render={(props) => (
                   <>
                     <SelectInput
-                      label="Status"
+                      label="Status: "
                       options={[
-                        { id: "all", value: "", text: "All" },
+                        { id: "all", value: "", text: "All Status" },
                         {
                           id: "delivered",
                           value: "delivered on time",
-                          text: "delivered on time",
+                          text: "Delivered on time",
                         },
                         {
                           id: "delivered before time",
                           value: "delivered before time",
-                          text: "delivered before time",
+                          text: "Delivered before time",
                         },
-                        { id: "late", value: "late", text: "late" },
+                        { id: "late", value: "late", text: "Delivered late" },
                         {
                           id: "inProgress",
                           value: "inProgress",
-                          text: "inProgress",
+                          text: "in Progress",
                         },
                       ]}
                       handleChange={(e) => {

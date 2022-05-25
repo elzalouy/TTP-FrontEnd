@@ -124,7 +124,7 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
               paddingTop={0.5}
               paddingLeft={1}
             >
-              Task view List
+              Task view list
             </Typography>
           </Box>
         </Box>

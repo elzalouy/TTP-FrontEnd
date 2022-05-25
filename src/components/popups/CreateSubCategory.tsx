@@ -25,6 +25,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const [errors, setErrors] = useState("");
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const [title, setTitle] = useState<string | undefined>("");
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategory, setSubCategory] = useState("");
   const [subCategories, setsubCategories] = useState<
@@ -32,14 +33,30 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   >([]);
 
   const selectedCategory = useAppSelector(selectSelectedCategory);
-  
+
   const [selectedData, setSelectedData] = useState<any>({
     selectedSubCategory: [],
     subCategoriesId: [],
   });
 
+  console.log(subCategories);
+
   useEffect(() => {
     setSelectedData(selectedCategory);
+    setTitle(selectedCategory?.category);
+    if (selectedCategory) {
+      let subCategoriesData = selectedCategory?.subCategoriesId?.map(
+        ({ _id, subCategory }) => {
+          return {
+            _id: _id,
+            subCategory: subCategory,
+          };
+        }
+      );
+      if (subCategoriesData) {
+        setsubCategories(subCategoriesData);
+      }
+    }
   }, [selectedCategory]);
 
   const onSubChange = (e: any) => {
@@ -47,16 +64,19 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   };
 
   const addSubCategory = (e: any) => {
-    if (subCategories.length === 0)
-      setsubCategories([{ _id: uuidv4(), subCategory }]);
-    // else {
-    setsubCategories([...subCategories, { _id: uuidv4(), subCategory }]);
-    // }
-    setSubCategory("");
+    if (subCategory.length > 0) {
+      if (subCategories.length === 0)
+        setsubCategories([{ _id: uuidv4(), subCategory }]);
+      // else {
+      setsubCategories([...subCategories, { _id: uuidv4(), subCategory }]);
+      // }
+      setSubCategory("");
+    }
   };
 
   const removeSubCategory = (id: any) => {
     setsubCategories(subCategories.filter((element) => element._id !== id));
+    console.log(subCategories);
   };
 
   const handleSubmit = async (e: any) => {
@@ -67,6 +87,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         (item: any) => item._id
       ),
       _id: selectedData._id,
+      category: title,
     };
     try {
       await dispatch(updateCategory(body));
@@ -76,6 +97,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
       setErrors(error.message);
     }
   };
+
   return (
     <>
       <PopUp
@@ -97,11 +119,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 }}
               />
             </div>
-            <Typography
-              fontWeight={"500"}
-              fontSize={18}
-              color="#00ACBA"
-            >
+            <Typography fontWeight={"500"} fontSize={18} color="#00ACBA">
               Manage Category
             </Typography>
           </Grid>
@@ -114,10 +132,13 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   className="text-input"
                   name="mainCategory"
                   placeholder="Ex: Al-shaqran"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   required
                   sx={{
                     height: 50,
                     width: "100%",
+                    backgroundColor:"#fff",
                     borderRadius: "6px",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderRadius: "6px",
@@ -141,6 +162,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   height: 50,
                   width: "100%",
                   borderRadius: "6px",
+                  backgroundColor:"#fff",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderRadius: "6px",
                   },

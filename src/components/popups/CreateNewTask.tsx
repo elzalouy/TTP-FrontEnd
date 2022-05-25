@@ -169,6 +169,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
             alt="closeIcon"
             onClick={() => {
               props.setShow("none");
+              reset();
             }}
           />
           <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>

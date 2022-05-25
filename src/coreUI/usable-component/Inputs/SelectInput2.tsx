@@ -145,7 +145,7 @@ const SelectInput2: React.FC<Props> = ({
       <Popover
         className={styles.root}
         open={options.length > 0 ? open : false}
-        sx={{ borderRadius: 0, width: "calc(96% - 11px) !important;" }}
+        sx={{ borderRadius: 0, width: "calc(96% - 11px) !important;",zIndex:2001 }}
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}

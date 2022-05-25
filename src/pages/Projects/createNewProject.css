@@ -149,7 +149,7 @@ input.date-project::-webkit-calendar-picker-indicator {
   height: 40px;
   background-color: black;
   color: #ffffff;
-  padding: 10px;
+  padding: 8px;
   border-radius: 5px;
   border: none;
   font-weight: bold;

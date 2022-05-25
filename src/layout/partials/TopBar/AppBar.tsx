@@ -5,6 +5,7 @@ import "./AppBar.css";
 import { Logo, Notification } from "../../../coreUI/usable-elements/images";
 import { RouteComponentProps, useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
+import zIndex from "@mui/material/styles/zIndex";
 
 const Bar: FC = (props: any) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,8 @@ const Bar: FC = (props: any) => {
         display: { lg: "none", md: "none", sm: "block", xs: "block" },
         bgcolor: "white",
         margin:"0px",
-        boxShadow:"none"
+        boxShadow:"none",
+        zIndex:1
       }}
     >
       <Toolbar
