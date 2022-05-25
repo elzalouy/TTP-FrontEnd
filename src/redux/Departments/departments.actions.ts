@@ -1,7 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import DepartmentsApi from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
-import { fireCreateDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
+import {
+  fireCreateDepartmentHook,
+  fireDeleteDepartmentHook,
+  fireUpdateDepartmentHook,
+} from "../Ui";
 import { myReducer } from "../store";
 import { removeAuthToken } from "../../services/api";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
@@ -81,10 +85,11 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
 
 export const deleteDepartment = createAsyncThunk<any, any, any>(
   "departments/deleteDepartment",
-  async (data: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.deleteDepartment(data);
+      let department = await DepartmentsApi.deleteDepartment(args?.data);
       if (department.ok && department.data) {
+        args?.dispatch(fireDeleteDepartmentHook(""));
         toast.success("Department deleted successfully", {
           position: "top-right",
           autoClose: 5000,
@@ -94,7 +99,7 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        return { ...data };
+        return { ...args.data };
       } else return [];
     } catch (error) {
       rejectWithValue(error);

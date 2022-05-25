@@ -173,8 +173,7 @@ const DragField: React.FC = (props: any) => {
       },
     };
     setColumns(cols);
-  }, [selectedProject]);
-
+  }, [selectedProject.tasks]);
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -235,7 +234,10 @@ const DragField: React.FC = (props: any) => {
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
-      <Box sx={{ minWidth: 1200, overflowX: "scroll",height:"100%" }} display="inline-flex">
+      <Box
+        sx={{ minWidth: 1200, overflowX: "scroll", height: "100%" }}
+        display="inline-flex"
+      >
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
             <Droppable droppableId={columnId} key={index}>

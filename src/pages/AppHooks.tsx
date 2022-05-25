@@ -1,21 +1,24 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { clientsActions, getAllClients } from "../redux/Clients";
+import { socket } from "../config/socket/actions";
+import { selectIsAuth, selectUser } from "../redux/Auth";
+import { getAllClients } from "../redux/Clients";
 import { getAllDepartments } from "../redux/Departments";
 import { useAppSelector } from "../redux/hooks";
-import { getPMs } from "../redux/PM";
 import {
   getAllProjects,
   getAllTasks,
   ProjectsActions,
-  selectAllProjects,
-  selectNewProject,
 } from "../redux/Projects";
-import { setStatistics } from "../redux/Statistics";
-import { fireDeleteTaskHook } from "../redux/Ui";
+import { fireMoveTaskOnTrello } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
+import { checkAuthToken } from "../services/api";
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
+  const isAuthed = useAppSelector(selectIsAuth);
+  const [moveTaskData, setMoveTaskData] = React.useState<any>(null);
+  const [connected, setConnnected] = React.useState(false);
+  const user = useAppSelector(selectUser);
   const {
     newProjectHook,
     updateProjectHook,
@@ -26,6 +29,8 @@ const AppHooks: React.FC = (props) => {
     createDepartmentHook,
     editTaskHook,
     moveTaskHook,
+    deleteDepartmentHook,
+    moveTaskOnTrelloHook,
   } = useAppSelector(selectUi);
   /*
   1- Create an app hook
@@ -86,6 +91,13 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllDepartments(null));
     }
   }, [createDepartmentHook]);
+  React.useEffect(() => {
+    if (deleteDepartmentHook !== undefined) {
+      console.log("delete department hook fired.");
+      dispatch(getAllDepartments(null));
+      dispatch(getAllTasks(null));
+    }
+  }, [deleteDepartmentHook]);
   // Edit Task hook
   React.useEffect(() => {
     if (editTaskHook !== undefined) {
@@ -99,6 +111,41 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
+  React.useEffect(() => {
+    if (moveTaskData !== null) {
+      console.log("entered condition");
+      dispatch(ProjectsActions.moveTaskInTrello(moveTaskData));
+      setMoveTaskData(null);
+    }
+  }, [moveTaskData]);
+  React.useEffect(() => {
+    if (isAuthed && checkAuthToken() && !connected) {
+      socket.on("connect", () => {
+        console.log("client is connected");
+        //todo check user auth
+        if (user?.type === "admin") {
+          // this for admins role only
+          socket.emit("joined admin");
+        }
+        if (user?.role === "PM") {
+          // this for project managers role only
+          socket.emit("joined manager");
+        }
+        // this is for specific user
+        socket.emit("joined user", { id: user?._id });
+        // on event for lestening if task moved on trello (__webhookUpdate)
+        socket.on("Move Task", (data) => {
+          console.log("handled event");
+          setMoveTaskData(data);
+        });
+      });
+      setConnnected(true);
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [isAuthed]);
+
   return <>{props.children}</>;
 };
 

@@ -84,6 +84,13 @@ const UISlice: Slice<UiInterface> = createSlice({
     fireMoveTaskHook: (state = UiState) => {
       state.moveTaskHook = state.moveTaskHook === true ? false : true;
     },
+    fireDeleteDepartmentHook: (state = UiState) => {
+      state.deleteDepartmentHook =
+        state.deleteDepartmentHook === true ? false : true;
+    },
+    fireMoveTaskOnTrello: (state = UiState, action: PayloadAction<any>) => {
+      state.moveTaskOnTrelloHook = action.payload;
+    },
   },
 });
 export default UISlice.reducer;
@@ -111,5 +118,7 @@ export const {
   fireCreatePMHook,
   fireEditPMHook,
   fireMoveTaskHook,
+  fireDeleteDepartmentHook,
+  fireMoveTaskOnTrello,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

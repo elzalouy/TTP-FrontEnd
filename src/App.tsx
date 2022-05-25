@@ -41,8 +41,6 @@ import { checkAuthToken } from "./services/api";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const isAuth = useAppSelector(selectIsAuth);
-  const user = useAppSelector(selectUser);
   const projects = useAppSelector(selectAllProjects);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -67,27 +65,6 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, checkAuthToken(), dispatch]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      //todo check user auth
-      let admin = true;
-      let projectManager = false;
-      let userId = "6268c93e0b9f6cdb369770bc";
-      if (admin) {
-        // this for admins role only
-        socket.emit("joined admin");
-      }
-
-      if (projectManager) {
-        // this for project managers role only
-        socket.emit("joined manager");
-      }
-
-      // this is for specific user
-      socket.emit("joined user", { id: userId });
-    });
-  }, []);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
     if (projects.loading === false)
@@ -99,15 +76,15 @@ const App: React.FC = (props) => {
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>
         <ToastContainer
-         position="top-right"
-         autoClose={5000}
-         hideProgressBar={false}
-         newestOnTop={false}
-         closeOnClick
-         rtl={false}
-         pauseOnFocusLoss
-         draggable
-         pauseOnHover
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
         />
         <PopUps />
         <Switch>

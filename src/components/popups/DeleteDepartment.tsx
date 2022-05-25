@@ -21,9 +21,8 @@ const DeleteDepartment: React.FC<Props> = ({
   const dispatch = useDispatch();
   const depData = useAppSelector(selectedDepart);
 
-  const handleSubmit = async () => {
-    await dispatch(deleteDepartment({ _id: depData?._id }));
-    await dispatch(getAllDepartments(null));
+  const handleSubmit = () => {
+    dispatch(deleteDepartment({ data: { _id: depData?._id }, dispatch }));
     handleSetShowDelete("none");
   };
 
