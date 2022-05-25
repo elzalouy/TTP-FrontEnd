@@ -19,6 +19,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
+import { getStatus } from "../../../components/popups/EditProject";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -39,6 +40,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -53,10 +55,17 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
       else return "";
     }
   };
+
   return (
-    <Table className={classes.table} style={ SM
-              ? { width: "140%", borderColor: "#EBEFF2" }
-              : { width: "100%", borderColor: "#EBEFF2" }} aria-label="simple table">
+    <Table
+      className={classes.table}
+      style={
+        SM
+          ? { width: "140%", borderColor: "#EBEFF2" }
+          : { width: "100%", borderColor: "#EBEFF2" }
+      }
+      aria-label="simple table"
+    >
       <TableHead>
         <TableRow className={classes.thead}>
           <TableCell
@@ -77,6 +86,11 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
           <TableCell sx={{ borderBottom: "none" }} align={props.align}>
             Deadline date
           </TableCell>
+          {props.status === "Done" && (
+            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+              End status
+            </TableCell>
+          )}
           <TableCell
             sx={{
               borderBottom: "none",
@@ -91,8 +105,10 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
+
             let NoOfTasks = project.NoOfTasks;
             let NoOfFinished = project.NoOfFinishedTasks;
+
             return (
               <TableRow className={classes.tbody} key={project._id}>
                 <TableCell
@@ -207,6 +223,27 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     )}
                   </Typography>
                 </TableCell>
+                {props.status === "Done" && (
+                  <TableCell
+                    onClick={() =>
+                      props.history.push(`/TasksBoard/${project._id}`)
+                    }
+                    sx={{
+                      cursor: "pointer",
+                      borderColor: setBorder(project),
+                    }}
+                    className={classes.tcellCenter}
+                    align={props.align}
+                  >
+                    <Typography
+                      variant={props.textSize === "small" ? "h6" : "h5"}
+                      color="#696974"
+                      fontSize={14}
+                    >
+                      {getStatus(project.projectStatus)}
+                    </Typography>
+                  </TableCell>
+                )}
                 <TableCell
                   sx={{
                     cursor: "pointer",

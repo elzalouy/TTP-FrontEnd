@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+.closeIconProject{
+    position: absolute;
+    right: 0;
+    top: -5px;
+}
+
 .date{
     width: 100%;
 }

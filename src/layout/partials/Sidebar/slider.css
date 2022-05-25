@@ -360,11 +360,21 @@
   background: #000000 0% 0% no-repeat padding-box;
   color: white;
 }
-.active svg :not(.dep) {
+/* .active svg :not(.dep) {
   stroke: white !important;
-}
+} */
 .active svg path {
-  stroke: white !important;
+  stroke: white ;
+}
+.active svg .path-pm {
+  fill: white ;
+}
+.path-pm{
+  stroke:none !important;
+}
+.path-pm:hover{
+  stroke: none !important;
+  fill: white;
 }
 .active svg .category {
   stroke: white !important;
@@ -376,15 +386,18 @@
 .active svg g :not(.dep) {
   stroke: white !important;
 }
-/* 
-.sideItem svg:not(.dep) {
-  stroke: #9fa1ab !important;
-}
+
+/* .sideItem svg:not(.dep) {
+  stroke: #9FA1AB !important;
+} */
 .sideItem:hover .category {
   fill: white !important;
 }
 .sideItem:hover svg path {
-  stroke: white !important;
+  stroke: white;
+}
+.sideItem:hover svg .path-pm {
+  fill: white;
 }
 .sideItem:hover svg circle :not(.dep) {
   stroke: white !important;
@@ -392,6 +405,7 @@
 .sideItem:hover svg g :not(.dep) {
   stroke: white !important;
 }
+/*
 .active svg g {
   stroke: white !important;
 }

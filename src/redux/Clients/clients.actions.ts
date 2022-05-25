@@ -29,8 +29,8 @@ export const creatClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client created successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -57,8 +57,8 @@ export const updateClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client updated successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -80,8 +80,8 @@ export const deleteClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client deleted successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -91,7 +91,15 @@ export const deleteClient = createAsyncThunk<any, any, any>(
       }
       throw new Error("Error hapenned while deleting the client");
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       rejectWithValue(error);
     }
   }

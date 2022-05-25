@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Divider,
   Drawer,
@@ -14,6 +13,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import "./slider.css";
+import Avatar from "react-avatar";
 import { styled } from "@mui/material/styles";
 import { Logo } from "../../../coreUI/usable-elements/images";
 import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
@@ -77,7 +77,7 @@ const AppDrawer: React.FC = (props: any) => {
           transition: " all 0.5s ease !important",
           marginRight: open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: open ? "16%" : "5%",
+            width: open ? "16%" : "4%",
             transition: "all 0.5s ease !important",
           },
         }}
@@ -114,6 +114,7 @@ const AppDrawer: React.FC = (props: any) => {
             />
             <DrawerItem
               {...props}
+              PM
               select={props.select}
               open={open}
               key="1"
@@ -221,9 +222,20 @@ const AppDrawer: React.FC = (props: any) => {
                   justifyContent: open ? "space-between" : "center",
                 }}
               >
-                <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
-                  AM
-                </Avatar>
+                <Avatar
+                  name={
+                    user?.user?.name === undefined
+                      ? user?.name
+                      : user?.user?.name
+                  }
+                  value="86%" size="40"
+                  round
+                  color="#FFC500"
+                  fgColor="black"
+                  style={{
+                    marginRight:"10px"
+                  }}
+                />
               </ListItemIcon>
               <ListItemText
                 sx={{
@@ -274,7 +286,7 @@ const AppDrawer: React.FC = (props: any) => {
               </ListItemText>
             </ListItemButton>
           ) : (
-            <Box sx={{ cursor: "pointer", marginLeft:"15px"}}>
+            <Box sx={{ cursor: "pointer", marginLeft: "15px" }}>
               <IconButton onClick={handleLogout}>
                 <LogoutIcon fontSize={"small"} />
               </IconButton>

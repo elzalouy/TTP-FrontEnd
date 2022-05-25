@@ -52,7 +52,15 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
   };
   const onSaveProject = () => {
     dispatch(UiActions.fireNewProjectHook(""));
-    toast("Project and Its Tasks have been saved.");
+    toast.success("Project and Its Tasks have been saved", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     setShow("none");
     setCurrentStep(0);
   };

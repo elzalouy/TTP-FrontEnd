@@ -162,7 +162,7 @@ const SelectInput: React.FC<Props> = ({
                 style={{
                   cursor: "pointer",
                   paddingInline: 10,
-                  width: "auto",
+                  width: "200px",
                   justifyContent: "flex-start",
                   textTransform: "none",
                   fontFamily: "Cairo",

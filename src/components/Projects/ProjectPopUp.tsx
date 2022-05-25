@@ -112,12 +112,13 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   };
   return (
     <PopUp show={createProjectPopup}>
-      <Grid container direction="row" className="projectFormHeader">
+      <Grid container position="relative" direction="column" className="projectFormHeader">
         <Grid
           item
-          xs={8}
+          xs={12}
+          display="flex"
           justifyContent={"center"}
-          paddingLeft={24}
+          alignItems="center"
           marginBottom={5}
         >
           <Stepper
@@ -142,16 +143,14 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
             ))}
           </Stepper>
         </Grid>
-        <Grid item xs={4} paddingTop={1} paddingRight={0.5}>
           <img
-            className="closeIcon"
+            className="closeIconProject"
             width="9"
             height="9"
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={onClose}
           />
-        </Grid>
       </Grid>
       {currentStep === 0 && (
         <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />

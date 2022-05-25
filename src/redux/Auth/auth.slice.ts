@@ -25,6 +25,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     builder.addCase(signIn.fulfilled, (state, { payload }) => {
       state.loading = false;
       if (payload.msg && payload.status) {
+        toast.error("Invalid Email Address or Password", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
@@ -36,8 +45,8 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.authState = true;
         toast.success("Login successful", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -54,6 +63,15 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     builder.addCase(forgotPassword.fulfilled, (state, { payload }) => {
       state.loading = false;
       if (payload.msg && payload.status) {
+        toast.error("Invalid Email Address", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
@@ -76,10 +94,14 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       state.User = initialState.User;
       state.authState = false;
+      state.Payload = {
+        msg: "",
+        status: "",
+      }
       toast.success("Logout successful", {
         position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: true,
+        autoClose: 5000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -118,8 +140,8 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       } else {
         toast.success("New password set successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,

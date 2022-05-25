@@ -5,12 +5,13 @@ type Props = {
   show: string;
   widthSize?: string;
   children: object;
+  zIndex?:number;
 };
 
-const SmallPopUp: React.FC<Props> = ({ show, children, widthSize }) => {
+const SmallPopUp: React.FC<Props> = ({ show, children, widthSize,zIndex }) => {
   return (
-    <div className="container-popup" style={{ display: show }}>
-      <div className="small-pop-up" style={{ width: widthSize }}>
+    <div className="container-popup" style={{ display: show,zIndex:zIndex }}>
+      <div className="small-pop-up" style={{ width: widthSize,zIndex:zIndex }}>
         {children}
       </div>
     </div>

@@ -127,6 +127,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             )}
           />
         </Grid>
+        <div style={{width:"20px"}}></div>
         <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -171,6 +172,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
+        <div style={{width:"20px"}}></div>
         {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -233,6 +235,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
+        <div style={{width:"20px"}}></div>
        {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
@@ -298,6 +301,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
+        <div style={{width:"20px"}}></div>
         <Grid marginX={0.5} item xs={2} sm={2} md={1}>
           <DeleteTask
             task={selects}

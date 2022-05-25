@@ -14,8 +14,8 @@ type Props = {
 
 const DeleteTask: React.FC<Props> = (props) => {
   return (
-    <Box style={{ height: "30px",marginBottom:"5px" }}>
-      <Box style={{ width: "35px", padding: "0 10px" }} className="filter-icon">
+    <Box style={{ height: "40px" }}>
+      <Box style={{height:"100%", width: "35px", padding: "0 10px" }} className="filter-icon">
         <IconButton
           onClick={() => {
             if (props.task.length !== 0) {
@@ -23,8 +23,8 @@ const DeleteTask: React.FC<Props> = (props) => {
             }else{
               toast.warn("Please select a task you wish to delete", {
                 position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: true,
+                autoClose: 5000,
+                hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,

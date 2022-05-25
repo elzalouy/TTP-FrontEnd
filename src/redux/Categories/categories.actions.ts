@@ -29,8 +29,8 @@ export const createCategory = createAsyncThunk<any, any, any>(
       if (result.data) {
         toast.success("Category created successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -52,8 +52,8 @@ export const updateCategory = createAsyncThunk<any, any, any>(
       if (result.data) {
         toast.success("Category updated successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,

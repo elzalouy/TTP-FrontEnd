@@ -24,7 +24,15 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       if (projects.ok) return projects.data;
       throw projects.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -37,7 +45,15 @@ export const createProject = createAsyncThunk<any, any, any>(
       let result = await api.createProject(project);
       if (result.ok) {
         args.setcurrentStep(1);
-        toast("Project created successfully");
+        toast.success("Project created successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return result.data;
       }
       return rejectWithValue(result.data);
@@ -52,7 +68,15 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
-        toast("Task have been saved to the Database");
+        toast.success("Task have been saved to the Database", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return result.data?.task;
       }
       return rejectWithValue(result.data);
@@ -69,14 +93,38 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
         args.setShow("none");
-        toast("Task have been save to the Database");
+        toast.success("Task have been save to the Database", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return result.data?.task;
       } else {
-        toast(result?.data[0]?.message);
+        toast.error(result?.data[0]?.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -90,7 +138,15 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -104,7 +160,15 @@ export const getTasks = createAsyncThunk<any, any, any>(
       if (tasks?.ok) return tasks?.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -118,7 +182,15 @@ export const getProject = createAsyncThunk<any, any, any>(
       if (projects.ok) return projects?.data[0];
       throw projects.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -136,7 +208,15 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -150,7 +230,15 @@ export const filterTasks = createAsyncThunk<any, any, any>(
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -162,12 +250,28 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteProjectTasks(args?.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
-        toast("Project Tasks deleted first.");
+        toast.success("Project Tasks deleted first.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return true;
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -179,12 +283,28 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
-        toast("Tasks deleted.");
+        toast.success("Tasks deleted.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return args.ids;
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -196,12 +316,28 @@ export const deleteProject = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteProject(args.data);
       if (deleteResult?.ok) {
         args.dispatch(fireDeleteProjectHook(""));
-        toast("Project Deleted Sucessfully");
+        toast.success("Project Deleted Sucessfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return true;
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -214,11 +350,27 @@ export const deleteTask = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteTask(args.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
-        toast("Tasks deleted from DB and Trello");
+        toast.success("Tasks deleted from DB and Trello", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return deleteResult.data;
       } else throw deleteResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -230,11 +382,27 @@ export const editProject = createAsyncThunk<any, any, any>(
       let editResult = await api.editProject(args.data);
       if (editResult.ok) {
         args.dispatch(fireUpdateProjectHook(""));
-        toast("Project updated successfully");
+        toast.success("Project updated successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return true;
       } else throw editResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
@@ -268,7 +436,15 @@ export const moveTask = createAsyncThunk<any, any, any>(
         return moveResult.data;
       } else throw moveResult.problem;
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
