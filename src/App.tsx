@@ -99,15 +99,15 @@ const App: React.FC = (props) => {
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>
         <ToastContainer
-          position="top-right"
-          autoClose={1500}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
+         position="top-right"
+         autoClose={5000}
+         hideProgressBar={false}
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover
         />
         <PopUps />
         <Switch>

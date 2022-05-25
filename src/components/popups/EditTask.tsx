@@ -113,7 +113,7 @@ const EditTask: React.FC<Props> = (props) => {
   React.useEffect(() => {
     reset();
   }, [editTaskPopup]);
-  
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -143,7 +143,15 @@ const EditTask: React.FC<Props> = (props) => {
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
-      toast(validateResult.error.message);
+      toast.error(validateResult.error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
     }
   };
@@ -393,7 +401,7 @@ const EditTask: React.FC<Props> = (props) => {
                   )}
                 />
                 <br />
-                <label className="label-project">Assign to Member</label>
+                <label className="label-project">Assign to Team</label>
                 <br />
                 <Controller
                   name="memberId"

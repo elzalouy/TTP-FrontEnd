@@ -48,6 +48,12 @@ const IMAGES = {
   overviewProjects: require("./OverviewProjects.svg").default,
   overViewRevision: require("./OverviewRevision.svg").default,
   overviewCheck: require("./OverviewCheck.svg").default,
+  loginDesktop: require("./loginDesktop.svg").default,
+  forgotDesktop: require("./forgotDesktop.svg").default,
+  resetDesktop: require("./resetDesktop.svg").default,
+  loginTablet: require("./loginTablet.svg").default,
+  forgotTablet: require("./forgotTablet.svg").default,
+  resetTablet: require("./resetTablet.svg").default,
   departmentsIcon: require("./Departments.svg"),
   searchIcon: require("./Iconly-Light-outline-Search.svg"),
 };

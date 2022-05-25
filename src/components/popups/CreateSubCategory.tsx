@@ -138,7 +138,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   sx={{
                     height: 50,
                     width: "100%",
-                    backgroundColor:"#fff",
                     borderRadius: "6px",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderRadius: "6px",
@@ -162,7 +161,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   height: 50,
                   width: "100%",
                   borderRadius: "6px",
-                  backgroundColor:"#fff",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderRadius: "6px",
                   },

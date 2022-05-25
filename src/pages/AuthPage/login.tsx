@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import Person from "../../assets/img/person.png";
+import IMAGES from "../../assets/img";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import {
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { toast } from "react-toastify";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -74,13 +75,9 @@ const Login: React.FC<Props> = ({ history }) => {
     if (isAuth === true) {
       history.replace("/Overview");
     }
-  }, [watch]);
+  }, [res]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    setFailed({
-      message: "",
-      status: false,
-    });
     dispatch(
       signIn({
         data: {
@@ -90,6 +87,10 @@ const Login: React.FC<Props> = ({ history }) => {
         history,
       })
     );
+    setFailed({
+      message: "",
+      status: false,
+    });
   };
 
   if (isAuth) {
@@ -108,8 +109,8 @@ const Login: React.FC<Props> = ({ history }) => {
         item
         xs={11}
         sm={11}
-        md={8}
-        lg={8}
+        md={6}
+        lg={6}
         height={600}
         justifyContent={SM ? "flex-start" : "center"}
         container
@@ -144,9 +145,7 @@ const Login: React.FC<Props> = ({ history }) => {
             Login to your account
           </Typography>
           {failed.status && (
-            <p className="error-text">
-              Login was unsuccessful : {failed.message}
-            </p>
+            <p className="error-text">Invalid Email Address or Password</p>
           )}
           <Typography
             variant={"h5"}
@@ -166,7 +165,7 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...field}
                 {...register("email", { required: true })}
                 type="email"
-                autoComplete="new-password"
+                autoComplete="on"
                 className="f-inputs"
                 placeholder="Email Address"
                 onChange={() =>
@@ -266,11 +265,16 @@ const Login: React.FC<Props> = ({ history }) => {
           sm={0}
           md={6}
           lg={6}
-          bgcolor={"black"}
+          bgcolor={"#FFC500"}
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={Person} className="Image" alt="" style={{ width: "60%" }} />
+          <img
+            src={IMAGES.loginDesktop}
+            className="Image"
+            alt=""
+            style={{ width: "60%" }}
+          />
         </Grid>
       </Grid>
     </Grid>

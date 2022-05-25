@@ -18,8 +18,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         borderRadius: 2.5,
         justifyContent: props.open ? "initial" : "center",
         ":hover": {
-          background: props.select !== props.path ? "transparent" : "#17171e",
-          // "& .MuiListItemText-root": { color: "white", boxShadow: "none" },
+          "& .MuiListItemText-root": { color: "white", boxShadow: "none" },
         },
       }}
       onClick={() => props.onClick()}
@@ -40,6 +39,9 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         sx={{
           color: props.select === props.path ? "white" : "#808191",
           opacity: props.open ? 1 : 0,
+          ":hover": {
+            color:"#FFF !important"
+          },
         }}
       >
         <Typography

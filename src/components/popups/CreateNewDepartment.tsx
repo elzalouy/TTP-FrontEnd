@@ -124,12 +124,12 @@ const CreateNewDepartment: React.FC<Props> = () => {
     } else {
       toast.error("Department name already exist", {
         position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: true,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
       });
     }
   };

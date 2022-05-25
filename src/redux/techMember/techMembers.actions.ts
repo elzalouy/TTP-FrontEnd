@@ -40,7 +40,15 @@ export const createTeam = createAsyncThunk<any, any, any>(
       let team = await api.createTechMember(args.data);
       if (team.ok && team.data) {
         args.dispatch(fireNewTeamHook(""));
-        toast("team created successfully");
+        toast.success("team created successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return args.data;
       } else return [];
     } catch (error) {

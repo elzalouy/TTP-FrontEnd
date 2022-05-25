@@ -85,7 +85,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
     if (isValid.error) {
       setError(isValid);
-      toast(isValid.error.message);
+      toast.error(isValid.error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else dispatch(createProject({ data: project, setcurrentStep }));
   };
 

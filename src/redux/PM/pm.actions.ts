@@ -14,8 +14,8 @@ export const resendMail = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("New email sent successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -54,8 +54,8 @@ export const createPM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager created successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -68,7 +68,15 @@ export const createPM = createAsyncThunk<any, any, any>(
         "Error happened while creating the project manager, please try again"
       );
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       rejectWithValue(error);
     }
   }
@@ -82,8 +90,8 @@ export const updatePM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager updated successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -94,7 +102,15 @@ export const updatePM = createAsyncThunk<any, any, any>(
       }
       throw new Error(PMs?.originalError?.message);
     } catch (error: any) {
-      toast(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       rejectWithValue(error);
     }
   }
@@ -108,8 +124,8 @@ export const updatePMpassword = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -131,8 +147,8 @@ export const resetPMpassword = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -154,8 +170,8 @@ export const deletePM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager deleted successfully", {
           position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: true,
+          autoClose: 5000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,

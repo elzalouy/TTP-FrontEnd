@@ -49,8 +49,8 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     if (timeLimit && timeLimit >= currentTime) {
       toast.warn("Please try to resend after one hour", {
         position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
+        autoClose: 5000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,

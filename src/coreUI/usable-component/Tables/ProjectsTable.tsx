@@ -19,6 +19,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
+import { getStatus } from "../../../components/popups/EditProject";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -39,6 +40,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -53,6 +55,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
       else return "";
     }
   };
+
   return (
     <Table
       className={classes.table}
@@ -102,8 +105,10 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
+
             let NoOfTasks = project.NoOfTasks;
             let NoOfFinished = project.NoOfFinishedTasks;
+
             return (
               <TableRow className={classes.tbody} key={project._id}>
                 <TableCell
@@ -235,15 +240,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#696974"
                       fontSize={14}
                     >
-                      {new Date(project.projectDeadline).toLocaleDateString(
-                        "en-US",
-                        {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
+                      {getStatus(project.projectStatus)}
                     </Typography>
                   </TableCell>
                 )}

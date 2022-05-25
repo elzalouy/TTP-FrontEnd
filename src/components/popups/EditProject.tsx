@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
@@ -11,29 +11,85 @@ import {
   editProject as editProjectAction,
 } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { fireUpdateProjectHook } from "../../redux/Ui";
+import { TextField, TextFieldProps } from "@mui/material";
+import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import DoneProjectConfirm from "./DoneProjectPopup";
+import moment from "moment";
 
 type Props = {
   show: string;
   setShow: any;
 };
 
+export const getStatus = (status: string | undefined) => {
+  if (status === "late") {
+    return "Delivered Late";
+  } else if (status === "deliver on time") {
+    return "Delivered on time";
+  } else if (status === "deliver before deadline") {
+    return "Delivered earlier";
+  } else if (status === "inProgress") {
+    return "In Progress";
+  } else if (status === "Done") {
+    return "Done";
+  }
+};
+
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-  const { control, register, watch, setValue } = useForm();
+  const { control, watch, setValue } = useForm();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const project = useAppSelector(selectEditProject);
+  const [confirm, setConfirm] = useState<string>("none");
+  const [trigger, setTrigger] = useState<boolean>(false);
+
   useEffect(() => {
     setValue("clientId", project?.clientId);
     setValue("projectManager", project?.projectManager?._id);
     setValue("deadline", project?.projectDeadline);
     setValue("name", project?.name);
     setValue("status", project?.projectStatus);
+    setValue("startDate", project?.startDate);
   }, [project]);
-  const onSubmitEdit = () => {
-    let data = watch();
+
+  useEffect(() => {
+    if (trigger) {
+      let data = watch();
+      executeEditProject(data);
+    }
+  }, [trigger]);
+
+  const calculateStatusBasedOnDeadline = (data: any) => {
+    let formattedDeadline = moment(project?.projectDeadline).format(
+      "MM-DD-YYYY"
+    );
+    let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
+    let onTime = moment(formattedToday).isSame(formattedDeadline);
+    let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
+    let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
+    if (afterDeadline) {
+      return (data = "late");
+    } else if (beforeDeadline) {
+      return (data = "deliver before deadline");
+    } else if (onTime) {
+      return (data = "deliver on time");
+    }
+  };
+
+  const getPM = (id: string) => {
+    let pm = PMs.find((pm) => pm._id === id);
+    return pm?.name;
+  };
+
+  const executeEditProject = (data: any) => {
     let editProject = { ...project };
+    if (data.status === "Done") {
+      let status = calculateStatusBasedOnDeadline(data.status);
+      data.status = status;
+    }
     editProject.name = data.name;
     editProject.projectManager = data.projectManager;
     editProject.projectManagerName = PMs.find(
@@ -42,12 +98,33 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.projectDeadline = data.deadline;
     editProject.clientId = data.clientId;
     editProject.projectStatus = data.status;
-
+    editProject.startDate = data.startDate;
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
+    setTrigger(false);
   };
+
+  const onSubmitEdit = () => {
+    let data = watch();
+    if (data === project) {
+      setShow("none");
+      return;
+    }
+    if (data.status === "Done") {
+      setConfirm("flex");
+    } else {
+      executeEditProject(data);
+      setShow("none");
+    }
+  };
+
   return (
     <>
+      <DoneProjectConfirm
+        show={confirm}
+        setShow={setConfirm}
+        setTrigger={setTrigger}
+      />
       <PopUp show={show} minWidthSize="50vw">
         <div>
           <img
@@ -70,10 +147,21 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="name"
                 control={control}
                 render={(props) => (
-                  <input
+                  <TextField
+                    id="outlined-error"
                     value={props.field.value}
-                    className="popup-input"
-                    type="text"
+                    sx={{
+                      width: "100%",
+                      marginTop: 1,
+                      "& .MuiOutlinedInput-input": {
+                        height: "13px !important",
+                        borderRadius: "6px",
+                        background: "white !important",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderRadius: "6px",
+                      },
+                    }}
                     placeholder="Project name"
                     onChange={props.field.onChange}
                   />
@@ -87,19 +175,26 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="clientId"
                 control={control}
                 render={(props) => (
-                  <select
-                    value={props.field.value}
-                    className="popup-select"
-                    onChange={props.field.onChange}
-                  >
-                    <option>Select</option>
-                    {clients &&
-                      clients.map((item, i) => (
-                        <option value={item.clientId} key={i}>
-                          {item.clientName}
-                        </option>
-                      ))}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={
+                      clients.find(
+                        (item) => item.clientId === props.field.value
+                      )?.clientName
+                    }
+                    selectValue={props.field.value}
+                    options={
+                      clients
+                        ? clients?.map((item) => {
+                            return {
+                              id: item.clientId,
+                              value: item.clientId,
+                              text: item.clientName,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
             </div>
@@ -109,11 +204,33 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"deadline"}
                 control={control}
                 render={(props) => (
-                  <input
+                  <MobileDatePicker
+                    inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    className="popup-input"
-                    type="date"
                     onChange={props.field.onChange}
+                    leftArrowButtonText="arrow"
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & TextFieldProps
+                    ) => (
+                      <TextField
+                        className="date"
+                        {...params}
+                        placeholder="Deadline"
+                        onChange={params.onChange}
+                        sx={{
+                          cursor: "pointer",
+                          paddingTop: 1,
+                          "& .MuiOutlinedInput-input": {
+                            height: "13px !important",
+                            borderRadius: "6px",
+                            background: "white !important",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderRadius: "6px",
+                          },
+                        }}
+                      />
+                    )}
                   />
                 )}
               />
@@ -124,30 +241,21 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="status"
                 control={control}
                 render={(props) => (
-                  <select
-                    value={props.field.value}
-                    className="popup-select"
-                    onChange={props.field.onChange}
-                  >
-                    <option>Select</option>
-                    {[
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={getStatus(props.field.value)}
+                    selectValue={props.field.value}
+                    options={[
                       { value: "inProgress", text: "In Progress" },
-                      { value: "late", text: "Late" },
-                      { value: "deliver on time", text: "deliver on time" },
-                      {
-                        value: "delivered after deadline",
-                        text: "delivered after deadline",
-                      },
-                      {
-                        value: "deliver before deadline",
-                        text: "deliver before deadline",
-                      },
-                    ].map((item, i) => (
-                      <option value={item.value} key={i}>
-                        {item.value}
-                      </option>
-                    ))}
-                  </select>
+                      { value: "Done", text: "Done" },
+                    ].map((item, i) => {
+                      return {
+                        id: item.value,
+                        value: item.value,
+                        text: item.text,
+                      };
+                    })}
+                  />
                 )}
               />
             </div>
@@ -157,34 +265,58 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="projectManager"
                 control={control}
                 render={(props) => (
-                  <select
-                    value={props.field.value}
-                    onChange={props.field.onChange}
-                    className="popup-select"
-                  >
-                    <option value=""> Select</option>
-                    {PMs?.length > 0 &&
-                      PMs.map((item, i) => (
-                        <option value={item?._id} key={i}>
-                          {item?.name}
-                        </option>
-                      ))}
-                  </select>
+                  <SelectInput2
+                    handleChange={props.field.onChange}
+                    selectText={getPM(props.field.value)}
+                    selectValue={props.field.value}
+                    options={
+                      PMs?.length > 0
+                        ? PMs.map((item) => {
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                          })
+                        : []
+                    }
+                  />
                 )}
               />
             </div>
             <div>
-              <label className="popup-label">Description</label>
+              <label className="popup-label">Start date</label>
               <Controller
-                name="description"
+                name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <textarea
-                    maxLength={75}
-                    className="popup-textarea"
-                    rows={3}
-                    placeholder="Write about your project"
+                  <MobileDatePicker
+                    inputFormat="YYYY-MM-DD"
+                    value={props.field.value}
                     onChange={props.field.onChange}
+                    leftArrowButtonText="arrow"
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & TextFieldProps
+                    ) => (
+                      <TextField
+                        className="date"
+                        {...params}
+                        placeholder="Start Date"
+                        onChange={params.onChange}
+                        sx={{
+                          cursor: "pointer",
+                          paddingTop: 1,
+                          "& .MuiOutlinedInput-input": {
+                            height: "13px !important",
+                            borderRadius: "6px",
+                            background: "white !important",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderRadius: "6px",
+                          },
+                        }}
+                      />
+                    )}
                   />
                 )}
               />

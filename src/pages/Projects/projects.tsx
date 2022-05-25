@@ -283,16 +283,20 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                       options={[
                         { id: "all", value: "", text: "All Status" },
                         {
-                          id: "delivered",
-                          value: "delivered on time",
+                          id: "deliver on time",
+                          value: "deliver on time",
                           text: "Delivered on time",
                         },
                         {
-                          id: "delivered before time",
-                          value: "delivered before time",
-                          text: "Delivered before time",
+                          id: "deliver before time",
+                          value: "deliver before deadline",
+                          text: "Delivered earlier",
                         },
-                        { id: "late", value: "late", text: "Delivered late" },
+                        {
+                          id: "late",
+                          value: "late",
+                          text: "Delivered late",
+                        },
                         {
                           id: "inProgress",
                           value: "inProgress",

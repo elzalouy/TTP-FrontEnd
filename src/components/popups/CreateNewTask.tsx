@@ -112,8 +112,17 @@ const CreateNewTask: React.FC<Props> = (props) => {
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
-      toast(validateResult.error.message);
+      toast.error(validateResult.error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
+      reset();
       dispatch(
         createTaskFromBoard({
           data: newTask,
@@ -380,7 +389,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   )}
                 />
                 <br />
-                <label className="label-project">Assign to Member</label>
+                <label className="label-project">Assign to Team</label>
                 <br />
                 <Controller
                   name="memberId"
@@ -449,6 +458,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 }}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
+                <span style={{color:"white",fontSize:"12px",marginLeft:"5px"}}>{Files && Files.length > 0 ? Files?.length : ""}</span>
               </ButtonBase>
               {Files &&
                 Files.length > 0 &&

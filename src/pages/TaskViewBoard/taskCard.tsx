@@ -52,8 +52,8 @@ const TaskCard: React.FC<DataTypes> = ({
           : "#DAE6EF";
       setDaysBgColor(daysBgColor);
     } else {
-      setRemaningDays("Set Deadline");
-      setDaysBgColor("#9FA1AB33");
+      setRemaningDays("Deadline is required");
+      setDaysBgColor("#E4DADC");
       setDaysColor("#2C2C2C");
     }
   }, []);
@@ -202,11 +202,18 @@ const TaskCard: React.FC<DataTypes> = ({
                             : `${Math.abs(remainingDays)} Days ago`}
                         </Typography>
                       ) : (
-                        <Typography
-                          style={{ paddingLeft: "5px", fontSize: 14 }}
-                        >
-                          Set deadline now
-                        </Typography>
+                        <>
+                          <img src={IMAGES.scheduleRed} alt="more" />
+                          <Typography
+                            style={{
+                              paddingLeft: "5px",
+                              fontSize: 14,
+                              color: "#FF2E35",
+                            }}
+                          >
+                            {remainingDays}
+                          </Typography>
+                        </>
                       )}
                     </Stack>
                   </>
@@ -232,19 +239,28 @@ const TaskCard: React.FC<DataTypes> = ({
                 </Stack>
               </>
             )}
-            {techMembers.techMembers.find(
-              (member) => member._id === item.memberId
-            ) && (
-              <Stack
-                direction="row"
-                marginTop="15px"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
+            <Stack
+              direction="row"
+              height={"25px"}
+              paddingTop="10px"
+              marginY="10px"
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              {techMembers.techMembers.find(
+                (member) => member._id === item.memberId
+              ) && (
                 <Typography className={footerStyle} sx={{ fontSize: 14 }}>
                   Assigned To
                 </Typography>
-                <img src={IMAGES.arrow} alt="more" />
+              )}
+              {techMembers.techMembers.find(
+                (member) => member._id === item.memberId
+              ) && <img src={IMAGES.arrow} alt="more" />}
+              {techMembers.techMembers.find(
+                (member) => member._id === item.memberId
+              ) && (
                 <Typography
                   style={{ marginLeft: "10px", fontSize: 14 }}
                   className={footerStyle}
@@ -255,8 +271,8 @@ const TaskCard: React.FC<DataTypes> = ({
                     )?.name
                   }
                 </Typography>
-              </Stack>
-            )}
+              )} 
+            </Stack>
           </Box>
         );
       }}

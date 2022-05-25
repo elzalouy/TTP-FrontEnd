@@ -3,7 +3,7 @@ import Ttp from "../../assets/img/ttp_logo.png";
 import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Redirect, RouteComponentProps } from "react-router";
-import Person from "../../assets/img/person.png";
+import IMAGES from "../../assets/img";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { forgotPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
@@ -180,11 +180,11 @@ const Forget: React.FC<Props> = ({ history }) => {
           sm={0}
           md={6}
           lg={6}
-          bgcolor={"black"}
+          bgcolor={"#FFC500"}
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={Person} className="Image" alt="" style={{ width: "60%" }} />
+          <img src={IMAGES.forgotDesktop} className="Image" alt="" style={{ width: "60%" }} />
         </Grid>
       </Grid>
     </Grid>

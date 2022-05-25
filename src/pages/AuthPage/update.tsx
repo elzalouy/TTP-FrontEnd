@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router-dom";
 import { Grid, Typography, Input, Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
-import Person from "../../assets/img/person.png";
+import IMAGES from "../../assets/img";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { useDispatch } from "react-redux";
 import { Redirect, useHistory, useParams } from "react-router";
@@ -283,11 +283,11 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
           sm={0}
           md={6}
           lg={6}
-          bgcolor={"black"}
+          bgcolor={"#FFC500"}
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={Person} className="Image" alt="" style={{ width: "60%" }} />
+          <img src={IMAGES.resetDesktop} className="Image" alt="" style={{ width: "60%" }} />
         </Grid>
       </Grid>
     </Grid>

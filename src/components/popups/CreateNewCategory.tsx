@@ -157,6 +157,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               type="text"
               name="subCategory"
               value={subCategory}
+              className="text-input"
               onChange={onSubChange}
               placeholder="Sub category"
               sx={{

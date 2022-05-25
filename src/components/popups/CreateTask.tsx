@@ -99,7 +99,16 @@ const CreateTask: React.FC<Props> = (props) => {
       description: "description value until we upgrade the design.",
     };
     let validate = valdiateCreateTask(newTask);
-    if (validate.error) toast(validate.error.details[0].message);
+    if (validate.error)
+      toast.error(validate.error.details[0].message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     else {
       dispatch(createTaskFromBoard({ data: newTask, dispatch }));
       setTask({
