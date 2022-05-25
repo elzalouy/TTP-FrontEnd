@@ -137,13 +137,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     setFiles(newFiles);
   };
   const onChangeDepartment = (e: any) => {
-    console.log("changes happend");
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);
     setSelectedDepartment(dep);
   };
   const onChangeCategory = (e: any) => {
-    console.log(selectedDepartment, selectedCategory);
     setValue("categoryId", e.target.value);
     const cat = categories.find((item) => item._id === e.target.value);
     setSelectCategory(cat);
