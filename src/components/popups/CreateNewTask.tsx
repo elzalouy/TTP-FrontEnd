@@ -50,7 +50,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
-  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -114,7 +114,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -132,19 +132,24 @@ const CreateNewTask: React.FC<Props> = (props) => {
       );
     }
   };
+
+  console.log(Files);
+
   const onChangeFiles = () => {
     files.current?.click();
   };
+
   const onSetFiles = () => {
     let newfiles = files.current?.files;
+    let items = [...Files];
     if (newfiles) {
-      let items = [];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }
-      setFiles(items);
     }
+    setFiles(items);
   };
+
   const onRemoveFile = (item: File | null) => {
     let newFiles = Files;
     newFiles = newFiles?.filter((file) => file !== item);
@@ -458,7 +463,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 }}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
-                <span style={{color:"white",fontSize:"12px",marginLeft:"5px"}}>{Files && Files.length > 0 ? Files?.length : ""}</span>
+                <span
+                  style={{
+                    color: "white",
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  {Files && Files.length > 0 ? Files?.length : ""}
+                </span>
               </ButtonBase>
               {Files &&
                 Files.length > 0 &&

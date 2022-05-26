@@ -23,7 +23,7 @@ const DeleteTask: React.FC<Props> = (props) => {
             }else{
               toast.warn("Please select a task you wish to delete", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 1500,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

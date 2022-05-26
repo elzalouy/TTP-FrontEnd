@@ -30,7 +30,7 @@ export const createDepartment = createAsyncThunk<any, any, any>(
         args.dispatch(fireCreateDepartmentHook(""));
         toast.success("Department created successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -43,7 +43,7 @@ export const createDepartment = createAsyncThunk<any, any, any>(
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -64,7 +64,7 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
         args.dispatch(fireUpdateDepartmentHook(""));
         toast.success("Department updated successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -87,7 +87,7 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
       if (department.ok && department.data) {
         toast.success("Department deleted successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

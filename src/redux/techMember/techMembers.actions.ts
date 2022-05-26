@@ -42,7 +42,7 @@ export const createTeam = createAsyncThunk<any, any, any>(
         args.dispatch(fireNewTeamHook(""));
         toast.success("team created successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

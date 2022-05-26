@@ -102,7 +102,7 @@ const CreateTask: React.FC<Props> = (props) => {
     if (validate.error)
       toast.error(validate.error.details[0].message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

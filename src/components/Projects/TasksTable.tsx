@@ -54,7 +54,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     dispatch(UiActions.fireNewProjectHook(""));
     toast.success("Project and Its Tasks have been saved", {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

@@ -51,7 +51,7 @@ const EditTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
-  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -99,6 +99,7 @@ const EditTask: React.FC<Props> = (props) => {
   //     dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
   //   }
   // }, [watch(), reset]);
+
   const onChangeDepartment = (e: any) => {
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);
@@ -145,7 +146,7 @@ const EditTask: React.FC<Props> = (props) => {
       setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -155,13 +156,14 @@ const EditTask: React.FC<Props> = (props) => {
     } else {
     }
   };
+
   const onChangeFiles = () => {
     files.current?.click();
   };
   const onSetFiles = () => {
     let newfiles = files.current?.files;
     if (newfiles) {
-      let items = [];
+      let items = [...Files];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }

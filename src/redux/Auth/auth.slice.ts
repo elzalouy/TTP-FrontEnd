@@ -27,7 +27,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       if (payload.msg && payload.status) {
         toast.error("Invalid Email Address or Password", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -45,7 +45,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.authState = true;
         toast.success("Login successful", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -65,7 +65,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       if (payload.msg && payload.status) {
         toast.error("Invalid Email Address", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -100,7 +100,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       }
       toast.success("Logout successful", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -140,7 +140,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       } else {
         toast.success("New password set successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

@@ -100,7 +100,8 @@ const App: React.FC = (props) => {
       <AppHooks>
         <ToastContainer
          position="top-right"
-         autoClose={5000}
+         autoClose={1500}
+         limit={1}
          hideProgressBar={false}
          newestOnTop={false}
          closeOnClick

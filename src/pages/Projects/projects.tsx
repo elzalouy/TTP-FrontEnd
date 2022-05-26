@@ -389,7 +389,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 />
               </Box>
             </TableBox>
-            <TableBox
+            {/* <TableBox
               title={"Not Started"}
               outTitled={false}
               expanded={doneExpanded}
@@ -407,7 +407,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   {...props}
                 />
               </Box>
-            </TableBox>
+            </TableBox> */}
           </>
         ) : (
           <Box

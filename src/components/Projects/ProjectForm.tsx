@@ -87,7 +87,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       setError(isValid);
       toast.error(isValid.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
