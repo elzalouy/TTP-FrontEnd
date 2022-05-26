@@ -34,6 +34,7 @@ import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
+import { generateID } from "../../helpers/IdGenerator";
 // import {createProjectPopup} from '../../'
 
 interface TaskFormProps {}
@@ -91,6 +92,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
+  console.log(newProject.project._id);
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -122,6 +125,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else {
       dispatch(createProjectTask(newTask));

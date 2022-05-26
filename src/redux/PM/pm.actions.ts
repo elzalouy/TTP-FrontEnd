@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
@@ -76,6 +77,7 @@ export const createPM = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }
@@ -110,6 +112,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }

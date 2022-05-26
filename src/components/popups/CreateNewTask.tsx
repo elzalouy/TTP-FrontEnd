@@ -41,6 +41,7 @@ import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -120,6 +121,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else {
       reset();
@@ -132,9 +134,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       );
     }
   };
-
-  console.log(Files);
-
+  
   const onChangeFiles = () => {
     files.current?.click();
   };

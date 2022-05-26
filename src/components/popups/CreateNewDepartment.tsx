@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { register } from "../../serviceWorkerRegistration";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {};
 
@@ -130,6 +131,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     }
   };

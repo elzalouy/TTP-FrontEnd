@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../assets/img/index";
 import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
+import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { Project, Task } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
@@ -25,11 +26,14 @@ const TaskCard: React.FC<DataTypes> = ({
   footerStyle,
 }) => {
   const techMembers = useAppSelector(selectAllMembers);
-  const { _id, name, deadline, status } = item;
+  const { _id, name, deadline, status,boardId} = item;
+  const dep = useAppSelector(selectAllDepartments);
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
+  const assignedDepartment = dep.find((department)=>department.boardId===boardId);
 
+    
   useEffect(() => {
     if (status !== "Not Started") {
       const floatDays =
@@ -251,8 +255,8 @@ const TaskCard: React.FC<DataTypes> = ({
               {techMembers.techMembers.find(
                 (member) => member._id === item.memberId
               ) && (
-                <Typography className={footerStyle} sx={{ fontSize: 14 }}>
-                  Assigned To
+                <Typography className={footerStyle} sx={{ fontSize: 14 ,textTransform:"capitalize"}}>
+                  {assignedDepartment?.name}
                 </Typography>
               )}
               {techMembers.techMembers.find(

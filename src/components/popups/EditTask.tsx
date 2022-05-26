@@ -42,6 +42,7 @@ import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -152,6 +153,7 @@ const EditTask: React.FC<Props> = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else {
     }

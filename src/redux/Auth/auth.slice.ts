@@ -1,5 +1,6 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import {
   forgotPassword,
   getUserInfo,
@@ -33,6 +34,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.Payload = {
           msg: payload.msg,
@@ -51,6 +53,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
       }
     });
@@ -71,6 +74,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.Payload = {
           msg: payload.msg,
@@ -106,6 +110,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     });
     builder.addCase(getUserInfo.rejected, (state) => {
@@ -146,6 +151,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.User = payload;
         state.authState = payload.status === 200 ? true : false;

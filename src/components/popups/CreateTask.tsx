@@ -27,6 +27,7 @@ import _ from "lodash";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import { valdiateCreateTask } from "../../helpers/validation";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -108,6 +109,7 @@ const CreateTask: React.FC<Props> = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     else {
       dispatch(createTaskFromBoard({ data: newTask, dispatch }));

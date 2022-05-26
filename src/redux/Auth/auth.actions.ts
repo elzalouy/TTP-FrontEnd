@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
 
@@ -26,6 +27,7 @@ export const signIn = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }

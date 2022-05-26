@@ -11,6 +11,7 @@ import {
   fireUpdateProjectHook,
 } from "../Ui";
 import { removeAuthToken } from "../../services/api";
+import { generateID } from "../../helpers/IdGenerator";
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
   async (args, { rejectWithValue }) => {
@@ -31,7 +32,7 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -66,7 +67,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
-      let result: ApiResponse<any> = await api.createTask(args.data);
+      let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
         toast.success("Task have been saved to the Database", {
           position: "top-right",
@@ -123,7 +124,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -145,7 +146,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -167,7 +168,7 @@ export const getTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -189,7 +190,7 @@ export const getProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -215,7 +216,7 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -237,7 +238,7 @@ export const filterTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -270,7 +271,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -303,7 +304,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -336,7 +337,7 @@ export const deleteProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -369,7 +370,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -401,7 +402,7 @@ export const editProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -443,7 +444,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined, toastId: generateID(),
       });
       return rejectWithValue(error);
     }

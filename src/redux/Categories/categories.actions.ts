@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/endpoints/categories";
 import { toast } from "react-toastify";
 import { removeAuthToken } from "../../services/api";
+import { generateID } from "../../helpers/IdGenerator";
 
 export const getAllCategories = createAsyncThunk<any, any, any>(
   "category/getAll",
@@ -35,6 +36,7 @@ export const createCategory = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         return args;
       } else return [];
@@ -58,6 +60,7 @@ export const updateCategory = createAsyncThunk<any, any, any>(
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         return result.data;
       } else return [];

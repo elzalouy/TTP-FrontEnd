@@ -68,11 +68,11 @@ const createTaskSchema = Joi.object({
     "any.required": "Sub Category is required",
   }),
   listId: Joi.string().min(4).required().messages({
-    "string.base": "Department is required",
-    "string.empty": "Department should be string with min 4 chars",
-    "string.min": "Department length should be Min 4 chars",
-    "string.max": "Department length should be Max 20 chars",
-    "any.required": "Department is required",
+    "string.base": "Team is required",
+    "string.empty": "Team should be string with min 4 chars",
+    "string.min": "Team length should be Min 4 chars",
+    "string.max": "Team length should be Max 20 chars",
+    "any.required": "Team is required",
   }),
   memberId: Joi.string().required().min(4).messages({
     "string.base": "Member is required",

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
+import { generateID } from "../../helpers/IdGenerator";
 import "./DeleteTask.css";
 
 type Props = {
@@ -29,6 +30,7 @@ const DeleteTask: React.FC<Props> = (props) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
+                toastId:generateID(),
               });
             }
           }}

@@ -25,6 +25,7 @@ import { validateCreateProject } from "../../helpers/validation";
 import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../redux/Ui/UI.selectors";
+import { generateID } from "../../helpers/IdGenerator";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -93,6 +94,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else dispatch(createProject({ data: project, setcurrentStep }));
   };
