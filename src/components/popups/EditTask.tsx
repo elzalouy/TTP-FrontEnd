@@ -31,6 +31,7 @@ import {
   selectNewProject,
   selectSelectedDepartment,
   selectSelectedProject,
+  Task,
 } from "../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
@@ -48,8 +49,6 @@ type Props = {
   setShow: (val: string) => void;
 };
 const EditTask: React.FC<Props> = (props) => {
-  const dispatch: Dispatch<any> = useDispatch();
-  const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>();
   const [error, setError] = React.useState<{
@@ -68,37 +67,25 @@ const EditTask: React.FC<Props> = (props) => {
   const { editTaskPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, watch, control, reset, setValue } = useForm();
   React.useEffect(() => {
-    if (editTask) {
-      let id = departments.find(
-        (item) => item.boardId === editTask.boardId
-      )?._id;
-      setValue("name", editTask?.name);
-      setValue("attachedFiles", editTask.attachedFiles);
-      setValue("categoryId", editTask.categoryId);
-      setValue("deadline", editTask.deadline === null ? "" : editTask.deadline);
-      setValue("description", editTask.description);
-      setValue("file", editTask.file);
-      setValue("memberId", editTask.memberId);
-      setValue("selectedDepartmentId", id ? id : "");
-      setValue("subCategoryId", editTask.subCategoryId);
+    let task = selectedProject.tasks.find((item) => item._id === editTask);
+    if (task) {
+      let dep = departments.find((item) => item.boardId === task?.boardId);
+      setValue("name", task.name);
+      setValue("attachedFiles", task.attachedFiles);
+      setValue("categoryId", task.categoryId);
+      setValue("deadline", task.deadline === null ? "" : task.deadline);
+      setValue("description", task.description);
+      setValue("file", task.file);
+      setValue("memberId", task.memberId);
+      setValue("selectedDepartmentId", dep ? dep._id : "");
+      setValue("subCategoryId", task.subCategoryId);
+      setSelectCategory(
+        categories.find((item) => item._id === task?.categoryId)
+      );
+      setSelectedDepartment(dep);
     }
-  }, [editTask, setValue]);
-
-  // React.useEffect(() => {
-  //   let values = watch();
-  //   if (values?.categoryId !== selectedCategory?._id) {
-  //     let category = categories.find((item) => item._id === values.categoryId);
-  //     dispatch(
-  //       categoriesActions.setSelectedCategory(category ? category : null)
-  //     );
-  //   }
-  //   if (values.selectedDepartmentId !== selectedDepartment?._id) {
-  //     let dep = departments.find(
-  //       (item) => item._id === values.selectedDepartmentId
-  //     );
-  //     dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
-  //   }
-  // }, [watch(), reset]);
+  }, [editTask]);
+  console.log(watch());
   const onChangeDepartment = (e: any) => {
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);
@@ -111,7 +98,9 @@ const EditTask: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    reset();
+    if (editTaskPopup === "none") {
+      reset();
+    }
   }, [editTaskPopup]);
 
   const onSubmit = async (data: any) => {
@@ -283,6 +272,7 @@ const EditTask: React.FC<Props> = (props) => {
                           )}
                           {...params}
                           onChange={params.onChange}
+                          value={params.value}
                           sx={{
                             width: "100%",
                             paddingTop: 1,

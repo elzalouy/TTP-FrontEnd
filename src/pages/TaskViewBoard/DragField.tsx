@@ -187,16 +187,10 @@ const DragField: React.FC = (props: any) => {
       let department = departments?.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
       );
-      // dispatch(
-      //   moveTask({
-      //     department: department,
-      //     list: destColumn,
-      //     task: sourceColumn.items[source.index],
-      //   })
-      // );
+
       move({
         department: department,
-        list: destColumn,
+        value: destColumn.value,
         task: sourceColumn.items[source.index],
       });
       setColumns({
@@ -227,7 +221,7 @@ const DragField: React.FC = (props: any) => {
   };
 
   const move = (obj: any) => {
-    dispatch(moveTask({ data: obj, dispatch }));
+    dispatch(moveTask(obj));
   };
 
   return (

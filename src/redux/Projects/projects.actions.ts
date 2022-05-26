@@ -11,6 +11,7 @@ import {
   fireUpdateProjectHook,
 } from "../Ui";
 import { removeAuthToken } from "../../services/api";
+import { Department } from "../Departments";
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
   async (args, { rejectWithValue }) => {
@@ -347,9 +348,9 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-      let deleteResult = await api.deleteTask(args.data);
+      let deleteResult = await api.deleteTask(args?.data);
       if (deleteResult.ok) {
-        args.dispatch(fireDeleteTaskHook(""));
+        args.disptach(fireDeleteTaskHook(""));
         toast.success("Tasks deleted from DB and Trello", {
           position: "top-right",
           autoClose: 5000,
@@ -411,24 +412,41 @@ export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (args, { rejectWithValue }) => {
     try {
-      let data: any = args?.data;
       let newlist = "";
-      if (data.list.value === "inProgress")
-        newlist = data.department.defaultListId;
-      if (data.list.value === "Review") newlist = data.department.reviewListId;
-      if (args?.list?.value === "Shared")
-        newlist = data.department.sharedListID;
-      if (args?.list?.value === "Done") newlist = data.department.doneListId;
-      if (args?.list?.value === "Not Clear")
-        newlist = data.department.notClearListId;
-      if (data.list.value === "Cancled")
-        newlist = data.department.canceldListId;
-      if (data.list.value === "Not Started")
-        newlist = data.department.notStartedListId;
-      let Data: any = {
-        cardId: data?.task?.cardId,
+      let department: Department = args?.department;
+      let value = args?.value;
+      let task = args?.task;
+      console.log(department);
+      console.log(value);
+      switch (value) {
+        case "Not Clear":
+          newlist = department.notClearListId;
+          break;
+        case "Not Started":
+          newlist = department.notStartedListId;
+          break;
+        case "inProgress":
+          newlist = department.defaultListId;
+          break;
+        case "Review":
+          newlist = department.reviewListId;
+          break;
+        case "Shared":
+          newlist = department.sharedListID;
+          break;
+        case "Cancled":
+          newlist = department.canceldListId;
+          break;
+        case "Done":
+          newlist = department.doneListId;
+          break;
+        default:
+          break;
+      }
+      let Data = {
+        cardId: task.cardId,
         listId: newlist,
-        status: data.list.value,
+        status: value,
       };
       let moveResult = await api.moveTask(Data);
       if (moveResult.ok) {

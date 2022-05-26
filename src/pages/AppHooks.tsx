@@ -30,7 +30,6 @@ const AppHooks: React.FC = (props) => {
     editTaskHook,
     moveTaskHook,
     deleteDepartmentHook,
-    moveTaskOnTrelloHook,
   } = useAppSelector(selectUi);
   /*
   1- Create an app hook
