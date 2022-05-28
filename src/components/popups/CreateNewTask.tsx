@@ -127,10 +127,9 @@ const CreateNewTask: React.FC<Props> = (props) => {
           data: newTask,
           dispatch: dispatch,
           setShow: props.setShow,
-          reset:reset
+          reset: reset,
         })
       );
-
     }
   };
 

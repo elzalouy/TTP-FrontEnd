@@ -24,21 +24,16 @@ import {
 import { Department, selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
-  createProjectTask,
-  createTaskFromBoard,
-  ProjectsActions,
+  editTaskFromBoard,
   selectAllProjects,
-  selectNewProject,
-  selectSelectedDepartment,
   selectSelectedProject,
-  Task,
 } from "../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
 import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
-import { valdiateCreateTask } from "../../helpers/validation";
+import { valdiateCreateTask, validateEditTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../redux/Ui/UI.selectors";
@@ -50,6 +45,7 @@ type Props = {
   setShow: (val: string) => void;
 };
 const EditTask: React.FC<Props> = (props) => {
+  const dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
@@ -64,12 +60,12 @@ const EditTask: React.FC<Props> = (props) => {
     React.useState<Department>();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
 
-  const { editTask } = useAppSelector(selectAllProjects);
+  const { editTask: id } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, watch, control, reset, setValue } = useForm();
-  
+  const { register, handleSubmit, control, reset, setValue } = useForm();
+
   React.useEffect(() => {
-    let task = selectedProject.tasks.find((item) => item._id === editTask);
+    let task = selectedProject.tasks.find((item) => item._id === id);
     if (task) {
       let dep = departments.find((item) => item.boardId === task?.boardId);
       setValue("name", task.name);
@@ -86,7 +82,7 @@ const EditTask: React.FC<Props> = (props) => {
       );
       setSelectedDepartment(dep);
     }
-  }, [editTask]);
+  }, [id]);
 
   const onChangeDepartment = (e: any) => {
     setValue("selectedDepartmentId", e.target.value);
@@ -107,6 +103,7 @@ const EditTask: React.FC<Props> = (props) => {
 
   const onSubmit = async (data: any) => {
     let newTask = {
+      id: id,
       name: data.name,
       categoryId: data?.categoryId,
       subCategoryId: data?.subCategoryId,
@@ -124,14 +121,14 @@ const EditTask: React.FC<Props> = (props) => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: [],
+      attachedFiles: "",
       listId: selectedDepartment?.teamsId?.find(
         (item) => item._id === data.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
-    let validateResult = valdiateCreateTask(newTask);
+    let validateResult = validateEditTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
       toast.error(validateResult.error.message, {
@@ -142,9 +139,12 @@ const EditTask: React.FC<Props> = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
     } else {
+      dispatch(
+        editTaskFromBoard({ data: newTask, dispatch, setShow: props.setShow })
+      );
     }
   };
 
@@ -501,7 +501,7 @@ const EditTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                Add task
+                Save task
               </button>
             </div>
           </form>

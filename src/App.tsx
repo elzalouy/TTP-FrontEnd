@@ -42,6 +42,7 @@ import { checkAuthToken } from "./services/api";
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
+  const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     let id = localStorage.getItem("id");
@@ -64,7 +65,7 @@ const App: React.FC = (props) => {
       dispatch(getAllTasks(null));
       setMounted(true);
     }
-  }, [dispatch, checkAuthToken(), dispatch]);
+  }, [dispatch, isAuthed]);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
     if (projects.loading === false)

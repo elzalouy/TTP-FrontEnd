@@ -472,12 +472,13 @@ export const moveTask = createAsyncThunk<any, any, any>(
   }
 );
 
-export const editTask = createAsyncThunk<any, any, any>(
+export const editTaskFromBoard = createAsyncThunk<any, any, any>(
   "tasks/editTask",
   async (args: any, { rejectWithValue }) => {
     try {
       let response = await api.editTask(args.data);
       if (response.ok && response.data) {
+        args.setShow("none")
         args.dispatch(fireEditTaskHook(""));
         return response.data;
       } else throw new Error("Task not updated.");

@@ -8,7 +8,7 @@ import {
   deleteTask,
   deleteTasks,
   editProject,
-  editTask,
+  editTaskFromBoard,
   filterProjects,
   filterTasks,
   getAllProjects,
@@ -316,7 +316,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(deleteTasks.pending, (state, action) => {
       // state.loading = true;
     });
-    builder.addCase(editTask.fulfilled, (state, action) => {
+    builder.addCase(editTaskFromBoard.fulfilled, (state, action) => {
       state.editTask = undefined;
       let tasks = [...state.allTasks];
       let index = tasks.findIndex((item) => item._id === action.payload?._id);
@@ -333,10 +333,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.selectedProject = selectedProject;
       }
     });
-    builder.addCase(editTask.rejected, (state, action) => {
+    builder.addCase(editTaskFromBoard.rejected, (state, action) => {
       state.loading = false;
     });
-    builder.addCase(editTask.pending, (state, action) => {
+    builder.addCase(editTaskFromBoard.pending, (state, action) => {
       // state.loading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});
