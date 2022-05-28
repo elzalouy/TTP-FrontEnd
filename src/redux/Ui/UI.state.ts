@@ -11,6 +11,7 @@ export interface UiInterface {
   isSideMenuOpened: boolean;
   logoutPopup: string;
   createProjectPopup: string;
+  moveTaskOnTrelloHook: any;
   /*
     this hooks shouldn't be used except for updating
     the state of the project while a certain exndpoint or function called 
@@ -27,6 +28,7 @@ export interface UiInterface {
   createPMHook: boolean | undefined;
   editPMHook: boolean | undefined;
   moveTaskHook: boolean | undefined;
+  deleteDepartmentHook: boolean | undefined;
 }
 const UiState: UiInterface = {
   deleteProjectPopup: "none",
@@ -41,6 +43,7 @@ const UiState: UiInterface = {
   logoutPopup: "none",
   isSideMenuOpened: true,
   createProjectPopup: "none",
+  moveTaskOnTrelloHook: undefined,
   /*
   this hooks shouldn't be used except for updating
   the state of the project while a certain exndpoint or function called 
@@ -57,6 +60,7 @@ const UiState: UiInterface = {
   createPMHook: undefined,
   editPMHook: undefined,
   moveTaskHook: undefined,
+  deleteDepartmentHook: undefined,
 };
 
 export default UiState;

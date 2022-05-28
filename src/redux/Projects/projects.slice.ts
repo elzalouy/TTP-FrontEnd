@@ -138,6 +138,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.allTasks = allTasks;
       }
     },
+    moveTaskInTrello: (state = projectsState, action: PayloadAction<any>) => {
+      let taskIndex = state.allTasks.findIndex(
+        (item) => item.cardId === action.payload.cardId
+      );
+      let boardIndex = state.selectedProject.tasks.findIndex(
+        (item) => item.cardId === action.payload.cardId
+      );
+      let task = { ...state.selectedProject.tasks[boardIndex] };
+      task.status = action.payload.to;
+      state.allTasks[taskIndex] = task;
+      state.selectedProject.tasks[boardIndex] = task;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createProject.rejected, (state) => {

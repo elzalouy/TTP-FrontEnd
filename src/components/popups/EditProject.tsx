@@ -17,34 +17,26 @@ import { TextField, TextFieldProps } from "@mui/material";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import moment from "moment";
+import { date } from "joi";
+import {
+  calculateStatusBasedOnDeadline,
+  getStatus,
+} from "../../helpers/dateFunctions";
 
 type Props = {
   show: string;
   setShow: any;
 };
 
-export const getStatus = (status: string | undefined) => {
-  if (status === "late") {
-    return "Delivered Late";
-  } else if (status === "deliver on time") {
-    return "Delivered on time";
-  } else if (status === "deliver before deadline") {
-    return "Delivered earlier";
-  } else if (status === "inProgress") {
-    return "In Progress";
-  } else if (status === "Done") {
-    return "Done";
-  }
-};
-
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-  const { control, watch, setValue } = useForm();
+  const { control, watch, setValue} = useForm();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const project = useAppSelector(selectEditProject);
   const [confirm, setConfirm] = useState<string>("none");
   const [trigger, setTrigger] = useState<boolean>(false);
+  const [alert , setAlert] = useState<string>("");
 
   useEffect(() => {
     setValue("clientId", project?.clientId);
@@ -62,23 +54,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     }
   }, [trigger]);
 
-  const calculateStatusBasedOnDeadline = (data: any) => {
-    let formattedDeadline = moment(project?.projectDeadline).format(
-      "MM-DD-YYYY"
-    );
-    let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
-    let onTime = moment(formattedToday).isSame(formattedDeadline);
-    let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
-    let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
-    if (afterDeadline) {
-      return (data = "late");
-    } else if (beforeDeadline) {
-      return (data = "deliver before deadline");
-    } else if (onTime) {
-      return (data = "deliver on time");
-    }
-  };
-
   const getPM = (id: string) => {
     let pm = PMs.find((pm) => pm._id === id);
     return pm?.name;
@@ -86,10 +61,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const executeEditProject = (data: any) => {
     let editProject = { ...project };
-    if (data.status === "Done") {
-      let status = calculateStatusBasedOnDeadline(data.status);
-      data.status = status;
-    }
     editProject.name = data.name;
     editProject.projectManager = data.projectManager;
     editProject.projectManagerName = PMs.find(
@@ -99,6 +70,16 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.clientId = data.clientId;
     editProject.projectStatus = data.status;
     editProject.startDate = data.startDate;
+
+    if (editProject.startDate === null) {
+      editProject.projectStatus = "Not Started";
+    }
+
+    if (editProject.projectStatus === "Done") {
+      let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
+      editProject.projectStatus = status;
+    }
+
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
     setTrigger(false);
@@ -110,7 +91,18 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       setShow("none");
       return;
     }
-    if (data.status === "Done") {
+
+    if((data.startDate === null) && (data.deadline === null)){
+      setAlert("Starting date and Deadline");
+    }else if((data.startDate === null) && (data.deadline !== null)){
+      setAlert("Starting date");
+    }else if((data.startDate !== null) && (data.deadline === null)){
+      setAlert("Deadline");
+    }else{
+      setAlert("");
+    }
+
+    if (data.status === "Done" && alert.length === 0) {
       setConfirm("flex");
     } else {
       executeEditProject(data);
@@ -121,6 +113,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   return (
     <>
       <DoneProjectConfirm
+        alert={alert}
+        setAlert={setAlert}
         show={confirm}
         setShow={setConfirm}
         setTrigger={setTrigger}

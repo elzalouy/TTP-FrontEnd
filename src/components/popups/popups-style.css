@@ -55,6 +55,11 @@
   margin-left: 10px;
 }
 
+.controllers-center{
+  justify-content: center !important;
+  align-items: center;
+}
+
 .controllers-delete {
   cursor: pointer;
   width: 200px;
@@ -207,6 +212,7 @@
 .warning-text {
   margin: 20px 8px 0px;
   color: black;
+  text-align: center;
 }
 
 .margin-cover {
@@ -441,6 +447,12 @@ table.allTeam-table td.deleteTd {
 .add-new-dep > p {
   padding: 5px;
   font-weight: 600;
+}
+
+.css-hz1bth-MuiDialog-container{
+  position: relative;
+  left: 17%;
+  width: 87vw;
 }
 
 @keyframes filling {

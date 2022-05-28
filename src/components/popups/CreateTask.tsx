@@ -64,6 +64,7 @@ const CreateTask: React.FC<Props> = (props) => {
       });
     }
   }, [createTaskPopup]);
+  
   React.useEffect(() => {
     if (Task?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === Task?.categoryId);
@@ -97,7 +98,7 @@ const CreateTask: React.FC<Props> = (props) => {
         (item) => item._id === Task?.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
-      description: "description value until we upgrade the design.",
+      description: "Description value until we upgrade the design",
     };
     let validate = valdiateCreateTask(newTask);
     if (validate.error)
@@ -113,7 +114,7 @@ const CreateTask: React.FC<Props> = (props) => {
       });
     else {
       dispatch(createTaskFromBoard({ data: newTask, dispatch }));
-      setTask({
+     /*  setTask({
         name: "",
         categoryId: "",
         subCategoryId: "",
@@ -121,7 +122,7 @@ const CreateTask: React.FC<Props> = (props) => {
         deadline: "",
         attachedFiles: "",
         selectedDepartmentId: "",
-      });
+      }); */
       props.setShow("none");
     }
   };

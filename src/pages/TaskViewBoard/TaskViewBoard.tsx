@@ -32,7 +32,6 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const all = useAppSelector(selectAllProjects);
   const { control, register, reset, watch } = useForm();
-
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);

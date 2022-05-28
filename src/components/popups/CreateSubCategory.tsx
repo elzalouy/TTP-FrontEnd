@@ -39,8 +39,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
     subCategoriesId: [],
   });
 
-  console.log(subCategories);
-
   useEffect(() => {
     setSelectedData(selectedCategory);
     setTitle(selectedCategory?.category);
@@ -76,7 +74,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
 
   const removeSubCategory = (id: any) => {
     setsubCategories(subCategories.filter((element) => element._id !== id));
-    console.log(subCategories);
   };
 
   const handleSubmit = async (e: any) => {

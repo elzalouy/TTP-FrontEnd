@@ -39,6 +39,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
   const deps = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const dispatch = useDispatch();
+  
   const onDeleteTask = (task: Task) => {
     dispatch(deleteTask({ data: { id: task._id }, dispatch }));
   };

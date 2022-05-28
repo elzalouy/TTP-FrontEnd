@@ -26,14 +26,19 @@ const TaskCard: React.FC<DataTypes> = ({
   footerStyle,
 }) => {
   const techMembers = useAppSelector(selectAllMembers);
-  const { _id, name, deadline, status,boardId} = item;
-  const dep = useAppSelector(selectAllDepartments);
+  const departments = useAppSelector(selectAllDepartments);
+  const { _id, name, deadline, status, boardId } = item;
+  const [data, setData] = useState<
+    | {
+        department?: string | undefined;
+        member?: string | undefined;
+      }
+    | undefined
+  >();
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const assignedDepartment = dep.find((department)=>department.boardId===boardId);
 
-    
   useEffect(() => {
     if (status !== "Not Started") {
       const floatDays =
@@ -60,6 +65,14 @@ const TaskCard: React.FC<DataTypes> = ({
       setDaysBgColor("#E4DADC");
       setDaysColor("#2C2C2C");
     }
+    let newData = { ...data };
+    newData.member = techMembers.techMembers.find(
+      (member) => member._id === item.memberId
+    )?.name;
+    newData.department = departments.find(
+      (item) => item.boardId === boardId
+    )?.name;
+    setData(newData);
   }, []);
   const checkStatusAndSetBorder = (status: string) => {
     if (status === "Not Started") {
@@ -104,7 +117,6 @@ const TaskCard: React.FC<DataTypes> = ({
           border: checkStatusAndSetBorder(column?.value),
           ...provided.draggableProps.style,
         };
-
         return (
           <Box
             {...provided.draggableProps}
@@ -150,7 +162,6 @@ const TaskCard: React.FC<DataTypes> = ({
                 </Stack>
               </>
             )}
-
             {item.status !== "cancled" ? (
               <>
                 {item.status === "done" ? (
@@ -252,30 +263,24 @@ const TaskCard: React.FC<DataTypes> = ({
               justifyContent="flex-start"
               alignItems="center"
             >
-              {techMembers.techMembers.find(
-                (member) => member._id === item.memberId
-              ) && (
-                <Typography className={footerStyle} sx={{ fontSize: 14 ,textTransform:"capitalize"}}>
-                  {assignedDepartment?.name}
-                </Typography>
+              {data?.department && (
+                <>
+                  <Typography className={footerStyle} sx={{ fontSize: 14 }}>
+                    {data.department}
+                  </Typography>
+                </>
               )}
-              {techMembers.techMembers.find(
-                (member) => member._id === item.memberId
-              ) && <img src={IMAGES.arrow} alt="more" />}
-              {techMembers.techMembers.find(
-                (member) => member._id === item.memberId
-              ) && (
-                <Typography
-                  style={{ marginLeft: "10px", fontSize: 14 }}
-                  className={footerStyle}
-                >
-                  {
-                    techMembers.techMembers.find(
-                      (member) => member._id === item.memberId
-                    )?.name
-                  }
-                </Typography>
-              )} 
+              {data?.member && (
+                <>
+                  <img src={IMAGES.arrow} alt="more" />
+                  <Typography
+                    style={{ marginLeft: "10px", fontSize: 14 }}
+                    className={footerStyle}
+                  >
+                    {data.member}
+                  </Typography>
+                </>
+              )}
             </Stack>
           </Box>
         );

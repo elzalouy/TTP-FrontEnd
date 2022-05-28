@@ -173,8 +173,7 @@ const DragField: React.FC = (props: any) => {
       },
     };
     setColumns(cols);
-  }, [selectedProject]);
-
+  }, [selectedProject.tasks]);
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -188,16 +187,10 @@ const DragField: React.FC = (props: any) => {
       let department = departments?.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
       );
-      // dispatch(
-      //   moveTask({
-      //     department: department,
-      //     list: destColumn,
-      //     task: sourceColumn.items[source.index],
-      //   })
-      // );
+
       move({
         department: department,
-        list: destColumn,
+        value: destColumn.value,
         task: sourceColumn.items[source.index],
       });
       setColumns({
@@ -228,14 +221,17 @@ const DragField: React.FC = (props: any) => {
   };
 
   const move = (obj: any) => {
-    dispatch(moveTask({ data: obj, dispatch }));
+    dispatch(moveTask(obj));
   };
 
   return (
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
-      <Box sx={{ minWidth: 1200, overflowX: "scroll",height:"100%" }} display="inline-flex">
+      <Box
+        sx={{ minWidth: 1200, overflowX: "scroll", height: "100%" }}
+        display="inline-flex"
+      >
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
             <Droppable droppableId={columnId} key={index}>

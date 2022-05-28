@@ -73,7 +73,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         data?.deadline !== "" && data?.deadline !== null
           ? moment(data?.deadline).toDate()
           : null,
-      startDate: moment(data?.startDate).toDate(),
+      startDate: data?.startDate !== "" && data.startDate !== null ? moment(data?.startDate).toDate() : null,
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
