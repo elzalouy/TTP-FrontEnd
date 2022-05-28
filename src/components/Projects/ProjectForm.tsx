@@ -3,12 +3,13 @@ import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
-import { createProject } from "../../redux/Projects";
+import { createProject, selectLoading } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
 import {
   Button,
   ButtonBase,
+  CircularProgress,
   Grid,
   Input,
   InputAdornment,
@@ -47,6 +48,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   });
   // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
+  const loading = useAppSelector(selectLoading);
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
@@ -73,11 +75,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         data?.deadline !== "" && data?.deadline !== null
           ? moment(data?.deadline).toDate()
           : null,
-      startDate: data?.startDate !== "" && data.startDate !== null ? moment(data?.startDate).toDate() : null,
+      startDate:
+        data?.startDate !== "" && data.startDate !== null
+          ? moment(data?.startDate).toDate()
+          : null,
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
-      projectStatus: data?.deadline !== null ? "inProgress" : "Not Started",
+      projectStatus: (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started",
       completedDate: null,
       adminId: localStorage.getItem("id"),
     };
@@ -94,7 +99,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
     } else dispatch(createProject({ data: project, setcurrentStep }));
   };
@@ -328,7 +333,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
               },
             }}
           >
-            Next
+            {loading ? (
+              <CircularProgress
+                sx={{
+                  color: "white",
+                  width: "25px !important",
+                  height: "25px !important",
+                }}
+              />
+            ) : (
+              "Next"
+            )}
           </Button>
         </Grid>
       </Grid>

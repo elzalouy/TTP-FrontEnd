@@ -26,7 +26,7 @@ type Props = {
 };
 
 const CreateNewProject: React.FC<Props> = (props) => {
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(true);
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const notStartedProjects = useAppSelector(selectNotStartedProjects);

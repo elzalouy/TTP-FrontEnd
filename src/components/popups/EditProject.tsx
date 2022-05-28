@@ -30,13 +30,13 @@ type Props = {
 
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-  const { control, watch, setValue} = useForm();
+  const { control, watch, setValue } = useForm();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const project = useAppSelector(selectEditProject);
   const [confirm, setConfirm] = useState<string>("none");
   const [trigger, setTrigger] = useState<boolean>(false);
-  const [alert , setAlert] = useState<string>("");
+  const [alert, setAlert] = useState<string>("");
 
   useEffect(() => {
     setValue("clientId", project?.clientId);
@@ -87,26 +87,35 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const onSubmitEdit = () => {
     let data = watch();
+
     if (data === project) {
       setShow("none");
       return;
     }
 
-    if((data.startDate === null) && (data.deadline === null)){
+    if (data.startDate === null && data.deadline === null) {
       setAlert("Starting date and Deadline");
-    }else if((data.startDate === null) && (data.deadline !== null)){
+      if (data.status === "Done" || "inProgress") {
+        setConfirm("flex");
+      }
+    } else if (data.startDate === null && data.deadline !== null) {
       setAlert("Starting date");
-    }else if((data.startDate !== null) && (data.deadline === null)){
+      if (data.status === "Done" || "inProgress") {
+        setConfirm("flex");
+      }
+    } else if (data.startDate !== null && data.deadline === null) {
       setAlert("Deadline");
-    }else{
-      setAlert("");
-    }
-
-    if (data.status === "Done" && alert.length === 0) {
-      setConfirm("flex");
+      if (data.status === "Done" || "inProgress") {
+        setConfirm("flex");
+      }
     } else {
-      executeEditProject(data);
-      setShow("none");
+      setAlert("");
+      if (data.status === "Done") {
+        setConfirm("flex");
+      } else {
+        setConfirm("none");
+        setTrigger(true);
+      }
     }
   };
 
@@ -230,6 +239,43 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               />
             </div>
             <div>
+              <label className="popup-label">Start date</label>
+              <Controller
+                name={"startDate"}
+                control={control}
+                render={(props) => (
+                  <MobileDatePicker
+                    inputFormat="YYYY-MM-DD"
+                    value={props.field.value}
+                    onChange={props.field.onChange}
+                    leftArrowButtonText="arrow"
+                    renderInput={(
+                      params: JSX.IntrinsicAttributes & TextFieldProps
+                    ) => (
+                      <TextField
+                        className="date"
+                        {...params}
+                        placeholder="Start Date"
+                        onChange={params.onChange}
+                        sx={{
+                          cursor: "pointer",
+                          paddingTop: 1,
+                          "& .MuiOutlinedInput-input": {
+                            height: "13px !important",
+                            borderRadius: "6px",
+                            background: "white !important",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderRadius: "6px",
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                )}
+              />
+            </div>
+            <div>
               <label className="popup-label">Project Status</label>
               <Controller
                 name="status"
@@ -274,43 +320,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           })
                         : []
                     }
-                  />
-                )}
-              />
-            </div>
-            <div>
-              <label className="popup-label">Start date</label>
-              <Controller
-                name={"startDate"}
-                control={control}
-                render={(props) => (
-                  <MobileDatePicker
-                    inputFormat="YYYY-MM-DD"
-                    value={props.field.value}
-                    onChange={props.field.onChange}
-                    leftArrowButtonText="arrow"
-                    renderInput={(
-                      params: JSX.IntrinsicAttributes & TextFieldProps
-                    ) => (
-                      <TextField
-                        className="date"
-                        {...params}
-                        placeholder="Start Date"
-                        onChange={params.onChange}
-                        sx={{
-                          cursor: "pointer",
-                          paddingTop: 1,
-                          "& .MuiOutlinedInput-input": {
-                            height: "13px !important",
-                            borderRadius: "6px",
-                            background: "white !important",
-                          },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderRadius: "6px",
-                          },
-                        }}
-                      />
-                    )}
                   />
                 )}
               />

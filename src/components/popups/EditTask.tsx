@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonBase,
+  CircularProgress,
   Grid,
   TextField,
   TextFieldProps,
@@ -25,6 +26,7 @@ import { Department, selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   editTaskFromBoard,
+  editTaskLoading,
   selectAllProjects,
   selectSelectedProject,
 } from "../../redux/Projects";
@@ -55,6 +57,7 @@ const EditTask: React.FC<Props> = (props) => {
   }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
+  const loadingTask = useAppSelector(editTaskLoading);
   const selectedProject = useAppSelector(selectSelectedProject);
   const [selectedDepartment, setSelectedDepartment] =
     React.useState<Department>();
@@ -501,7 +504,17 @@ const EditTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                Save task
+                {loadingTask ? (
+                  <CircularProgress
+                    sx={{
+                      color: "white",
+                      width: "25px !important",
+                      height: "25px !important",
+                    }}
+                  />
+                ) : (
+                  "Update Task"
+                )}
               </button>
             </div>
           </form>
