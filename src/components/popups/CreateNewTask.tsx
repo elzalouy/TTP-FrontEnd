@@ -41,6 +41,7 @@ import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -50,7 +51,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
-  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -79,11 +80,8 @@ const CreateNewTask: React.FC<Props> = (props) => {
     },
   });
 
-  React.useEffect(() => {
-    reset();
-  }, [createProjectPopup]);
-
   const onSubmit = async (data: any) => {
+    console.log(selectedDepartment);
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -109,42 +107,48 @@ const CreateNewTask: React.FC<Props> = (props) => {
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
+    console.log(newTask);
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId: generateID(),
       });
     } else {
-      reset();
       dispatch(
         createTaskFromBoard({
           data: newTask,
           dispatch: dispatch,
           setShow: props.setShow,
+          reset:reset
         })
       );
+
     }
   };
+
   const onChangeFiles = () => {
     files.current?.click();
   };
+
   const onSetFiles = () => {
     let newfiles = files.current?.files;
+    let items = [...Files];
     if (newfiles) {
-      let items = [];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }
-      setFiles(items);
     }
+    setFiles(items);
   };
+
   const onRemoveFile = (item: File | null) => {
     let newFiles = Files;
     newFiles = newFiles?.filter((file) => file !== item);
@@ -458,7 +462,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 }}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
-                <span style={{color:"white",fontSize:"12px",marginLeft:"5px"}}>{Files && Files.length > 0 ? Files?.length : ""}</span>
+                <span
+                  style={{
+                    color: "white",
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  {Files && Files.length > 0 ? Files?.length : ""}
+                </span>
               </ButtonBase>
               {Files &&
                 Files.length > 0 &&

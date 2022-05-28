@@ -34,6 +34,7 @@ import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
+import { generateID } from "../../helpers/IdGenerator";
 // import {createProjectPopup} from '../../'
 
 interface TaskFormProps {}
@@ -42,7 +43,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
-  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -91,6 +92,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
+  console.log(newProject.project._id);
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -116,22 +119,27 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
-    } else dispatch(createProjectTask(newTask));
+    } else {
+      dispatch(createProjectTask(newTask));
+    }
   };
+
   const onChangeFiles = () => {
     files.current?.click();
   };
+
   const onSetFiles = () => {
     let newfiles = files.current?.files;
+    let items = [...Files];
     if (newfiles) {
-      let items = [];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }

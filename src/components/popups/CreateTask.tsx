@@ -27,6 +27,7 @@ import _ from "lodash";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import { valdiateCreateTask } from "../../helpers/validation";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -63,6 +64,7 @@ const CreateTask: React.FC<Props> = (props) => {
       });
     }
   }, [createTaskPopup]);
+  
   React.useEffect(() => {
     if (Task?.categoryId !== selectedCategory?._id) {
       let category = categories.find((item) => item._id === Task?.categoryId);
@@ -96,22 +98,23 @@ const CreateTask: React.FC<Props> = (props) => {
         (item) => item._id === Task?.memberId
       )?.listId,
       boardId: selectedDepartment?.boardId,
-      description: "description value until we upgrade the design.",
+      description: "Description value until we upgrade the design",
     };
     let validate = valdiateCreateTask(newTask);
     if (validate.error)
       toast.error(validate.error.details[0].message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     else {
       dispatch(createTaskFromBoard({ data: newTask, dispatch }));
-      setTask({
+     /*  setTask({
         name: "",
         categoryId: "",
         subCategoryId: "",
@@ -119,7 +122,7 @@ const CreateTask: React.FC<Props> = (props) => {
         deadline: "",
         attachedFiles: "",
         selectedDepartmentId: "",
-      });
+      }); */
       props.setShow("none");
     }
   };

@@ -23,14 +23,14 @@ const createProjectSchema = Joi.object({
   projectDeadline: Joi.date().optional().allow(null, "").messages({
     "any.required": "Project Deadline is required",
   }),
-  startDate: Joi.date().required().messages({
+  startDate: Joi.date().optional().allow(null, "").messages({
     "any.required": "Project Start Date is required",
   }),
   clientId: Joi.string().required().min(2).max(50).messages({
-    "any.required": "Client  is required",
-    "string.base": "Client   should be string",
-    "string.empty": "Client   is required",
-    "string.min": "Client  length should be Min 2 chars",
+    "any.required": "Client is required",
+    "string.base": "Client should be string",
+    "string.empty": "Client is required",
+    "string.min": "Client length should be Min 2 chars",
   }),
   numberOfFinishedTasks: Joi.number().optional().allow(null, 0),
   numberOfTasks: Joi.number().optional().allow(null, 0),
@@ -67,14 +67,14 @@ const createTaskSchema = Joi.object({
     "string.empty": "Sub Category should be selected",
     "any.required": "Sub Category is required",
   }),
-  listId: Joi.string().min(4).required().messages({
-    "string.base": "Department is required",
-    "string.empty": "Department should be string with min 4 chars",
-    "string.min": "Department length should be Min 4 chars",
-    "string.max": "Department length should be Max 20 chars",
-    "any.required": "Department is required",
+  listId: Joi.string().min(4).optional().allow("").messages({
+    "string.base": "Team is required",
+    "string.empty": "Team should be string with min 4 chars",
+    "string.min": "Team length should be Min 4 chars",
+    "string.max": "Team length should be Max 20 chars",
+    "any.required": "Team is required",
   }),
-  memberId: Joi.string().required().min(4).messages({
+  memberId: Joi.string().optional().allow("").messages({
     "string.base": "Member is required",
     "string.empty": "Member should be selected",
     "string.min": "Member should be selected",

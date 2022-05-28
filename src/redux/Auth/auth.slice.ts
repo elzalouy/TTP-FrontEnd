@@ -1,5 +1,6 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import {
   forgotPassword,
   getUserInfo,
@@ -27,12 +28,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       if (payload.msg && payload.status) {
         toast.error("Invalid Email Address or Password", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.Payload = {
           msg: payload.msg,
@@ -45,12 +47,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.authState = true;
         toast.success("Login successful", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
       }
     });
@@ -65,12 +68,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       if (payload.msg && payload.status) {
         toast.error("Invalid Email Address", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.Payload = {
           msg: payload.msg,
@@ -100,12 +104,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       }
       toast.success("Logout successful", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     });
     builder.addCase(getUserInfo.rejected, (state) => {
@@ -140,12 +145,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       } else {
         toast.success("New password set successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          toastId:generateID(),
         });
         state.User = payload;
         state.authState = payload.status === 200 ? true : false;

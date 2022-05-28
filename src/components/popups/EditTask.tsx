@@ -43,6 +43,7 @@ import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   show: string;
@@ -50,7 +51,7 @@ type Props = {
 };
 const EditTask: React.FC<Props> = (props) => {
   const files = React.useRef<HTMLInputElement>(null);
-  const [Files, setFiles] = React.useState<(File | null)[]>();
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -66,6 +67,7 @@ const EditTask: React.FC<Props> = (props) => {
   const { editTask } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, watch, control, reset, setValue } = useForm();
+  
   React.useEffect(() => {
     let task = selectedProject.tasks.find((item) => item._id === editTask);
     if (task) {
@@ -85,7 +87,7 @@ const EditTask: React.FC<Props> = (props) => {
       setSelectedDepartment(dep);
     }
   }, [editTask]);
-  console.log(watch());
+
   const onChangeDepartment = (e: any) => {
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);
@@ -134,23 +136,25 @@ const EditTask: React.FC<Props> = (props) => {
       setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else {
     }
   };
+
   const onChangeFiles = () => {
     files.current?.click();
   };
   const onSetFiles = () => {
     let newfiles = files.current?.files;
     if (newfiles) {
-      let items = [];
+      let items = [...Files];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }

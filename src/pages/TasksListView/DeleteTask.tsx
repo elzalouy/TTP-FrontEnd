@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
+import { generateID } from "../../helpers/IdGenerator";
 import "./DeleteTask.css";
 
 type Props = {
@@ -23,12 +24,13 @@ const DeleteTask: React.FC<Props> = (props) => {
             }else{
               toast.warn("Please select a task you wish to delete", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 1500,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
+                toastId:generateID(),
               });
             }
           }}

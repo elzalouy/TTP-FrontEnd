@@ -13,6 +13,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import IMAGES from "../../assets/img";
+import { generateID } from "../../helpers/IdGenerator";
 import { selectAllCategories } from "../../redux/Categories";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
@@ -38,6 +39,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
   const deps = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const dispatch = useDispatch();
+  
   const onDeleteTask = (task: Task) => {
     dispatch(deleteTask({ data: { id: task._id }, dispatch }));
   };
@@ -54,12 +56,13 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     dispatch(UiActions.fireNewProjectHook(""));
     toast.success("Project and Its Tasks have been saved", {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      toastId:generateID(),
     });
     setShow("none");
     setCurrentStep(0);

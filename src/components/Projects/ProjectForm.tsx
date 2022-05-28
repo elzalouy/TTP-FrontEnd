@@ -25,6 +25,7 @@ import { validateCreateProject } from "../../helpers/validation";
 import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../redux/Ui/UI.selectors";
+import { generateID } from "../../helpers/IdGenerator";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -72,7 +73,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         data?.deadline !== "" && data?.deadline !== null
           ? moment(data?.deadline).toDate()
           : null,
-      startDate: moment(data?.startDate).toDate(),
+      startDate: data?.startDate !== "" && data.startDate !== null ? moment(data?.startDate).toDate() : null,
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
@@ -87,12 +88,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       setError(isValid);
       toast.error(isValid.error.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
     } else dispatch(createProject({ data: project, setcurrentStep }));
   };

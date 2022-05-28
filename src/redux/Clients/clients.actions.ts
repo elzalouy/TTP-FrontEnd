@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import ClientsApi from "../../services/endpoints/clients";
 
@@ -29,7 +30,7 @@ export const creatClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client created successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -57,7 +58,7 @@ export const updateClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client updated successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -80,7 +81,7 @@ export const deleteClient = createAsyncThunk<any, any, any>(
       if (client.ok && client.data) {
         toast.success("Client deleted successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -93,12 +94,13 @@ export const deleteClient = createAsyncThunk<any, any, any>(
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }

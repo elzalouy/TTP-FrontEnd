@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { register } from "../../serviceWorkerRegistration";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {};
 
@@ -80,10 +81,10 @@ const CreateNewDepartment: React.FC<Props> = () => {
     }
   };
 
-  const getTeamName = (value:string) => {
+  const getTeamName = (value: string) => {
     let target = value.split(",");
     return target[1];
-  }
+  };
 
   const handleRemoveTeam = (index: number) => {
     Names.splice(index, 1);
@@ -124,12 +125,13 @@ const CreateNewDepartment: React.FC<Props> = () => {
     } else {
       toast.error("Department name already exist", {
         position: "top-right",
-autoClose: 5000,
-hideProgressBar: false,
-closeOnClick: true,
-pauseOnHover: true,
-draggable: true,
-progress: undefined,
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId:generateID(),
       });
     }
   };
@@ -213,7 +215,7 @@ progress: undefined,
         />
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
-    {/*       <select
+          {/*       <select
             className="popup-select"
             onChange={(e) => {
               if (e.target.value !== "") {
@@ -234,9 +236,9 @@ progress: undefined,
             control={control}
             render={(props) => (
               <SelectInput2
-                handleChange={(e:any)=>{
+                handleChange={(e: any) => {
                   if (e.target.value !== "") {
-                   setData(e.target.value);
+                    setData(e.target.value);
                   }
                 }}
                 selectText={getTeamName(Data)}

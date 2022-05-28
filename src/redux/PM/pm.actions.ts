@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
@@ -14,7 +15,7 @@ export const resendMail = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("New email sent successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -54,7 +55,7 @@ export const createPM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager created successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -70,12 +71,13 @@ export const createPM = createAsyncThunk<any, any, any>(
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }
@@ -90,7 +92,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager updated successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -104,12 +106,13 @@ export const updatePM = createAsyncThunk<any, any, any>(
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        toastId:generateID(),
       });
       rejectWithValue(error);
     }
@@ -124,7 +127,7 @@ export const updatePMpassword = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -147,7 +150,7 @@ export const resetPMpassword = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -170,7 +173,7 @@ export const deletePM = createAsyncThunk<any, any, any>(
       if (PMs.ok && PMs.data) {
         toast.success("Product Manager deleted successfully", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

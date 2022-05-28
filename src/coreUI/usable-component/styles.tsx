@@ -3,7 +3,7 @@ import { borderRadius } from "@mui/system";
 import { DefaultTheme } from "styled-components";
 
 export const projectsTableStyle = (status: string) => {
-  const borderColor = ["#FCEFC0", "#00ACBA33"];
+  const borderColor = ["#FCEFC0", "#00ACBA33","#E8E8E8"];
   const NotStartedStyle = makeStyles((theme: DefaultTheme) => ({
     root: {
       width: "100%",
@@ -16,24 +16,24 @@ export const projectsTableStyle = (status: string) => {
     },
     thead: {
       color: "black",
-      backgroundColor: borderColor[1],
+      backgroundColor: borderColor[2],
       fontFamily: "Cairo, Regular",
     },
     tbody: {
-      backgroundColor: "#E1F3F5",
+      backgroundColor: "#F1F1F4",
     },
     tcellLeft: {
-      borderBottom: "2px solid #00ACBA",
-      borderLeft: "2px solid #00ACBA",
-      borderTop: "2px solid #00ACBA",
+      borderBottom: "2px solid #9FA1AB",
+      borderLeft: "2px solid #9FA1AB",
+      borderTop: "2px solid #9FA1AB",
 
       borderTopLeftRadius: "10px",
       borderBottomLeftRadius: "10px",
     },
     tcellRight: {
-      borderBottom: "2px solid #00ACBA",
-      borderRight: "2px solid #00ACBA",
-      borderTop: "2px solid #00ACBA",
+      borderBottom: "2px solid #9FA1AB",
+      borderRight: "2px solid #9FA1AB",
+      borderTop: "2px solid #9FA1AB",
       borderTopRightRadius: "10px",
       borderBottomRightRadius: "10px",
       fontWeight: 600,
@@ -41,15 +41,15 @@ export const projectsTableStyle = (status: string) => {
       color: "#707683",
     },
     tcellCenter: {
-      borderBottom: "2px solid #00ACBA",
-      borderTop: "2px solid #00ACBA",
+      borderBottom: "2px solid #9FA1AB",
+      borderTop: "2px solid #9FA1AB",
       color: "#707683",
     },
     tcellCenterTask: {
-      borderBottom: "2px solid #00ACBA",
+      borderBottom: "2px solid #9FA1AB",
 
-      borderTop: "2px solid #00ACBA",
-      color: "#00ACBA",
+      borderTop: "2px solid #9FA1AB",
+      color: "#9FA1AB",
       fontWeight: "bold",
     },
   }));

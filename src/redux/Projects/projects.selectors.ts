@@ -3,6 +3,7 @@ export const selectLoading = (state: RootState) => state?.projects?.loading;
 //projects
 export const selectNewProject = (state: RootState) =>
   state?.projects?.newProject;
+
 export const selectInprogressProjects = (state: RootState) =>
   state?.projects?.filteredProjects
     ?.filter((item) => item.projectStatus === "inProgress")
@@ -12,9 +13,10 @@ export const selectInprogressProjects = (state: RootState) =>
           ? -1
           : 1
         : new Date(a.projectDeadline) < new Date(b.projectDeadline)
-        ? 1
-        : -1
+          ? 1
+          : -1
     );
+
 export const selectDoneProjects = (state: RootState) =>
   state?.projects?.filteredProjects?.filter(
     (item) =>

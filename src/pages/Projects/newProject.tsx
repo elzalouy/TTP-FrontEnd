@@ -3,54 +3,106 @@ import "./createNewProject.css";
 import Box from "@mui/material/Box";
 import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
-import { ProjectsActions } from "../../redux/Projects";
+import {
+  ProjectsActions,
+  selectNotStartedProjects,
+  selectLoading,
+} from "../../redux/Projects";
 import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
+import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../redux/Ui";
+import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
+import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
+import { selectPMs } from "../../redux/PM";
+import { RouteComponentProps } from "react-router";
 
-type Props = {};
-const CreateNewProject: React.FC<Props> = () => {
+type Props = {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+};
+
+const CreateNewProject: React.FC<Props> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const loading = useAppSelector(selectLoading);
+  const notStartedProjects = useAppSelector(selectNotStartedProjects);
+  const PMs = useAppSelector(selectPMs);
   const newProject = useAppSelector(selectNewProject);
+
   const setShow = (value: string) => {
     dispatch(toggleCreateProjectPopup(value));
   };
 
   return (
-    <div>
+    <TableBox
+      title={"Not Started"}
+      outTitled={false}
+      expanded={expanded}
+      setExpanded={setExpanded}
+      bgColor={"#F1F1F4"}
+    >
       <Box
         id="project-container"
-        sx={{
+        sx={notStartedProjects?.length === 0 ? {
           display: "flex",
+          justifyContent:"flex-end",
           flexDirection: "column",
           width: "100%",
           borderRadius: "12px",
           backgroundColor: "#F1F1F4",
           py: 1,
-          px: 2,
+          px: 0,
+          mb: 1,
+          font: "normal normal 600 16px/30px Cairo",
+          color: "#505050",
+        } : {
+          display: "flex",
+          justifyContent:"flex-end",
+          flexDirection: "column",
+          width: "100%",
+          borderRadius: "12px",
+          backgroundColor: "#F1F1F4",
+          py: 1,
+          px: 0,
           mb: 4,
           font: "normal normal 600 16px/30px Cairo",
           color: "#505050",
         }}
       >
-        <Box
-          id="project-header"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingLeft: 1,
-            paddingBottom: 2.5,
-            fontWeight: "600",
-          }}
-        >
-          Not started yet
-        </Box>
+        {loading === false ? (
+          <ProjectsTable
+            align="center"
+            textSize="medium"
+            status={"Not Started"}
+            condition={notStartedProjects?.length === 0 ? true : false}
+            expanded={expanded}
+            projects={notStartedProjects}
+            projectManagers={PMs}
+            {...props}
+          />
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              borderRadius: "12px",
+              backgroundColor: "#F1F1F4",
+              p: 1,
+              my: 2,
+              cursor: "pointer",
+              font: "normal normal 600 16px/30px Cairo",
+              color: "#909090",
+            }}
+          >
+            <RotateRightIcon></RotateRightIcon> Loading More
+          </Box>
+        )}
         <Box
           onClick={() => {
             setShow("flex");
@@ -64,6 +116,7 @@ const CreateNewProject: React.FC<Props> = () => {
             alignItems: "center",
             cursor: "pointer",
             py: 1,
+            my: 1,
           }}
         >
           <img
@@ -77,7 +130,7 @@ const CreateNewProject: React.FC<Props> = () => {
           </h5>
         </Box>
       </Box>
-    </div>
+    </TableBox>
   );
 };
 

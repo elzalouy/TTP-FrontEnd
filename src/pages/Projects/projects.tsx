@@ -39,7 +39,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
-  const notStartedProjects = useAppSelector(selectNotStartedProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
   const [expanded, setExpanded] = useState<boolean>(true);
@@ -348,7 +347,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
-        {role !== "PM" && <CreateNewProject />}
+        {role !== "PM" && <CreateNewProject {...props}/>}
         {loading === false ? (
           <>
             <TableBox
@@ -389,7 +388,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 />
               </Box>
             </TableBox>
-            <TableBox
+            {/* <TableBox
               title={"Not Started"}
               outTitled={false}
               expanded={doneExpanded}
@@ -407,7 +406,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                   {...props}
                 />
               </Box>
-            </TableBox>
+            </TableBox> */}
           </>
         ) : (
           <Box
