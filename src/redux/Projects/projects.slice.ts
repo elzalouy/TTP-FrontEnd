@@ -156,7 +156,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createProject.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(createProject.fulfilled, (state, action) => {
       state.loading = false;
@@ -187,7 +187,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createTaskFromBoard.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(createTaskFromBoard.fulfilled, (state, action) => {
       state.loading = false;
@@ -317,6 +317,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       // state.loading = true;
     });
     builder.addCase(editTask.fulfilled, (state, action) => {
+      state.loading = false;
       state.editTask = undefined;
       let tasks = [...state.allTasks];
       let index = tasks.findIndex((item) => item._id === action.payload?._id);
@@ -337,7 +338,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(editTask.pending, (state, action) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});
     // builder.addCase(moveTask.)

@@ -43,6 +43,7 @@ const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
@@ -53,6 +54,7 @@ const App: React.FC = (props) => {
       );
     }
   }, [dispatch]);
+
   useEffect(() => {
     if (!mounted && checkAuthToken()) {
       dispatch(getAllDepartments(null));
@@ -72,6 +74,7 @@ const App: React.FC = (props) => {
         setStatistics({ projects: projects.projects, tasks: projects.allTasks })
       );
   }, [projects?.projects, projects?.allTasks]);
+
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>
@@ -83,8 +86,8 @@ const App: React.FC = (props) => {
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
+          limit={1}
           draggable
-          pauseOnHover
         />
         <PopUps />
         <Switch>

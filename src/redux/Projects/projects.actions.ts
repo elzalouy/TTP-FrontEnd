@@ -252,7 +252,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
   "projects/deleteProjectTasks",
   async (args, { rejectWithValue }) => {
     try {
-      let deleteResult = await api.deleteProjectTasks(args?.data);
+      let deleteResult = await api.deleteProjectTasks(args.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
         toast.success("Project Tasks deleted first.", {
@@ -352,6 +352,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
+      console.log(args.data);
       let deleteResult = await api.deleteTask(args?.data);
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));

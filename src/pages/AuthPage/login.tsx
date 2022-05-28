@@ -66,6 +66,7 @@ const Login: React.FC<Props> = ({ history }) => {
   useEffect(() => {
     if (res.msg && res.status !== 200) {
       if (res.page === "login") {
+        toast.clearWaitingQueue();
         setFailed({
           message: res.msg,
           status: res.status,

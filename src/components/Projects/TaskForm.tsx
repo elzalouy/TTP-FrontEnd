@@ -41,7 +41,6 @@ interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  const Dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>([]);
   const [error, setError] = React.useState<{
@@ -129,6 +128,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       });
     } else {
       dispatch(createProjectTask(newTask));
+      reset();
+      setSelectedDepartment(undefined);
+      setSelectCategory(undefined);
     }
   };
 

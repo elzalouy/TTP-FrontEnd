@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { forgotPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
+import { toast } from "react-toastify";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -47,6 +48,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     if (res.msg === "" && res.status === "") {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
+      toast.clearWaitingQueue();
       setVisible(false);
       if(res.page==="forgetPassword"){
         setFailed({

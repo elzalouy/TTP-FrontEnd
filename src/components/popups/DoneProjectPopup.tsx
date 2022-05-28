@@ -27,7 +27,7 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
       <p className="warning-text">
         {alert.length === 0
           ? "Are you sure you want to end this project?"
-          : `Please add a ${alert} to end this project`}
+          : `Please add a ${alert} to update this project status`}
       </p>
       <hr className="separator" />
       <div className="margin-cover">
@@ -52,7 +52,7 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
               setAlert("");
             }}
           >
-            End
+            {alert ? `Try again` : "End"}
           </button>
         </div>
       </div>

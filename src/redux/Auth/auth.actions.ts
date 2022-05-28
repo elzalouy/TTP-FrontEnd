@@ -27,7 +27,7 @@ export const signIn = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId:"signin",
       });
       rejectWithValue(error);
     }
@@ -87,7 +87,17 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
       if (result.ok === true) {
         return result.data;
       } else return result.data;
-    } catch (error) {
+    } catch (error:any) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId:generateID(),
+      });
       rejectWithValue(error);
     }
   }

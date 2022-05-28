@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonBase,
+  CircularProgress,
   Grid,
   TextField,
   TextFieldProps,
@@ -27,6 +28,7 @@ import {
   createProjectTask,
   createTaskFromBoard,
   ProjectsActions,
+  selectLoading,
   selectNewProject,
   selectSelectedDepartment,
   selectSelectedProject,
@@ -60,6 +62,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
+  const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
   const [selectedDepartment, setSelectedDepartment] =
@@ -127,10 +130,9 @@ const CreateNewTask: React.FC<Props> = (props) => {
           data: newTask,
           dispatch: dispatch,
           setShow: props.setShow,
-          reset:reset
+          reset: reset,
         })
       );
-
     }
   };
 
@@ -508,7 +510,11 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                Add task
+                {loadingTask ? (
+                  <CircularProgress sx={{ color: "white",width:"25px !important",height:"25px !important"}} />
+                ) : (
+                  "Add task"
+                )}
               </button>
             </div>
           </form>

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonBase,
+  CircularProgress,
   Grid,
   TextField,
   TextFieldProps,
@@ -28,6 +29,7 @@ import {
   createTaskFromBoard,
   ProjectsActions,
   selectAllProjects,
+  selectLoading,
   selectNewProject,
   selectSelectedDepartment,
   selectSelectedProject,
@@ -59,6 +61,7 @@ const EditTask: React.FC<Props> = (props) => {
   }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
+  const loadingTask = useAppSelector(selectLoading);
   const selectedProject = useAppSelector(selectSelectedProject);
   const [selectedDepartment, setSelectedDepartment] =
     React.useState<Department>();
@@ -67,7 +70,7 @@ const EditTask: React.FC<Props> = (props) => {
   const { editTask } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, watch, control, reset, setValue } = useForm();
-  
+
   React.useEffect(() => {
     let task = selectedProject.tasks.find((item) => item._id === editTask);
     if (task) {
@@ -501,7 +504,11 @@ const EditTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                Add task
+                 {loadingTask ? (
+                  <CircularProgress sx={{ color: "white",width:"25px !important",height:"25px !important"}} />
+                ) : (
+                  "Update Task"
+                )}
               </button>
             </div>
           </form>

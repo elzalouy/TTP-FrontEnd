@@ -90,7 +90,7 @@ const createTaskSchema = Joi.object({
   start: Joi.date().required().messages({
     "any.required": "Task start date is required",
   }),
-  deadline: Joi.date().required().optional().allow(null, "").messages({
+  deadline: Joi.date().optional().allow(null, "").messages({
     "any.required": "Task Deadline is required",
   }),
   boardId: Joi.string().required().min(4).messages({

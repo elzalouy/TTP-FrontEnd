@@ -4,6 +4,7 @@ export const selectLoading = (state: RootState) => state?.projects?.loading;
 export const selectNewProject = (state: RootState) =>
   state?.projects?.newProject;
 
+
 export const selectInprogressProjects = (state: RootState) =>
   state?.projects?.filteredProjects
     ?.filter((item) => item.projectStatus === "inProgress")
