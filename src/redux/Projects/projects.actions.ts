@@ -104,6 +104,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        args.reset();
         return result.data?.task;
       } else {
         toast.error(result?.data[0]?.message, {
@@ -115,6 +116,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        args.reset();
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
@@ -127,6 +129,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         draggable: true,
         progress: undefined, toastId: generateID(),
       });
+      args.reset();
       return rejectWithValue(error);
     }
   }

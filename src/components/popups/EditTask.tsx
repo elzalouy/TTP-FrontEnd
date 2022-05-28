@@ -67,6 +67,7 @@ const EditTask: React.FC<Props> = (props) => {
   const { editTask } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, watch, control, reset, setValue } = useForm();
+  
   React.useEffect(() => {
     let task = selectedProject.tasks.find((item) => item._id === editTask);
     if (task) {
@@ -86,7 +87,7 @@ const EditTask: React.FC<Props> = (props) => {
       setSelectedDepartment(dep);
     }
   }, [editTask]);
-  console.log(watch());
+
   const onChangeDepartment = (e: any) => {
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);

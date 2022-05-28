@@ -80,11 +80,8 @@ const CreateNewTask: React.FC<Props> = (props) => {
     },
   });
 
-  React.useEffect(() => {
-    reset();
-  }, [createProjectPopup]);
-
   const onSubmit = async (data: any) => {
+    console.log(selectedDepartment);
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -110,6 +107,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
+    console.log(newTask);
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
@@ -121,20 +119,21 @@ const CreateNewTask: React.FC<Props> = (props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
     } else {
-      reset();
       dispatch(
         createTaskFromBoard({
           data: newTask,
           dispatch: dispatch,
           setShow: props.setShow,
+          reset:reset
         })
       );
+
     }
   };
-  
+
   const onChangeFiles = () => {
     files.current?.click();
   };
