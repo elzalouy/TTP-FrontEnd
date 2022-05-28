@@ -76,18 +76,6 @@ const App: React.FC = (props) => {
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>
         <ToastContainer
-<<<<<<< HEAD
-         position="top-right"
-         autoClose={1500}
-         limit={1}
-         hideProgressBar={false}
-         newestOnTop={false}
-         closeOnClick
-         rtl={false}
-         pauseOnFocusLoss
-         draggable
-         pauseOnHover
-=======
           position="top-right"
           autoClose={5000}
           hideProgressBar={false}
@@ -97,7 +85,6 @@ const App: React.FC = (props) => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
->>>>>>> 661c3d8f2cbd92a4d8092515b05ff13d0afedf0e
         />
         <PopUps />
         <Switch>
