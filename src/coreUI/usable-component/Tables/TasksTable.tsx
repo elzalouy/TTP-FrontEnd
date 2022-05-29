@@ -7,13 +7,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import "../../../pages/TasksListView/TasksListView.css"
+import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
-import { useMediaQuery,useTheme } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
@@ -31,6 +31,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
+
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
       let selected = [...selects];
@@ -43,14 +44,15 @@ const TasksTable: React.FC<TasksTableProps> = ({
       setAllSelected(selected);
     }
   };
+
   return (
     <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
-      <Table style={MD? {width:"150%"} : {width:"100%"}}>
+      <Table style={MD ? { width: "150%" } : { width: "100%" }}>
         <TableHead>
           <TableRow>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "20px",
                 margin: "0px",
                 padding: "0px 0px 0px 8px",
@@ -68,7 +70,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
             </TableCell>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "30px",
                 margin: "0px",
                 padding: "0px 8px 0px 0px",
@@ -79,7 +81,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
             </TableCell>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "300px",
                 margin: "0px",
                 padding: "0px 0px 0px 15px",
@@ -90,7 +92,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
             </TableCell>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "300px",
                 margin: "0px",
                 padding: "0px 0px 0px 8px",
@@ -101,7 +103,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
             </TableCell>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "250px",
                 margin: "0px",
                 paddingRight: "15px",
@@ -112,7 +114,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
             </TableCell>
             <TableCell
               style={{
-                color:"#334D6E",
+                color: "#334D6E",
                 width: "160px",
                 margin: "0px",
                 padding: "0px 15px 0px 8px",
@@ -125,7 +127,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
         </TableHead>
         <TableBody>
           {tasks &&
-            tasks?.map((item,index) => {
+            tasks?.map((item, index) => {
               const { _id, status, name, projectId, start, deadline } = item;
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -165,14 +167,14 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           ? "inProgressStatus"
                           : status === "Review"
                           ? "reviewStatus"
-                          : status === "Not Clear" 
-                          ? "notClearStatus" 
+                          : status === "Not Clear"
+                          ? "notClearStatus"
                           : status === "Not Started"
-                          ? "notStartedStatus" 
+                          ? "notStartedStatus"
                           : status === "Done"
-                          ? "doneStatus" 
-                          : status === "Shared" 
-                          ? "sharedStatus" 
+                          ? "doneStatus"
+                          : status === "Shared"
+                          ? "sharedStatus"
                           : "endedStatus"
                       }
                     >
@@ -189,7 +191,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                       margin: "0px",
                       padding: "0px 0px 0px 15px",
                       textTransform: "capitalize",
-                      fontWeight:"500"
+                      fontWeight: "500",
                     }}
                   >
                     {name}
@@ -210,7 +212,9 @@ const TasksTable: React.FC<TasksTableProps> = ({
                     }
                   </TableCell>
                   <TableCell align="left" style={{ color: "#707683" }}>
-                    {start !== null ? moment(start).format('MMMM Do, YYYY') : "-"}
+                    {start !== null
+                      ? moment(start).format("MMMM Do, YYYY")
+                      : "-"}
                   </TableCell>
                   <TableCell
                     style={{
@@ -222,7 +226,9 @@ const TasksTable: React.FC<TasksTableProps> = ({
                     }}
                     align="left"
                   >
-                    {deadline !== null ? moment(deadline).format('MMMM Do, YYYY') : "-"}
+                    {deadline === null || deadline === ""
+                      ? "-"
+                      : moment(deadline).format("MMMM Do, YYYY")}
                   </TableCell>
                 </TableRow>
               );

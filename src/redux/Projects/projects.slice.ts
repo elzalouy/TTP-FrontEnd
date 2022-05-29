@@ -53,9 +53,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       let tasks = [...state.newProject.tasks];
       tasks = tasks.filter(
         (item) =>
-          item._id === action.payload._id &&
-          item.name !== action.payload.name &&
-          item.description !== action.payload.description
+          item._id !== action.payload._id 
+      /*     item.name !== action.payload.name &&
+          item.description !== action.payload.description */
       );
       state.newProject.tasks = tasks;
     },
@@ -161,6 +161,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createProject.fulfilled, (state, action) => {
       state.loading = false;
       state.newProject.project = action.payload;
+      state.newProject.tasks = [];
     });
     builder.addCase(getAllProjects.rejected, (state) => {
       state.loading = false;

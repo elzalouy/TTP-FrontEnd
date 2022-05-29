@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
-import { createProject, selectLoading } from "../../redux/Projects";
+import { createProject, ProjectsActions, selectLoading } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
 import {
@@ -82,7 +82,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       clientId: data?.clientId,
       numberOfFinishedTasks: 0,
       numberOfTasks: 0,
-      projectStatus: (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started",
+      projectStatus:
+        (data.deadline && data.startDate) !== null
+          ? "inProgress"
+          : "Not Started",
       completedDate: null,
       adminId: localStorage.getItem("id"),
     };
@@ -101,7 +104,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         progress: undefined,
         toastId: generateID(),
       });
-    } else dispatch(createProject({ data: project, setcurrentStep }));
+    } else {
+      dispatch(createProject({ data: project, setcurrentStep }));
+    }
   };
 
   return (
