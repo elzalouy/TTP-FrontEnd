@@ -114,6 +114,13 @@ const validateCreateProject = (data: any) => {
   let { error, value, warning } = createProjectSchema.validate(data);
   return { error, value, warning };
 };
+export const validateEditTask = (data: any) => {
+  let editSchema = createTaskSchema.keys({
+    id: Joi.string().required().label("Id"),
+  });
+  let { error, value, warning } = editSchema.validate(data);
+  return { error, value, warning };
+};
 const valdiateCreateTask = (data: any) => {
   let { error, value, warning } = createTaskSchema.validate(data);
   return { error, value, warning };

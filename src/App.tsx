@@ -28,20 +28,15 @@ import { ToastContainer } from "react-toastify";
 import { getAllMembers } from "./redux/techMember";
 import OverView from "./pages/UserOverview/OverView";
 import "react-toastify/dist/ReactToastify.css";
-import PopUps from "./pages/PopUps";
-import { Box } from "@mui/system";
-import NotFound from "./pages/NotFound";
-import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
 import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
-import { socket } from "./config/socket/actions";
 import { setStatistics } from "./redux/Statistics";
-import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
+  const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -66,7 +61,7 @@ const App: React.FC = (props) => {
       dispatch(getAllTasks(null));
       setMounted(true);
     }
-  }, [dispatch, checkAuthToken(), dispatch]);
+  }, [dispatch, isAuthed]);
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
     if (projects.loading === false)
