@@ -84,7 +84,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   });
 
   const onSubmit = async (data: any) => {
-    console.log(selectedDepartment);
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -110,7 +109,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
-    console.log(newTask);
+    // console.log(newTask);
     let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
       setError(validateResult);
@@ -511,7 +510,13 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 className="addTaskBtn"
               >
                 {loadingTask ? (
-                  <CircularProgress sx={{ color: "white",width:"25px !important",height:"25px !important"}} />
+                  <CircularProgress
+                    sx={{
+                      color: "white",
+                      width: "25px !important",
+                      height: "25px !important",
+                    }}
+                  />
                 ) : (
                   "Add task"
                 )}
