@@ -91,8 +91,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
-  console.log(newProject.project._id);
-
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -102,7 +100,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       projectId: newProject?.project?._id,
       status: "Not Started",
       start: new Date().toUTCString(),
-      deadline: moment(data?.deadline).toDate(),
+      deadline:  data?.deadline !== "" && data?.deadline !== null
+      ? moment(data?.deadline).toDate()
+      : null,
       deliveryDate: null,
       done: null,
       turnoverTime: null,

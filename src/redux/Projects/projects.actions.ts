@@ -352,8 +352,8 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-      console.log(args.data);
       let deleteResult = await api.deleteTask(args?.data);
+      console.log(deleteResult);
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));
         toast.success("Tasks deleted from DB and Trello", {
