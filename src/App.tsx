@@ -28,15 +28,9 @@ import { ToastContainer } from "react-toastify";
 import { getAllMembers } from "./redux/techMember";
 import OverView from "./pages/UserOverview/OverView";
 import "react-toastify/dist/ReactToastify.css";
-import PopUps from "./pages/PopUps";
-import { Box } from "@mui/system";
-import NotFound from "./pages/NotFound";
-import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
 import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
-import { socket } from "./config/socket/actions";
 import { setStatistics } from "./redux/Statistics";
-import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
 
 const App: React.FC = (props) => {
