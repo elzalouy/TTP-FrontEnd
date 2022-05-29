@@ -362,10 +362,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-<<<<<<< HEAD
       // console.log(args.data);
-=======
->>>>>>> 23e826f19cd10410ccf4d538242c50400f6a4a3c
       let deleteResult = await api.deleteTask(args?.data);
       console.log(deleteResult);
       if (deleteResult.ok) {

@@ -60,10 +60,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   if (props.condition) {
     return null;
   } else {
-<<<<<<< HEAD
     // console.log(props.projects);
-=======
->>>>>>> 23e826f19cd10410ccf4d538242c50400f6a4a3c
     return (
       <Table
         className={classes.table}
