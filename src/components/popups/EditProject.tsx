@@ -30,7 +30,12 @@ type Props = {
 
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-  const { control, watch, setValue } = useForm();
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { isDirty },
+  } = useForm();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const project = useAppSelector(selectEditProject);
@@ -61,6 +66,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const executeEditProject = (data: any) => {
     let editProject = { ...project };
+
+    if (alert === "Not Started" || alert === "inProgress") {
+      data.status = "inProgress";
+    }
+
     editProject.name = data.name;
     editProject.projectManager = data.projectManager;
     editProject.projectManagerName = PMs.find(
@@ -70,10 +80,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.clientId = data.clientId;
     editProject.projectStatus = data.status;
     editProject.startDate = data.startDate;
-
-    if (editProject.startDate === null) {
-      editProject.projectStatus = "Not Started";
-    }
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
@@ -88,31 +94,37 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const onSubmitEdit = () => {
     let data = watch();
 
-    if (data === project) {
-      setShow("none");
-      return;
-    }
-
     if (data.startDate === null && data.deadline === null) {
       setAlert("Starting date and Deadline");
-      if (data.status === "Done" || "inProgress") {
+      if (data.status === "Done" || data.status === "inProgress") {
         setConfirm("flex");
+      } else {
+        setTrigger(true);
       }
     } else if (data.startDate === null && data.deadline !== null) {
       setAlert("Starting date");
-      if (data.status === "Done" || "inProgress") {
+      if (data.status === "Done" || data.status === "inProgress") {
         setConfirm("flex");
+      } else {
+        setTrigger(true);
       }
     } else if (data.startDate !== null && data.deadline === null) {
       setAlert("Deadline");
-      if (data.status === "Done" || "inProgress") {
+      if (data.status === "Done" || data.status === "inProgress") {
         setConfirm("flex");
+      } else {
+        setTrigger(true);
       }
     } else {
       setAlert("");
       if (data.status === "Done") {
         setConfirm("flex");
+      } else if (data.status === "inProgress") {
+        setAlert("inProgress");
+        setConfirm("none");
+        setTrigger(true);
       } else {
+        setAlert("Not Started");
         setConfirm("none");
         setTrigger(true);
       }
@@ -138,6 +150,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              setValue("clientId", project?.clientId);
+              setValue("projectManager", project?.projectManager?._id);
+              setValue("deadline", project?.projectDeadline);
+              setValue("name", project?.name);
+              setValue("status", project?.projectStatus);
+              setValue("startDate", project?.startDate);
             }}
           />
         </div>
@@ -202,9 +220,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               />
             </div>
             <div>
-              <label className="popup-label">Deadline date</label>
+              <label className="popup-label">Start date</label>
               <Controller
-                name={"deadline"}
+                name={"startDate"}
                 control={control}
                 render={(props) => (
                   <MobileDatePicker
@@ -218,7 +236,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                       <TextField
                         className="date"
                         {...params}
-                        placeholder="Deadline"
+                        placeholder="Start Date"
                         onChange={params.onChange}
                         sx={{
                           cursor: "pointer",
@@ -239,9 +257,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               />
             </div>
             <div>
-              <label className="popup-label">Start date</label>
+              <label className="popup-label">Deadline date</label>
               <Controller
-                name={"startDate"}
+                name={"deadline"}
                 control={control}
                 render={(props) => (
                   <MobileDatePicker
@@ -255,7 +273,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                       <TextField
                         className="date"
                         {...params}
-                        placeholder="Start Date"
+                        placeholder="Deadline"
                         onChange={params.onChange}
                         sx={{
                           cursor: "pointer",
@@ -330,11 +348,26 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               className="controllers-cancel"
               onClick={() => {
                 setShow("none");
+                setValue("clientId", project?.clientId);
+                setValue("projectManager", project?.projectManager?._id);
+                setValue("deadline", project?.projectDeadline);
+                setValue("name", project?.name);
+                setValue("status", project?.projectStatus);
+                setValue("startDate", project?.startDate);
               }}
             >
               Cancel
             </button>
-            <button className="controllers-done" onClick={onSubmitEdit}>
+            <button
+              className="controllers-done"
+              onClick={() => {
+                if (isDirty) {
+                  onSubmitEdit();
+                }else{
+                  setShow("none")
+                }
+              }}
+            >
               Done
             </button>
           </div>

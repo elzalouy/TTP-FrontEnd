@@ -37,8 +37,9 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   const [removeTeam, setRemoveTeam] = useState<string[]>([]);
   const [addTeam, setAddTeam] = useState<{ _id: string; name: string }[]>([]);
   const selectedDepartment = useAppSelector(selectedDepart);
+  const splitData = Data.split(",");
   let teamsData = useAppSelector(selectAllMembers);
-  const { register, control} = useForm();
+  const { register, control } = useForm();
   const [formData, setFormData] = useState<{
     name: string;
     color: string;
@@ -100,13 +101,12 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   const handleRemoveTeam = (index: number) => {
     // add the listId I want to remove in trello
     let targetTeam = teams.find((team: any) => team.name === Names[index]);
-    if (targetTeam && targetTeam.idInTrello) {
+    if (targetTeam) {
       setRemoveTeam([...removeTeam, targetTeam.idInTrello]);
+      //There is no trello ID shown in these objects of target which is why i removed the condition
     }
-
-    let newAddTeam = addTeam.filter((team: any) => team._id !== targetTeam._id);
+    let newAddTeam = addTeam.filter((team: any) => team?._id !== targetTeam?._id);
     setAddTeam(newAddTeam);
-
     // filter my team array
     // let filterTeam = teams.filter((team: any) => team.name !== Names[index]);
     Names.splice(index, 1);
@@ -118,10 +118,10 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    if(e.target.name){
+    if (e.target.name) {
       setFormData({ ...formData, [e.target.name]: e.target.value });
-    }else{
-      setFormData({ ...formData, color: e.target.value });
+    } else {
+       setFormData({ ...formData, color: e.target.value });
     }
   };
 
@@ -178,29 +178,31 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         />
         <label className="popup-label">Color</label>
         <Controller
-                name="EditDepartmentColors"
-                control={control}
-                render={(props) => (
-                  <SelectInput2
-                    handleChange={handleChange}
-                    selectText={color}
-                    {...register("color")}
-                    selectValue={color}
-                    options={
-                     colors ? colors.map((color)=>{
+          name="EditDepartmentColors"
+          control={control}
+          render={(props) => (
+            <SelectInput2
+              handleChange={handleChange}
+              selectText={color}
+              {...register("color")}
+              selectValue={color}
+              options={
+                colors
+                  ? colors.map((color) => {
                       return {
                         id: color,
                         value: color,
                         text: color,
                       };
-                     })
-                    : []}
-                  />
-                )}
-              />
+                    })
+                  : []
+              }
+            />
+          )}
+        />
         <label className="popup-label">Teams</label>
         <div className="add-teams-section">
-          <select
+          {/*   <select
             className="popup-select"
             onChange={(e) => {
               if (e.target.value !== "") {
@@ -220,8 +222,34 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                 {team.name}
               </option>
             ))}
-          </select>
-
+          </select> */}
+          <Controller
+            name="EditDepartmentTeams"
+            control={control}
+            render={(props) => (
+              <SelectInput2
+                handleChange={(e)=>{
+                  if(e.target.value !== ""){
+                    setData(e.target.value);
+                  }
+                }}
+                selectText={splitData[1]}
+                {...register("team")}
+                selectValue={Data}
+                options={
+                  teamsData
+                    ? teamsData?.techMembers?.map((team:any) => {
+                        return {
+                          id: team._id,
+                          value: `${team._id},${team.name},${team.idInTrello}`,
+                          text: team.name,
+                        };
+                      })
+                    : []
+                }
+              />
+            )}
+          />
           <button
             className="orange-btn"
             onClick={() => {

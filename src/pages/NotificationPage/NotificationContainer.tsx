@@ -48,7 +48,7 @@ const NotificationContainer = (props: Props) => {
     return () => {
       socket.off("notification update");
     };
-  });
+  },[]);
 
   const handleLoadMore = async () => {
     setLoading(true);
@@ -72,12 +72,11 @@ const NotificationContainer = (props: Props) => {
       ) : null}
       <Grid item xs={12} lg={6} textAlign="center" mb="1em">
         <LoadingButton
-          loading={loading}
           variant="contained"
-          sx={{ textTransform: "capitalize", pr: "2em", pl: "2em",color:"#fff !important" }}
+          sx={{ textTransform: "capitalize",color:"#fff !important",maxHeight:"40px" }}
           onClick={handleLoadMore}
         >
-         {buttonLoading ? <CircularProgress sx={{color:"white",padding:"10px"}}/> : 'Load More'}
+         {loading ? <CircularProgress sx={{color:"white",padding:"10px"}}/> : 'Load More'}
         </LoadingButton>
       </Grid>
     </Grid>

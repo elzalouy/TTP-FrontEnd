@@ -93,6 +93,7 @@ const SelectInput: React.FC<Props> = ({
           overflow={"hidden"}
           color="#696974"
           fontSize={14}
+          textTransform="capitalize"
           fontWeight={"400"}
           paddingRight={1}
         >
@@ -102,6 +103,7 @@ const SelectInput: React.FC<Props> = ({
           lineHeight={1}
           textOverflow="hidden"
           overflow={"hidden"}
+          textTransform="capitalize"
           variant="h5"
           height={40}
           fontSize={14}

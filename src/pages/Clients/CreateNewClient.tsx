@@ -119,7 +119,7 @@ const CreateNewClient: React.FC<Props> = () => {
 
             <Box className="controllers">
               <button
-                className="cancelBtn"
+                className="cancelBtn-client"
                 onClick={(e) => {
                   e.preventDefault();
                   setShow("none");
@@ -127,7 +127,7 @@ const CreateNewClient: React.FC<Props> = () => {
               >
                 Cancel
               </button>
-              <button className="blackBtn">Done</button>
+              <button className="blackBtn-client">Done</button>
             </Box>
           </form>
         </Box>

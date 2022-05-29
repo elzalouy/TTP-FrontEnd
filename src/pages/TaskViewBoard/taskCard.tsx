@@ -41,6 +41,11 @@ const TaskCard: React.FC<DataTypes> = ({
 
   useEffect(() => {
     if (status !== "Not Started") {
+      if(deadline===null){
+        setRemaningDays("Deadline is required");
+        setDaysBgColor("#E4DADC");
+        setDaysColor("#2C2C2C");
+      }
       const floatDays =
         (new Date(deadline).getTime() - new Date().getTime()) /
         (1000 * 60 * 60 * 24);
@@ -179,7 +184,7 @@ const TaskCard: React.FC<DataTypes> = ({
                     >
                       <img src={IMAGES.scheduleOn} alt="more" />
                       <Typography style={{ paddingLeft: "5px" }}>
-                        done
+                        Done
                       </Typography>
                     </Stack>
                   </>
