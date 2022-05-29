@@ -36,6 +36,7 @@ const Tasks: React.FC<Props> = (props: any) => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [Show, setShow] = React.useState("none");
   const { register, watch, control, setValue } = useForm();
+
   React.useEffect(() => {
     if (props?.location?.state?.projectId) {
       setValue("projectId", props?.location?.state?.projectId);
@@ -43,6 +44,7 @@ const Tasks: React.FC<Props> = (props: any) => {
       dispatch(filterTasks(filter));
     }
   }, []);
+
   const onHandleChange = (e: any) => {
     e.preventDefault();
     let filter = watch();
@@ -55,6 +57,7 @@ const Tasks: React.FC<Props> = (props: any) => {
   };
 
   const onDeleteTasks = async () => {
+    let filter = watch();
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
   };
@@ -127,7 +130,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             )}
           />
         </Grid>
-        <div style={{width:"20px"}}></div>
+        <div style={{ width: "20px" }}></div>
         <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -142,23 +145,23 @@ const Tasks: React.FC<Props> = (props: any) => {
                     { id: "", value: "", text: "All" },
                     {
                       id: "not started",
-                      value: "not started",
+                      value: "Not Started",
                       text: "Not Started",
                     },
-                    { id: "not clear", value: "not clear", text: "Not Clear" },
+                    { id: "not clear", value: "Not Clear", text: "Not Clear" },
                     {
                       id: "inProgress",
                       value: "inProgress",
                       text: "In Progress",
                     },
-                    { id: "review", value: "review", text: "Review" },
-                    { id: "shared", value: "shared", text: "Shared" },
+                    { id: "review", value: "Review", text: "Review" },
+                    { id: "shared", value: "Shared", text: "Shared" },
                     {
                       id: "done",
-                      value: "done",
+                      value: "Done",
                       text: "Done",
                     },
-                    { id: "canceled", value: "canceled", text: "Canceled" },
+                    { id: "canceled", value: "Cancel", text: "Canceled" },
                   ]}
                   handleChange={(e) => {
                     e.preventDefault();
@@ -172,7 +175,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
-        <div style={{width:"20px"}}></div>
+        <div style={{ width: "20px" }}></div>
         {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -235,8 +238,8 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
-        <div style={{width:"20px"}}></div>
-       {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
+        <div style={{ width: "20px" }}></div>
+        {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -301,7 +304,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid>
-        <div style={{width:"20px"}}></div>
+        <div style={{ width: "20px" }}></div>
         <Grid marginX={0.5} item xs={2} sm={2} md={1}>
           <DeleteTask
             task={selects}

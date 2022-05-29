@@ -84,7 +84,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                 color: "#334D6E",
                 width: "300px",
                 margin: "0px",
-                padding: "0px 0px 0px 15px",
+                padding: "0px 0px 0px 50px",
                 fontWeight: "normal",
               }}
             >
@@ -178,7 +178,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           : "endedStatus"
                       }
                     >
-                      {status}
+                      {status === "Cancel" ? "Canceled" : status}
                     </div>
                   </TableCell>
                   <TableCell
@@ -189,7 +189,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                       color: "#323C47",
                       width: "300px",
                       margin: "0px",
-                      padding: "0px 0px 0px 15px",
+                      padding: "0px 0px 0px 50px",
                       textTransform: "capitalize",
                       fontWeight: "500",
                     }}

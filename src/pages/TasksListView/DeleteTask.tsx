@@ -16,12 +16,15 @@ type Props = {
 const DeleteTask: React.FC<Props> = (props) => {
   return (
     <Box style={{ height: "40px" }}>
-      <Box style={{height:"100%", width: "35px", padding: "0 10px" }} className="filter-icon">
+      <Box
+        style={{ height: "100%", width: "35px", padding: "0 10px" }}
+        className="filter-icon"
+      >
         <IconButton
           onClick={() => {
             if (props.task.length !== 0) {
               props.setShow("flex");
-            }else{
+            } else {
               toast.warn("Please select a task you wish to delete", {
                 position: "top-right",
                 autoClose: 1500,
@@ -30,7 +33,7 @@ const DeleteTask: React.FC<Props> = (props) => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                toastId:generateID(),
+                toastId: generateID(),
               });
             }
           }}
@@ -39,23 +42,25 @@ const DeleteTask: React.FC<Props> = (props) => {
         </IconButton>
       </Box>
 
-      <PopUp show={props.Show} widthSize="23vw">
-        <p className="delete-title">
-          Are you sure you want to delete this task?
-        </p>
-        <hr className="hr-dt" />
-        <div className="controllers-dt">
-          <button
-            className="cancelBtn-dt"
-            onClick={() => {
-              props.setShow("none");
-            }}
-          >
-            Cancel
-          </button>
-          <button className="redBtn" onClick={props.onDelete}>
-            Delete
-          </button>
+      <PopUp show={props.Show} widthSize="25vw">
+        <div className="task-delete-container">
+          <p className="delete-title">
+            Are you sure you want to delete this task?
+          </p>
+          <hr className="hr-dt" />
+          <div className="controllers-dt">
+            <button
+              className="cancelBtn-dt"
+              onClick={() => {
+                props.setShow("none");
+              }}
+            >
+              Cancel
+            </button>
+            <button className="redBtn" onClick={props.onDelete}>
+              Delete
+            </button>
+          </div>
         </div>
       </PopUp>
     </Box>
