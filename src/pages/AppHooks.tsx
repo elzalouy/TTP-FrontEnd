@@ -140,7 +140,7 @@ const AppHooks: React.FC = (props) => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [isAuthed]);
 
   return <>{props.children}</>;
 };
