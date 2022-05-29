@@ -33,7 +33,8 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -127,7 +128,8 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       args.reset();
       return rejectWithValue(error);
@@ -150,7 +152,8 @@ export const filterProjects = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -172,7 +175,8 @@ export const getTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -194,7 +198,8 @@ export const getProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -220,7 +225,8 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -242,7 +248,8 @@ export const filterTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -275,7 +282,8 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -308,7 +316,8 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -341,7 +350,8 @@ export const deleteProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -352,7 +362,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-      console.log(args.data);
+      // console.log(args.data);
       let deleteResult = await api.deleteTask(args?.data);
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));
@@ -375,7 +385,8 @@ export const deleteTask = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -407,7 +418,8 @@ export const editProject = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -421,8 +433,8 @@ export const moveTask = createAsyncThunk<any, any, any>(
       let department: Department = args?.department;
       let value = args?.value;
       let task = args?.task;
-      console.log(department);
-      console.log(value);
+      // console.log(department);
+      // console.log(value);
       switch (value) {
         case "Not Clear":
           newlist = department.notClearListId;
@@ -466,7 +478,8 @@ export const moveTask = createAsyncThunk<any, any, any>(
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined, toastId: generateID(),
+        progress: undefined,
+        toastId: generateID(),
       });
       return rejectWithValue(error);
     }
@@ -479,7 +492,7 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
     try {
       let response = await api.editTask(args.data);
       if (response.ok && response.data) {
-        args.setShow("none")
+        args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;
       } else throw new Error("Task not updated.");

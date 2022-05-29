@@ -60,7 +60,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   if (props.condition) {
     return null;
   } else {
-    console.log(props.projects);
+    // console.log(props.projects);
     return (
       <Table
         className={classes.table}
@@ -71,41 +71,43 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         }
         aria-label="simple table"
       >
-      {props.expanded === true && <TableHead>
-          <TableRow className={classes.thead}>
-            <TableCell
-              sx={{
-                borderBottom: "none",
-                borderTopLeftRadius: "10px",
-                borderBottomLeftRadius: "10px",
-              }}
-            >
-              Project title
-            </TableCell>
-            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-              Start date
-            </TableCell>
-            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-              {props.progress ? "Progress" : "Tasks"}
-            </TableCell>
-            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-              Deadline date
-            </TableCell>
-            {props.status === "Done" && (
-              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-                End status
+        {props.expanded === true && (
+          <TableHead>
+            <TableRow className={classes.thead}>
+              <TableCell
+                sx={{
+                  borderBottom: "none",
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                }}
+              >
+                Project title
               </TableCell>
-            )}
-            <TableCell
-              sx={{
-                borderBottom: "none",
-                borderTopRightRadius: "10px",
-                borderBottomRightRadius: "10px",
-              }}
-              align="right"
-            ></TableCell>
-          </TableRow>
-        </TableHead>}
+              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+                Start date
+              </TableCell>
+              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+                {props.progress ? "Progress" : "Tasks"}
+              </TableCell>
+              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+                Deadline date
+              </TableCell>
+              {props.status === "Done" && (
+                <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+                  End status
+                </TableCell>
+              )}
+              <TableCell
+                sx={{
+                  borderBottom: "none",
+                  borderTopRightRadius: "10px",
+                  borderBottomRightRadius: "10px",
+                }}
+                align="right"
+              ></TableCell>
+            </TableRow>
+          </TableHead>
+        )}
         <TableBody>
           {props.expanded === true &&
             props.projects &&
@@ -158,12 +160,21 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       fontSize={14}
                       color="#696974"
                     >
-                      {project.startDate === null ? <span style={{color:"red"}}>Please add a Starting date</span> : new Date(project.startDate).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {project.startDate === null ? (
+                        <span style={{ color: "red" }}>
+                          Please add a Starting date
+                        </span>
+                      ) : (
+                        new Date(project.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      )}
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -216,12 +227,21 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#696974"
                       fontSize={14}
                     >
-                     {project.projectDeadline === null ? <span style={{color:"red"}}>Please add a Deadline</span> : new Date(project.startDate).toLocaleDateString("en-US", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {project.projectDeadline === null ? (
+                        <span style={{ color: "red" }}>
+                          Please add a Deadline
+                        </span>
+                      ) : (
+                        new Date(project.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      )}
                     </Typography>
                   </TableCell>
                   {props.status === "Done" && (

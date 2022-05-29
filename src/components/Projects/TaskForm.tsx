@@ -91,7 +91,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
-  console.log(newProject.project._id);
+  // console.log(newProject.project._id);
 
   const onSubmit = async (data: any) => {
     let newTask = {
@@ -124,7 +124,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
     } else {
       dispatch(createProjectTask(newTask));
@@ -419,7 +419,15 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 }}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
-                <span style={{color:"white",fontSize:"12px",marginLeft:"5px"}}>{Files && Files.length > 0 ? Files?.length : ""}</span>
+                <span
+                  style={{
+                    color: "white",
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  {Files && Files.length > 0 ? Files?.length : ""}
+                </span>
               </Button>
               {Files &&
                 Files.length > 0 &&
