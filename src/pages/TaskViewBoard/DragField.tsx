@@ -95,7 +95,7 @@ const DragField: React.FC = (props: any) => {
     },
 
     [uuidv4()]: {
-      name: "Canceled",
+      name: "Cancled",
       items: cancledTasks,
       header: "canceled-header",
       body: "canceled-task",
@@ -163,7 +163,7 @@ const DragField: React.FC = (props: any) => {
         footer: "task-card-footer-done",
       },
       [uuidv4()]: {
-        name: "Canceled",
+        name: "Cancled",
         items: cancledTasks,
         header: "canceled-header",
         body: "canceled-task",

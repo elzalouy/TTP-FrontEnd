@@ -55,6 +55,31 @@
   margin-left: 10px;
 }
 
+.blackBtn-client{
+  cursor: pointer;
+  width: 180px;
+  height: 42px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.cancelBtn-client{
+  cursor: pointer;
+  width: 180px;
+  height: 42px;
+  background-color: #f4f4f4;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
 .controllers-center{
   justify-content: center !important;
   align-items: center;

@@ -129,7 +129,9 @@ const TasksTable: React.FC<TasksTableProps> = ({
         <TableBody>
           {tasks &&
             tasks?.map((item, index) => {
+
               const { _id, status, name, projectId, start, deadline } = item;
+              
 
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
