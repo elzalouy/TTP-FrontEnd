@@ -272,7 +272,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
                         <TextField
-                          placeholder="deadline"
+                          placeholder="Deadline"
                           error={error.error?.details[0].path.includes(
                             "deadline"
                           )}

@@ -255,6 +255,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         )}
                         {...register("deadline")}
                         onChange={params.onChange}
+                        placeholder="Deadline"
                         sx={{
                           width: "100%",
                           paddingTop: 1,
@@ -317,6 +318,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     )}
                     {...register("description")}
                     id="outlined-multiline-static"
+                    placeholder="Write about your task"
                     multiline
                     sx={{
                       paddingTop: 1,
