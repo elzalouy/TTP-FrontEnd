@@ -3,6 +3,11 @@
   font-weight: bolder !important;
 }
 
+.normal{
+  font-family: "Cairo" !important;
+  font-weight: normal !important;
+}
+
 .black-btn {
   cursor: pointer;
   text-transform: capitalize;
@@ -124,7 +129,13 @@
   font-weight: bold !important;
   margin: 10px 0 5px 0 !important;
   text-transform: capitalize;
-  margin-top: 40px !important;
+  margin:40px !important;
+}
+.popup-label-nt {
+  display: block;
+  font-weight: bold !important;
+  margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
 }
 
 .popup-input {
@@ -398,7 +409,8 @@ table.allTask-table td.deleteTd {
   border-radius: 5px;
   padding: 11px;
   width: 100%;
-  margin: 10px 0;
+  margin: 30px 0;
+  margin-top: 35px;
 }
 
 /* TABLE ADD NEW TEAM */
