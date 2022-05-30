@@ -38,7 +38,6 @@ export const getPMs = createAsyncThunk<any, any, any>(
         rejectWithValue("Un Authorized");
         removeAuthToken();
       }
-
       if (PMs.ok && PMs.data) return PMs.data;
       else return [];
     } catch (error) {
@@ -53,7 +52,7 @@ export const createPM = createAsyncThunk<any, any, any>(
     try {
       let PMs = await PMapi.createUser(args.data);
       if (PMs.ok && PMs.data) {
-        toast.success("Product Manager created successfully", {
+        toast.success("Project Manager created successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -90,7 +89,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
     try {
       let PMs = await PMapi.updateUser(args.data);
       if (PMs.ok && PMs.data) {
-        toast.success("Product Manager updated successfully", {
+        toast.success("Project Manager updated successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -171,7 +170,7 @@ export const deletePM = createAsyncThunk<any, any, any>(
     try {
       let PMs = await PMapi.deleteUser(id);
       if (PMs.ok && PMs.data) {
-        toast.success("Product Manager deleted successfully", {
+        toast.success("Project Manager deleted successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
