@@ -114,7 +114,7 @@ const SelectInput: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-          {Value ? Value : placeholder || "All"}
+          {Value ? Value==="inProgress" ? "In Progress" : Value : placeholder || "All"}
         </Typography>
       </Box>
       <Box display={"inline-flex"} maxWidth="28px" onClick={handleOpen}>
