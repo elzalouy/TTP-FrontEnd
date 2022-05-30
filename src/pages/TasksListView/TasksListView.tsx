@@ -161,7 +161,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                       value: "Done",
                       text: "Done",
                     },
-                    { id: "canceled", value: "Cancel", text: "Canceled" },
+                    { id: "canceled", value: "Cancled", text: "Cancled" },
                   ]}
                   handleChange={(e) => {
                     e.preventDefault();

@@ -53,9 +53,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       let tasks = [...state.newProject.tasks];
       tasks = tasks.filter(
         (item) =>
-          item._id !== action.payload._id 
-      /*     item.name !== action.payload.name &&
-          item.description !== action.payload.description */
+          item._id !== action.payload._id
+        /*     item.name !== action.payload.name &&
+            item.description !== action.payload.description */
       );
       state.newProject.tasks = tasks;
     },
@@ -241,7 +241,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.allTasks = action.payload;
-      state.filteredTasks = action.payload;
+      if (state.filteredTasks.length === 0) {
+        state.filteredTasks = action.payload;
+      }
     });
     builder.addCase(filterTasks.rejected, (state) => {
       state.loading = false;
@@ -294,6 +296,11 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.allTasks = [...state.allTasks].filter(
         (item) => item._id !== action.payload?._id
       );
+      state.filteredTasks = [...state.filteredTasks].filter((task) => {
+        action.payload.filter((tasksDeleted: Task) => {
+          return tasksDeleted._id !== task._id;
+        })
+      });
       state.loading = false;
     });
     builder.addCase(editProject.fulfilled, (state, action) => {
@@ -308,6 +315,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(deleteTasks.fulfilled, (state, action) => {
       state.loading = false;
+      state.filteredTasks = [...state.filteredTasks].filter((task) => task._id !== action.payload?._id);
       let all = [...state.allTasks];
       all = _(all).keyBy("id").at(action.payload).filter().value();
     });
@@ -340,7 +348,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.pending, (state, action) => {
       state.editTaskLoading = true;
     });
-    builder.addCase(moveTask.rejected, (state, action) => {});
+    builder.addCase(moveTask.rejected, (state, action) => { });
     // builder.addCase(moveTask.)
   },
 });
