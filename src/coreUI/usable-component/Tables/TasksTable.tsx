@@ -200,7 +200,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           : "endedStatus"
                       }
                     >
-                      {status === "Cancel" ? "Canceled" : status}
+                      {status}
                     </div>
                   </TableCell>
                   <TableCell

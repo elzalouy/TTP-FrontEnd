@@ -69,7 +69,7 @@ export const selectNotStartedTasks = (state: RootState) =>
   );
 export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Cancled"
+    (item) => item.status === "Cancel"
   );
 export const selectSharedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(

@@ -64,8 +64,16 @@ export const createPM = createAsyncThunk<any, any, any>(
         args.dispatch(fireCreatePMHook(""));
         return PMs.data;
       }
-      throw new Error(
-        "Error happened while creating the project manager, please try again"
+      toast.error(
+        "Error happened while creating the project manager, please try again",{
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
       );
     } catch (error: any) {
       toast.error(error, {
@@ -101,7 +109,15 @@ export const updatePM = createAsyncThunk<any, any, any>(
         args.dispatch(fireEditPMHook(""));
         return PMs.data;
       }
-      throw new Error(PMs?.originalError?.message);
+      toast.error(PMs?.originalError?.message,{
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",
