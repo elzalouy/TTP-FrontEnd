@@ -244,10 +244,11 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       if (state.filteredTasks.length === 0) {
         state.filteredTasks = action.payload;
       } else {
-        state.filteredTasks = [...state.filteredTasks].filter((task) => {
-          return action.payload?.filter((deletedTask: Task) => {
-            return task.status === deletedTask.status
+        state.filteredTasks = [...action.payload].filter((task: Task) => {
+          let filteredAfterDeleteTasks = [...state.filteredTasks].filter((deletedTask: Task) => {
+            return task._id === deletedTask._id;
           });
+          return filteredAfterDeleteTasks;
         });
       }
     });
