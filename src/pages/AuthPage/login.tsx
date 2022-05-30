@@ -47,6 +47,8 @@ const Login: React.FC<Props> = ({ history }) => {
   const {
     handleSubmit,
     control,
+    setValue,
+    watch,
     formState: { errors },
     register,
   } = useForm<IFormInputs>();
@@ -56,7 +58,7 @@ const Login: React.FC<Props> = ({ history }) => {
     status: false,
     message: "",
   });
-  const watch = useAppSelector(selectAuth);
+  // const watch = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
   const loading = useAppSelector(selectLoading);
   const res = useAppSelector(selectResponse);
@@ -166,15 +168,15 @@ const Login: React.FC<Props> = ({ history }) => {
                 {...field}
                 {...register("email", { required: true })}
                 type="email"
-                autoComplete="on"
                 className="f-inputs"
                 placeholder="Email Address"
-                onChange={() =>
+                onChange={(e: any) => {
+                  setValue("email", e.target.value);
                   setFailed({
                     message: "",
                     status: false,
-                  })
-                }
+                  });
+                }}
               />
             )}
           />
@@ -202,12 +204,13 @@ const Login: React.FC<Props> = ({ history }) => {
                   type={visible ? "text" : "password"}
                   autoComplete="new-password"
                   className="password-input"
-                  onChange={() =>
+                  onChange={(e:any) => {
+                    setValue("password",e.target.value)
                     setFailed({
                       message: "",
                       status: false,
                     })
-                  }
+                  }}
                   placeholder="Password"
                 />
                 <IconButton onClick={() => setVisiblity((state) => !state)}>

@@ -182,6 +182,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
             src={IMAGES.closeicon}
             alt="closeIcon"
             onClick={() => {
+              setValue("deadline", null);
               props.setShow("none");
               reset();
             }}

@@ -20,7 +20,7 @@ import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
@@ -423,7 +423,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               color: "#909090",
             }}
           >
-            <RotateRightIcon></RotateRightIcon> Loading More
+            <CircularProgress sx={{color:"#BCC4D4" , marginRight:"10px" , padding:"10px"}} /> Loading More
           </Box>
         )}
       </Box>

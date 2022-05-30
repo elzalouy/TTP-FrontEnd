@@ -1,10 +1,14 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import React, { useState, useRef } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./CreateNewClient.css";
 import { useDispatch } from "react-redux";
-import { creatClient } from "../../redux/Clients";
+import {
+  creatClient,
+  selectLoadingClient,
+} from "../../redux/Clients";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {};
 interface client {
@@ -17,6 +21,7 @@ const CreateNewClient: React.FC<Props> = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
+  const loadingClient = useAppSelector(selectLoadingClient);
   const [Data, setData] = useState<client>({
     image: null,
     clientName: "",
@@ -127,7 +132,9 @@ const CreateNewClient: React.FC<Props> = () => {
               >
                 Cancel
               </button>
-              <button className="blackBtn-client">Done</button>
+              <button className="blackBtn-client">
+                {loadingClient ? <CircularProgress sx={{color:"white" , padding:"0px",height:"25px !important" , width:"25px !important" }} /> : "Done"}
+              </button>
             </Box>
           </form>
         </Box>

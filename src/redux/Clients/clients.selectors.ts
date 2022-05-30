@@ -10,4 +10,5 @@ export const selectClientsNames = (state: RootState) => {
   });
   return names;
 };
+export const selectLoadingClient = (state:RootState) => state?.clients?.loading;
 export const selectEditClient = (state: RootState) => state?.clients.editClient;

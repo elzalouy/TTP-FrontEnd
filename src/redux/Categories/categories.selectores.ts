@@ -6,3 +6,5 @@ export const selectAllCategories = (state: RootState) =>
 export const selectSelectedCategory = (state: RootState) =>
   state?.categories?.selectedCategory;
 
+export const selectCatLoading = (state:RootState) => state?.categories?.loading;
+

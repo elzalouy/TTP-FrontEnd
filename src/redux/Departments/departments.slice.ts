@@ -35,7 +35,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createDepartment.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(createDepartment.fulfilled, (state, action) => {
       state.loading = false;
@@ -45,7 +45,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(updateDepartment.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(updateDepartment.fulfilled, (state, action) => {
       state.loading = false;

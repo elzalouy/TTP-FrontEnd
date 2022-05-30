@@ -4,11 +4,11 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
 import { useAppSelector } from "../../redux/hooks";
-import { selectSelectedCategory } from "../../redux/Categories/categories.selectores";
+import { selectSelectedCategory,selectCatLoading } from "../../redux/Categories/categories.selectores";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
@@ -25,6 +25,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const [errors, setErrors] = useState("");
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const loadingCat = useAppSelector(selectCatLoading);
   const [title, setTitle] = useState<string | undefined>("");
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategory, setSubCategory] = useState("");
@@ -195,7 +196,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
               Cancel
             </button>
             <button className="controllers-done" onClick={handleSubmit}>
-              Done
+              {loadingCat ? <CircularProgress sx={{color:"white" , height:"25px !important" , width:"25px !important"}}/> : "Done"}
             </button>
           </div>
         </Grid>

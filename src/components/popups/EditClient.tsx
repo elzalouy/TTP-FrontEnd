@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { selectEditClient, updateClient } from "../../redux/Clients";
+import { selectEditClient, selectLoadingClient, updateClient } from "../../redux/Clients";
 import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
 
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const client = useAppSelector(selectEditClient);
+  const loadingClient = useAppSelector(selectLoadingClient);
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
   const [Data, setData] = useState<any>();
@@ -109,7 +110,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               Cancel
             </button>
             <button className="blackBtn" onClick={handleSubmit}>
-              Done
+              {loadingClient ? <CircularProgress sx={{color:"white" , padding:"0px",height:"25px !important" , width:"25px !important" }}/> : "Done"}
             </button>
           </Box>
         </Box>

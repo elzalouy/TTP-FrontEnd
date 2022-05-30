@@ -4,10 +4,11 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
-import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
+import { selectAllDepartments,selectDepartmentLoading } from "../../redux/Departments/departments.selectors";
 import { useDispatch } from "react-redux";
 import { createTeam } from "../../redux/techMember";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
+import { CircularProgress } from "@mui/material";
 
 type Props = {};
 
@@ -22,6 +23,7 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
+  const depLoading = useAppSelector(selectDepartmentLoading);
 
   const getDepartmentName = (id: teamData) => {
     const departmentID = id.department.split(",");
@@ -65,7 +67,7 @@ const AddNewTeam: React.FC<Props> = () => {
           setShow("flex");
         }}
       >
-        Manage Teams
+        Add New Teams
       </button>
 
       <PopUp show={Show} minWidthSize="30vw">
@@ -81,7 +83,7 @@ const AddNewTeam: React.FC<Props> = () => {
             }}
           />
         </div>
-        <p className="popup-title">Manage teams</p>
+        <p className="popup-title">Add new teams</p>
         <label className="popup-label">Team name</label>
         <input
           className="popup-input"
@@ -189,7 +191,11 @@ const AddNewTeam: React.FC<Props> = () => {
             Cancel
           </button>
           <button className="controllers-done" onClick={handleAddTeam}>
-            Done
+            {depLoading ? (
+              <CircularProgress sx={{ color: "white", padding: "10px" }} />
+            ) : (
+              "Done"
+            )}
           </button>
         </div>
       </PopUp>

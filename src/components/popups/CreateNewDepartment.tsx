@@ -10,12 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createDepartment,
   selectAllDepartments,
+  selectDepartmentLoading,
 } from "../../redux/Departments";
 import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { register } from "../../serviceWorkerRegistration";
 import { generateID } from "../../helpers/IdGenerator";
+import { CircularProgress } from "@mui/material";
 
 type Props = {};
 
@@ -34,6 +36,7 @@ const colors: string[] = [
 const CreateNewDepartment: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const department = useSelector(selectAllDepartments);
+  const depLoading = useAppSelector(selectDepartmentLoading);
   const [Show, setShow] = useState("none");
   const [Data, setData] = useState<string>("Select Team");
   const [Names, setNames] = useState<string[]>([]);
@@ -302,7 +305,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             Cancel
           </button>
           <button className="controllers-done" onClick={() => handleSubmit()}>
-            Done
+            {depLoading ? <CircularProgress sx={{ color: "white", padding: "10px" }} />  : "Done"}
           </button>
         </div>
       </PopUp>

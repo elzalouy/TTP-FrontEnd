@@ -12,7 +12,7 @@ import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../redux/Ui";
 import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
@@ -100,7 +100,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
               color: "#909090",
             }}
           >
-            <RotateRightIcon></RotateRightIcon> Loading More
+            <CircularProgress sx={{color:"#BCC4D4" , marginRight:"10px" , padding:"10px"}}/> Loading More
           </Box>
         )}
         <Box
