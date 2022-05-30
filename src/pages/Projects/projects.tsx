@@ -15,6 +15,7 @@ import {
   ProjectsActions,
   selectNotStartedProjects,
 } from "../../redux/Projects";
+import Loading from "../../coreUI/usable-elements/Loading"
 import { getPMs, selectPMs } from "../../redux/PM";
 import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
@@ -423,7 +424,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               color: "#909090",
             }}
           >
-            <CircularProgress sx={{color:"#BCC4D4" , marginRight:"10px" , padding:"10px"}} /> Loading More
+            <Loading color="grey" type="spinningBubbles"/> Loading More
           </Box>
         )}
       </Box>

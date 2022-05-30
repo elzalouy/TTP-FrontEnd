@@ -14,6 +14,7 @@ import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
@@ -129,16 +130,27 @@ const TasksTable: React.FC<TasksTableProps> = ({
           {tasks &&
             tasks?.map((item, index) => {
               const { _id, status, name, projectId, start, deadline } = item;
+
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
-                    style={{
-                      color: "#334D6E",
-                      width: "20px",
-                      margin: "0px",
-                      padding: "0px 8px 0px 8px",
-                      textTransform: "capitalize",
-                    }}
+                    style={
+                      checkIndexForLastRow(index, tasks)
+                        ? {
+                            color: "#334D6E",
+                            width: "20px",
+                            margin: "0px",
+                            padding: "12px 8px 12px 8px",
+                            textTransform: "capitalize",
+                          }
+                        : {
+                            color: "#334D6E",
+                            width: "20px",
+                            margin: "0px",
+                            padding: "0px 8px 0px 8px",
+                            textTransform: "capitalize",
+                          }
+                    }
                   >
                     <Checkbox
                       checked={
@@ -153,13 +165,23 @@ const TasksTable: React.FC<TasksTableProps> = ({
                   </TableCell>
                   <TableCell
                     align="left"
-                    style={{
-                      color: "#334D6E",
-                      width: "30px",
-                      margin: "0px",
-                      padding: "0px 8px 0px 0px",
-                      textTransform: "capitalize",
-                    }}
+                    style={
+                      checkIndexForLastRow(index, tasks)
+                        ? {
+                            color: "#334D6E",
+                            width: "20px",
+                            margin: "0px",
+                            padding: "12px 8px 12px 0px",
+                            textTransform: "capitalize",
+                          }
+                        : {
+                            color: "#334D6E",
+                            width: "20px",
+                            margin: "0px",
+                            padding: "0px 8px 0px 0px",
+                            textTransform: "capitalize",
+                          }
+                    }
                   >
                     <div
                       className={
@@ -184,26 +206,48 @@ const TasksTable: React.FC<TasksTableProps> = ({
                   <TableCell
                     onClick={() => history.push(`/TasksBoard/${projectId}`)}
                     align="left"
-                    style={{
-                      cursor: "pointer",
-                      color: "#323C47",
-                      width: "300px",
-                      margin: "0px",
-                      padding: "0px 0px 0px 50px",
-                      textTransform: "capitalize",
-                      fontWeight: "500",
-                    }}
+                    style={
+                      checkIndexForLastRow(index, tasks)
+                        ? {
+                            cursor: "pointer",
+                            color: "#323C47",
+                            width: "300px",
+                            margin: "0px",
+                            padding: "12px 0px 12px 50px",
+                            textTransform: "capitalize",
+                            fontWeight: "500",
+                          }
+                        : {
+                            cursor: "pointer",
+                            color: "#323C47",
+                            width: "300px",
+                            margin: "0px",
+                            padding: "0px 0px 0px 50px",
+                            textTransform: "capitalize",
+                            fontWeight: "500",
+                          }
+                    }
                   >
                     {name}
                   </TableCell>
                   <TableCell
-                    style={{
-                      color: "#707683",
-                      width: "300px",
-                      margin: "0px",
-                      padding: "0px 0px 0px 8px",
-                      textTransform: "capitalize",
-                    }}
+                    style={
+                      checkIndexForLastRow(index, tasks)
+                        ? {
+                            color: "#707683",
+                            width: "300px",
+                            margin: "0px",
+                            padding: "12px 0px 12px 8px",
+                            textTransform: "capitalize",
+                          }
+                        : {
+                            color: "#707683",
+                            width: "300px",
+                            margin: "0px",
+                            padding: "0px 0px 0px 8px",
+                            textTransform: "capitalize",
+                          }
+                    }
                     align="left"
                   >
                     {
@@ -217,13 +261,23 @@ const TasksTable: React.FC<TasksTableProps> = ({
                       : "-"}
                   </TableCell>
                   <TableCell
-                    style={{
-                      color: "#707683",
-                      width: "160px",
-                      margin: "0px",
-                      padding: "0px 15px 0px 8px",
-                      textTransform: "capitalize",
-                    }}
+                    style={
+                      checkIndexForLastRow(index, tasks)
+                        ? {
+                            color: "#707683",
+                            width: "160px",
+                            margin: "0px",
+                            padding: "12px 15px 12px 8px",
+                            textTransform: "capitalize",
+                          }
+                        : {
+                            color: "#707683",
+                            width: "160px",
+                            margin: "0px",
+                            padding: "0px 15px 0px 8px",
+                            textTransform: "capitalize",
+                          }
+                    }
                     align="left"
                   >
                     {deadline === null || deadline === ""

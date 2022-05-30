@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Task } from "../redux/Projects";
 
 export const getStatus = (status: string | undefined) => {
     if (status === "late") {
@@ -28,3 +29,13 @@ export const getStatus = (status: string | undefined) => {
       return "deliver on time";
     }
   };
+
+  export const checkIndexForLastRow = (index:number,tasks:Task[]) => {
+    let length = tasks.length - 1; 
+//Taking length of whole array and finding the last row to make changes
+    if(index === length){
+      return true;
+    }else{
+      return false;
+    }
+  }

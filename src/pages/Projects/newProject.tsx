@@ -14,6 +14,7 @@ import IMAGES from "../../assets/img";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../redux/Ui";
+import Loading from "../../coreUI/usable-elements/Loading"
 import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
 import { selectPMs } from "../../redux/PM";
@@ -100,7 +101,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
               color: "#909090",
             }}
           >
-            <CircularProgress sx={{color:"#BCC4D4" , marginRight:"10px" , padding:"10px"}}/> Loading More
+            <Loading color="grey" type="spinningBubbles"/> Loading More
           </Box>
         )}
         <Box

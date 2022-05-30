@@ -21,7 +21,7 @@ import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
   getStatus,
-} from "../../helpers/dateFunctions";
+} from "../../helpers/generalUtils";
 
 type Props = {
   show: string;
