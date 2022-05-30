@@ -324,7 +324,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             }}
             className="filter-icon"
           >
-            <img src={IMAGES.progressCircles} alt="sortout" />{" "}
+           <Loading color="grey" type="spinningBubbles"/>
             <Typography style={{ color: "#909090", paddingLeft: "10px" }}>
               Loading
             </Typography>

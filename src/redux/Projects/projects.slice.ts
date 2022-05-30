@@ -244,12 +244,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       if (state.filteredTasks.length === 0) {
         state.filteredTasks = action.payload;
       } else {
-        state.filteredTasks = [...action.payload].filter((task: Task) => {
-          let filteredAfterDeleteTasks = [...state.filteredTasks].filter((deletedTask: Task) => {
-            return task._id === deletedTask._id;
-          });
-          return filteredAfterDeleteTasks;
-        });
+        state.filteredTasks = action.payload.filter((task:Task) => state.filteredTasks.find(({ _id }) => task._id === _id));
       }
     });
     builder.addCase(filterTasks.rejected, (state) => {
