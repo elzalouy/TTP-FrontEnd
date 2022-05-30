@@ -245,7 +245,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.filteredTasks = action.payload;
       } else {
         state.filteredTasks = [...state.filteredTasks].filter((task) => {
-          action.payload?.filter((deletedTask: Task) => {
+          return action.payload?.filter((deletedTask: Task) => {
             return task.status === deletedTask.status
           });
         });
