@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { socket } from "../config/socket/actions";
+import { socket } from "../services/socketIo";
 import { selectIsAuth, selectUser } from "../redux/Auth";
 import { getAllClients } from "../redux/Clients";
 import { getAllDepartments } from "../redux/Departments";

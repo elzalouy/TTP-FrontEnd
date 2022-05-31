@@ -36,7 +36,6 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
-import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
 import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
@@ -74,7 +73,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       name: "",
       categoryId: "",
       subCategoryId: "",
-      memberId: "",
+      teamId: "",
       deadline: null,
       attachedFiles: "",
       selectedDepartmentId: "",
@@ -88,29 +87,24 @@ const CreateNewTask: React.FC<Props> = (props) => {
       name: data.name,
       categoryId: data?.categoryId,
       subCategoryId: data?.subCategoryId,
-      memberId: data?.memberId,
+      teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status:
-        data?.deadline !== null && data?.deadline !== ""
-          ? "inProgress"
-          : "Not Started",
+      status: data?.deadline ? "inProgress" : "Not Started",
       start: new Date().toUTCString(),
-      deadline:
-        data?.deadline === "" || data?.deadline === null
-          ? null
-          : moment(data?.deadline).toDate(),
+      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
       attachedFiles: [],
-      listId: selectedDepartment?.teamsId?.find(
-        (item) => item._id === data.memberId
-      )?.listId,
+      listId: data?.teamId
+        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
+            ?.listId
+        : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
-    // console.log(newTask);
     let validateResult = valdiateCreateTask(newTask);
+    console.log(validateResult, newTask, data);
     if (validateResult.error) {
       setError(validateResult);
       toast.error(validateResult.error.message, {
@@ -398,7 +392,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 <label className="label-project">Assign to Team</label>
                 <br />
                 <Controller
-                  name="memberId"
+                  name="teamId"
                   control={control}
                   render={(props) => (
                     <SelectInput2
@@ -409,7 +403,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           (item) => item._id === props.field.value
                         )?.name
                       }
-                      {...register("memberId")}
+                      {...register("teamId")}
                       selectValue={props.field.value}
                       options={
                         selectedDepartment?.teamsId

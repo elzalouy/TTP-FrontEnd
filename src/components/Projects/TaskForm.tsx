@@ -65,7 +65,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       name: "",
       categoryId: "",
       subCategoryId: "",
-      memberId: "",
+      teamId: "",
       deadline: null,
       attachedFiles: "",
       selectedDepartmentId: "",
@@ -101,21 +101,19 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       name: data.name,
       categoryId: data?.categoryId,
       subCategoryId: data?.subCategoryId,
-      memberId: data?.memberId,
+      teamId: data?.teamId ? data?.teamId : null,
       projectId: newProject?.project?._id,
-      status: "Not Started",
+      status: data?.deadline ? "inProgress" : "Not Started",
       start: new Date().toUTCString(),
-      deadline:
-        data?.deadline !== "" && data?.deadline !== null
-          ? moment(data?.deadline).toDate()
-          : null,
+      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
       attachedFiles: [],
-      listId: selectedDepartment?.teamsId?.find(
-        (item) => item._id === data.memberId
-      )?.listId,
+      listId: data?.teamId
+        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
+            ?.listId
+        : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
@@ -371,7 +369,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
               <label className="label-project">Assign to Team</label>
               <br />
               <Controller
-                name="memberId"
+                name="teamId"
                 control={control}
                 render={(props) => (
                   <SelectInput2
@@ -382,7 +380,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         (item) => item._id === props.field.value
                       )?.name
                     }
-                    {...register("memberId")}
+                    {...register("teamId")}
                     selectValue={props.field.value}
                     options={
                       selectedDepartment?.teamsId

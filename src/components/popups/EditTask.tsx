@@ -27,13 +27,14 @@ import { useAppSelector } from "../../redux/hooks";
 import {
   editTaskFromBoard,
   editTaskLoading,
+  ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
 } from "../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
-import { UiActions } from "../../redux/Ui";
+// import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
 import { valdiateCreateTask, validateEditTask } from "../../helpers/validation";
 import Joi from "joi";
@@ -77,7 +78,7 @@ const EditTask: React.FC<Props> = (props) => {
       setValue("deadline", task.deadline === null ? "" : task.deadline);
       setValue("description", task.description);
       setValue("file", task.file);
-      setValue("memberId", task.memberId);
+      setValue("teamId", task.teamId);
       setValue("selectedDepartmentId", dep ? dep._id : "");
       setValue("subCategoryId", task.subCategoryId);
       setSelectCategory(
@@ -110,24 +111,19 @@ const EditTask: React.FC<Props> = (props) => {
       name: data.name,
       categoryId: data?.categoryId,
       subCategoryId: data?.subCategoryId,
-      memberId: data?.memberId,
+      teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status:
-        data?.deadline !== null && data?.deadline !== ""
-          ? "inProgress"
-          : "Not Started",
+      status: data?.deadline ? "inProgress" : "Not Started",
       start: new Date().toUTCString(),
-      deadline:
-        data?.deadline === "" || data?.deadline === null
-          ? null
-          : moment(data?.deadline).toDate(),
+      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: "",
-      listId: selectedDepartment?.teamsId?.find(
-        (item) => item._id === data.memberId
-      )?.listId,
+      attachedFiles: [],
+      listId: data?.teamId
+        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
+            ?.listId
+        : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
@@ -169,6 +165,10 @@ const EditTask: React.FC<Props> = (props) => {
     newFiles = newFiles?.filter((file) => file !== item);
     setFiles(newFiles);
   };
+  const onCloseModel = () => {
+    dispatch(ProjectsActions.onEditTask(""));
+    props.setShow("none");
+  };
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
@@ -183,10 +183,7 @@ const EditTask: React.FC<Props> = (props) => {
             className="closeIcon"
             src={IMAGES.closeicon}
             alt="closeIcon"
-            onClick={() => {
-              setValue("deadline", null);
-              props.setShow("none");
-            }}
+            onClick={onCloseModel}
           />
           <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
             Edit task
@@ -402,7 +399,7 @@ const EditTask: React.FC<Props> = (props) => {
                 <label className="label-project">Assign to Team</label>
                 <br />
                 <Controller
-                  name="memberId"
+                  name="teamId"
                   control={control}
                   render={(props) => (
                     <SelectInput2
@@ -413,7 +410,7 @@ const EditTask: React.FC<Props> = (props) => {
                           (item) => item._id === props.field.value
                         )?.name
                       }
-                      {...register("memberId")}
+                      {...register("teamId")}
                       selectValue={props.field.value}
                       options={
                         selectedDepartment?.teamsId
