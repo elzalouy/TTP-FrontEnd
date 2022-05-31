@@ -5,10 +5,13 @@ import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import { useDispatch } from "react-redux";
 import { getAllNotifi, updateNotifi } from "../../redux/notification";
-import { notifiDataSelector,loadingNotification } from "../../redux/notification/notifi.selectors";
+import {
+  notifiDataSelector,
+  loadingNotification,
+} from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { notifiAction } from "../../redux/notification";
-import { socket } from "../../config/socket/actions";
+import { socket } from "../../services/socketIo";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -17,7 +20,6 @@ import { CircularProgress } from "@mui/material";
 type Props = {};
 // if
 const NotificationContainer = (props: Props) => {
-
   const dispatch = useDispatch();
   const notifiData = useAppSelector(notifiDataSelector);
   const user = useAppSelector(selectUser);
@@ -48,7 +50,7 @@ const NotificationContainer = (props: Props) => {
     return () => {
       socket.off("notification update");
     };
-  },[]);
+  }, []);
 
   const handleLoadMore = async () => {
     setLoading(true);
@@ -58,7 +60,13 @@ const NotificationContainer = (props: Props) => {
   };
 
   return (
-    <Grid container paddingX={4} paddingY={MD ? 10 : 0} spacing={4} bgcolor="#FAFAFB" >
+    <Grid
+      container
+      paddingX={4}
+      paddingY={MD ? 10 : 0}
+      spacing={4}
+      bgcolor="#FAFAFB"
+    >
       <Grid item xs={12}>
         <NotificationHeader />
       </Grid>
@@ -73,10 +81,18 @@ const NotificationContainer = (props: Props) => {
       <Grid item xs={12} lg={6} textAlign="center" mb="1em">
         <LoadingButton
           variant="contained"
-          sx={{ textTransform: "capitalize",color:"#fff !important",maxHeight:"40px" }}
+          sx={{
+            textTransform: "capitalize",
+            color: "#fff !important",
+            maxHeight: "40px",
+          }}
           onClick={handleLoadMore}
         >
-         {loading ? <CircularProgress sx={{color:"white",padding:"10px"}}/> : 'Load More'}
+          {loading ? (
+            <CircularProgress sx={{ color: "white", padding: "10px" }} />
+          ) : (
+            "Load More"
+          )}
         </LoadingButton>
       </Grid>
     </Grid>

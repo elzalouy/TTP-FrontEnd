@@ -46,7 +46,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     projectId: "",
     categoryId: "",
     subCategoryId: "",
-    memberId: "",
+    teamId: "",
     countNotClear: "",
     countShared: "",
     status: "",
@@ -155,9 +155,8 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                             .find((item) =>
                               item.teamsId.findIndex((i) => i._id === task._id)
                             )
-                            ?.teamsId?.find(
-                              (item) => item._id === task.memberId
-                            )?.name}
+                            ?.teamsId?.find((item) => item._id === task.teamId)
+                            ?.name}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">

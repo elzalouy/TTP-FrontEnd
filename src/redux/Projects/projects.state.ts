@@ -6,7 +6,7 @@ export interface Task {
   projectId: string;
   categoryId: string;
   subCategoryId: string;
-  memberId: string;
+  teamId: string;
   countNotClear?: any;
   countShared?: any;
   status: string;
@@ -101,7 +101,7 @@ const PorjectsState: ProjectsInterface = {
       projectId: "",
       categoryId: "",
       subCategoryId: "",
-      memberId: "",
+      teamId: "",
       countNotClear: 0,
       countShared: 0,
       status: "",

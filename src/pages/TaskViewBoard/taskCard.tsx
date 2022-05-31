@@ -27,7 +27,7 @@ const TaskCard: React.FC<DataTypes> = ({
 }) => {
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
-  const { _id, name, deadline, status, boardId } = item;
+  const { _id, name, deadline, status, boardId, teamId } = item;
   const [data, setData] = useState<
     | {
         department?: string | undefined;
@@ -41,7 +41,7 @@ const TaskCard: React.FC<DataTypes> = ({
 
   useEffect(() => {
     if (status !== "Not Started") {
-      if(deadline===null){
+      if (deadline === null) {
         setRemaningDays("Deadline is required");
         setDaysBgColor("#E4DADC");
         setDaysColor("#2C2C2C");
@@ -72,7 +72,7 @@ const TaskCard: React.FC<DataTypes> = ({
     }
     let newData = { ...data };
     newData.member = techMembers.techMembers.find(
-      (member) => member._id === item.memberId
+      (member) => member._id === item.teamId
     )?.name;
     newData.department = departments.find(
       (item) => item.boardId === boardId

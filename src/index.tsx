@@ -17,7 +17,6 @@ import "./i18n/i18n";
 import "./assets/fonts/Cairo-Black.ttf";
 import "./assets/fonts/Cairo-Bold.ttf";
 import "./assets/fonts/Cairo-Regular.ttf";
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
