@@ -201,7 +201,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       "startDate"
                     )}
                     {...register("startDate")}
-                    placeholder="start date"
+                    placeholder="Start Date"
                     onChange={params.onChange}
                     sx={{
                       paddingTop: 1,
@@ -246,7 +246,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       "deadline"
                     )}
                     {...register("deadline")}
-                    placeholder="deadline"
+                    placeholder="Deadline"
                     sx={{
                       paddingTop: 1,
                       "& .MuiOutlinedInput-input": {

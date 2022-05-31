@@ -36,7 +36,6 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
-import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
 import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
@@ -267,7 +266,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
                         <TextField
-                          placeholder="deadline"
+                          placeholder="Deadline"
                           error={error.error?.details[0].path.includes(
                             "deadline"
                           )}

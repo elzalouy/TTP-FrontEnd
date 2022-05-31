@@ -129,7 +129,9 @@ const TasksTable: React.FC<TasksTableProps> = ({
         <TableBody>
           {tasks &&
             tasks?.map((item, index) => {
+
               const { _id, status, name, projectId, start, deadline } = item;
+              
 
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
@@ -169,17 +171,17 @@ const TasksTable: React.FC<TasksTableProps> = ({
                       checkIndexForLastRow(index, tasks)
                         ? {
                             color: "#334D6E",
-                            width: "20px",
                             margin: "0px",
                             padding: "12px 8px 12px 0px",
                             textTransform: "capitalize",
+                            width:"130px"
                           }
                         : {
                             color: "#334D6E",
-                            width: "20px",
                             margin: "0px",
                             padding: "0px 8px 0px 0px",
                             textTransform: "capitalize",
+                            width:"130px"
                           }
                     }
                   >

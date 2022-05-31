@@ -22,6 +22,7 @@ import {
 import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
 import "./TasksListView.css";
+import Loading from "../../coreUI/usable-elements/Loading";
 interface Props {
   projectId?: string;
 }
@@ -161,7 +162,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                       value: "Done",
                       text: "Done",
                     },
-                    { id: "canceled", value: "Cancel", text: "Canceled" },
+                    { id: "canceled", value: "Cancled", text: "Cancled" },
                   ]}
                   handleChange={(e) => {
                     e.preventDefault();
@@ -324,7 +325,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             }}
             className="filter-icon"
           >
-            <img src={IMAGES.progressCircles} alt="sortout" />{" "}
+           <Loading color="grey" type="spinningBubbles"/>
             <Typography style={{ color: "#909090", paddingLeft: "10px" }}>
               Loading
             </Typography>

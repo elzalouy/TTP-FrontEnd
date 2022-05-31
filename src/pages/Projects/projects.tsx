@@ -300,7 +300,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                         {
                           id: "inProgress",
                           value: "inProgress",
-                          text: "in Progress",
+                          text: "In Progress",
                         },
                       ]}
                       handleChange={(e) => {

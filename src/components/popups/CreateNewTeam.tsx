@@ -4,7 +4,10 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
-import { selectAllDepartments,selectDepartmentLoading } from "../../redux/Departments/departments.selectors";
+import {
+  selectAllDepartments,
+  selectDepartmentLoading,
+} from "../../redux/Departments/departments.selectors";
 import { useDispatch } from "react-redux";
 import { createTeam } from "../../redux/techMember";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
@@ -35,6 +38,7 @@ const AddNewTeam: React.FC<Props> = () => {
     return departmentName[0]?.name;
   };
 
+
   useEffect(() => {
     setTeam({
       name: "",
@@ -59,6 +63,7 @@ const AddNewTeam: React.FC<Props> = () => {
     setAllTeam([]);
     setShow("none");
   };
+
   return (
     <>
       <button
@@ -84,7 +89,7 @@ const AddNewTeam: React.FC<Props> = () => {
           />
         </div>
         <p className="popup-title">Add new teams</p>
-        <label className="popup-label">Team name</label>
+        <label className="popup-label-nt">Team name</label>
         <input
           className="popup-input"
           type="text"
@@ -98,8 +103,8 @@ const AddNewTeam: React.FC<Props> = () => {
           }}
         />
 
-        <label className="popup-label">Department</label>
-    {/*     <select
+        <label className="popup-label-nt">Department</label>
+        {/*     <select
           className="popup-select"
           onChange={(e) => {
             setTeam({ ...Team, department: e.target.value });
@@ -153,12 +158,12 @@ const AddNewTeam: React.FC<Props> = () => {
           Add
         </button>
         <label style={{ fontWeight: "light", fontSize: "1rem" }}>
-          Added Team
+          Added Teams
         </label>
         <table className="allTeam-table">
           <tr className="th">
-            <th>Team Name</th>
-            <th>Department Name</th>
+            <th className="normal">Team Name</th>
+            <th className="normal">Department Name</th>
             <th></th>
           </tr>
           {AllTeam.map((el, index) => {
