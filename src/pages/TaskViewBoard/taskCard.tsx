@@ -117,10 +117,6 @@ const TaskCard: React.FC<DataTypes> = ({
     }
   };
 
-  if (status === "Not Started") {
-    console.log(getDisabledDrag(status, deadline));
-  }
-
   return (
     <Draggable
       index={index}

@@ -109,7 +109,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: [],
+      attachedFiles: null,
       listId: data?.teamId
         ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
             ?.listId
@@ -465,11 +465,18 @@ const TaskForm: React.FC<TaskFormProps> = () => {
           </div>
           <div>
             <button type="submit" className="addTaskBtn">
-            {loadingTask ? (
-              <CircularProgress sx={{ color: "white", padding: "0px" ,height:"25px !important",width:"25px !important"}} />
-            ) : (
-              "Add Task"
-            )}
+              {loadingTask ? (
+                <CircularProgress
+                  sx={{
+                    color: "white",
+                    padding: "0px",
+                    height: "25px !important",
+                    width: "25px !important",
+                  }}
+                />
+              ) : (
+                "Add Task"
+              )}
             </button>
           </div>
         </form>

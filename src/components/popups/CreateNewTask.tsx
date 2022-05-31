@@ -95,7 +95,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: [],
+      attachedFiles: null,
       listId: data?.teamId
         ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
             ?.listId
