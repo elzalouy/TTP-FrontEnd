@@ -29,11 +29,11 @@ const DeleteDepartment: React.FC<Props> = ({
   return (
     <SmallPopUp show={showDelete}>
       <p className="warning-text">
-        Are you sure you want to delete this department?{" "}
+        Are you sure you want to delete this department?
       </p>
       <Typography variant="h5" fontWeight={600} padding={1}>
-        If you deleted this department, all the tasks and Members in this
-        department will be deleted also.
+        If you delete this department, all the tasks and Members in this
+        department will be delete also.
       </Typography>
       <hr className="separator" />
       <div className="margin-cover">
