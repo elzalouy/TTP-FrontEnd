@@ -7,6 +7,7 @@ import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { Project, Task } from "../../redux/Projects";
+import { getDisabledDrag } from "../../helpers/generalUtils";
 import { selectAllMembers } from "../../redux/techMember";
 
 import "./taskCard.css";
@@ -45,26 +46,27 @@ const TaskCard: React.FC<DataTypes> = ({
         setRemaningDays("Deadline is required");
         setDaysBgColor("#E4DADC");
         setDaysColor("#2C2C2C");
+      } else {
+        const floatDays =
+          (new Date(deadline).getTime() - new Date().getTime()) /
+          (1000 * 60 * 60 * 24);
+        const remainingDays = Math.round(floatDays);
+        setRemaningDays(remainingDays);
+        const daysColor =
+          remainingDays <= 2
+            ? "#FF0000"
+            : remainingDays > 2 && remainingDays <= 5
+            ? "#FF974A"
+            : "#0079BF";
+        setDaysColor(daysColor);
+        const daysBgColor =
+          remainingDays <= 2
+            ? "#F1CBCC"
+            : remainingDays > 2 && remainingDays <= 5
+            ? "#FF974A1A"
+            : "#DAE6EF";
+        setDaysBgColor(daysBgColor);
       }
-      const floatDays =
-        (new Date(deadline).getTime() - new Date().getTime()) /
-        (1000 * 60 * 60 * 24);
-      const remainingDays = Math.round(floatDays);
-      setRemaningDays(remainingDays);
-      const daysColor =
-        remainingDays <= 2
-          ? "#FF0000"
-          : remainingDays > 2 && remainingDays <= 5
-          ? "#FF974A"
-          : "#0079BF";
-      setDaysColor(daysColor);
-      const daysBgColor =
-        remainingDays <= 2
-          ? "#F1CBCC"
-          : remainingDays > 2 && remainingDays <= 5
-          ? "#FF974A1A"
-          : "#DAE6EF";
-      setDaysBgColor(daysBgColor);
     } else {
       setRemaningDays("Deadline is required");
       setDaysBgColor("#E4DADC");
@@ -79,6 +81,7 @@ const TaskCard: React.FC<DataTypes> = ({
     )?.name;
     setData(newData);
   }, []);
+
   const checkStatusAndSetBorder = (status: string) => {
     if (status === "Not Started") {
       return "#9fa1ab1a solid 2px";
@@ -114,8 +117,16 @@ const TaskCard: React.FC<DataTypes> = ({
     }
   };
 
+  if (status === "Not Started") {
+    console.log(getDisabledDrag(status, deadline));
+  }
+
   return (
-    <Draggable index={index} draggableId={`${_id}`}>
+    <Draggable
+      index={index}
+      draggableId={`${_id}`}
+      isDragDisabled={getDisabledDrag(status, deadline)}
+    >
       {(provided, snapshot) => {
         const afterDropStyle = {
           backgroundColor: checkStatusAndSetBackground(column?.value),

@@ -175,7 +175,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
 
         <p className="popup-title">Edit department</p>
 
-        <label className="popup-label">Department name</label>
+        <label className="popup-label-nt">Department name</label>
         <input
           className="popup-input"
           type="text"
@@ -184,7 +184,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
           onChange={handleChange}
           name="name"
         />
-        <label className="popup-label">Color</label>
+        <label className="popup-label-nt">Color</label>
         <Controller
           name="EditDepartmentColors"
           control={control}
@@ -208,7 +208,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
             />
           )}
         />
-        <label className="popup-label">Teams</label>
+        <label className="popup-label-nt">Teams</label>
         <div className="add-teams-section">
           {/*   <select
             className="popup-select"

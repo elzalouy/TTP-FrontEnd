@@ -170,7 +170,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
 
         <p className="popup-title">Create new department</p>
 
-        <label className="popup-label">Department name</label>
+        <label className="popup-label-nt">Department name</label>
         <input
           className="popup-input"
           type="text"
@@ -180,7 +180,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
           value={name}
         />
 
-        <label className="popup-label">Color</label>
+        <label className="popup-label-nt">Color</label>
         {/*   <select
           className="popup-select"
           name="color"
@@ -216,7 +216,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             />
           )}
         />
-        <label className="popup-label">Teams</label>
+        <label className="popup-label-nt">Teams</label>
         <div className="add-teams-section">
           {/*       <select
             className="popup-select"

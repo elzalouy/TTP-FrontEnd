@@ -51,9 +51,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(getAllProjects(null));
-  }, []);
+  }, []); */
 
   const onHandleChange = (e: any) => {
     let data = watch();
