@@ -15,7 +15,7 @@ import {
   ProjectsActions,
   selectNotStartedProjects,
 } from "../../redux/Projects";
-import Loading from "../../coreUI/usable-elements/Loading"
+import Loading from "../../coreUI/usable-elements/Loading";
 import { getPMs, selectPMs } from "../../redux/PM";
 import { clientsDataSelector } from "../../redux/Clients";
 import { Controller, useForm } from "react-hook-form";
@@ -51,9 +51,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
 
-  useEffect(() => {
-    dispatch(getAllProjects(null));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllProjects(null));
+  // }, []);
 
   const onHandleChange = (e: any) => {
     let data = watch();
@@ -103,11 +103,18 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           <Box
             onClick={() => setFilter(!filter)}
             textAlign={"center"}
-            sx={!filter ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 } : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }}
+            sx={
+              !filter
+                ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
+                : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+            }
             width={38}
             height={38}
           >
-            <img src={!filter ? IMAGES.filtericonwhite :IMAGES.filtericon } alt="FILTER" />
+            <img
+              src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+              alt="FILTER"
+            />
           </Box>
         </Grid>
         <Grid
@@ -348,7 +355,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
-        {role !== "PM" && <CreateNewProject {...props}/>}
+        {role !== "PM" && <CreateNewProject {...props} />}
         {loading === false ? (
           <>
             <TableBox
@@ -424,7 +431,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               color: "#909090",
             }}
           >
-            <Loading color="grey" type="spinningBubbles"/> Loading More
+            <Loading color="grey" type="spinningBubbles" /> Loading More
           </Box>
         )}
       </Box>
