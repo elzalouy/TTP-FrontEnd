@@ -22,6 +22,7 @@ import {
 import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
 import "./TasksListView.css";
+import Loading from "../../coreUI/usable-elements/Loading";
 interface Props {
   projectId?: string;
 }
