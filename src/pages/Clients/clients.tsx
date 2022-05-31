@@ -54,9 +54,11 @@ const Clients: React.FC<Props> = () => {
   const clientData = useAppSelector(clientsDataSelector);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  useEffect(() => {
+
+/*   useEffect(() => {
     dispatch(getAllClients(null));
-  }, [dispatch]);
+  }, [dispatch]); */
+
   const [filter, setFilter] = useState<{
     sortDate: string;
   }>({
