@@ -7,11 +7,16 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectedDepart } from "../../redux/Departments/departments.selectors";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 import { useDispatch } from "react-redux";
-import { updateDepartment, getAllDepartments } from "../../redux/Departments";
+import {
+  updateDepartment,
+  getAllDepartments,
+  selectDepartmentLoading,
+} from "../../redux/Departments";
 import { error } from "console";
 import { useForm, Controller } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import departments from "../../services/endpoints/departments";
+import { CircularProgress } from "@mui/material";
 
 type Props = {
   Show: string;
@@ -32,6 +37,7 @@ const colors: string[] = [
 
 const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   const dispatch = useDispatch();
+  const depLoading = useAppSelector(selectDepartmentLoading);
   const [Data, setData] = useState<string>("");
   const [Names, setNames] = useState<string[]>([]);
   const [removeTeam, setRemoveTeam] = useState<string[]>([]);
@@ -105,7 +111,9 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       setRemoveTeam([...removeTeam, targetTeam.idInTrello]);
       //There is no trello ID shown in these objects of target which is why i removed the condition
     }
-    let newAddTeam = addTeam.filter((team: any) => team?._id !== targetTeam?._id);
+    let newAddTeam = addTeam.filter(
+      (team: any) => team?._id !== targetTeam?._id
+    );
     setAddTeam(newAddTeam);
     // filter my team array
     // let filterTeam = teams.filter((team: any) => team.name !== Names[index]);
@@ -121,7 +129,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
     if (e.target.name) {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     } else {
-       setFormData({ ...formData, color: e.target.value });
+      setFormData({ ...formData, color: e.target.value });
     }
   };
 
@@ -228,8 +236,8 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
             control={control}
             render={(props) => (
               <SelectInput2
-                handleChange={(e)=>{
-                  if(e.target.value !== ""){
+                handleChange={(e) => {
+                  if (e.target.value !== "") {
                     setData(e.target.value);
                   }
                 }}
@@ -238,7 +246,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                 selectValue={Data}
                 options={
                   teamsData
-                    ? teamsData?.techMembers?.map((team:any) => {
+                    ? teamsData?.techMembers?.map((team: any) => {
                         return {
                           id: team._id,
                           value: `${team._id},${team.name},${team.idInTrello}`,
@@ -294,8 +302,12 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
           >
             Cancel
           </button>
-          <button className="controllers-done" onClick={handleSubmit}>
-            Done
+          <button className="controllers-done" onClick={() => handleSubmit()}>
+            {depLoading ? (
+              <CircularProgress sx={{ color: "white", padding: "10px" }} />
+            ) : (
+              "Done"
+            )}
           </button>
         </div>
       </PopUp>

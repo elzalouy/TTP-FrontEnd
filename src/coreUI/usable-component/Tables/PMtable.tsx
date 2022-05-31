@@ -58,6 +58,16 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
         toastId: "mail",
       });
     } else {
+      toast.success("Verification email sent successfully", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      });
       dispatch(resendMail(id));
       let duration = moment().add(1, "h").unix().toString();
       localStorage.setItem("limit", duration);

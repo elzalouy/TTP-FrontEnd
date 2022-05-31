@@ -90,7 +90,15 @@ export const deleteClient = createAsyncThunk<any, any, any>(
         });
         return data;
       }
-      throw new Error("Error hapenned while deleting the client");
+      toast.error("Error hapenned while deleting the client", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",

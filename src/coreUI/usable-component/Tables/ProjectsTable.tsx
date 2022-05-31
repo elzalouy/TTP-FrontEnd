@@ -19,7 +19,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
-import { getStatus } from "../../../helpers/dateFunctions";
+import { getStatus } from "../../../helpers/generalUtils";
 
 interface ProjectsTableProps {
   progress?: boolean;

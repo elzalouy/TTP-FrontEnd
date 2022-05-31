@@ -167,7 +167,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(getAllProjects.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
       state.loading = false;
@@ -178,7 +178,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createProjectTask.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
       state.loading = false;
@@ -304,7 +304,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(editProject.pending, (state, action) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(deleteTasks.fulfilled, (state, action) => {
       state.loading = false;

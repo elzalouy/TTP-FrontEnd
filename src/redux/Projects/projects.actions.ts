@@ -496,7 +496,15 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;
-      } else throw new Error("Task not updated.");
+      } else toast.error("Task not updated",{
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (error) {
       return rejectWithValue(error);
     }

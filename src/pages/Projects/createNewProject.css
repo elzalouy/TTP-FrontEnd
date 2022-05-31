@@ -127,6 +127,10 @@ input.date-project::-webkit-calendar-picker-indicator {
   margin: 10px 0;
 }
 
+.loading-projects{
+  margin-right: 10px;
+}
+
 .blackBtn {
   cursor: pointer;
   width: 220px;

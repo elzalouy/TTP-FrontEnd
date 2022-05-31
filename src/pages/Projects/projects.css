@@ -15,6 +15,9 @@
   background-color: #ffffff;
   position: relative;
 }
+.loading-projects{
+  margin-right: 10px;
+}
 .projects-option select {
   padding-top: 3px;
 }

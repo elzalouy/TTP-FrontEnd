@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   TextField,
   TextFieldProps,
   Typography,
@@ -23,6 +24,7 @@ import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
   ProjectsActions,
+  selectLoading,
   selectNewProject,
   selectSelectedDepartment,
 } from "../../redux/Projects";
@@ -50,6 +52,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   }>({ error: undefined, value: undefined, warning: undefined });
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
+  const loadingTask = useAppSelector(selectLoading);
   // const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const [selectedDepartment, setSelectedDepartment] =
@@ -460,7 +463,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
           </div>
           <div>
             <button type="submit" className="addTaskBtn">
-              Add task
+            {loadingTask ? (
+              <CircularProgress sx={{ color: "white", padding: "0px" ,height:"25px !important",width:"25px !important"}} />
+            ) : (
+              "Add Task"
+            )}
             </button>
           </div>
         </form>

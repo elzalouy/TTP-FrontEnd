@@ -37,7 +37,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch, control, reset } = useForm({
+  const { register, watch, control, reset,setValue } = useForm({
     defaultValues: {
       name: "",
       projectManager: "",
@@ -309,6 +309,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           <ButtonBase
             className="cancelBtn"
             onClick={() => {
+              setValue("deadline",null)
+              setValue("startDate",null)
               setcurrentStep(0);
               setShow("none");
             }}
