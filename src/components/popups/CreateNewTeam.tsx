@@ -9,7 +9,15 @@ import {
   selectDepartmentLoading,
 } from "../../redux/Departments/departments.selectors";
 import { useDispatch } from "react-redux";
-import { createTeam } from "../../redux/techMember";
+import {
+  createTeam,
+  getAllMembers,
+  getTechMembersByDeptId,
+  selectAllTeamMembers,
+  selectDepartmentMembers,
+  TechMemberInterface,
+  TechMembersInterface,
+} from "../../redux/techMember";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { CircularProgress } from "@mui/material";
 
@@ -24,15 +32,23 @@ const AddNewTeam: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const depLoading = useAppSelector(selectDepartmentLoading);
-  const AllTeamsFromAllDep = departments.map((dep) => dep.teamsId);
+  const DepBasedTeams = useAppSelector(selectDepartmentMembers);
   const [Show, setShow] = useState("none");
   const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
-  console.log(AllTeamsFromAllDep);
 
-  const getDepartmentName = (id: teamData) => {
-    const departmentID = id.department.split(",");
-    const departmentName = departments.filter((department) => {
+  const getDepartmentNameById = (id: string) => {
+    let departmentName = departments.filter((department) => {
+      if (id === department._id) {
+        return department.name;
+      }
+    });
+    return departmentName[0]?.name;
+  };
+
+  const getDepartmentName = (team: teamData) => {
+    let departmentID = team.department.split(",");
+    let departmentName = departments.filter((department) => {
       if (departmentID[0] === department._id) {
         return department.name;
       }
@@ -41,11 +57,19 @@ const AddNewTeam: React.FC<Props> = () => {
   };
 
   useEffect(() => {
+    let id = Team.department.split(",")[0];
+    if (id.length !== 0) {
+      dispatch(getTechMembersByDeptId(id));
+    }
+  }, [Team.department]);
+
+  useEffect(() => {
     setTeam({
       name: "",
       department: "",
     });
     setAllTeam([]);
+    dispatch(getAllMembers(null));
   }, [Show]);
 
   const handleAddTeam = async () => {
@@ -73,7 +97,7 @@ const AddNewTeam: React.FC<Props> = () => {
           setShow("flex");
         }}
       >
-        Add New Teams
+        Manage Teams
       </button>
 
       <PopUp show={Show} minWidthSize="30vw">
@@ -89,7 +113,7 @@ const AddNewTeam: React.FC<Props> = () => {
             }}
           />
         </div>
-        <p className="popup-title">Add new teams</p>
+        <p className="popup-title">Manage teams</p>
         <label className="popup-label-nt">Team name</label>
         <input
           className="popup-input"
@@ -167,6 +191,21 @@ const AddNewTeam: React.FC<Props> = () => {
             <th className="normal">Department Name</th>
             <th></th>
           </tr>
+          {DepBasedTeams.map((team, index) => {
+            return (
+              <tr key={index}>
+                <td>{team.name}</td>
+                <td>{getDepartmentNameById(team.departmentId)}</td>
+                <td>
+                    <img
+                    src={IMAGES.deleteicon}
+                    alt="delete"
+                   /*  onClick={} */
+                  />
+                </td>
+              </tr>
+            );
+          })}
           {AllTeam.map((el, index) => {
             return (
               <tr key={index}>

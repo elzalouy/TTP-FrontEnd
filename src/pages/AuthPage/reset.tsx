@@ -103,7 +103,8 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         sm={11}
         md={8}
         lg={8}
-        height={550}
+        height={600}
+        maxWidth={"50% !important"}
         bgcolor={"white"}
         justifyContent={SM? "flex-start" : "center"}
         container
@@ -114,8 +115,8 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
       >
         <Grid
           item
-          xs={12}
-          sm={12}
+          xs={11}
+          sm={11}
           lg={6}
           md={6}
           height={"100%"}

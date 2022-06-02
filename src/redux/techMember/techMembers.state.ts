@@ -10,10 +10,10 @@ export interface TechMemberInterface {
 export interface TechMembersInterface {
   techMembers: TechMemberInterface[];
   loading: boolean | null;
-  deptTechMembers: TechMemberInterface[] | null;
+  deptTechMembers: TechMemberInterface[];
 }
 export const techMembersState: TechMembersInterface = {
   loading: null,
   techMembers: [],
-  deptTechMembers: null,
+  deptTechMembers: [],
 };

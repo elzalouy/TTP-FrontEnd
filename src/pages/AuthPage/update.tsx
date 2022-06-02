@@ -112,7 +112,8 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
         sm={11}
         md={8}
         lg={8}
-        height={550}
+        height={600}
+        maxWidth={"50% !important"}
         justifyContent={SM? "flex-start" : "center"}
         container
         direction="row"

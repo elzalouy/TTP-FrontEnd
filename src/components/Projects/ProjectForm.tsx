@@ -3,7 +3,11 @@ import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../redux/Clients/clients.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { getPMs, selectPMs } from "../../redux/PM";
-import { createProject, ProjectsActions, selectLoading } from "../../redux/Projects";
+import {
+  createProject,
+  ProjectsActions,
+  selectLoading,
+} from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../redux/Clients";
 import {
@@ -27,6 +31,7 @@ import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import { generateID } from "../../helpers/IdGenerator";
+import IMAGES from "../../assets/img";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -37,7 +42,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
 }) => {
-  const { register, watch, control, reset,setValue } = useForm({
+  const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
       projectManager: "",
@@ -194,27 +199,50 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 renderInput={(
                   params: JSX.IntrinsicAttributes & TextFieldProps
                 ) => (
-                  <TextField
-                    className="date"
-                    {...params}
-                    error={validateError.error?.details[0].path.includes(
-                      "startDate"
-                    )}
-                    {...register("startDate")}
-                    placeholder="Start Date"
-                    onChange={params.onChange}
-                    sx={{
-                      paddingTop: 1,
-                      "& .MuiOutlinedInput-input": {
-                        height: "13px !important",
-                        borderRadius: "6px",
-                        background: "white !important",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "6px",
-                      },
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "relative",
                     }}
-                  />
+                  >
+                    <TextField
+                      className="date"
+                      {...params}
+                      error={validateError.error?.details[0].path.includes(
+                        "startDate"
+                      )}
+                      {...register("startDate")}
+                      placeholder="Start Date"
+                      onChange={params.onChange}
+                      sx={{
+                        paddingTop: 1,
+                        "& .MuiOutlinedInput-input": {
+                          height: "13px !important",
+                          borderRadius: "6px",
+                          background: "white !important",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderRadius: "6px",
+                        },
+                      }}
+                    />
+                    <img
+                      className="closeIcon"
+                      src={IMAGES.closeicon}
+                      style={{
+                        width: "10px",
+                        height: "10px",
+                        position: "absolute",
+                        right: "10px",
+                      }}
+                      alt="closeIcon"
+                      onClick={() => {
+                        setValue("deadline", null);
+                      }}
+                    />
+                  </div>
                 )}
               />
             )}
@@ -239,26 +267,49 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   style,
                   ...params
                 }: any) => (
-                  <TextField
-                    {...params}
-                    className="date"
-                    error={validateError.error?.details[0].path.includes(
-                      "deadline"
-                    )}
-                    {...register("deadline")}
-                    placeholder="Deadline"
-                    sx={{
-                      paddingTop: 1,
-                      "& .MuiOutlinedInput-input": {
-                        height: "13px !important",
-                        borderRadius: "6px",
-                        background: "white !important",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "6px",
-                      },
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "relative",
                     }}
-                  />
+                  >
+                    <TextField
+                      {...params}
+                      className="date"
+                      error={validateError.error?.details[0].path.includes(
+                        "deadline"
+                      )}
+                      {...register("deadline")}
+                      placeholder="Deadline"
+                      sx={{
+                        paddingTop: 1,
+                        "& .MuiOutlinedInput-input": {
+                          height: "13px !important",
+                          borderRadius: "6px",
+                          background: "white !important",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderRadius: "6px",
+                        },
+                      }}
+                    />
+                    <img
+                      className="closeIcon"
+                      src={IMAGES.closeicon}
+                      style={{
+                        width: "10px",
+                        height: "10px",
+                        position: "absolute",
+                        right: "10px",
+                      }}
+                      alt="closeIcon"
+                      onClick={() => {
+                        setValue("deadline", null);
+                      }}
+                    />
+                  </div>
                 )}
               />
             )}
@@ -309,8 +360,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
           <ButtonBase
             className="cancelBtn"
             onClick={() => {
-              setValue("deadline",null)
-              setValue("startDate",null)
+              setValue("deadline", null);
+              setValue("startDate", null);
               setcurrentStep(0);
               setShow("none");
             }}

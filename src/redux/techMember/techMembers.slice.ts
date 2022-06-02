@@ -35,6 +35,7 @@ const techMembersSlice: Slice<TechMembersInterface> = createSlice({
     builder.addCase(getAllMembers.fulfilled, (state, action) => {
       state.loading = false;
       state.techMembers = action.payload;
+      state.deptTechMembers = action.payload;
     });
     builder.addCase(createTeam.rejected, (state) => {
       state.loading = false;
