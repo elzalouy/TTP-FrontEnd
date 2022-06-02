@@ -55,8 +55,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const loadingTask = useAppSelector(selectLoading);
   // const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
-  const [selectedDepartment, setSelectedDepartment] =
-    React.useState<Department>();
+  const [selectedDepartment, setSelectedDepartment] = React.useState<
+    Department | any
+  >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
   const { createProjectPopup } = useAppSelector(selectUi);
 
@@ -73,22 +74,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       file: "",
     },
   });
-
-  // React.useEffect(() => {
-  //   let values = watch();
-  //   if (values?.categoryId !== selectedCategory?._id) {
-  //     let category = categories.find((item) => item._id === values.categoryId);
-  //     dispatch(
-  //       categoriesActions.setSelectedCategory(category ? category : null)
-  //     );
-  //   }
-  //   if (values.selectedDepartmentId !== selectedDepartment?._id) {
-  //     let dep = departments.find(
-  //       (item) => item._id === values.selectedDepartmentId
-  //     );
-  //     dispatch(ProjectsActions.onChangeSelectedDepartment(dep));
-  //   }
-  // }, [watch(), reset]);
 
   React.useEffect(() => {
     reset();
@@ -111,8 +96,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       turnoverTime: null,
       attachedFiles: null,
       listId: data?.teamId
-        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
-            ?.listId
+        ? selectedDepartment?.teamsId?.find(
+            (item: any) => item._id === data.teamId
+          )?.listId
         : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
@@ -131,6 +117,40 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         toastId: generateID(),
       });
     } else {
+      let task = new FormData();
+      task.append("name", data.name);
+      task.append("categoryId", data.categoryId);
+      task.append("subCategoryId", data.subCategoryId);
+      task.append("teamId", data.teamId);
+      task.append(
+        "projectId",
+        newProject?.project?._id ? newProject?.project?._id : ""
+      );
+      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("start", new Date().toUTCString());
+      task.append(
+        "deadline",
+        data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
+      );
+      if (Files) {
+        let data: Array<any> = Array.from(Files);
+        for (let i = 0; i < data.length; i++) {
+          task.append("attachedFiles", data[i]);
+        }
+      }
+      task.append(
+        "listId",
+        data?.teamId
+          ? selectedDepartment?.teamsId?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : selectedDepartment?.defaultListId
+      );
+      task.append(
+        "boardId",
+        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+      );
+      task.append("description", data?.description);
       dispatch(createProjectTask(newTask));
       reset();
       setSelectedDepartment(undefined);
@@ -400,14 +420,14 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     handleChange={props.field.onChange}
                     selectText={
                       selectedDepartment?.teamsId?.find(
-                        (item) => item._id === props.field.value
+                        (item: any) => item._id === props.field.value
                       )?.name
                     }
                     {...register("teamId")}
                     selectValue={props.field.value}
                     options={
                       selectedDepartment?.teamsId
-                        ? selectedDepartment?.teamsId?.map((item) => {
+                        ? selectedDepartment?.teamsId?.map((item: any) => {
                             return {
                               id: item._id ? item._id : "",
                               value: item._id ? item._id : "",

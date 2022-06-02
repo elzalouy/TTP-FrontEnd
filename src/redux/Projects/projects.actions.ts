@@ -71,6 +71,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
+        console.log(result.data);
         toast.success("Task have been saved to the Database", {
           position: "top-right",
           autoClose: 1500,
@@ -106,7 +107,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
           progress: undefined,
         });
         args.reset();
-        return result.data?.task;
+        return result.data;
       } else {
         toast.error(result?.data[0]?.message, {
           position: "top-right",
@@ -362,7 +363,6 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
   async (args, { rejectWithValue }) => {
     try {
-      // console.log(args.data);
       let deleteResult = await api.deleteTask(args?.data);
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));
@@ -433,8 +433,6 @@ export const moveTask = createAsyncThunk<any, any, any>(
       let department: Department = args?.department;
       let value = args?.value;
       let task = args?.task;
-      // console.log(department);
-      // console.log(value);
       switch (value) {
         case "Not Clear":
           newlist = department.notClearListId;
@@ -495,15 +493,16 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;
-      } else toast.error("Task not updated",{
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      } else
+        toast.error("Task not updated", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
     } catch (error) {
       return rejectWithValue(error);
     }

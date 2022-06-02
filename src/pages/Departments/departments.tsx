@@ -20,10 +20,10 @@ const Departments: React.FC<IProps> = () => {
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllDepartments(null));
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getAllDepartments(null));
+  // }, []);
   useEffect(() => {
     setDepartment(departmentData);
   }, [departmentData]);

@@ -55,7 +55,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     deliveryDate: "",
     done: "",
     turnoverTime: "",
-    attachedFiles: "",
+    attachedFiles: [],
     attachedCard: "",
     listId: "",
     cardId: "",

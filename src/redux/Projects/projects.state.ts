@@ -15,7 +15,7 @@ export interface Task {
   deliveryDate?: any;
   done: any;
   turnoverTime: any;
-  attachedFiles: string;
+  attachedFiles: any[];
   attachedCard: string;
   listId?: string;
   cardId?: string;
@@ -110,7 +110,7 @@ const PorjectsState: ProjectsInterface = {
       deliveryDate: new Date(),
       done: new Date(),
       turnoverTime: 0,
-      attachedFiles: "",
+      attachedFiles: [],
       attachedCard: "",
       listId: "",
       cardId: "",
