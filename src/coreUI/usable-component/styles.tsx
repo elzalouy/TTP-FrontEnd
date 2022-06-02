@@ -160,7 +160,7 @@ export const popOverStyle = () => {
   return makeStyles({
     root: {
       "& .css-13ywwmo-MuiPaper-root-MuiPopover-paper": {
-        borderRadius: 0,
+        borderRadius: "10px",
       },
     },
   });

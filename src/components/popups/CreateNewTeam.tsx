@@ -21,12 +21,14 @@ interface teamData {
 }
 
 const AddNewTeam: React.FC<Props> = () => {
-  const [Show, setShow] = useState("none");
-  const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
-  const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const depLoading = useAppSelector(selectDepartmentLoading);
+  const AllTeamsFromAllDep = departments.map((dep) => dep.teamsId);
+  const [Show, setShow] = useState("none");
+  const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
+  const [AllTeam, setAllTeam] = useState<teamData[]>([]);
+  console.log(AllTeamsFromAllDep);
 
   const getDepartmentName = (id: teamData) => {
     const departmentID = id.department.split(",");
@@ -37,7 +39,6 @@ const AddNewTeam: React.FC<Props> = () => {
     });
     return departmentName[0]?.name;
   };
-
 
   useEffect(() => {
     setTeam({
