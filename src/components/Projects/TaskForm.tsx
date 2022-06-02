@@ -135,7 +135,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       if (Files) {
         let data: Array<any> = Array.from(Files);
         for (let i = 0; i < data.length; i++) {
-          console.log(Files[i], data[i]);
           task.append("attachedFiles", data[i]);
         }
       }
@@ -152,7 +151,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         selectedDepartment?.boardId ? selectedDepartment.boardId : ""
       );
       task.append("description", data?.description);
-
       dispatch(createProjectTask(newTask));
       reset();
       setSelectedDepartment(undefined);

@@ -71,6 +71,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
+        console.log(result.data);
         toast.success("Task have been saved to the Database", {
           position: "top-right",
           autoClose: 1500,
