@@ -108,7 +108,7 @@ const createTaskSchema = Joi.object({
   deliveryDate: Joi.any().allow(null),
   done: Joi.any().allow(null),
   turnoverTime: Joi.allow(null),
-  attachedFiles: Joi.any().optional().allow(null),
+  attachedFiles: Joi.array().optional().allow(null).max(3),
 });
 const validateCreateProject = (data: any) => {
   let { error, value, warning } = createProjectSchema.validate(data);

@@ -15,7 +15,7 @@ export interface Department {
     _id: string;
     name: string;
     departmentId: string;
-    listId: string | null;
+    listId: string;
   }[];
   totalInProgress: number;
   totalDone: number;

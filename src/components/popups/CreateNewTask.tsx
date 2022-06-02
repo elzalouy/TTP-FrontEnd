@@ -64,8 +64,9 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
-  const [selectedDepartment, setSelectedDepartment] =
-    React.useState<Department>();
+  const [selectedDepartment, setSelectedDepartment] = React.useState<
+    Department | any
+  >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
 
   const { register, handleSubmit, watch, control, reset, setValue } = useForm({
@@ -95,16 +96,16 @@ const CreateNewTask: React.FC<Props> = (props) => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: null,
+      attachedFiles: Files,
       listId: data?.teamId
-        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
-            ?.listId
+        ? selectedDepartment?.teamsId?.find(
+            (item: any) => item._id === data.teamId
+          )?.listId
         : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
     let validateResult = valdiateCreateTask(newTask);
-    console.log(validateResult, newTask, data);
     if (validateResult.error) {
       setError(validateResult);
       toast.error(validateResult.error.message, {
@@ -118,9 +119,44 @@ const CreateNewTask: React.FC<Props> = (props) => {
         toastId: generateID(),
       });
     } else {
+      let task = new FormData();
+      task.append("name", data.name);
+      task.append("categoryId", data.categoryId);
+      task.append("subCategoryId", data.subCategoryId);
+      task.append("teamId", data.teamId);
+      task.append(
+        "projectId",
+        selectedProject?.project?._id ? selectedProject?.project?._id : ""
+      );
+      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("start", new Date().toUTCString());
+      task.append(
+        "deadline",
+        data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
+      );
+      if (Files) {
+        let data: Array<any> = Array.from(Files);
+        for (let i = 0; i < data.length; i++) {
+          console.log(Files[i], data[i]);
+          task.append("attachedFiles", data[i]);
+        }
+      }
+      task.append(
+        "listId",
+        data?.teamId
+          ? selectedDepartment?.teamsId?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : selectedDepartment?.defaultListId
+      );
+      task.append(
+        "boardId",
+        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+      );
+      task.append("description", data?.description);
       dispatch(
         createTaskFromBoard({
-          data: newTask,
+          data: task,
           dispatch: dispatch,
           setShow: props.setShow,
           reset: reset,
@@ -400,14 +436,14 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       handleChange={props.field.onChange}
                       selectText={
                         selectedDepartment?.teamsId?.find(
-                          (item) => item._id === props.field.value
+                          (item: any) => item._id === props.field.value
                         )?.name
                       }
                       {...register("teamId")}
                       selectValue={props.field.value}
                       options={
                         selectedDepartment?.teamsId
-                          ? selectedDepartment?.teamsId?.map((item) => {
+                          ? selectedDepartment?.teamsId?.map((item: any) => {
                               return {
                                 id: item._id ? item._id : "",
                                 value: item._id ? item._id : "",
@@ -424,14 +460,16 @@ const CreateNewTask: React.FC<Props> = (props) => {
             <Box
               marginX={1}
               marginY={3}
-              alignItems="center"
-              width={"100%"}
-              overflow="scroll"
-              display={"inline-flex"}
-              className="files"
+              maxWidth={"50vw"}
+              width="50vw"
+              sx={{
+                overflowX: "scroll",
+                overflowY: "hidden",
+                display: "inline-flex",
+              }}
+              flexDirection="row"
             >
               <input
-                {...register("file")}
                 onChange={onSetFiles}
                 ref={files}
                 type="file"
@@ -445,6 +483,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   width: "46px !important",
                   height: "32px",
                   borderRadius: "5px",
+                  paddingX: 1,
                   ":hover": {
                     backgroundColor: "#00ACBA",
                   },
@@ -463,6 +502,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                     color: "white",
                     fontSize: "12px",
                     marginLeft: "5px",
+                    width: "auto",
                   }}
                 >
                   {Files && Files.length > 0 ? Files?.length : ""}
@@ -477,20 +517,27 @@ const CreateNewTask: React.FC<Props> = (props) => {
                     bgcolor={"#F1F1F5"}
                     padding={0.5}
                     borderRadius={1}
-                    display={"inline-flex"}
                     color="#92929D"
                     sx={{
+                      width: "auto",
                       cursor: "pointer",
                       height: "32px",
-                      textAlign: "center",
+                      textAlign: "start",
                       alignContent: "center",
                       justifySelf: "center",
                       justifyContent: "center",
                       alignItems: "center",
+                      display: "inline-flex",
                     }}
                     onClick={() => onRemoveFile(item)}
                   >
-                    <Typography>{item?.name}</Typography>
+                    <Typography
+                      lineHeight={"32px"}
+                      height={"32px"}
+                      width={"calc(100%)"}
+                    >
+                      {item?.name}
+                    </Typography>
                     <CloseIcon
                       sx={{ fontSize: "14px", marginLeft: 0.5 }}
                       htmlColor="#92929D"

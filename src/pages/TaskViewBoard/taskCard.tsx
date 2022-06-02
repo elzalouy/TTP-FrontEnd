@@ -38,6 +38,15 @@ const TaskCard: React.FC<DataTypes> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
+  const [taskImages, setTaskImages] = useState<any[]>();
+
+  useEffect(() => {
+    let mimeTypes = ["image/png", "image/png", "image/jpeg", "image/svg"];
+    let images = item.attachedFiles.filter((item) =>
+      mimeTypes.includes(item.mimeType)
+    );
+    setTaskImages(images);
+  }, []);
 
   useEffect(() => {
     if (status !== "Not Started") {
@@ -150,7 +159,7 @@ const TaskCard: React.FC<DataTypes> = ({
               <>
                 <img
                   style={{ width: "100%", marginTop: "10px" }}
-                  src={IMAGES.picTask}
+                  src={taskImages ? taskImages[0]?.url : ""}
                   alt="more"
                 />
                 <Stack
@@ -160,9 +169,11 @@ const TaskCard: React.FC<DataTypes> = ({
                   alignItems="center"
                 >
                   <img src={IMAGES.attachment} alt="more" />
-                  <Typography style={{ paddingLeft: "5px" }}>1</Typography>{" "}
+                  <Typography style={{ paddingLeft: "5px" }}>
+                    {item?.attachedFiles.length}
+                  </Typography>{" "}
                   <Typography className="fileUpload">
-                    {item?.attachedFiles}
+                    {/* {item?.attachedFiles} */}
                   </Typography>
                 </Stack>
               </>
