@@ -8,13 +8,14 @@ import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
 import { checkAuthToken } from "../services/api";
 import { useDispatch } from "react-redux";
-import { getUserInfo } from "../redux/Auth";
+import { getUserInfo, selectIsAuth } from "../redux/Auth";
 import { getAllDepartments } from "../redux/Departments";
 import { getAllCategories } from "../redux/Categories";
 import { getAllClients } from "../redux/Clients";
 import { getPMs } from "../redux/PM";
 import { getAllMembers } from "../redux/techMember";
 import { getAllProjects, getAllTasks } from "../redux/Projects";
+import { useAppSelector } from "../redux/hooks";
 
 interface Props {
   component: React.ReactNode;
@@ -25,6 +26,7 @@ const LoggedInContainer: React.FC<Props> = ({
   component: Component,
   ...rest
 }: any) => {
+
   return (
     <div className="main">
       <Route

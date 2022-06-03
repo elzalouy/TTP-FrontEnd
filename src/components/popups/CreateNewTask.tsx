@@ -83,8 +83,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
     },
   });
 
-  console.log(watch());
-
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -327,7 +325,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           <img
                             className="closeIcon"
                             src={IMAGES.closeicon}
-                            style={{width:"10px",height:"10px",position:"absolute",right:"10px"}}
+                            style={{width:"10px",height:"10px",position:"absolute",right:"13px",bottom:"17px"}}
                             alt="closeIcon"
                             onClick={() => {
                               setValue("deadline", null);

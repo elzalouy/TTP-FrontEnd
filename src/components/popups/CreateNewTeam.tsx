@@ -11,9 +11,9 @@ import {
 import { useDispatch } from "react-redux";
 import {
   createTeam,
+  deleteTeam,
   getAllMembers,
   getTechMembersByDeptId,
-  selectAllTeamMembers,
   selectDepartmentMembers,
   TechMemberInterface,
   TechMembersInterface,
@@ -36,6 +36,11 @@ const AddNewTeam: React.FC<Props> = () => {
   const [Show, setShow] = useState("none");
   const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
+  const [removeTeams, setRemoveTeams] = useState<TechMembersInterface[]>([]);
+
+  const onSubmit = () => {
+    dispatch(deleteTeam({ data: removeTeams, dispatch }));
+  };
 
   const getDepartmentNameById = (id: string) => {
     let departmentName = departments.filter((department) => {
@@ -44,6 +49,15 @@ const AddNewTeam: React.FC<Props> = () => {
       }
     });
     return departmentName[0]?.name;
+  };
+
+  const getDepartmentById = (id: string) => {
+    let dep = departments.find((department) => {
+      if (id === department._id) {
+        return department;
+      }
+    });
+    return dep;
   };
 
   const getDepartmentName = (team: teamData) => {
@@ -197,10 +211,12 @@ const AddNewTeam: React.FC<Props> = () => {
                 <td>{team.name}</td>
                 <td>{getDepartmentNameById(team.departmentId)}</td>
                 <td>
-                    <img
+                  <img
                     src={IMAGES.deleteicon}
                     alt="delete"
-                   /*  onClick={} */
+                    onClick={() =>{
+                      dispatch(deleteTeam({data:team,dispatch}))
+                    }}
                   />
                 </td>
               </tr>

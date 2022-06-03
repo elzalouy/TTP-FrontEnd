@@ -67,6 +67,7 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
+  
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
     if (projects.loading === false)

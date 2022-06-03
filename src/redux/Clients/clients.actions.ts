@@ -3,15 +3,17 @@ import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import ClientsApi from "../../services/endpoints/clients";
+import { logout } from "../Auth";
 
 export const getAllClients = createAsyncThunk<any, any, any>(
   "clients/getAll",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue ,dispatch}) => {
     try {
       let result = await ClientsApi.getClients();
       if (result?.status === 401 || result?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
+        dispatch(logout(null));
       }
       if (result.data) {
         return result.data;

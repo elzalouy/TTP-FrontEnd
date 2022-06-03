@@ -299,7 +299,7 @@ const EditTask: React.FC<Props> = (props) => {
                               width: "10px",
                               height: "10px",
                               position: "absolute",
-                              right: "10px",
+                              right:"13px",bottom:"17px"
                             }}
                             alt="closeIcon"
                             onClick={() => {

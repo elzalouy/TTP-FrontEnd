@@ -20,6 +20,7 @@ import moment from "moment";
 import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
+  checkProjectStatus,
   getStatus,
 } from "../../helpers/generalUtils";
 
@@ -41,7 +42,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const project = useAppSelector(selectEditProject);
   const [confirm, setConfirm] = useState<string>("none");
   const [trigger, setTrigger] = useState<boolean>(false);
-  const [updateDate , setUpdateDate] = useState<boolean>(false);
+  const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
 
   useEffect(() => {
@@ -59,7 +60,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       executeEditProject(data);
     }
   }, [trigger]);
-
 
   const getPM = (id: string) => {
     let pm = PMs.find((pm) => pm._id === id);
@@ -93,11 +93,13 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setTrigger(false);
   };
 
-
   const onSubmitEdit = () => {
     let data = watch();
 
-    if(updateDate){
+    if (updateDate) {
+      if (data.startDate === null || data.deadline === null) {
+        data.status = "Not Started";
+      }
       executeEditProject(data);
       return;
     }
@@ -267,21 +269,24 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                             },
                           }}
                         />
-                        <img
-                          className="closeIcon"
-                          src={IMAGES.closeicon}
-                          style={{
-                            width: "10px",
-                            height: "10px",
-                            position: "absolute",
-                            right: "10px",
-                          }}
-                          alt="closeIcon"
-                          onClick={() => {
-                            setValue("startDate", null);
-                            setUpdateDate(true);
-                          }}
-                        />
+                        {checkProjectStatus(project?.projectStatus) && (
+                          <img
+                            className="closeIcon"
+                            src={IMAGES.closeicon}
+                            style={{
+                              width: "10px",
+                              height: "10px",
+                              position: "absolute",
+                              right: "13px",
+                              bottom: "17px",
+                            }}
+                            alt="closeIcon"
+                            onClick={() => {
+                              setValue("startDate", null);
+                              setUpdateDate(true);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   />
@@ -302,7 +307,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
                     ) => (
-                      <div style={{display:"flex",justifyContent:"center",alignItems:"center", position:"relative"}}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          position: "relative",
+                        }}
+                      >
                         <TextField
                           className="date"
                           {...params}
@@ -321,21 +333,24 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                             },
                           }}
                         />
-                        <img
-                          className="closeIcon"
-                          src={IMAGES.closeicon}
-                          style={{
-                            width: "10px",
-                            height: "10px",
-                            position: "absolute",
-                            right: "10px",
-                          }}
-                          alt="closeIcon"
-                          onClick={() => {
-                            setValue("deadline", null);
-                            setUpdateDate(true);
-                          }}
-                        />
+                        {checkProjectStatus(project?.projectStatus) && (
+                          <img
+                            className="closeIcon"
+                            src={IMAGES.closeicon}
+                            style={{
+                              width: "10px",
+                              height: "10px",
+                              position: "absolute",
+                              right: "13px",
+                              bottom: "17px",
+                            }}
+                            alt="closeIcon"
+                            onClick={() => {
+                              setValue("deadline", null);
+                              setUpdateDate(true);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   />
@@ -410,7 +425,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             <button
               className="controllers-done"
               onClick={() => {
-                if (isDirty) {
+                if (isDirty || updateDate) {
                   onSubmitEdit();
                 } else {
                   setShow("none");
