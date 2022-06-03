@@ -125,4 +125,35 @@ const valdiateCreateTask = (data: any) => {
   let { error, value, warning } = createTaskSchema.validate(data);
   return { error, value, warning };
 };
+
+export const validateTaskFilesSchema = (files: File[] | any[]) => {
+  let response: {
+    error: string | null;
+    value: any;
+  } | null = null;
+  let totalSizeInBytes = 0;
+  for (let i = 0; i < files.length; i++) {
+    let item = files[i];
+    if (item.size > 10000000) {
+      response = {
+        error: `The file ${item.name} has exceeded the max size 10 MB`,
+        value: files,
+      };
+      console.log(response);
+      break;
+    }
+    totalSizeInBytes += item.size;
+    if (totalSizeInBytes >= 20000000) {
+      response = {
+        error: "Files has exceeded the max size 20 MB",
+        value: files,
+      };
+      console.log(response);
+      break;
+    }
+  }
+  if (response !== null) return response;
+  else return { error: null, value: files };
+};
+
 export { validateCreateProject, valdiateCreateTask };

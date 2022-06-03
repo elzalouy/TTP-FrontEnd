@@ -37,7 +37,10 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
 import IMAGES from "../../assets/img";
-import { valdiateCreateTask } from "../../helpers/validation";
+import {
+  valdiateCreateTask,
+  validateTaskFilesSchema,
+} from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
@@ -134,34 +137,36 @@ const CreateNewTask: React.FC<Props> = (props) => {
         "deadline",
         data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
       );
-      if (Files) {
-        let data: Array<any> = Array.from(Files);
-        for (let i = 0; i < data.length; i++) {
-          console.log(Files[i], data[i]);
-          task.append("attachedFiles", data[i]);
+      let files: Array<any> = Array.from(Files);
+      let result = validateTaskFilesSchema(files);
+      if (result.error === null) {
+        if (Files) {
+          for (let i = 0; i < files.length; i++) {
+            task.append("attachedFiles", files[i]);
+          }
         }
-      }
-      task.append(
-        "listId",
-        data?.teamId
-          ? selectedDepartment?.teamsId?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
-          : selectedDepartment?.defaultListId
-      );
-      task.append(
-        "boardId",
-        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
-      );
-      task.append("description", data?.description);
-      dispatch(
-        createTaskFromBoard({
-          data: task,
-          dispatch: dispatch,
-          setShow: props.setShow,
-          reset: reset,
-        })
-      );
+        task.append(
+          "listId",
+          data?.teamId
+            ? selectedDepartment?.teamsId?.find(
+                (item: any) => item._id === data.teamId
+              )?.listId
+            : selectedDepartment?.defaultListId
+        );
+        task.append(
+          "boardId",
+          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+        );
+        task.append("description", data?.description);
+        dispatch(
+          createTaskFromBoard({
+            data: task,
+            dispatch: dispatch,
+            setShow: props.setShow,
+            reset: reset,
+          })
+        );
+      } else toast.error(result.error);
     }
   };
 

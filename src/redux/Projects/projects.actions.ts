@@ -70,6 +70,8 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let result: ApiResponse<any> = await api.createTask(args);
+      console.log("problem", result);
+
       if (result.ok) {
         console.log(result.data);
         toast.success("Task have been saved to the Database", {
@@ -85,6 +87,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
       }
       return rejectWithValue(result.data);
     } catch (error: any) {
+      console.log(new Error(error).message);
       return rejectWithValue(error);
     }
   }
@@ -503,6 +506,27 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+export const downloadAttachment = createAsyncThunk<any, any, any>(
+  "tasks/downloadAttachment",
+  async (
+    args: { cardId: string; attachmentId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      let response: any = await api.downloadAttachment(
+        `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
+      );
+      console.log(response);
+      if (response.ok) {
+        window.open(response.data?.url);
+        return response.data;
+      }
+      return rejectWithValue(response.data);
     } catch (error) {
       return rejectWithValue(error);
     }
