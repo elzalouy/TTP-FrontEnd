@@ -153,7 +153,6 @@ const TaskCard: React.FC<DataTypes> = ({
     <Draggable
       index={index}
       draggableId={`${_id}`}
-      isDragDisabled={getDisabledDrag(status, deadline)}
     >
       {(provided, snapshot) => {
         const afterDropStyle = {

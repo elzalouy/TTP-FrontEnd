@@ -305,7 +305,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             Cancel
           </button>
           <button className="controllers-done" onClick={() => handleSubmit()}>
-            {depLoading ? <CircularProgress sx={{ color: "white", padding: "10px" }} />  : "Done"}
+            {depLoading ? <CircularProgress sx={{ color: "white", padding: "0px",height:"25px !important",width:"25px !important" }} />  : "Done"}
           </button>
         </div>
       </PopUp>
