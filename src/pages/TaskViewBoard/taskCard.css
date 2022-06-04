@@ -102,7 +102,7 @@
   font-weight: 500;
   background-color: #d6e0ef;
   border-radius: 5px;
-  padding: 5px 5px;
+  padding: 3px 3px;
   margin: 0px 0px 0 15px;
   text-decoration: none;
   cursor: pointer;
@@ -178,7 +178,7 @@ body {
 }
 .prev {
   position: absolute;
-  top: 55px;
+  top: 63px;
   color: #92929d;
   z-index: 2;
   background-color: white;
@@ -190,7 +190,7 @@ body {
 }
 .next {
   position: absolute;
-  top: 55px;
+  top: 63px;
   color: #92929d;
   z-index: 2;
   background-color: white;

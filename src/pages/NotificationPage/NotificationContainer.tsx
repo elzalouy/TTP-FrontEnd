@@ -79,21 +79,31 @@ const NotificationContainer = (props: Props) => {
         </Grid>
       ) : null}
       <Grid item xs={12} lg={6} textAlign="center" mb="1em">
-        <LoadingButton
-          variant="contained"
-          sx={{
+        <button
+          style={{
             textTransform: "capitalize",
-            color: "#fff !important",
             maxHeight: "40px",
+            background: "black",
+            height: "40px",
+            width: "80px",
+            color: "white",
+            borderRadius: "10px",
           }}
           onClick={handleLoadMore}
         >
           {loading ? (
-            <CircularProgress sx={{ color: "white", padding: "10px" }} />
+            <CircularProgress
+              sx={{
+                color: "white",
+                padding: "8px",
+                height: "35px !important",
+                width: "35px !important",
+              }}
+            />
           ) : (
             "Load More"
           )}
-        </LoadingButton>
+        </button>
       </Grid>
     </Grid>
   );

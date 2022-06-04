@@ -133,6 +133,8 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
     }
   };
 
+  console.log(removeTeam);
+
   const handleSubmit = async () => {
     if (selectedDepartment) {
       let depData = {

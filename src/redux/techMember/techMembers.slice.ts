@@ -4,6 +4,7 @@ import {
   getAllMembers,
   getTechMembersByDeptId,
   createTeam,
+  deleteTeam,
 } from "./techMembers.actions";
 import { TechMembersInterface, techMembersState } from "./techMembers.state";
 
@@ -35,6 +36,7 @@ const techMembersSlice: Slice<TechMembersInterface> = createSlice({
     builder.addCase(getAllMembers.fulfilled, (state, action) => {
       state.loading = false;
       state.techMembers = action.payload;
+      state.deptTechMembers = action.payload;
     });
     builder.addCase(createTeam.rejected, (state) => {
       state.loading = false;
@@ -45,6 +47,21 @@ const techMembersSlice: Slice<TechMembersInterface> = createSlice({
     builder.addCase(createTeam.fulfilled, (state, action) => {
       state.loading = false;
       state.techMembers = [...state.techMembers, action.payload];
+    });
+    builder.addCase(deleteTeam.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteTeam.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteTeam.fulfilled, (state, action) => {
+      state.loading = false;
+      state.techMembers = [...state.techMembers].filter((team) => {
+        return team._id !== action.payload._id
+      });
+      state.deptTechMembers = [...state.deptTechMembers].filter((team) => {
+        return team._id !== action.payload._id
+      });
     });
   },
 });

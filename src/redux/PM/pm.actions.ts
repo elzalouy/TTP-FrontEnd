@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
+import { logout } from "../Auth";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
 
 export const resendMail = createAsyncThunk<any, any, any>(
@@ -31,12 +32,13 @@ export const resendMail = createAsyncThunk<any, any, any>(
 
 export const getPMs = createAsyncThunk<any, any, any>(
   "PM/getPMs",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue ,dispatch}) => {
     try {
       let PMs = await PMapi.getUsers();
       if (PMs?.status === 401 || PMs?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
+        dispatch(logout(null));
       }
       if (PMs.ok && PMs.data) return PMs.data;
       else return [];

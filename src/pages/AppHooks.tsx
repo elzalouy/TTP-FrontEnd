@@ -17,7 +17,6 @@ const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
   const [moveTaskData, setMoveTaskData] = React.useState<any>(null);
-  const [connected, setConnnected] = React.useState(false);
   const user = useAppSelector(selectUser);
   const {
     newProjectHook,
@@ -31,12 +30,7 @@ const AppHooks: React.FC = (props) => {
     moveTaskHook,
     deleteDepartmentHook,
   } = useAppSelector(selectUi);
-  /*
-  1- Create an app hook
-  2- test all casses 
-  3- Remove loading
-  4- set all endpoints that needs to be called
-  */
+
   React.useEffect(() => {
     // new project hook
     if (newProjectHook !== undefined) {
@@ -90,6 +84,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllDepartments(null));
     }
   }, [createDepartmentHook]);
+  // delete Department hook
   React.useEffect(() => {
     if (deleteDepartmentHook !== undefined) {
       console.log("delete department hook fired.");
@@ -104,12 +99,14 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [editTaskHook]);
+  // move task
   React.useEffect(() => {
     if (moveTaskHook !== undefined) {
       console.log("move task hook fired");
       dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
+  // move task from trello with websocket connection
   React.useEffect(() => {
     if (moveTaskData !== null) {
       console.log("entered condition");
