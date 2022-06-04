@@ -30,6 +30,14 @@ export const calculateStatusBasedOnDeadline = (data: any) => {
   }
 };
 
+export const checkProjectStatus = (status: string | undefined) => {
+  if (status === "deliver before deadline" || status === "deliver on time" || status === "late") {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 export const checkIndexForLastRow = (index: number, tasks: Task[]) => {
   let length = tasks.length - 1;
   //Taking length of whole array and finding the last row to make changes
@@ -40,14 +48,38 @@ export const checkIndexForLastRow = (index: number, tasks: Task[]) => {
   }
 }
 
-export const getDisabledDrag = (status: string, deadline: string | null) => {
+export const checkStatusAndSetBorder = (status: string) => {
   if (status === "Not Started") {
-    if (deadline === null) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
+    return "#9fa1ab1a solid 2px";
+  } else if (status === "Not Clear") {
+    return "#d2903456 solid 1px";
+  } else if (status === "Review") {
+    return "#0079bf solid 1px";
+  } else if (status === "Done") {
+    return "#00aaba4b solid 1px";
+  } else if (status === "inProgress") {
+    return "#ffc500 solid 1px";
+  } else if (status === "Cancled") {
+    return "#d2343441 solid 1px";
+  } else if (status === "Shared") {
+    return "#9fa1ab1a solid 2px";
   }
-}
+};
+
+export const checkStatusAndSetBackground = (status: string) => {
+  if (status === "Not Started") {
+    return "#F1F1F2";
+  } else if (status === "Not Clear") {
+    return "#f7f0e7";
+  } else if (status === "Review") {
+    return "#E1F3F5";
+  } else if (status === "Done") {
+    return "#E1F3F5";
+  } else if (status === "inProgress") {
+    return "#FBF5E2";
+  } else if (status === "Cancled") {
+    return "#F7E6E7";
+  } else if (status === "Shared") {
+    return "#F7E6E7";
+  }
+};

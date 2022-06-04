@@ -359,7 +359,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         {loading === false ? (
           <>
             <TableBox
-              title={"In progress"}
+              title={"In Progress"}
               outTitled={false}
               expanded={expanded}
               setExpanded={setExpanded}

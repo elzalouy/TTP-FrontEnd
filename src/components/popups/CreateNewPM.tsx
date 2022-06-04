@@ -83,7 +83,7 @@ const AddNewPM: React.FC<Props> = () => {
         </div>
 
         <div>
-          <p className="popup-title bold">Add new product manager</p>
+          <p className="popup-title bold">Add new Project Manager</p>
           {error && (
             <p className="popup-error">Please fill all the empty field</p>
           )}

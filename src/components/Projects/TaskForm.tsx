@@ -266,27 +266,50 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
                     ) => (
-                      <TextField
-                        {...params}
-                        error={error.error?.details[0].path.includes(
-                          "deadline"
-                        )}
-                        {...register("deadline")}
-                        onChange={params.onChange}
-                        placeholder="Deadline"
-                        sx={{
-                          width: "100%",
-                          paddingTop: 1,
-                          "& .MuiOutlinedInput-input": {
-                            height: "13px !important",
-                            borderRadius: "6px",
-                            background: "white !important",
-                          },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderRadius: "6px",
-                          },
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          position: "relative",
                         }}
-                      />
+                      >
+                        <TextField
+                          {...params}
+                          error={error.error?.details[0].path.includes(
+                            "deadline"
+                          )}
+                          {...register("deadline")}
+                          onChange={params.onChange}
+                          placeholder="Deadline"
+                          sx={{
+                            width: "100%",
+                            paddingTop: 1,
+                            "& .MuiOutlinedInput-input": {
+                              height: "13px !important",
+                              borderRadius: "6px",
+                              background: "white !important",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderRadius: "6px",
+                            },
+                          }}
+                        />
+                        <img
+                          className="closeIcon"
+                          src={IMAGES.closeicon}
+                          style={{
+                            width: "10px",
+                            height: "10px",
+                            position: "absolute",
+                            right:"13px",bottom:"17px"
+                          }}
+                          alt="closeIcon"
+                          onClick={() => {
+                            setValue("deadline", null);
+                          }}
+                        />
+                      </div>
                     )}
                   />
                 )}

@@ -13,14 +13,16 @@ import {
 import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
 import { Department } from "../Departments";
+import { logout } from "../Auth";
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let projects = await api.getHttpProjects();
       if (projects?.status === 401 || projects?.status === 403) {
-        return rejectWithValue("Un Authorized");
+        rejectWithValue("Un Authorized");
         removeAuthToken();
+        dispatch(logout(null));
       }
 
       if (projects.ok) return projects.data;
@@ -211,12 +213,13 @@ export const getProject = createAsyncThunk<any, any, any>(
 );
 export const getAllTasks = createAsyncThunk<any, any, any>(
   "projects/getAllTasks",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let tasks = await api.getTasks("");
       if (tasks?.status === 401 || tasks?.status === 403) {
-        return rejectWithValue("Un Authorized");
+        rejectWithValue("Un Authorized");
         removeAuthToken();
+        dispatch(logout(null));
       }
 
       if (tasks.ok) return tasks.data;

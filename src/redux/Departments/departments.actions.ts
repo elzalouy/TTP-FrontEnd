@@ -8,14 +8,16 @@ import {
 } from "../Ui";
 import { myReducer } from "../store";
 import { removeAuthToken } from "../../services/api";
+import { logout } from "../Auth";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue ,dispatch}) => {
     try {
       let departments = await DepartmentsApi.getDepartments();
       if (departments?.status === 401 || departments?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
+        dispatch(logout(null));
       }
       if (departments.ok && departments.data) return departments.data;
       else return [];

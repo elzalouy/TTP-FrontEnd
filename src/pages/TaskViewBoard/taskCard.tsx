@@ -7,7 +7,10 @@ import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { downloadAttachment, Project, Task } from "../../redux/Projects";
-import { getDisabledDrag } from "../../helpers/generalUtils";
+import {
+  checkStatusAndSetBackground,
+  checkStatusAndSetBorder,
+} from "../../helpers/generalUtils";
 import { selectAllMembers } from "../../redux/techMember";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
@@ -110,38 +113,11 @@ const TaskCard: React.FC<DataTypes> = ({
     setData(newData);
   }, []);
 
-  const checkStatusAndSetBorder = (status: string) => {
-    if (status === "Not Started") {
-      return "#9fa1ab1a solid 2px";
-    } else if (status === "Not Clear") {
-      return "#d2903456 solid 1px";
-    } else if (status === "Review") {
-      return "#0079bf solid 1px";
-    } else if (status === "Done") {
-      return "#00aaba4b solid 1px";
-    } else if (status === "inProgress") {
-      return "#ffc500 solid 1px";
-    } else if (status === "Cancled") {
-      return "#d2343441 solid 1px";
-    } else if (status === "Shared") {
-      return "#9fa1ab1a solid 2px";
-    }
-  };
-  const checkStatusAndSetBackground = (status: string) => {
-    if (status === "Not Started") {
-      return "#F1F1F2";
-    } else if (status === "Not Clear") {
-      return "#f7f0e7";
-    } else if (status === "Review") {
-      return "#E1F3F5";
-    } else if (status === "Done") {
-      return "#E1F3F5";
-    } else if (status === "inProgress") {
-      return "#FBF5E2";
-    } else if (status === "Cancled") {
-      return "#F7E6E7";
-    } else if (status === "Shared") {
-      return "#F7E6E7";
+  const getRemainingDays = (day: number) => {
+    if (day > 0) {
+      return `${day} Days Left`;
+    } else {
+      return `${Math.abs(day)} Days ago`;
     }
   };
   const onDownload = (file: any) => {
@@ -150,10 +126,7 @@ const TaskCard: React.FC<DataTypes> = ({
     );
   };
   return (
-    <Draggable
-      index={index}
-      draggableId={`${_id}`}
-    >
+    <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
         const afterDropStyle = {
           backgroundColor: checkStatusAndSetBackground(column?.value),
@@ -328,9 +301,7 @@ const TaskCard: React.FC<DataTypes> = ({
                         <Typography
                           style={{ paddingLeft: "5px", fontSize: 14 }}
                         >
-                          {remainingDays > 0
-                            ? `${remainingDays} Days left`
-                            : `${Math.abs(remainingDays)} Days ago`}
+                          {typeof remainingDays === "string" ? remainingDays : getRemainingDays(remainingDays)}
                         </Typography>
                       ) : (
                         <>

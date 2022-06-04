@@ -202,7 +202,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           : "endedStatus"
                       }
                     >
-                      {status}
+                      {status === "inProgress" ? "In Progress" : status}
                     </div>
                   </TableCell>
                   <TableCell
