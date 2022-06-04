@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { useHistory } from "react-router";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
@@ -33,15 +34,22 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
+import {
+  getUserInfo,
+  selectIsAuth,
+  selectIsLogout,
+  selectUser,
+} from "./redux/Auth";
 import { setStatistics } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
+  const isLoggedOut = useAppSelector(selectIsLogout);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -56,6 +64,12 @@ const App: React.FC = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
+   if(isLoggedOut){
+     setTimeout(()=>history.replace("/"),1000);
+   }
+  }, [isLoggedOut]);
+
+  useEffect(() => {
     if (!mounted && checkAuthToken()) {
       dispatch(getAllDepartments(null));
       dispatch(getAllCategories(null));
@@ -67,7 +81,7 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
-  
+
   // calculations of the statistics must be changed in the future, it's the backend responsibilty.
   React.useEffect(() => {
     if (projects.loading === false)

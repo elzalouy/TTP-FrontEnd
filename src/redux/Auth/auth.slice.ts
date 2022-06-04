@@ -98,6 +98,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
       state.loading = false;
       state.User = initialState.User;
       state.authState = false;
+      state.logoutState = true;
       state.Payload = {
         msg: "",
         status: "",
