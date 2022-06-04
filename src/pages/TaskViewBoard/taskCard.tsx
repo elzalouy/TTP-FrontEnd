@@ -70,7 +70,7 @@ const TaskCard: React.FC<DataTypes> = ({
       );
       setTaskFiles(others);
     }
-  }, []);
+  }, [item]);
   useEffect(() => {
     if (status !== "Not Started") {
       if (deadline === null || deadline === "") {
@@ -193,7 +193,7 @@ const TaskCard: React.FC<DataTypes> = ({
                             <img
                               style={{
                                 width: "100%",
-                                height: 100,
+                                height: 120,
                                 borderRadius: 8,
                                 marginTop: "10px",
                               }}
@@ -225,7 +225,7 @@ const TaskCard: React.FC<DataTypes> = ({
                       style={{ paddingLeft: "5px", color: "#92929D" }}
                     >
                       {item?.attachedFiles.length}
-                    </Typography>{" "}
+                    </Typography>
                     <Box
                       flexDirection={"row"}
                       sx={{
@@ -301,7 +301,9 @@ const TaskCard: React.FC<DataTypes> = ({
                         <Typography
                           style={{ paddingLeft: "5px", fontSize: 14 }}
                         >
-                          {typeof remainingDays === "string" ? remainingDays : getRemainingDays(remainingDays)}
+                          {typeof remainingDays === "string"
+                            ? remainingDays
+                            : getRemainingDays(remainingDays)}
                         </Typography>
                       ) : (
                         <>

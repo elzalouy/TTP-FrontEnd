@@ -17,5 +17,5 @@ export default {
   editProject: (args: any) => api.put("updateProject", args),
   moveTask: (args: any) => api.put("moveTask", args),
   editTask: (args: any) => api.post("updateTask", args),
-  downloadAttachment: (args: any) => api.post(`downloadAttachment${args}`),
+  downloadAttachment: (args: any) => api.get(`downloadAttachment${args}`),
 };
