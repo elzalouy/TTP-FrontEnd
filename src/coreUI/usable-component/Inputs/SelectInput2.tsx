@@ -17,8 +17,8 @@ interface Props {
   handleChange: (e: any) => void;
   options?: {
     id?: string;
-    value: string;
-    text: string;
+    value?: string;
+    text?: string;
   }[];
   label?: string;
   default?: string;

@@ -37,14 +37,17 @@ const DepartmentCard: React.FC<Props> = ({
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const projects = useAppSelector(selectAllProjects);
+
   const handleSetShow = (value: string) => {
     setShow(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
+
   const handleSetShowDelete = (value: string) => {
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
   };
+
   return (
     <div
       className="department-Card"
@@ -64,15 +67,19 @@ const DepartmentCard: React.FC<Props> = ({
         )}
       </div>
       <div className="teams">
-        {department?.teamsId?.map((team: any) => (
-          <div
-            className="teamName-badge"
-            key={team._id}
-            style={{ borderColor: colors[department.color][1] }}
-          >
-            {team.name}
-          </div>
-        ))}
+        {department?.teamsId?.map((team: any) => {
+          if (!team.isDeleted) {
+            return (
+              <div
+                className="teamName-badge"
+                key={team._id}
+                style={{ borderColor: colors[department.color][1] }}
+              >
+                {team.name}
+              </div>
+            );
+          }
+        })}
       </div>
       <div className="counter-container">
         <div className="InProgress">

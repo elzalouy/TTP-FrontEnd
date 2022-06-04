@@ -3,6 +3,7 @@ export interface TechMemberInterface {
   name: string;
   departmentId: string;
   boardId?: string;
+  isDeleted?:boolean
   trelloMemberId?: string;
   listId?: string;
   newBoardId?: string;

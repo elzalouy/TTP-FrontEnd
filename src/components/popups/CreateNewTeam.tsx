@@ -20,6 +20,7 @@ import {
 } from "../../redux/techMember";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { CircularProgress } from "@mui/material";
+import { departmentsActions } from "../../redux/Departments";
 
 type Props = {};
 
@@ -38,9 +39,9 @@ const AddNewTeam: React.FC<Props> = () => {
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const [removeTeams, setRemoveTeams] = useState<TechMembersInterface[]>([]);
 
-  const onSubmit = () => {
+  /*  const onSubmit = () => {
     dispatch(deleteTeam({ data: removeTeams, dispatch }));
-  };
+  }; */
 
   const getDepartmentNameById = (id: string) => {
     let departmentName = departments.filter((department) => {
@@ -214,8 +215,17 @@ const AddNewTeam: React.FC<Props> = () => {
                   <img
                     src={IMAGES.deleteicon}
                     alt="delete"
-                    onClick={() =>{
-                      dispatch(deleteTeam({data:team,dispatch}))
+                    onClick={() => {
+                      //Here we dispatch one action to the DB updating boolean flag and one action to redux to change UI
+                      dispatch(
+                        deleteTeam({
+                          data: { id: team._id, isDeleted: "true" },
+                          dispatch,
+                        })
+                      );
+                      dispatch(
+                        departmentsActions.updateDepartmentTeams(team._id)
+                      );
                     }}
                   />
                 </td>
