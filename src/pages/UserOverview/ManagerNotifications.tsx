@@ -1,21 +1,6 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
+import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
-import {
-  ArrowForwardIos as ArrowIcon,
-  BorderRightSharp,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import PopoverComponent from "../../coreUI/usable-component/Popovers/PopoverComponent";
 interface Props {
