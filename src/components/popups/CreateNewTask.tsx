@@ -306,7 +306,14 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       renderInput={(
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
-                        <div style={{display:"flex",justifyContent:"center",alignItems:"center", position:"relative"}}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "relative",
+                          }}
+                        >
                           <TextField
                             placeholder="Deadline"
                             error={error.error?.details[0].path.includes(
@@ -330,7 +337,13 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           <img
                             className="closeIcon"
                             src={IMAGES.closeicon}
-                            style={{width:"10px",height:"10px",position:"absolute",right:"13px",bottom:"17px"}}
+                            style={{
+                              width: "10px",
+                              height: "10px",
+                              position: "absolute",
+                              right: "13px",
+                              bottom: "17px",
+                            }}
                             alt="closeIcon"
                             onClick={() => {
                               setValue("deadline", null);
@@ -460,11 +473,19 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       options={
                         selectedDepartment?.teamsId
                           ? selectedDepartment?.teamsId?.map((item: any) => {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.name,
-                              };
+                              if (!item.isDeleted) {
+                                return {
+                                  id: item._id ? item._id : "",
+                                  value: item._id ? item._id : "",
+                                  text: item.name,
+                                };
+                              } else {
+                                return {
+                                  id: "",
+                                  value: "",
+                                  text: "",
+                                };
+                              }
                             })
                           : []
                       }

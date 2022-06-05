@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
 import { logout } from "../Auth";
+import { fireDeleteCategoryHook } from "../Ui";
 
 export const getAllCategories = createAsyncThunk<any, any, any>(
   "category/getAll",
@@ -55,6 +56,31 @@ export const updateCategory = createAsyncThunk<any, any, any>(
       let result = await api.updateCategory(args);
       if (result.data) {
         toast.success("Category updated successfully", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId:generateID(),
+        });
+        return result.data;
+      } else return [];
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteCategory = createAsyncThunk<any, any, any>(
+  "category/deleteCategory",
+  async (args: any, { rejectWithValue }) => {
+    try {
+      let result = await api.updateCategory(args.data);
+      if (result.data) {
+        args.dispatch(fireDeleteCategoryHook(""));
+        toast.success("Category deleted successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,

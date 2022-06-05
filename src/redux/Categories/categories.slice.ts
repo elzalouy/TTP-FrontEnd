@@ -3,8 +3,9 @@ import {
   getAllCategories,
   createCategory,
   updateCategory,
+  deleteCategory,
 } from "./categories.actions";
-import initialState, { CategoriesInterface } from "./categories.state";
+import initialState, { CategoriesInterface, Category } from "./categories.state";
 
 const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
   name: "categories",
@@ -38,8 +39,8 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
     });
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.loading = false;
-      state.categories = action.payload;
-      state.chosenCategories = action.payload;
+      state.categories = action.payload.filter((item:Category)=>!item.isDeleted);
+      state.chosenCategories = action.payload.filter((item:Category)=>!item.isDeleted);;
     });
     builder.addCase(createCategory.pending, (state) => {
       state.loading = true;
@@ -64,6 +65,21 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
         .indexOf(payload._id);
       state.categories.splice(targetIndex, 1, payload);
       state.chosenCategories.splice(targetIndex, 1, payload);
+      state.loading = false;
+    });
+    builder.addCase(deleteCategory.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteCategory.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteCategory.fulfilled, (state, { payload }) => {
+      state.categories = [...state.categories].filter((cat) => {
+        return cat._id !== payload._id
+      });
+      state.chosenCategories = [...state.chosenCategories].filter((cat) => {
+        return cat._id !== payload._id
+      });
       state.loading = false;
     });
   },

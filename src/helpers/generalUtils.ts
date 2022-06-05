@@ -1,6 +1,12 @@
 import moment from "moment";
 import { Task } from "../redux/Projects";
 
+interface options {
+  id?: string;
+  value?: string;
+  text?: string;
+};
+
 export const getStatus = (status: string | undefined) => {
   if (status === "late") {
     return "Delivered Late";
@@ -83,3 +89,21 @@ export const checkStatusAndSetBackground = (status: string) => {
     return "#F7E6E7";
   }
 };
+
+export const isOptionsEmpty = (options: options[]) => {
+  let checkOptions = options.map((op) => {
+    //Mapping all options array with true or false
+    if (op.id?.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  let finalResult = checkOptions.filter((op) => op === false);
+  //Finding length of filtered array to determine true or false
+  if (finalResult.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}

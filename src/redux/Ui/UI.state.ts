@@ -29,6 +29,8 @@ export interface UiInterface {
   editPMHook: boolean | undefined;
   moveTaskHook: boolean | undefined;
   deleteDepartmentHook: boolean | undefined;
+  deleteCategoryHook: boolean | undefined;
+  deleteTeamHook: boolean | undefined;
 }
 const UiState: UiInterface = {
   deleteProjectPopup: "none",
@@ -61,6 +63,8 @@ const UiState: UiInterface = {
   editPMHook: undefined,
   moveTaskHook: undefined,
   deleteDepartmentHook: undefined,
+  deleteCategoryHook: undefined,
+  deleteTeamHook: undefined,
 };
 
 export default UiState;

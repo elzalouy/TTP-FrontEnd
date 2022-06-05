@@ -11,6 +11,8 @@ import EditIcon from "../../assets/icons/EditIcon";
 import { styled } from "@mui/material/styles";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
+import CategoryDrop from "../../components/dropdowns/CategoryDrop";
+import DeleteCategory from "../../components/popups/DeleteCategory";
 
 type Props = {};
 interface IProps {
@@ -31,11 +33,16 @@ const CategoryCard: React.FC<IProps> = ({
   handleSetEditCatDisplay,
   category,
 }) => {
-
   const dispatch = useDispatch();
+  const [showDelete, setShowDelete] = useState("none");
 
   const handleSetSelect = () => {
     dispatch(categoriesActions.setSelectedCategory(category));
+  };
+
+  const handleSetShowDelete = (value: string) => {
+    dispatch(categoriesActions.setSelectedCategory(category));
+    setShowDelete(value);
   };
 
   const EditBtn = styled(Button)({
@@ -61,20 +68,37 @@ const CategoryCard: React.FC<IProps> = ({
         overflow: "hidden",
       }}
     >
-      <Typography
+      <DeleteCategory
+        showDelete={showDelete}
+        handleSetShowDelete={handleSetShowDelete}
+      />
+      <Box
         sx={{
-          fontWeight: "bold",
-          mt: 1,
-          mb: 0.2,
-          fontSize: 22,
-          letterSpacing: 0.2,
-          textAlign: "left",
-          textTransform: "capitalize",
+          display: "flex",
+          flexDirection: "row",
+          mb: 1,
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
-        style={{ color: fontColor }}
       >
-        {mainCategory}
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            mb: 0.2,
+            fontSize: 22,
+            letterSpacing: 0.2,
+            textAlign: "left",
+            textTransform: "capitalize",
+          }}
+          style={{ color: fontColor }}
+        >
+          {mainCategory}
+        </Typography>
+        <CategoryDrop
+          color={fontColor}
+          handleSetShowDelete={handleSetShowDelete}
+        />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -137,7 +161,7 @@ const CategoryCard: React.FC<IProps> = ({
                   borderRadius: 1,
                   borderColor: fontColor,
                   mr: 1,
-                  paddingY:1,
+                  paddingY: 1,
                 }}
                 onClick={() => {
                   handleSetDisplay("flex");

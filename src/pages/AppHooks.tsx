@@ -13,6 +13,8 @@ import {
 import { fireMoveTaskOnTrello } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
 import { checkAuthToken } from "../services/api";
+import { getAllCategories } from "../redux/Categories";
+import { getAllMembers } from "../redux/techMember";
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
@@ -29,7 +31,27 @@ const AppHooks: React.FC = (props) => {
     editTaskHook,
     moveTaskHook,
     deleteDepartmentHook,
+    deleteTeamHook,
+    deleteCategoryHook
   } = useAppSelector(selectUi);
+
+  React.useEffect(() => {
+    // delete team hook
+    if (deleteTeamHook !== undefined) {
+      console.log("delete category hook fired");
+      dispatch(getAllDepartments(null));
+      dispatch(getAllMembers(null));
+    }
+  }, [deleteTeamHook]);
+
+  React.useEffect(() => {
+    // delete category hook
+    if (deleteCategoryHook !== undefined) {
+      console.log("delete category hook fired");
+      dispatch(getAllCategories(null));
+      dispatch(getAllDepartments(null));
+    }
+  }, [deleteCategoryHook]);
 
   React.useEffect(() => {
     // new project hook

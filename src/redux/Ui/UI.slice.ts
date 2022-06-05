@@ -50,47 +50,53 @@ const UISlice: Slice<UiInterface> = createSlice({
     },
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
-      state.newProjectHook = state.newProjectHook === true ? false : true;
+      state.newProjectHook = !state.newProjectHook
     },
     fireUpdateProjectHook: (state = UiState, action: PayloadAction<any>) => {
-      state.updateProjectHook = state.updateProjectHook === true ? false : true;
+      state.updateProjectHook = !state.updateProjectHook
     },
     fireDeleteTaskHook: (state = UiState, action: PayloadAction<any>) => {
-      state.deleteTasksHook = state.deleteTasksHook === true ? false : true;
+      state.deleteTasksHook = !state.deleteTasksHook
     },
     fireDeleteProjectHook: (state = UiState) => {
-      state.deleteProjectHook = state.deleteProjectHook === true ? false : true;
+      state.deleteProjectHook = !state.deleteProjectHook
     },
     fireNewTeamHook: (state = UiState) => {
-      state.createTeamHook = state.createTeamHook === true ? false : true;
+      state.createTeamHook = !state.createTeamHook
     },
     fireUpdateDepartmentHook: (state = UiState) => {
       state.updateDepartmentHook =
-        state.updateDepartmentHook === true ? false : true;
+        !state.updateDepartmentHook
     },
     fireCreateDepartmentHook: (state = UiState) => {
       state.createDepartmentHook =
-        state.createDepartmentHook === true ? false : true;
+        !state.createDepartmentHook
     },
     fireEditTaskHook: (state = UiState) => {
-      state.editTaskHook = state.editTaskHook === true ? false : true;
+      state.editTaskHook = !state.editTaskHook
     },
     fireCreatePMHook: (state = UiState) => {
-      state.createPMHook = state.createPMHook === true ? false : true;
+      state.createPMHook = !state.createPMHook
     },
     fireEditPMHook: (state = UiState) => {
-      state.editPMHook = state.createPMHook === true ? false : true;
+      state.editPMHook = !state.createPMHook
     },
     fireMoveTaskHook: (state = UiState) => {
-      state.moveTaskHook = state.moveTaskHook === true ? false : true;
+      state.moveTaskHook = !state.moveTaskHook
     },
     fireDeleteDepartmentHook: (state = UiState) => {
       state.deleteDepartmentHook =
-        state.deleteDepartmentHook === true ? false : true;
+        !state.deleteDepartmentHook
     },
     fireMoveTaskOnTrello: (state = UiState, action: PayloadAction<any>) => {
       state.moveTaskOnTrelloHook = action.payload;
     },
+    fireDeleteCategoryHook: (state = UiState) => {
+      state.deleteCategoryHook = !state.deleteCategoryHook
+    },
+    fireDeleteTeamHook: (state = UiState) => {
+      state.deleteTeamHook = !state.deleteTeamHook;
+    }
   },
 });
 export default UISlice.reducer;
@@ -119,6 +125,8 @@ export const {
   fireEditPMHook,
   fireMoveTaskHook,
   fireDeleteDepartmentHook,
+  fireDeleteCategoryHook,
+  fireDeleteTeamHook,
   fireMoveTaskOnTrello,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;
