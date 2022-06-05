@@ -200,58 +200,59 @@ const AddNewTeam: React.FC<Props> = () => {
         <label style={{ fontWeight: "light", fontSize: "1rem" }}>
           Added Teams
         </label>
-        <table className="allTeam-table">
-          <tr className="th">
-            <th className="normal">Team Name</th>
-            <th className="normal">Department Name</th>
-            <th></th>
-          </tr>
-          {DepBasedTeams.map((team, index) => {
-            return (
-              <tr key={index}>
-                <td>{team.name}</td>
-                <td>{getDepartmentNameById(team.departmentId)}</td>
-                <td>
-                  <img
-                    src={IMAGES.deleteicon}
-                    alt="delete"
-                    onClick={() => {
-                      //Here we dispatch one action to the DB updating boolean flag and one action to redux to change UI
-                      dispatch(
-                        deleteTeam({
-                          data: { id: team._id, isDeleted: "true" },
-                          dispatch,
-                        })
-                      );
-                      dispatch(
-                        departmentsActions.updateDepartmentTeams(team._id)
-                      );
-                    }}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-          {AllTeam.map((el, index) => {
-            return (
-              <tr key={index}>
-                <td>{el.name}</td>
-                <td>{getDepartmentName(el)}</td>
-                <td>
-                  <img
-                    src={IMAGES.deleteicon}
-                    alt="delete"
-                    onClick={() => {
-                      AllTeam.splice(index, 1);
-                      setAllTeam([...AllTeam]);
-                    }}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </table>
-
+        <div className="allTeam-table-container">
+          <table className="allTeam-table">
+            <tr className="th">
+              <th className="normal">Team Name</th>
+              <th className="normal">Department Name</th>
+              <th></th>
+            </tr>
+            {DepBasedTeams.map((team, index) => {
+              return (
+                <tr key={index}>
+                  <td>{team.name}</td>
+                  <td>{getDepartmentNameById(team.departmentId)}</td>
+                  <td>
+                    <img
+                      src={IMAGES.deleteicon}
+                      alt="delete"
+                      onClick={() => {
+                        //Here we dispatch one action to the DB updating boolean flag and one action to redux to change UI
+                        dispatch(
+                          deleteTeam({
+                            data: { id: team._id, isDeleted: "true" },
+                            dispatch,
+                          })
+                        );
+                        dispatch(
+                          departmentsActions.updateDepartmentTeams(team._id)
+                        );
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+            {AllTeam.map((el, index) => {
+              return (
+                <tr key={index}>
+                  <td>{el.name}</td>
+                  <td>{getDepartmentName(el)}</td>
+                  <td>
+                    <img
+                      src={IMAGES.deleteicon}
+                      alt="delete"
+                      onClick={() => {
+                        AllTeam.splice(index, 1);
+                        setAllTeam([...AllTeam]);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </table>
+        </div>
         <div className="controllers">
           <button
             className="controllers-cancel"

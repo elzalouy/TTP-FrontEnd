@@ -413,6 +413,12 @@ table.allTask-table td.deleteTd {
 }
 
 /* TABLE ADD NEW TEAM */
+.allTeam-table-container{
+  height: 200px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
 table.allTeam-table {
   margin: 15px 0;
   width: 100%;
