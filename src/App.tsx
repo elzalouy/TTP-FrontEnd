@@ -43,6 +43,8 @@ import {
 import { setStatistics } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();

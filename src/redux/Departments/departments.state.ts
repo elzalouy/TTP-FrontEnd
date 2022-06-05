@@ -16,6 +16,7 @@ export interface Department {
     name: string;
     departmentId: string;
     listId: string;
+    isDeleted?:boolean;
   }[];
   totalInProgress: number;
   totalDone: number;

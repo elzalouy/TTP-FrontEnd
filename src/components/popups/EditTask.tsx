@@ -36,12 +36,17 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 
 // import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
-import { valdiateCreateTask, validateEditTask } from "../../helpers/validation";
+import {
+  valdiateCreateTask,
+  validateEditTask,
+  validateTaskFilesSchema,
+} from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
 import { generateID } from "../../helpers/IdGenerator";
+import { AnyListenerPredicate } from "@reduxjs/toolkit/dist/listenerMiddleware/types";
 
 type Props = {
   show: string;
@@ -60,8 +65,9 @@ const EditTask: React.FC<Props> = (props) => {
   const categories = useAppSelector(selectAllCategories);
   const loadingTask = useAppSelector(editTaskLoading);
   const selectedProject = useAppSelector(selectSelectedProject);
-  const [selectedDepartment, setSelectedDepartment] =
-    React.useState<Department>();
+  const [selectedDepartment, setSelectedDepartment] = React.useState<
+    Department | any
+  >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
 
   const { editTask: id } = useAppSelector(selectAllProjects);
@@ -121,8 +127,9 @@ const EditTask: React.FC<Props> = (props) => {
       turnoverTime: null,
       attachedFiles: "",
       listId: data?.teamId
-        ? selectedDepartment?.teamsId?.find((item) => item._id === data.teamId)
-            ?.listId
+        ? selectedDepartment?.teamsId?.find(
+            (item: any) => item._id === data.teamId
+          )?.listId
         : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
@@ -141,9 +148,46 @@ const EditTask: React.FC<Props> = (props) => {
         toastId: generateID(),
       });
     } else {
-      dispatch(
-        editTaskFromBoard({ data: newTask, dispatch, setShow: props.setShow })
+      let task = new FormData();
+      task.append("name", data.name);
+      task.append("categoryId", data.categoryId);
+      task.append("subCategoryId", data.subCategoryId);
+      task.append("teamId", data.teamId);
+      task.append(
+        "projectId",
+        selectedProject?.project?._id ? selectedProject?.project?._id : ""
       );
+      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("start", new Date().toUTCString());
+      task.append(
+        "deadline",
+        data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
+      );
+      let files: Array<any> = Array.from(Files);
+      let result = validateTaskFilesSchema(files);
+      if (result.error === null) {
+        if (Files) {
+          for (let i = 0; i < files.length; i++) {
+            task.append("attachedFiles", files[i]);
+          }
+        }
+        task.append(
+          "listId",
+          data?.teamId
+            ? selectedDepartment?.teamsId?.find(
+                (item: any) => item._id === data.teamId
+              )?.listId
+            : selectedDepartment?.defaultListId
+        );
+        task.append(
+          "boardId",
+          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+        );
+        task.append("description", data?.description);
+        dispatch(
+          editTaskFromBoard({ data: newTask, dispatch, setShow: props.setShow })
+        );
+      } else toast.error(result.error);
     }
   };
 
@@ -270,7 +314,14 @@ const EditTask: React.FC<Props> = (props) => {
                       renderInput={(
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
-                        <div style={{display:"flex",justifyContent:"center",alignItems:"center", position:"relative"}}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "relative",
+                          }}
+                        >
                           <TextField
                             placeholder="deadline"
                             error={error.error?.details[0].path.includes(
@@ -299,7 +350,8 @@ const EditTask: React.FC<Props> = (props) => {
                               width: "10px",
                               height: "10px",
                               position: "absolute",
-                              right:"13px",bottom:"17px"
+                              right: "13px",
+                              bottom: "17px",
                             }}
                             alt="closeIcon"
                             onClick={() => {
@@ -423,19 +475,23 @@ const EditTask: React.FC<Props> = (props) => {
                       handleChange={props.field.onChange}
                       selectText={
                         selectedDepartment?.teamsId?.find(
-                          (item) => item._id === props.field.value
+                          (item: any) => item._id === props.field.value
                         )?.name
                       }
                       {...register("teamId")}
                       selectValue={props.field.value}
                       options={
                         selectedDepartment?.teamsId
-                          ? selectedDepartment?.teamsId?.map((item) => {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.name,
-                              };
+                          ? selectedDepartment?.teamsId?.map((item: any) => {
+                              if (!item.isDeleted) {
+                                return {
+                                  id: item._id ? item._id : "",
+                                  value: item._id ? item._id : "",
+                                  text: item.name,
+                                };
+                              } else {
+                                return [];
+                              }
                             })
                           : []
                       }
@@ -444,7 +500,7 @@ const EditTask: React.FC<Props> = (props) => {
                 />
               </div>
             </div>
-            <Box
+            {/* <Box
               marginX={1}
               marginY={3}
               alignItems="center"
@@ -511,7 +567,7 @@ const EditTask: React.FC<Props> = (props) => {
                     />
                   </Box>
                 ))}
-            </Box>
+            </Box> */}
             <div>
               <button
                 style={{ marginBottom: "20px" }}

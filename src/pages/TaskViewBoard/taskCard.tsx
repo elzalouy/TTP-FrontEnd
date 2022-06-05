@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { Box, style } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
@@ -6,14 +6,23 @@ import IMAGES from "../../assets/img/index";
 import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
-import { Project, Task } from "../../redux/Projects";
+import { downloadAttachment, Project, Task } from "../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
 } from "../../helpers/generalUtils";
 import { selectAllMembers } from "../../redux/techMember";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper";
+import {
+  ArrowBackIosNew as ArrowBackIosNewIcon,
+  ArrowForwardIos as ArrowForwardIosIcon,
+} from "@mui/icons-material";
+import "swiper/css";
+import "swiper/css/navigation";
 
 import "./taskCard.css";
+import { useDispatch } from "react-redux";
 interface DataTypes {
   index: number;
   item: Task;
@@ -29,6 +38,9 @@ const TaskCard: React.FC<DataTypes> = ({
   column,
   footerStyle,
 }) => {
+  const dispatch = useDispatch();
+  const navigationPrevRef = React.useRef(null);
+  const navigationNextRef = React.useRef(null);
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
   const { _id, name, deadline, status, boardId, teamId } = item;
@@ -43,7 +55,9 @@ const TaskCard: React.FC<DataTypes> = ({
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
   const [taskImages, setTaskImages] = useState<any[]>();
+  const [taskFiles, setTaskFiles] = useState<any[]>();
 
+  /// set files
   useEffect(() => {
     let mimeTypes = ["image/png", "image/png", "image/jpeg", "image/svg"];
     if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
@@ -51,12 +65,15 @@ const TaskCard: React.FC<DataTypes> = ({
         mimeTypes.includes(item.mimeType)
       );
       setTaskImages(images);
+      let others = item?.attachedFiles.filter(
+        (item) => !mimeTypes.includes(item.mimeType)
+      );
+      setTaskFiles(others);
     }
-  }, []);
-
+  }, [item]);
   useEffect(() => {
     if (status !== "Not Started") {
-      if (deadline === null) {
+      if (deadline === null || deadline === "") {
         setRemaningDays("Deadline is required");
         setDaysBgColor("#E4DADC");
         setDaysColor("#2C2C2C");
@@ -103,7 +120,11 @@ const TaskCard: React.FC<DataTypes> = ({
       return `${Math.abs(day)} Days ago`;
     }
   };
-
+  const onDownload = (file: any) => {
+    dispatch(
+      downloadAttachment({ cardId: item.cardId, attachmentId: file?.trelloId })
+    );
+  };
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -136,29 +157,100 @@ const TaskCard: React.FC<DataTypes> = ({
                 {project?.projectManager?.name}
               </Typography>
             </Box>
-            {item?.attachedFiles?.length > 0 && (
-              <>
-                <img
-                  style={{ width: "100%", marginTop: "10px" }}
-                  src={taskImages ? taskImages[0]?.url : ""}
-                  alt="more"
-                />
-                <Stack
-                  direction="row"
-                  marginTop="12px"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                >
-                  <img src={IMAGES.attachment} alt="more" />
-                  <Typography style={{ paddingLeft: "5px" }}>
-                    {item?.attachedFiles.length}
-                  </Typography>{" "}
-                  <Typography className="fileUpload">
-                    {/* {item?.attachedFiles} */}
-                  </Typography>
-                </Stack>
-              </>
-            )}
+            <Grid direction="row">
+              {item?.attachedFiles?.length > 0 && (
+                <>
+                  {taskImages && taskImages.length > 0 && (
+                    <>
+                      <Swiper
+                        spaceBetween={5}
+                        centeredSlides={true}
+                        autoplay={{
+                          delay: 2500,
+                          disableOnInteraction: false,
+                        }}
+                        navigation={{
+                          prevEl: navigationPrevRef.current,
+                          nextEl: navigationNextRef.current,
+                        }}
+                        onSwiper={(swiper: any) => {
+                          setTimeout(() => {
+                            swiper.params.navigation.prevEl =
+                              navigationPrevRef.current;
+                            swiper.params.navigation.nextEl =
+                              navigationNextRef.current;
+                          });
+                        }}
+                        onBeforeInit={(swiper: any) => {
+                          swiper.params.navigation.prevEl = navigationPrevRef;
+                          swiper.params.navigation.nextEl = navigationNextRef;
+                        }}
+                        modules={[Autoplay, Navigation]}
+                        className="swiper"
+                      >
+                        {taskImages.map((item) => (
+                          <SwiperSlide className="swiper-slide">
+                            <img
+                              style={{
+                                width: "100%",
+                                height: 120,
+                                borderRadius: 8,
+                                marginTop: "10px",
+                              }}
+                              src={item?.url}
+                              alt="more"
+                            />
+                          </SwiperSlide>
+                        ))}
+                        <div ref={navigationPrevRef}>
+                          <ArrowBackIosNewIcon
+                            className="prev"
+                            htmlColor="black"
+                          />
+                        </div>
+                        <div ref={navigationNextRef}>
+                          <ArrowForwardIosIcon className="next" />
+                        </div>
+                      </Swiper>
+                    </>
+                  )}
+                  <Stack
+                    direction="row"
+                    marginTop="12px"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                  >
+                    <img src={IMAGES.attachment} alt="more" />
+                    <Typography
+                      style={{ paddingLeft: "5px", color: "#92929D" }}
+                    >
+                      {item?.attachedFiles.length}
+                    </Typography>
+                    <Box
+                      flexDirection={"row"}
+                      sx={{
+                        width: "100%",
+                        display: "inline-flex",
+                        overflowX: "scroll",
+                      }}
+                    >
+                      {taskFiles &&
+                        taskFiles.length > 0 &&
+                        taskFiles.map((item) => (
+                          <>
+                            <Typography
+                              onClick={(e) => onDownload(item)}
+                              className="fileUpload"
+                            >
+                              {item?.name}
+                            </Typography>
+                          </>
+                        ))}
+                    </Box>
+                  </Stack>
+                </>
+              )}
+            </Grid>
             {item.status !== "cancled" ? (
               <>
                 {item.status === "done" ? (
@@ -209,7 +301,9 @@ const TaskCard: React.FC<DataTypes> = ({
                         <Typography
                           style={{ paddingLeft: "5px", fontSize: 14 }}
                         >
-                          {typeof remainingDays === "string" ? remainingDays : getRemainingDays(remainingDays)}
+                          {typeof remainingDays === "string"
+                            ? remainingDays
+                            : getRemainingDays(remainingDays)}
                         </Typography>
                       ) : (
                         <>

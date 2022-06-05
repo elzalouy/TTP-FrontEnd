@@ -97,13 +97,15 @@
   margin: 10px 0px 0 0px;
 }
 .fileUpload {
-  color: #783dbd;
+  color: #783dbd !important;
   width: fit-content;
   font-weight: 500;
   background-color: #d6e0ef;
   border-radius: 5px;
-  padding: 5px 5px;
+  padding: 3px 3px;
   margin: 0px 0px 0 15px;
+  text-decoration: none;
+  cursor: pointer;
 }
 .task-option {
   display: flex;
@@ -134,4 +136,67 @@
   right: 20px;
   top: 0;
   height: 35px;
+}
+#app {
+  height: 100%;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.prev {
+  position: absolute;
+  top: 63px;
+  color: #92929d;
+  z-index: 2;
+  background-color: white;
+  left: 5px;
+  font-size: 15px;
+  padding-right: 2px;
+  margin: 0;
+  border-radius: 100%;
+}
+.next {
+  position: absolute;
+  top: 63px;
+  color: #92929d;
+  z-index: 2;
+  background-color: white;
+  left: 250px;
+  font-size: 15px;
+  padding-left: 2px;
+  margin: 0;
+  border-radius: 100%;
 }

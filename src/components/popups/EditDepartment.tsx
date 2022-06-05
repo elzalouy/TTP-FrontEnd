@@ -74,7 +74,9 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       });
       let selectedTeams: string[] = selectedDepartment.teamsId.map(
         (team: any) => {
-          return team.name;
+          if (!team.isDeleted) {
+            return team.name;
+          }
         }
       );
       setNames(selectedTeams);
@@ -133,8 +135,6 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
     }
   };
 
-  console.log(removeTeam);
-
   const handleSubmit = async () => {
     if (selectedDepartment) {
       let depData = {
@@ -146,6 +146,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         addTeam: addTeam,
         removeTeam: removeTeam,
       };
+      console.log(depData);
       dispatch(updateDepartment({ data: depData, dispatch }));
       handleSetShow("none");
       setFormData({
@@ -275,21 +276,23 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         </div>
         <div className="names-container">
           {Names.map((el, index) => {
-            return (
-              <div className="team-name-badge" key={index}>
-                <p className="name-of-badge">{el}</p>
-                <img
-                  src={IMAGES.closeicon}
-                  alt="close"
-                  width="9px"
-                  height="9px"
-                  className="pointer"
-                  onClick={() => {
-                    handleRemoveTeam(index);
-                  }}
-                />
-              </div>
-            );
+            if (el) {
+              return (
+                <div className="team-name-badge" key={index}>
+                  <p className="name-of-badge">{el}</p>
+                  <img
+                    src={IMAGES.closeicon}
+                    alt="close"
+                    width="9px"
+                    height="9px"
+                    className="pointer"
+                    onClick={() => {
+                      handleRemoveTeam(index);
+                    }}
+                  />
+                </div>
+              );
+            }
           })}
         </div>
 

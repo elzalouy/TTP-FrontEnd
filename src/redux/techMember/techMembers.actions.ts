@@ -65,8 +65,8 @@ export const deleteTeam = createAsyncThunk<any, any, any>(
   "techMembers/deleteTeam",
   async (args: any, { rejectWithValue }) => {
     try {
-      let team = await api.deleteTechMember(args.data);
-      if (team.ok && team.data) {
+      let team = await api.updateTechMember(args.data);
+      if (team.status === 200) {
         toast.success("team deleted successfully", {
           position: "top-right",
           autoClose: 1500,
