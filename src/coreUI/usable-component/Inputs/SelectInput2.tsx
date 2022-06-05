@@ -13,6 +13,7 @@ import "../style.css";
 import { ArrowDropUp } from "@mui/icons-material";
 import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";
 import _ from "lodash";
+import { isOptionsEmpty } from "../../../helpers/generalUtils";
 interface Props {
   handleChange: (e: any) => void;
   options?: {
@@ -134,7 +135,7 @@ const SelectInput2: React.FC<Props> = ({
               paddingRight: 1,
             }}
           >
-            {open && options.length>1 ? (
+            {open && options.length > 1 ? (
               <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
             ) : (
               <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
@@ -145,7 +146,20 @@ const SelectInput2: React.FC<Props> = ({
       <Popover
         className={styles.root}
         open={options.length > 0 ? open : false}
-        sx={{ borderRadius: "10px", width: "calc(96% - 11px) !important;",zIndex:2001 }}
+        sx={
+          isOptionsEmpty(options)
+            ? {
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+                opacity: "0",
+              }
+            : {
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+              }
+        }
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}
@@ -160,32 +174,37 @@ const SelectInput2: React.FC<Props> = ({
       >
         <Box display={"grid"} padding={1} borderRadius={"10px"}>
           {options &&
-            options.map((item) => (
-              <option
-                key={item.id}
-                className="Option"
-                value={item?.value}
-                onClick={(e) => {
-                  handleChange(e);
-                  handleClose();
-                }}
-                style={{
-                  cursor: "pointer",
-                  paddingInline: 10,
-                  width: "340px",
-                  justifyContent: "flex-start",
-                  textTransform: "capitalize",
-                  fontFamily: "Cairo",
-                  color: "#696974",
-                  fontWeight: "700",
-                  fontSize: 13,
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  borderRadius: 0,
-                }}
-                label={item?.text}
-              />
-            ))}
+            options.map((item) => {
+              if (item.id?.length === 0) {
+                return false;
+              }
+              return (
+                <option
+                  key={item.id}
+                  className="Option"
+                  value={item?.value}
+                  onClick={(e) => {
+                    handleChange(e);
+                    handleClose();
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    paddingInline: 10,
+                    width: "340px",
+                    justifyContent: "flex-start",
+                    textTransform: "capitalize",
+                    fontFamily: "Cairo",
+                    color: "#696974",
+                    fontWeight: "700",
+                    fontSize: 13,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 0,
+                  }}
+                  label={item?.text}
+                />
+              );
+            })}
         </Box>
       </Popover>
     </Grid>

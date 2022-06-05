@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/endpoints/techMembers";
 import { toast } from "react-toastify";
-import { fireNewTeamHook } from "../Ui";
+import { fireDeleteTeamHook, fireNewTeamHook } from "../Ui";
 import { removeAuthToken } from "../../services/api";
 import { logout } from "../Auth";
 
@@ -67,6 +67,7 @@ export const deleteTeam = createAsyncThunk<any, any, any>(
     try {
       let team = await api.updateTechMember(args.data);
       if (team.status === 200) {
+        args.dispatch(fireDeleteTeamHook(""));
         toast.success("team deleted successfully", {
           position: "top-right",
           autoClose: 1500,

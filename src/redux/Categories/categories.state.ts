@@ -8,6 +8,7 @@ export interface Category {
   subCategories?: string[];
   subCategoriesId?: SubCategory[];
   selectedSubCategory: SubCategory[];
+  isDeleted?:boolean
 }
 
 export interface CategoriesInterface {

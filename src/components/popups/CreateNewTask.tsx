@@ -480,7 +480,11 @@ const CreateNewTask: React.FC<Props> = (props) => {
                                   text: item.name,
                                 };
                               } else {
-                                return [];
+                                return {
+                                  id: "",
+                                  value: "",
+                                  text: "",
+                                };
                               }
                             })
                           : []

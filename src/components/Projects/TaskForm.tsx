@@ -436,7 +436,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                                 text: item.name,
                               };
                             } else {
-                              return [];
+                              return {
+                                id: "",
+                                value: "",
+                                text: "",
+                              };
                             }
                           })
                         : []
