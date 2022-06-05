@@ -146,6 +146,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         addTeam: addTeam,
         removeTeam: removeTeam,
       };
+      console.log(depData);
       dispatch(updateDepartment({ data: depData, dispatch }));
       handleSetShow("none");
       setFormData({

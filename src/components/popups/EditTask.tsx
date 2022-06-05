@@ -314,7 +314,14 @@ const EditTask: React.FC<Props> = (props) => {
                       renderInput={(
                         params: JSX.IntrinsicAttributes & TextFieldProps
                       ) => (
-                        <div style={{display:"flex",justifyContent:"center",alignItems:"center", position:"relative"}}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "relative",
+                          }}
+                        >
                           <TextField
                             placeholder="deadline"
                             error={error.error?.details[0].path.includes(
@@ -343,7 +350,8 @@ const EditTask: React.FC<Props> = (props) => {
                               width: "10px",
                               height: "10px",
                               position: "absolute",
-                              right:"13px",bottom:"17px"
+                              right: "13px",
+                              bottom: "17px",
                             }}
                             alt="closeIcon"
                             onClick={() => {
@@ -475,11 +483,15 @@ const EditTask: React.FC<Props> = (props) => {
                       options={
                         selectedDepartment?.teamsId
                           ? selectedDepartment?.teamsId?.map((item: any) => {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.name,
-                              };
+                              if (!item.isDeleted) {
+                                return {
+                                  id: item._id ? item._id : "",
+                                  value: item._id ? item._id : "",
+                                  text: item.name,
+                                };
+                              } else {
+                                return [];
+                              }
                             })
                           : []
                       }

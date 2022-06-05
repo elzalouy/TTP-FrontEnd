@@ -11,7 +11,7 @@ import { removeAuthToken } from "../../services/api";
 import { logout } from "../Auth";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
-  async (args: any, { rejectWithValue ,dispatch}) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let departments = await DepartmentsApi.getDepartments();
       if (departments?.status === 401 || departments?.status === 403) {
@@ -66,6 +66,7 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let department = await DepartmentsApi.updateDepartment(args.data);
+      console.log(args.data);
       if (department.ok && department.data) {
         args.dispatch(fireUpdateDepartmentHook(""));
         toast.success("Department updated successfully", {

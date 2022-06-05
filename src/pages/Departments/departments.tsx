@@ -10,6 +10,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
 import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 import { selectRole } from "../../redux/Auth";
+import { toast } from "react-toastify";
 
 interface IProps {
   alternatingColor: string[][];
@@ -24,9 +25,13 @@ const Departments: React.FC<IProps> = () => {
   // useEffect(() => {
   //   dispatch(getAllDepartments(null));
   // }, []);
+
   useEffect(() => {
     setDepartment(departmentData);
+    //For preventing duplication of toasts
+    toast.clearWaitingQueue();
   }, [departmentData]);
+
   const alternatingColor = [
     ["#0079BF", "#E1EDF6"],
     ["#B04632", "#F3E8E7"],
@@ -34,6 +39,7 @@ const Departments: React.FC<IProps> = () => {
     ["#783DBD", "#EFEBF2"],
     ["#00AECC", "#E1F3F7"],
   ];
+
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
       <Box
