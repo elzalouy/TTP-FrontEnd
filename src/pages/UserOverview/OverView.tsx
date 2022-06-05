@@ -46,240 +46,170 @@ const OverView: FC<Props> = (props) => {
       );
     } else props.history.push("/login");
   }, [dispatch, props.history]);
-
   return (
     <>
-      <Box width={"100%"} height={"100%"} bgcolor={"#FAFAFB"}>
+      <Grid
+        container
+        justifyContent={"space-between"}
+        alignItems={"normal"}
+        direction={MD ? "column" : "row"}
+        marginX={5}
+        bgcolor={"#FAFAFB"}
+      >
         <Grid
-          justifyContent={"space-between"}
-          alignItems={"normal"}
-          direction={MD ? "column" : "row"}
+          item
+          // direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
+          xs={12}
+        >
+          <Box
+            sx={{
+              width: "auto",
+              display: "inline-flex",
+            }}
+          >
+            <UserName
+              loading={false}
+              name={
+                userName?.user?.name === undefined
+                  ? userName?.name
+                  : userName?.user?.name
+              }
+            />
+          </Box>
+          <Typography
+            color="#171725"
+            paddingTop={7}
+            variant="h5"
+            fontSize={"24px"}
+            fontWeight={"900"}
+          >
+            Overview
+          </Typography>
+        </Grid>
+        <Grid
+          direction="row"
+          justifyContent={"flex-start"}
+          alignItems="flex-start"
           container
         >
           <Grid
-            item
-            // direction="row"
+            direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
-            paddingLeft={SM ? 2 : 4}
-            xs={12}
-          >
-            <Box
-              sx={{
-                width: "auto",
-                display: "inline-flex",
-              }}
-            >
-              <UserName
-                loading={false}
-                name={
-                  userName?.user?.name === undefined
-                    ? userName?.name
-                    : userName?.user?.name
-                }
-              />
-            </Box>
-            <Typography
-              color="#171725"
-              paddingTop={7}
-              variant="h5"
-              fontSize={"24px"}
-              fontWeight={"900"}
-            >
-              Overview
-            </Typography>
-          </Grid>
-          <Grid
-            xs={12}
-            item
-            direction="row"
-            justifyContent={"flex-start"}
-            alignItems="flex-start"
+            paddingTop={4}
             container
-            paddingLeft={SM ? 0 : 4}
           >
-            <Grid item xs={12} sm={12} lg={7.5} md={7.5}>
-              <Grid
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                paddingTop={5}
-                paddingRight={SM ? 0 : role === "PM" ? 0 : "3%"}
-                container
-              >
+            <>
+              {role === "PM" ? (
                 <>
-                  {role === "PM" && (
-                    <>
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#ECFDF1"
-                        Icon={() => <img alt="1" src={IMAGES.overviewCheck} />}
-                        pt={1.7}
-                        title={"Tasks Completed"}
-                        count={statistics?.NoCompletedTasks?.toString()}
-                        percent={statistics?.PercentCompletedTasks?.toString()}
-                        percentColor="#260EFF"
-                      />
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#EFEFFF"
-                        Icon={() => (
-                          <img alt="2" src={IMAGES.overViewRevision} />
-                        )}
-                        pt={1.6}
-                        title="New Tasks"
-                        count={statistics?.PercentNoNewTasks?.toString()}
-                        percent={statistics?.PercentNoNewTasks?.toString()}
-                        percentColor="#30CF47"
-                      />
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#FFF3EF"
-                        Icon={() => (
-                          <img src={IMAGES.overViewDeadline} alt="3" />
-                        )}
-                        pt={1.5}
-                        title="Projects Completed"
-                        count={statistics?.PercentCompletedProjects?.toString()}
-                        percent={statistics?.PercentCompletedProjects?.toString()}
-                        percentColor="#FF2E35"
-                      />
-                    </>
-                  )}
-                  {role === "OM" && (
-                    <>
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#ECFDF1"
-                        Icon={() => <img src={IMAGES.overViewDone} alt="3" />}
-                        pt={1.5}
-                        title={"Organization Capacity"}
-                        count={"0"}
-                        percent="0"
-                        percentColor="#260EFF"
-                      />
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#EFF1FF"
-                        Icon={() => (
-                          <img src={IMAGES.overViewRevision} alt="3" />
-                        )}
-                        pt={1.5}
-                        title="Revision Tasks"
-                        count="0"
-                        percent="0"
-                        percentColor="#30CF47"
-                      />
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#FFF3EF"
-                        Icon={() => (
-                          <img src={IMAGES.overViewDeadline} alt="3" />
-                        )}
-                        pt={1.5}
-                        title="Meeting deadlines"
-                        count="0"
-                        percent="0"
-                        percentColor="#FF2E35"
-                      />
-                      <UserStatus
-                        loading={statistics.loading}
-                        user={role}
-                        IconBgColor="#FBF5E2"
-                        Icon={() => (
-                          <img src={IMAGES.overviewProjects} alt="3" />
-                        )}
-                        pt={1.7}
-                        title="Current Active Projects"
-                        count={statistics.NoCurruntProjects?.toString()}
-                        percent={statistics.PercentCurrentProjects?.toString()}
-                        percentColor="#FFC500"
-                      />
-                    </>
-                  )}
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#ECFDF1"
+                    Icon={() => <img alt="1" src={IMAGES.projectsicon} />}
+                    pt={1.7}
+                    title={"Number of projects"}
+                    count={statistics?.NoCompletedTasks?.toString()}
+                  />
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#EFEFFF"
+                    Icon={() => <img alt="2" src={IMAGES.overViewRevision} />}
+                    pt={1.6}
+                    title="Shared Tasks"
+                    count={statistics?.PercentNoNewTasks?.toString()}
+                  />
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#FFF3EF"
+                    Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
+                    pt={1.5}
+                    title="Review Tasks"
+                    count={statistics?.PercentCompletedProjects?.toString()}
+                  />
                 </>
-              </Grid>
-              {MD ? (
-                <Grid
-                  marginTop={5}
-                  item
-                  lg={4}
-                  md={4}
-                  sm={12}
-                  xs={12}
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  {role === "OM" ? (
-                    <ManagerNotifications {...props} />
-                  ) : (
-                    <UserNotifications {...props} />
-                  )}
-                </Grid>
               ) : (
-                <Grid
-                  // direction="row"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  paddingTop={2.5}
-                  overflow="scroll"
-                  paddingRight={SM ? 0 : 3.5}
-                >
-                  <UserProjects {...props} />
-                </Grid>
+                <>
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#ECFDF1"
+                    Icon={() => <img src={IMAGES.projectsicon} alt="3" />}
+                    title={"Task Board tasks"}
+                    count={"28"}
+                  />
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#EFF1FF"
+                    Icon={() => <img src={IMAGES.overViewRevision} alt="3" />}
+                    title="In Progress Tasks"
+                    count="12"
+                  />
+                  <UserStatus
+                    loading={statistics.loading}
+                    user={role}
+                    IconBgColor="#FFF3EF"
+                    Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
+                    title="Review Tasks"
+                    count="92"
+                  />
+                </>
+              )}
+            </>
+            <Grid
+              item
+              lg={4.5}
+              md={4.5}
+              sm={12}
+              xs={12}
+              justifyContent="center"
+              alignItems="center"
+            >
+              {role === "OM" ? (
+                <ManagerNotifications {...props} />
+              ) : (
+                <UserNotifications {...props} />
               )}
             </Grid>
-            {MD ? (
-              <Grid
-                // direction="row"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                paddingTop={2.5}
-                overflow="scroll"
-                paddingRight={SM ? 0 : 3.5}
-                width={"100%"}
-              >
-                <UserProjects {...props} />
-              </Grid>
-            ) : (
-              <Grid
-                marginTop={5}
-                item
-                lg={4}
-                md={4}
-                sm={12}
-                xs={12}
-                justifyContent="center"
-                alignItems="center"
-              >
-                {role === "OM" ? (
-                  <ManagerNotifications {...props} />
-                ) : (
-                  <UserNotifications {...props} />
-                )}
-              </Grid>
-            )}
           </Grid>
           <Grid
             item
-            xs={11.5}
+            xs={6}
+            paddingRight={2}
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            marginBottom={5}
+          >
+            <UserTasks title={"Shared Tasks"} />
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            paddingLeft={2}
             // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            paddingLeft={SM ? 0 : 4}
             marginBottom={5}
           >
-            <UserTasks />
+            <UserTasks title={"Tasks Close to Deadline"} />
+          </Grid>
+          <Grid
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            paddingTop={2.5}
+            overflow="scroll"
+            xs={12}
+          >
+            <UserProjects {...props} />
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
     </>
   );
 };

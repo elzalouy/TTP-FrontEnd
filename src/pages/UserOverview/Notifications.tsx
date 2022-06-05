@@ -7,24 +7,14 @@ interface Props {
   history: RouteComponentProps["history"];
 }
 const UserNotifications: React.FC<Props> = (props) => {
-  const notifications = ["", "", "", ""];
+  const notifications = [""];
   return (
     <Stack
       bgcolor={"white"}
       borderRadius={2}
       width={{ xs: "100%", sm: "100%", md: "100%", lg: "100%" }}
       padding={1.8}
-      paddingTop={2.5}
     >
-      <Typography
-        variant="h4"
-        fontSize={18}
-        fontWeight={"bold"}
-        color="#131523"
-        fontFamily={"Cairo"}
-      >
-        Shared Tasks
-      </Typography>
       <Box sx={{ display: "inline-flex" }} marginTop={2}>
         <Typography
           variant={"h5"}
@@ -44,7 +34,7 @@ const UserNotifications: React.FC<Props> = (props) => {
           11 Dec, 2021
         </Typography>
       </Box>
-      {notifications.map((item,i) => (
+      {notifications.map((item, i) => (
         <Box
           marginTop={2}
           width={"100%"}

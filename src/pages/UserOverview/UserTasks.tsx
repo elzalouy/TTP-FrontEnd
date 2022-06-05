@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllProjects } from "../../redux/Projects";
-import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
-interface UserTasksProps {}
+import TasksTable from "../../coreUI/usable-component/Tables/OverviewTasksTable";
+interface UserTasksProps {
+  title: string;
+}
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
@@ -22,14 +24,13 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
     <>
       <Typography
         id="project-header"
-        variant="h5"
-        fontWeight={"800"}
+        fontSize={18}
+        fontWeight={"900"}
         color="#505050"
         paddingBottom={2}
-        paddingX={2}
-        marginTop={2}
+        marginTop={5}
       >
-        Tasks Closed to deadline
+        {props.title}
       </Typography>
       <TasksTable
         selects={selects}

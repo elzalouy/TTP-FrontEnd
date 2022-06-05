@@ -10,26 +10,22 @@ interface UserStatusProps {
   IconBgColor: string;
   title: string;
   count: string | undefined;
-  percent: string | undefined;
-  percentColor: string;
-  user: string;
-  pt: number;
+  user: string | undefined;
+  pt?: number;
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
-
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Grid
       xs={12}
-      sm={props.user === "PM" ? 4 : 3}
-      md={props.user === "PM" ? 4 : 3}
-      lg={props.user === "PM" ? 4 : 3}
+      sm={2.5}
+      md={2.5}
+      lg={2.5}
       flexBasis={"50%"}
-      marginTop={"15px"}
-      paddingRight={props.user === "PM" ? "4%" : "2%"}
+      paddingRight={"3%"}
       paddingLeft={SM ? "2%" : "0%"}
       item
     >
@@ -37,21 +33,22 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
         color="white"
         sx={{
           width: "100%",
-          borderRadius: 3,
+          borderRadius: 2.5,
           height: "100%",
         }}
       >
         <CardContent
           sx={{
-            paddingX: props.user === "project manager" ? "10%" : "6%",
-            paddingY: "10%",
+            paddingX: "12%",
+            paddingY: "12%",
+            boxShadow: "5px 10px #888888;",
           }}
         >
           <Box
-            width={45}
-            height={45}
+            width={50}
+            height={50}
             borderRadius={10}
-            paddingTop={props.pt}
+            paddingTop={props.pt ? props.pt : 1.7}
             textAlign={"center"}
             bgcolor={props.IconBgColor}
           >
@@ -62,6 +59,7 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
             variant="h5"
             width={"100%"}
             paddingTop={3.5}
+            fontSize={16}
           >
             {props.title}
           </Typography>
@@ -70,36 +68,17 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
               variant="text"
               width={100}
               height={35}
-              sx={{ marginLeft: 1, marginTop: 3.5 }}
+              sx={{ marginTop: 4.5 }}
             />
           ) : (
             <Typography
               color={"InfoText"}
               variant="h1"
               fontWeight={"500"}
-              paddingTop={3.5}
+              paddingTop={4.5}
+              paddingBottom={2.5}
             >
               {props.count}
-            </Typography>
-          )}
-          {props.loading === true ? (
-            <Skeleton
-              variant="text"
-              width={100}
-              height={35}
-              sx={{ marginLeft: 1, marginTop: 2.5 }}
-            />
-          ) : (
-            <Typography
-              color={props.percentColor}
-              paddingTop={2.5}
-              variant="h5"
-            >
-              <DotIcon
-                sx={{ fontSize: 8, marginRight: 0.7 }}
-                htmlColor={props.percentColor}
-              />
-              {props.percent}%
             </Typography>
           )}
         </CardContent>
