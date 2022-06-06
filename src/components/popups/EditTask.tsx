@@ -52,6 +52,44 @@ type Props = {
   show: string;
   setShow: (val: string) => void;
 };
+
+//SX Styles Objects
+
+const editTaskDescStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+}
+
+const editTaskDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
+const editTaskNameStyles= {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
 const EditTask: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
@@ -248,18 +286,7 @@ const EditTask: React.FC<Props> = (props) => {
                       value={props.field.value}
                       error={error.error?.details[0].path.includes("name")}
                       id="outlined-error"
-                      sx={{
-                        width: "100%",
-                        marginTop: 1,
-                        "& .MuiOutlinedInput-input": {
-                          height: "13px !important",
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderRadius: "6px",
-                        },
-                      }}
+                      sx={editTaskNameStyles}
                       placeholder="Task name"
                       onChange={props.field.onChange}
                     />
@@ -330,18 +357,7 @@ const EditTask: React.FC<Props> = (props) => {
                             {...params}
                             onChange={params.onChange}
                             value={params.value}
-                            sx={{
-                              width: "100%",
-                              paddingTop: 1,
-                              "& .MuiOutlinedInput-input": {
-                                height: "13px !important",
-                                borderRadius: "6px",
-                                background: "white !important",
-                              },
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                borderRadius: "6px",
-                              },
-                            }}
+                            sx={editTaskDeadlineStyles}
                           />
                           <img
                             className="closeIcon"
@@ -414,14 +430,7 @@ const EditTask: React.FC<Props> = (props) => {
                       id="outlined-multiline-static"
                       multiline
                       placeholder="Write about your task"
-                      sx={{
-                        paddingTop: 1,
-                        width: "100%",
-                        "& .MuiOutlinedInput-input": {
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                      }}
+                      sx={editTaskDescStyles}
                       rows={5}
                       onChange={props.field.onChange}
                     />

@@ -28,6 +28,18 @@ interface Props {
   error?: Boolean | undefined;
 }
 
+const selectInputGridTwoStyles = {
+  width: "calc(100%)",
+  height: 43,
+  background: "white",
+  borderRadius: 1.5,
+  overflow: "hidden",
+  cursor: "pointer",
+  border: "1px solid #E4E4E4",
+  padding: "0px !important",
+  marginTop: "7px",
+}
+
 const SelectInput2: React.FC<Props> = ({
   handleChange,
   options = [],
@@ -52,17 +64,7 @@ const SelectInput2: React.FC<Props> = ({
 
   return (
     <Grid
-      sx={{
-        width: "calc(100%)",
-        height: 43,
-        background: "white",
-        borderRadius: 1.5,
-        overflow: "hidden",
-        cursor: "pointer",
-        border: "1px solid #E4E4E4",
-        padding: "0px !important",
-        marginTop: "7px",
-      }}
+      sx={selectInputGridTwoStyles}
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"

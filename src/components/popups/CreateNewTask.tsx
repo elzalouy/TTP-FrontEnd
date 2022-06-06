@@ -65,7 +65,7 @@ const createNewTaskNameStyles = {
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
   },
-}
+};
 
 const createNewTaskDeadlineStyles = {
   width: "100%",
@@ -78,7 +78,7 @@ const createNewTaskDeadlineStyles = {
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
   },
-}
+};
 
 const createNewTaskDescriptionStyles = {
   paddingTop: 1,
@@ -87,7 +87,7 @@ const createNewTaskDescriptionStyles = {
     borderRadius: "6px",
     background: "white !important",
   },
-}
+};
 
 const createNewTaskFilesStyles = {
   backgroundColor: "#00ACBA",
@@ -105,7 +105,7 @@ const createNewTaskFilesStyles = {
       color: "white",
     },
   },
-}
+};
 
 const createNewTaskFilesItemStyles = {
   width: "auto",
@@ -117,7 +117,7 @@ const createNewTaskFilesItemStyles = {
   justifyContent: "center",
   alignItems: "center",
   display: "inline-flex",
-}
+};
 
 const CreateNewTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -380,21 +380,23 @@ const CreateNewTask: React.FC<Props> = (props) => {
                             onChange={params.onChange}
                             sx={createNewTaskDeadlineStyles}
                           />
-                          <img
-                            className="closeIcon"
-                            src={IMAGES.closeicon}
-                            style={{
-                              width: "10px",
-                              height: "10px",
-                              position: "absolute",
-                              right: "13px",
-                              bottom: "17px",
-                            }}
-                            alt="closeIcon"
-                            onClick={() => {
-                              setValue("deadline", null);
-                            }}
-                          />
+                          {watch().deadline !== null && (
+                            <img
+                              className="closeIcon"
+                              src={IMAGES.closeicon}
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                position: "absolute",
+                                right: "13px",
+                                bottom: "17px",
+                              }}
+                              alt="closeIcon"
+                              onClick={() => {
+                                setValue("deadline", null);
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     />
@@ -552,10 +554,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 style={{ display: "none" }}
                 multiple
               />
-              <ButtonBase
-                onClick={onChangeFiles}
-                sx={createNewTaskFilesStyles}
-              >
+              <ButtonBase onClick={onChangeFiles} sx={createNewTaskFilesStyles}>
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
                   style={{

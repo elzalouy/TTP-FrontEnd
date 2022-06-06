@@ -41,6 +41,67 @@ import { generateID } from "../../helpers/IdGenerator";
 
 interface TaskFormProps {}
 
+//SX Styles Objects
+
+const taskFormFilesStyles = {
+  cursor: "pointer",
+  height: "35px",
+  textAlign: "center",
+  alignContent: "center",
+  paddingTop: 1,
+}
+
+const taskFormNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const taskFormDescStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+};
+
+const taskFormDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const taskFormFileAddStyles = {
+  backgroundColor: "#00ACBA",
+  width: "40px",
+  height: "32px",
+  borderRadius: "5px",
+  ":hover": {
+    backgroundColor: "#00ACBA",
+  },
+  "& .MuiButton-root": {
+    ":hover": {
+      backgroundColor: "#00ACBA",
+      color: "white",
+    },
+  },
+}
+
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
@@ -204,18 +265,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     error={error.error?.details[0].path.includes("name")}
                     id="outlined-error"
                     className="textfield"
-                    sx={{
-                      width: "100%",
-                      marginTop: 1,
-                      "& .MuiOutlinedInput-input": {
-                        height: "13px !important",
-                        borderRadius: "6px",
-                        background: "white !important",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "6px",
-                      },
-                    }}
+                    sx={taskFormNameStyles}
                     placeholder="Task name"
                     {...register("name")}
                     onChange={props.field.onChange}
@@ -282,34 +332,25 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                           {...register("deadline")}
                           onChange={params.onChange}
                           placeholder="Deadline"
-                          sx={{
-                            width: "100%",
-                            paddingTop: 1,
-                            "& .MuiOutlinedInput-input": {
-                              height: "13px !important",
-                              borderRadius: "6px",
-                              background: "white !important",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderRadius: "6px",
-                            },
-                          }}
+                          sx={taskFormDeadlineStyles}
                         />
-                        <img
-                          className="closeIcon"
-                          src={IMAGES.closeicon}
-                          style={{
-                            width: "10px",
-                            height: "10px",
-                            position: "absolute",
-                            right: "13px",
-                            bottom: "17px",
-                          }}
-                          alt="closeIcon"
-                          onClick={() => {
-                            setValue("deadline", null);
-                          }}
-                        />
+                        {watch().deadline !== null && (
+                          <img
+                            className="closeIcon"
+                            src={IMAGES.closeicon}
+                            style={{
+                              width: "10px",
+                              height: "10px",
+                              position: "absolute",
+                              right: "13px",
+                              bottom: "17px",
+                            }}
+                            alt="closeIcon"
+                            onClick={() => {
+                              setValue("deadline", null);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   />
@@ -362,14 +403,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     id="outlined-multiline-static"
                     placeholder="Write about your task"
                     multiline
-                    sx={{
-                      paddingTop: 1,
-                      width: "100%",
-                      "& .MuiOutlinedInput-input": {
-                        borderRadius: "6px",
-                        background: "white !important",
-                      },
-                    }}
+                    sx={taskFormDescStyles}
                     rows={5}
                     onChange={props.field.onChange}
                   />
@@ -460,21 +494,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
               />
               <Button
                 onClick={onChangeFiles}
-                sx={{
-                  backgroundColor: "#00ACBA",
-                  width: "40px",
-                  height: "32px",
-                  borderRadius: "5px",
-                  ":hover": {
-                    backgroundColor: "#00ACBA",
-                  },
-                  "& .MuiButton-root": {
-                    ":hover": {
-                      backgroundColor: "#00ACBA",
-                      color: "white",
-                    },
-                  },
-                }}
+                sx={taskFormFileAddStyles}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
@@ -497,13 +517,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     padding={0.5}
                     borderRadius={1}
                     color="#92929D"
-                    sx={{
-                      cursor: "pointer",
-                      height: "35px",
-                      textAlign: "center",
-                      alignContent: "center",
-                      paddingTop: 1,
-                    }}
+                    sx={taskFormFilesStyles}
                     onClick={() => onRemoveFile(item)}
                   >
                     {item?.name}

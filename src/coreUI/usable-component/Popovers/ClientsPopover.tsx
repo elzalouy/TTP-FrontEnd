@@ -10,6 +10,29 @@ import MoreIcon from "../../../assets/icons/moreIcon";
 interface Props {
   client: Client;
 }
+
+//SX Styles Objects
+
+const clientPopoverButtonStyles = {
+  width: 120,
+  justifyContent: "flex-start",
+  textTransform: "none",
+  fontFamily: "Cairo",
+  color: "#696974",
+  fontWeight: "700",
+  fontSize: 13,
+}
+
+const clientPopoverEditButtonStyles = {
+  width: 120,
+  justifyContent: "flex-start",
+  color: "#FF0000",
+  textTransform: "none",
+  fontFamily: "Cairo",
+  fontWeight: "700",
+  fontSize: 13,
+}
+
 const ClientsPopover: React.FC<Props> = ({ client }) => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
@@ -57,15 +80,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
           <Button
             variant="text"
             onClick={showEditClientPopup}
-            sx={{
-              width: 120,
-              justifyContent: "flex-start",
-              textTransform: "none",
-              fontFamily: "Cairo",
-              color: "#696974",
-              fontWeight: "700",
-              fontSize: 13,
-            }}
+            sx={clientPopoverButtonStyles}
           >
             <img
               alt=""
@@ -78,15 +93,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
           <Button
             variant="text"
             onClick={showDeleteClientPopup}
-            sx={{
-              width: 120,
-              justifyContent: "flex-start",
-              color: "#FF0000",
-              textTransform: "none",
-              fontFamily: "Cairo",
-              fontWeight: "700",
-              fontSize: 13,
-            }}
+            sx={clientPopoverEditButtonStyles}
           >
             <img
               alt=""

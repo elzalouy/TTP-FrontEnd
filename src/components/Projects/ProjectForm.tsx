@@ -38,6 +38,45 @@ interface ProjectFormProps {
   setShow: any;
 }
 
+//SX Styles Objects
+
+const projectFormNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
+const projectFormStartDateStyles = {
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
+const projectFormDeadlineStyles = {
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
 const ProjectForm: React.FC<ProjectFormProps> = ({
   setShow,
   setcurrentStep,
@@ -133,18 +172,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                 error={validateError.error?.details[0]?.path?.includes("name")}
                 id="outlined-error"
                 {...register("name")}
-                sx={{
-                  width: "100%",
-                  marginTop: 1,
-                  "& .MuiOutlinedInput-input": {
-                    height: "13px !important",
-                    borderRadius: "6px",
-                    background: "white !important",
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderRadius: "6px",
-                  },
-                }}
+                sx={projectFormNameStyles}
                 placeholder="Project name"
                 onChange={props.field.onChange}
               />
@@ -216,19 +244,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       {...register("startDate")}
                       placeholder="Start Date"
                       onChange={params.onChange}
-                      sx={{
-                        paddingTop: 1,
-                        "& .MuiOutlinedInput-input": {
-                          height: "13px !important",
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderRadius: "6px",
-                        },
-                      }}
+                      sx={projectFormStartDateStyles}
                     />
-                    <img
+                   {watch().startDate !== null && <img
                       className="closeIcon"
                       src={IMAGES.closeicon}
                       style={{
@@ -239,9 +257,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       }}
                       alt="closeIcon"
                       onClick={() => {
-                        setValue("deadline", null);
+                        setValue("startDate", null);
                       }}
-                    />
+                    />}
                   </div>
                 )}
               />
@@ -283,19 +301,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       )}
                       {...register("deadline")}
                       placeholder="Deadline"
-                      sx={{
-                        paddingTop: 1,
-                        "& .MuiOutlinedInput-input": {
-                          height: "13px !important",
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderRadius: "6px",
-                        },
-                      }}
+                      sx={projectFormDeadlineStyles}
                     />
-                    <img
+                    {watch().deadline !== null && <img
                       className="closeIcon"
                       src={IMAGES.closeicon}
                       style={{
@@ -308,7 +316,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                       onClick={() => {
                         setValue("deadline", null);
                       }}
-                    />
+                    />}
                   </div>
                 )}
               />
