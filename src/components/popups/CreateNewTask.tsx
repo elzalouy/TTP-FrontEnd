@@ -51,6 +51,74 @@ type Props = {
   show: string;
   setShow: (val: string) => void;
 };
+
+//SX Style Objects
+
+const createNewTaskNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
+const createNewTaskDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
+
+const createNewTaskDescriptionStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+}
+
+const createNewTaskFilesStyles = {
+  backgroundColor: "#00ACBA",
+  width: "46px !important",
+  height: "32px",
+  borderRadius: "5px",
+  paddingX: 1,
+  ":hover": {
+    backgroundColor: "#00ACBA",
+  },
+  "& .MuiButton-root": {
+    width: "46px !important",
+    ":hover": {
+      backgroundColor: "#00ACBA",
+      color: "white",
+    },
+  },
+}
+
+const createNewTaskFilesItemStyles = {
+  width: "auto",
+  cursor: "pointer",
+  height: "32px",
+  textAlign: "start",
+  alignContent: "center",
+  justifySelf: "center",
+  justifyContent: "center",
+  alignItems: "center",
+  display: "inline-flex",
+}
+
 const CreateNewTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
@@ -240,18 +308,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       {...register("name")}
                       error={error.error?.details[0].path.includes("name")}
                       id="outlined-error"
-                      sx={{
-                        width: "100%",
-                        marginTop: 1,
-                        "& .MuiOutlinedInput-input": {
-                          height: "13px !important",
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderRadius: "6px",
-                        },
-                      }}
+                      sx={createNewTaskNameStyles}
                       placeholder="Task name"
                       onChange={props.field.onChange}
                     />
@@ -321,18 +378,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                             )}
                             {...params}
                             onChange={params.onChange}
-                            sx={{
-                              width: "100%",
-                              paddingTop: 1,
-                              "& .MuiOutlinedInput-input": {
-                                height: "13px !important",
-                                borderRadius: "6px",
-                                background: "white !important",
-                              },
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                borderRadius: "6px",
-                              },
-                            }}
+                            sx={createNewTaskDeadlineStyles}
                           />
                           <img
                             className="closeIcon"
@@ -404,14 +450,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       id="outlined-multiline-static"
                       multiline
                       placeholder="Write about your task"
-                      sx={{
-                        paddingTop: 1,
-                        width: "100%",
-                        "& .MuiOutlinedInput-input": {
-                          borderRadius: "6px",
-                          background: "white !important",
-                        },
-                      }}
+                      sx={createNewTaskDescriptionStyles}
                       rows={5}
                       onChange={props.field.onChange}
                     />
@@ -515,23 +554,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
               />
               <ButtonBase
                 onClick={onChangeFiles}
-                sx={{
-                  backgroundColor: "#00ACBA",
-                  width: "46px !important",
-                  height: "32px",
-                  borderRadius: "5px",
-                  paddingX: 1,
-                  ":hover": {
-                    backgroundColor: "#00ACBA",
-                  },
-                  "& .MuiButton-root": {
-                    width: "46px !important",
-                    ":hover": {
-                      backgroundColor: "#00ACBA",
-                      color: "white",
-                    },
-                  },
-                }}
+                sx={createNewTaskFilesStyles}
               >
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
@@ -555,17 +578,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                     padding={0.5}
                     borderRadius={1}
                     color="#92929D"
-                    sx={{
-                      width: "auto",
-                      cursor: "pointer",
-                      height: "32px",
-                      textAlign: "start",
-                      alignContent: "center",
-                      justifySelf: "center",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      display: "inline-flex",
-                    }}
+                    sx={createNewTaskFilesItemStyles}
                     onClick={() => onRemoveFile(item)}
                   >
                     <Typography

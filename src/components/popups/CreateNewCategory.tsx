@@ -4,7 +4,7 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { useState, useEffect } from "react";
 import { CircularProgress, Grid, TextField, Typography } from "@mui/material";
-import {selectCatLoading } from "../../redux/Categories/categories.selectores";
+import { selectCatLoading } from "../../redux/Categories/categories.selectores";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,7 +12,43 @@ import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../../redux/hooks";
+
 type Props = {};
+
+//SX Style objects
+
+const addNewCategoryContainerStyles = {
+  py: 1,
+  px: 1,
+  width: "100%",
+  height: 210,
+  maxHeight: 350,
+  borderRadius: 3,
+};
+
+const AddNewCategoryCircularProgressStyles = {
+  color: "white",
+  height: "25px !important",
+  width: "25px !important",
+}
+
+const addNewCategoryMainCategoryStyles = {
+  height: 50,
+  width: "100%",
+  borderRadius: "6px",
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const addNewCategorySubCatStyles = {
+  height: 50,
+  width: "100%",
+  borderRadius: "6px",
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
 
 const CreateNewCategory: React.FC<Props> = () => {
   const dispatch = useDispatch();
@@ -58,7 +94,7 @@ const CreateNewCategory: React.FC<Props> = () => {
       selectedSubCategory: subCategories,
     };
     try {
-      await dispatch(createCategory(body));
+      await dispatch(createCategory({data:body,dispatch}));
       setShow("none");
       setSubCategory("");
       setsubCategories([]);
@@ -70,14 +106,7 @@ const CreateNewCategory: React.FC<Props> = () => {
   return (
     <>
       <Box
-        sx={{
-          py: 1,
-          px: 1,
-          width: "100%",
-          height: 210,
-          maxHeight: 350,
-          borderRadius: 3,
-        }}
+        sx={addNewCategoryContainerStyles}
         className="add-new-cat"
         onClick={() => {
           setShow("flex");
@@ -133,14 +162,7 @@ const CreateNewCategory: React.FC<Props> = () => {
                 value={mainCategory}
                 onChange={onMainChange}
                 required
-                sx={{
-                  height: 50,
-                  width: "100%",
-                  borderRadius: "6px",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderRadius: "6px",
-                  },
-                }}
+                sx={addNewCategoryMainCategoryStyles}
               />
             </div>
           </Grid>
@@ -163,14 +185,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               className="text-input"
               onChange={onSubChange}
               placeholder="Sub category"
-              sx={{
-                height: 50,
-                width: "100%",
-                borderRadius: "6px",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderRadius: "6px",
-                },
-              }}
+              sx={addNewCategorySubCatStyles}
             />
           </Grid>
           <Grid item xs={3} style={{ marginTop: "10px" }}>
@@ -208,7 +223,13 @@ const CreateNewCategory: React.FC<Props> = () => {
               Cancel
             </button>
             <button className="controllers-done" onClick={handleSubmit}>
-            {loadingCat ? <CircularProgress sx={{color:"white" , height:"25px !important" , width:"25px !important"}}/> : "Done"}
+              {loadingCat ? (
+                <CircularProgress
+                  sx={AddNewCategoryCircularProgressStyles}
+                />
+              ) : (
+                "Done"
+              )}
             </button>
           </div>
         </Grid>

@@ -11,7 +11,6 @@ import {
 import { useDispatch } from "react-redux";
 import {
   createTeam,
-  deleteTeam,
   getAllMembers,
   getTechMembersByDeptId,
   selectDepartmentMembers,
@@ -21,6 +20,8 @@ import {
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import { CircularProgress } from "@mui/material";
 import { departmentsActions } from "../../redux/Departments";
+import { toast } from "react-toastify";
+import DeleteTeam from "./DeleteTeam";
 
 type Props = {};
 
@@ -34,10 +35,12 @@ const AddNewTeam: React.FC<Props> = () => {
   const departments = useAppSelector(selectAllDepartments);
   const depLoading = useAppSelector(selectDepartmentLoading);
   const DepBasedTeams = useAppSelector(selectDepartmentMembers);
+  const [showDelete, setShowDelete] = useState("none");
   const [Show, setShow] = useState("none");
   const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
   const [AllTeam, setAllTeam] = useState<teamData[]>([]);
   const [removeTeams, setRemoveTeams] = useState<TechMembersInterface[]>([]);
+  const [selectedTeam, setSelectedTeam] = useState<TechMemberInterface>();
 
   /*  const onSubmit = () => {
     dispatch(deleteTeam({ data: removeTeams, dispatch }));
@@ -52,14 +55,14 @@ const AddNewTeam: React.FC<Props> = () => {
     return departmentName[0]?.name;
   };
 
-  const getDepartmentById = (id: string) => {
+/*   const getDepartmentById = (id: string) => {
     let dep = departments.find((department) => {
       if (id === department._id) {
         return department;
       }
     });
     return dep;
-  };
+  }; */
 
   const getDepartmentName = (team: teamData) => {
     let departmentID = team.department.split(",");
@@ -114,7 +117,11 @@ const AddNewTeam: React.FC<Props> = () => {
       >
         Manage Teams
       </button>
-
+      <DeleteTeam
+        show={showDelete}
+        setShow={setShowDelete}
+        team={selectedTeam}
+      />
       <PopUp show={Show} minWidthSize="30vw">
         <div>
           <img
@@ -209,28 +216,22 @@ const AddNewTeam: React.FC<Props> = () => {
             </tr>
             {DepBasedTeams.map((team, index) => {
               return (
-                <tr key={index}>
-                  <td>{team.name}</td>
-                  <td>{getDepartmentNameById(team.departmentId)}</td>
-                  <td>
-                    <img
-                      src={IMAGES.deleteicon}
-                      alt="delete"
-                      onClick={() => {
-                        //Here we dispatch one action to the DB updating boolean flag and one action to redux to change UI
-                        dispatch(
-                          deleteTeam({
-                            data: { id: team._id, isDeleted: "true" },
-                            dispatch,
-                          })
-                        );
-                        dispatch(
-                          departmentsActions.updateDepartmentTeams(team._id)
-                        );
-                      }}
-                    />
-                  </td>
-                </tr>
+                <>
+                  <tr key={index}>
+                    <td>{team.name}</td>
+                    <td>{getDepartmentNameById(team.departmentId)}</td>
+                    <td>
+                      <img
+                        src={IMAGES.deleteicon}
+                        alt="delete"
+                        onClick={() => {
+                          setSelectedTeam(team);
+                          setShowDelete("flex");
+                        }}
+                      />
+                    </td>
+                  </tr>
+                </>
               );
             })}
             {AllTeam.map((el, index) => {

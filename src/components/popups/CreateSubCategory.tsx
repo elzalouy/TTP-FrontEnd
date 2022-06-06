@@ -4,7 +4,10 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import "./popups-style.css";
 import { useAppSelector } from "../../redux/hooks";
-import { selectSelectedCategory,selectCatLoading } from "../../redux/Categories/categories.selectores";
+import {
+  selectSelectedCategory,
+  selectCatLoading,
+} from "../../redux/Categories/categories.selectores";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
@@ -13,11 +16,40 @@ import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
+
 type Props = {
   display: string;
   handleSetDisplay: (value: string) => void;
   subCategories?: string[];
 };
+
+//SX Style Objects
+
+const createSubCatMainCatStyle = {
+  height: 50,
+  width: "100%",
+  borderRadius: "6px",
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const createNewSubCatLoading = {
+  color: "white",
+  height: "25px !important",
+  width: "25px !important",
+};
+
+const createNewSubCatInputStyle = {
+  paddingRight: "20px",
+  flex: 1,
+  height: 50,
+  width: "100%",
+  borderRadius: "6px",
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+}
 
 const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const dispatch = useDispatch();
@@ -133,14 +165,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  sx={{
-                    height: 50,
-                    width: "100%",
-                    borderRadius: "6px",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderRadius: "6px",
-                    },
-                  }}
+                  sx={createSubCatMainCatStyle}
                 />
               </div>
             </Grid>
@@ -153,16 +178,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 value={subCategory}
                 onChange={onSubChange}
                 placeholder="Sub category"
-                sx={{
-                  paddingRight: "20px",
-                  flex: 1,
-                  height: 50,
-                  width: "100%",
-                  borderRadius: "6px",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderRadius: "6px",
-                  },
-                }}
+                sx={createNewSubCatInputStyle}
               />
               <div className="add-subcategory" onClick={addSubCategory}>
                 Add
@@ -196,7 +212,11 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
               Cancel
             </button>
             <button className="controllers-done" onClick={handleSubmit}>
-              {loadingCat ? <CircularProgress sx={{color:"white" , height:"25px !important" , width:"25px !important"}}/> : "Done"}
+              {loadingCat ? (
+                <CircularProgress sx={createNewSubCatLoading} />
+              ) : (
+                "Done"
+              )}
             </button>
           </div>
         </Grid>

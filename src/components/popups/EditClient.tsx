@@ -4,13 +4,26 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { selectEditClient, selectLoadingClient, updateClient } from "../../redux/Clients";
+import {
+  selectEditClient,
+  selectLoadingClient,
+  updateClient,
+} from "../../redux/Clients";
 import { useAppSelector } from "../../redux/hooks";
 
 interface Props {
   show: string;
   setShow: (val: string) => void;
 }
+
+//SX Styles Objects
+
+const editClientLoadingStyles = {
+  color: "white",
+  padding: "0px",
+  height: "25px !important",
+  width: "25px !important",
+};
 
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const client = useAppSelector(selectEditClient);
@@ -110,7 +123,11 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               Cancel
             </button>
             <button className="blackBtn-client" onClick={handleSubmit}>
-              {loadingClient ? <CircularProgress sx={{color:"white" , padding:"0px",height:"25px !important" , width:"25px !important" }}/> : "Done"}
+              {loadingClient ? (
+                <CircularProgress sx={editClientLoadingStyles} />
+              ) : (
+                "Done"
+              )}
             </button>
           </Box>
         </Box>

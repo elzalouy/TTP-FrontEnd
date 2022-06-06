@@ -32,13 +32,24 @@ const AppHooks: React.FC = (props) => {
     moveTaskHook,
     deleteDepartmentHook,
     deleteTeamHook,
-    deleteCategoryHook
+    deleteCategoryHook,
+    createCategoryHook,
   } = useAppSelector(selectUi);
+
+  React.useEffect(() => {
+    // create category hook
+    if (createCategoryHook !== undefined) {
+      console.log("create category hook fired");
+      dispatch(getAllCategories(null));
+      dispatch(getAllDepartments(null));
+      dispatch(getAllMembers(null));
+    }
+  }, [createCategoryHook]);
 
   React.useEffect(() => {
     // delete team hook
     if (deleteTeamHook !== undefined) {
-      console.log("delete category hook fired");
+      console.log("delete team hook fired");
       dispatch(getAllDepartments(null));
       dispatch(getAllMembers(null));
     }
