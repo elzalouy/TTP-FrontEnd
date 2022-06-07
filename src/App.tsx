@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { useHistory } from "react-router";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
@@ -42,8 +43,10 @@ import "swiper/css/navigation";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
+  const isLoggedOut = useAppSelector(selectIsLogout);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
   useEffect(() => {
@@ -56,6 +59,12 @@ const App: React.FC = (props) => {
       );
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isLoggedOut) {
+      setTimeout(() => history.replace("/"), 1000);
+    }
+  }, [isLoggedOut]);
 
   useEffect(() => {
     if (!mounted && checkAuthToken()) {

@@ -16,12 +16,13 @@ export interface User {
 interface Res {
   msg: string;
   status: number | string;
-  page?:string;
+  page?: string;
 }
 export interface UserInterface {
   loading: boolean | null;
   User: User | null;
   authState: boolean;
+  logoutState: boolean;
   Payload: Res;
 }
 const UserState: UserInterface = {
@@ -36,6 +37,7 @@ const UserState: UserInterface = {
     image: "",
   },
   authState: false,
+  logoutState:false,
   Payload: { msg: "", status: "" },
 };
 export default UserState;
