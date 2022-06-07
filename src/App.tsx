@@ -34,7 +34,7 @@ import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
 import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
-import { setStatistics } from "./redux/Statistics";
+import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
 import "swiper/css";
@@ -45,7 +45,7 @@ const App: React.FC = (props) => {
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
-
+  const user = useAppSelector(selectUser);
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
@@ -69,15 +69,29 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
-  
-  // calculations of the statistics must be changed in the future, it's the backend responsibilty.
-  React.useEffect(() => {
-    if (projects.loading === false)
-      dispatch(
-        setStatistics({ projects: projects.projects, tasks: projects.allTasks })
-      );
-  }, [projects?.projects, projects?.allTasks]);
-
+  useEffect(() => {
+    console.log("update statistic hook fired");
+    if (projects.projects.length > 0) {
+      if (user?.role === "OM") {
+        dispatch(
+          setStatisticsForOm({
+            projects: projects.projects,
+            tasks: projects.allTasks,
+            user: user,
+          })
+        );
+      }
+      if (user?.role === "PM") {
+        dispatch(
+          setStatisticsForPm({
+            projects: projects.projects,
+            tasks: projects.allTasks,
+            user: user,
+          })
+        );
+      }
+    }
+  }, [projects.allTasks, projects.projects, user]);
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>

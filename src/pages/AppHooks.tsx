@@ -32,7 +32,7 @@ const AppHooks: React.FC = (props) => {
     moveTaskHook,
     deleteDepartmentHook,
     deleteTeamHook,
-    deleteCategoryHook
+    deleteCategoryHook,
   } = useAppSelector(selectUi);
 
   React.useEffect(() => {

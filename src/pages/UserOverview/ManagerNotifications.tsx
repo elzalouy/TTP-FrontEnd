@@ -3,11 +3,14 @@ import * as React from "react";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import PopoverComponent from "../../coreUI/usable-component/Popovers/PopoverComponent";
+import { useAppSelector } from "../../redux/hooks";
+import { selectSatistics } from "../../redux/Statistics";
+import Status from "../../coreUI/usable-component/Typos/Status";
 interface Props {
   history: RouteComponentProps["history"];
 }
 const ManagerNotifications: React.FC<Props> = (props) => {
-  const notifications = ["", "", "", ""];
+  const statistics = useAppSelector(selectSatistics);
   const tabs = ["0", "1", "2"];
   const [tab, setTab] = React.useState("0");
   const [open, setOpen] = React.useState(false);
@@ -36,7 +39,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box width={"inherit"} overflow="hidden" marginRight={0}>
+    <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
       <PopoverComponent setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
@@ -44,54 +47,64 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
             <Tab value={"2"} label="Shared Tasks" sx={cssTab("2")} />
           </Tabs>
-          {tabs?.map((tabItem, index) => (
-            <Box
-              key={index}
-              role={"tabpanel"}
-              aria-labelledby={`tab-${tabItem}`}
-              hidden={tab == tabItem ? false : true}
-              id={tabItem}
-              tabIndex={index}
-              height={open ? "350px" : "auto"}
-              sx={{ overflowY: "scroll" }}
-            >
-              <Box sx={{ display: "inline-flex" }} marginTop={2}>
-                <Typography sx={cssDay}>Today</Typography>
-                <Typography sx={cssDate}>11 Dec, 2021</Typography>
-              </Box>
-              {(open ? notifications : notifications.slice(0, 2))?.map(
-                (item, index) => (
-                  <Box key={index} sx={cssNotiBox}>
-                    {/* <Avatar sx={{ bgcolor: "#57B8FF" }}>EE</Avatar> */}
-                    <Typography sx={cssNotiStatus("status")}>status</Typography>
-                    <Box paddingTop={0.2} paddingLeft={1}>
-                      <Typography sx={cssNotiTitle}>
-                        Ahmed Ali finished his task in Vcode ... {tabItem}
-                      </Typography>
-                      <Typography sx={cssNotiSubTitle}>
-                        Ahmed Ali finished his task in Vcode ...
-                      </Typography>
-                    </Box>
-                  </Box>
-                )
-              )}
-              <Button
-                variant="text"
-                sx={cssMoreBtn}
-                fullWidth={false}
-                onClick={() => setOpen(!open)}
+          {tabs?.map((tabItem, index) => {
+            let tasks =
+              tabItem === "0"
+                ? statistics.OM.Taskboard
+                : tabItem === "1"
+                ? statistics.OM.Review
+                : statistics.OM.Shared;
+            return (
+              <Box
+                key={index}
+                role={"tabpanel"}
+                aria-labelledby={`tab-${tabItem}`}
+                hidden={tab == tabItem ? false : true}
+                id={tabItem}
+                tabIndex={index}
+                height={
+                  open
+                    ? tasks && tasks?.length <= 4
+                      ? `${tasks?.length * 60 + 76}px`
+                      : "300px"
+                    : "auto"
+                }
+                sx={{ overflowY: "scroll" }}
               >
-                {open ? (
-                  <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                ) : (
-                  <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                )}
-                <Typography sx={cssMoreText}>
-                  {open ? "See Less" : "See More"}
-                </Typography>
-              </Button>
-            </Box>
-          ))}
+                <Box sx={{ display: "inline-flex" }} marginTop={2}>
+                  <Typography sx={cssDay}>Today</Typography>
+                  <Typography sx={cssDate}>11 Dec, 2021</Typography>
+                </Box>
+                {tasks &&
+                  (open ? tasks : tasks?.slice(0, 2))?.map((item, index) => (
+                    <Box key={index} sx={cssNotiBox}>
+                      <Status status={item?.status} />
+                      <Box paddingTop={0.2} paddingLeft={1}>
+                        <Typography sx={cssNotiTitle}>{item.name}</Typography>
+                        <Typography sx={cssNotiSubTitle}>
+                          {item.name} moved to {item.status}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                <Button
+                  variant="text"
+                  sx={cssMoreBtn}
+                  fullWidth={false}
+                  onClick={() => setOpen(!open)}
+                >
+                  {open ? (
+                    <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                  ) : (
+                    <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                  )}
+                  <Typography sx={cssMoreText}>
+                    {open ? "See Less" : "See More"}
+                  </Typography>
+                </Button>
+              </Box>
+            );
+          })}
         </Stack>
       </PopoverComponent>
     </Box>
@@ -152,8 +165,6 @@ const cssNotiSubTitle = {
 const cssMoreBtn = {
   width: "100%",
   justifyContent: "center",
-  position: "relative",
-  bottom: "0px",
   paddingTop: 1,
   ":hover": {
     backgroundColor: "transparent",

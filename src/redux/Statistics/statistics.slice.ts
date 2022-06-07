@@ -2,70 +2,88 @@ import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
 import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import { Project, Task } from "../Projects";
-import { getStartEndDayOfWeek } from "../../helpers/equations";
+import {
+  getStartEndDayOfWeek,
+  isCloseToDeadline,
+} from "../../helpers/equations";
+import { User } from "../Auth";
 const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,
   reducers: {
-    setStatistics: (state = StatisticsState, action: PayloadAction<any>) => {
-      state.loading = true;
-      let { start } = getStartEndDayOfWeek(new Date());
+    // set statistics
+    setStatisticsForOm: (
+      state = StatisticsState,
+      action: PayloadAction<any>
+    ) => {
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
-      //projects
-      if (projects && projects?.length > 0) {
-        state.NoCompletedProjects = projects?.filter(
-          (item) => item.projectStatus === "done"
-        ).length;
-        state.PercentCompletedProjects = Math.round(
-          (projects?.filter((item) => item.projectStatus === "done").length /
-            projects.length) *
-            100
-        );
-        state.NoCurruntProjects = projects?.filter(
-          (item) => item.projectStatus === "inProgress"
-        ).length;
-        state.PercentCurrentProjects = Math.round(
-          (projects?.filter((item) => item.projectStatus === "inProgress")
-            .length /
-            projects.length) *
-            100
-        );
-        state.NoCompletedTasks = tasks?.filter(
-          (item) => item.status === "done"
-        ).length;
-      } else {
-        state.NoCompletedProjects = 0;
-        state.NoCurruntProjects = 0;
-        state.PercentCompletedProjects = 0;
-        state.PercentCurrentProjects = 0;
+      let user: User = action.payload.user;
+      if (user && user?.role?.length > 0) {
+        if (projects && projects.length > 0) {
+          state.OM.projectsCloseToDeadlines = projects.filter(
+            (item) =>
+              item.projectDeadline &&
+              isCloseToDeadline(new Date(item.projectDeadline))
+          );
+        }
+        if (tasks && tasks.length > 0) {
+          state.OM.Taskboard = tasks.filter(
+            (item) => item.status === "inProgress"
+          );
+          state.OM.Review = tasks.filter((item) => item.status === "Review");
+          state.OM.Shared = tasks.filter((item) => item.status === "Shared");
+          state.OM.TasksCloseToDeadline = tasks.filter(
+            (item) =>
+              item.deadline && isCloseToDeadline(new Date(item.deadline))
+          );
+          state.OM.inProgress = tasks.filter(
+            (item) => item.status === "inProgress"
+          );
+        }
       }
-      if (tasks && tasks?.length > 0) {
-        state.PercentCompletedTasks = Math.round(
-          (tasks?.filter((item) => item.status === "done").length /
-            tasks.length) *
-            100
+      state.loading = false;
+    },
+    setStatisticsForPm: (
+      state = StatisticsState,
+      action: PayloadAction<any>
+    ) => {
+      let projects: Project[] = action.payload.projects;
+      let tasks: Task[] = action.payload.tasks;
+      let user: User = action.payload.user;
+      let userProjects =
+        projects &&
+        projects?.filter((item) => item.projectManager?._id === user._id);
+      state.PM.projects = userProjects;
+      console.log(userProjects);
+      if (tasks && tasks.length > 0) {
+        let ids = userProjects.flatMap((item: Project) => item._id);
+        console.log(ids);
+        state.PM.Review = tasks.filter(
+          (item) => ids.includes(item.projectId) && item.deadline === "Review"
         );
-        let newTasks = tasks?.filter((item) => {
-          let { start: TaskStart } = getStartEndDayOfWeek(item.start);
-          if (TaskStart.getTime() >= start.getTime()) return item;
-        });
-        state.NoNewTasks = newTasks.length;
-        state.PercentNoNewTasks = Math.round(
-          (newTasks.length / tasks.length) * 100
+        state.PM.Shared = tasks.filter(
+          (item) => ids.includes(item.projectId) && item.deadline === "Shared"
         );
-        state.NoCompletedTasks = tasks?.filter(
-          (item) => item.status === "done"
-        ).length;
-      } else {
-        state.NoCompletedTasks = 0;
-        state.NoNewTasks = 0;
-        state.PercentCompletedTasks = 0;
-        state.PercentNoNewTasks = 0;
+        state.PM.inProgress = tasks.filter(
+          (item) => ids.includes(item.projectId) && item.status === "inProgress"
+        );
+        state.PM.TasksCloseToDeadline = tasks.filter(
+          (item) =>
+            ids.includes(item.projectId) &&
+            item.deadline &&
+            isCloseToDeadline(new Date(item.deadline))
+        );
+        state.PM.projectsCloseToDeadlines = userProjects?.filter(
+          (item) =>
+            item?.projectDeadline &&
+            isCloseToDeadline(new Date(item?.projectDeadline))
+        );
       }
       state.loading = false;
     },
   },
 });
-export const { setStatistics } = StatisticsSlice.actions;
+export const { setStatisticsForOm, setStatisticsForPm } =
+  StatisticsSlice.actions;
 export default StatisticsSlice.reducer;

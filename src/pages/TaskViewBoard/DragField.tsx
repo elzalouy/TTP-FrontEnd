@@ -192,6 +192,7 @@ const DragField: React.FC = (props: any) => {
         department: department,
         value: destColumn.value,
         task: sourceColumn.items[source.index],
+        dispatch,
       });
       setColumns({
         ...columns,

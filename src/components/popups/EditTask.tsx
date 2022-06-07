@@ -125,7 +125,7 @@ const EditTask: React.FC<Props> = (props) => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: "",
+      attachedFiles: [],
       listId: data?.teamId
         ? selectedDepartment?.teamsId?.find(
             (item: any) => item._id === data.teamId

@@ -15,8 +15,9 @@ import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
+import Status from "../Typos/Status";
 interface OverviewTasksTableProps {
-  tasks: Task[];
+  tasks: Task[] | null;
   projects: Project[];
   selects: any[];
   setAllSelected: (value: any) => any;
@@ -66,14 +67,6 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
         <TableBody>
           {tasks &&
             tasks?.map((item, index) => {
-              const cssCell: any = {
-                color: "#334D6E",
-                margin: "0px",
-                padding: "20px",
-                textTransform: "capitalize",
-                width: "130px",
-                align: "left",
-              };
               const { _id, status, name, projectId, start, deadline } = item;
               return (
                 <TableRow
@@ -84,25 +77,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                   key={_id}
                 >
                   <TableCell align="left" style={cssCell}>
-                    <div
-                      className={
-                        status === "inProgress"
-                          ? "inProgressStatus"
-                          : status === "Review"
-                          ? "reviewStatus"
-                          : status === "Not Clear"
-                          ? "notClearStatus"
-                          : status === "Not Started"
-                          ? "notStartedStatus"
-                          : status === "Done"
-                          ? "doneStatus"
-                          : status === "Shared"
-                          ? "sharedStatus"
-                          : "endedStatus"
-                      }
-                    >
-                      {status === "inProgress" ? "In Progress" : status}
-                    </div>
+                    <Status status={status} />
                   </TableCell>
                   <TableCell
                     onClick={() => history.push(`/TasksBoard/${projectId}`)}
@@ -131,3 +106,11 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
 };
 
 export default OverviewTasksTable;
+const cssCell: any = {
+  color: "#334D6E",
+  margin: "0px",
+  padding: "20px",
+  textTransform: "capitalize",
+  width: "130px",
+  align: "left",
+};

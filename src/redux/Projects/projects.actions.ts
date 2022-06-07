@@ -469,7 +469,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
         listId: newlist,
         status: value,
       };
-      let moveResult = await api.moveTask(Data);
+      let moveResult: ApiResponse<any> = await api.moveTask(Data);
       if (moveResult.ok) {
         args.dispatch(fireMoveTaskHook(""));
         return moveResult.data;

@@ -232,7 +232,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                           Please add a Deadline
                         </span>
                       ) : (
-                        new Date(project.startDate).toLocaleDateString(
+                        new Date(project.projectDeadline).toLocaleDateString(
                           "en-US",
                           {
                             weekday: "long",

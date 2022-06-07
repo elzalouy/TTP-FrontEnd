@@ -10,10 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppSelector } from "../../redux/hooks";
-import { selectAllProjects } from "../../redux/Projects";
+import { selectAllProjects, Task } from "../../redux/Projects";
 import TasksTable from "../../coreUI/usable-component/Tables/OverviewTasksTable";
 interface UserTasksProps {
   title: string;
+  tasks: Task[] | null;
 }
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
@@ -36,7 +37,7 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         selects={selects}
         setAllSelected={setAllSelected}
         projects={projects.projects}
-        tasks={projects.allTasks}
+        tasks={props.tasks}
       />
     </>
   );

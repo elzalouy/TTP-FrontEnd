@@ -54,7 +54,9 @@ const IMAGES = {
   loginTablet: require("./loginTablet.svg").default,
   forgotTablet: require("./forgotTablet.svg").default,
   resetTablet: require("./resetTablet.svg").default,
-  departmentsIcon: require("./Departments.svg"),
-  searchIcon: require("./Iconly-Light-outline-Search.svg"),
+  departmentsIcon: require("./Departments.svg").default,
+  searchIcon: require("./Iconly-Light-outline-Search.svg").default,
+  overViewProjectsIcon: require("./OverviewProjectsIcon.svg").default,
+  overviewTasksIcon: require("./OverviewTasksIcon.svg").default,
 };
 export default IMAGES;

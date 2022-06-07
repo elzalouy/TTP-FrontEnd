@@ -14,25 +14,10 @@ interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
+  projects: Project[] | null;
 }
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectPMs);
-  const all = useAppSelector(selectAllProjects);
-  const [closeProjects, setCloseProjects] = React.useState<Project[]>([]);
-  React.useEffect(() => {
-    let projects = [...all?.projects];
-    let filtered = projects
-      .filter(
-        (item) =>
-          new Date(item.projectDeadline).getTime() >= new Date().getTime()
-      )
-      .sort(
-        (item1, item2) =>
-          new Date(item1.projectDeadline).getTime() -
-          new Date(item2.projectDeadline).getTime()
-      );
-    setCloseProjects(filtered);
-  }, [all]);
 
   return (
     <TableBox
@@ -48,7 +33,6 @@ const UserProjects: React.FC<Props> = (props) => {
           textSize="small"
           status={"In progress"}
           expanded={true}
-          projects={closeProjects}
           projectManagers={PMs}
           {...props}
         />

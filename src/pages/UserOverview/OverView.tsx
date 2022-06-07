@@ -1,6 +1,6 @@
 import "./overview.css";
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import { FC, useEffect } from "react";
 import UserName from "./Name";
 import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
@@ -14,13 +14,11 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";
 import { getUserInfo, selectRole, selectUser } from "../../redux/Auth";
-import { getPMs } from "../../redux/PM";
-import { getAllProjects, getAllTasks } from "../../redux/Projects";
-import { selectAllSatistics } from "../../redux/Statistics";
-import { getAllDepartments } from "../../redux/Departments";
-import { getAllCategories } from "../../redux/Categories";
-import { getAllClients } from "../../redux/Clients";
-import { getAllMembers } from "../../redux/techMember";
+import {
+  selectOMSatistics,
+  selectPMSatistics,
+  selectSatistics,
+} from "../../redux/Statistics";
 import { checkAuthToken } from "../../services/api";
 interface Props {
   history: RouteComponentProps["history"];
@@ -34,7 +32,7 @@ const OverView: FC<Props> = (props) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const statistics = useAppSelector(selectAllSatistics);
+  const statistics = useAppSelector(selectSatistics);
 
   useEffect(() => {
     let id = localStorage.getItem("id");
@@ -109,19 +107,21 @@ const OverView: FC<Props> = (props) => {
                     loading={statistics.loading}
                     user={role}
                     IconBgColor="#ECFDF1"
-                    Icon={() => <img alt="1" src={IMAGES.projectsicon} />}
+                    Icon={() => (
+                      <img alt="1" src={IMAGES.overViewProjectsIcon} />
+                    )}
                     pt={1.7}
                     title={"Number of projects"}
-                    count={statistics?.NoCompletedTasks?.toString()}
+                    count={statistics.PM.projects?.length.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
                     user={role}
                     IconBgColor="#EFEFFF"
-                    Icon={() => <img alt="2" src={IMAGES.overViewRevision} />}
+                    Icon={() => <img src={IMAGES.overviewTasksIcon} alt="3" />}
                     pt={1.6}
                     title="Shared Tasks"
-                    count={statistics?.PercentNoNewTasks?.toString()}
+                    count={statistics.PM.Shared?.length.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
@@ -130,7 +130,7 @@ const OverView: FC<Props> = (props) => {
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     pt={1.5}
                     title="Review Tasks"
-                    count={statistics?.PercentCompletedProjects?.toString()}
+                    count={statistics.PM.Review?.length.toString()}
                   />
                 </>
               ) : (
@@ -139,17 +139,21 @@ const OverView: FC<Props> = (props) => {
                     loading={statistics.loading}
                     user={role}
                     IconBgColor="#ECFDF1"
-                    Icon={() => <img src={IMAGES.projectsicon} alt="3" />}
+                    Icon={() => (
+                      <img src={IMAGES.overViewProjectsIcon} alt="3" />
+                    )}
+                    pt={1.6}
                     title={"Task Board tasks"}
-                    count={"28"}
+                    count={statistics.OM.Taskboard?.length.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
                     user={role}
-                    IconBgColor="#EFF1FF"
-                    Icon={() => <img src={IMAGES.overViewRevision} alt="3" />}
+                    IconBgColor="#FBF5E2"
+                    Icon={() => <img alt="2" src={IMAGES.overviewProjects} />}
                     title="In Progress Tasks"
-                    count="12"
+                    pt={1.9}
+                    count={statistics.OM.inProgress?.length.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
@@ -157,7 +161,8 @@ const OverView: FC<Props> = (props) => {
                     IconBgColor="#FFF3EF"
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     title="Review Tasks"
-                    count="92"
+                    count={statistics.OM.Review?.length.toString()}
+                    pt={1.8}
                   />
                 </>
               )}
@@ -186,7 +191,14 @@ const OverView: FC<Props> = (props) => {
             alignItems="flex-start"
             marginBottom={5}
           >
-            <UserTasks title={"Shared Tasks"} />
+            {role === "OM" ? (
+              <UserTasks
+                tasks={statistics.OM.inProgress}
+                title={"In Progress"}
+              />
+            ) : (
+              <UserTasks tasks={statistics.PM.Shared} title={"Shared Tasks"} />
+            )}
           </Grid>
           <Grid
             item
@@ -197,7 +209,18 @@ const OverView: FC<Props> = (props) => {
             alignItems="flex-start"
             marginBottom={5}
           >
-            <UserTasks title={"Tasks Close to Deadline"} />
+            {role === "OM" && (
+              <UserTasks
+                tasks={statistics.OM.TasksCloseToDeadline}
+                title={"Tasks Close to Deadline"}
+              />
+            )}
+            {role == "PM" && (
+              <UserTasks
+                tasks={statistics.PM.TasksCloseToDeadline}
+                title={"Tasks Close to Deadline"}
+              />
+            )}
           </Grid>
           <Grid
             justifyContent="flex-start"
@@ -206,7 +229,14 @@ const OverView: FC<Props> = (props) => {
             overflow="scroll"
             xs={12}
           >
-            <UserProjects {...props} />
+            <UserProjects
+              projects={
+                role === "OM"
+                  ? statistics.OM.projectsCloseToDeadlines
+                  : statistics.PM.projectsCloseToDeadlines
+              }
+              {...props}
+            />
           </Grid>
         </Grid>
       </Grid>

@@ -55,7 +55,7 @@ const Clients: React.FC<Props> = () => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     dispatch(getAllClients(null));
   }, [dispatch]); */
 
