@@ -27,6 +27,15 @@ interface Props {
   placeholder?: string;
 }
 
+const selectInputGridStyles = {
+  width: "100%",
+  height: 40,
+  background: "#FFFFFF",
+  borderRadius: "10px",
+  overflow: "hidden",
+  cursor: "pointer",
+}
+
 const SelectInput: React.FC<Props> = ({
   handleChange,
   options = [],
@@ -58,14 +67,7 @@ const SelectInput: React.FC<Props> = ({
   };
   return (
     <Grid
-      sx={{
-        width: "100%",
-        height: 40,
-        background: "#FFFFFF",
-        borderRadius: "10px",
-        overflow: "hidden",
-        cursor: "pointer",
-      }}
+      sx={selectInputGridStyles}
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"

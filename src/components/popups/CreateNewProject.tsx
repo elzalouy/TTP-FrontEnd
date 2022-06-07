@@ -7,7 +7,30 @@ import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject } from "../../redux/Projects";
 import { useDispatch } from "react-redux";
 
+//SX Style Objects
+
+const createNewProjectHeaderStyles = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  mb: 1,
+}
+
+const createNewProjectNotStartedHeaderStyles = {
+  backgroundColor: "#E8E8E8",
+  border: "2px solid #9FA1AB",
+  borderRadius: "10px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  py: 0.6,
+}
+
 type Props = {};
+
 const CreateNewProject: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
@@ -26,14 +49,7 @@ const CreateNewProject: React.FC<Props> = () => {
       >
         <Box
           id="project-header"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            mb: 1,
-          }}
+          sx={createNewProjectHeaderStyles}
         >
           Not started yet
         </Box>
@@ -41,16 +57,7 @@ const CreateNewProject: React.FC<Props> = () => {
           onClick={() => {
             setShow("flex");
           }}
-          sx={{
-            backgroundColor: "#E8E8E8",
-            border: "2px solid #9FA1AB",
-            borderRadius: "10px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-            py: 0.6,
-          }}
+          sx={createNewProjectNotStartedHeaderStyles}
         >
           <AddBoxOutlinedIcon sx={{ color: "black" }}></AddBoxOutlinedIcon>
           <h3 style={{ color: "black", fontWeight: "bold" }}>

@@ -33,6 +33,8 @@ const colors: string[] = [
   "grey",
 ];
 
+const createNewDepLoadingStyles = { color: "white", padding: "0px",height:"25px !important",width:"25px !important" }
+
 const CreateNewDepartment: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const department = useSelector(selectAllDepartments);
@@ -305,7 +307,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             Cancel
           </button>
           <button className="controllers-done" onClick={() => handleSubmit()}>
-            {depLoading ? <CircularProgress sx={{ color: "white", padding: "0px",height:"25px !important",width:"25px !important" }} />  : "Done"}
+            {depLoading ? <CircularProgress sx={createNewDepLoadingStyles} />  : "Done"}
           </button>
         </div>
       </PopUp>

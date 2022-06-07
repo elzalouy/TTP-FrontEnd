@@ -13,18 +13,23 @@ interface Props {
   onChange: (e: any) => void;
   placeholder?: string;
 }
+
+//SX Styles Objects
+
+const paperStyles = {
+  p: "2px 4px",
+  display: "flex",
+  borderRadius: "10px",
+  alignItems: "center",
+  width: "100%",
+  height: 42,
+}
+
 const Search: React.FC<Props> = (props) => {
   return (
     <Paper
       component="form"
-      sx={{
-        p: "2px 4px",
-        display: "flex",
-        borderRadius: "10px",
-        alignItems: "center",
-        width: "100%",
-        height: 42,
-      }}
+      sx={paperStyles}
     >
       <IconButton
         type="button"

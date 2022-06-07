@@ -72,6 +72,10 @@ const UISlice: Slice<UiInterface> = createSlice({
       state.createDepartmentHook =
         !state.createDepartmentHook
     },
+    fireCreateCategoryHook: (state = UiState) => {
+      state.createCategoryHook =
+        !state.createCategoryHook
+    },
     fireEditTaskHook: (state = UiState) => {
       state.editTaskHook = !state.editTaskHook
     },
@@ -120,6 +124,7 @@ export const {
   fireNewTeamHook,
   fireUpdateDepartmentHook,
   fireCreateDepartmentHook,
+  fireCreateCategoryHook,
   fireEditTaskHook,
   fireCreatePMHook,
   fireEditPMHook,

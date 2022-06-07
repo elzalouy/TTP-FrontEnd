@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
 import { logout } from "../Auth";
-import { fireDeleteCategoryHook } from "../Ui";
+import { fireCreateCategoryHook, fireDeleteCategoryHook } from "../Ui";
 
 export const getAllCategories = createAsyncThunk<any, any, any>(
   "category/getAll",
@@ -29,8 +29,9 @@ export const createCategory = createAsyncThunk<any, any, any>(
   "category/createCategory",
   async (args: any, { rejectWithValue }) => {
     try {
-      let result = await api.createCategory(args);
+      let result = await api.createCategory(args.data);
       if (result.data) {
+        args.dispatch(fireCreateCategoryHook(""))
         toast.success("Category created successfully", {
           position: "top-right",
           autoClose: 1500,

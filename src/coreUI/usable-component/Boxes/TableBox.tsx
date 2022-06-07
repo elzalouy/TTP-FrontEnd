@@ -12,6 +12,32 @@ interface TableBoxProps {
 }
 
 const TableBox: React.FC<TableBoxProps> = (props) => {
+  //SX Styles Object
+
+  const tableBoxProjectHeader = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    mb: 1,
+    px: 1,
+  };
+
+  const tableBoxProjectContainer = {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    borderRadius: "12px",
+    backgroundColor: props.bgColor,
+    p: 1,
+    pt: props.outTitled ? 0 : 2,
+    mb: 5,
+    font: "normal normal 600 16px/30px Cairo",
+    color: "#505050",
+    overflow: "scroll",
+  };
+
   return (
     <>
       {props.outTitled && (
@@ -24,36 +50,10 @@ const TableBox: React.FC<TableBoxProps> = (props) => {
           {props.title}
         </Typography>
       )}
-      <Box
-        id="project-container"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          borderRadius: "12px",
-          backgroundColor: props.bgColor,
-          p: 1,
-          pt: props.outTitled ? 0 : 2,
-          mb: 5,
-          font: "normal normal 600 16px/30px Cairo",
-          color: "#505050",
-          overflow:"scroll"
-        }}
-      >
+      <Box id="project-container" sx={tableBoxProjectContainer}>
         {!props.outTitled && (
           <>
-            <Box
-              id="project-header"
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                mb: 1,
-                px: 1,
-              }}
-            >
+            <Box id="project-header" sx={tableBoxProjectHeader}>
               {props.title}
               {props.expanded ? (
                 <ArrowDropUpIcon

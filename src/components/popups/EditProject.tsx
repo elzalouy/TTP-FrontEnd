@@ -29,6 +29,47 @@ type Props = {
   setShow: any;
 };
 
+//SX Styles Object
+
+const editProjectTitleStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const editProjectStartDateStyles = {
+  cursor: "pointer",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const editProjectDeadlineStyles = {
+  cursor: "pointer",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const {
@@ -181,18 +222,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <TextField
                     id="outlined-error"
                     value={props.field.value}
-                    sx={{
-                      width: "100%",
-                      marginTop: 1,
-                      "& .MuiOutlinedInput-input": {
-                        height: "13px !important",
-                        borderRadius: "6px",
-                        background: "white !important",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "6px",
-                      },
-                    }}
+                    sx={editProjectTitleStyles}
                     placeholder="Project name"
                     onChange={props.field.onChange}
                   />
@@ -256,18 +286,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Start Date"
                           onChange={params.onChange}
-                          sx={{
-                            cursor: "pointer",
-                            paddingTop: 1,
-                            "& .MuiOutlinedInput-input": {
-                              height: "13px !important",
-                              borderRadius: "6px",
-                              background: "white !important",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderRadius: "6px",
-                            },
-                          }}
+                          sx={editProjectStartDateStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) && (
                           <img
@@ -320,18 +339,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Deadline"
                           onChange={params.onChange}
-                          sx={{
-                            cursor: "pointer",
-                            paddingTop: 1,
-                            "& .MuiOutlinedInput-input": {
-                              height: "13px !important",
-                              borderRadius: "6px",
-                              background: "white !important",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderRadius: "6px",
-                            },
-                          }}
+                          sx={editProjectDeadlineStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) && (
                           <img
