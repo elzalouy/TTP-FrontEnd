@@ -288,7 +288,7 @@ const TaskCard: React.FC<DataTypes> = ({
                       {status !== "Not Started" && (
                         <img
                           src={
-                            remainingDays <= 2
+                            typeof remainingDays === "string"
                               ? IMAGES.scheduleRed
                               : remainingDays > 2 && remainingDays <= 5
                               ? IMAGES.scheduleOrange
@@ -299,7 +299,15 @@ const TaskCard: React.FC<DataTypes> = ({
                       )}
                       {status !== "Not Started" ? (
                         <Typography
-                          style={{ paddingLeft: "5px", fontSize: 14 }}
+                          style={
+                            typeof remainingDays === "string"
+                              ? {
+                                  paddingLeft: "5px",
+                                  fontSize: 14,
+                                  color: "#FF2E35",
+                                }
+                              : { paddingLeft: "5px", fontSize: 14 }
+                          }
                         >
                           {typeof remainingDays === "string"
                             ? remainingDays

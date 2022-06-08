@@ -31,7 +31,7 @@ const DeleteTeam: React.FC<DeleteTaskProps> = ({ show, setShow, team }) => {
 
   return (
     <SmallPopUp show={show} zIndex={99999}>
-      <p className="warning-text">Are you sure you want to delete this Team?</p>
+      <p className="warning-text">This is an existing team, Are you sure you want to delete this team ?</p>
       <hr className="separator" />
       <div className="margin-cover">
         <div className="controllers">

@@ -28,6 +28,7 @@ export interface UiInterface {
   createPMHook: boolean | undefined;
   editPMHook: boolean | undefined;
   moveTaskHook: boolean | undefined;
+  createProjectHook : boolean | undefined;
   createCategoryHook : boolean | undefined;
   deleteDepartmentHook: boolean | undefined;
   deleteCategoryHook: boolean | undefined;
@@ -59,6 +60,7 @@ const UiState: UiInterface = {
   createTeamHook: undefined,
   createCategoryHook : undefined,
   updateDepartmentHook: undefined,
+  createProjectHook:undefined,
   createDepartmentHook: undefined,
   editTaskHook: undefined,
   createPMHook: undefined,

@@ -149,7 +149,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         toastId: generateID(),
       });
     } else {
-      dispatch(createProject({ data: project, setcurrentStep }));
+      dispatch(createProject({ data: project, setcurrentStep ,dispatch}));
     }
   };
 

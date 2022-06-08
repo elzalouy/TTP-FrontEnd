@@ -4,6 +4,7 @@ import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import {
   selectAllDepartments,
   selectDepartmentLoading,
@@ -18,7 +19,7 @@ import {
   TechMembersInterface,
 } from "../../redux/techMember";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 import { departmentsActions } from "../../redux/Departments";
 import { toast } from "react-toastify";
 import DeleteTeam from "./DeleteTeam";
@@ -55,7 +56,7 @@ const AddNewTeam: React.FC<Props> = () => {
     return departmentName[0]?.name;
   };
 
-/*   const getDepartmentById = (id: string) => {
+  /*   const getDepartmentById = (id: string) => {
     let dep = departments.find((department) => {
       if (id === department._id) {
         return department;
@@ -76,7 +77,7 @@ const AddNewTeam: React.FC<Props> = () => {
 
   useEffect(() => {
     let id = Team.department.split(",")[0];
-    if (id.length !== 0) {
+    if (id.length !== 0 && Team.name === "") {
       dispatch(getTechMembersByDeptId(id));
     }
   }, [Team.department]);
@@ -192,6 +193,7 @@ const AddNewTeam: React.FC<Props> = () => {
           onClick={() => {
             setAllTeam([...AllTeam, Team]);
             setTeam({ name: "", department: "" });
+            dispatch(getAllMembers(null));
           }}
           disabled={Team.department === "" || Team.name === ""}
           style={{
@@ -204,9 +206,28 @@ const AddNewTeam: React.FC<Props> = () => {
         >
           Add
         </button>
-        <label style={{ fontWeight: "light", fontSize: "1rem" }}>
-          Added Teams
-        </label>
+        <div className="addTeamTable-Header-container">
+          <label style={{ fontWeight: "light", fontSize: "1rem" }}>
+            Added Teams
+          </label>
+          <IconButton
+            onClick={() => {
+              if (Team.department !== "" && Team.name === "") {
+                setTeam({ ...Team, department: "" });
+                dispatch(getAllMembers(null));
+              }
+            }}
+            disableRipple={Team.department === "" ? true : false}
+          >
+            <FilterAltOffIcon
+              sx={
+                Team.department === ""
+                  ? { color: "lightgray" }
+                  : { color: "black" }
+              }
+            />
+          </IconButton>
+        </div>
         <div className="allTeam-table-container">
           <table className="allTeam-table">
             <tr className="th">
@@ -235,22 +256,47 @@ const AddNewTeam: React.FC<Props> = () => {
               );
             })}
             {AllTeam.map((el, index) => {
-              return (
-                <tr key={index}>
-                  <td>{el.name}</td>
-                  <td>{getDepartmentName(el)}</td>
-                  <td>
-                    <img
-                      src={IMAGES.deleteicon}
-                      alt="delete"
-                      onClick={() => {
-                        AllTeam.splice(index, 1);
-                        setAllTeam([...AllTeam]);
-                      }}
-                    />
-                  </td>
-                </tr>
-              );
+              if (Team.department === el.department) {
+                return (
+                  <tr key={index}>
+                    <td style={{ position: "relative" }}>
+                      {el.name}
+                      <span className="new-team-alert">new</span>
+                    </td>
+                    <td>{getDepartmentName(el)}</td>
+                    <td>
+                      <img
+                        src={IMAGES.deleteicon}
+                        alt="delete"
+                        onClick={() => {
+                          AllTeam.splice(index, 1);
+                          setAllTeam([...AllTeam]);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                );
+              } else if (Team.department === "") {
+                return (
+                  <tr key={index}>
+                    <td style={{ position: "relative" }}>
+                      {el.name}
+                      <span className="new-team-alert">new</span>
+                    </td>
+                    <td>{getDepartmentName(el)}</td>
+                    <td>
+                      <img
+                        src={IMAGES.deleteicon}
+                        alt="delete"
+                        onClick={() => {
+                          AllTeam.splice(index, 1);
+                          setAllTeam([...AllTeam]);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                );
+              }
             })}
           </table>
         </div>

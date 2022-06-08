@@ -68,6 +68,10 @@ const UISlice: Slice<UiInterface> = createSlice({
       state.updateDepartmentHook =
         !state.updateDepartmentHook
     },
+    fireCreateProjectHook: (state = UiState) => {
+      state.createProjectHook =
+        !state.createProjectHook
+    },
     fireCreateDepartmentHook: (state = UiState) => {
       state.createDepartmentHook =
         !state.createDepartmentHook
@@ -131,6 +135,7 @@ export const {
   fireMoveTaskHook,
   fireDeleteDepartmentHook,
   fireDeleteCategoryHook,
+  fireCreateProjectHook,
   fireDeleteTeamHook,
   fireMoveTaskOnTrello,
 } = UISlice.actions;
