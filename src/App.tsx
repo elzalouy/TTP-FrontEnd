@@ -54,6 +54,7 @@ const App: React.FC = (props) => {
   const isLoggedOut = useAppSelector(selectIsLogout);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
+
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
@@ -83,6 +84,7 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
+
   useEffect(() => {
     console.log("update statistic hook fired");
     if (projects.projects.length > 0) {
@@ -106,6 +108,7 @@ const App: React.FC = (props) => {
       }
     }
   }, [projects.allTasks, projects.projects, user]);
+
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>

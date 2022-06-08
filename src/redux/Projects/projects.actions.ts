@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import api from "../../services/endpoints/projects";
 import { Project } from "./projects.state";
 import {
+  fireCreateProjectHook,
   fireDeleteProjectHook,
   fireDeleteTaskHook,
   fireEditTaskHook,
@@ -14,6 +15,7 @@ import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
 import { Department } from "../Departments";
 import { logout } from "../Auth";
+
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
   async (args, { rejectWithValue, dispatch }) => {
@@ -49,6 +51,7 @@ export const createProject = createAsyncThunk<any, any, any>(
       let project: Project = { ...args.data };
       let result = await api.createProject(project);
       if (result.ok) {
+        args.dispatch(fireCreateProjectHook(""));
         args.setcurrentStep(1);
         toast.success("Project created successfully", {
           position: "top-right",

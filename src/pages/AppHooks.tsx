@@ -32,9 +32,19 @@ const AppHooks: React.FC = (props) => {
     moveTaskHook,
     deleteDepartmentHook,
     deleteTeamHook,
+    createProjectHook,
     deleteCategoryHook,
     createCategoryHook,
   } = useAppSelector(selectUi);
+
+  React.useEffect(() => {
+    // create project hook
+    if (createProjectHook !== undefined) {
+      console.log("create project hook fired");
+      dispatch(getAllProjects(null));
+      dispatch(getAllTasks(null));
+    }
+  }, [createProjectHook]);
 
   React.useEffect(() => {
     // create category hook
@@ -73,6 +83,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllProjects(null));
     }
   }, [newProjectHook]);
+
   // update project hook
   React.useEffect(() => {
     if (updateProjectHook !== undefined) {
@@ -81,6 +92,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllProjects(null));
     }
   }, [updateProjectHook]);
+
   // Delete task hook
   React.useEffect(() => {
     if (deleteTasksHook !== undefined) {
@@ -88,6 +100,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [deleteTasksHook]);
+
   // Delete project hook
   React.useEffect(() => {
     if (deleteProjectHook !== undefined) {
@@ -96,6 +109,7 @@ const AppHooks: React.FC = (props) => {
       // dispatch(getAllClients(null));
     }
   }, [deleteProjectHook]);
+
   // new Tech member to department
   React.useEffect(() => {
     if (createTeamHook !== undefined) {
@@ -103,6 +117,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllDepartments(null));
     }
   }, [createTeamHook]);
+
   // update Depertment
   React.useEffect(() => {
     if (updateDepartmentHook !== undefined) {
@@ -110,6 +125,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllDepartments(null));
     }
   }, [updateDepartmentHook]);
+
   // create department hook
   React.useEffect(() => {
     if (createDepartmentHook !== undefined) {
@@ -117,6 +133,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllDepartments(null));
     }
   }, [createDepartmentHook]);
+
   // delete Department hook
   React.useEffect(() => {
     if (deleteDepartmentHook !== undefined) {
@@ -125,6 +142,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [deleteDepartmentHook]);
+
   // Edit Task hook
   React.useEffect(() => {
     if (editTaskHook !== undefined) {
@@ -132,6 +150,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [editTaskHook]);
+
   // move task
   React.useEffect(() => {
     if (moveTaskHook !== undefined) {
@@ -139,6 +158,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
+
   // move task from trello with websocket connection
   React.useEffect(() => {
     if (moveTaskData !== null) {
@@ -147,6 +167,7 @@ const AppHooks: React.FC = (props) => {
       setMoveTaskData(null);
     }
   }, [moveTaskData]);
+
   React.useEffect(() => {
     socket.on("connect", () => {
       console.log("client is connected");

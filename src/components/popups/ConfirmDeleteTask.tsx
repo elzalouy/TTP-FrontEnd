@@ -15,8 +15,7 @@ interface LogoutPopupProps {
 const ConfirmDeleteTask: React.FC<LogoutPopupProps> = ({ show, setShow,task}) => {
   
   const dispatch = useDispatch();
-  console.log(task._id);
-
+  
   return (
     <SmallPopUp show={show} zIndex={9999}>
       <p className="warning-text">Are you sure you want to delete this task?</p>

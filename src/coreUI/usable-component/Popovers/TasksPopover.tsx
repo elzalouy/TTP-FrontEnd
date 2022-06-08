@@ -7,7 +7,7 @@ import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
 import { ProjectsActions, Task } from "../../../redux/Projects";
-import { projectPopoverButtonStyles } from "./ProjectPopover";
+import { projectPopoverButtonGrayStyles, projectPopoverButtonStyles } from "./ProjectPopover";
 
 interface Props {
   item: Task;
@@ -61,7 +61,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
           <Button
             variant="text"
             onClick={onEditTask}
-            sx={projectPopoverButtonStyles}
+            sx={projectPopoverButtonGrayStyles}
           >
             <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
             Edit Task

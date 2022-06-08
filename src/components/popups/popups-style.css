@@ -72,6 +72,7 @@
   font-weight: bold;
   margin: 10px 0;
 }
+
 .cancelBtn-client {
   cursor: pointer;
   width: 180px;
@@ -117,6 +118,7 @@
   text-transform: capitalize;
   margin-bottom: 20px;
 }
+
 .popup-error {
   color: red;
   font-weight: 600;
@@ -130,6 +132,7 @@
   margin: 10px 0 5px 0 !important;
   text-transform: capitalize;
 }
+
 .popup-label-nt {
   display: block;
   font-weight: bold !important;
@@ -270,6 +273,18 @@
   display: flex;
 }
 
+.new-team-alert {
+  position: absolute;
+  left: 300px;
+  font-size: 10px;
+  text-transform: uppercase;
+  top: 12px;
+  color: yellowgreen;
+  border: 1px solid;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
 .add-subcategory {
   display: inline-flex;
   align-items: center;
@@ -286,6 +301,7 @@
   font-weight: bold;
   width: 100px;
 }
+
 .add-subcategory-cnc {
   display: inline-flex;
   align-items: center;
@@ -413,7 +429,13 @@ table.allTask-table td.deleteTd {
 }
 
 /* TABLE ADD NEW TEAM */
-.allTeam-table-container{
+.addTeamTable-Header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.allTeam-table-container {
   max-height: 200px;
   overflow-y: auto;
   margin-bottom: 10px;
@@ -429,19 +451,19 @@ table.allTask-table td.deleteTd {
 
 /* Track */
 .allTeam-table-container::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
- 
+
 /* Handle */
 .allTeam-table-container::-webkit-scrollbar-thumb {
-  background: black; 
+  background: black;
   border-radius: 5px;
 }
 
 /* Handle on hover */
 .allTeam-table-container::-webkit-scrollbar-thumb:hover {
-  background: black; 
+  background: black;
 }
 
 table.allTeam-table {
@@ -496,22 +518,22 @@ table.allTeam-table td.deleteTd {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
 } */
-.add-new-cat > img {
+.add-new-cat>img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-cat > p {
+.add-new-cat>p {
   padding: 5px;
   font-weight: 600;
 }
 
-.add-new-dep > img {
+.add-new-dep>img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-dep > p {
+.add-new-dep>p {
   padding: 5px;
   font-weight: 600;
 }
@@ -542,9 +564,11 @@ table.allTeam-table td.deleteTd {
     grid-template-columns: 1fr;
     width: 55vw !important;
   }
+
   .controllers {
     margin-top: 20px;
   }
+
   .controllers-done {
     width: 150px;
   }
@@ -554,13 +578,16 @@ table.allTeam-table td.deleteTd {
   .black-btn {
     font-size: 15px;
   }
+
   .inputs-grid {
     grid-template-columns: 1fr;
     width: 70vw !important;
   }
+
   .controllers {
     margin-top: 20px;
   }
+
   .controllers-done {
     width: 150px;
   }
