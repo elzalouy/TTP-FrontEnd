@@ -281,6 +281,11 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        if (args.deleteProject) {
+          let data = args.data;
+          let dispatch = args.disptach;
+          dispatch(deleteProject({ data: data, dispatch }));
+        }
         return true;
       }
       throw deleteResult.problem;
