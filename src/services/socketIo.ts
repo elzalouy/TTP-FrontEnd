@@ -5,5 +5,5 @@ export let socket = io(
   process.env.NODE_ENV === "development"
     ? apiUrl.SOCKET_DEV_URL
     : apiUrl.SOCKET_BASE_URL,
-  {transports:["websocket"], upgrade:false , withCredentials: true }
+  {withCredentials: true }
 );
