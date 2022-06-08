@@ -3,7 +3,6 @@ import _ from "lodash";
 import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import { Project, Task } from "../Projects";
 import {
-  getStartEndDayOfWeek,
   isCloseToDeadline,
   setTasksBoardToArrays,
   setTasksToArrays,
@@ -26,7 +25,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           state.OM.projectsCloseToDeadlines = projects.filter(
             (item) =>
               item.projectDeadline &&
-              isCloseToDeadline(new Date(item.projectDeadline))
+              isCloseToDeadline(item.projectDeadline, item.startDate, 35)
           );
         }
         if (tasks && tasks.length > 0) {
@@ -42,7 +41,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           state.OM.shared = setTasksToArrays(shared);
           state.OM.tasksCloseToDeadline = tasks.filter(
             (item) =>
-              item.deadline && isCloseToDeadline(new Date(item.deadline))
+              item.deadline && isCloseToDeadline(item.deadline, item.start, 25)
           );
           state.OM.inProgress = inprogress;
         }
@@ -80,12 +79,12 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           (item) =>
             ids.includes(item.projectId) &&
             item.deadline &&
-            isCloseToDeadline(new Date(item.deadline))
+            isCloseToDeadline(item.deadline, item.start, 25)
         );
         state.PM.projectsCloseToDeadlines = userProjects?.filter(
           (item) =>
             item?.projectDeadline &&
-            isCloseToDeadline(new Date(item?.projectDeadline))
+            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
         );
       }
       state.loading = false;

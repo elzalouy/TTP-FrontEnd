@@ -1,22 +1,32 @@
 import { Task } from "../redux/Projects/projects.state";
 import _ from "lodash";
-export const getStartEndDayOfWeek = (date: Date) => {
-  var dt = new Date(date); // current date of week
-  var currentWeekDay = dt.getUTCDay();
-  var lessDays = currentWeekDay == 0 ? 6 : currentWeekDay - 1;
-  var wkStart = new Date(new Date(dt).setDate(dt.getDate() - lessDays));
-  var wkEnd = new Date(new Date(wkStart).setDate(wkStart.getDate() + 6));
-  return { start: wkStart, end: wkEnd };
-};
-export const isCloseToDeadline = (date: Date) => {
-  var today = new Date();
-  var nextweek = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + 7
-  );
-  if (date && date.getTime() > nextweek.getTime()) return false;
-  else return true;
+
+export const isCloseToDeadline = (
+  deadline: string,
+  start: string,
+  percent: number
+) => {
+  if (deadline.length > 0) {
+    let startDate = new Date(start);
+    let deadlineDate = new Date(deadline);
+    let totalDays = Math.floor(
+      deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
+        startDate.getTime() / (1000 * 60 * 60 * 24)
+    );
+    if (totalDays > 0) {
+      let remained = Math.floor(
+        deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
+          startDate.getTime() / (1000 * 60 * 60 * 24)
+      );
+      console.log(totalDays, remained, remained / totalDays);
+      if (remained <= 0) return false;
+      else if (remained > 0 && (remained / totalDays) * 100 > percent)
+        return false;
+      else return true;
+    } else return true;
+  } else {
+    return false;
+  }
 };
 export const setTasksToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
