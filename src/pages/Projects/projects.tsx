@@ -199,7 +199,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     label="Project Manager: "
                     {...props}
                     options={[
-                      { id: "all", value: "", text: "All" },
+                      { id: "all", value: "", text: "All Project Managers" },
                       ...PMs.map((item) => {
                         return {
                           id: item._id,
@@ -243,7 +243,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     label={"Client: "}
                     {...props}
                     options={[
-                      { id: "all", value: "", text: "All" },
+                      { id: "all", value: "", text: "All Clients" },
                       ...clients?.map((item) => {
                         return {
                           id: item._id,
@@ -289,6 +289,11 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                       label="Status: "
                       options={[
                         { id: "all", value: "", text: "All Status" },
+                        {
+                          id: "Not Started",
+                          value: "Not Started",
+                          text: "Not Started",
+                        },
                         {
                           id: "deliver on time",
                           value: "deliver on time",
