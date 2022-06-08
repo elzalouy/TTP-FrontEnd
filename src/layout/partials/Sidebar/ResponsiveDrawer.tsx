@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Divider,
   Drawer,
@@ -13,6 +12,7 @@ import {
   AppBarProps,
 } from "@mui/material";
 import * as React from "react";
+import Avatar from "react-avatar";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -217,9 +217,19 @@ const ResponsiveDrawer: React.FC = (props: any) => {
                 justifyContent: props.open ? "space-between" : "center",
               }}
             >
-              <Avatar src={userImage === "" ? IMAGES.avatar : userImage}>
-                AM
-              </Avatar>
+              <Avatar
+                name={
+                  user?.user?.name === undefined ? user?.name : user?.user?.name
+                }
+                value="86%"
+                size="40"
+                round
+                color="#FFC500"
+                fgColor="black"
+                style={{
+                  marginRight: "10px",
+                }}
+              />
             </ListItemIcon>
             <ListItemText
               sx={{
@@ -253,8 +263,12 @@ const ResponsiveDrawer: React.FC = (props: any) => {
                     color="#808191"
                   >
                     {user?.user?.role === undefined
-                      ? user?.role === "OM" ? "Admin" : "Project Manager"
-                      : user?.user?.role  === "OM" ? "Admin" : "Project Manager"}
+                      ? user?.role === "OM"
+                        ? "Admin"
+                        : "Project Manager"
+                      : user?.user?.role === "OM"
+                      ? "Admin"
+                      : "Project Manager"}
                   </Typography>
                 </Box>
                 <Box sx={{ cursor: "pointer" }}>
