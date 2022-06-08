@@ -21,7 +21,7 @@ const clientPopoverButtonStyles = {
   color: "#696974",
   fontWeight: "700",
   fontSize: 13,
-}
+};
 
 const clientPopoverEditButtonStyles = {
   width: 120,
@@ -31,7 +31,7 @@ const clientPopoverEditButtonStyles = {
   fontFamily: "Cairo",
   fontWeight: "700",
   fontSize: 13,
-}
+};
 
 const ClientsPopover: React.FC<Props> = ({ client }) => {
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
           <Button
             variant="text"
             onClick={showEditClientPopup}
-            sx={clientPopoverButtonStyles}
+            className={styles.grayButton}
           >
             <img
               alt=""
@@ -93,7 +93,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
           <Button
             variant="text"
             onClick={showDeleteClientPopup}
-            sx={clientPopoverEditButtonStyles}
+            className={styles.grayButton}
           >
             <img
               alt=""

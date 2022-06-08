@@ -14,7 +14,7 @@ import { selectAllProjects, Task } from "../../redux/Projects";
 import TasksTable from "../../coreUI/usable-component/Tables/OverviewTasksTable";
 interface UserTasksProps {
   title: string;
-  tasks: Task[] | null;
+  tasks?: Task[] | null;
 }
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
@@ -37,7 +37,7 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         selects={selects}
         setAllSelected={setAllSelected}
         projects={projects.projects}
-        tasks={props.tasks}
+        tasks={props?.tasks}
       />
     </>
   );

@@ -181,6 +181,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
       state.loading = false;
+      console.log(action.payload);
       if (action.payload) state.newProject.tasks.push(action.payload);
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {

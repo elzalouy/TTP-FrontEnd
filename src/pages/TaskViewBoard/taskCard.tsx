@@ -116,6 +116,9 @@ const TaskCard: React.FC<DataTypes> = ({
   const getRemainingDays = (day: number) => {
     if (day > 0) {
       return `${day} Days Left`;
+    }
+    if (day === 0) {
+      return "Today";
     } else {
       return `${Math.abs(day)} Days ago`;
     }
@@ -219,6 +222,8 @@ const TaskCard: React.FC<DataTypes> = ({
                     marginTop="12px"
                     justifyContent="flex-start"
                     alignItems="center"
+                    overflow={"hidden"}
+                    width="100%"
                   >
                     <img src={IMAGES.attachment} alt="more" />
                     <Typography
@@ -229,8 +234,8 @@ const TaskCard: React.FC<DataTypes> = ({
                     <Box
                       flexDirection={"row"}
                       sx={{
-                        width: "100%",
                         display: "inline-flex",
+                        width: "100%",
                         overflowX: "scroll",
                       }}
                     >
@@ -239,7 +244,8 @@ const TaskCard: React.FC<DataTypes> = ({
                         taskFiles.map((item) => (
                           <>
                             <Typography
-                              onClick={(e) => onDownload(item)}
+                              variant={"body2"}
+                              onClick={() => onDownload(item)}
                               className="fileUpload"
                             >
                               {item?.name}

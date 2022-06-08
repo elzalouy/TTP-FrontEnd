@@ -26,7 +26,7 @@ interface ProjectsTableProps {
   status: string;
   expanded: boolean;
   condition?: number | boolean;
-  projects: Project[] | any;
+  projects?: Project[] | any;
   projectManagers: ProjectManager[];
   textSize: string;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;

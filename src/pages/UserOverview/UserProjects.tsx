@@ -14,11 +14,10 @@ interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
-  projects: Project[] | null;
+  projects?: Project[] | null;
 }
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectPMs);
-
   return (
     <TableBox
       title={"Projects Close To Deadline"}

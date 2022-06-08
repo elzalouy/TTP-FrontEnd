@@ -121,7 +121,7 @@ const OverView: FC<Props> = (props) => {
                     Icon={() => <img src={IMAGES.overviewTasksIcon} alt="3" />}
                     pt={1.6}
                     title="Shared Tasks"
-                    count={statistics.PM.Shared?.length.toString()}
+                    count={statistics.PM.sharedLength.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
@@ -130,7 +130,7 @@ const OverView: FC<Props> = (props) => {
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     pt={1.5}
                     title="Review Tasks"
-                    count={statistics.PM.Review?.length.toString()}
+                    count={statistics.PM.reviewLength.toString()}
                   />
                 </>
               ) : (
@@ -144,7 +144,7 @@ const OverView: FC<Props> = (props) => {
                     )}
                     pt={1.6}
                     title={"Task Board tasks"}
-                    count={statistics.OM.Taskboard?.length.toString()}
+                    count={statistics.OM.taskBoardLength.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
@@ -161,7 +161,7 @@ const OverView: FC<Props> = (props) => {
                     IconBgColor="#FFF3EF"
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     title="Review Tasks"
-                    count={statistics.OM.Review?.length.toString()}
+                    count={statistics.OM.reviewLength.toString()}
                     pt={1.8}
                   />
                 </>
@@ -197,7 +197,7 @@ const OverView: FC<Props> = (props) => {
                 title={"In Progress"}
               />
             ) : (
-              <UserTasks tasks={statistics.PM.Shared} title={"Shared Tasks"} />
+              <UserTasks tasks={statistics.PM.shared} title={"Shared Tasks"} />
             )}
           </Grid>
           <Grid
@@ -211,13 +211,13 @@ const OverView: FC<Props> = (props) => {
           >
             {role === "OM" && (
               <UserTasks
-                tasks={statistics.OM.TasksCloseToDeadline}
+                tasks={statistics.OM.tasksCloseToDeadline}
                 title={"Tasks Close to Deadline"}
               />
             )}
             {role == "PM" && (
               <UserTasks
-                tasks={statistics.PM.TasksCloseToDeadline}
+                tasks={statistics.PM.tasksCloseToDeadline}
                 title={"Tasks Close to Deadline"}
               />
             )}

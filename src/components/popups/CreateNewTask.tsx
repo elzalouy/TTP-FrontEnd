@@ -161,7 +161,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status: data?.deadline ? "inProgress" : "Not Started",
+      status: "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
@@ -199,7 +199,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
         "projectId",
         selectedProject?.project?._id ? selectedProject?.project?._id : ""
       );
-      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("status", "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
@@ -208,11 +208,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
       let files: Array<any> = Array.from(Files);
       let result = validateTaskFilesSchema(files);
       if (result.error === null) {
-        if (Files) {
+        if (files) {
           for (let i = 0; i < files.length; i++) {
             task.append("attachedFiles", files[i]);
           }
         }
+        task.append(
+          "boardId",
+          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+        );
         task.append(
           "listId",
           data?.teamId
@@ -220,10 +224,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 (item: any) => item._id === data.teamId
               )?.listId
             : selectedDepartment?.defaultListId
-        );
-        task.append(
-          "boardId",
-          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
         );
         task.append("description", data?.description);
         dispatch(
@@ -234,6 +234,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
             reset: reset,
           })
         );
+        setFiles([]);
       } else toast.error(result.error);
     }
   };
@@ -287,6 +288,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
             onClick={() => {
               setValue("deadline", null);
               props.setShow("none");
+              setFiles([]);
               reset();
             }}
           />

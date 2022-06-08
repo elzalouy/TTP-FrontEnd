@@ -3,7 +3,7 @@ import { borderRadius } from "@mui/system";
 import { DefaultTheme } from "styled-components";
 
 export const projectsTableStyle = (status: string) => {
-  const borderColor = ["#FCEFC0", "#00ACBA33","#E8E8E8"];
+  const borderColor = ["#FCEFC0", "#00ACBA33", "#E8E8E8"];
   const NotStartedStyle = makeStyles((theme: DefaultTheme) => ({
     root: {
       width: "100%",
@@ -163,8 +163,27 @@ export const popOverStyle = () => {
         borderRadius: "10px",
       },
     },
+    grayButton: {
+      width: 180,
+      justifyContent: "flex-start",
+      color: "#696974",
+      textTransform: "none",
+      fontFamily: "Cairo",
+      fontWeight: 700,
+      fontSize: 13,
+    },
+    redButton: {
+      width: 180,
+      justifyContent: "flex-start",
+      color: "#FF0000",
+      textTransform: "none",
+      fontFamily: "Cairo",
+      fontWeight: 700,
+      fontSize: 13,
+    },
   });
 };
+
 export const InputStyle = makeStyles({
   root: {
     "& .MuiInputBase-input": {

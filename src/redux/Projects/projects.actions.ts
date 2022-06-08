@@ -72,10 +72,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let result: ApiResponse<any> = await api.createTask(args);
-      console.log("problem", result);
-
       if (result.ok) {
-        console.log(result.data);
         toast.success("Task have been saved to the Database", {
           position: "top-right",
           autoClose: 1500,
@@ -85,7 +82,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        return result.data?.task;
+        return result.data;
       }
       return rejectWithValue(result.data);
     } catch (error: any) {
@@ -443,11 +440,11 @@ export const moveTask = createAsyncThunk<any, any, any>(
         case "Not Clear":
           newlist = department.notClearListId;
           break;
-        case "Not Started":
-          newlist = department.notStartedListId;
+        case "Tasks Board":
+          newlist = department.defaultListId;
           break;
         case "inProgress":
-          newlist = department.defaultListId;
+          newlist = department.inProgressListId;
           break;
         case "Review":
           newlist = department.reviewListId;
