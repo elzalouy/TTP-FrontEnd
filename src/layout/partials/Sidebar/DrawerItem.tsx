@@ -47,6 +47,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         <Typography
           fontWeight={props.select === props.path ? "600" : "500"}
           fontSize={14}
+          paddingLeft={props.text === "Project Managers" ? "5px" : "0px"}
         >
           {props.text}
         </Typography>

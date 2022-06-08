@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { useHistory } from "react-router";
 import LoggedInContainer from "./layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
@@ -33,7 +34,11 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
+import {
+  getUserInfo,
+  selectIsAuth,
+  selectUser,
+} from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
@@ -42,10 +47,12 @@ import "swiper/css/navigation";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
+
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
@@ -69,6 +76,7 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
+
   useEffect(() => {
     console.log("update statistic hook fired");
     if (projects.projects.length > 0) {
@@ -92,6 +100,7 @@ const App: React.FC = (props) => {
       }
     }
   }, [projects.allTasks, projects.projects, user]);
+
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
       <AppHooks>

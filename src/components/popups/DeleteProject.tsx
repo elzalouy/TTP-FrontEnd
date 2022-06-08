@@ -24,6 +24,7 @@ const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
     await dispatch(deleteProject({ data: { id: id }, dispatch }));
     setShow("none");
   };
+
   return (
     <>
       <SmallPopUp show={show}>

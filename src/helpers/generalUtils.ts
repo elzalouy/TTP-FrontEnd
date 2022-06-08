@@ -36,11 +36,9 @@ export const calculateStatusBasedOnDeadline = (data: any) => {
   }
 };
 
-export const checkProjectStatus = (status: string | undefined) => {
+export const checkProjectStatusName = (status: string | undefined) => {
   if (status === "deliver before deadline" || status === "deliver on time" || status === "late") {
-    return false;
-  } else {
-    return true;
+    return "Done";
   }
 }
 

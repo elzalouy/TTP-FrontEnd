@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import IMAGES from "../../assets/img";
 import PopUp from "../../coreUI/usable-component/popUp";
 import "./popups-style.css";
-import { Controller, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValue,
+  FieldValues,
+  useForm,
+  UseFormWatch,
+} from "react-hook-form";
 import { useAppSelector } from "../../redux/hooks";
 import { selectClientsNames } from "../../redux/Clients";
 import { selectPMs } from "../../redux/PM";
@@ -20,7 +26,6 @@ import moment from "moment";
 import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
-  checkProjectStatus,
   getStatus,
 } from "../../helpers/generalUtils";
 
@@ -107,6 +112,18 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     return pm?.name;
   };
 
+  const checkProjectStatus = (status: string | undefined) => {
+    if (
+      status === "deliver before deadline" ||
+      status === "deliver on time" ||
+      status === "late"
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const executeEditProject = (data: any) => {
     let editProject = { ...project };
 
@@ -138,8 +155,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let data = watch();
 
     if (updateDate) {
+      console.log(data);
       if (data.startDate === null || data.deadline === null) {
         data.status = "Not Started";
+      }else{
+        data.status = "inProgress"
       }
       executeEditProject(data);
       return;
@@ -288,24 +308,25 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           onChange={params.onChange}
                           sx={editProjectStartDateStyles}
                         />
-                        {checkProjectStatus(project?.projectStatus) && (
-                          <img
-                            className="closeIcon"
-                            src={IMAGES.closeicon}
-                            style={{
-                              width: "10px",
-                              height: "10px",
-                              position: "absolute",
-                              right: "13px",
-                              bottom: "17px",
-                            }}
-                            alt="closeIcon"
-                            onClick={() => {
-                              setValue("startDate", null);
-                              setUpdateDate(true);
-                            }}
-                          />
-                        )}
+                        {checkProjectStatus(project?.projectStatus) &&
+                          watch().startDate !== null && (
+                            <img
+                              className="closeIcon"
+                              src={IMAGES.closeicon}
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                position: "absolute",
+                                right: "13px",
+                                bottom: "17px",
+                              }}
+                              alt="closeIcon"
+                              onClick={() => {
+                                setValue("startDate", null);
+                                setUpdateDate(true);
+                              }}
+                            />
+                          )}
                       </div>
                     )}
                   />
@@ -341,24 +362,25 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           onChange={params.onChange}
                           sx={editProjectDeadlineStyles}
                         />
-                        {checkProjectStatus(project?.projectStatus) && (
-                          <img
-                            className="closeIcon"
-                            src={IMAGES.closeicon}
-                            style={{
-                              width: "10px",
-                              height: "10px",
-                              position: "absolute",
-                              right: "13px",
-                              bottom: "17px",
-                            }}
-                            alt="closeIcon"
-                            onClick={() => {
-                              setValue("deadline", null);
-                              setUpdateDate(true);
-                            }}
-                          />
-                        )}
+                        {checkProjectStatus(project?.projectStatus) &&
+                          watch().deadline !== null && (
+                            <img
+                              className="closeIcon"
+                              src={IMAGES.closeicon}
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                position: "absolute",
+                                right: "13px",
+                                bottom: "17px",
+                              }}
+                              alt="closeIcon"
+                              onClick={() => {
+                                setValue("deadline", null);
+                                setUpdateDate(true);
+                              }}
+                            />
+                          )}
                       </div>
                     )}
                   />

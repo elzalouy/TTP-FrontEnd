@@ -5,6 +5,7 @@ export const selectLoading = (state: RootState) => state?.Auth.loading;
 export const selectUser = (state: RootState) => state?.Auth?.User;
 export const selectResponse = (state: RootState) => state?.Auth?.Payload;
 export const selectIsAuth = (state: RootState) => state?.Auth?.authState;
+export const selectIsLogout = (state: RootState) => state?.Auth?.logoutState;
 export const selectPassword = (state: RootState) =>
   state?.Auth?.User?.user?.password !== undefined
     ? state?.Auth?.User?.user?.password
