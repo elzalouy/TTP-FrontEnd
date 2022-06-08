@@ -37,7 +37,6 @@ import { useAppSelector } from "./redux/hooks";
 import {
   getUserInfo,
   selectIsAuth,
-  selectIsLogout,
   selectUser,
 } from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
@@ -51,7 +50,6 @@ const App: React.FC = (props) => {
   const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
-  const isLoggedOut = useAppSelector(selectIsLogout);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
 
@@ -65,12 +63,6 @@ const App: React.FC = (props) => {
       );
     }
   }, [dispatch]);
-
-  useEffect(() => {
-    if (isLoggedOut) {
-      setTimeout(() => history.replace("/"), 1000);
-    }
-  }, [isLoggedOut]);
 
   useEffect(() => {
     if (!mounted && checkAuthToken()) {
