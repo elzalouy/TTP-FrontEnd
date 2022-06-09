@@ -15,6 +15,7 @@ import {
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { setAuthToken } from "../../services/api";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -89,7 +90,8 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       }
     } else {
       setVisible(true);
-      setTimeout(() => history.push("/"), 800);
+      setAuthToken(token);
+      setTimeout(() => history.replace("/Overview"), 1000);
     }
   }, [auth]);
 

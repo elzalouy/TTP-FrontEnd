@@ -1,5 +1,13 @@
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Typography, Input, Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Input,
+  Button,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import IMAGES from "../../assets/img";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { Redirect, useHistory, useParams } from "react-router";
@@ -10,6 +18,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { resetPMpassword, selectPayload, selectPMs } from "../../redux/PM";
 import { selectAuth, selectIsAuth } from "../../redux/Auth";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { setAuthToken } from "../../services/api";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -80,11 +89,12 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         status: res.status,
       });
     } else {
+      setAuthToken(token);
       setVisible(true);
     }
   }, [res]);
 
-    if (isAuth) {
+  if (isAuth) {
     return <Redirect to={"/Overview"} />;
   }
 
@@ -106,12 +116,16 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         height={600}
         maxWidth={"50% !important"}
         bgcolor={"white"}
-        justifyContent={SM? "flex-start" : "center"}
+        justifyContent={SM ? "flex-start" : "center"}
         container
         direction="row"
-        sx={SM ? {boxShadow:"none"} :{
-          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-        }}
+        sx={
+          SM
+            ? { boxShadow: "none" }
+            : {
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }
+        }
       >
         <Grid
           item
@@ -265,7 +279,12 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={IMAGES.resetDesktop} className="Image" alt="" style={{ width: "60%" }} />
+          <img
+            src={IMAGES.resetDesktop}
+            className="Image"
+            alt=""
+            style={{ width: "60%" }}
+          />
         </Grid>
       </Grid>
     </Grid>
