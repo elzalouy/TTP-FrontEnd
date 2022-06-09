@@ -3,6 +3,11 @@
   src: url(../../assets/fonts/Cairo-Bold.ttf);
 }
 
+body{
+  /* Fixing height issues since there is an added 100% height for taskCard */
+  height: auto !important;
+}
+
 .bold{
   font-family: "Cairo-Bold" !important;
   font-weight: bolder !important;

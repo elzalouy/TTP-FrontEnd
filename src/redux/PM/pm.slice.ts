@@ -93,7 +93,7 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
           status: payload.status,
         };
       } else {
-        state.PMs = payload;
+        state.PMs = [...payload];
       }
     });
     builder.addCase(resendMail.rejected, (state) => {

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
-import { removeAuthToken } from "../../services/api";
+import { removeAuthToken, setAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
 import { logout } from "../Auth";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
@@ -161,9 +161,9 @@ export const updatePMpassword = createAsyncThunk<any, any, any>(
 
 export const resetPMpassword = createAsyncThunk<any, any, any>(
   "PM/resetPMpassword",
-  async (data: object, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let PMs = await PMapi.resetPassword(data);
+      let PMs = await PMapi.resetPassword(args.data);
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",

@@ -66,16 +66,6 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     builder.addCase(forgotPassword.fulfilled, (state, { payload }) => {
       state.loading = false;
       if (payload.msg && payload.status) {
-        toast.error("Invalid Email Address", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId:generateID(),
-        });
         state.Payload = {
           msg: payload.msg,
           status: payload.status,

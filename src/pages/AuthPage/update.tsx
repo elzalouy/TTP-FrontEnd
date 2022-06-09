@@ -61,6 +61,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   const { token } = useParams<IParam>();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTokenValid = localStorage.getItem("token");
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     let pattern = new RegExp(data.password);
@@ -70,6 +71,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
         newPassword({
           token: `Bearer ${token}`,
           password: data.password,
+          id : token
         })
       );
     } else {
@@ -90,12 +92,11 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       }
     } else {
       setVisible(true);
-      setAuthToken(token);
       setTimeout(() => history.replace("/Overview"), 1000);
     }
   }, [auth]);
 
-    if (isAuth) {
+    if (isAuth && isTokenValid) {
     return <Redirect to={"/Overview"} />;
   }
 

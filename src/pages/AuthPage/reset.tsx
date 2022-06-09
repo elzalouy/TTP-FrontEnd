@@ -62,6 +62,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTokenValid = localStorage.getItem("token");
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     let pattern = new RegExp(data.newPassword);
@@ -69,11 +70,14 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
       setPasswordError(false);
       dispatch(
         resetPMpassword({
-          id: `Bearer ${token}`,
-          password: data.newPassword,
+          data: {
+            id: `Bearer ${token}`,
+            password: data.newPassword,
+          },
+          token: token,
         })
       );
-      history.replace("/");
+      setTimeout(() => history.replace("/login"), 1000);
     } else {
       setPasswordError(true);
     }
@@ -89,12 +93,12 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
         status: res.status,
       });
     } else {
-      setAuthToken(token);
       setVisible(true);
+      setTimeout(() => history.replace("/login"), 1000);
     }
   }, [res]);
 
-  if (isAuth) {
+  if (isAuth && isTokenValid) {
     return <Redirect to={"/Overview"} />;
   }
 

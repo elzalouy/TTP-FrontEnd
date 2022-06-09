@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
+import { setAuthToken } from "../../services/api";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
 
@@ -27,7 +28,7 @@ export const signIn = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:"signin",
+        toastId: "signin",
       });
       rejectWithValue(error);
     }
@@ -71,6 +72,7 @@ export const newPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.newPasword(args);
       if (result.ok === true) {
+        setAuthToken(args.id);
         return result.data;
       } else return result.data;
     } catch (error) {
@@ -85,9 +87,31 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.forgotPassword(args);
       if (result.ok === true) {
+        toast.success("An Email has been set to reset your password", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
         return result.data;
-      } else return result.data;
-    } catch (error:any) {
+      } else {
+        toast.error("Invalid Email Address", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
+        return result.data
+      };
+    } catch (error: any) {
       toast.error(error, {
         position: "top-right",
         autoClose: 1500,
@@ -96,7 +120,7 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
       rejectWithValue(error);
     }
