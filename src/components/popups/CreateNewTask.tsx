@@ -474,15 +474,15 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       )}
                       handleChange={props.field.onChange}
                       selectText={
-                        selectedCategory?.selectedSubCategory?.find(
+                        selectedCategory?.subCategoriesId?.find(
                           (item) => item._id === props.field.value
                         )?.subCategory
                       }
                       {...register("subCategoryId")}
                       selectValue={props.field.value}
                       options={
-                        selectedCategory?.selectedSubCategory
-                          ? selectedCategory?.selectedSubCategory?.map(
+                        selectedCategory?.subCategoriesId
+                          ? selectedCategory?.subCategoriesId?.map(
                               (item) => {
                                 return {
                                   id: item._id ? item._id : "",

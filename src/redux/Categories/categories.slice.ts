@@ -65,6 +65,7 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
         .indexOf(payload._id);
       state.categories.splice(targetIndex, 1, payload);
       state.chosenCategories.splice(targetIndex, 1, payload);
+      
       state.loading = false;
     });
     builder.addCase(deleteCategory.pending, (state) => {
