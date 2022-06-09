@@ -53,7 +53,7 @@ export const checkIndexForLastRow = (index: number, tasks: Task[]) => {
 }
 
 export const checkStatusAndSetBorder = (status: string) => {
-  if (status === "Not Started") {
+  if (status === "Tasks Board") {
     return "#9fa1ab1a solid 2px";
   } else if (status === "Not Clear") {
     return "#d2903456 solid 1px";
@@ -71,7 +71,7 @@ export const checkStatusAndSetBorder = (status: string) => {
 };
 
 export const checkStatusAndSetBackground = (status: string) => {
-  if (status === "Not Started") {
+  if (status === "Tasks Board") {
     return "#F1F1F2";
   } else if (status === "Not Clear") {
     return "#f7f0e7";

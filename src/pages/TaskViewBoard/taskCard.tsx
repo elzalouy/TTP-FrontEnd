@@ -128,6 +128,7 @@ const TaskCard: React.FC<DataTypes> = ({
       downloadAttachment({ cardId: item.cardId, attachmentId: file?.trelloId })
     );
   };
+  
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
