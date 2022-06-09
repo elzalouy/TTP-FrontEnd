@@ -49,7 +49,7 @@ const taskFormFilesStyles = {
   textAlign: "center",
   alignContent: "center",
   paddingTop: 1,
-}
+};
 
 const taskFormNameStyles = {
   width: "100%",
@@ -100,7 +100,7 @@ const taskFormFileAddStyles = {
       color: "white",
     },
   },
-}
+};
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -149,7 +149,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: newProject?.project?._id,
-      status: data?.deadline ? "inProgress" : "Not Started",
+      status: "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
@@ -187,7 +187,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         "projectId",
         newProject?.project?._id ? newProject?.project?._id : ""
       );
-      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("status", "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
@@ -200,16 +200,16 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         }
       }
       task.append(
+        "boardId",
+        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+      );
+      task.append(
         "listId",
         data?.teamId
           ? selectedDepartment?.teamsId?.find(
               (item: any) => item._id === data.teamId
             )?.listId
           : selectedDepartment?.defaultListId
-      );
-      task.append(
-        "boardId",
-        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
       );
       task.append("description", data?.description);
       dispatch(createProjectTask(newTask));
@@ -492,10 +492,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 style={{ display: "none" }}
                 multiple
               />
-              <Button
-                onClick={onChangeFiles}
-                sx={taskFormFileAddStyles}
-              >
+              <Button onClick={onChangeFiles} sx={taskFormFileAddStyles}>
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
                   style={{

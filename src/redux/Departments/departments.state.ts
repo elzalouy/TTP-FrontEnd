@@ -7,7 +7,7 @@ export interface Department {
   sharedListID: string;
   doneListId: string;
   notClearListId: string;
-  notStartedListId: string;
+  inProgressListId: string;
   canceldListId: string;
   color: string;
   mainBoard: boolean;
@@ -16,7 +16,7 @@ export interface Department {
     name: string;
     departmentId: string;
     listId: string;
-    isDeleted?:boolean;
+    isDeleted?: boolean;
   }[];
   totalInProgress: number;
   totalDone: number;

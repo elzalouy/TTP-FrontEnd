@@ -19,7 +19,7 @@ const Status: React.FC<StatusProps> = (props) => {
       ? "#fc5a5a"
       : props.status === "Not Clear"
       ? "#ffac38"
-      : "#919090";
+      : "#696974";
   const bgColor =
     props.status === "inProgress"
       ? "#fff8dd"
@@ -33,7 +33,7 @@ const Status: React.FC<StatusProps> = (props) => {
       ? "#ffeeee"
       : props.status === "Not Clear"
       ? "#f0f0f0"
-      : ":#f0f0f0";
+      : "#9fa1ab33";
   const statusStyle = {
     color: color,
     backgroundColor: bgColor,

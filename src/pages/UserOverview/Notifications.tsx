@@ -2,7 +2,7 @@ import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
-import PopoverComponent from "../../coreUI/usable-component/Popovers/PopoverComponent";
+import PopoverComponent from "../../coreUI/usable-component/ScrollOver";
 import { useAppSelector } from "../../redux/hooks";
 import { selectSatistics } from "../../redux/Statistics";
 interface Props {
@@ -38,72 +38,73 @@ const Notifications: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
-      <PopoverComponent setPopover={setOpen} popover={open}>
-        <Stack sx={cssStack}>
-          <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
-            <Tab value={"0"} label="In Progress Tasks" sx={cssTab("0")} />
-            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
-          </Tabs>
-          {tabs?.map((tabItem, index) => {
-            let tasks =
-              tabItem === "0" ? statistics.PM.inProgress : statistics.PM.Review;
-            return (
-              <Box
-                key={index}
-                role={"tabpanel"}
-                aria-labelledby={`tab-${tabItem}`}
-                hidden={tab == tabItem ? false : true}
-                id={tabItem}
-                tabIndex={index}
-                height={
-                  open
-                    ? tasks && tasks.length <= 4
-                      ? `${tasks?.length * 60 + 76}px`
-                      : "300px"
-                    : "auto"
-                }
-                sx={{ overflowY: "scroll" }}
-              >
-                <Box sx={{ display: "inline-flex" }} marginTop={2}>
-                  <Typography sx={cssDay}>Today</Typography>
-                  <Typography sx={cssDate}>11 Dec, 2021</Typography>
-                </Box>
+    <></>
+    // <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
+    //   <PopoverComponent setPopover={setOpen} popover={open}>
+    //     <Stack sx={cssStack}>
+    //       <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
+    //         <Tab value={"0"} label="In Progress Tasks" sx={cssTab("0")} />
+    //         <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
+    //       </Tabs>
+    //       {tabs?.map((tabItem, index) => {
+    //         let tasks =
+    //           tabItem === "0" ? statistics.PM.inProgress : statistics.PM.Review;
+    //         return (
+    //           <Box
+    //             key={index}
+    //             role={"tabpanel"}
+    //             aria-labelledby={`tab-${tabItem}`}
+    //             hidden={tab == tabItem ? false : true}
+    //             id={tabItem}
+    //             tabIndex={index}
+    //             height={
+    //               open
+    //                 ? tasks && tasks.length <= 4
+    //                   ? `${tasks?.length * 60 + 76}px`
+    //                   : "300px"
+    //                 : "auto"
+    //             }
+    //             sx={{ overflowY: "scroll" }}
+    //           >
+    //             <Box sx={{ display: "inline-flex" }} marginTop={2}>
+    //               <Typography sx={cssDay}>Today</Typography>
+    //               <Typography sx={cssDate}>11 Dec, 2021</Typography>
+    //             </Box>
 
-                {(open ? tasks : tasks?.slice(0, 2))?.map((item, index) => (
-                  <Box key={index} sx={cssNotiBox}>
-                    <Typography sx={cssNotiStatus("status")}>
-                      {item.status}
-                    </Typography>
-                    <Box paddingTop={0.2} paddingLeft={1}>
-                      <Typography sx={cssNotiTitle}>{item.name}</Typography>
-                      <Typography sx={cssNotiSubTitle}>
-                        {item.name} moved to {item.status}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))}
-                <Button
-                  variant="text"
-                  sx={cssMoreBtn}
-                  fullWidth={false}
-                  onClick={() => setOpen(!open)}
-                >
-                  {open ? (
-                    <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                  ) : (
-                    <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                  )}
-                  <Typography sx={cssMoreText}>
-                    {open ? "See Less" : "See More"}
-                  </Typography>
-                </Button>
-              </Box>
-            );
-          })}
-        </Stack>
-      </PopoverComponent>
-    </Box>
+    //             {(open ? tasks : tasks?.slice(0, 2))?.map((item, index) => (
+    //               <Box key={index} sx={cssNotiBox}>
+    //                 <Typography sx={cssNotiStatus("status")}>
+    //                   {item.status}
+    //                 </Typography>
+    //                 <Box paddingTop={0.2} paddingLeft={1}>
+    //                   <Typography sx={cssNotiTitle}>{item.name}</Typography>
+    //                   <Typography sx={cssNotiSubTitle}>
+    //                     {item.name} moved to {item.status}
+    //                   </Typography>
+    //                 </Box>
+    //               </Box>
+    //             ))}
+    //             <Button
+    //               variant="text"
+    //               sx={cssMoreBtn}
+    //               fullWidth={false}
+    //               onClick={() => setOpen(!open)}
+    //             >
+    //               {open ? (
+    //                 <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+    //               ) : (
+    //                 <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+    //               )}
+    //               <Typography sx={cssMoreText}>
+    //                 {open ? "See Less" : "See More"}
+    //               </Typography>
+    //             </Button>
+    //           </Box>
+    //         );
+    //       })}
+    //     </Stack>
+    //   </PopoverComponent>
+    // </Box>
   );
 };
 

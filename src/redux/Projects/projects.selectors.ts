@@ -65,7 +65,7 @@ export const selectNotClearTasks = (state: RootState) =>
   );
 export const selectNotStartedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Not Started"
+    (item) => item.status === "Tasks Board"
   );
 export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(

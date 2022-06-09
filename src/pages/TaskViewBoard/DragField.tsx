@@ -108,13 +108,13 @@ const DragField: React.FC = (props: any) => {
   useEffect(() => {
     let cols: any = {
       [uuidv4()]: {
-        name: "Not Started",
+        name: "Tasks Board",
         items: notStartedTasks,
         header: "not-started-header",
         body: "not-started-task",
         border: "not-started-border",
         NewTask: <CreateNewTask />,
-        value: "Not Started",
+        value: "Tasks Board",
         footer: "task-card-footer-notstarted",
       },
       [uuidv4()]: {

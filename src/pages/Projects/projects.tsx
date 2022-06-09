@@ -401,25 +401,6 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                 />
               </Box>
             </TableBox>
-            {/* <TableBox
-              title={"Not Started"}
-              outTitled={false}
-              expanded={doneExpanded}
-              setExpanded={setDoneExpanded}
-              bgColor={backgroundColor[1]}
-            >
-              <Box id="project-title">
-                <ProjectsTable
-                  align="center"
-                  textSize="medium"
-                  status={"Not Started"}
-                  expanded={doneExpanded}
-                  projects={notStartedProjects}
-                  projectManagers={PMs}
-                  {...props}
-                />
-              </Box>
-            </TableBox> */}
           </>
         ) : (
           <Box

@@ -18,26 +18,6 @@ interface Props {
 
 //SX Styles Object
 
-export const projectPopoverButtonStyles = {
-  width: 180,
-  justifyContent: "flex-start",
-  color: "#FF0000",
-  textTransform: "none",
-  fontFamily: "Cairo",
-  fontWeight: "700",
-  fontSize: 13,
-}
-
-export const projectPopoverButtonGrayStyles = {
-  width: 180,
-  justifyContent: "flex-start",
-  color: "#696974",
-  textTransform: "none",
-  fontFamily: "Cairo",
-  fontWeight: "700",
-  fontSize: 13,
-}
-
 const ProjectPopover: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
@@ -87,7 +67,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
           <Button
             onClick={() => props.history.push(`/TasksBoard/${props.id}`)}
             variant="text"
-            sx={projectPopoverButtonGrayStyles}
+            className={styles.grayButton}
           >
             <img
               src={IMAGES.projectsicon}
@@ -99,7 +79,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
           <Button
             variant="text"
             onClick={showEditProjectPopup}
-            sx={projectPopoverButtonGrayStyles}
+            className={styles.grayButton}
           >
             <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
             Edit Project
@@ -107,7 +87,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
           <Button
             onClick={showDeleteProjectPopup}
             variant="text"
-            sx={projectPopoverButtonStyles}
+            className={styles.redButton}
           >
             <img
               src={IMAGES.deleteicon2}

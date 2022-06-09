@@ -1,11 +1,17 @@
 import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import {
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  TableRestaurantTwoTone,
+} from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
-import PopoverComponent from "../../coreUI/usable-component/Popovers/PopoverComponent";
+import ScrollOver from "../../coreUI/usable-component/ScrollOver";
 import { useAppSelector } from "../../redux/hooks";
 import { selectSatistics } from "../../redux/Statistics";
+import _ from "lodash";
 import Status from "../../coreUI/usable-component/Typos/Status";
+import { Task } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -28,19 +34,39 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
-  const cssNotiStatus = (status: string) => {
+  const cssTabContent = (tabItem: string) => {
+    let tasks =
+      tabItem === "0"
+        ? statistics.OM.taskboard
+        : tabItem === "1"
+        ? statistics.OM.review
+        : statistics.OM.shared;
+    let flat = _.flattenDeep(tasks);
     return {
-      height: "22px",
-      paddingX: 1,
-      color: "#FF974A",
-      backgroundColor: "#FFF4EC",
-      borderRadius: "4px",
+      height: open
+        ? flat && flat?.length <= 4
+          ? `${flat?.length * 60 + 76}px`
+          : "300px"
+        : "auto",
+      overflowY: "scroll",
+      "&::-webkit-scrollbar": {
+        display: open ? "block !important" : "none",
+        width: "3px !important",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "#ECECEC",
+        borderRadius: 5,
+      },
+      "&::-webkit-scrollbar-button": {
+        color: "#9FA1AB",
+        width: "3px !important",
+        borderRadius: 5,
+      },
     };
   };
-
   return (
     <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
-      <PopoverComponent setPopover={setOpen} popover={open}>
+      <ScrollOver setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
             <Tab value={"0"} label="Taskboard" sx={cssTab("0")} />
@@ -48,12 +74,14 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             <Tab value={"2"} label="Shared Tasks" sx={cssTab("2")} />
           </Tabs>
           {tabs?.map((tabItem, index) => {
-            let tasks =
+            let tasks: Task[][] | null =
               tabItem === "0"
-                ? statistics.OM.Taskboard
+                ? statistics.OM.taskboard
                 : tabItem === "1"
-                ? statistics.OM.Review
-                : statistics.OM.Shared;
+                ? statistics.OM.review
+                : statistics.OM.shared;
+            let flattenTasks: Task[] = _.flattenDeep(tasks);
+            console.log(flattenTasks, tasks);
             return (
               <Box
                 key={index}
@@ -63,30 +91,78 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                 id={tabItem}
                 tabIndex={index}
                 height={
-                  open
-                    ? tasks && tasks?.length <= 4
-                      ? `${tasks?.length * 60 + 76}px`
-                      : "300px"
+                  open === true
+                    ? flattenTasks?.length && flattenTasks?.length <= 2
+                      ? `${flattenTasks?.length * 60 + 76}px !important`
+                      : "600px"
                     : "auto"
                 }
-                sx={{ overflowY: "scroll" }}
+                sx={cssTabContent(tabItem)}
               >
-                <Box sx={{ display: "inline-flex" }} marginTop={2}>
-                  <Typography sx={cssDay}>Today</Typography>
-                  <Typography sx={cssDate}>11 Dec, 2021</Typography>
-                </Box>
                 {tasks &&
-                  (open ? tasks : tasks?.slice(0, 2))?.map((item, index) => (
-                    <Box key={index} sx={cssNotiBox}>
-                      <Status status={item?.status} />
-                      <Box paddingTop={0.2} paddingLeft={1}>
-                        <Typography sx={cssNotiTitle}>{item.name}</Typography>
-                        <Typography sx={cssNotiSubTitle}>
-                          {item.name} moved to {item.status}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
+                  tasks?.map((TArray: Task[], index: number) => {
+                    let day = "",
+                      year = "",
+                      month = "",
+                      currentDay = "";
+                    if (
+                      TArray[0].status !== "Tasks Board" &&
+                      TArray &&
+                      TArray[0]?.lastMoveDate
+                    ) {
+                      let date = new Date(TArray[0].lastMoveDate);
+                      day = date?.getDate().toString();
+                      month = date?.getMonth().toString();
+                      year = date?.getFullYear().toString();
+                    }
+                    if (
+                      TArray[0].status === "Tasks Board" &&
+                      TArray[0]?.createdAt
+                    ) {
+                      let date = new Date(TArray[0].createdAt);
+                      day = date?.getDate().toString();
+                      month = date?.getMonth().toString();
+                      year = date?.getFullYear().toString();
+                      currentDay = [
+                        "Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                      ][date?.getDay()];
+                    }
+                    return (
+                      <>
+                        <Box sx={{ display: "inline-flex" }} marginTop={2}>
+                          <Typography sx={cssDay}>{currentDay}</Typography>
+                          <Typography
+                            sx={cssDate}
+                          >{`${day},  ${month}  ${year}`}</Typography>
+                        </Box>
+                        {TArray?.length > 0 &&
+                          (open === true ? TArray : TArray.slice(0, 2)).map(
+                            (item) => {
+                              return (
+                                <Box key={index} sx={cssNotiBox}>
+                                  <Status status={item?.status} />
+                                  <Box paddingTop={0.2} paddingLeft={1}>
+                                    <Typography sx={cssNotiTitle}>
+                                      {item.name}
+                                    </Typography>
+                                    <Typography sx={cssNotiSubTitle}>
+                                      {item.name} moved to {item.status}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              );
+                            }
+                          )}
+                      </>
+                    );
+                  })}
+
                 <Button
                   variant="text"
                   sx={cssMoreBtn}
@@ -106,7 +182,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
             );
           })}
         </Stack>
-      </PopoverComponent>
+      </ScrollOver>
     </Box>
   );
 };
@@ -143,7 +219,7 @@ const cssDate = {
 };
 const cssNotiBox = {
   marginTop: 0.5,
-  width: "100%",
+  width: "98%",
   height: 60,
   borderRadius: "12px",
   boxShadow: "0px 5px 15px 5px #FAFAFB;",

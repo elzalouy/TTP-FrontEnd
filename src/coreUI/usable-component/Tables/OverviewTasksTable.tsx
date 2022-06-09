@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -7,6 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { makeStyles } from "@material-ui/styles";
+
 import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
 import { Project, Task } from "../../../redux/Projects";
@@ -17,7 +20,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import Status from "../Typos/Status";
 interface OverviewTasksTableProps {
-  tasks: Task[] | null;
+  tasks?: Task[] | null;
   projects: Project[];
   selects: any[];
   setAllSelected: (value: any) => any;
@@ -53,64 +56,97 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
       setAllSelected(selected);
     }
   };
+  const css = Style();
   return (
-    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
-      <Table style={{ width: MD ? "150%" : "100%", borderRadius: 3 }}>
-        <TableHead>
-          <TableRow sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2 }}>
-            <TableCell style={cssHeadTableCell}>Status</TableCell>
-            <TableCell style={cssHeadTableCell}>Task Name</TableCell>
-            <TableCell style={cssHeadTableCell}>Project Name</TableCell>
-            <TableCell style={cssHeadTableCell}>Deadline</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tasks &&
-            tasks?.map((item, index) => {
-              const { _id, status, name, projectId, start, deadline } = item;
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ borderBottom: "2px solid #FAFAFB;" }}
-                  tabIndex={-1}
-                  key={_id}
-                >
-                  <TableCell align="left" style={cssCell}>
-                    <Status status={status} />
-                  </TableCell>
-                  <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
-                    style={cssCell}
-                  >
-                    {name}
-                  </TableCell>
-                  <TableCell style={cssCell} align="left">
-                    {
-                      projects.find((project) => project._id === projectId)
-                        ?.name
-                    }
-                  </TableCell>
-                  <TableCell style={cssCell} align="left">
-                    {deadline === null || deadline === ""
-                      ? "-"
-                      : moment(deadline).format("MMMM Do, YYYY")}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper className={css.Paper}>
+      <TableContainer
+        sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
+        className={css.tableContainer}
+      >
+        <Table stickyHeader={true} style={{ borderRadius: 3 }}>
+          <TableHead style={{ position: "relative", top: 0, zIndex: 1 }}>
+            <TableRow
+              sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2 }}
+            >
+              <TableCell style={cssHeadTableCell}>Status</TableCell>
+              <TableCell style={cssHeadTableCell}>Task Name</TableCell>
+              <TableCell style={cssHeadTableCell}>Project Name</TableCell>
+              <TableCell style={cssHeadTableCell}>Deadline</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tasks &&
+              tasks?.map((item, index) => {
+                const { _id, status, name, projectId, start, deadline } = item;
+                return (
+                  <>
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      sx={{ borderBottom: "2px solid #FAFAFB;" }}
+                      tabIndex={-1}
+                      key={index}
+                    >
+                      <TableCell align="left" className={css.Cell}>
+                        <Status status={status} />
+                      </TableCell>
+                      <TableCell
+                        onClick={() => history.push(`/TasksBoard/${projectId}`)}
+                        className={css.Cell}
+                      >
+                        {name}
+                      </TableCell>
+                      <TableCell className={css.Cell} align="left">
+                        {
+                          projects.find((project) => project._id === projectId)
+                            ?.name
+                        }
+                      </TableCell>
+                      <TableCell className={css.Cell} align="left">
+                        {deadline === null || deadline === ""
+                          ? "-"
+                          : moment(deadline).format("MMMM Do, YYYY")}
+                      </TableCell>
+                    </TableRow>
+                  </>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 
 export default OverviewTasksTable;
-const cssCell: any = {
-  color: "#334D6E",
-  margin: "0px",
-  padding: "20px",
-  textTransform: "capitalize",
-  width: "130px",
-  align: "left",
-};
+const Style = makeStyles((theme: any) => ({
+  Paper: {
+    overFlow: "hidden",
+  },
+  Cell: {
+    color: "#334D6E",
+    margin: "0px",
+    padding: "20px",
+    textTransform: "capitalize",
+    width: "130px",
+    align: "left",
+  },
+  tableContainer: {
+    maxHeight: "300px",
+    overflow: "scroll",
+    padding: 0,
+    "&::-webkit-scrollbar": {
+      display: "block !important",
+      width: "3px !important",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ECECEC !important",
+      borderRadius: 5,
+    },
+    "&::-webkit-scrollbar-button": {
+      color: "#9FA1AB !important",
+      width: "3px !important",
+      borderRadius: 5,
+    },
+  },
+}));

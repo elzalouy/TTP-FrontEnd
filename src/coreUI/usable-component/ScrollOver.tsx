@@ -1,7 +1,7 @@
 import { Box, Popover, Stack } from "@mui/material";
 import * as React from "react";
 
-interface PopoverComponentProps {
+interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
 }
@@ -17,7 +17,7 @@ const popoverStyles = {
   boxShadow: "0px 5px 15px 5px #FAFAFB;",
 };
 
-const PopoverComponent: React.FC<PopoverComponentProps> = (props) => {
+const ScrollOver: React.FC<ScrollOverProps> = (props) => {
   return (
     <>
       {props.popover ? (
@@ -29,4 +29,4 @@ const PopoverComponent: React.FC<PopoverComponentProps> = (props) => {
   );
 };
 
-export default PopoverComponent;
+export default ScrollOver;

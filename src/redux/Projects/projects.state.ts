@@ -22,6 +22,9 @@ export interface Task {
   boardId?: string;
   file?: any;
   description: string;
+  lastMove?: string;
+  lastMoveDate?: string;
+  createdAt?: string;
 }
 export interface Project {
   _id: string;

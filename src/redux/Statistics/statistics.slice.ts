@@ -3,8 +3,9 @@ import _ from "lodash";
 import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import { Project, Task } from "../Projects";
 import {
-  getStartEndDayOfWeek,
   isCloseToDeadline,
+  setTasksBoardToArrays,
+  setTasksToArrays,
 } from "../../helpers/equations";
 import { User } from "../Auth";
 const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
@@ -24,22 +25,25 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           state.OM.projectsCloseToDeadlines = projects.filter(
             (item) =>
               item.projectDeadline &&
-              isCloseToDeadline(new Date(item.projectDeadline))
+              isCloseToDeadline(item.projectDeadline, item.startDate, 35)
           );
         }
         if (tasks && tasks.length > 0) {
-          state.OM.Taskboard = tasks.filter(
-            (item) => item.status === "inProgress"
-          );
-          state.OM.Review = tasks.filter((item) => item.status === "Review");
-          state.OM.Shared = tasks.filter((item) => item.status === "Shared");
-          state.OM.TasksCloseToDeadline = tasks.filter(
+          let inprogress = tasks.filter((item) => item.status === "inProgress");
+          let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
+          let review = tasks.filter((item) => item.status === "Review");
+          let shared = tasks.filter((item) => item.status === "Shared");
+          state.OM.taskBoardLength = taskBoard.length;
+          state.OM.reviewLength = review.length;
+          state.OM.sharedLength = shared.length;
+          state.OM.taskboard = setTasksBoardToArrays(taskBoard);
+          state.OM.review = setTasksToArrays(review);
+          state.OM.shared = setTasksToArrays(shared);
+          state.OM.tasksCloseToDeadline = tasks.filter(
             (item) =>
-              item.deadline && isCloseToDeadline(new Date(item.deadline))
+              item.deadline && isCloseToDeadline(item.deadline, item.start, 25)
           );
-          state.OM.inProgress = tasks.filter(
-            (item) => item.status === "inProgress"
-          );
+          state.OM.inProgress = inprogress;
         }
       }
       state.loading = false;
@@ -55,29 +59,32 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         projects &&
         projects?.filter((item) => item.projectManager?._id === user._id);
       state.PM.projects = userProjects;
-      console.log(userProjects);
       if (tasks && tasks.length > 0) {
         let ids = userProjects.flatMap((item: Project) => item._id);
-        console.log(ids);
-        state.PM.Review = tasks.filter(
+        let review = tasks.filter(
           (item) => ids.includes(item.projectId) && item.deadline === "Review"
         );
-        state.PM.Shared = tasks.filter(
+        let shared = tasks.filter(
           (item) => ids.includes(item.projectId) && item.deadline === "Shared"
         );
-        state.PM.inProgress = tasks.filter(
+        let inprogress = tasks.filter(
           (item) => ids.includes(item.projectId) && item.status === "inProgress"
         );
-        state.PM.TasksCloseToDeadline = tasks.filter(
+        state.PM.shared = shared;
+        state.PM.reviewLength = review.length;
+        state.PM.sharedLength = shared.length;
+        state.PM.inProgress = setTasksToArrays(inprogress);
+        state.PM.review = setTasksToArrays(review);
+        state.PM.tasksCloseToDeadline = tasks.filter(
           (item) =>
             ids.includes(item.projectId) &&
             item.deadline &&
-            isCloseToDeadline(new Date(item.deadline))
+            isCloseToDeadline(item.deadline, item.start, 25)
         );
         state.PM.projectsCloseToDeadlines = userProjects?.filter(
           (item) =>
             item?.projectDeadline &&
-            isCloseToDeadline(new Date(item?.projectDeadline))
+            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
         );
       }
       state.loading = false;

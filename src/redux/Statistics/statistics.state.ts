@@ -3,39 +3,49 @@ import { Project, Task } from "../Projects";
 export interface StatisticsInterface {
   loading: boolean;
   OM: {
-    Taskboard: Task[] | null;
+    taskboard: Task[][] | null;
+    taskBoardLength: number;
+    review: Task[][] | null;
+    reviewLength: number;
+    shared: Task[][] | null;
+    sharedLength: number;
     inProgress: Task[] | null;
-    Review: Task[] | null;
-    Shared: Task[] | null;
+    tasksCloseToDeadline: Task[] | null;
     projectsCloseToDeadlines: Project[] | null;
-    TasksCloseToDeadline: Task[] | null;
   };
   PM: {
-    projects: Project[] | null;
-    inProgress: Task[] | null;
-    Shared: Task[] | null;
-    Review: Task[] | null;
-    TasksCloseToDeadline: Task[] | null;
+    inProgress: Task[][] | null;
+    review: Task[][] | null;
+    reviewLength: number;
+    sharedLength: number;
+    shared: Task[] | null;
+    tasksCloseToDeadline: Task[] | null;
     projectsCloseToDeadlines: Project[] | null;
+    projects: Project[] | null;
   };
 }
 
 const StatisticsState: StatisticsInterface = {
   loading: true,
   OM: {
-    Taskboard: null,
+    taskboard: null,
+    taskBoardLength: 0,
     inProgress: null,
-    Review: null,
-    Shared: null,
+    review: null,
+    reviewLength: 0,
+    shared: null,
+    sharedLength: 0,
     projectsCloseToDeadlines: null,
-    TasksCloseToDeadline: null,
+    tasksCloseToDeadline: null,
   },
   PM: {
     projects: null,
     inProgress: null,
-    Shared: null,
-    Review: null,
-    TasksCloseToDeadline: null,
+    sharedLength: 0,
+    shared: null,
+    review: null,
+    reviewLength: 0,
+    tasksCloseToDeadline: null,
     projectsCloseToDeadlines: null,
   },
 };
