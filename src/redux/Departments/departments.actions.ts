@@ -33,6 +33,9 @@ export const createDepartment = createAsyncThunk<any, any, any>(
     try {
       let department = await DepartmentsApi.createDepartment(args.data);
       if (department.ok && department.data) {
+        args.setNames([]);
+        args.setData("");
+        args.setShow("none");
         args.dispatch(fireCreateDepartmentHook(""));
         toast.success("Department created successfully", {
           position: "top-right",

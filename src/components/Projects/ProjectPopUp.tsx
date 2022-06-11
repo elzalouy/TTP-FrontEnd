@@ -35,6 +35,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
   const [currentStep, setcurrentStep] = useState(0);
+
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 12,
@@ -59,6 +60,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       opacity: 0.3,
     },
   }));
+
   const QontoStepIconRoot = styled("div")<{
     ownerState: { active?: boolean; completed?: boolean };
   }>(({ theme, ownerState }) => ({
@@ -88,6 +90,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       backgroundColor: ownerState.active ? "#00ACBA" : "",
     },
   }));
+
   function QontoStepIcon(props: StepIconProps) {
     const { active, completed, className } = props;
     return (
@@ -103,6 +106,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </QontoStepIconRoot>
     );
   }
+
   const onClose = () => {
     if (currentStep === 1) {
       dispatch(UiActions.fireNewProjectHook(""));
@@ -110,9 +114,15 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
     setcurrentStep(0);
     setShow("none");
   };
+
   return (
     <PopUp show={createProjectPopup}>
-      <Grid container position="relative" direction="column" className="projectFormHeader">
+      <Grid
+        container
+        position="relative"
+        direction="column"
+        className="projectFormHeader"
+      >
         <Grid
           item
           xs={12}
@@ -143,14 +153,14 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
             ))}
           </Stepper>
         </Grid>
-          <img
-            className="closeIconProject"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
-            onClick={onClose}
-          />
+        <img
+          className="closeIconProject"
+          width="9"
+          height="9"
+          src={IMAGES.closeicon}
+          alt="closeIcon"
+          onClick={onClose}
+        />
       </Grid>
       {currentStep === 0 && (
         <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />

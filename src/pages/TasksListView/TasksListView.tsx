@@ -145,9 +145,9 @@ const Tasks: React.FC<Props> = (props: any) => {
                   options={[
                     { id: "", value: "", text: "All" },
                     {
-                      id: "not started",
-                      value: "Not Started",
-                      text: "Not Started",
+                      id: "Tasks Board",
+                      value: "Tasks Board",
+                      text: "Tasks Board",
                     },
                     { id: "not clear", value: "Not Clear", text: "Not Clear" },
                     {

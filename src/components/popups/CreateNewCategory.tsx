@@ -96,6 +96,7 @@ const CreateNewCategory: React.FC<Props> = () => {
     try {
       await dispatch(createCategory({data:body,dispatch}));
       setShow("none");
+      setMainCategory("");
       setSubCategory("");
       setsubCategories([]);
     } catch (error: any) {

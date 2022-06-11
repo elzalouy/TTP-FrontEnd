@@ -157,7 +157,7 @@ const EditTask: React.FC<Props> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status: data?.deadline ? "inProgress" : "Not Started",
+      status: data?.deadline ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,

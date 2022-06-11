@@ -6,5 +6,4 @@ export const selectAllDepartments = (state: RootState) =>
 export const selectedDepart = (state: RootState) =>
   state?.departments?.selectedDepart;
 
-
 export const selectDepartmentLoading = (state:RootState) => state?.departments?.loading;

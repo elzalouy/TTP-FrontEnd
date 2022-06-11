@@ -29,8 +29,6 @@ const CategoriesSlice: Slice<CategoriesInterface> = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAllCategories.pending, (state) => {
       state.loading = true;
-      state.categories = [];
-      state.chosenCategories = [];
     });
     builder.addCase(getAllCategories.rejected, (state) => {
       state.loading = false;

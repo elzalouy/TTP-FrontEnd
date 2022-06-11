@@ -11,12 +11,14 @@ import {
   updateDepartment,
   getAllDepartments,
   selectDepartmentLoading,
+  departmentsActions,
 } from "../../redux/Departments";
 import { error } from "console";
 import { useForm, Controller } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import departments from "../../services/endpoints/departments";
 import { CircularProgress } from "@mui/material";
+import { deleteTeam } from "../../redux/techMember";
 
 type Props = {
   Show: string;
@@ -46,6 +48,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
   const splitData = Data.split(",");
   let teamsData = useAppSelector(selectAllMembers);
   const { register, control } = useForm();
+
   const [formData, setFormData] = useState<{
     name: string;
     color: string;
@@ -105,7 +108,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       setData("");
     }
   };
-
+  
   const handleRemoveTeam = (index: number) => {
     // add the listId I want to remove in trello
     let targetTeam = teams.find((team: any) => team.name === Names[index]);
@@ -146,8 +149,23 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         addTeam: addTeam,
         removeTeam: removeTeam,
       };
-      console.log(depData);
       dispatch(updateDepartment({ data: depData, dispatch }));
+
+      //Making changes for teams removed throughout the app by mocking the delete logic
+      let newTeamsData = selectedDepartment.teamsId.filter((team) =>
+        removeTeam.some((item) => team.idInTrello === item)
+      );
+      newTeamsData.map((team) => {
+        dispatch(
+          deleteTeam({
+            data: { id: team?._id, isDeleted: "true" },
+            dispatch,
+          })
+        );
+        dispatch(departmentsActions.updateDepartmentTeams(team?._id));
+      });
+
+      //Handling reset logic
       handleSetShow("none");
       setFormData({
         name: "",
@@ -252,7 +270,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                     ? teamsData?.techMembers?.map((team: any) => {
                         return {
                           id: team._id,
-                          value: `${team._id},${team.name},${team.idInTrello}`,
+                          value: `${team._id},${team.name},${team.listId}`,
                           text: team.name,
                         };
                       })
