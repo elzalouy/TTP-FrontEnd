@@ -195,7 +195,7 @@ const EditTask: React.FC<Props> = (props) => {
         "projectId",
         selectedProject?.project?._id ? selectedProject?.project?._id : ""
       );
-      task.append("status", data.deadline ? "inProgress" : "Not Started");
+      task.append("status", data.deadline ? "inProgress" : "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
