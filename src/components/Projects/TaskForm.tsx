@@ -13,94 +13,24 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import "./projectForm.css";
-import {
-  categoriesActions,
-  Category,
-  selectAllCategories,
-  selectSelectedCategory,
-} from "../../redux/Categories";
+import { Category, selectAllCategories } from "../../redux/Categories";
 import { Department, selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
   createProjectTask,
-  ProjectsActions,
   selectLoading,
   selectNewProject,
-  selectSelectedDepartment,
 } from "../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import { UiActions } from "../../redux/Ui";
 import IMAGES from "../../assets/img";
 import { valdiateCreateTask } from "../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
-import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
+import { selectUi } from "../../redux/Ui/UI.selectors";
 import { generateID } from "../../helpers/IdGenerator";
-// import {createProjectPopup} from '../../'
 
 interface TaskFormProps {}
-
-//SX Styles Objects
-
-const taskFormFilesStyles = {
-  cursor: "pointer",
-  height: "35px",
-  textAlign: "center",
-  alignContent: "center",
-  paddingTop: 1,
-};
-
-const taskFormNameStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const taskFormDescStyles = {
-  paddingTop: 1,
-  width: "100%",
-  "& .MuiOutlinedInput-input": {
-    borderRadius: "6px",
-    background: "white !important",
-  },
-};
-
-const taskFormDeadlineStyles = {
-  width: "100%",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const taskFormFileAddStyles = {
-  backgroundColor: "#00ACBA",
-  width: "40px",
-  height: "32px",
-  borderRadius: "5px",
-  ":hover": {
-    backgroundColor: "#00ACBA",
-  },
-  "& .MuiButton-root": {
-    ":hover": {
-      backgroundColor: "#00ACBA",
-      color: "white",
-    },
-  },
-};
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -140,8 +70,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
-  // console.log(newProject.project._id);
-
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -149,7 +77,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: newProject?.project?._id,
-      status: "Tasks Board",
+      status: data?.teamId ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
@@ -214,6 +142,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       task.append("description", data?.description);
       dispatch(createProjectTask(newTask));
       reset();
+      setFiles([]);
       setSelectedDepartment(undefined);
       setSelectCategory(undefined);
     }
@@ -549,3 +478,63 @@ const TaskForm: React.FC<TaskFormProps> = () => {
 };
 
 export default TaskForm;
+//SX Styles Objects
+
+const taskFormFilesStyles = {
+  cursor: "pointer",
+  height: "35px",
+  textAlign: "center",
+  alignContent: "center",
+  paddingTop: 1,
+};
+
+const taskFormNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const taskFormDescStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+};
+
+const taskFormDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const taskFormFileAddStyles = {
+  backgroundColor: "#00ACBA",
+  width: "40px",
+  height: "32px",
+  borderRadius: "5px",
+  ":hover": {
+    backgroundColor: "#00ACBA",
+  },
+  "& .MuiButton-root": {
+    ":hover": {
+      backgroundColor: "#00ACBA",
+      color: "white",
+    },
+  },
+};

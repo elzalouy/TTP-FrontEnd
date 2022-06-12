@@ -89,7 +89,6 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
       }
       return rejectWithValue(result.data);
     } catch (error: any) {
-      console.log(new Error(error).message);
       return rejectWithValue(error);
     }
   }
@@ -539,7 +538,7 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-      console.log(response);
+
       if (response.ok) {
         window.open(response.data?.url);
         return response.data;

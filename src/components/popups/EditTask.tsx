@@ -41,7 +41,7 @@ import {
   validateEditTask,
   validateTaskFilesSchema,
 } from "../../helpers/validation";
-import Joi from "joi";
+import Joi, { string } from "joi";
 import moment from "moment";
 import { selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
@@ -52,48 +52,18 @@ type Props = {
   show: string;
   setShow: (val: string) => void;
 };
-
-//SX Styles Objects
-
-const editTaskDescStyles = {
-  paddingTop: 1,
-  width: "100%",
-  "& .MuiOutlinedInput-input": {
-    borderRadius: "6px",
-    background: "white !important",
-  },
-}
-
-const editTaskDeadlineStyles = {
-  width: "100%",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-}
-
-const editTaskNameStyles= {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-}
-
 const EditTask: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>([]);
+  const [oldFiles, setOldFiles] = React.useState<
+    {
+      name: string;
+      mimeType: string;
+      trelloId: string;
+      url: string;
+    }[]
+  >([]);
   const [error, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
     value: any;
@@ -129,6 +99,7 @@ const EditTask: React.FC<Props> = (props) => {
         categories.find((item) => item._id === task?.categoryId)
       );
       setSelectedDepartment(dep);
+      setOldFiles(task.attachedFiles);
     }
   }, [id]);
 
@@ -157,13 +128,13 @@ const EditTask: React.FC<Props> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status: data?.deadline ? "inProgress" : "Tasks Board",
+      status: data?.teamId ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: [],
+      attachedFiles: oldFiles,
       listId: data?.teamId
         ? selectedDepartment?.teamsId?.find(
             (item: any) => item._id === data.teamId
@@ -195,37 +166,29 @@ const EditTask: React.FC<Props> = (props) => {
         "projectId",
         selectedProject?.project?._id ? selectedProject?.project?._id : ""
       );
-      task.append("status", data.deadline ? "inProgress" : "Tasks Board");
+      task.append("status", data.teamId ? "inProgress" : "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
         data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
       );
-      let files: Array<any> = Array.from(Files);
-      let result = validateTaskFilesSchema(files);
-      if (result.error === null) {
-        if (Files) {
-          for (let i = 0; i < files.length; i++) {
-            task.append("attachedFiles", files[i]);
-          }
-        }
-        task.append(
-          "listId",
-          data?.teamId
-            ? selectedDepartment?.teamsId?.find(
-                (item: any) => item._id === data.teamId
-              )?.listId
-            : selectedDepartment?.defaultListId
-        );
-        task.append(
-          "boardId",
-          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
-        );
-        task.append("description", data?.description);
-        dispatch(
-          editTaskFromBoard({ data: newTask, dispatch, setShow: props.setShow })
-        );
-      } else toast.error(result.error);
+      task.append(
+        "listId",
+        data?.teamId
+          ? selectedDepartment?.teamsId?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : selectedDepartment?.defaultListId
+      );
+      task.append(
+        "boardId",
+        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+      );
+      task.append("attachedFiles", JSON.stringify(oldFiles));
+      task.append("description", data?.description);
+      dispatch(
+        editTaskFromBoard({ data: newTask, dispatch, setShow: props.setShow })
+      );
     }
   };
 
@@ -242,7 +205,7 @@ const EditTask: React.FC<Props> = (props) => {
       setFiles(items);
     }
   };
-  const onRemoveFile = (item: File | null) => {
+  const onRemoveFile = (item: any) => {
     let newFiles = Files;
     newFiles = newFiles?.filter((file) => file !== item);
     setFiles(newFiles);
@@ -458,15 +421,13 @@ const EditTask: React.FC<Props> = (props) => {
                       selectValue={props.field.value}
                       options={
                         selectedCategory?.subCategoriesId
-                          ? selectedCategory?.subCategoriesId?.map(
-                              (item) => {
-                                return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.subCategory,
-                                };
-                              }
-                            )
+                          ? selectedCategory?.subCategoriesId?.map((item) => {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.subCategory,
+                              };
+                            })
                           : []
                       }
                     />
@@ -514,11 +475,8 @@ const EditTask: React.FC<Props> = (props) => {
               </div>
             </div>
             {/* <Box
-              marginX={1}
-              marginY={3}
+              marginTop={1}
               alignItems="center"
-              width={"100%"}
-              overflow="scroll"
               display={"inline-flex"}
               className="files"
             >
@@ -530,55 +488,37 @@ const EditTask: React.FC<Props> = (props) => {
                 style={{ display: "none" }}
                 multiple
               />
-              <ButtonBase
-                onClick={onChangeFiles}
-                sx={{
-                  backgroundColor: "#00ACBA",
-                  width: "46px !important",
-                  height: "32px",
-                  borderRadius: "5px",
-                  ":hover": {
-                    backgroundColor: "#00ACBA",
-                  },
-                  "& .MuiButton-root": {
-                    width: "46px !important",
-                    ":hover": {
-                      backgroundColor: "#00ACBA",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
+              <Button onClick={onChangeFiles} sx={taskFormFileAddStyles}>
                 <img src={IMAGES.fileicon} alt="Upload" />
-              </ButtonBase>
+                <span
+                  style={{
+                    color: "white",
+                    fontSize: "12px",
+                    marginLeft: "5px",
+                  }}
+                >
+                  {Files && Files.length > 0 ? Files?.length : ""}
+                </span>
+              </Button>
               {Files &&
                 Files.length > 0 &&
                 Files?.map((item, index) => (
-                  <Box
+                  <Typography
                     key={index}
-                    marginLeft={1}
+                    marginX={0.5}
                     bgcolor={"#F1F1F5"}
                     padding={0.5}
                     borderRadius={1}
-                    display={"inline-flex"}
                     color="#92929D"
-                    sx={{
-                      cursor: "pointer",
-                      height: "32px",
-                      textAlign: "center",
-                      alignContent: "center",
-                      justifySelf: "center",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+                    sx={taskFormFilesStyles}
                     onClick={() => onRemoveFile(item)}
                   >
-                    <Typography>{item?.name}</Typography>
+                    {item?.name}
                     <CloseIcon
                       sx={{ fontSize: "14px", marginLeft: 0.5 }}
                       htmlColor="#92929D"
                     />
-                  </Box>
+                  </Typography>
                 ))}
             </Box> */}
             <div>
@@ -608,3 +548,63 @@ const EditTask: React.FC<Props> = (props) => {
 };
 
 export default EditTask;
+
+//SX Styles Objects
+
+const taskFormFilesStyles = {
+  cursor: "pointer",
+  height: "35px",
+  textAlign: "center",
+  alignContent: "center",
+  paddingTop: 1,
+};
+const editTaskDescStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+};
+
+const editTaskDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const editTaskNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const taskFormFileAddStyles = {
+  backgroundColor: "#00ACBA",
+  width: "40px",
+  height: "32px",
+  borderRadius: "5px",
+  ":hover": {
+    backgroundColor: "#00ACBA",
+  },
+  "& .MuiButton-root": {
+    ":hover": {
+      backgroundColor: "#00ACBA",
+      color: "white",
+    },
+  },
+};

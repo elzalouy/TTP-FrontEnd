@@ -161,7 +161,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status: "Tasks Board",
+      status: data?.teamId ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
       deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
       deliveryDate: null,
@@ -199,7 +199,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
         "projectId",
         selectedProject?.project?._id ? selectedProject?.project?._id : ""
       );
-      task.append("status", "Tasks Board");
+      task.append("status", data?.teamId ? "inProgress" : "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
@@ -482,15 +482,13 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       selectValue={props.field.value}
                       options={
                         selectedCategory?.subCategoriesId
-                          ? selectedCategory?.subCategoriesId?.map(
-                              (item) => {
-                                return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.subCategory,
-                                };
-                              }
-                            )
+                          ? selectedCategory?.subCategoriesId?.map((item) => {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.subCategory,
+                              };
+                            })
                           : []
                       }
                     />

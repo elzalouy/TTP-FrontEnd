@@ -80,7 +80,7 @@ const createTaskSchema = Joi.object({
     "string.min": "Team should be selected",
     "any.required": "Team is required",
   }),
-  status: Joi.string().required().messages({
+  status: Joi.string().allow("inProgress", "Tasks Board").required().messages({
     "string.base": "Status is required",
     "string.empty": "Status should be string with min 4 chars",
     "string.min": "Status length should be Min 4 chars",
@@ -139,7 +139,6 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
         error: `The file ${item.name} has exceeded the max size 10 MB`,
         value: files,
       };
-      console.log(response);
       break;
     }
     totalSizeInBytes += item.size;
@@ -148,7 +147,6 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
         error: "Files has exceeded the max size 20 MB",
         value: files,
       };
-      console.log(response);
       break;
     }
   }

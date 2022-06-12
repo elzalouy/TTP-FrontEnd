@@ -155,11 +155,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let data = watch();
 
     if (updateDate) {
-      console.log(data);
       if (data.startDate === null || data.deadline === null) {
         data.status = "Not Started";
-      }else{
-        data.status = "inProgress"
+      } else {
+        data.status = "inProgress";
       }
       executeEditProject(data);
       return;

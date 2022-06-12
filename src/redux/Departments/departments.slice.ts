@@ -60,7 +60,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
         let dep = state.departments.findIndex(
           (item) => item._id === payload._id
         );
-        if (dep) state.departments[dep] = payload;
+        if (dep >= 0) state.departments[dep] = payload;
         else state.departments.push(payload);
       }
     },

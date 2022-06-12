@@ -108,7 +108,7 @@ const AppHooks: React.FC = (props) => {
     if (deleteProjectHook !== undefined) {
       console.log("delete project hook fired.");
       dispatch(getAllProjects(null));
-      // dispatch(getAllClients(null));
+      dispatch(getAllClients(null));
     }
   }, [deleteProjectHook]);
 
@@ -164,7 +164,6 @@ const AppHooks: React.FC = (props) => {
   // move task from trello with websocket connection
   React.useEffect(() => {
     if (moveTaskData !== null) {
-      console.log("entered condition");
       dispatch(ProjectsActions.moveTaskInTrello(moveTaskData));
       setMoveTaskData(null);
     }
@@ -207,5 +206,4 @@ const AppHooks: React.FC = (props) => {
 
   return <>{props.children}</>;
 };
-
 export default AppHooks;

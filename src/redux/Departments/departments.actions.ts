@@ -73,7 +73,6 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let department = await DepartmentsApi.updateDepartment(args.data);
-      console.log(args.data);
       if (department.ok && department.data) {
         args.dispatch(fireUpdateDepartmentHook(""));
         toast.success("Department updated successfully", {

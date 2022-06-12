@@ -18,7 +18,6 @@ export const isCloseToDeadline = (
         deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
           startDate.getTime() / (1000 * 60 * 60 * 24)
       );
-      console.log(totalDays, remained, remained / totalDays);
       if (remained <= 0) return false;
       else if (remained > 0 && (remained / totalDays) * 100 > percent)
         return false;
@@ -92,6 +91,5 @@ export const setTasksBoardToArrays = (tasks: Task[]) => {
       });
     }
   });
-  console.log(sortedTasks);
   return sortedTasks;
 };

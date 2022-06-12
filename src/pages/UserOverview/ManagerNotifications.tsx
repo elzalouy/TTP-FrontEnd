@@ -81,7 +81,6 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                 ? statistics.OM.review
                 : statistics.OM.shared;
             let flattenTasks: Task[] = _.flattenDeep(tasks);
-            console.log(flattenTasks, tasks);
             return (
               <Box
                 key={index}
@@ -106,6 +105,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                       month = "",
                       currentDay = "";
                     if (
+                      TArray?.length > 0 &&
                       TArray[0].status !== "Tasks Board" &&
                       TArray &&
                       TArray[0]?.lastMoveDate
@@ -116,6 +116,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                       year = date?.getFullYear().toString();
                     }
                     if (
+                      TArray?.length > 0 &&
                       TArray[0].status === "Tasks Board" &&
                       TArray[0]?.createdAt
                     ) {
@@ -135,7 +136,11 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                     }
                     return (
                       <>
-                        <Box sx={{ display: "inline-flex" }} marginTop={2}>
+                        <Box
+                          key={index}
+                          sx={{ display: "inline-flex" }}
+                          marginTop={2}
+                        >
                           <Typography sx={cssDay}>{currentDay}</Typography>
                           <Typography
                             sx={cssDate}

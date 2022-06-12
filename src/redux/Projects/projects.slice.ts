@@ -181,7 +181,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       if (action.payload) state.newProject.tasks.push(action.payload);
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {
@@ -291,7 +290,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       // state.loading = true;
     });
     builder.addCase(deleteTask.fulfilled, (state, action) => {
-      console.log(action.payload);
       let tasks = [...state.newProject.tasks];
       tasks = tasks.filter((item) => item._id !== action.payload?._id);
       state.newProject.tasks = tasks;
