@@ -71,6 +71,7 @@ const TaskCard: React.FC<DataTypes> = ({
       setTaskFiles(others);
     }
   }, [item]);
+  
   useEffect(() => {
     if (status !== "Not Started") {
       if (deadline === null || deadline === "") {
@@ -295,7 +296,7 @@ const TaskCard: React.FC<DataTypes> = ({
                       {status !== "Not Started" && (
                         <img
                           src={
-                            typeof remainingDays === "string"
+                            (typeof remainingDays === "string" || remainingDays <= 2)
                               ? IMAGES.scheduleRed
                               : remainingDays > 2 && remainingDays <= 5
                               ? IMAGES.scheduleOrange

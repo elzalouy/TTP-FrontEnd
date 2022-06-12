@@ -1,4 +1,11 @@
-import { Button, Grid , Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Ttp from "../../assets/img/ttp_logo.png";
 import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -6,7 +13,12 @@ import { Redirect, RouteComponentProps } from "react-router";
 import IMAGES from "../../assets/img";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { forgotPassword, selectAuth, selectIsAuth, selectResponse } from "../../redux/Auth";
+import {
+  forgotPassword,
+  selectAuth,
+  selectIsAuth,
+  selectResponse,
+} from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { toast } from "react-toastify";
 
@@ -43,14 +55,14 @@ const Forget: React.FC<Props> = ({ history }) => {
   const res = useAppSelector(selectResponse);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  
+
   useEffect(() => {
     if (res.msg === "" && res.status === "") {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
       toast.clearWaitingQueue();
       setVisible(false);
-      if(res.page==="forgetPassword"){
+      if (res.page === "forgetPassword") {
         setFailed({
           message: res.msg,
           status: res.status,
@@ -69,14 +81,14 @@ const Forget: React.FC<Props> = ({ history }) => {
     );
   };
 
-  if(isAuth){
-    return <Redirect to={"/Overview"}/>
+  if (isAuth) {
+    return <Redirect to={"/Overview"} />;
   }
 
   return (
     <Grid
       container
-      height={SM ? "100vh":"90vh"}
+      height={SM ? "100vh" : "90vh"}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
@@ -86,15 +98,19 @@ const Forget: React.FC<Props> = ({ history }) => {
         item
         xs={11}
         sm={11}
-        md={8}
-        lg={8}
+        md={6}
+        lg={6}
         height={550}
-        justifyContent={SM? "flex-start" : "center"}
+        justifyContent={SM ? "flex-start" : "center"}
         container
         direction="row"
-        sx={SM ? {boxShadow:"none"} :{
-          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-        }}
+        sx={
+          SM
+            ? { boxShadow: "none" }
+            : {
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }
+        }
       >
         <Grid
           item
@@ -172,6 +188,27 @@ const Forget: React.FC<Props> = ({ history }) => {
               >
                 Send
               </Button>
+              <Link
+                sx={{ textDecoration: "none", cursor: "pointer" }}
+                onClick={() => history.push("/login")}
+              >
+                <Typography
+                  textAlign={"center"}
+                  variant={"h5"}
+                  sx={{
+                    fontWeight: "900",
+                    ":hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  paddingTop={3.5}
+                  fontFamily={"Cairo"}
+                  color="black"
+                  className="bold"
+                >
+                  Go Back To Login
+                </Typography>
+              </Link>
             </>
           )}
         </Grid>
@@ -186,7 +223,12 @@ const Forget: React.FC<Props> = ({ history }) => {
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={IMAGES.forgotDesktop} className="Image" alt="" style={{ width: "60%" }} />
+          <img
+            src={IMAGES.forgotDesktop}
+            className="Image"
+            alt=""
+            style={{ width: "60%" }}
+          />
         </Grid>
       </Grid>
     </Grid>

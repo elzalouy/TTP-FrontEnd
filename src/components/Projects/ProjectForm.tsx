@@ -39,7 +39,6 @@ interface ProjectFormProps {
 }
 
 //SX Styles Objects
-
 const projectFormNameStyles = {
   width: "100%",
   marginTop: 1,

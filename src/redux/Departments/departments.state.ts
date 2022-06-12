@@ -17,6 +17,7 @@ export interface Department {
     departmentId: string;
     listId: string;
     isDeleted?: boolean;
+    idInTrello?:string;
   }[];
   totalInProgress: number;
   totalDone: number;

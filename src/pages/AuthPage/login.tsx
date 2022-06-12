@@ -246,7 +246,9 @@ const Login: React.FC<Props> = ({ history }) => {
             )}
           </Button>
           <Link
-            sx={{ textDecoration: "none", cursor: "pointer" }}
+            sx={{ textDecoration: "none", cursor: "pointer" , ":hover" : {
+              textDecoration : "underline"
+            }}}
             onClick={() => history.push("/ForgetPassword")}
           >
             <Typography

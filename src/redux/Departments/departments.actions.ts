@@ -36,6 +36,9 @@ export const createDepartment = createAsyncThunk<any, any, any>(
         args.data
       );
       if (department.ok && department.data) {
+        args.setNames([]);
+        args.setData("");
+        args.setShow("none");
         args.dispatch(fireCreateDepartmentHook(""));
         toast.success("Department created successfully", {
           position: "top-right",

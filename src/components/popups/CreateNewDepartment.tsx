@@ -101,7 +101,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const handleSubmit = async () => {
     let checkMatch = department.find((dep: any) => dep.name === formData.name);
     if (!checkMatch) {
-      dispatch(createDepartment({ data: formData, dispatch }));
+      dispatch(createDepartment({ data: formData, dispatch,setNames,setData,setShow }));
       setFormData({
         name: "",
         color: "",
@@ -110,9 +110,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
         totalInProgress: 0,
         totalDone: 0,
       });
-      setNames([]);
-      setData("");
-      setShow("none");
     } else {
       toast.error("Department name already exist", {
         position: "top-right",

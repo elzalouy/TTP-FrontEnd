@@ -229,7 +229,7 @@ const DragField: React.FC = (props: any) => {
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
       <Box
-        sx={{ minWidth: 1200, overflowX: "scroll", height: "100%" }}
+        sx={{ minWidth: 1200, overflowX: "scroll", height: "auto" }}
         display="inline-flex"
       >
         {Object.entries(columns).map(([columnId, column], index) => {
@@ -259,6 +259,7 @@ const DragField: React.FC = (props: any) => {
                         <img src={IMAGES.taskFilter} alt="more" />
                       </Typography> */}
                     </Stack>
+                    {column?.NewTask}
                     {column &&
                       column?.items?.map((item: Task, index) => {
                         return (
@@ -274,7 +275,6 @@ const DragField: React.FC = (props: any) => {
                           </Box>
                         );
                       })}
-                    {column?.NewTask}
                     {provided.placeholder}
                   </Grid>
                 );

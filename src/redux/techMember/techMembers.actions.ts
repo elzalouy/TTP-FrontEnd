@@ -44,7 +44,7 @@ export const createTeam = createAsyncThunk<any, any, any>(
       let team = await api.createTechMember(args.data);
       if (team.ok && team.data) {
         args.dispatch(fireNewTeamHook(""));
-        toast.success("team created successfully", {
+        toast.success("Team created successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -68,7 +68,7 @@ export const deleteTeam = createAsyncThunk<any, any, any>(
       let team = await api.updateTechMember(args.data);
       if (team.status === 200) {
         args.dispatch(fireDeleteTeamHook(""));
-        toast.success("team deleted successfully", {
+        toast.success("Team deleted successfully", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
