@@ -222,7 +222,7 @@ const cssNotiBox = {
   width: "98%",
   height: 60,
   borderRadius: "12px",
-  boxShadow: "0px 5px 15px 5px #FAFAFB;",
+  boxShadow: "15px 10px  #FAFAFB;",
   padding: 1.2,
   display: "inline-flex",
   alignItems: "center",

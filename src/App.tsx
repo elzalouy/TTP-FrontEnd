@@ -34,11 +34,7 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import {
-  getUserInfo,
-  selectIsAuth,
-  selectUser,
-} from "./redux/Auth";
+import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";

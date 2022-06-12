@@ -441,38 +441,48 @@ export const moveTask = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let newlist = "";
+      let liststr = "";
       let department: Department = args?.department;
       let value = args?.value;
       let task = args?.task;
       switch (value) {
         case "Not Clear":
           newlist = department.notClearListId;
+          liststr = "notClearListId";
           break;
         case "Tasks Board":
           newlist = department.defaultListId;
+          liststr = "defaultListId";
           break;
         case "inProgress":
           newlist = department.inProgressListId;
+          liststr = "inProgressListId";
           break;
         case "Review":
           newlist = department.reviewListId;
+          liststr = "reviewListId";
           break;
         case "Shared":
           newlist = department.sharedListID;
+          liststr = "sharedListID";
           break;
         case "Cancled":
           newlist = department.canceldListId;
+          liststr = "canceldListId";
           break;
         case "Done":
           newlist = department.doneListId;
+          liststr = "doneListId";
           break;
+
         default:
           break;
       }
-      let Data = {
+      let Data: any = {
         cardId: task.cardId,
         listId: newlist,
         status: value,
+        list: liststr,
       };
       let moveResult: ApiResponse<any> = await api.moveTask(Data);
       if (moveResult.ok) {

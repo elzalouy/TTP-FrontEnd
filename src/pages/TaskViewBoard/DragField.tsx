@@ -39,13 +39,13 @@ const DragField: React.FC = (props: any) => {
 
   const [columns, setColumns] = useState({
     [uuidv4()]: {
-      name: "Not Started",
+      name: "Tasks Board",
       items: notStartedTasks,
       header: "not-started-header",
       body: "not-started-task",
       border: "not-started-border",
       NewTask: <CreateNewTask />,
-      value: "Not Started",
+      value: "Tasks Board",
       footer: "task-card-footer-notstarted",
     },
     [uuidv4()]: {
@@ -187,7 +187,6 @@ const DragField: React.FC = (props: any) => {
       let department = departments?.find(
         (item) => item.boardId === sourceColumn.items[source.index]?.boardId
       );
-
       move({
         department: department,
         value: destColumn.value,

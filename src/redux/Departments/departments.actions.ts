@@ -9,6 +9,7 @@ import {
 import { myReducer } from "../store";
 import { removeAuthToken } from "../../services/api";
 import { logout } from "../Auth";
+import { ApiResponse } from "apisauce";
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
   async (args: any, { rejectWithValue, dispatch }) => {
@@ -31,7 +32,9 @@ export const createDepartment = createAsyncThunk<any, any, any>(
   "departments/createDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.createDepartment(args.data);
+      let department: ApiResponse<any> = await DepartmentsApi.createDepartment(
+        args.data
+      );
       if (department.ok && department.data) {
         args.dispatch(fireCreateDepartmentHook(""));
         toast.success("Department created successfully", {
@@ -45,7 +48,8 @@ export const createDepartment = createAsyncThunk<any, any, any>(
         });
         return department.data;
       }
-      throw "Department not creacted, error hapenned";
+      toast.error(department.data.message);
+      return rejectWithValue(department.data?.message);
     } catch (error: any) {
       toast.error(error, {
         position: "top-right",

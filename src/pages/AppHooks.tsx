@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { socket } from "../services/socketIo";
 import { selectIsAuth, selectUser } from "../redux/Auth";
 import { getAllClients } from "../redux/Clients";
-import { getAllDepartments } from "../redux/Departments";
+import { departmentsActions, getAllDepartments } from "../redux/Departments";
 import { useAppSelector } from "../redux/hooks";
 import {
   getAllProjects,
@@ -19,6 +19,8 @@ const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
   const [moveTaskData, setMoveTaskData] = React.useState<any>(null);
+  const [newDepartment, setNewDepartment] = React.useState<any>(null);
+  const [createDepError, setCreateDepError] = React.useState<any>(null);
   const user = useAppSelector(selectUser);
   const {
     newProjectHook,
@@ -167,7 +169,13 @@ const AppHooks: React.FC = (props) => {
       setMoveTaskData(null);
     }
   }, [moveTaskData]);
-
+  // new department
+  React.useEffect(() => {
+    console.log("new department socket fired");
+    if (newDepartment?._id) {
+      dispatch(departmentsActions.replaceDepartment(newDepartment));
+    }
+  }, [newDepartment]);
   React.useEffect(() => {
     socket.on("connect", () => {
       console.log("client is connected");
@@ -186,6 +194,10 @@ const AppHooks: React.FC = (props) => {
       socket.on("Move Task", (data) => {
         console.log("handled event");
         setMoveTaskData(data);
+      });
+      socket.on("new department error", (data) => console.log(data));
+      socket.on("new department", (data) => {
+        setNewDepartment(data);
       });
     });
     return () => {

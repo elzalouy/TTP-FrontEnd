@@ -17,21 +17,56 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
     ) => {
       state.selectedDepart = payload;
     },
-    updateDepartmentTeams: (state = initialState, { payload }: PayloadAction<any>) => {
+    updateDepartmentTeams: (
+      state = initialState,
+      { payload }: PayloadAction<any>
+    ) => {
       //This function gives real time delete effect in the UI
       state.departments = state.departments.map((dep) => {
-        let updatededTeams = dep.teamsId.map((team) => team._id === payload ? { ...team, isDeleted: true } : team);
+        let updatededTeams = dep.teamsId.map((team) =>
+          team._id === payload ? { ...team, isDeleted: true } : team
+        );
         if (payload) {
-          return { ...dep, teamsId: updatededTeams }
+          return { ...dep, teamsId: updatededTeams };
         } else {
           return dep;
         }
       });
-      state.departments.map((dep) => dep.teamsId.map((team) => team._id === payload ? { ...team, isDeleted: true } : team));
+      state.departments.map((dep) =>
+        dep.teamsId.map((team) =>
+          team._id === payload ? { ...team, isDeleted: true } : team
+        )
+      );
       if (state.selectedDepart !== null) {
-        state.selectedDepart = { ...state.selectedDepart, teamsId: state.selectedDepart.teamsId.map((team) => team._id === payload ? { ...team, isDeleted: true } : team) }
+        state.selectedDepart = {
+          ...state.selectedDepart,
+          teamsId: state.selectedDepart.teamsId.map((team) =>
+            team._id === payload ? { ...team, isDeleted: true } : team
+          ),
+        };
       }
-    }
+    },
+    replaceDepartment: (
+      state = initialState,
+      { payload }: PayloadAction<any>
+    ) => {
+      if (payload._id) {
+        let dep = state.departments.findIndex(
+          (item) => item._id === payload._id
+        );
+        state.departments[dep] = payload;
+      }
+    },
+    deleteDepartment: (
+      state = initialState,
+      { payload }: PayloadAction<any>
+    ) => {
+      if (payload.id) {
+        state.departments = state.departments.filter(
+          (item) => item._id !== payload.id
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllDepartments.rejected, (state) => {

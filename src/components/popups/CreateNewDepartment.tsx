@@ -21,20 +21,6 @@ import { CircularProgress } from "@mui/material";
 
 type Props = {};
 
-const colors: string[] = [
-  "blue",
-  "orange",
-  "green",
-  "red",
-  "purple",
-  "pink",
-  "lime",
-  "sky",
-  "grey",
-];
-
-const createNewDepLoadingStyles = { color: "white", padding: "0px",height:"25px !important",width:"25px !important" }
-
 const CreateNewDepartment: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const department = useSelector(selectAllDepartments);
@@ -136,7 +122,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
     }
   };
@@ -307,7 +293,11 @@ const CreateNewDepartment: React.FC<Props> = () => {
             Cancel
           </button>
           <button className="controllers-done" onClick={() => handleSubmit()}>
-            {depLoading ? <CircularProgress sx={createNewDepLoadingStyles} />  : "Done"}
+            {depLoading ? (
+              <CircularProgress sx={createNewDepLoadingStyles} />
+            ) : (
+              "Done"
+            )}
           </button>
         </div>
       </PopUp>
@@ -316,3 +306,21 @@ const CreateNewDepartment: React.FC<Props> = () => {
 };
 
 export default CreateNewDepartment;
+const colors: string[] = [
+  "blue",
+  "orange",
+  "green",
+  "red",
+  "purple",
+  "pink",
+  "lime",
+  "sky",
+  "grey",
+];
+
+const createNewDepLoadingStyles = {
+  color: "white",
+  padding: "0px",
+  height: "25px !important",
+  width: "25px !important",
+};

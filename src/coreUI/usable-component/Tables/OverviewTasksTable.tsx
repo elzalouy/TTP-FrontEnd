@@ -26,7 +26,7 @@ interface OverviewTasksTableProps {
   setAllSelected: (value: any) => any;
 }
 const cssHeadTableCell: any = {
-  color: "#334D6E",
+  color: "#9FA1AB",
   width: "30px",
   margin: "0px",
   padding: "12px 8px 12px 20px",
