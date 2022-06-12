@@ -19,8 +19,8 @@ type Props = {
 const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
   const id = useAppSelector(selectDeleteProjectId);
   const dispatch = useDispatch();
+  
   const onDeleteProject = async () => {
-    await dispatch(deleteProjectTasks({ data: { id: id }, dispatch }));
     await dispatch(deleteProject({ data: { id: id }, dispatch }));
     setShow("none");
   };
