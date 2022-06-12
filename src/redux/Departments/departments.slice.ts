@@ -46,6 +46,12 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
         };
       }
     },
+    /**
+     * replace Department
+     * In case of there are a response came from backend socket service ,
+     * it will recieve the new data and either add a new department or replace the existed one
+     * @param data
+     */
     replaceDepartment: (
       state = initialState,
       { payload }: PayloadAction<any>
