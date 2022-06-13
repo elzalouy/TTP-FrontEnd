@@ -176,7 +176,6 @@ const AppHooks: React.FC = (props) => {
     }
   }, [newDepartment]);
   React.useEffect(() => {
-    socket.open().timeout(2000).open();
     socket.on("connect", () => {
       console.log("client is connected");
       //todo check user auth
@@ -201,6 +200,7 @@ const AppHooks: React.FC = (props) => {
       });
     });
     return () => {
+      console.log("client disconnected");
       socket.disconnect();
     };
   }, []);

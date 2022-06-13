@@ -10,5 +10,7 @@ export let socket = io(
     upgrade: true,
     withCredentials: true,
     rememberUpgrade: true,
+    reconnection: true,
+    reconnectionDelayMax: 2000,
   }
 );
