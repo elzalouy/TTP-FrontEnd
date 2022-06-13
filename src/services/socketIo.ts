@@ -6,11 +6,12 @@ export let socket = io(
     ? apiUrl.SOCKET_DEV_URL
     : apiUrl.SOCKET_BASE_URL,
   {
-    transports: ["websocket", "polling"],
+    transports: ["polling", "websocket"],
     upgrade: true,
     withCredentials: true,
     rememberUpgrade: true,
     reconnection: true,
+    reconnectionDelay: 1000,
     reconnectionDelayMax: 2000,
   }
 );
