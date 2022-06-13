@@ -6,7 +6,7 @@ export let socket = io(
     ? apiUrl.SOCKET_DEV_URL
     : apiUrl.SOCKET_BASE_URL,
   {
-    transports: ["polling", "websocket"],
+    transports: ["websocket", "polling"],
     upgrade: true,
     withCredentials: true,
     rememberUpgrade: true,

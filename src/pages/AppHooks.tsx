@@ -177,6 +177,7 @@ const AppHooks: React.FC = (props) => {
   }, [newDepartment]);
   React.useEffect(() => {
     socket.on("connect", () => {
+      socket.open().timeout(2000).open();
       console.log("client is connected");
       //todo check user auth
       if (user?.type === "admin") {
