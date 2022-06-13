@@ -170,12 +170,13 @@ const AppHooks: React.FC = (props) => {
   }, [moveTaskData]);
   // new department
   React.useEffect(() => {
-    console.log("new department socket fired");
     if (newDepartment?._id) {
+      console.log("new department socket fired");
       dispatch(departmentsActions.replaceDepartment(newDepartment));
     }
   }, [newDepartment]);
   React.useEffect(() => {
+    socket.open().timeout(2000).open();
     socket.on("connect", () => {
       console.log("client is connected");
       //todo check user auth
