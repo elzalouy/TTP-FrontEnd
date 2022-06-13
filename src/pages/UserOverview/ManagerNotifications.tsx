@@ -20,6 +20,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
   const tabs = ["0", "1", "2"];
   const [tab, setTab] = React.useState("0");
   const [open, setOpen] = React.useState(false);
+
   const cssTab = (tabIndex: string) => {
     return {
       width: "calc(33%)",
@@ -34,6 +35,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
+
   const cssTabContent = (tabItem: string) => {
     let tasks =
       tabItem === "0"
@@ -41,7 +43,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
         : tabItem === "1"
         ? statistics.OM.review
         : statistics.OM.shared;
+
     let flat = _.flattenDeep(tasks);
+
     return {
       height: open
         ? flat && flat?.length <= 4
@@ -64,14 +68,15 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       },
     };
   };
+  
   return (
     <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
       <ScrollOver setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
-            <Tab value={"0"} label="Taskboard" sx={cssTab("0")} />
-            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
-            <Tab value={"2"} label="Shared Tasks" sx={cssTab("2")} />
+            <Tab value={"0"} label="Taskboard" sx={cssTab("0")} disableRipple={true}/>
+            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} disableRipple={true}/>
+            <Tab value={"2"} label="Shared Tasks" sx={cssTab("2")} disableRipple={true}/>
           </Tabs>
           {tabs?.map((tabItem, index) => {
             let tasks: Task[][] | null =

@@ -27,6 +27,11 @@ interface Props {
   placeholder?: string;
 }
 
+const getTextfromValue = (string: any) => {
+  let text = _.truncate(string, { length: 15, separator: " " });
+  return text;
+};
+
 const selectInputGridStyles = {
   width: "100%",
   height: 40,
@@ -52,19 +57,24 @@ const SelectInput: React.FC<Props> = ({
   );
   const [Label, setLabel] = useState(label);
   const [Value, setValue] = useState(selectText);
+
+  const open = Boolean(anchorEl);
+
   useEffect(() => {
     if (selectText && selectText.length > 15) {
       return setValue(_.truncate(selectText, { length: 15, separator: " " }));
     }
     return setValue(selectText);
   }, [selectText, selectValue]);
-  const open = Boolean(anchorEl);
+
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <Grid
       sx={selectInputGridStyles}
@@ -86,6 +96,7 @@ const SelectInput: React.FC<Props> = ({
       <Box
         minWidth={"calc(100%-28px)"}
         display={"inline-flex"}
+        flex={5}
         justifyContent="flex-start"
         alignItems={"center"}
         paddingLeft={1}
@@ -123,7 +134,7 @@ const SelectInput: React.FC<Props> = ({
             : placeholder || "All"}
         </Typography>
       </Box>
-      <Box display={"inline-flex"} maxWidth="28px" onClick={handleOpen}>
+      <Box display={"inline-flex"} maxWidth="28px">
         <Box
           height={40}
           sx={{
@@ -134,9 +145,9 @@ const SelectInput: React.FC<Props> = ({
           }}
         >
           {open ? (
-            <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
+            <ArrowDropUp htmlColor="#92929D" />
           ) : (
-            <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
+            <ArrowDownIcon htmlColor="#92929D" />
           )}
         </Box>
       </Box>
@@ -156,36 +167,60 @@ const SelectInput: React.FC<Props> = ({
           horizontal: "center",
         }}
       >
-        <Box display={"grid"} padding={1} borderRadius={"10px"}  width="100%">
-          <optgroup style={{marginTop:"-20px"}}>
-            {options &&
-              options.map((item) => (
-                <option
-                  key={item.id}
-                  className="Option"
-                  value={item.value}
-                  onClick={(e) => {
-                    handleChange(e);
-                    handleClose();
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    paddingInline: 10,
-                    width: "200px",
-                    justifyContent: "flex-start",
-                    textTransform: "none",
-                    fontFamily: "Cairo",
-                    color: "#696974",
-                    fontWeight: "700",
-                    fontSize: 13,
-                    paddingTop: 5,
-                    paddingBottom: 5,
-                    borderRadius: 0,
-                  }}
-                  label={item.text}
-                />
-              ))}
-          </optgroup>
+        <Box display={"grid"} padding={1} borderRadius={"10px"} width="100%">
+          {options &&
+            options.map((item) => {
+              return (
+                <>
+                  <label
+                    htmlFor={item.id}
+                    className="Option"
+                    style={{
+                      cursor: "pointer",
+                      paddingInline: 10,
+                      width: "200px",
+                      justifyContent: "flex-start",
+                      textTransform: "none",
+                      fontFamily: "Cairo",
+                      color: "#696974",
+                      fontWeight: "700",
+                      fontSize: 13,
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      borderRadius: 0,
+                    }}
+                  >
+                    {item.text}
+                  </label>
+                  <input
+                    name={item.id}
+                    id={item.id}
+                    key={item.id}
+                    className="Option"
+                    style={{
+                      cursor: "pointer",
+                      paddingInline: 10,
+                      width: "200px",
+                      justifyContent: "flex-start",
+                      textTransform: "none",
+                      fontFamily: "Cairo",
+                      color: "#696974",
+                      fontWeight: "700",
+                      fontSize: 13,
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      borderRadius: 0,
+                    }}
+                    onClick={(e) => {
+                      handleChange(e);
+                    }}
+                    readOnly
+                    hidden
+                    value={item?.value}
+                  />
+                </>
+              );
+            })}
         </Box>
       </Popover>
     </Grid>

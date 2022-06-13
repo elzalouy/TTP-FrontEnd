@@ -360,7 +360,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           width: "100%",
         }}
       >
-        {role !== "PM" && <CreateNewProject {...props} />}
+        <CreateNewProject {...props} />
         {loading === false ? (
           <>
             <TableBox

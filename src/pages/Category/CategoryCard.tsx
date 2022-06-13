@@ -94,10 +94,12 @@ const CategoryCard: React.FC<IProps> = ({
         >
           {mainCategory}
         </Typography>
-        <CategoryDrop
-          color={fontColor}
-          handleSetShowDelete={handleSetShowDelete}
-        />
+        {role !== "PM" && (
+          <CategoryDrop
+            color={fontColor}
+            handleSetShowDelete={handleSetShowDelete}
+          />
+        )}
       </Box>
       <Box
         sx={{

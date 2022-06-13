@@ -91,6 +91,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   });
   // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
+  const watchStartDate = watch().startDate;
+  const watchDeadline = watch().deadline;
   const loading = useAppSelector(selectLoading);
   const clients = useAppSelector(selectClientsNames);
   const user = useAppSelector(selectUser);
@@ -100,6 +102,37 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
+
+  React.useEffect(() => {
+    let today = moment().format();
+    let deadline = moment(watchDeadline).format();
+    let startDate = moment(watchStartDate).format();
+    if(moment(today).isAfter(moment(deadline))){
+      toast.warning("Deadline has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      })
+    }
+    if(moment(today).isAfter(moment(startDate))){
+      toast.warning("Start Date has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      })
+    }
+  }, [watchStartDate , watchDeadline]);
+  
 
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;

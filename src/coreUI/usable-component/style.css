@@ -19,6 +19,9 @@
 
 .Option {
   transition: all 0.9s;
+  border: none !important;
+  outline: none !important;
+  text-transform: capitalize !important;
 }
 .Option:hover {
   background-color: #f1f1f4 !important;

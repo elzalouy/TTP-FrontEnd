@@ -80,7 +80,26 @@ const EditTask: React.FC<Props> = (props) => {
 
   const { editTask: id } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, control, reset, setValue } = useForm();
+  const { register, handleSubmit, control, reset, setValue, watch } = useForm();
+
+  const watchDeadline = watch().deadline;
+
+  /* React.useEffect(() => {
+    let today = moment().format();
+    let deadline = moment(watchDeadline).format();
+    if (moment(today).isAfter(moment(deadline))) {
+      toast.warning("Deadline has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      });
+    }
+  }, [watchDeadline]); */
 
   React.useEffect(() => {
     let task = selectedProject.tasks.find((item) => item._id === id);
