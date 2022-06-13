@@ -177,7 +177,6 @@ const AppHooks: React.FC = (props) => {
   }, [newDepartment]);
   React.useEffect(() => {
     socket.on("connect", () => {
-      socket.open().timeout(2000).open();
       console.log("client is connected");
       //todo check user auth
       if (user?.type === "admin") {
@@ -198,6 +197,11 @@ const AppHooks: React.FC = (props) => {
       socket.on("new department error", (data) => console.log(data));
       socket.on("new department", (data) => {
         setNewDepartment(data);
+      });
+      socket.on("connect_failed", function () {
+        document.write(
+          "Sorry, there seems to be an issue with the connection!"
+        );
       });
     });
     return () => {
