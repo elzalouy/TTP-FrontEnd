@@ -34,7 +34,7 @@ const selectInputGridStyles = {
   borderRadius: "10px",
   overflow: "hidden",
   cursor: "pointer",
-}
+};
 
 const SelectInput: React.FC<Props> = ({
   handleChange,
@@ -116,7 +116,11 @@ const SelectInput: React.FC<Props> = ({
             overflow: "hidden",
           }}
         >
-          {Value ? Value==="inProgress" ? "In Progress" : Value : placeholder || "All"}
+          {Value
+            ? Value === "inProgress"
+              ? "In Progress"
+              : Value
+            : placeholder || "All"}
         </Typography>
       </Box>
       <Box display={"inline-flex"} maxWidth="28px" onClick={handleOpen}>
@@ -139,7 +143,7 @@ const SelectInput: React.FC<Props> = ({
       <Popover
         className={styles.root}
         open={open}
-        sx={{ borderRadius: "10px", width:"100%"}}
+        sx={{ borderRadius: "10px", width: "100%" }}
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}
@@ -152,34 +156,36 @@ const SelectInput: React.FC<Props> = ({
           horizontal: "center",
         }}
       >
-        <Box display={"grid"} padding={1} borderRadius={"10px"} width="100%">
-          {options &&
-            options.map((item) => (
-              <option
-                key={item.id}
-                className="Option"
-                value={item.value}
-                onClick={(e) => {
-                  handleChange(e);
-                  handleClose();
-                }}
-                style={{
-                  cursor: "pointer",
-                  paddingInline: 10,
-                  width: "200px",
-                  justifyContent: "flex-start",
-                  textTransform: "none",
-                  fontFamily: "Cairo",
-                  color: "#696974",
-                  fontWeight: "700",
-                  fontSize: 13,
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  borderRadius: 0,
-                }}
-                label={item.text}
-              />
-            ))}
+        <Box display={"grid"} padding={1} borderRadius={"10px"}  width="100%">
+          <optgroup style={{marginTop:"-20px"}}>
+            {options &&
+              options.map((item) => (
+                <option
+                  key={item.id}
+                  className="Option"
+                  value={item.value}
+                  onClick={(e) => {
+                    handleChange(e);
+                    handleClose();
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    paddingInline: 10,
+                    width: "200px",
+                    justifyContent: "flex-start",
+                    textTransform: "none",
+                    fontFamily: "Cairo",
+                    color: "#696974",
+                    fontWeight: "700",
+                    fontSize: 13,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    borderRadius: 0,
+                  }}
+                  label={item.text}
+                />
+              ))}
+          </optgroup>
         </Box>
       </Popover>
     </Grid>
