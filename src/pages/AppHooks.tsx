@@ -194,6 +194,12 @@ const AppHooks: React.FC = (props) => {
         console.log("handled event");
         setMoveTaskData(data);
       });
+      socket.on("message", (data) => {
+        if (data.function === "Move Task") {
+          console.log("handled event");
+          setMoveTaskData(data);
+        }
+      });
       socket.on("new department error", (data) => console.log(data));
       socket.on("new department", (data) => {
         setNewDepartment(data);
