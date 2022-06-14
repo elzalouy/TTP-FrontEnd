@@ -12,11 +12,13 @@ interface UserStatusProps {
   count: string | undefined;
   user: string | undefined;
   pt?: number;
+  pb?:number;
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const LG = useMediaQuery (theme.breakpoints.down("lg"));
 
   return (
     <Grid
@@ -25,7 +27,8 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
       md={2.5}
       lg={2.5}
       flexBasis={"50%"}
-      paddingRight={"3%"}
+      marginTop={SM ? "10px" : "0px"}
+      paddingRight={LG ? "0":"3%"}
       paddingLeft={SM ? "2%" : "0%"}
       item
     >
@@ -38,10 +41,13 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
         }}
       >
         <CardContent
-          sx={{
+          sx={props.pb && LG ? { paddingX: "12%",
+          paddingY: "12%",
+          paddingBottom : "42px !important",
+          boxShadow: "box-shadow: 0px 3px 6px #0000000A",} : {
             paddingX: "12%",
             paddingY: "12%",
-            boxShadow: "5px 10px #888888;",
+            boxShadow: "0px 3px 6px #0000000A",
           }}
         >
           <Box

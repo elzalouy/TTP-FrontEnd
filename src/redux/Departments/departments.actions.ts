@@ -10,6 +10,7 @@ import { myReducer } from "../store";
 import { removeAuthToken } from "../../services/api";
 import { logout } from "../Auth";
 import { ApiResponse } from "apisauce";
+
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
   async (args: any, { rejectWithValue, dispatch }) => {
