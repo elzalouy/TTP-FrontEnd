@@ -206,7 +206,6 @@ const SelectInput2: React.FC<Props> = ({
                     {item.text}
                   </label>
                   <input
-                    name={item.id}
                     id={item.id}
                     key={item.id}
                     className="Option"
