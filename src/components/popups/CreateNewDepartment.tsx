@@ -125,6 +125,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       });
     }
   };
+  
   return (
     <>
       <div

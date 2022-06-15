@@ -5,10 +5,13 @@ import PopUp from "../../coreUI/usable-component/popUp";
 import "./CreateNewClient.css";
 import { useDispatch } from "react-redux";
 import {
+  clientsDataSelector,
   creatClient,
   selectLoadingClient,
 } from "../../redux/Clients";
 import { useAppSelector } from "../../redux/hooks";
+import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {};
 interface client {
@@ -21,6 +24,7 @@ const CreateNewClient: React.FC<Props> = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
+  const allClients = useAppSelector(clientsDataSelector);
   const loadingClient = useAppSelector(selectLoadingClient);
   const [Data, setData] = useState<client>({
     image: null,
@@ -34,13 +38,29 @@ const CreateNewClient: React.FC<Props> = () => {
     let formData = new FormData();
     formData.append("clientName", Data.clientName);
     formData.append("image", Data.image);
-    dispatch(creatClient(formData));
-    setImageView(null);
-    setData({
-      image: null,
-      clientName: "",
-    });
-    setShow("none");
+    let checkName = allClients.find(
+      (client) => client.clientName === Data.clientName
+    );
+    if (!checkName) {
+      dispatch(creatClient(formData));
+      setImageView(null);
+      setData({
+        image: null,
+        clientName: "",
+      });
+      setShow("none");
+    } else {
+      toast.error("Client name already exist", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: generateID(),
+      });
+    }
   };
 
   const fileUpload = () => {
@@ -56,6 +76,7 @@ const CreateNewClient: React.FC<Props> = () => {
       setData({ ...Data, [e.target.name]: e.target.value });
     }
   };
+
   return (
     <>
       <Box
@@ -133,7 +154,18 @@ const CreateNewClient: React.FC<Props> = () => {
                 Cancel
               </button>
               <button className="blackBtn-client">
-                {loadingClient ? <CircularProgress sx={{color:"white" , padding:"0px",height:"25px !important" , width:"25px !important" }} /> : "Done"}
+                {loadingClient ? (
+                  <CircularProgress
+                    sx={{
+                      color: "white",
+                      padding: "0px",
+                      height: "25px !important",
+                      width: "25px !important",
+                    }}
+                  />
+                ) : (
+                  "Done"
+                )}
               </button>
             </Box>
           </form>

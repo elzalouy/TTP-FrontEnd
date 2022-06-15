@@ -22,8 +22,6 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
   } = client;
   const role = useAppSelector(selectRole);
 
-  console.log(image);
-
   return (
     <Box>
       <Grid container direction="column" className="client-card">
@@ -50,7 +48,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5}}
                 >
                   {clientName}
                 </Typography>

@@ -84,12 +84,12 @@ const DepartmentCard: React.FC<Props> = ({
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">In progress task</p>
-          <p>{department?.totalInProgress}</p>
+          <p>{department?.totalInProgress ? department.totalInProgress : 0}</p>
         </div>
         <div className="hrVertical"></div>
         <div className="Done">
           <p className="counter-title">Done task</p>
-          <p>{department?.totalDone}</p>
+          <p>{department?.totalDone ? department.totalDone : 0}</p>
         </div>
       </div>
       <EditDepartment Show={Show} handleSetShow={handleSetShow} />

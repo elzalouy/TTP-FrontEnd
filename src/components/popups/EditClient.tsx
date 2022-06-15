@@ -101,12 +101,12 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               hidden
             />
             <img
-              src={ImageView ? ImageView : Data?.image}
+              src={Data?.image === "null" ? IMAGES.imgupload : Data?.image}
               style={{
                 width: "9em",
                 height: "9em",
               }}
-              alt=""
+              alt="Avatar"
             />
           </Box>
           <input

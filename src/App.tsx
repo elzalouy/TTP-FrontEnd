@@ -107,7 +107,7 @@ const App: React.FC = (props) => {
     //Waiting for credentials to be removed from the app
     setTimeout(() => {
       return <Redirect to={"/login"} />;
-    }, 1500);
+    }, 2500);
   }
 
   return (

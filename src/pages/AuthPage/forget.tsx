@@ -126,9 +126,32 @@ const Forget: React.FC<Props> = ({ history }) => {
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
           {visible ? (
-            <p className="success-text">
-              A reset link has been sent to your email successfully
-            </p>
+            <>
+              <p className="success-text">
+                A reset link has been sent to your email successfully
+              </p>
+              <Link
+                sx={{ textDecoration: "none", cursor: "pointer" }}
+                onClick={() => history.push("/login")}
+              >
+                <Typography
+                  textAlign={"center"}
+                  variant={"h5"}
+                  sx={{
+                    fontWeight: "900",
+                    ":hover": {
+                      textDecoration: "underline",
+                    },
+                  }}
+                  paddingTop={3.5}
+                  fontFamily={"Cairo"}
+                  color="black"
+                  className="bold"
+                >
+                  Go Back To Login
+                </Typography>
+              </Link>
+            </>
           ) : (
             <>
               <Typography
