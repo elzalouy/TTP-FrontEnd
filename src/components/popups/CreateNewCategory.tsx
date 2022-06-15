@@ -9,9 +9,12 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
+import { selectAllCategories } from "../../redux/Categories";
 import { createCategory } from "../../redux/Categories";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../../redux/hooks";
+import { generateID } from "../../helpers/IdGenerator";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -30,7 +33,7 @@ const AddNewCategoryCircularProgressStyles = {
   color: "white",
   height: "25px !important",
   width: "25px !important",
-}
+};
 
 const addNewCategoryMainCategoryStyles = {
   height: 50,
@@ -48,7 +51,7 @@ const addNewCategorySubCatStyles = {
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
   },
-}
+};
 
 const CreateNewCategory: React.FC<Props> = () => {
   const dispatch = useDispatch();
@@ -57,6 +60,7 @@ const CreateNewCategory: React.FC<Props> = () => {
   const [errors, setErrors] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const loadingCat = useAppSelector(selectCatLoading);
+  const allCategories = useAppSelector(selectAllCategories);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
@@ -94,11 +98,27 @@ const CreateNewCategory: React.FC<Props> = () => {
       selectedSubCategory: subCategories,
     };
     try {
-      await dispatch(createCategory({data:body,dispatch}));
-      setShow("none");
-      setMainCategory("");
-      setSubCategory("");
-      setsubCategories([]);
+      const checkNames = allCategories.find(
+        (cat) => cat.category === body.category
+      );
+      if (!checkNames) {
+        await dispatch(createCategory({ data: body, dispatch }));
+        setShow("none");
+        setMainCategory("");
+        setSubCategory("");
+        setsubCategories([]);
+      } else {
+        toast.error("Category name already exist", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
+      }
     } catch (error: any) {
       setErrors(error.message);
     }
@@ -225,9 +245,7 @@ const CreateNewCategory: React.FC<Props> = () => {
             </button>
             <button className="controllers-done" onClick={handleSubmit}>
               {loadingCat ? (
-                <CircularProgress
-                  sx={AddNewCategoryCircularProgressStyles}
-                />
+                <CircularProgress sx={AddNewCategoryCircularProgressStyles} />
               ) : (
                 "Done"
               )}
