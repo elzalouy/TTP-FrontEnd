@@ -136,18 +136,22 @@ body{
 
 .f-inputs:active{
   outline: 1px solid black;
+  border-radius: 5px;
 }
 
 .f-inputs:focus{
   outline: 1px solid black;
+  border-radius: 5px;
 }
 
 .password-input:active{
   outline: 1px solid black;
+  border-radius: 5px;
 }
 
 .password-input:focus{
   outline: 1px solid black;
+  border-radius: 5px;
 }
 
 /* .Image {
