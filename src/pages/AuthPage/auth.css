@@ -62,10 +62,10 @@ body{
 }
 
 
-
+/* 
 .password-container:active{
   outline: 1px solid black;
-}
+} */
 
 .password-input{
   display: block;
