@@ -158,7 +158,6 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
-
   // move task from trello with websocket connection
   React.useEffect(() => {
     if (moveTaskData !== null) {
