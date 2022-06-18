@@ -11,8 +11,8 @@ import EditIcon from "../../assets/icons/EditIcon";
 import { styled } from "@mui/material/styles";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
-import CategoryDrop from "../../components/dropdowns/CategoryDrop";
-import DeleteCategory from "../../components/popups/DeleteCategory";
+import CategoryDrop from "../../coreUI/usable-component/Dropdowns/CategoryDrop";
+import DeleteCategory from "../../coreUI/usable-component/FormPopups/DeleteCategory";
 
 type Props = {};
 interface IProps {

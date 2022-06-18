@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import IMAGES from "../../assets/img";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import { Department } from "../../redux/Departments";
-import DepartmentDrop from "../../components/dropdowns/DepartmentDrop";
-import EditDepartment from "../../components/popups/EditDepartment";
+import DepartmentDrop from "../../coreUI/usable-component/Dropdowns/DepartmentDrop";
+import EditDepartment from "../../coreUI/usable-component/FormPopups/EditDepartment";
 import { useDispatch } from "react-redux";
 import { departmentsActions } from "../../redux/Departments";
-import DeleteDepartment from "../../components/popups/DeleteDepartment";
+import DeleteDepartment from "../../coreUI/usable-component/FormPopups/DeleteDepartment";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import {

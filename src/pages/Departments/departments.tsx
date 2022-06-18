@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DepartmentCard from "./departmentCard";
 import "./departments.css";
-import CreateNewDepartment from "../../components/popups/CreateNewDepartment";
-import CreateNewTeam from "../../components/popups/CreateNewTeam";
+import CreateNewDepartment from "../../coreUI/usable-component/FormPopups/CreateNewDepartment";
+import CreateNewTeam from "../../coreUI/usable-component/FormPopups/CreateNewTeam";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Department, getAllDepartments } from "../../redux/Departments";

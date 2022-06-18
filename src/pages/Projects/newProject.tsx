@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-import NewProjectPopUp from "../../components/Projects/ProjectPopUp";
+import NewProjectPopUp from "../../coreUI/usable-component/Projects/ProjectPopUp";
 import { useAppSelector } from "../../redux/hooks";
 import {
   ProjectsActions,

@@ -19,8 +19,8 @@ import { FC, useState } from "react";
 import IMAGES from "../../../assets/img";
 import _ from "lodash";
 import { PMsActions, ProjectManager, resendMail } from "../../../redux/PM";
-import EditPM from "../../../components/popups/EditPM";
-import DeletePM from "../../../components/popups/DeletePM";
+import EditPM from "../FormPopups/EditPM";
+import DeletePM from "../FormPopups/DeletePM";
 import { useDispatch } from "react-redux";
 import {
   toggleDeleteProjectManagerPopup,

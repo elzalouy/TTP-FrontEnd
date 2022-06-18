@@ -9,7 +9,7 @@ import React, { useState, useEffect } from "react";
 import IMAGES from "../../assets/img";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import "./clients.css";
-import CreateNewClient from "./CreateNewClient";
+import CreateNewClient from "../../coreUI/usable-component/FormPopups/CreateNewClient";
 import ClientCard from "./clientCard";
 
 import { clientsDataSelector } from "../../redux/Clients/clients.selectors";

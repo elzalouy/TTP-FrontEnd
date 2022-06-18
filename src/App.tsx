@@ -13,7 +13,7 @@ import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
 import Clients from "./pages/Clients/clients";
-import ProjectManagers from "./pages/ProjectManagers/projectManagers";
+import ProjectManagers from "./pages/ProjectManagers/ProjectManagers";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "./redux/Clients";
@@ -34,12 +34,18 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
+import {
+  getUserInfo,
+  selectIsAuth,
+  selectIsLogout,
+  selectUser,
+} from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./utils/AppHooks";
 import { checkAuthToken } from "./services/api";
 import "swiper/css";
 import "swiper/css/navigation";
+
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();

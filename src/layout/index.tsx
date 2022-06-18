@@ -1,21 +1,22 @@
-import { CssBaseline } from "@mui/material";
-import { Box } from "@mui/system";
+// import { CssBaseline } from "@mui/material";
+// import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import "./index.css";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
 import { checkAuthToken } from "../services/api";
-import { useDispatch } from "react-redux";
-import { getUserInfo, selectIsAuth } from "../redux/Auth";
-import { getAllDepartments } from "../redux/Departments";
-import { getAllCategories } from "../redux/Categories";
-import { getAllClients } from "../redux/Clients";
-import { getPMs } from "../redux/PM";
-import { getAllMembers } from "../redux/techMember";
-import { getAllProjects, getAllTasks } from "../redux/Projects";
-import { useAppSelector } from "../redux/hooks";
+// import { useDispatch } from "react-redux";
+// import { getUserInfo, selectIsAuth, selectIsLogout } from "../redux/Auth";
+// import { getAllDepartments } from "../redux/Departments";
+// import { getAllCategories } from "../redux/Categories";
+// import { getAllClients } from "../redux/Clients";
+// import { getPMs } from "../redux/PM";
+// import { getAllMembers } from "../redux/techMember";
+// import { getAllProjects, getAllTasks } from "../redux/Projects";
+// import { useAppSelector } from "../redux/hooks";
+import AuthRedirection from "../pages/AuthPage/AuthRedirection/AuthRedirection";
 
 interface Props {
   component: React.ReactNode;
@@ -29,14 +30,18 @@ const LoggedInContainer: React.FC<Props> = ({
   ...rest
 }: any) => {
   const { pathname } = useLocation();
+  // const isLogout = useAppSelector(selectIsLogout);
+
+  if (!checkAuthToken()) {
+    return <AuthRedirection />;
+  }
 
   return (
     <div className="main">
       <Route
         {...rest}
         render={(props) => {
-          if (pathname === "/") return <Redirect to={"Overview"}/>;
-          if (!checkAuthToken()) return <Redirect to={"/login"} />;
+          if (pathname === "/") return <Redirect to={"Overview"} />;
           else
             return (
               <div key={rest.location.key} style={{ display: "flex" }}>

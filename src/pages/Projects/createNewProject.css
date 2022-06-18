@@ -110,7 +110,7 @@ input.date-project::-webkit-calendar-picker-indicator {
 }
 .controllers {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 20px;
 }
 

@@ -10,7 +10,7 @@ type Props = {
   children: object;
 };
 
-const popUp: React.FC<Props> = ({
+const PopUp: React.FC<Props> = ({
   show,
   children,
   widthSize,
@@ -37,4 +37,4 @@ const popUp: React.FC<Props> = ({
   );
 };
 
-export default popUp;
+export default PopUp;
