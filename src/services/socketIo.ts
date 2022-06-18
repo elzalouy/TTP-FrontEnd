@@ -25,6 +25,22 @@ export const openConnection = (user: User | null) => {
     // this is for specific user
     socket.emit("joined user", { id: user?._id });
     // on event for lestening if task moved on trello (__webhookUpdate)
+    socket.on("connect_failed", function () {
+      document.write("Sorry, there seems to be an issue with the connection!");
+      setTimeout(() => {
+        socket.connect();
+      }, 1000);
+    });
+    socket.on("disconnect", (reason) => {
+      if (
+        reason === "io server disconnect" ||
+        reason === "io client disconnect"
+      ) {
+        // the disconnection was initiated by the server, you need to reconnect manually
+        socket.connect();
+      }
+      // else the socket will automatically try to reconnect
+    });
   });
   return IO;
 };
