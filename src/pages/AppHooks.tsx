@@ -197,10 +197,9 @@ const AppHooks: React.FC = (props) => {
     socket.on("new department", (data) => {
       setNewDepartment(data);
     });
-    socket.on("connect_failed", function () {
-      document.write("Sorry, there seems to be an issue with the connection!");
+    socket.on("connect_error", () => {
+      socket.connect();
     });
-
     return () => {
       console.log("client disconnected");
       socket.disconnect();
