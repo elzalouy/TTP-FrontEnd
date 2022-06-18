@@ -1,6 +1,6 @@
 import * as React from "react";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import IMAGES from "../../assets/img";
 import Joi from "joi";
 import moment from "moment";

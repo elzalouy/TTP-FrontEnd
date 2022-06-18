@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import IMAGES from "../../assets/img";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import "./popups-style.css";
 import { useState } from "react";
 import { color } from "@mui/system";
@@ -15,7 +15,7 @@ import {
 import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-import { register } from "../../serviceWorkerRegistration";
+import { register } from "../../utils/serviceWorkerRegistration";
 import { generateID } from "../../helpers/IdGenerator";
 import { CircularProgress } from "@mui/material";
 

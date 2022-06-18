@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import IMAGES from "../../assets/img/index";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";

@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 
 import {
   categoriesActions,
@@ -44,7 +44,7 @@ import {
 import Joi from "joi";
 import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
-import PopUps from "../../pages/PopUps";
+import PopUps from "../../coreUI/usable-component/Popup/PopUps";
 import { generateID } from "../../helpers/IdGenerator";
 import { selectRole } from "../../redux/Auth";
 

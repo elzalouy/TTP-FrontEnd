@@ -1,6 +1,6 @@
 import React from "react";
 import IMAGES from "../../assets/img";
-import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
+import SmallPopUp from "../../coreUI/usable-component/Popup/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
 import axios, { AxiosResponse } from "axios";

@@ -1,7 +1,6 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
-import React, { FC } from "react";
-
+import React, { FC } from "react";   
 import { Done as DoneIcon, Circle as DotIcon } from "@mui/icons-material";
 import { useMediaQuery } from "@mui/material";
 interface UserStatusProps {

@@ -5,7 +5,7 @@ import {
   TextField,
 } from "@mui/material";
 import * as React from "react";
-import { InputStyle } from "../styles";
+import { InputStyle } from "../Styles";
 import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
 import { styled } from "@material-ui/styles";
 

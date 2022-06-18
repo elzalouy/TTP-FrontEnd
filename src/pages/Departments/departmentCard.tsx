@@ -65,7 +65,7 @@ const DepartmentCard: React.FC<Props> = ({
     dispatch(departmentsActions.selecteDepartment(department));
   };
 
-  const getAllTasksByStatus = (status: Status[]) => {
+  const getAllTasksByFilteredByStatus = (status: Status[]) => {
     let findTasksByDepartmentId = tasks.filter(
       (task) => task.boardId === department.boardId
     );
@@ -112,13 +112,13 @@ const DepartmentCard: React.FC<Props> = ({
       <div className="counter-container">
         <div className="InProgress">
           <p className="counter-title">Active tasks</p>
-          <p>{getAllTasksByStatus(["Done", "Cancled"])}</p>
+          <p>{getAllTasksByFilteredByStatus(["Done", "Cancled"])}</p>
         </div>
         <div className="hrVertical"></div>
         <div className="Done">
           <p className="counter-title">Done tasks</p>
           <p>
-            {getAllTasksByStatus([
+            {getAllTasksByFilteredByStatus([
               "Tasks Board",
               "Review",
               "Shared",

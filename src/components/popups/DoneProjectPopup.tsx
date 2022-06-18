@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
+import SmallPopUp from "../../coreUI/usable-component/Popup/SmallPopup";
 import { logout } from "../../redux/Auth";
 import { toggleLogOutPopup } from "../../redux/Ui";
 

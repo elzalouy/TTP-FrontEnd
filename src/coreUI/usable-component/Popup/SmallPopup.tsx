@@ -1,6 +1,6 @@
 import React from "react";
-import { useAppSelector } from "../../redux/hooks";
-import { selectSideMenuToggle } from "../../redux/Ui/UI.selectors";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
 import "./popUp.css";
 
 type Props = {

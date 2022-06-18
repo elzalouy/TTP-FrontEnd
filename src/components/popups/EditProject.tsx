@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IMAGES from "../../assets/img";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import "./popups-style.css";
 import {
   Controller,

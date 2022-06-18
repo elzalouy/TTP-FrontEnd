@@ -15,7 +15,7 @@ import {
   TableRestaurantTwoTone,
 } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
-import ScrollOver from "../../../coreUI/usable-component/ScrollOver";
+import ScrollOver from "../../../coreUI/usable-component/Popup/ScrollOver";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectSatistics } from "../../../redux/Statistics";
 import Status from "../../../coreUI/usable-component/Typos/Status";

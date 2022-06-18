@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import "./projectForm.css";
 import { FC, useState } from "react";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import { useAppSelector } from "../../redux/hooks";
 import { ProjectsActions, selectNewProject } from "../../redux/Projects";
 import IMAGES from ".././../assets/img/index";

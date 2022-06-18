@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import SmallPopUp from "../../coreUI/usable-component/SmallPopup";
+import SmallPopUp from "../../coreUI/usable-component/Popup/SmallPopup";
 import { useAppSelector } from "../../redux/hooks";
 import { deleteTask, selectedDeleteTaskId } from "../../redux/Projects";
 import { openDeleteTaskPopup } from "../../redux/Ui";

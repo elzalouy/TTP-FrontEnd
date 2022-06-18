@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./popups-style.css";
 import IMAGES from "../../assets/img";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";

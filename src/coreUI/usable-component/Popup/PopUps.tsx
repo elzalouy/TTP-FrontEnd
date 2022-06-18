@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import DeleteClient from "../components/popups/DeleteClient";
-import DeleteProject from "../components/popups/DeleteProject";
-import EditClient from "../components/popups/EditClient";
-import EditProject from "../components/popups/EditProject";
-import EditTask from "../components/popups/EditTask";
-import LogoutPopup from "../components/popups/LogoutPopup";
-import { useAppSelector } from "../redux/hooks";
+import DeleteClient from "../../../components/popups/DeleteClient";
+import DeleteProject from "../../../components/popups/DeleteProject";
+import EditClient from "../../../components/popups/EditClient";
+import EditProject from "../../../components/popups/EditProject";
+import EditTask from "../../../components/popups/EditTask";
+import LogoutPopup from "../../../components/popups/LogoutPopup";
+import { useAppSelector } from "../../../redux/hooks";
 import {
   openDeleteProjectPopup,
   openEditProjectPopup,
@@ -17,12 +17,12 @@ import {
   toggleEditTaskPopup,
   openDeleteTaskPopup,
   toggleCreateProjectPopup,
-} from "../redux/Ui";
-import { selectUi } from "../redux/Ui/UI.selectors";
-import DeleteTask from "../components/popups/DeleteTask";
+} from "../../../redux/Ui";
+import { selectUi } from "../../../redux/Ui/UI.selectors";
+import DeleteTask from "../../../components/popups/DeleteTask";
 import { Grid } from "@mui/material";
-import NewProjectPopUp from "../components/Projects/ProjectPopUp";
-import CreateNewTask from "../components/popups/CreateNewTask";
+import NewProjectPopUp from "../../../components/Projects/ProjectPopUp";
+import CreateNewTask from "../../../components/popups/CreateNewTask";
 
 const PopUps: React.FC = () => {
   const dispatch = useDispatch();

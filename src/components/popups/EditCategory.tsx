@@ -1,6 +1,6 @@
 import React from "react";
 import IMAGES from "../../assets/img";
-import PopUp from "../../coreUI/usable-component/popUp";
+import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import { useState, useEffect } from "react";
 import "./popups-style.css";
 import { useAppSelector } from "../../redux/hooks";

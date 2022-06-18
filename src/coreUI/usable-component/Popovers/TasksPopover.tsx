@@ -1,7 +1,7 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
-import { popOverStyle } from "../styles";
+import { popOverStyle } from "../Styles";
 import IMAGES from "../../../assets/img";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";

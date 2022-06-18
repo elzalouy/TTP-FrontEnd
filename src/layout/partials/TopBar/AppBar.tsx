@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Toolbar, AppBar, Drawer, IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import "./AppBar.css";
-import { Logo, Notification } from "../../../coreUI/usable-elements/images";
+import { Logo, Notification } from "../../../coreUI/usable-elements/Images";
 import { RouteComponentProps, useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
 import zIndex from "@mui/material/styles/zIndex";

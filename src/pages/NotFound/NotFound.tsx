@@ -2,8 +2,8 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import "./notfound.css";
 import { Redirect, RouteComponentProps, useLocation } from "react-router";
-import IMAGES from "../assets/img";
-import { checkAuthToken } from "../services/api";
+import IMAGES from "../../assets/img";
+import { checkAuthToken } from "../../services/api";
 interface NotFoundProps {
   history: RouteComponentProps["history"];
 }

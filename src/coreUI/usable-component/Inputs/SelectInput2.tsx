@@ -8,7 +8,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { popOverStyle } from "../styles";
+import { popOverStyle } from "../Styles";
 import "../style.css";
 import { ArrowDropUp } from "@mui/icons-material";
 import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";

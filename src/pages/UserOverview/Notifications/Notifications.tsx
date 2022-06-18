@@ -2,7 +2,7 @@ import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
-import PopoverComponent from "../../../coreUI/usable-component/ScrollOver";
+import PopoverComponent from "../../../coreUI/usable-component/Popup/ScrollOver";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectSatistics } from "../../../redux/Statistics";
 import { Task } from "../../../redux/Projects";
