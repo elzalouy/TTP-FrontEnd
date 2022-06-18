@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { socket } from "../services/socketIo";
+import { openConnection } from "../services/socketIo";
 import { selectIsAuth, selectUser } from "../redux/Auth";
 import { getAllClients } from "../redux/Clients";
 import { departmentsActions, getAllDepartments } from "../redux/Departments";
@@ -174,21 +174,7 @@ const AppHooks: React.FC = (props) => {
     }
   }, [newDepartment]);
   React.useEffect(() => {
-    socket.on("connect", () => {
-      console.log("client is connected");
-      //todo check user auth
-      if (user?.type === "admin") {
-        // this for admins role only
-        socket.emit("joined admin");
-      }
-      if (user?.role === "PM") {
-        // this for project managers role only
-        socket.emit("joined manager");
-      }
-      // this is for specific user
-      socket.emit("joined user", { id: user?._id });
-      // on event for lestening if task moved on trello (__webhookUpdate)
-    });
+    let socket = openConnection(user);
     socket.on("Move Task", (data) => {
       console.log("handled event");
       setMoveTaskData(data);
