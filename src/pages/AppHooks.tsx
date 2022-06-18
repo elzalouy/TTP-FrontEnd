@@ -203,6 +203,16 @@ const AppHooks: React.FC = (props) => {
         socket.connect();
       }, 1000);
     });
+    socket.on("disconnect", (reason) => {
+      if (
+        reason === "io server disconnect" ||
+        reason === "io client disconnect"
+      ) {
+        // the disconnection was initiated by the server, you need to reconnect manually
+        socket.connect();
+      }
+      // else the socket will automatically try to reconnect
+    });
     return () => {
       console.log("client disconnected");
       socket.disconnect();
