@@ -12,7 +12,7 @@ import {
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import { generateID } from "../../../helpers/IdGenerator";
 import { selectAllCategories } from "../../../redux/Categories";
 import { selectAllDepartments } from "../../../redux/Departments";

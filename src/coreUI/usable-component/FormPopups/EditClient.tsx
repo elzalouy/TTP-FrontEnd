@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import PopUp from "../Popup/PopUp";
 import "./popups-style.css";
 import { Box, CircularProgress, Typography } from "@mui/material";

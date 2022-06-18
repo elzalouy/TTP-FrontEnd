@@ -1,8 +1,9 @@
 import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
-import "./AuthRedirection.css";
-import { Redirect, useHistory, useLocation } from "react-router";
+import "./authRedirect.css";
+import { Redirect, RouteComponentProps, useHistory } from "react-router";
 import IMAGES from "../../../assets/img/Images";
+import { checkAuthToken } from "../../../services/api";
 
 const AuthRedirection: FC = () => {
   const history = useHistory();
@@ -22,7 +23,7 @@ const AuthRedirection: FC = () => {
           sx={{ width: "400px", textAlign: "center" }}
           fontFamily="Cairo, Regular"
         >
-          Your authorization token has expired , Please login again
+          Your token has expired , Please try logging in again
         </Typography>
         <Button
           sx={{
@@ -37,7 +38,7 @@ const AuthRedirection: FC = () => {
           }}
           onClick={() => history.replace("/login")}
         >
-          Go to Login
+          Go to login
         </Button>
       </Grid>
     </div>

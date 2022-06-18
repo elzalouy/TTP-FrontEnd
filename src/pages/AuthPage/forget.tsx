@@ -10,7 +10,7 @@ import Ttp from "../../assets/img/ttp_logo.png";
 import "./auth.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Redirect, RouteComponentProps } from "react-router";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {

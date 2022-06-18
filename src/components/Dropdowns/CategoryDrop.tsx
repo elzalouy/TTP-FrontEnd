@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useState } from "react";
-import IMAGES from "../../../assets/img/Images";
+import IMAGES from "../../assets/img/Images";
 import "./dropdowns-style.css";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 

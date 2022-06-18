@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { openCreateTaskPopup } from "../../redux/Ui";
 
 import "./taskViewBoard.css";

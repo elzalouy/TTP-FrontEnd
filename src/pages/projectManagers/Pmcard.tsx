@@ -1,5 +1,5 @@
 import React from 'react'
-import IMAGES from '../../assets/img'
+import IMAGES from '../../assets/img/Images'
 import './Pmcard.css'
 const AccountInfo = {
     FullName: "Ahamed Ali",

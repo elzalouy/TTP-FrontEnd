@@ -1,5 +1,5 @@
 import React from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import SmallPopUp from "../Popup/SmallPopup";
 import "./popups-style.css";
 import { useAppSelector } from "../../../redux/hooks";

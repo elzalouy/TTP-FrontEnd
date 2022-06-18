@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../assets/img/index";
+import IMAGES from "../../assets/img/Images";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
 import { useTheme } from "@mui/material/styles";

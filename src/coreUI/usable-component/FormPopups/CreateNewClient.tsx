@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
 import React, { useState, useRef } from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import "./CreateNewClient.css";
 import { useDispatch } from "react-redux";

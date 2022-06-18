@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "./newProject";
-import IMAGES from "../../assets/img/index";
+import IMAGES from "../../assets/img/Images";
 import SearchBar from "../../coreUI/usable-component/Inputs/SearchBox";
 import Box from "@mui/material/Box";
 import RotateRightIcon from "@mui/icons-material/RotateRight";

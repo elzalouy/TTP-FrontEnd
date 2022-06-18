@@ -1,11 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import IMAGES from "../../../assets/img/Images";
+import IMAGES from "../../assets/img/Images";
 import "./dropdowns-style.css";
 
 type Props = {};
 
-const ProjectDrop: React.FC<Props> = () => {
+const TaskDrop: React.FC<Props> = () => {
   const [Show, setShow] = useState<string>("none");
 
   return (
@@ -24,10 +24,19 @@ const ProjectDrop: React.FC<Props> = () => {
         <button className="dropdown-btn" onClick={() => setShow("none")}>
           <img
             className="dropdown-btn-icon grey-icon"
+            src={IMAGES.plus}
+            alt="icon"
+          />
+          <span className="dropdown-btn-titleGrey">Add sub task</span>
+        </button>
+
+        <button className="dropdown-btn" onClick={() => setShow("none")}>
+          <img
+            className="dropdown-btn-icon grey-icon"
             src={IMAGES.edit}
             alt="icon"
           />
-          <span className="dropdown-btn-titleGrey">Edit project</span>
+          <span className="dropdown-btn-titleGrey">Edit task</span>
         </button>
 
         <button className="dropdown-btn" onClick={() => setShow("none")}>
@@ -44,4 +53,4 @@ const ProjectDrop: React.FC<Props> = () => {
     </div>
   );
 };
-export default ProjectDrop;
+export default TaskDrop;

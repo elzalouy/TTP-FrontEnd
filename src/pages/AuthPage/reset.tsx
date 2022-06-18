@@ -9,7 +9,7 @@ import {
   useTheme,
   CircularProgress,
 } from "@mui/material";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

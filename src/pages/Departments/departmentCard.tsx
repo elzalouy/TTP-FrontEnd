@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import { Department } from "../../redux/Departments";
 import DepartmentDrop from "../../coreUI/usable-component/Dropdowns/DepartmentDrop";

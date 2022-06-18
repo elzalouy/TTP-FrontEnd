@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { useState } from "react";
-import IMAGES from "../../../assets/img/Images";
+import IMAGES from "../../assets/img/Images";
 import "./dropdowns-style.css";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 type Props = {
+  handleSetShow: (value: string) => void;
   handleSetShowDelete: (value: string) => void;
   color?:string
 };
@@ -14,7 +15,8 @@ type Props = {
  */
 function useOutsideAlerter(ref: any) {}
 
-const CategoryDrop: React.FC<Props> = ({
+const DepartmentDrop: React.FC<Props> = ({
+  handleSetShow,
   handleSetShowDelete,
   color
 }) => {
@@ -56,6 +58,21 @@ const CategoryDrop: React.FC<Props> = ({
           className="dropdown-btn"
           onClick={() => {
             setShow("none");
+            handleSetShow("flex");
+          }}
+        >
+          <img
+            className="dropdown-btn-icon grey-icon"
+            src={IMAGES.edit}
+            alt="icon"
+          />
+          <span className="dropdown-btn-titleGrey">Edit department</span>
+        </button>
+
+        <button
+          className="dropdown-btn"
+          onClick={() => {
+            setShow("none");
             handleSetShowDelete("flex");
           }}
         >
@@ -72,4 +89,4 @@ const CategoryDrop: React.FC<Props> = ({
     </div>
   );
 };
-export default CategoryDrop;
+export default DepartmentDrop;

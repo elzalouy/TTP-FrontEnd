@@ -1,5 +1,5 @@
 import React from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import PopUp from "../Popup/PopUp";
 import { useState, useEffect } from "react";
 import "./popups-style.css";

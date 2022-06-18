@@ -13,7 +13,7 @@ import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";
 import Category from "./pages/Category/Category";
 import Clients from "./pages/Clients/clients";
-import ProjectManagers from "./pages/ProjectManagers/ProjectManagers";
+import ProjectManagers from "./pages/ProjectManagers/PM";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "./redux/Clients";

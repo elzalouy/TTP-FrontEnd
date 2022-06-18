@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 
 interface ProjectFormProps {
   setcurrentStep: any;

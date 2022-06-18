@@ -6,7 +6,7 @@ import departmentIcon from "../../assets/img/departmentIcon.svg";
 import profileImageDemo from "../../assets/img/profileImageDemo.png";
 import projects from "../../assets/img/projects.svg";
 import tasks from "../../assets/img/tasks.svg";
-import img from "../../assets/img/index";
+import img from "../../assets/img/Images";
 import overView from "../../assets/img/taskviewiconCopy.svg";
 import { RouteComponentProps } from "react-router";
 

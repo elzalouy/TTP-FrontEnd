@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
 import "./clients.css";
 import CreateNewClient from "../../coreUI/usable-component/FormPopups/CreateNewClient";

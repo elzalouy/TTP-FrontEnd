@@ -16,7 +16,7 @@ import "../../../themes/style.css";
 import MailLockIcon from '@mui/icons-material/MailLock';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { FC, useState } from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import _ from "lodash";
 import { PMsActions, ProjectManager, resendMail } from "../../../redux/PM";
 import EditPM from "../FormPopups/EditPM";

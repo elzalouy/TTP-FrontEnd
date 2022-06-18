@@ -17,7 +17,7 @@ import Avatar from "react-avatar";
 import { styled } from "@mui/material/styles";
 import { Logo } from "../../../coreUI/usable-elements/Images";
 import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import DrawerItem from "./DrawerItem";
 import { useDispatch } from "react-redux";
 import {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import SelectInput2 from "../Inputs/SelectInput2";
 import PopUp from "../Popup/PopUp";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import Joi from "joi";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";

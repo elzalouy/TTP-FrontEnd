@@ -1,7 +1,7 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { Client } from "./clients";
 import moment from "moment";
 import ClientsPopover from "../../coreUI/usable-component/Popovers/ClientsPopover";

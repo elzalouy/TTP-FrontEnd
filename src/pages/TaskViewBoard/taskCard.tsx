@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box, style } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import IMAGES from "../../assets/img/index";
+import IMAGES from "../../assets/img/Images";
 import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";

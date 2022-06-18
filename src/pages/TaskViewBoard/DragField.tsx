@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {

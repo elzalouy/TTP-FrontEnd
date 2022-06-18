@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PopUp from "../Popup/PopUp";
-import IMAGES from "../../../assets/img/index";
+import IMAGES from "../../../assets/img/Images";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
 import { createPM, selectPMs } from "../../../redux/PM";
@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../redux/hooks";
 
 type Props = {};
 
-const AddNewPM: React.FC<Props> = () => {
+const CreateNewPM: React.FC<Props> = () => {
   const [show, setShow] = useState("none");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -130,4 +130,4 @@ const AddNewPM: React.FC<Props> = () => {
   );
 };
 
-export default AddNewPM;
+export default CreateNewPM;

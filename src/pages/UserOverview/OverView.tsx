@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications/Notifications";
 import { RouteComponentProps } from "react-router";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";

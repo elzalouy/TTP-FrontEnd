@@ -14,7 +14,7 @@ import { FC, useState } from "react";
 import PopUp from "../Popup/PopUp";
 import { useAppSelector } from "../../../redux/hooks";
 import { ProjectsActions, selectNewProject } from "../../../redux/Projects";
-import IMAGES from "../../../assets/img/index";
+import IMAGES from "../../../assets/img/Images";
 import TaskForm from "./TaskForm";
 import Tasks from "./TasksTable";
 import ProjectForm from "./ProjectForm";

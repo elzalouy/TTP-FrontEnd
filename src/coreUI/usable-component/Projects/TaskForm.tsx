@@ -23,7 +23,7 @@ import {
 } from "../../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import { valdiateCreateTask } from "../../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";

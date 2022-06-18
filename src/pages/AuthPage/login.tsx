@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import Ttp from "../../assets/img/ttp_logo.png";
 import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";

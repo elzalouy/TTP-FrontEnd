@@ -10,7 +10,7 @@ import {
 } from "../../redux/Projects";
 import { selectNewProject } from "../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../redux/Ui";

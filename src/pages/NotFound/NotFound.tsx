@@ -2,7 +2,7 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import "./notfound.css";
 import { Redirect, RouteComponentProps, useLocation } from "react-router";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { checkAuthToken } from "../../services/api";
 interface NotFoundProps {
   history: RouteComponentProps["history"];
@@ -11,7 +11,7 @@ interface NotFoundProps {
 const NotFound: FC<NotFoundProps> = (props) => {
   const location = useLocation();
 
-  if (location.pathname === "/") {
+  if (location.pathname === "/" && checkAuthToken()) {
     return (
       <div className="notfound">
         <Grid
@@ -25,6 +25,8 @@ const NotFound: FC<NotFoundProps> = (props) => {
         </Grid>
       </div>
     );
+  } else if (location.pathname === "/" && !checkAuthToken()) {
+    return <Redirect to={"/login"} />;
   }
 
   return (

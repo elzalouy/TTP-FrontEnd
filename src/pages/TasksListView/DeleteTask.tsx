@@ -1,7 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import PopUp from "../../coreUI/usable-component/Popup/PopUp";
 import { generateID } from "../../helpers/IdGenerator";
 import "./DeleteTask.css";

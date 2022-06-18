@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./popups-style.css";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import PopUp from "../Popup/PopUp";
 import { useState } from "react";
 import { useAppSelector } from "../../../redux/hooks";

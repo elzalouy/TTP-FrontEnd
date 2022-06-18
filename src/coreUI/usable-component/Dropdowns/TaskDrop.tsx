@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import "./dropdowns-style.css";
 
 type Props = {};

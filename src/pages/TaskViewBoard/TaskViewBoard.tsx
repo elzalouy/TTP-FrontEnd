@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../assets/img";
+import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../redux/hooks";
 import DragField from "./DragField";
 import {

@@ -20,7 +20,7 @@ import {
   Logout as LogoutIcon,
   Close as Close,
 } from "@mui/icons-material";
-import IMAGES from "../../../assets/img";
+import IMAGES from "../../../assets/img/Images";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
