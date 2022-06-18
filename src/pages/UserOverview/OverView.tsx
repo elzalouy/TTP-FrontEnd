@@ -6,19 +6,15 @@ import UserProjects from "./UserProjects";
 import UserStatus from "./StatusCard";
 import UserTasks from "./UserTasks";
 import { useDispatch } from "react-redux";
-import UserNotifications from "./Notifications";
+import UserNotifications from "./Notifications/Notifications";
 import { RouteComponentProps } from "react-router";
-import ManagerNotifications from "./ManagerNotifications";
+import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../redux/hooks";
 import { getUserInfo, selectRole, selectUser } from "../../redux/Auth";
-import {
-  selectOMSatistics,
-  selectPMSatistics,
-  selectSatistics,
-} from "../../redux/Statistics";
+import { selectSatistics } from "../../redux/Statistics";
 import { checkAuthToken } from "../../services/api";
 interface Props {
   history: RouteComponentProps["history"];

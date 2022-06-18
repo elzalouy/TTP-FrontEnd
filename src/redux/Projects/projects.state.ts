@@ -15,11 +15,17 @@ export interface Task {
   deliveryDate?: any;
   done: any;
   turnoverTime: any;
-  attachedFiles: any[];
+  attachedFiles: {
+    _id: string;
+    name: string;
+    mimeType: string;
+    trelloId: string;
+    url: string;
+  }[];
   attachedCard: string;
-  listId?: string;
-  cardId?: string;
-  boardId?: string;
+  listId: string;
+  cardId: string;
+  boardId: string;
   file?: any;
   description: string;
   lastMove?: string;

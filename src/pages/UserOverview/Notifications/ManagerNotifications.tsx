@@ -6,12 +6,12 @@ import {
   TableRestaurantTwoTone,
 } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
-import ScrollOver from "../../coreUI/usable-component/ScrollOver";
-import { useAppSelector } from "../../redux/hooks";
-import { selectSatistics } from "../../redux/Statistics";
+import ScrollOver from "../../../coreUI/usable-component/ScrollOver";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectSatistics } from "../../../redux/Statistics";
+import Status from "../../../coreUI/usable-component/Typos/Status";
+import { Task } from "../../../redux/Projects";
 import _ from "lodash";
-import Status from "../../coreUI/usable-component/Typos/Status";
-import { Task } from "../../redux/Projects";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -34,6 +34,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
+
   const cssTabContent = (tabItem: string) => {
     let tasks =
       tabItem === "0"

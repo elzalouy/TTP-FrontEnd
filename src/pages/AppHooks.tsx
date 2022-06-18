@@ -10,9 +10,7 @@ import {
   getAllTasks,
   ProjectsActions,
 } from "../redux/Projects";
-import { fireMoveTaskOnTrello } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
-import { checkAuthToken } from "../services/api";
 import { getAllCategories } from "../redux/Categories";
 import { getAllMembers } from "../redux/techMember";
 const AppHooks: React.FC = (props) => {
@@ -193,12 +191,6 @@ const AppHooks: React.FC = (props) => {
       socket.on("Move Task", (data) => {
         console.log("handled event");
         setMoveTaskData(data);
-      });
-      socket.on("message", (data) => {
-        if (data.function === "Move Task") {
-          console.log("handled event");
-          setMoveTaskData(data);
-        }
       });
       socket.on("new department error", (data) => console.log(data));
       socket.on("new department", (data) => {
