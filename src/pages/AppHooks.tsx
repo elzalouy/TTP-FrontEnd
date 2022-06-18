@@ -183,11 +183,6 @@ const AppHooks: React.FC = (props) => {
     socket.on("new department", (data) => {
       setNewDepartment(data);
     });
-
-    return () => {
-      console.log("client disconnected");
-      socket.disconnect();
-    };
   }, []);
 
   return <>{props.children}</>;

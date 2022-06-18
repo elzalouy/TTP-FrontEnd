@@ -9,6 +9,7 @@ export const openConnection = (user: User | null) => {
       : apiUrl.SOCKET_BASE_URL,
     {
       transports: ["websocket"],
+      reconnectionDelay: 0,
     }
   );
   let IO = socket.on("connect", () => {
