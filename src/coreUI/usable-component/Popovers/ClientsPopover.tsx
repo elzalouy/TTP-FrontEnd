@@ -1,7 +1,7 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
-import { popOverStyle } from "../Styles";
+import { popOverStyle } from "../../../themes/Styles";
 import IMAGES from "../../../assets/img";
 import { useDispatch } from "react-redux";
 import { openEditClientPopup, openDeleteClientPopup } from "../../../redux/Ui";

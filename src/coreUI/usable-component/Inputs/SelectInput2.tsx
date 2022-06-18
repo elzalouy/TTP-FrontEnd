@@ -8,8 +8,8 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { popOverStyle } from "../Styles";
-import "../style.css";
+import { popOverStyle } from "../../../themes/Styles";
+import "../../../themes/style.css";
 import { ArrowDropUp } from "@mui/icons-material";
 import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";
 import _ from "lodash";

@@ -9,9 +9,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useAppSelector } from "../../redux/hooks";
-import { selectAllProjects, Task } from "../../redux/Projects";
-import TasksTable from "../../coreUI/usable-component/Tables/OverviewTasksTable";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectAllProjects, Task } from "../../../redux/Projects";
+import TasksTable from "../../../coreUI/usable-component/Tables/OverviewTasksTable";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;

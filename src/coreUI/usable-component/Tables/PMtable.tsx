@@ -12,7 +12,7 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import "../style.css";
+import "../../../themes/style.css";
 import MailLockIcon from '@mui/icons-material/MailLock';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { FC, useState } from "react";

@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { ProjectManager } from "../../../redux/PM";
 import { Project, selectAllProjects } from "../../../redux/Projects";
-import { projectsTableStyle } from "../Styles";
+import { projectsTableStyle } from "../../../themes/Styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../Popovers/ProjectPopover";
