@@ -34,12 +34,7 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import {
-  getUserInfo,
-  selectIsAuth,
-  selectIsLogout,
-  selectUser,
-} from "./redux/Auth";
+import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./pages/AppHooks";
 import { checkAuthToken } from "./services/api";
@@ -51,7 +46,6 @@ const App: React.FC = (props) => {
   const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
-  const isLoggedOut = useAppSelector(selectIsLogout);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
 
@@ -102,13 +96,6 @@ const App: React.FC = (props) => {
       }
     }
   }, [projects.allTasks, projects.projects, user]);
-
-  if (isLoggedOut) {
-    //Waiting for credentials to be removed from the app
-    setTimeout(() => {
-      return <Redirect to={"/login"} />;
-    }, 2500);
-  }
 
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>
@@ -187,14 +174,15 @@ const App: React.FC = (props) => {
             component={OverView}
             key="/overview"
           />
-          <LoggedInContainer
-            path="/404"
-            component={NotFound}
-            key="/notfound2"
-          />
-          <Redirect from="/" to="Overview" />
-          <Route path="/404" component={NotFound} key="/notfound" />
-          <Redirect from="*" to="/404" key="404" />
+          {!isAuthed && <Route path="*" component={NotFound} key="/notfound" />}
+          {isAuthed && (
+            <LoggedInContainer
+              path="*"
+              component={NotFound}
+              notfound
+              key="/notfound_user"
+            />
+          )}
         </Switch>
       </AppHooks>
     </Box>

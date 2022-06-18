@@ -23,10 +23,11 @@ import { useDispatch } from "react-redux";
 import {
   logout,
   selectImage,
+  selectIsLogout,
   selectRole,
   selectUser,
 } from "../../../redux/Auth";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
 import Overviewicon from "../../../assets/icons/Overview";
 import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
@@ -228,12 +229,13 @@ const AppDrawer: React.FC = (props: any) => {
                       ? user?.name
                       : user?.user?.name
                   }
-                  value="86%" size="40"
+                  value="86%"
+                  size="40"
                   round
                   color="#FFC500"
                   fgColor="black"
                   style={{
-                    marginRight:"10px"
+                    marginRight: "10px",
                   }}
                 />
               </ListItemIcon>

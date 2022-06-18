@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import "./index.css";
 import { useHistory } from "react-router";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import Sidebar from "./partials/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
 import { checkAuthToken } from "../services/api";
@@ -20,23 +20,27 @@ import { useAppSelector } from "../redux/hooks";
 interface Props {
   component: React.ReactNode;
   path: string;
+  notfound?: boolean;
 }
 
 const LoggedInContainer: React.FC<Props> = ({
   component: Component,
+  notfound,
   ...rest
 }: any) => {
+  const { pathname } = useLocation();
 
   return (
     <div className="main">
       <Route
         {...rest}
         render={(props) => {
+          if (pathname === "/") return <Redirect to={"Overview"}/>;
           if (!checkAuthToken()) return <Redirect to={"/login"} />;
           else
             return (
               <div key={rest.location.key} style={{ display: "flex" }}>
-                <Sidebar {...rest} {...props} />
+                {!notfound && <Sidebar {...rest} {...props} />}
                 <Bar {...props} {...rest} />
                 <Component key={rest?.location?.key} {...props} {...rest} />
               </div>

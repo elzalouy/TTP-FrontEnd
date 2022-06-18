@@ -16,6 +16,7 @@ import _ from "lodash";
 import { isOptionsEmpty } from "../../../helpers/generalUtils";
 interface Props {
   handleChange: (e: any) => void;
+  handleOnClick?: (e: any) => void;
   options?: {
     id?: string;
     value?: string;
@@ -46,6 +47,7 @@ const SelectInput2: React.FC<Props> = ({
   selectValue,
   label,
   selectText,
+  handleOnClick,
   error,
 }) => {
   const styles = popOverStyle()();
@@ -73,6 +75,7 @@ const SelectInput2: React.FC<Props> = ({
       direction="row"
       className="select"
       container
+      onClick={handleOnClick}
     >
       <Grid
         onClick={handleOpen}
@@ -225,6 +228,7 @@ const SelectInput2: React.FC<Props> = ({
                     }}
                     onClick={(e) => {
                       handleChange(e);
+                      handleClose();
                     }}
                     readOnly
                     hidden

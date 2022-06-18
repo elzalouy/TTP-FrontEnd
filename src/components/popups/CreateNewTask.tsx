@@ -46,6 +46,7 @@ import moment from "moment";
 import { createProjectPopup, selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
 import { generateID } from "../../helpers/IdGenerator";
+import { selectRole } from "../../redux/Auth";
 
 type Props = {
   show: string;
@@ -139,6 +140,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
     Department | any
   >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
+  const role = useAppSelector(selectRole);
 
   const { register, handleSubmit, watch, control, reset, setValue } = useForm({
     defaultValues: {
@@ -158,7 +160,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
   React.useEffect(() => {
     let today = moment().format();
     let deadline = moment(watchDeadline).format();
-    if(moment(today).isAfter(moment(deadline))){
+    if (moment(today).isAfter(moment(deadline))) {
       toast.warning("Deadline has already passed today's date", {
         position: "top-right",
         autoClose: 1500,
@@ -168,7 +170,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
         draggable: true,
         progress: undefined,
         toastId: "mail",
-      })
+      });
     }
   }, [watchDeadline]);
 
@@ -513,44 +515,66 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   )}
                 />
                 <br />
-                <label className="label-project">Assign to Team</label>
-                <br />
-                <Controller
-                  name="teamId"
-                  control={control}
-                  render={(props) => (
-                    <SelectInput2
-                      error={error?.error?.details[0]?.path.includes("listId")}
-                      handleChange={props.field.onChange}
-                      selectText={
-                        selectedDepartment?.teamsId?.find(
-                          (item: any) => item._id === props.field.value
-                        )?.name
-                      }
-                      {...register("teamId")}
-                      selectValue={props.field.value}
-                      options={
-                        selectedDepartment?.teamsId
-                          ? selectedDepartment?.teamsId?.map((item: any) => {
-                              if (!item.isDeleted) {
-                                return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.name,
-                                };
-                              } else {
-                                return {
-                                  id: "",
-                                  value: "",
-                                  text: "",
-                                };
-                              }
-                            })
-                          : []
-                      }
+                {role === "OM" && (
+                  <>
+                    <label className="label-project">Assign to Team</label>
+                    <br />
+                    <Controller
+                      name="teamId"
+                      control={control}
+                      render={(props) => (
+                        <SelectInput2
+                          error={error?.error?.details[0]?.path.includes(
+                            "listId"
+                          )}
+                          handleChange={props.field.onChange}
+                          selectText={
+                            selectedDepartment?.teamsId?.find(
+                              (item: any) => item._id === props.field.value
+                            )?.name
+                          }
+                          {...register("teamId")}
+                          handleOnClick={()=>{
+                            if(selectedDepartment?.teamsId.length === 0){
+                              toast.warning("There are no existing teams", {
+                                position: "top-right",
+                                autoClose: 1500,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                toastId: generateID(),
+                              });
+                            }
+                          }}
+                          selectValue={props.field.value}
+                          options={
+                            selectedDepartment?.teamsId
+                              ? selectedDepartment?.teamsId?.map(
+                                  (item: any) => {
+                                    if (!item.isDeleted) {
+                                      return {
+                                        id: item._id ? item._id : "",
+                                        value: item._id ? item._id : "",
+                                        text: item.name,
+                                      };
+                                    } else {
+                                      return {
+                                        id: "",
+                                        value: "",
+                                        text: "",
+                                      };
+                                    }
+                                  }
+                                )
+                              : []
+                          }
+                        />
+                      )}
                     />
-                  )}
-                />
+                  </>
+                )}
               </div>
             </div>
             <Box

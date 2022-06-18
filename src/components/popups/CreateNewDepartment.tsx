@@ -103,7 +103,15 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const handleSubmit = async () => {
     let checkMatch = department.find((dep: any) => dep.name === formData.name);
     if (!checkMatch) {
-      dispatch(createDepartment({ data: formData, dispatch,setNames,setData,setShow }));
+      dispatch(
+        createDepartment({
+          data: formData,
+          dispatch,
+          setNames,
+          setData,
+          setShow,
+        })
+      );
       setFormData({
         name: "",
         color: "",
@@ -125,7 +133,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       });
     }
   };
-  
+
   return (
     <>
       <div
@@ -227,6 +235,20 @@ const CreateNewDepartment: React.FC<Props> = () => {
             control={control}
             render={(props) => (
               <SelectInput2
+                handleOnClick={() => {
+                  if (teamsData.techMembers.length === 0) {
+                    toast.warning("There are no existing teams", {
+                      position: "top-right",
+                      autoClose: 1500,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      toastId: generateID(),
+                    });
+                  }
+                }}
                 handleChange={(e: any) => {
                   if (e.target.value !== "") {
                     setData(e.target.value);

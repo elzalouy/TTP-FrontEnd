@@ -47,6 +47,7 @@ import { selectUi } from "../../redux/Ui/UI.selectors";
 import PopUps from "../../pages/PopUps";
 import { generateID } from "../../helpers/IdGenerator";
 import { AnyListenerPredicate } from "@reduxjs/toolkit/dist/listenerMiddleware/types";
+import { selectRole } from "../../redux/Auth";
 
 type Props = {
   show: string;
@@ -81,6 +82,7 @@ const EditTask: React.FC<Props> = (props) => {
   const { editTask: id } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
   const { register, handleSubmit, control, reset, setValue, watch } = useForm();
+  const role = useAppSelector(selectRole);
 
   const watchDeadline = watch().deadline;
 
@@ -453,44 +455,66 @@ const EditTask: React.FC<Props> = (props) => {
                   )}
                 />
                 <br />
-                <label className="label-project">Assign to Team</label>
-                <br />
-                <Controller
-                  name="teamId"
-                  control={control}
-                  render={(props) => (
-                    <SelectInput2
-                      error={error?.error?.details[0]?.path.includes("listId")}
-                      handleChange={props.field.onChange}
-                      selectText={
-                        selectedDepartment?.teamsId?.find(
-                          (item: any) => item._id === props.field.value
-                        )?.name
-                      }
-                      {...register("teamId")}
-                      selectValue={props.field.value}
-                      options={
-                        selectedDepartment?.teamsId
-                          ? selectedDepartment?.teamsId?.map((item: any) => {
-                              if (!item.isDeleted) {
-                                return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.name,
-                                };
-                              } else {
-                                return {
-                                  id: "",
-                                  value: "",
-                                  text: "",
-                                };
-                              }
-                            })
-                          : []
-                      }
+                {role === "OM" && (
+                  <>
+                    <label className="label-project">Assign to Team</label>
+                    <br />
+                    <Controller
+                      name="teamId"
+                      control={control}
+                      render={(props) => (
+                        <SelectInput2
+                          error={error?.error?.details[0]?.path.includes(
+                            "listId"
+                          )}
+                          handleChange={props.field.onChange}
+                          selectText={
+                            selectedDepartment?.teamsId?.find(
+                              (item: any) => item._id === props.field.value
+                            )?.name
+                          }
+                          {...register("teamId")}
+                          handleOnClick={() => {
+                            if (selectedDepartment?.teamsId.length === 0) {
+                              toast.warning("There are no existing teams", {
+                                position: "top-right",
+                                autoClose: 1500,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                toastId: generateID(),
+                              });
+                            }
+                          }}
+                          selectValue={props.field.value}
+                          options={
+                            selectedDepartment?.teamsId
+                              ? selectedDepartment?.teamsId?.map(
+                                  (item: any) => {
+                                    if (!item.isDeleted) {
+                                      return {
+                                        id: item._id ? item._id : "",
+                                        value: item._id ? item._id : "",
+                                        text: item.name,
+                                      };
+                                    } else {
+                                      return {
+                                        id: "",
+                                        value: "",
+                                        text: "",
+                                      };
+                                    }
+                                  }
+                                )
+                              : []
+                          }
+                        />
+                      )}
                     />
-                  )}
-                />
+                  </>
+                )}
               </div>
             </div>
             {/* <Box

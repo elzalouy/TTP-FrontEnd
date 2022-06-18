@@ -19,6 +19,8 @@ import SelectInput2 from "../../coreUI/usable-component/Inputs/SelectInput2";
 import departments from "../../services/endpoints/departments";
 import { CircularProgress } from "@mui/material";
 import { deleteTeam } from "../../redux/techMember";
+import { toast } from "react-toastify";
+import { generateID } from "../../helpers/IdGenerator";
 
 type Props = {
   Show: string;
@@ -108,7 +110,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
       setData("");
     }
   };
-  
+
   const handleRemoveTeam = (index: number) => {
     // add the listId I want to remove in trello
     let targetTeam = teams.find((team: any) => team.name === Names[index]);
@@ -260,6 +262,20 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                 handleChange={(e) => {
                   if (e.target.value !== "") {
                     setData(e.target.value);
+                  }
+                }}
+                handleOnClick={(e) => {
+                  if (teamsData.techMembers.length === 0) {
+                    toast.warning("There are no existing teams", {
+                      position: "top-right",
+                      autoClose: 1500,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      toastId: generateID(),
+                    });
                   }
                 }}
                 selectText={splitData[1]}

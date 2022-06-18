@@ -28,7 +28,7 @@ export interface Client {
   _id: string;
   clientName: string;
   doneProject: string[];
-  inProgressProject: string[];
+  inProgressProject: string[] | number;
   inProgressTask: string[];
   createdAt: string;
   image: string;

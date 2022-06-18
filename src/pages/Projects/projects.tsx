@@ -163,6 +163,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
                     {...props}
                     label="Due Date: "
                     options={[
+                      { id: "All", text: "All", value: "" },
                       { id: "asc", text: "Ascending", value: "asc" },
                       { id: "desc", text: "Descending", value: "desc" },
                     ]}

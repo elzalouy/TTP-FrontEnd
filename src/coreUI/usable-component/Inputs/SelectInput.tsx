@@ -13,24 +13,22 @@ import "../style.css";
 import { ArrowDropUp } from "@mui/icons-material";
 import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";
 import _ from "lodash";
+import { isOptionsEmpty } from "../../../helpers/generalUtils";
 interface Props {
   handleChange: (e: any) => void;
+  handleOnClick?: (e: any) => void;
   options?: {
-    id: string | undefined;
-    value: string | undefined;
-    text: string | undefined;
+    id?: string;
+    value?: string;
+    text?: string;
   }[];
-  label?: string | undefined;
-  selectValue: string | undefined;
-  customValue?: string;
-  selectText: string | undefined;
+  label?: string;
+  default?: string;
   placeholder?: string;
+  selectValue: string | undefined;
+  selectText: string | undefined;
+  error?: Boolean | undefined;
 }
-
-const getTextfromValue = (string: any) => {
-  let text = _.truncate(string, { length: 15, separator: " " });
-  return text;
-};
 
 const selectInputGridStyles = {
   width: "100%",
@@ -45,21 +43,21 @@ const SelectInput: React.FC<Props> = ({
   handleChange,
   options = [],
   selectValue,
-  customValue,
   label,
-  selectText,
   placeholder,
+  selectText,
+  handleOnClick,
+  error,
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [Label, setLabel] = useState(label);
+  const [Value, setValue] = useState(selectText);
+
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const [Label, setLabel] = useState(label);
-  const [Value, setValue] = useState(selectText);
 
   const open = Boolean(anchorEl);
-
   useEffect(() => {
     if (selectText && selectText.length > 15) {
       return setValue(_.truncate(selectText, { length: 15, separator: " " }));
@@ -81,25 +79,18 @@ const SelectInput: React.FC<Props> = ({
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"
-      onClick={anchorEl === null ? handleOpen : handleClose}
+      className="select"
       container
+      onClick={handleOnClick}
     >
-      {/* <Grid
+      <Grid
         onClick={handleOpen}
         item
         justifyContent={"flex-start"}
         alignItems="center"
         paddingLeft={1}
         display="inline-flex"
-        width={"80%"}
-      > */}
-      <Box
-        minWidth={"calc(100%-28px)"}
-        display={"inline-flex"}
-        flex={5}
-        justifyContent="flex-start"
-        alignItems={"center"}
-        paddingLeft={1}
+        xs={10}
       >
         <Typography
           maxWidth={140}
@@ -112,7 +103,26 @@ const SelectInput: React.FC<Props> = ({
         >
           {Label}
         </Typography>
-        <Typography
+        {selectText ? (
+          <Typography
+            lineHeight={1}
+            textOverflow="hidden"
+            overflow={"hidden"}
+            variant="h5"
+            height={40}
+            fontSize={14}
+            textTransform="capitalize"
+            fontWeight={"700"}
+            color="#44444F"
+            sx={{
+              paddingTop: 1.5,
+              overflow: "hidden",
+            }}
+          >
+            {selectText}
+          </Typography>
+        ) : (
+          <Typography
           lineHeight={1}
           textOverflow="hidden"
           overflow={"hidden"}
@@ -126,50 +136,69 @@ const SelectInput: React.FC<Props> = ({
             paddingTop: 1.5,
             overflow: "hidden",
           }}
-        >
-          {Value
-            ? Value === "inProgress"
-              ? "In Progress"
-              : Value
-            : placeholder || "All"}
-        </Typography>
-      </Box>
-      <Box display={"inline-flex"} maxWidth="28px">
-        <Box
-          height={40}
-          sx={{
-            borderLeft: "1px solid #F1F1F5",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: 1,
-          }}
-        >
-          {open ? (
-            <ArrowDropUp htmlColor="#92929D" />
-          ) : (
-            <ArrowDownIcon htmlColor="#92929D" />
-          )}
+          >
+            {Value
+              ? Value === "inProgress"
+                ? "In Progress"
+                : Value
+              : placeholder || "All"}
+          </Typography>
+        )}
+      </Grid>
+      <Grid item>
+        <Box display={"inline-flex"} onClick={handleOpen}>
+          <Box
+            height={40}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 1,
+              paddingRight: 1,
+            }}
+          >
+            {open && options.length > 1 ? (
+              <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
+            ) : (
+              <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
+            )}
+          </Box>
         </Box>
-      </Box>
+      </Grid>
       <Popover
         className={styles.root}
-        open={open}
-        sx={{ borderRadius: "10px", width: "100%" }}
+        open={options.length > 0 ? open : false}
+        sx={
+          isOptionsEmpty(options)
+            ? {
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+                opacity: "0",
+              }
+            : {
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+              }
+        }
         anchorEl={anchorEl}
         anchorReference="anchorEl"
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "center",
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "center",
+          horizontal: "left",
         }}
       >
-        <Box display={"grid"} padding={1} borderRadius={"10px"} width="100%">
+        <Box display={"grid"} padding={1} borderRadius={"10px"}>
           {options &&
             options.map((item) => {
+              if (item.id?.length === 0) {
+                return false;
+              }
               return (
                 <>
                   <label
@@ -193,7 +222,6 @@ const SelectInput: React.FC<Props> = ({
                     {item.text}
                   </label>
                   <input
-                    name={item.id}
                     id={item.id}
                     key={item.id}
                     className="Option"
@@ -213,6 +241,7 @@ const SelectInput: React.FC<Props> = ({
                     }}
                     onClick={(e) => {
                       handleChange(e);
+                      handleClose();
                     }}
                     readOnly
                     hidden

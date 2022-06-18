@@ -18,6 +18,7 @@ import {
   ProjectsInterface,
   ProjectsActions,
   deleteTasks,
+  getAllTasks,
 } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "./DeleteTask";
@@ -39,6 +40,9 @@ const Tasks: React.FC<Props> = (props: any) => {
   const { register, watch, control, setValue } = useForm();
 
   React.useEffect(() => {
+    //To clear all filters on each page change
+    dispatch(filterTasks({}));
+    
     if (props?.location?.state?.projectId) {
       setValue("projectId", props?.location?.state?.projectId);
       let filter = watch();
@@ -54,6 +58,7 @@ const Tasks: React.FC<Props> = (props: any) => {
 
   const onHandleSort = (e: any) => {
     let filter = watch();
+    console.log(e.target);
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
   };
 
@@ -116,7 +121,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                 label="Due Date: "
                 {...props}
                 options={[
-                  { id: "", text: "All", value: "all" },
+                  { id: "All", text: "All", value: "" },
                   { id: "asc", text: "Ascending", value: "asc" },
                   { id: "desc", text: "Descending", value: "desc" },
                 ]}
@@ -143,7 +148,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                   placeholder="All"
                   {...props}
                   options={[
-                    { id: "", value: "", text: "All" },
+                    { id: "All", value: "", text: "All" },
                     {
                       id: "Tasks Board",
                       value: "Tasks Board",
@@ -214,7 +219,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                   label={"Project: "}
                   {...props}
                   options={[
-                    { id: "", value: "", text: "All" },
+                    { id: "All", value: "", text: "All" },
                     ...projects.projects?.map((item) => {
                       return {
                         id: item._id,
@@ -325,7 +330,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             }}
             className="filter-icon"
           >
-           <Loading color="grey" type="spinningBubbles"/>
+            <Loading color="grey" type="spinningBubbles" />
             <Typography style={{ color: "#909090", paddingLeft: "10px" }}>
               Loading
             </Typography>

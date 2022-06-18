@@ -62,7 +62,7 @@ const createTaskSchema = Joi.object({
     "string.empty": "Category should be selected",
     "any.required": "Category is required",
   }),
-  subCategoryId: Joi.string().required().messages({
+  subCategoryId: Joi.string().optional().allow("").messages({
     "string.base": "Sub Category is required",
     "string.empty": "Sub Category should be selected",
     "any.required": "Sub Category is required",

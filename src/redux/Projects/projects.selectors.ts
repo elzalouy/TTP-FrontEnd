@@ -81,4 +81,4 @@ export const selectEditTaskValues = (state: RootState) =>
 export const selectedDeleteTaskId = (state: RootState) =>
   state.projects.deleteTask;
 export const editTaskLoading = (state: RootState) =>
-  state.projects.editTaskLoading;
+  state.projects.loading;

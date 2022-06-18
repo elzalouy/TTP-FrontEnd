@@ -15,7 +15,7 @@ const LogoutPopup: React.FC<LogoutPopupProps> = ({ show, setShow }) => {
   const history = useHistory();
   const handleLogout = () => {
     dispatch(logout(null));
-    // setTimeout(() => history.replace("/"), 1000);
+    setTimeout(() => history.replace("/login"), 500);
     setShow("none");
   };
   return (

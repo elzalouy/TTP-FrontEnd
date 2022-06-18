@@ -7,20 +7,31 @@ import moment from "moment";
 import ClientsPopover from "../../coreUI/usable-component/Popovers/ClientsPopover";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
+import { selectNotStartedProjects } from "../../redux/Projects";
 interface IProps {
   client: Client;
 }
 
 const ClientCard: React.FC<IProps> = ({ client }) => {
-  const {
-    clientName,
-    createdAt,
-    doneProject,
-    inProgressProject,
-    inProgressTask,
-    image,
-  } = client;
+  const { clientName, createdAt, doneProject, inProgressProject, image } =
+    client;
+
   const role = useAppSelector(selectRole);
+  const notStartedProject = useAppSelector(selectNotStartedProjects);
+
+  const getAllActiveProjects = () => {
+    let notStartedArray = notStartedProject?.filter(
+      (project) => project.clientId === client._id
+    );
+
+    if (
+      typeof notStartedArray !== "undefined" &&
+      typeof inProgressProject === "number"
+    ) {
+      return notStartedArray.length + inProgressProject;
+    }
+    return 0;
+  };
 
   return (
     <Box>
@@ -48,7 +59,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5}}
+                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
                 >
                   {clientName}
                 </Typography>
@@ -102,10 +113,10 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               style={{ color: "#808191" }}
               className="counter-title"
             >
-              In Progress Project
+              Active Projects
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressProject}
+              {getAllActiveProjects()}
             </Typography>
           </Grid>
           <Grid
@@ -129,7 +140,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               style={{ color: "#808191" }}
               className="counter-title"
             >
-              Done Project
+              Done Projects
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
           </Grid>

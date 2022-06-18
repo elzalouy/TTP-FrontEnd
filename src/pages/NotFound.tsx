@@ -1,14 +1,34 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
-import { RouteComponentProps } from "react-router";
+import "./notfound.css";
+import { Redirect, RouteComponentProps, useLocation } from "react-router";
 import IMAGES from "../assets/img";
+import { checkAuthToken } from "../services/api";
 interface NotFoundProps {
   history: RouteComponentProps["history"];
 }
 
 const NotFound: FC<NotFoundProps> = (props) => {
+  const location = useLocation();
+
+  if (location.pathname === "/") {
+    return (
+      <div className="notfound">
+        <Grid
+          container
+          justifyContent={"center"}
+          height={"100vh"}
+          alignItems="center"
+          direction={"column"}
+        >
+          <CircularProgress sx={{ color: "black" }} />
+        </Grid>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div className="notfound">
       <Grid
         container
         justifyContent={"center"}
@@ -41,7 +61,7 @@ const NotFound: FC<NotFoundProps> = (props) => {
           Go Back
         </Button>
       </Grid>
-    </>
+    </div>
   );
 };
 

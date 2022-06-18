@@ -9,13 +9,29 @@ import { departmentsActions } from "../../redux/Departments";
 import DeleteDepartment from "../../components/popups/DeleteDepartment";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
-import { selectAllProjects } from "../../redux/Projects";
+import {
+  selectAllProjects,
+  selectDoneTasks,
+  selectInProgressTasks,
+  selectTasks,
+  Task,
+} from "../../redux/Projects";
+
+type Status =
+  | "Tasks Board"
+  | "Review"
+  | "Shared"
+  | "Done"
+  | "Cancled"
+  | "inProgress"
+  | "Not Clear";
 
 type Props = {
   backgroundColor: string;
   fontColor: string;
   department: Department;
 };
+
 const colors: any = {
   blue: ["#0079BF1A", "#0079BF"],
   orange: ["#D290341A", "#D29034"],
@@ -37,6 +53,7 @@ const DepartmentCard: React.FC<Props> = ({
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const projects = useAppSelector(selectAllProjects);
+  const tasks = useAppSelector(selectTasks);
 
   const handleSetShow = (value: string) => {
     setShow(value);
@@ -46,6 +63,17 @@ const DepartmentCard: React.FC<Props> = ({
   const handleSetShowDelete = (value: string) => {
     setShowDelete(value);
     dispatch(departmentsActions.selecteDepartment(department));
+  };
+
+  const getAllTasksByStatus = (status: Status[]) => {
+    let findTasksByDepartmentId = tasks.filter(
+      (task) => task.boardId === department.boardId
+    );
+    let filterTasksByStatus = findTasksByDepartmentId.filter((task) => {
+       return !status.some((item) => item === task.status);
+    });
+    console.log(filterTasksByStatus , status);
+    return filterTasksByStatus.length;
   };
 
   return (
@@ -83,13 +111,22 @@ const DepartmentCard: React.FC<Props> = ({
       </div>
       <div className="counter-container">
         <div className="InProgress">
-          <p className="counter-title">In progress task</p>
-          <p>{department?.totalInProgress ? department.totalInProgress : 0}</p>
+          <p className="counter-title">Active tasks</p>
+          <p>{getAllTasksByStatus(["Done", "Cancled"])}</p>
         </div>
         <div className="hrVertical"></div>
         <div className="Done">
-          <p className="counter-title">Done task</p>
-          <p>{department?.totalDone ? department.totalDone : 0}</p>
+          <p className="counter-title">Done tasks</p>
+          <p>
+            {getAllTasksByStatus([
+              "Tasks Board",
+              "Review",
+              "Shared",
+              "Cancled",
+              "inProgress",
+              "Not Clear",
+            ])}
+          </p>
         </div>
       </div>
       <EditDepartment Show={Show} handleSetShow={handleSetShow} />
