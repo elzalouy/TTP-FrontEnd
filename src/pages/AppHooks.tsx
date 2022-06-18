@@ -199,6 +199,9 @@ const AppHooks: React.FC = (props) => {
     });
     socket.on("connect_failed", function () {
       document.write("Sorry, there seems to be an issue with the connection!");
+      setTimeout(() => {
+        socket.connect();
+      }, 1000);
     });
     return () => {
       console.log("client disconnected");
