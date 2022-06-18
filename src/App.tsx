@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { useHistory } from "react-router";
-import LoggedInContainer from "./layout";
+import LoggedInContainer from "./layout/Layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
 import TasksListView from "./pages/TasksListView/TasksListView";

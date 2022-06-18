@@ -1,10 +1,10 @@
 // import { CssBaseline } from "@mui/material";
 // import { Box } from "@mui/system";
 import React, { useEffect } from "react";
-import "./index.css";
+import "./Layout.css";
 // import { useHistory } from "react-router";
 import { Route, Redirect, useLocation } from "react-router-dom";
-import Sidebar from "./partials/Sidebar";
+import Sidebar from "./partials/Sidebar/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
 import { checkAuthToken } from "../services/api";
 // import { useDispatch } from "react-redux";

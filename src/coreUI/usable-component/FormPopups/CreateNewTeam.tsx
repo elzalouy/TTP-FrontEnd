@@ -202,6 +202,7 @@ const AddNewTeam: React.FC<Props> = () => {
                 ? "#FFC500"
                 : "#FFC500",
             marginBottom: "3em",
+            cursor:(Team.department === "" || Team.name === "") ? "default" : "pointer",
           }}
         >
           Add
