@@ -177,18 +177,18 @@ const AppHooks: React.FC = (props) => {
     socket.on("connect", () => {
       console.log("client is connected");
       //todo check user auth
+      if (user?.type === "admin") {
+        // this for admins role only
+        socket.emit("joined admin");
+      }
+      if (user?.role === "PM") {
+        // this for project managers role only
+        socket.emit("joined manager");
+      }
+      // this is for specific user
+      socket.emit("joined user", { id: user?._id });
+      // on event for lestening if task moved on trello (__webhookUpdate)
     });
-    if (user?.type === "admin") {
-      // this for admins role only
-      socket.emit("joined admin");
-    }
-    if (user?.role === "PM") {
-      // this for project managers role only
-      socket.emit("joined manager");
-    }
-    // this is for specific user
-    socket.emit("joined user", { id: user?._id });
-    // on event for lestening if task moved on trello (__webhookUpdate)
     socket.on("Move Task", (data) => {
       console.log("handled event");
       setMoveTaskData(data);
@@ -197,8 +197,8 @@ const AppHooks: React.FC = (props) => {
     socket.on("new department", (data) => {
       setNewDepartment(data);
     });
-    socket.on("connect_error", () => {
-      socket.connect();
+    socket.on("connect_failed", function () {
+      document.write("Sorry, there seems to be an issue with the connection!");
     });
     return () => {
       console.log("client disconnected");
