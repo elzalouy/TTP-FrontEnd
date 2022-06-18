@@ -46,8 +46,8 @@ const OverView: FC<Props> = (props) => {
         container
         justifyContent={"space-between"}
         alignItems={"normal"}
-        direction={MD ? "column" : "row"}
-        marginX={5}
+        direction={"row"}
+        marginX={SM ? 2 : 5}
         bgcolor={"#FAFAFB"}
       >
         <Grid
@@ -91,7 +91,7 @@ const OverView: FC<Props> = (props) => {
         >
           <Grid
             direction="row"
-            justifyContent="flex-start"
+            justifyContent={MD ? "space-between" : "flex-start"}
             alignItems="flex-start"
             paddingTop={4}
             container
@@ -159,6 +159,7 @@ const OverView: FC<Props> = (props) => {
                     title="Review Tasks"
                     count={statistics.OM.reviewLength.toString()}
                     pt={1.8}
+                    pb={5}
                   />
                 </>
               )}
@@ -169,6 +170,7 @@ const OverView: FC<Props> = (props) => {
               md={4.5}
               sm={12}
               xs={12}
+              marginY={2}
               justifyContent="center"
               alignItems="center"
             >
@@ -181,7 +183,9 @@ const OverView: FC<Props> = (props) => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            md={12}
+            lg={6}
             paddingRight={2}
             justifyContent="flex-start"
             alignItems="flex-start"
@@ -190,7 +194,7 @@ const OverView: FC<Props> = (props) => {
             {role === "OM" ? (
               <UserTasks
                 tasks={statistics.OM.inProgress}
-                title={"In Progress"}
+                title={"Tasks In Progress"}
               />
             ) : (
               <UserTasks tasks={statistics.PM.shared} title={"Shared Tasks"} />
@@ -198,8 +202,10 @@ const OverView: FC<Props> = (props) => {
           </Grid>
           <Grid
             item
-            xs={6}
-            paddingLeft={2}
+            xs={12}
+            md={12}
+            lg={6}
+            paddingLeft={SM ? 0 : 2}
             // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"

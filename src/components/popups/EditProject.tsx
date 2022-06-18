@@ -28,6 +28,7 @@ import {
   calculateStatusBasedOnDeadline,
   getStatus,
 } from "../../helpers/generalUtils";
+import { toast } from "react-toastify";
 
 type Props = {
   show: string;
@@ -90,6 +91,38 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
+  const watchStartDate = watch().startDate;
+  const watchDeadline = watch().deadline;
+
+ /*  React.useEffect(() => {
+    let today = moment().format();
+    let deadline = moment(watchDeadline).format();
+    let startDate = moment(watchStartDate).format();
+    if (moment(today).isAfter(moment(deadline))) {
+      toast.warning("Deadline has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      });
+    }
+    if (moment(today).isAfter(moment(startDate))) {
+      toast.warning("Start Date has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      });
+    }
+  }, [watchStartDate, watchDeadline]); */
 
   useEffect(() => {
     setValue("clientId", project?.clientId);

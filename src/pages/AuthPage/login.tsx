@@ -213,7 +213,7 @@ const Login: React.FC<Props> = ({ history }) => {
                   }}
                   placeholder="Password"
                 />
-                <IconButton onClick={() => setVisiblity((state) => !state)}>
+                <IconButton className="password-icon" onClick={() => setVisiblity((state) => !state)}>
                   {!visible ? (
                     <VisibilityOff style={{ color: "#b4b6c4" }} />
                   ) : (

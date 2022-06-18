@@ -25,22 +25,11 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       if (projects?.status === 401 || projects?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        dispatch(logout(null));
+        dispatch(logout(null)); 
       }
-
       if (projects.ok) return projects.data;
       throw projects.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
       return rejectWithValue(error);
     }
   }
@@ -219,22 +208,12 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
       if (tasks?.status === 401 || tasks?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        dispatch(logout(null));
+        let result = await dispatch(logout(null));
+        console.log(result);
       }
-
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
       return rejectWithValue(error);
     }
   }

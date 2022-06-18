@@ -7,6 +7,7 @@ import {
   IconButton,
   useMediaQuery,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import IMAGES from "../../assets/img";
 import Ttp from "../../assets/img/ttp_logo.png";
@@ -16,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { resetPMpassword, selectPayload, selectPMs } from "../../redux/PM";
-import { selectAuth, selectIsAuth } from "../../redux/Auth";
+import { selectAuth, selectIsAuth, selectLoading } from "../../redux/Auth";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { setAuthToken } from "../../services/api";
 
@@ -57,6 +58,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
     message: "",
   });
   const isAuth = useAppSelector(selectIsAuth);
+  const loading = useAppSelector(selectLoading);
   const res = useAppSelector(selectPayload);
   const { token } = useParams<IParam>();
   const dispatch = useDispatch();
@@ -192,6 +194,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                       onChange={() => setFailed({ message: "", status: false })}
                     />
                     <IconButton
+                      className="password-icon"
                       onClick={() => setHidePassword((state) => !state)}
                     >
                       {!hidePassword ? (
@@ -232,6 +235,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                       onChange={() => setFailed({ message: "", status: false })}
                     />
                     <IconButton
+                      className="password-icon"
                       onClick={() => setHideConfirmPassword((state) => !state)}
                     >
                       {!hideConfirmPassword ? (
@@ -267,7 +271,11 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
                 disableElevation
                 onClick={handleSubmit(onSubmit)}
               >
-                Confirm
+                {loading ? (
+                  <CircularProgress sx={{ color: "white", padding: "10px" }} />
+                ) : (
+                  "Confirm"
+                )}
               </Button>
             </>
           )}
@@ -287,7 +295,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
             src={IMAGES.resetDesktop}
             className="Image"
             alt=""
-            style={{ width: "60%" }}
+            style={{ width: "80%" }}
           />
         </Grid>
       </Grid>

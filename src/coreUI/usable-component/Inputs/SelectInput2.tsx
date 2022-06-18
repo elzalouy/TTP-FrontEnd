@@ -38,7 +38,7 @@ const selectInputGridTwoStyles = {
   border: "1px solid #E4E4E4",
   padding: "0px !important",
   marginTop: "7px",
-}
+};
 
 const SelectInput2: React.FC<Props> = ({
   handleChange,
@@ -55,9 +55,12 @@ const SelectInput2: React.FC<Props> = ({
 
   const open = Boolean(anchorEl);
 
+  
+
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -181,30 +184,53 @@ const SelectInput2: React.FC<Props> = ({
                 return false;
               }
               return (
-                <option
-                  key={item.id}
-                  className="Option"
-                  value={item?.value}
-                  onClick={(e) => {
-                    handleChange(e);
-                    handleClose();
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    paddingInline: 10,
-                    width: "340px",
-                    justifyContent: "flex-start",
-                    textTransform: "capitalize",
-                    fontFamily: "Cairo",
-                    color: "#696974",
-                    fontWeight: "700",
-                    fontSize: 13,
-                    paddingTop: 5,
-                    paddingBottom: 5,
-                    borderRadius: 0,
-                  }}
-                  label={item?.text}
-                />
+                <>
+                  <label
+                    htmlFor={item.id}
+                    className="Option"
+                    style={{
+                      cursor: "pointer",
+                      paddingInline: 10,
+                      width: "200px",
+                      justifyContent: "flex-start",
+                      textTransform: "none",
+                      fontFamily: "Cairo",
+                      color: "#696974",
+                      fontWeight: "700",
+                      fontSize: 13,
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      borderRadius: 0,
+                    }}
+                  >
+                    {item.text}
+                  </label>
+                  <input
+                    id={item.id}
+                    key={item.id}
+                    className="Option"
+                    style={{
+                      cursor: "pointer",
+                      paddingInline: 10,
+                      width: "200px",
+                      justifyContent: "flex-start",
+                      textTransform: "none",
+                      fontFamily: "Cairo",
+                      color: "#696974",
+                      fontWeight: "700",
+                      fontSize: 13,
+                      paddingTop: 5,
+                      paddingBottom: 5,
+                      borderRadius: 0,
+                    }}
+                    onClick={(e) => {
+                      handleChange(e);
+                    }}
+                    readOnly
+                    hidden
+                    value={item?.value}
+                  />
+                </>
               );
             })}
         </Box>

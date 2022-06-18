@@ -21,6 +21,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
     image,
   } = client;
   const role = useAppSelector(selectRole);
+
   return (
     <Box>
       <Grid container direction="column" className="client-card">
@@ -32,7 +33,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               alignItems="center"
             >
               <img
-                src={!image ? IMAGES.avatarClients : image}
+                src={image === "null" ? IMAGES.avatarClients : image}
                 alt="avatar"
                 style={{
                   width: "52px",
@@ -47,7 +48,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+                  sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5}}
                 >
                   {clientName}
                 </Typography>

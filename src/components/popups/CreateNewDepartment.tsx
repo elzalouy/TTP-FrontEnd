@@ -59,6 +59,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
   const { name, color, teams, mainBoard } = formData;
   const { register, control } = useForm();
   let teamsData = useAppSelector(selectAllMembers);
+
   const handleSelectTeam = () => {
     // let value = e.target.value;
     let teamData = Data.split(",");
@@ -91,6 +92,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
+    console.log(e.target);
     if (e.target.name) {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     } else {
@@ -123,6 +125,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
       });
     }
   };
+  
   return (
     <>
       <div

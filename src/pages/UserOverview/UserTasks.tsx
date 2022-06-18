@@ -33,12 +33,24 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
       >
         {props.title}
       </Typography>
-      <TasksTable
-        selects={selects}
-        setAllSelected={setAllSelected}
-        projects={projects.projects}
-        tasks={props?.tasks}
-      />
+      {props.tasks?.length === 0 ? (
+        <p
+          style={{
+            textTransform: "capitalize",
+            margin: "10px",
+            color: "rgb(154,154,152)",
+          }}
+        >
+          There are currently no {props.title}
+        </p>
+      ) : (
+        <TasksTable
+          selects={selects}
+          setAllSelected={setAllSelected}
+          projects={projects.projects}
+          tasks={props?.tasks}
+        />
+      )}
     </>
   );
 };

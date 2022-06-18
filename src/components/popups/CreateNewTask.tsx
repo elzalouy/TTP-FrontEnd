@@ -153,6 +153,24 @@ const CreateNewTask: React.FC<Props> = (props) => {
       file: "",
     },
   });
+  const watchDeadline = watch().deadline;
+
+  React.useEffect(() => {
+    let today = moment().format();
+    let deadline = moment(watchDeadline).format();
+    if(moment(today).isAfter(moment(deadline))){
+      toast.warning("Deadline has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      })
+    }
+  }, [watchDeadline]);
 
   const onSubmit = async (data: any) => {
     let newTask = {

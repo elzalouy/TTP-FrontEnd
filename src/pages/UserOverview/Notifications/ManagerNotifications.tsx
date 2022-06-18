@@ -1,4 +1,13 @@
-import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import * as React from "react";
 import {
   KeyboardArrowDown,
@@ -12,6 +21,7 @@ import { selectSatistics } from "../../../redux/Statistics";
 import Status from "../../../coreUI/usable-component/Typos/Status";
 import { Task } from "../../../redux/Projects";
 import _ from "lodash";
+import { setWidth } from "../../../helpers/generalUtils";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -20,6 +30,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
   const tabs = ["0", "1", "2"];
   const [tab, setTab] = React.useState("0");
   const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
+
   const cssTab = (tabIndex: string) => {
     return {
       width: "calc(33%)",
@@ -42,7 +55,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
         : tabItem === "1"
         ? statistics.OM.review
         : statistics.OM.shared;
+
     let flat = _.flattenDeep(tasks);
+
     return {
       height: open
         ? flat && flat?.length <= 4
@@ -65,14 +80,30 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       },
     };
   };
+
   return (
-    <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
+    <Box width={setWidth(MD, open)} overflow="hidden">
       <ScrollOver setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
-            <Tab value={"0"} label="Taskboard" sx={cssTab("0")} />
-            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
-            <Tab value={"2"} label="Shared Tasks" sx={cssTab("2")} />
+            <Tab
+              value={"0"}
+              label="Taskboard"
+              sx={cssTab("0")}
+              disableRipple={true}
+            />
+            <Tab
+              value={"1"}
+              label="Review Tasks"
+              sx={cssTab("1")}
+              disableRipple={true}
+            />
+            <Tab
+              value={"2"}
+              label="Shared Tasks"
+              sx={cssTab("2")}
+              disableRipple={true}
+            />
           </Tabs>
           {tabs?.map((tabItem, index) => {
             let tasks: Task[][] | null =

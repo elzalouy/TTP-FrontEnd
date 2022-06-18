@@ -35,7 +35,8 @@ import { Box } from "@mui/system";
 import _ from "lodash";
 
 const EditTask: React.FC<Props> = (props) => {
-  // here is the clean code should be
+  // here is the clean order of code
+  // we want to seperate some rendered lines of design code as a seperated component
   // our State first
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
@@ -79,7 +80,6 @@ const EditTask: React.FC<Props> = (props) => {
 
   // secondly hooks here
   React.useEffect(() => {
-    console.log("id changed");
     let State = { ...state };
     let task = selectedProject.tasks.find((item) => item._id === id);
     if (task) {

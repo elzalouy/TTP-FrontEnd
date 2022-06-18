@@ -19,7 +19,7 @@ const LogoutPopup: React.FC<LogoutPopupProps> = ({ show, setShow }) => {
     setShow("none");
   };
   return (
-    <SmallPopUp show={show}>
+    <SmallPopUp show={show} zIndex={7}>
       <p className="warning-text">Are you sure you want to Logout?</p>
       <hr className="separator" />
       <div className="margin-cover">

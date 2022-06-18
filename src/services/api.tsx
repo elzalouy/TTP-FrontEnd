@@ -7,6 +7,7 @@ const api = create({
       : apiUrl.API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
+
 export const checkAuthToken = () => {
   try {
     let token = localStorage.getItem("token");
@@ -17,12 +18,14 @@ export const checkAuthToken = () => {
     }
   } catch (error) {}
 };
+
 export const removeAuthToken = () => {
   try {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
   } catch (error) {}
 };
+
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("token", token);

@@ -93,7 +93,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
           <Button
             variant="text"
             onClick={showDeleteClientPopup}
-            className={styles.grayButton}
+            className={styles.redButton}
           >
             <img
               alt=""

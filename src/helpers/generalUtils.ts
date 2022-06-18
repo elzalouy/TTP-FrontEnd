@@ -7,6 +7,18 @@ interface options {
   text?: string;
 };
 
+export const setWidth = (size: boolean, open: boolean) => {
+  if (size && open) {
+    return "80%";
+  } else if (!size && open) {
+    return "29.5%";
+  } else if (!size && !open) {
+    return "inherit";
+  } else {
+    return "inherit";
+  }
+};
+
 export const getStatus = (status: string | undefined) => {
   if (status === "late") {
     return "Delivered Late";

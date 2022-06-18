@@ -1,5 +1,14 @@
 import { RouteComponentProps } from "react-router-dom";
-import { Grid, Typography, Input, Button, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Input,
+  Button,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+  CircularProgress,
+} from "@mui/material";
 import IMAGES from "../../assets/img";
 import Ttp from "../../assets/img/ttp_logo.png";
 import { useDispatch } from "react-redux";
@@ -10,6 +19,7 @@ import {
   newPassword,
   selectAuth,
   selectIsAuth,
+  selectLoading,
   selectResponse,
   selectUser,
 } from "../../redux/Auth";
@@ -55,6 +65,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
   });
 
   const dispatch = useDispatch();
+  const loading = useAppSelector(selectLoading);
   const auth = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
@@ -71,7 +82,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
         newPassword({
           token: `Bearer ${token}`,
           password: data.password,
-          id : token
+          id: token,
         })
       );
     } else {
@@ -84,7 +95,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       setVisible(false);
     } else if (res.msg !== "" && res.status !== 200) {
       setVisible(false);
-      if(res.page==="newPassword"){
+      if (res.page === "newPassword") {
         setFailed({
           message: res.msg,
           status: res.status,
@@ -96,7 +107,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
     }
   }, [auth]);
 
-    if (isAuth && isTokenValid) {
+  if (isAuth && isTokenValid) {
     return <Redirect to={"/Overview"} />;
   }
 
@@ -117,12 +128,16 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
         lg={8}
         height={600}
         maxWidth={"50% !important"}
-        justifyContent={SM? "flex-start" : "center"}
+        justifyContent={SM ? "flex-start" : "center"}
         container
         direction="row"
-        sx={SM ? {boxShadow:"none"} :{
-          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-        }}
+        sx={
+          SM
+            ? { boxShadow: "none" }
+            : {
+                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+              }
+        }
       >
         <Grid
           item
@@ -190,6 +205,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                       }
                     />
                     <IconButton
+                      className="password-icon"
                       onClick={() => setHidePassword((state) => !state)}
                     >
                       {!hidePassword ? (
@@ -240,7 +256,10 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                         })
                       }
                     />
-                    <IconButton onClick={() => setHideConfirmPassword((state) => !state)}>
+                    <IconButton
+                      className="password-icon"
+                      onClick={() => setHideConfirmPassword((state) => !state)}
+                    >
                       {!hideConfirmPassword ? (
                         <VisibilityOff style={{ color: "#b4b6c4" }} />
                       ) : (
@@ -275,7 +294,11 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
                 disableElevation
                 onClick={handleSubmit(onSubmit)}
               >
-                Confirm
+                {loading ? (
+                  <CircularProgress sx={{ color: "white", padding: "10px" }} />
+                ) : (
+                  "Confirm"
+                )}
               </Button>
             </>
           )}
@@ -291,7 +314,12 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
           textAlign={"center"}
           paddingTop={20}
         >
-          <img src={IMAGES.resetDesktop} className="Image" alt="" style={{ width: "60%" }} />
+          <img
+            src={IMAGES.resetDesktop}
+            className="Image"
+            alt=""
+            style={{ width: "80%" }}
+          />
         </Grid>
       </Grid>
     </Grid>
