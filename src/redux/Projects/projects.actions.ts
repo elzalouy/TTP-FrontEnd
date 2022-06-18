@@ -15,6 +15,7 @@ import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
 import { Department } from "../Departments";
 import { logout } from "../Auth";
+import moment from "moment";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
@@ -483,17 +484,23 @@ export const moveTask = createAsyncThunk<any, any, any>(
   }
 );
 
+/**
+ * editTaskFromBoard
+ * This action dispatches the new edited task to the reducers, so it can change it with the new data.
+ * @param EditTaskInfo
+ * @returns newTask or Error (message, path)
+ */
 export const editTaskFromBoard = createAsyncThunk<any, any, any>(
   "tasks/editTask",
   async (args: any, { rejectWithValue }) => {
     try {
-      let response = await api.editTask(args.data);
+      let response: ApiResponse<any> = await api.editTask(args.data);
       if (response.ok && response.data) {
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;
-      } else
-        toast.error("Task not updated", {
+      } else {
+        toast.error(response.data?.message, {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -502,6 +509,8 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
+        return rejectWithValue(response.data);
+      }
     } catch (error) {
       return rejectWithValue(error);
     }

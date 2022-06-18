@@ -10,9 +10,7 @@ import {
   getAllTasks,
   ProjectsActions,
 } from "../redux/Projects";
-import { fireMoveTaskOnTrello } from "../redux/Ui";
 import { selectUi } from "../redux/Ui/UI.selectors";
-import { checkAuthToken } from "../services/api";
 import { getAllCategories } from "../redux/Categories";
 import { getAllMembers } from "../redux/techMember";
 const AppHooks: React.FC = (props) => {
@@ -179,36 +177,28 @@ const AppHooks: React.FC = (props) => {
     socket.on("connect", () => {
       console.log("client is connected");
       //todo check user auth
-      if (user?.type === "admin") {
-        // this for admins role only
-        socket.emit("joined admin");
-      }
-      if (user?.role === "PM") {
-        // this for project managers role only
-        socket.emit("joined manager");
-      }
-      // this is for specific user
-      socket.emit("joined user", { id: user?._id });
-      // on event for lestening if task moved on trello (__webhookUpdate)
-      socket.on("Move Task", (data) => {
-        console.log("handled event");
-        setMoveTaskData(data);
-      });
-      socket.on("message", (data) => {
-        if (data.function === "Move Task") {
-          console.log("handled event");
-          setMoveTaskData(data);
-        }
-      });
-      socket.on("new department error", (data) => console.log(data));
-      socket.on("new department", (data) => {
-        setNewDepartment(data);
-      });
-      socket.on("connect_failed", function () {
-        document.write(
-          "Sorry, there seems to be an issue with the connection!"
-        );
-      });
+    });
+    if (user?.type === "admin") {
+      // this for admins role only
+      socket.emit("joined admin");
+    }
+    if (user?.role === "PM") {
+      // this for project managers role only
+      socket.emit("joined manager");
+    }
+    // this is for specific user
+    socket.emit("joined user", { id: user?._id });
+    // on event for lestening if task moved on trello (__webhookUpdate)
+    socket.on("Move Task", (data) => {
+      console.log("handled event");
+      setMoveTaskData(data);
+    });
+    socket.on("new department error", (data) => console.log(data));
+    socket.on("new department", (data) => {
+      setNewDepartment(data);
+    });
+    socket.on("connect_error", () => {
+      socket.connect();
     });
     return () => {
       console.log("client disconnected");

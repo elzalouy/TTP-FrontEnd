@@ -184,13 +184,13 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       if (action.payload) state.newProject.tasks.push(action.payload);
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {
-      state.loading = false;
+      state.editTaskLoading = false;
     });
     builder.addCase(createTaskFromBoard.pending, (state) => {
-      state.loading = true;
+      state.editTaskLoading = true;
     });
     builder.addCase(createTaskFromBoard.fulfilled, (state, action) => {
-      state.loading = false;
+      state.editTaskLoading = false;
       if (action.payload?._id) {
         let selectedProject = { ...state.selectedProject };
         selectedProject.tasks.push(action?.payload);
