@@ -11,7 +11,7 @@ import {
 } from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
 import { notifiAction } from "../../redux/notification";
-import { socket } from "../../services/socketIo";
+import { openConnection } from "../../services/socketIo";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -44,6 +44,7 @@ const NotificationContainer = (props: Props) => {
 
   // watch notification update
   useEffect(() => {
+    let socket = openConnection(user);
     socket.on("notification update", (data: any) => {
       dispatch(notifiAction.updateCounter(data));
     });
