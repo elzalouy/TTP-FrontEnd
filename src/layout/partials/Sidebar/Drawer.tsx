@@ -39,7 +39,7 @@ import NotificationIcon from "../../../assets/icons/Notification";
 import { useAppSelector } from "../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
-import { counterNotif } from "../../../redux/notification";
+import { counterNotif } from "../../../redux/Notification";
 
 interface BarProps extends AppBarProps {}
 

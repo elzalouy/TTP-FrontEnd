@@ -7,7 +7,7 @@ import pmSlice from "./PM/pm.slice";
 import projectsSlice from "./Projects/projects.slice";
 import techMembersSlice from "./techMember/techMembers.slice";
 import UISlice from "./Ui/UI.slice";
-import NotifiSlice from "./notification/notifi.slice";
+import NotifiSlice from "./Notification/notifi.slice";
 import authSlice from "./Auth/auth.slice";
 import statisticsSlice from "./Statistics/statistics.slice";
 
