@@ -2,16 +2,10 @@ import { Grid, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import "./AuthRedirection.css";
 import IMAGES from "../../../assets/img/Images";
-import { Redirect, useHistory } from "react-router";
-import { selectIsLogout } from "../../../redux/Auth";
-import { useAppSelector } from "../../../redux/hooks";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 const AuthRedirection: FC = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const isLogout = useAppSelector(selectIsLogout);
-  const [timeLeft, setTimeLeft] = useState(0);
 
   return (
     <div className="notfound">
@@ -31,6 +25,21 @@ const AuthRedirection: FC = () => {
         >
           Your authorization token has expired , Please login again
         </Typography>
+        <Button
+          sx={{
+            bgcolor: "#000000",
+            color: "white",
+            width: "239px",
+            borderRadius: "6px",
+            fontFamily: "Cairo, Regular",
+            fontWeight: "700",
+            marginTop: 3,
+            "&:hover": { backgroundColor: "#000000" },
+          }}
+          onClick={() => history.push("/login")}
+        >
+          Go to Login
+        </Button>
       </Grid>
     </div>
   );
