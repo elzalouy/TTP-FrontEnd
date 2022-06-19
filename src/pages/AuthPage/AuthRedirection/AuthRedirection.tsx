@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import "./AuthRedirection.css";
 import IMAGES from "../../../assets/img/Images";
