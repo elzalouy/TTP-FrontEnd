@@ -34,26 +34,20 @@ import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
 import { useAppSelector } from "./redux/hooks";
-import {
-  getUserInfo,
-  selectIsAuth,
-  selectIsLogout,
-  selectUser,
-} from "./redux/Auth";
+import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
 import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import AppHooks from "./utils/AppHooks";
 import { checkAuthToken } from "./services/api";
 import "swiper/css";
 import "swiper/css/navigation";
 
-
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
+  // const logOut = useAppSelector(selectIsLogout);
 
   useEffect(() => {
     let id = localStorage.getItem("id");

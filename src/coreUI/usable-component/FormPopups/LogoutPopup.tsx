@@ -12,12 +12,12 @@ interface LogoutPopupProps {
 
 const LogoutPopup: React.FC<LogoutPopupProps> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const handleLogout = () => {
     dispatch(logout(null));
-    setTimeout(() => history.replace("/login"), 100);
     setShow("none");
   };
+
   return (
     <SmallPopUp show={show} zIndex={7}>
       <p className="warning-text">Are you sure you want to Logout?</p>

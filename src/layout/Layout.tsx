@@ -1,6 +1,6 @@
 // import { CssBaseline } from "@mui/material";
 // import { Box } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Layout.css";
 // import { useHistory } from "react-router";
 import { Route, Redirect, useLocation } from "react-router-dom";
@@ -17,6 +17,8 @@ import { checkAuthToken } from "../services/api";
 // import { getAllProjects, getAllTasks } from "../redux/Projects";
 // import { useAppSelector } from "../redux/hooks";
 import AuthRedirection from "../pages/AuthPage/AuthRedirection/AuthRedirection";
+import { selectIsAuth, selectIsLogout } from "../redux/Auth";
+import { useAppSelector } from "../redux/hooks";
 
 interface Props {
   component: React.ReactNode;
@@ -30,9 +32,10 @@ const LoggedInContainer: React.FC<Props> = ({
   ...rest
 }: any) => {
   const { pathname } = useLocation();
-  // const isLogout = useAppSelector(selectIsLogout);
+  const isAuthed = useAppSelector(selectIsAuth);
+  const isLogout = useAppSelector(selectIsLogout);
 
-  if (!checkAuthToken()) {
+  if (isLogout) {
     return <AuthRedirection />;
   }
 
@@ -41,6 +44,7 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => {
+          if (!isLogout && !isAuthed) return <Redirect to="login" />;
           if (pathname === "/") return <Redirect to={"Overview"} />;
           else
             return (

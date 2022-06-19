@@ -34,12 +34,12 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          toastId:generateID(),
+          toastId: generateID(),
         });
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page:"login"
+          page: "login"
         };
         state.authState = false;
       } else {
@@ -53,7 +53,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          toastId:generateID(),
+          toastId: generateID(),
         });
       }
     });
@@ -69,7 +69,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page:"forgotPassword"
+          page: "forgotPassword"
         };
       } else {
         state.User = payload;
@@ -86,23 +86,33 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     });
     builder.addCase(logout.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.User = initialState.User;
+      state.User = {
+        _id: "",
+        name: "",
+        email: "",
+        password: "",
+        role: "",
+        trelloMemberId: "",
+        image: ""
+      };
       state.authState = false;
-      state.logoutState = true;
+      state.logoutState = payload;
       state.Payload = {
         msg: "",
         status: "",
       }
-      toast.success("Logout successful", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId:generateID(),
-      });
+      if (!payload) {
+        toast.success("Logout successful", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
+      }
     });
     builder.addCase(getUserInfo.rejected, (state) => {
       state.loading = false;
@@ -131,7 +141,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page:"newPassword"
+          page: "newPassword"
         };
       } else {
         toast.success("New password set successfully", {
@@ -142,7 +152,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          toastId:generateID(),
+          toastId: generateID(),
         });
         state.User = payload;
         state.authState = payload.status === 200 ? true : false;

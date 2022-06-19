@@ -19,7 +19,7 @@ export const getAllDepartments = createAsyncThunk<any, any, any>(
       if (departments?.status === 401 || departments?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        dispatch(logout(null));
+        dispatch(logout(true));
       }
       if (departments.ok && departments.data) return departments.data;
       else return [];

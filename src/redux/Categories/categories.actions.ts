@@ -14,7 +14,7 @@ export const getAllCategories = createAsyncThunk<any, any, any>(
       if (result?.status === 401 || result?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        dispatch(logout(null));
+        dispatch(logout(true));
       }
       if (result.data && result.ok) {
         return result.data;

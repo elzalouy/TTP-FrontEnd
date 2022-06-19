@@ -25,7 +25,7 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       if (projects?.status === 401 || projects?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        dispatch(logout(null)); 
+        dispatch(logout(true)); 
       }
       if (projects.ok) return projects.data;
       throw projects.problem;
@@ -208,8 +208,7 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
       if (tasks?.status === 401 || tasks?.status === 403) {
         rejectWithValue("Un Authorized");
         removeAuthToken();
-        let result = await dispatch(logout(null));
-        console.log(result);
+        dispatch(logout(true));
       }
       if (tasks.ok) return tasks.data;
       throw tasks.problem;

@@ -56,10 +56,14 @@ export const logout = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let result = await api.signOut();
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
       if (result.ok === true) {
-        return result.data;
+        await localStorage.removeItem("token");
+        await localStorage.removeItem("id");
+        if(args){
+          return true
+        }else {
+          return false
+        }
       } else return result.data;
     } catch (error) {
       rejectWithValue(error);
