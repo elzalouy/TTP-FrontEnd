@@ -79,7 +79,7 @@
   margin-top: 7px;
 }
 input.date-project::-webkit-calendar-picker-indicator {
-  background: url("../../assets/img/dropdownIcon.svg") no-repeat;
+  background: url("../../../assets/img/dropdownIcon.svg") no-repeat;
 }
 .textarea-project {
   width: calc(96% - 11px);

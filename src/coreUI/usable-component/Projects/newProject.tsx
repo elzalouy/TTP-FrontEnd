@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-import NewProjectPopUp from "../../coreUI/usable-component/Projects/ProjectPopUp";
-import { useAppSelector } from "../../redux/hooks";
+import NewProjectPopUp from "../../../coreUI/usable-component/Projects/ProjectPopUp";
+import { useAppSelector } from "../../../redux/hooks";
 import {
   ProjectsActions,
   selectNotStartedProjects,
   selectLoading,
-} from "../../redux/Projects";
-import { selectNewProject } from "../../redux/Projects/projects.selectors";
+} from "../../../redux/Projects";
+import { selectNewProject } from "../../../redux/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../assets/img/Images";
+import IMAGES from "../../../assets/img/Images";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
-import { toggleCreateProjectPopup } from "../../redux/Ui";
-import Loading from "../../coreUI/usable-elements/Loading"
-import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
-import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
-import { selectPMs } from "../../redux/PM";
+import { toggleCreateProjectPopup } from "../../../redux/Ui";
+import Loading from "../../../coreUI/usable-elements/Loading"
+import TableBox from "../../../coreUI/usable-component/Boxes/TableBox";
+import ProjectsTable from "../../../coreUI/usable-component/Tables/ProjectsTable";
+import { selectPMs } from "../../../redux/PM";
 import { RouteComponentProps } from "react-router";
 
 type Props = {

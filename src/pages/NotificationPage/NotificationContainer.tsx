@@ -4,13 +4,13 @@ import NotificationFilter from "./NotificationFilter";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import { useDispatch } from "react-redux";
-import { getAllNotifi, updateNotifi } from "../../redux/Notification";
+import { getAllNotifi, updateNotifi } from "../../redux/notification";
 import {
   notifiDataSelector,
   loadingNotification,
-} from "../../redux/Notification/notifi.selectors";
+} from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
-import { notifiAction } from "../../redux/Notification";
+import { notifiAction } from "../../redux/notification";
 import { openConnection } from "../../services/socketIo";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
