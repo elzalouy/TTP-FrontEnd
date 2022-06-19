@@ -57,6 +57,7 @@ export const logout = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signOut();
       localStorage.removeItem("token");
+      localStorage.removeItem("id");
       if (result.ok === true) {
         return result.data;
       } else return result.data;

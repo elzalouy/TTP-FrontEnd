@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore ,compose } from "@reduxjs/toolkit";
 import reduxThunk from "redux-thunk";
 import categoriesSlice from "./Categories/categories.slice";
 import clientsSlice from "./Clients/clients.slice";
@@ -23,7 +23,8 @@ const reducers = combineReducers({
   Auth: authSlice,
   Statistics: statisticsSlice,
 });
-const store = configureStore({ reducer: reducers, middleware: [reduxThunk] });
+
+const store = configureStore({ reducer: reducers, middleware: [reduxThunk] ,devTools: process.env.NODE_ENV === 'development'});
 export const myReducer = store.getState()
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

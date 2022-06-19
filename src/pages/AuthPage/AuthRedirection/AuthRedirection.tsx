@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import "./AuthRedirection.css";
 import { Redirect, useHistory, useLocation } from "react-router";
 import IMAGES from "../../../assets/img/Images";
+import { checkAuthToken } from "../../../services/api";
 
 const AuthRedirection: FC = () => {
   const history = useHistory();
@@ -35,7 +36,7 @@ const AuthRedirection: FC = () => {
             marginTop: 3,
             "&:hover": { backgroundColor: "#000000" },
           }}
-          onClick={() => history.replace("/login")}
+          onClick={() => history.push("/login")}
         >
           Go to Login
         </Button>
