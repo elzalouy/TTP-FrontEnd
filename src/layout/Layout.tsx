@@ -32,10 +32,10 @@ const LoggedInContainer: React.FC<Props> = ({
   ...rest
 }: any) => {
   const { pathname } = useLocation();
-  const isAuthed = useAppSelector(selectIsAuth);
-  const isLogout = useAppSelector(selectIsLogout);
+  // const isAuthed = useAppSelector(selectIsAuth);
+  // const isLogout = useAppSelector(selectIsLogout);
 
-  if (isLogout) {
+  if (!checkAuthToken()) {
     return <AuthRedirection />;
   }
 
@@ -44,7 +44,6 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => {
-          if (!isLogout && !isAuthed) return <Redirect to="login" />;
           if (pathname === "/") return <Redirect to={"Overview"} />;
           else
             return (

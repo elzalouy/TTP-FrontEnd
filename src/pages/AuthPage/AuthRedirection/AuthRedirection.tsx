@@ -1,11 +1,19 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import "./AuthRedirection.css";
 import IMAGES from "../../../assets/img/Images";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
+// import { checkAuthToken } from "../../../services/api";
+import { selectIsLogout } from "../../../redux/Auth";
+import { useAppSelector } from "../../../redux/hooks";
 
 const AuthRedirection: FC = () => {
   const history = useHistory();
+  const isLogout = useAppSelector(selectIsLogout);
+
+  if (!isLogout) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className="notfound">

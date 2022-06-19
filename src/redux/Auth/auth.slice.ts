@@ -42,9 +42,11 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           page: "login"
         };
         state.authState = false;
+        state.logoutState = true;
       } else {
         state.User = payload;
         state.authState = true;
+        state.logoutState = false;
         toast.success("Login successful", {
           position: "top-right",
           autoClose: 1500,

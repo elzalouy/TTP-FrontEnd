@@ -206,7 +206,6 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
       let tasks = await api.getTasks("");
       if (tasks?.status === 401 || tasks?.status === 403) {
         rejectWithValue("Un Authorized");
-        removeAuthToken();
         dispatch(logout(true));
       }
       if (tasks.ok) return tasks.data;
