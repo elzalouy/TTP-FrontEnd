@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
-import { setAuthToken } from "../../services/api";
+import { removeAuthToken, setAuthToken } from "../../services/api";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
 
@@ -57,11 +57,10 @@ export const logout = createAsyncThunk<any, any, any>(
     try {
       let result = await api.signOut();
       if (result.ok === true) {
-        await localStorage.removeItem("token");
-        await localStorage.removeItem("id");
-        if(args){
+        removeAuthToken();
+        if (args) {
           return true
-        }else {
+        } else {
           return false
         }
       } else return result.data;

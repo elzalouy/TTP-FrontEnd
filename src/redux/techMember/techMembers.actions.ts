@@ -14,7 +14,6 @@ export const getTechMembersByDeptId = createAsyncThunk<any, any, any>(
       });
       if (members?.status === 401 || members?.status === 403) {
         rejectWithValue("Un Authorized");
-        removeAuthToken();
         dispatch(logout(true));
       }
       if (members.ok && members.data) return members.data;

@@ -12,7 +12,6 @@ export const getAllClients = createAsyncThunk<any, any, any>(
       let result = await ClientsApi.getClients();
       if (result?.status === 401 || result?.status === 403) {
         rejectWithValue("Un Authorized");
-        removeAuthToken();
         dispatch(logout(true));
       }
       if (result.data) {

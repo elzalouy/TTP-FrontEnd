@@ -24,7 +24,6 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       let projects = await api.getHttpProjects();
       if (projects?.status === 401 || projects?.status === 403) {
         rejectWithValue("Un Authorized");
-        removeAuthToken();
         dispatch(logout(true)); 
       }
       if (projects.ok) return projects.data;

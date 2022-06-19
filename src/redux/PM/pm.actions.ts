@@ -37,7 +37,6 @@ export const getPMs = createAsyncThunk<any, any, any>(
       let PMs = await PMapi.getUsers();
       if (PMs?.status === 401 || PMs?.status === 403) {
         rejectWithValue("Un Authorized");
-        removeAuthToken();
         dispatch(logout(true));
       }
       if (PMs.ok && PMs.data) return PMs.data;

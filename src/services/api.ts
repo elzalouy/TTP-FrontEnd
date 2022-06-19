@@ -16,20 +16,22 @@ export const checkAuthToken = () => {
     } else {
       return false;
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const removeAuthToken = () => {
   try {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("token", token);
-  } catch (e) {}
+  } catch (e) { }
 };
 
 api.axiosInstance.interceptors.request.use(

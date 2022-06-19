@@ -13,28 +13,6 @@ const AuthRedirection: FC = () => {
   const isLogout = useAppSelector(selectIsLogout);
   const [timeLeft, setTimeLeft] = useState(0);
 
-  useEffect(() => {
-    setTimeLeft(3);
-  }, []);
-
-  useEffect(() => {
-    // exit early when we reach 0
-    if (!timeLeft) return;
-
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-
-    // clear interval on re-render to avoid memory leaks
-    return () => clearInterval(intervalId);
-  }, [timeLeft]);
-
-  if (isLogout) {
-    setTimeout(() => {
-      history.replace("/login");
-    }, 3000);
-  }
-
   return (
     <div className="notfound">
       <Grid
@@ -51,11 +29,7 @@ const AuthRedirection: FC = () => {
           fontFamily="Cairo, Regular"
           textTransform={"capitalize"}
         >
-          Your authorization token has expired , You will be redirected to login
-          again in
-        </Typography>
-        <Typography sx={{ color: "black", fontSize: "30px", margin: "5px" }}>
-          {timeLeft}
+          Your authorization token has expired , Please login again
         </Typography>
       </Grid>
     </div>
