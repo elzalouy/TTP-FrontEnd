@@ -2,9 +2,10 @@ import { Box, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
+import PopUp from "../Popup/PopUp";
 import { generateID } from "../../../helpers/IdGenerator";
 import "./DeleteTask.css";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 
 type Props = {
   onDelete?: () => void;
@@ -44,10 +45,12 @@ const DeleteTask: React.FC<Props> = (props) => {
 
       <PopUp show={props.Show} widthSize="25vw">
         <div className="task-delete-container">
+          <div className="imageAlert">
+            <img src={deleteIcon} />
+          </div>
           <p className="delete-title">
-            Are you sure you want to delete this task?
+            Are you sure you want to delete the selected tasks?
           </p>
-          <hr className="hr-dt" />
           <div className="controllers-dt">
             <button
               className="cancelBtn-dt"

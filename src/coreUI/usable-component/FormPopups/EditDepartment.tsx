@@ -158,12 +158,12 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         removeTeam.some((item) => team.idInTrello === item)
       );
       newTeamsData.map((team) => {
-        dispatch(
+        /* dispatch(
           deleteTeam({
             data: { id: team?._id, isDeleted: "true" },
             dispatch,
           })
-        );
+        ); */
         dispatch(departmentsActions.updateDepartmentTeams(team?._id));
       });
 

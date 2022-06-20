@@ -58,5 +58,7 @@ const IMAGES = {
   searchIcon: require("./Iconly-Light-outline-Search.svg").default,
   overViewProjectsIcon: require("./OverviewProjectsIcon.svg").default,
   overviewTasksIcon: require("./OverviewTasksIcon.svg").default,
+  deleteIconAlert: require("./deleteAlert.png").default,
+  logoutIconAlert: require("./logoutAlert.png").default,
 };
 export default IMAGES;

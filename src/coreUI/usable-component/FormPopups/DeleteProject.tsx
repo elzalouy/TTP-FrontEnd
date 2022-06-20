@@ -10,6 +10,7 @@ import {
   selectDeleteProjectId,
 } from "../../../redux/Projects";
 import { useDispatch } from "react-redux";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 
 type Props = {
   show: string;
@@ -19,7 +20,7 @@ type Props = {
 const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
   const id = useAppSelector(selectDeleteProjectId);
   const dispatch = useDispatch();
-  
+
   const onDeleteProject = async () => {
     await dispatch(deleteProject({ data: { id: id }, dispatch }));
     setShow("none");
@@ -28,10 +29,12 @@ const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
   return (
     <>
       <SmallPopUp show={show}>
+        <div className="imageAlert">
+          <img src={deleteIcon} />
+        </div>
         <p className="warning-text">
           Are you sure you want to delete this project?
         </p>
-        <hr className="separator" />
         <div className="margin-cover">
           <div className="controllers-small-popup">
             <button

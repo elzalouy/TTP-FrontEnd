@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import SmallPopUp from "../Popup/SmallPopup";
 import { logout } from "../../../redux/Auth";
-import { toggleLogOutPopup } from "../../../redux/Ui";
+import logoutIcon from "../../../assets/img/logoutAlert.png";
 
 interface LogoutPopupProps {
   show: string;
@@ -20,8 +19,10 @@ const LogoutPopup: React.FC<LogoutPopupProps> = ({ show, setShow }) => {
 
   return (
     <SmallPopUp show={show} zIndex={7}>
+      <div className="imageAlert">
+        <img src={logoutIcon} />
+      </div>
       <p className="warning-text">Are you sure you want to Logout?</p>
-      <hr className="separator" />
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button

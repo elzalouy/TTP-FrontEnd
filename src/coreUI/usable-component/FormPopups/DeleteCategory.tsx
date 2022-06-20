@@ -4,11 +4,18 @@ import SmallPopUp from "../Popup/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
-import { deleteDepartment, getAllDepartments } from "../../../redux/Departments";
+import {
+  deleteDepartment,
+  getAllDepartments,
+} from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectedDepart } from "../../../redux/Departments/departments.selectors";
 import { Typography } from "@mui/material";
-import { deleteCategory, selectSelectedCategory } from "../../../redux/Categories";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
+import {
+  deleteCategory,
+  selectSelectedCategory,
+} from "../../../redux/Categories";
 
 type Props = {
   showDelete: string;
@@ -28,7 +35,8 @@ const DeleteCategory: React.FC<Props> = ({
         data: {
           _id: category?._id,
           isDeleted: true,
-        },dispatch
+        },
+        dispatch,
       })
     );
     handleSetShowDelete("none");
@@ -36,6 +44,9 @@ const DeleteCategory: React.FC<Props> = ({
 
   return (
     <SmallPopUp show={showDelete}>
+      <div className="imageAlert">
+        <img src={deleteIcon} />
+      </div>
       <p className="warning-text">
         Are you sure you want to delete this category?
       </p>
@@ -43,7 +54,6 @@ const DeleteCategory: React.FC<Props> = ({
         If you delete this Category, all the Sub-categories in this department
         will also be deleted.
       </Typography>
-      <hr className="separator" />
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button

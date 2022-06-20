@@ -4,10 +4,14 @@ import SmallPopUp from "../Popup/SmallPopup";
 import { useState } from "react";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
-import { deleteDepartment, getAllDepartments } from "../../../redux/Departments";
+import {
+  deleteDepartment,
+  getAllDepartments,
+} from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectedDepart } from "../../../redux/Departments/departments.selectors";
 import { Typography } from "@mui/material";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 
 type Props = {
   showDelete: string;
@@ -28,6 +32,9 @@ const DeleteDepartment: React.FC<Props> = ({
 
   return (
     <SmallPopUp show={showDelete}>
+      <div className="imageAlert">
+        <img src={deleteIcon} />
+      </div>
       <p className="warning-text">
         Are you sure you want to delete this department?
       </p>
@@ -35,7 +42,6 @@ const DeleteDepartment: React.FC<Props> = ({
         If you delete this department, all the tasks and Members in this
         department will be delete also.
       </Typography>
-      <hr className="separator" />
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button

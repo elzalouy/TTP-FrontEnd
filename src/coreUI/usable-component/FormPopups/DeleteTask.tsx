@@ -4,6 +4,7 @@ import SmallPopUp from "../Popup/SmallPopup";
 import { useAppSelector } from "../../../redux/hooks";
 import { deleteTask, selectedDeleteTaskId } from "../../../redux/Projects";
 import { openDeleteTaskPopup } from "../../../redux/Ui";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 
 interface DeleteTaskProps {
   show: string;
@@ -20,8 +21,10 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({ show, setShow }) => {
   };
   return (
     <SmallPopUp show={show}>
+      <div className="imageAlert">
+        <img src={deleteIcon} />
+      </div>
       <p className="warning-text">Are you sure you want to delete this Task?</p>
-      <hr className="separator" />
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button

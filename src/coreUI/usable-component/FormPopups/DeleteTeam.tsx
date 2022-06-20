@@ -6,6 +6,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { deleteTask, selectedDeleteTaskId } from "../../../redux/Projects";
 import { deleteTeam, TechMemberInterface } from "../../../redux/techMember";
 import { openDeleteTaskPopup } from "../../../redux/Ui";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 
 interface DeleteTaskProps {
   show: string;
@@ -31,8 +32,12 @@ const DeleteTeam: React.FC<DeleteTaskProps> = ({ show, setShow, team }) => {
 
   return (
     <SmallPopUp show={show} zIndex={99999}>
-      <p className="warning-text">This is an existing team, Are you sure you want to delete this team ?</p>
-      <hr className="separator" />
+      <div className="imageAlert">
+        <img src={deleteIcon} />
+      </div>
+      <p className="warning-text">
+        This is an existing team, Are you sure you want to delete this team ?
+      </p>
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button
