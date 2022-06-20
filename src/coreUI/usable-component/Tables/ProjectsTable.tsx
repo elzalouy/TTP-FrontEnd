@@ -20,6 +20,7 @@ import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
+import "../../../App.css"
 
 interface ProjectsTableProps {
   progress?: boolean;

@@ -6,24 +6,27 @@
   font-family: "Cairo";
   src: url(assets/fonts/Cairo-Regular.ttf);
 }
+
 @font-face {
   font-family: "Cairo, Bold";
   src: url(assets/fonts/Cairo-Bold.ttf);
 }
+
 @font-face {
   font-family: "Cairo, Regular";
   src: url(assets/fonts/Cairo-Regular.ttf);
 }
+
 body {
   margin: 0;
   font-family: "Cairo", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-/*   background-color: #fcfcfc; */
+  /*   background-color: #fcfcfc; */
 }
 
-.imageAlert{
-  display:flex;
+.imageAlert {
+  display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -31,11 +34,11 @@ body {
 
 /* Change the white to any color */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-    box-shadow: 0 0 0 30px white inset !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
 }
 
 * {
@@ -47,14 +50,45 @@ input:-webkit-autofill:active{
 
 *::-webkit-scrollbar {
   display: none;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .main-container {
   display: flex;
   flex-direction: row;
   height: 100%;
 }
+
 body {
   background-color: #fafafb;
+}
+
+@media (max-width:900px) {
+
+  /* width */
+  .customScrollBar::-webkit-scrollbar {
+    display: block !important;
+    width: 5px;
+    height: 2px;
+  }
+
+  /* Track */
+  .customScrollBar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  .customScrollBar::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  .customScrollBar::-webkit-scrollbar-thumb:hover {
+    background: black;
+  }
 }

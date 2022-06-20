@@ -3,8 +3,6 @@
   src: url(../assets/fonts/Cairo-Regular.ttf);
 }
 
-
-
 .trow:hover{
   box-shadow: rgba(33, 35, 38, 0.151) 0px 10px 10px -10px;
 }

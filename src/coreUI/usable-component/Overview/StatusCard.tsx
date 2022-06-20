@@ -1,6 +1,6 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
-import React, { FC } from "react";   
+import React, { FC } from "react";
 import { Done as DoneIcon, Circle as DotIcon } from "@mui/icons-material";
 import { useMediaQuery } from "@mui/material";
 interface UserStatusProps {
@@ -11,13 +11,14 @@ interface UserStatusProps {
   count: string | undefined;
   user: string | undefined;
   pt?: number;
-  pb?:number;
+  pb?: number;
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const LG = useMediaQuery (theme.breakpoints.down("lg"));
+  const LG = useMediaQuery(theme.breakpoints.down("lg"));
+  const breakpoints = [SM, LG];
 
   return (
     <Grid
@@ -26,8 +27,9 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
       md={2.5}
       lg={2.5}
       flexBasis={"50%"}
+      height={"250px"}
       marginTop={SM ? "10px" : "0px"}
-      paddingRight={LG ? "0":"3%"}
+      paddingRight={LG ? "0" : "3%"}
       paddingLeft={SM ? "2%" : "0%"}
       item
     >
@@ -40,14 +42,20 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
         }}
       >
         <CardContent
-          sx={props.pb && LG ? { paddingX: "12%",
-          paddingY: "12%",
-          paddingBottom : "42px !important",
-          boxShadow: "box-shadow: 0px 3px 6px #0000000A",} : {
-            paddingX: "12%",
-            paddingY: "12%",
-            boxShadow: "0px 3px 6px #0000000A",
-          }}
+          sx={
+            props.pb && LG
+              ? {
+                  paddingX: "12%",
+                  paddingY: "12%",
+                  paddingBottom: "42px !important",
+                  boxShadow: "box-shadow: 0px 3px 6px #0000000A",
+                }
+              : {
+                  paddingX: "12%",
+                  paddingY: "12%",
+                  boxShadow: "0px 3px 6px #0000000A",
+                }
+          }
         >
           <Box
             width={50}
