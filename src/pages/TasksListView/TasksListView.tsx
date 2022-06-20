@@ -42,7 +42,7 @@ const Tasks: React.FC<Props> = (props: any) => {
   React.useEffect(() => {
     //To clear all filters on each page change
     dispatch(filterTasks({}));
-    
+
     if (props?.location?.state?.projectId) {
       setValue("projectId", props?.location?.state?.projectId);
       let filter = watch();
@@ -58,7 +58,6 @@ const Tasks: React.FC<Props> = (props: any) => {
 
   const onHandleSort = (e: any) => {
     let filter = watch();
-    console.log(e.target);
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
   };
 

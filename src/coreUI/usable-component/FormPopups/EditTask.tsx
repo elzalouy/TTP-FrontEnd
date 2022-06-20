@@ -198,7 +198,6 @@ const EditTask: React.FC<Props> = (props) => {
   const onSetFiles = () => {
     let State = { ...state };
     let newfiles = files.current?.files;
-    console.log(files);
     if (newfiles) {
       let items = [...state.newFiles];
       for (let i = 0; i < newfiles.length; i++) {

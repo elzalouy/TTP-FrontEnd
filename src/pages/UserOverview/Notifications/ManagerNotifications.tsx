@@ -43,7 +43,6 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
-  console.log(statistics.OM.review);
   const cssTabContent = (tabItem: string) => {
     let tasks =
       tabItem === "0"

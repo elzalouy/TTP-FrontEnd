@@ -38,7 +38,6 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           state.OM.sharedLength = shared.length;
           state.OM.taskboard = setTasksBoardToArrays(taskBoard);
           state.OM.review = setTasksToArrays(review);
-          console.log(review, setTasksToArrays(review));
           state.OM.shared = setTasksToArrays(shared);
           state.OM.tasksCloseToDeadline = tasks.filter(
             (item) =>

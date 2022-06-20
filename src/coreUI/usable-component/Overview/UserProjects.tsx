@@ -18,8 +18,7 @@ interface Props {
 }
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectPMs);
-  console.log(props.projects);
-  
+
   return (
     <TableBox
       title={"Projects Close To Deadline"}
@@ -28,18 +27,27 @@ const UserProjects: React.FC<Props> = (props) => {
       bgColor={"#FFC5001A"}
     >
       <Box id="project-title">
-       {props.projects?.length === 0 ? 
-       <p style={{textTransform:"capitalize",margin:"10px" , color:"rgb(154,154,152)"}}>There are currently no projects close to deadline</p>
-       :
-       <ProjectsTable
-          progress={true}
-          align={"left"}
-          textSize="small"
-          status={"In progress"}
-          expanded={true}
-          projectManagers={PMs}
-          {...props}
-        />}
+        {props.projects?.length === 0 ? (
+          <p
+            style={{
+              textTransform: "capitalize",
+              margin: "10px",
+              color: "rgb(154,154,152)",
+            }}
+          >
+            There are currently no projects close to deadline
+          </p>
+        ) : (
+          <ProjectsTable
+            progress={true}
+            align={"left"}
+            textSize="small"
+            status={"In progress"}
+            expanded={true}
+            projectManagers={PMs}
+            {...props}
+          />
+        )}
       </Box>
     </TableBox>
   );

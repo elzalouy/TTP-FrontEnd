@@ -108,88 +108,90 @@ const CreateNewTask: React.FC<Props> = (props) => {
   }, [watchDeadline]);
 
   const onSubmit = async (data: any) => {
-    let newTask = {
-      name: data.name,
-      categoryId: data?.categoryId,
-      subCategoryId: data?.subCategoryId,
-      teamId: data?.teamId ? data?.teamId : null,
-      projectId: selectedProject?.project?._id,
-      status: data?.teamId ? "inProgress" : "Tasks Board",
-      start: new Date().toUTCString(),
-      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
-      deliveryDate: null,
-      done: null,
-      turnoverTime: null,
-      attachedFiles: Files,
-      listId: data?.teamId
-        ? selectedDepartment?.teamsId?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
-        : selectedDepartment?.defaultListId,
-      boardId: selectedDepartment?.boardId,
-      description: data?.description,
-    };
-    let validateResult = valdiateCreateTask(newTask);
-    if (validateResult.error) {
-      setError(validateResult);
-      toast.error(validateResult.error.message, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
-    } else {
-      let task = new FormData();
-      task.append("name", data.name);
-      task.append("categoryId", data.categoryId);
-      task.append("subCategoryId", data.subCategoryId);
-      task.append("teamId", data.teamId);
-      task.append(
-        "projectId",
-        selectedProject?.project?._id ? selectedProject?.project?._id : ""
-      );
-      task.append("status", data?.teamId ? "inProgress" : "Tasks Board");
-      task.append("start", new Date().toUTCString());
-      task.append(
-        "deadline",
-        data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
-      );
-      let files: Array<any> = Array.from(Files);
-      let result = validateTaskFilesSchema(files);
-      if (result.error === null) {
-        if (files) {
-          for (let i = 0; i < files.length; i++) {
-            task.append("attachedFiles", files[i]);
-          }
-        }
-        task.append(
-          "boardId",
-          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
-        );
-        task.append(
-          "listId",
-          data?.teamId
-            ? selectedDepartment?.teamsId?.find(
-                (item: any) => item._id === data.teamId
-              )?.listId
-            : selectedDepartment?.defaultListId
-        );
-        task.append("description", data?.description);
-        dispatch(
-          createTaskFromBoard({
-            data: task,
-            dispatch: dispatch,
-            setShow: props.setShow,
-            reset: reset,
-          })
-        );
-        setFiles([]);
-      } else toast.error(result.error);
-    }
+    console.log(data);
+
+    // let newTask = {
+    //   name: data.name,
+    //   categoryId: data?.categoryId,
+    //   subCategoryId: data?.subCategoryId,
+    //   teamId: data?.teamId ? data?.teamId : null,
+    //   projectId: selectedProject?.project?._id,
+    //   status: data?.teamId ? "inProgress" : "Tasks Board",
+    //   start: new Date().toUTCString(),
+    //   deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
+    //   deliveryDate: null,
+    //   done: null,
+    //   turnoverTime: null,
+    //   attachedFiles: Files,
+    //   listId: data?.teamId!=="" && data?.teamId !== null
+    //     ? selectedDepartment?.teamsId?.find(
+    //         (item: any) => item._id === data.teamId
+    //       )?.listId
+    //     : selectedDepartment?.defaultListId,
+    //   boardId: selectedDepartment?.boardId,
+    //   description: data?.description,
+    // };
+    // let validateResult = valdiateCreateTask(newTask);
+    // if (validateResult.error) {
+    //   setError(validateResult);
+    //   toast.error(validateResult.error.message, {
+    //     position: "top-right",
+    //     autoClose: 1500,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     toastId: generateID(),
+    //   });
+    // } else {
+    //   let task = new FormData();
+    //   task.append("name", data.name);
+    //   task.append("categoryId", data.categoryId);
+    //   task.append("subCategoryId", data.subCategoryId);
+    //   task.append("teamId", data.teamId);
+    //   task.append(
+    //     "projectId",
+    //     selectedProject?.project?._id ? selectedProject?.project?._id : ""
+    //   );
+    //   task.append("status", data?.teamId ? "inProgress" : "Tasks Board");
+    //   task.append("start", new Date().toUTCString());
+    //   task.append(
+    //     "deadline",
+    //     data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
+    //   );
+    //   let files: Array<any> = Array.from(Files);
+    //   let result = validateTaskFilesSchema(files);
+    //   if (result.error === null) {
+    //     if (files) {
+    //       for (let i = 0; i < files.length; i++) {
+    //         task.append("attachedFiles", files[i]);
+    //       }
+    //     }
+    //     task.append(
+    //       "boardId",
+    //       selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+    //     );
+    //     task.append(
+    //       "listId",
+    //       data?.teamId
+    //         ? selectedDepartment?.teamsId?.find(
+    //             (item: any) => item._id === data.teamId
+    //           )?.listId
+    //         : selectedDepartment?.defaultListId
+    //     );
+    //     task.append("description", data?.description);
+    //     dispatch(
+    //       createTaskFromBoard({
+    //         data: task,
+    //         dispatch: dispatch,
+    //         setShow: props.setShow,
+    //         reset: reset,
+    //       })
+    //     );
+    //     setFiles([]);
+    //   } else toast.error(result.error);
+    // }
   };
 
   const onChangeFiles = () => {
@@ -217,11 +219,13 @@ const CreateNewTask: React.FC<Props> = (props) => {
     setValue("selectedDepartmentId", e.target.value);
     let dep = departments.find((item) => item._id === e.target.value);
     setSelectedDepartment(dep);
+    setValue("teamId", "");
   };
   const onChangeCategory = (e: any) => {
     setValue("categoryId", e.target.value);
     const cat = categories.find((item) => item._id === e.target.value);
     setSelectCategory(cat);
+    setValue("subCategoryId", "");
   };
 
   return (
