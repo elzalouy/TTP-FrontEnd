@@ -60,7 +60,6 @@ const Tasks: React.FC<Props> = (props: any) => {
 
   const onHandleSort = (e: any) => {
     let filter = watch();
-    console.log(e.target);
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
   };
 

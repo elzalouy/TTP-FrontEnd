@@ -137,17 +137,39 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.allTasks = allTasks;
       }
     },
-    moveTaskInTrello: (state = projectsState, action: PayloadAction<any>) => {
-      let taskIndex = state.allTasks.findIndex(
-        (item) => item.cardId === action.payload.cardId
-      );
-      let boardIndex = state.selectedProject.tasks.findIndex(
-        (item) => item.cardId === action.payload.cardId
-      );
-      let task = { ...state.selectedProject.tasks[boardIndex] };
-      task.status = action.payload.to;
-      state.allTasks[taskIndex] = task;
-      state.selectedProject.tasks[boardIndex] = task;
+    updateTaskData: (state = projectsState, action: PayloadAction<any>) => {
+      if (action.payload?._id) {
+        let allTasks = [...state.allTasks];
+        let projectTasks = [...state.selectedProject.tasks];
+        // update all tasks
+        let taskIndex = allTasks.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (taskIndex >= 0) {
+          allTasks[taskIndex] = action.payload;
+        }
+        // update project tasks
+        let index = projectTasks.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (index >= 0) {
+          projectTasks[index] = action.payload;
+        }
+        state.allTasks = [...allTasks];
+        state.selectedProject.tasks = [...projectTasks];
+      }
+    },
+    deleteTask: (state = projectsState, action: PayloadAction<any>) => {
+      if (action.payload._id) {
+        let allTasks = [...state.allTasks];
+        let selectProjectTasks = [...state.selectedProject.tasks];
+        state.allTasks = allTasks.filter(
+          (item) => item._id !== action.payload._id
+        );
+        state.selectedProject.tasks = selectProjectTasks.filter(
+          (item) => item._id !== action.payload._id
+        );
+      }
     },
   },
   extraReducers: (builder) => {

@@ -170,7 +170,6 @@ const OverView: FC<Props> = (props) => {
               md={4.5}
               sm={12}
               xs={12}
-              marginY={2}
               justifyContent="center"
               alignItems="center"
             >

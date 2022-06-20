@@ -16,7 +16,8 @@ import { getAllMembers } from "../redux/techMember";
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
-  const [moveTaskData, setMoveTaskData] = React.useState<any>(null);
+  const [updateTaskData, setUpdateTaskData] = React.useState<any>(null);
+  const [deleteTaskData, setDeleteTaskData] = React.useState<any>(null);
   const [newDepartment, setNewDepartment] = React.useState<any>(null);
   const [createDepError, setCreateDepError] = React.useState<any>(null);
   const user = useAppSelector(selectUser);
@@ -158,13 +159,19 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllTasks(null));
     }
   }, [moveTaskHook]);
-  // move task from trello with websocket connection
+  // Update task event from backend
   React.useEffect(() => {
-    if (moveTaskData !== null) {
-      dispatch(ProjectsActions.moveTaskInTrello(moveTaskData));
-      setMoveTaskData(null);
+    if (updateTaskData !== null) {
+      dispatch(ProjectsActions.updateTaskData(updateTaskData));
+      setUpdateTaskData(null);
     }
-  }, [moveTaskData]);
+  }, [updateTaskData]);
+  // delete task event from backend
+  React.useEffect(() => {
+    if (deleteTaskData !== null) {
+      dispatch(ProjectsActions.deleteTask(deleteTaskData));
+    }
+  }, [deleteTaskData]);
   // new department
   React.useEffect(() => {
     if (newDepartment?._id) {
@@ -174,10 +181,18 @@ const AppHooks: React.FC = (props) => {
   }, [newDepartment]);
   React.useEffect(() => {
     let socket = openConnection(user);
-    socket.on("Move Task", (data) => {
-      console.log("handled event");
-      setMoveTaskData(data);
+    socket.on("create task", (data) => {
+      console.log("create task trello,", data);
     });
+    socket.on("update task", (data) => {
+      console.log("update task trello,", data);
+      setUpdateTaskData(data);
+    });
+    socket.on("delete task", (data) => {
+      console.log("delete task trello", data);
+      setDeleteTaskData(data);
+    });
+    // it should delete the department from the store
     socket.on("new department error", (data) => console.log(data));
     socket.on("new department", (data) => {
       setNewDepartment(data);

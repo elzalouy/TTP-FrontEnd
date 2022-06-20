@@ -70,9 +70,8 @@ const DepartmentCard: React.FC<Props> = ({
       (task) => task.boardId === department.boardId
     );
     let filterTasksByStatus = findTasksByDepartmentId.filter((task) => {
-       return !status.some((item) => item === task.status);
+      return !status.some((item) => item === task.status);
     });
-    console.log(filterTasksByStatus , status);
     return filterTasksByStatus.length;
   };
 
