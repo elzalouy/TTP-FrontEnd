@@ -4,12 +4,15 @@ import "./notfound.css";
 import { Redirect, RouteComponentProps, useLocation } from "react-router";
 import IMAGES from "../../assets/img/Images";
 import { checkAuthToken } from "../../services/api";
+import { useAppSelector } from "../../redux/hooks";
+import { selectIsAuth } from "../../redux/Auth";
 interface NotFoundProps {
   history: RouteComponentProps["history"];
 }
 
 const NotFound: FC<NotFoundProps> = (props) => {
   const location = useLocation();
+  const isAuth = useAppSelector(selectIsAuth);
 
   if (location.pathname === "/" && checkAuthToken()) {
     return (
@@ -25,7 +28,7 @@ const NotFound: FC<NotFoundProps> = (props) => {
         </Grid>
       </div>
     );
-  } else if (location.pathname === "/" && !checkAuthToken()) {
+  } else if (location.pathname === "/" && (!checkAuthToken() || !isAuth)) {
     return <Redirect to={"/login"} />;
   }
 

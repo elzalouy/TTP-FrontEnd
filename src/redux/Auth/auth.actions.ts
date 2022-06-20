@@ -76,7 +76,6 @@ export const newPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.newPasword(args);
       if (result.ok === true) {
-        setAuthToken(args.id);
         return result.data;
       } else return result.data;
     } catch (error) {
