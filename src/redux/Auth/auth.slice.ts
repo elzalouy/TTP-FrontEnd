@@ -156,8 +156,6 @@ const AuthSlice: Slice<UserInterface> = createSlice({
           progress: undefined,
           toastId: generateID(),
         });
-        state.User = payload;
-        state.authState = payload.status === 200 ? true : false;
       }
     });
   },
