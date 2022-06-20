@@ -43,7 +43,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
-
+  console.log(statistics.OM.review);
   const cssTabContent = (tabItem: string) => {
     let tasks =
       tabItem === "0"
@@ -51,9 +51,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
         : tabItem === "1"
         ? statistics.OM.review
         : statistics.OM.shared;
-
     let flat = _.flattenDeep(tasks);
-
     return {
       height: open
         ? flat && flat?.length <= 4
