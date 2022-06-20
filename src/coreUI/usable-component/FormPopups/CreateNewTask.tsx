@@ -53,73 +53,6 @@ type Props = {
   setShow: (val: string) => void;
 };
 
-//SX Style Objects
-
-const createNewTaskNameStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const createNewTaskDeadlineStyles = {
-  width: "100%",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const createNewTaskDescriptionStyles = {
-  paddingTop: 1,
-  width: "100%",
-  "& .MuiOutlinedInput-input": {
-    borderRadius: "6px",
-    background: "white !important",
-  },
-};
-
-const createNewTaskFilesStyles = {
-  backgroundColor: "#00ACBA",
-  width: "46px !important",
-  height: "32px",
-  borderRadius: "5px",
-  paddingX: 1,
-  ":hover": {
-    backgroundColor: "#00ACBA",
-  },
-  "& .MuiButton-root": {
-    width: "46px !important",
-    ":hover": {
-      backgroundColor: "#00ACBA",
-      color: "white",
-    },
-  },
-};
-
-const createNewTaskFilesItemStyles = {
-  width: "auto",
-  cursor: "pointer",
-  height: "32px",
-  textAlign: "start",
-  alignContent: "center",
-  justifySelf: "center",
-  justifyContent: "center",
-  alignItems: "center",
-  display: "inline-flex",
-};
-
 const CreateNewTask: React.FC<Props> = (props) => {
   const dispatch: Dispatch<any> = useDispatch();
   const Dispatch = useDispatch();
@@ -534,8 +467,8 @@ const CreateNewTask: React.FC<Props> = (props) => {
                             )?.name
                           }
                           {...register("teamId")}
-                          handleOnClick={()=>{
-                            if(selectedDepartment?.teamsId.length === 0){
+                          handleOnClick={() => {
+                            if (selectedDepartment?.teamsId.length === 0) {
                               toast.warning("There are no existing teams", {
                                 position: "top-right",
                                 autoClose: 1500,
@@ -663,3 +596,70 @@ const CreateNewTask: React.FC<Props> = (props) => {
 };
 
 export default CreateNewTask;
+
+//SX Style Objects
+
+const createNewTaskNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const createNewTaskDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const createNewTaskDescriptionStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+};
+
+const createNewTaskFilesStyles = {
+  backgroundColor: "#00ACBA",
+  width: "46px !important",
+  height: "32px",
+  borderRadius: "5px",
+  paddingX: 1,
+  ":hover": {
+    backgroundColor: "#00ACBA",
+  },
+  "& .MuiButton-root": {
+    width: "46px !important",
+    ":hover": {
+      backgroundColor: "#00ACBA",
+      color: "white",
+    },
+  },
+};
+
+const createNewTaskFilesItemStyles = {
+  width: "auto",
+  cursor: "pointer",
+  height: "32px",
+  textAlign: "start",
+  alignContent: "center",
+  justifySelf: "center",
+  justifyContent: "center",
+  alignItems: "center",
+  display: "inline-flex",
+};
