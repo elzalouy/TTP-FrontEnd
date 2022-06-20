@@ -1,3 +1,13 @@
+import * as React from "react";
+import Status from "../../../coreUI/usable-component/Typos/Status";
+import ScrollOver from "../../../coreUI/usable-component/Popup/ScrollOver";
+import _ from "lodash";
+import { RouteComponentProps } from "react-router";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectSatistics } from "../../../redux/Statistics";
+import { Task } from "../../../redux/Projects";
+import { setWidth } from "../../../helpers/generalUtils";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,20 +18,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import * as React from "react";
-import {
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-  TableRestaurantTwoTone,
-} from "@mui/icons-material";
-import { RouteComponentProps } from "react-router";
-import ScrollOver from "../../../coreUI/usable-component/Popup/ScrollOver";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectSatistics } from "../../../redux/Statistics";
-import Status from "../../../coreUI/usable-component/Typos/Status";
-import { Task } from "../../../redux/Projects";
-import _ from "lodash";
-import { setWidth } from "../../../helpers/generalUtils";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -62,7 +58,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       height: open
         ? flat && flat?.length <= 4
           ? `${flat?.length * 60 + 76}px`
-          : "300px"
+          : "280px"
         : "auto",
       overflowY: "scroll",
       "&::-webkit-scrollbar": {
