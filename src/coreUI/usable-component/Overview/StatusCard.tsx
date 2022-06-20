@@ -48,12 +48,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
                   paddingX: "12%",
                   paddingY: "12%",
                   paddingBottom: "42px !important",
-                  boxShadow: "box-shadow: 0px 3px 6px #0000000A",
                 }
               : {
                   paddingX: "12%",
                   paddingY: "12%",
-                  boxShadow: "0px 3px 6px #0000000A",
                 }
           }
         >
