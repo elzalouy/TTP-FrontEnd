@@ -13,6 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import "../../../themes/style.css";
+import "../../../App.css"
 import MailLockIcon from '@mui/icons-material/MailLock';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { FC, useState } from "react";
@@ -85,7 +86,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     <>
       <EditPM hideButton />
       <DeletePM hideButton />
-      <TableContainer style={{paddingTop:"10px"}}>
+      <TableContainer style={{paddingTop:"10px"}} className="customScrollBar">
         <Table
           size="small"
           aria-label="a dense table"

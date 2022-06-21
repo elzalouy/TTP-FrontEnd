@@ -1,7 +1,8 @@
 import * as React from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import "../../../App.css";
 
 interface TableBoxProps {
   title: string;
@@ -12,6 +13,9 @@ interface TableBoxProps {
 }
 
 const TableBox: React.FC<TableBoxProps> = (props) => {
+  const theme = useTheme();
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+
   //SX Styles Object
 
   const tableBoxProjectHeader = {
@@ -35,7 +39,7 @@ const TableBox: React.FC<TableBoxProps> = (props) => {
     mb: 5,
     font: "normal normal 600 16px/30px Cairo",
     color: "#505050",
-    overflow: "scroll",
+    overflowX: "scroll",
   };
 
   return (
@@ -50,7 +54,11 @@ const TableBox: React.FC<TableBoxProps> = (props) => {
           {props.title}
         </Typography>
       )}
-      <Box id="project-container" sx={tableBoxProjectContainer}>
+      <Box
+        id="project-container"
+        sx={tableBoxProjectContainer}
+        className={SM ? "customScrollBar" : ""}
+      >
         {!props.outTitled && (
           <>
             <Box id="project-header" sx={tableBoxProjectHeader}>

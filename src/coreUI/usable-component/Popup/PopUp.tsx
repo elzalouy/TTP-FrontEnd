@@ -21,7 +21,7 @@ const PopUp: React.FC<Props> = ({
   return (
     <div className="container-popup" style={{ display: show }}>
       <div
-        className="pop-up"
+        className="pop-up customScrollBar"
         style={padding ?{ width: widthSize,
           minWidth: minWidthSize,
           maxWidth: maxWidthSize,padding:padding} : {

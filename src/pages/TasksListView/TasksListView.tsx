@@ -36,7 +36,9 @@ const Tasks: React.FC<Props> = (props: any) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
+  const LG = useMediaQuery(theme.breakpoints.up("md"));
   const [Show, setShow] = React.useState("none");
+  const [filter, setFilter] = React.useState(true);
   const { register, watch, control, setValue } = useForm();
 
   React.useEffect(() => {
@@ -67,6 +69,14 @@ const Tasks: React.FC<Props> = (props: any) => {
     setShow("none");
   };
 
+  React.useEffect(() => {
+    if (MD) {
+      setFilter(false);
+    } else {
+      setFilter(true);
+    }
+  }, [MD]);
+
   return (
     <Grid
       bgcolor={"#FAFAFB"}
@@ -79,109 +89,172 @@ const Tasks: React.FC<Props> = (props: any) => {
       marginTop={MD ? 6 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Stack direction="row" justifyContent="flex-start" alignItems="center">
-        <Typography
-          variant="h2"
-          marginBottom={2}
-          marginTop={SM ? 5 : MD ? 2 : 0}
-        >
-          Tasks
-          {props.projectId && (
+      <Grid display="flex" justifyContent={"space-between"} width="100%">
+        <Grid direction="row" justifyContent="flex-start" alignItems="center">
+          <Typography
+            variant="h2"
+            marginBottom={2}
+            marginTop={SM ? 5 : MD ? 2 : 0}
+          >
+            Tasks
+            {props.projectId && (
+              <>
+                <img
+                  style={{ margin: "0 20px" }}
+                  src={IMAGES.arrowHeader}
+                  alt="more"
+                />
+                {
+                  projects?.projects?.find(
+                    (item) => item._id === props.projectId
+                  )?.name
+                }
+              </>
+            )}
+          </Typography>
+        </Grid>
+        <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
+          {!LG && (
             <>
-              <img
-                style={{ margin: "0 20px" }}
-                src={IMAGES.arrowHeader}
-                alt="more"
-              />
-              {
-                projects?.projects?.find((item) => item._id === props.projectId)
-                  ?.name
-              }
+              <Box
+                onClick={() => setFilter(!filter)}
+                textAlign={"center"}
+                sx={
+                  !filter
+                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
+                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+                }
+                width={38}
+                height={38}
+              >
+                <img
+                  src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+                  alt="FILTER"
+                />
+              </Box>
             </>
           )}
-        </Typography>
-      </Stack>
-      <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
-        <Grid
-          marginX={0.5}
-          item
-          xs={6}
-          sm={3}
-          md={2}
-          lg={2}
-          marginY={1}
-          flex={1}
-        >
-          <Controller
-            control={control}
-            name="deadline"
-            render={(props) => (
-              <SelectInput
-                label="Due Date: "
-                {...props}
-                options={[
-                  { id: "All", text: "All", value: "" },
-                  { id: "asc", text: "Ascending", value: "asc" },
-                  { id: "desc", text: "Descending", value: "desc" },
-                ]}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                  onHandleSort(e);
-                }}
-                selectValue={props.field.value}
-                selectText={props.field.value}
+          <Grid marginX={0.5} item xs={6} sm={12} md={12} lg={12} marginY={1}>
+            <Box
+              style={
+                SM
+                  ? {
+                      backgroundColor: "#fafafa",
+                      width: "100%",
+                      marginLeft: "5px",
+                    }
+                  : {
+                      backgroundColor: "#fafafa",
+                      width: "100%",
+                      marginLeft: "0px",
+                    }
+              }
+            >
+              <Controller
+                name="name"
+                control={control}
+                render={(props) => (
+                  <SearchBox
+                    onChange={(e) => {
+                      props.field.onChange(e);
+                      onHandleChange(e);
+                    }}
+                    value={props.field.value}
+                    placeholder="Search"
+                  />
+                )}
               />
-            )}
-          />
+            </Box>
+          </Grid>
         </Grid>
-        <div style={{ width: "20px" }}></div>
-        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
-          <Box className="tasks-option">
-            <Controller
-              name="status"
-              control={control}
-              render={(props) => (
-                <SelectInput
-                  label="Status: "
-                  placeholder="All"
-                  {...props}
-                  options={[
-                    { id: "All", value: "", text: "All" },
-                    {
-                      id: "Tasks Board",
-                      value: "Tasks Board",
-                      text: "Tasks Board",
-                    },
-                    { id: "not clear", value: "Not Clear", text: "Not Clear" },
-                    {
-                      id: "inProgress",
-                      value: "inProgress",
-                      text: "In Progress",
-                    },
-                    { id: "review", value: "Review", text: "Review" },
-                    { id: "shared", value: "Shared", text: "Shared" },
-                    {
-                      id: "done",
-                      value: "Done",
-                      text: "Done",
-                    },
-                    { id: "canceled", value: "Cancled", text: "Cancled" },
-                  ]}
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectText={props.field.value}
+      </Grid>
+      <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
+        {filter && (
+          <>
+            <Grid
+              marginX={0.5}
+              item
+              xs={6}
+              sm={3}
+              md={2}
+              lg={2}
+              marginY={1}
+              flex={1}
+            >
+              <Controller
+                control={control}
+                name="deadline"
+                render={(props) => (
+                  <SelectInput
+                    label="Due Date: "
+                    {...props}
+                    options={[
+                      { id: "All", text: "All", value: "" },
+                      { id: "asc", text: "Ascending", value: "asc" },
+                      { id: "desc", text: "Descending", value: "desc" },
+                    ]}
+                    handleChange={(e) => {
+                      e.preventDefault();
+                      props.field.onChange(e);
+                      onHandleSort(e);
+                    }}
+                    selectValue={props.field.value}
+                    selectText={props.field.value}
+                  />
+                )}
+              />
+            </Grid>
+            <div style={{ width: "20px" }}></div>
+            <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
+              <Box className="tasks-option">
+                <Controller
+                  name="status"
+                  control={control}
+                  render={(props) => (
+                    <SelectInput
+                      label="Status: "
+                      placeholder="All"
+                      {...props}
+                      options={[
+                        { id: "All", value: "", text: "All" },
+                        {
+                          id: "Tasks Board",
+                          value: "Tasks Board",
+                          text: "Tasks Board",
+                        },
+                        {
+                          id: "not clear",
+                          value: "Not Clear",
+                          text: "Not Clear",
+                        },
+                        {
+                          id: "inProgress",
+                          value: "inProgress",
+                          text: "In Progress",
+                        },
+                        { id: "review", value: "Review", text: "Review" },
+                        { id: "shared", value: "Shared", text: "Shared" },
+                        {
+                          id: "done",
+                          value: "Done",
+                          text: "Done",
+                        },
+                        { id: "canceled", value: "Cancled", text: "Cancled" },
+                      ]}
+                      handleChange={(e) => {
+                        e.preventDefault();
+                        props.field.onChange(e);
+                        onHandleChange(e);
+                      }}
+                      selectValue={props.field.value}
+                      selectText={props.field.value}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Box>
-        </Grid>
-        <div style={{ width: "20px" }}></div>
-        {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
+              </Box>
+            </Grid>
+            <div style={{ width: "20px" }}></div>
+            {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
           <Box className="tasks-option">
             <Controller
               name="projectManager"
@@ -208,43 +281,43 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid> */}
-        <Grid marginX={0.5} item xs={4} sm={3} md={2} lg={2} marginY={1}>
-          <Box className="tasks-option">
-            <Controller
-              name="projectId"
-              control={control}
-              render={(props) => (
-                <SelectInput
-                  label={"Project: "}
-                  {...props}
-                  options={[
-                    { id: "All", value: "", text: "All" },
-                    ...projects.projects?.map((item) => {
-                      return {
-                        id: item._id,
-                        value: item._id,
-                        text: item.name,
-                      };
-                    }),
-                  ]}
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectText={
-                    projects?.projects?.find(
-                      (val) => val._id === props.field.value
-                    )?.name
-                  }
+            <Grid marginX={0.5} item xs={4} sm={3} md={2} lg={2} marginY={1}>
+              <Box className="tasks-option">
+                <Controller
+                  name="projectId"
+                  control={control}
+                  render={(props) => (
+                    <SelectInput
+                      label={"Project: "}
+                      {...props}
+                      options={[
+                        { id: "All", value: "", text: "All" },
+                        ...projects.projects?.map((item) => {
+                          return {
+                            id: item._id,
+                            value: item._id,
+                            text: item.name,
+                          };
+                        }),
+                      ]}
+                      handleChange={(e) => {
+                        e.preventDefault();
+                        props.field.onChange(e);
+                        onHandleChange(e);
+                      }}
+                      selectValue={props.field.value}
+                      selectText={
+                        projects?.projects?.find(
+                          (val) => val._id === props.field.value
+                        )?.name
+                      }
+                    />
+                  )}
                 />
-              )}
-            />
-          </Box>
-        </Grid>
-        <div style={{ width: "20px" }}></div>
-        {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
+              </Box>
+            </Grid>
+            <div style={{ width: "20px" }}></div>
+            {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
           <Controller
             name="memberId"
             control={control}
@@ -277,40 +350,10 @@ const Tasks: React.FC<Props> = (props: any) => {
             )}
           />
         </Grid> */}
-        <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
-          <Box
-            style={
-              SM
-                ? {
-                    backgroundColor: "#fafafa",
-                    width: "100%",
-                    marginLeft: "5px",
-                  }
-                : {
-                    backgroundColor: "#fafafa",
-                    width: "100%",
-                    marginLeft: "0px",
-                  }
-            }
-          >
-            <Controller
-              name="name"
-              control={control}
-              render={(props) => (
-                <SearchBox
-                  onChange={(e) => {
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  value={props.field.value}
-                  placeholder="Search"
-                />
-              )}
-            />
-          </Box>
-        </Grid>
+          </>
+        )}
         <div style={{ width: "20px" }}></div>
-        <Grid marginX={0.5} item xs={2} sm={2} md={1}>
+        <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={1}>
           <DeleteTask
             task={selects}
             Show={Show}

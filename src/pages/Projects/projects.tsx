@@ -50,6 +50,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const { watch, control } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
+  const LG = useMediaQuery(theme.breakpoints.up("md"));
 
   // useEffect(() => {
   //   dispatch(getAllProjects(null));
@@ -93,29 +94,33 @@ const Projects: React.FC<ProjectsProps> = (props) => {
       marginX={{ sm: 1, xs: 1, md: 4, lg: 4 }}
       marginTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
     >
-      <Grid container xs={12} justifyContent="flex-start" direction={"row"}>
+      <Grid container xs={12} justifyContent="space-between" direction={"row"}>
         <Grid item xs={4} sm={4} md={12} lg={12} marginBottom={4}>
           <Typography variant="h3" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
         <Grid item margin={1} marginLeft={0}>
-          <Box
-            onClick={() => setFilter(!filter)}
-            textAlign={"center"}
-            sx={
-              !filter
-                ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
-                : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
-            }
-            width={38}
-            height={38}
-          >
-            <img
-              src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
-              alt="FILTER"
-            />
-          </Box>
+          {!LG && (
+            <>
+              <Box
+                onClick={() => setFilter(!filter)}
+                textAlign={"center"}
+                sx={
+                  !filter
+                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
+                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+                }
+                width={38}
+                height={38}
+              >
+                <img
+                  src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+                  alt="FILTER"
+                />
+              </Box>
+            </>
+          )}
         </Grid>
         <Grid
           margin={1}

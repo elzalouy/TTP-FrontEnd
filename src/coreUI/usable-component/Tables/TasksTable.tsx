@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
+import "../../../App.css"
 import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
@@ -47,7 +48,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
   };
 
   return (
-    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}>
+    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }} className="customScrollBar">
       <Table style={MD ? { width: "150%" } : { width: "100%" }}>
         <TableHead>
           <TableRow>

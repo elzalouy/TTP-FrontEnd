@@ -44,8 +44,9 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => {
-          if (pathname === "/") return <Redirect to={"Overview"} />;
-          else
+          if (pathname === "/") {
+            return <Redirect to={"Overview"} />;
+          } else
             return (
               <div key={rest.location.key} style={{ display: "flex" }}>
                 {!notfound && <Sidebar {...rest} {...props} />}

@@ -16,6 +16,7 @@ import { Redirect, useHistory, useParams } from "react-router";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import {
+  logout,
   newPassword,
   selectAuth,
   selectIsAuth,
@@ -85,6 +86,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
           id: token,
         })
       );
+      setTimeout(() => history.replace("/login"), 1200);
     } else {
       setPasswordError(true);
     }
@@ -103,9 +105,8 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
       }
     } else {
       setVisible(true);
-      setTimeout(() => history.replace("/Overview"), 1000);
     }
-  }, [auth]);
+  }, [auth, res]);
 
   if (isAuth && isTokenValid) {
     return <Redirect to={"/Overview"} />;

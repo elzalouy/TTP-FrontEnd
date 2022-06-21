@@ -17,7 +17,12 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { resetPMpassword, selectPayload, selectPMs } from "../../redux/PM";
-import { selectAuth, selectIsAuth, selectLoading } from "../../redux/Auth";
+import {
+  logout,
+  selectAuth,
+  selectIsAuth,
+  selectLoading,
+} from "../../redux/Auth";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { setAuthToken } from "../../services/api";
 
@@ -79,7 +84,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
           token: token,
         })
       );
-      setTimeout(() => history.replace("/login"), 1000);
+      setTimeout(() => history.replace("/login"), 1200);
     } else {
       setPasswordError(true);
     }
@@ -96,9 +101,8 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
       });
     } else {
       setVisible(true);
-      setTimeout(() => history.replace("/login"), 1000);
     }
-  }, [res]);
+  }, [res, isAuth]);
 
   if (isAuth && isTokenValid) {
     return <Redirect to={"/Overview"} />;
