@@ -3,15 +3,16 @@ import { User } from "../redux/Auth";
 import apiUrl from "./api.json";
 
 export const openConnection = (user: User | null) => {
-  let socket = io(
+  let url =
     process.env.NODE_ENV === "development"
       ? apiUrl.SOCKET_DEV_URL
-      : apiUrl.SOCKET_BASE_URL,
-    {
-      path: "/socket.io",
-      reconnection: true,
-    }
-  );
+      : apiUrl.SOCKET_BASE_URL;
+
+  let socket = io(url, {
+    path: "/socket.io",
+    withCredentials: true,
+    reconnection: true,
+  });
   let IO = socket.on("connect", () => {
     console.log("client is connected");
   });
