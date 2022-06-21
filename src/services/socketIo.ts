@@ -8,25 +8,20 @@ export const openConnection = (user: User | null) => {
       ? apiUrl.SOCKET_DEV_URL
       : apiUrl.SOCKET_BASE_URL,
     {
-      transports: ["websocket"],
-      reconnectionDelay: 0,
+      path: "/socket.io",
+      reconnection: true,
     }
   );
   let IO = socket.on("connect", () => {
     console.log("client is connected");
-    //todo check user auth
   });
   if (user?.type === "admin") {
-    // this for admins role only
     IO.emit("joined admin");
   }
   if (user?.role === "PM") {
-    // this for project managers role only
     IO.emit("joined manager");
   }
-  // this is for specific user
   IO.emit("joined user", { id: user?._id });
-  // on event for lestening if task moved on trello (__webhookUpdate)
   IO.on("connect_failed", function () {
     document.write("Sorry, there seems to be an issue with the connection!");
     setTimeout(() => {
