@@ -13,6 +13,8 @@ import {
 import { selectUi } from "../redux/Ui/UI.selectors";
 import { getAllCategories } from "../redux/Categories";
 import { getAllMembers } from "../redux/techMember";
+import { setHideLoadingState } from "../redux/notification";
+
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
@@ -44,6 +46,7 @@ const AppHooks: React.FC = (props) => {
       console.log("create project hook fired");
       dispatch(getAllProjects(null));
       dispatch(getAllTasks(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [createProjectHook]);
 
@@ -54,6 +57,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllCategories(null));
       dispatch(getAllDepartments(null));
       dispatch(getAllMembers(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [createCategoryHook]);
 
@@ -63,6 +67,7 @@ const AppHooks: React.FC = (props) => {
       console.log("delete team hook fired");
       dispatch(getAllDepartments(null));
       dispatch(getAllMembers(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteTeamHook]);
 
@@ -72,6 +77,7 @@ const AppHooks: React.FC = (props) => {
       console.log("delete category hook fired");
       dispatch(getAllCategories(null));
       dispatch(getAllDepartments(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteCategoryHook]);
 
@@ -82,6 +88,7 @@ const AppHooks: React.FC = (props) => {
       dispatch(getAllClients(null));
       dispatch(getAllTasks(null));
       dispatch(getAllProjects(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [newProjectHook]);
 
@@ -91,6 +98,7 @@ const AppHooks: React.FC = (props) => {
       console.log("update project hook fired.");
       dispatch(getAllClients(null));
       dispatch(getAllProjects(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [updateProjectHook]);
 
@@ -99,6 +107,7 @@ const AppHooks: React.FC = (props) => {
     if (deleteTasksHook !== undefined) {
       console.log("delete tasks hook fired.");
       dispatch(getAllTasks(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteTasksHook]);
 
@@ -108,6 +117,7 @@ const AppHooks: React.FC = (props) => {
       console.log("delete project hook fired.");
       dispatch(getAllProjects(null));
       dispatch(getAllClients(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteProjectHook]);
 
@@ -116,6 +126,7 @@ const AppHooks: React.FC = (props) => {
     if (createTeamHook !== undefined) {
       console.log("new member hook fired.");
       dispatch(getAllDepartments(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [createTeamHook]);
 
@@ -124,6 +135,7 @@ const AppHooks: React.FC = (props) => {
     if (updateDepartmentHook !== undefined) {
       console.log("update department hook fired.");
       dispatch(getAllDepartments(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [updateDepartmentHook]);
 
@@ -132,6 +144,7 @@ const AppHooks: React.FC = (props) => {
     if (createDepartmentHook !== undefined) {
       console.log("create department hook fired.");
       dispatch(getAllDepartments(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [createDepartmentHook]);
 
@@ -141,6 +154,7 @@ const AppHooks: React.FC = (props) => {
       console.log("delete department hook fired.");
       dispatch(getAllDepartments(null));
       dispatch(getAllTasks(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteDepartmentHook]);
 
@@ -149,6 +163,7 @@ const AppHooks: React.FC = (props) => {
     if (editTaskHook !== undefined) {
       console.log("edit Task hook fired.");
       dispatch(getAllTasks(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [editTaskHook]);
 
@@ -157,6 +172,7 @@ const AppHooks: React.FC = (props) => {
     if (moveTaskHook !== undefined) {
       console.log("move task hook fired");
       dispatch(getAllTasks(null));
+      dispatch(setHideLoadingState(false));
     }
   }, [moveTaskHook]);
   // Update task event from backend
@@ -164,12 +180,14 @@ const AppHooks: React.FC = (props) => {
     if (updateTaskData !== null) {
       dispatch(ProjectsActions.updateTaskData(updateTaskData));
       setUpdateTaskData(null);
+      dispatch(setHideLoadingState(false));
     }
   }, [updateTaskData]);
   // delete task event from backend
   React.useEffect(() => {
     if (deleteTaskData !== null) {
       dispatch(ProjectsActions.deleteTask(deleteTaskData));
+      dispatch(setHideLoadingState(false));
     }
   }, [deleteTaskData]);
   // new department
@@ -177,8 +195,10 @@ const AppHooks: React.FC = (props) => {
     if (newDepartment?._id) {
       console.log("new department socket fired");
       dispatch(departmentsActions.replaceDepartment(newDepartment));
+      dispatch(setHideLoadingState(false));
     }
   }, [newDepartment]);
+  
   React.useEffect(() => {
     let socket = openConnection(user);
     socket.on("create-task", (data) => {

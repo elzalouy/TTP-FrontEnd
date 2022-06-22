@@ -249,7 +249,10 @@ const CreateNewDepartment: React.FC<Props> = () => {
                   }
                 }}
                 handleChange={(e: any) => {
-                  setData(e.target.value);
+                  console.log(e.target.value);
+                  if(e.target.value !== ""){
+                    setData(e.target.value);
+                  }
                 }}
                 selectText={getTeamName(Data)}
                 {...register("team")}

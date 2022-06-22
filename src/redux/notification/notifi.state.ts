@@ -14,10 +14,12 @@ export interface Notifis {
   loading: boolean | null;
   notifi: NotifiData[];
   counter: number;
+  hideLoading: boolean;
 }
 const NotifiState: Notifis = {
   loading: false,
   notifi: [],
   counter: 0,
+  hideLoading: false,
 };
 export default NotifiState;

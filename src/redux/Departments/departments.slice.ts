@@ -21,7 +21,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state = initialState,
       { payload }: PayloadAction<any>
     ) => {
-      //This function gives real time delete effect in the UI
+      /* //This function gives real time delete effect in the UI
       state.departments = state.departments.map((dep) => {
         let updatededTeams = dep.teamsId.map((team) =>
           team._id === payload ? { ...team, isDeleted: true } : team
@@ -36,14 +36,14 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
         dep.teamsId.map((team) =>
           team._id === payload ? { ...team, isDeleted: true } : team
         )
-      );
+      ); */
       if (state.selectedDepart !== null) {
         state.selectedDepart = {
           ...state.selectedDepart,
           teamsId: state.selectedDepart.teamsId.map((team) =>
             team._id === payload ? { ...team, isDeleted: true } : team
           ),
-        };
+        }; 
       }
     },
     /**
