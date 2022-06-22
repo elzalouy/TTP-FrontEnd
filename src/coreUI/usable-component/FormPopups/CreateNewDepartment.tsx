@@ -249,9 +249,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
                   }
                 }}
                 handleChange={(e: any) => {
-                  if (e.target.value !== "") {
-                    setData(e.target.value);
-                  }
+                  setData(e.target.value);
                 }}
                 selectText={getTeamName(Data)}
                 {...register("team")}
@@ -305,7 +303,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <br />
 
         <div className="controllers">
-         
           <button className="controllers-done" onClick={() => handleSubmit()}>
             {depLoading ? (
               <CircularProgress sx={createNewDepLoadingStyles} />

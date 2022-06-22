@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Grid,
   Link,
   Typography,
@@ -21,6 +22,7 @@ import {
 } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { toast } from "react-toastify";
+import { selectLoading } from "../../redux/Auth";
 
 interface Props {
   history: RouteComponentProps["history"];
@@ -51,6 +53,7 @@ const Forget: React.FC<Props> = ({ history }) => {
     message: "",
   });
   const auth = useAppSelector(selectAuth);
+  const loading = useAppSelector(selectLoading);
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);
   const theme = useTheme();
@@ -209,7 +212,11 @@ const Forget: React.FC<Props> = ({ history }) => {
                 disableElevation
                 onClick={handleSubmit(onSubmit)}
               >
-                Send
+                {loading ? (
+                  <CircularProgress sx={{ color: "white", padding: "10px" }} />
+                ) : (
+                  "Send"
+                )}
               </Button>
               <Link
                 sx={{ textDecoration: "none", cursor: "pointer" }}
