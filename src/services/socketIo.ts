@@ -10,35 +10,23 @@ export const openConnection = (user: User | null) => {
 
   let socket = io(url, {
     path: "/socket.io",
-    withCredentials: true,
     reconnection: true,
+    withCredentials: true,
+    extraHeaders: {
+      "Content-type": "application/json",
+    },
   });
-  let IO = socket.on("connect", () => {
+  let Io = socket.on("connect", () => {
     console.log("client is connected");
   });
-  if (user?.type === "admin") {
-    IO.emit("joined admin");
-  }
-  if (user?.role === "PM") {
-    IO.emit("joined manager");
-  }
-  IO.emit("joined user", { id: user?._id });
-  IO.on("connect_failed", function () {
-    document.write("Sorry, there seems to be an issue with the connection!");
-    setTimeout(() => {
-      IO.connect();
-    }, 1000);
-  });
-  IO.on("disconnect", (reason) => {
-    if (
-      reason === "io server disconnect" ||
-      reason === "io client disconnect"
-    ) {
-      // the disconnection was initiated by the server, you need to reconnect manually
-      IO.connect();
-    }
-    // else the socket will automatically try to reconnect
-  });
 
-  return IO;
+  // if (user?.type === "admin") {
+  //   IO.emit("joined admin");
+  // }
+  // if (user?.role === "PM") {
+  //   IO.emit("joined manager");
+  // }
+  // IO.emit("joined user", { id: user?._id });
+
+  return Io;
 };

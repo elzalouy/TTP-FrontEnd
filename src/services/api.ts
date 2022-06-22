@@ -16,7 +16,7 @@ export const checkAuthToken = () => {
     } else {
       return false;
     }
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const removeAuthToken = () => {
@@ -31,7 +31,7 @@ export const removeAuthToken = () => {
 export const setAuthToken = (token: string) => {
   try {
     localStorage.setItem("token", token);
-  } catch (e) { }
+  } catch (e) {}
 };
 
 api.axiosInstance.interceptors.request.use(
