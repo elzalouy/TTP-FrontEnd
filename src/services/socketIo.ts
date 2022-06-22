@@ -12,6 +12,8 @@ export const openConnection = (user: User | null) => {
     path: "/socket.io",
     reconnection: true,
     withCredentials: true,
+    secure: true,
+    transports: ["websocket"],
     extraHeaders: {
       "Content-type": "application/json",
     },
