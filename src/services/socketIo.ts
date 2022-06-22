@@ -11,10 +11,6 @@ export const openConnection = (user: User | null) => {
   let socket = io(url, {
     path: "/socket.io",
     reconnection: true,
-    withCredentials: true,
-    extraHeaders: {
-      "Content-type": "application/json",
-    },
   });
   let Io = socket.on("connect", () => {
     console.log("client is connected");

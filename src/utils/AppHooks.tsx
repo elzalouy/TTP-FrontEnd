@@ -201,20 +201,20 @@ const AppHooks: React.FC = (props) => {
   
   React.useEffect(() => {
     let socket = openConnection(user);
-    socket.on("create task", (data) => {
+    socket.on("create-task", (data) => {
       console.log("create task trello,", data);
     });
-    socket.on("update task", (data) => {
+    socket.on("update-task", (data) => {
       console.log("update task trello,", data);
       setUpdateTaskData(data);
     });
-    socket.on("delete task", (data) => {
+    socket.on("delete-task", (data) => {
       console.log("delete task trello", data);
       setDeleteTaskData(data);
     });
     // it should delete the department from the store
-    socket.on("new department error", (data) => console.log(data));
-    socket.on("new department", (data) => {
+    socket.on("new-department-error", (data) => console.log(data));
+    socket.on("new-department", (data) => {
       setNewDepartment(data);
     });
   }, []);
