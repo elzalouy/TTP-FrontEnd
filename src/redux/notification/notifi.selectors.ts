@@ -6,4 +6,6 @@ export const notifiDataSelector = (state: RootState) =>
   export const counterNotif = (state: RootState) =>
   state?.notifi?.counter;
 
+  export const selectHideLoading = (state:RootState) => state?.notifi?.hideLoading;
+
   export const loadingNotification = (state : RootState) => state?.notifi?.loading

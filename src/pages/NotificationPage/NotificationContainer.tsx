@@ -8,9 +8,10 @@ import { getAllNotifi, updateNotifi } from "../../redux/notification";
 import {
   notifiDataSelector,
   loadingNotification,
+  selectHideLoading,
 } from "../../redux/notification/notifi.selectors";
 import { useAppSelector } from "../../redux/hooks";
-import { notifiAction } from "../../redux/notification";
+import { updateCounter } from "../../redux/notification";
 import { openConnection } from "../../services/socketIo";
 import { selectRole, selectUser } from "../../redux/Auth";
 import Button from "@mui/material/Button";
@@ -28,7 +29,8 @@ const NotificationContainer = (props: Props) => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
-  const buttonLoading = useAppSelector(loadingNotification);
+  // const buttonLoading = useAppSelector(loadingNotification);
+  const hideLoading = useAppSelector(selectHideLoading);
 
   useEffect(() => {
     if (user && user._id) {
@@ -46,7 +48,7 @@ const NotificationContainer = (props: Props) => {
   useEffect(() => {
     let socket = openConnection(user);
     socket.on("notification update", (data: any) => {
-      dispatch(notifiAction.updateCounter(data));
+      dispatch(updateCounter(data));
     });
     return () => {
       socket.off("notification update");
@@ -79,33 +81,35 @@ const NotificationContainer = (props: Props) => {
           <NotificationItem notifiData={notifiData} />
         </Grid>
       ) : null}
-      <Grid item xs={12} lg={6} textAlign="center" mb="1em">
-        <button
-          style={{
-            textTransform: "capitalize",
-            maxHeight: "40px",
-            background: "black",
-            height: "40px",
-            width: "80px",
-            color: "white",
-            borderRadius: "10px",
-          }}
-          onClick={handleLoadMore}
-        >
-          {loading ? (
-            <CircularProgress
-              sx={{
-                color: "white",
-                padding: "8px",
-                height: "35px !important",
-                width: "35px !important",
-              }}
-            />
-          ) : (
-            "Load More"
-          )}
-        </button>
-      </Grid>
+      {!hideLoading && (
+        <Grid item xs={12} lg={6} textAlign="center" mb="1em">
+          <button
+            style={{
+              textTransform: "capitalize",
+              maxHeight: "40px",
+              background: "black",
+              height: "40px",
+              width: "80px",
+              color: "white",
+              borderRadius: "10px",
+            }}
+            onClick={handleLoadMore}
+          >
+            {loading ? (
+              <CircularProgress
+                sx={{
+                  color: "white",
+                  padding: "8px",
+                  height: "35px !important",
+                  width: "35px !important",
+                }}
+              />
+            ) : (
+              "Load More"
+            )}
+          </button>
+        </Grid>
+      )}
     </Grid>
   );
 };

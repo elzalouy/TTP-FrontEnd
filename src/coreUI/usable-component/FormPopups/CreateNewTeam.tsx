@@ -47,13 +47,14 @@ const AddNewTeam: React.FC<Props> = () => {
     dispatch(deleteTeam({ data: removeTeams, dispatch }));
   }; */
 
-  const getDepartmentNameById = (id: string) => {
-    let departmentName = departments.filter((department) => {
-      if (id === department._id) {
-        return department.name;
-      }
+  const getDepartmentsNameById = (id: string, team: string | undefined) => {
+    let departmentName = departments.map((department) => {
+      let teamsData = department.teamsId.some((el) => el._id === team);
+      if (teamsData) return department.name;
     });
-    return departmentName[0]?.name;
+    console.log(departmentName);
+    // return departmentName[0]?.name;
+    return departmentName;
   };
 
   /*   const getDepartmentById = (id: string) => {
@@ -202,7 +203,10 @@ const AddNewTeam: React.FC<Props> = () => {
                 ? "#FFC500"
                 : "#FFC500",
             marginBottom: "3em",
-            cursor:(Team.department === "" || Team.name === "") ? "default" : "pointer",
+            cursor:
+              Team.department === "" || Team.name === ""
+                ? "default"
+                : "pointer",
           }}
         >
           Add
@@ -241,7 +245,13 @@ const AddNewTeam: React.FC<Props> = () => {
                 <>
                   <tr key={index}>
                     <td>{team.name}</td>
-                    <td>{getDepartmentNameById(team.departmentId)}</td>
+                    <td>
+                      {getDepartmentsNameById(team.departmentId, team._id).map(
+                        (item) => (
+                          <p className="teamNames">{item}</p>
+                        )
+                      )}
+                    </td>
                     <td>
                       <img
                         src={IMAGES.deleteicon}
@@ -302,7 +312,6 @@ const AddNewTeam: React.FC<Props> = () => {
           </table>
         </div>
         <div className="controllers">
-         
           <button className="controllers-done" onClick={handleAddTeam}>
             {depLoading ? (
               <CircularProgress sx={{ color: "white", padding: "10px" }} />
