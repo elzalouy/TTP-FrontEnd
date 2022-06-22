@@ -43,7 +43,7 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
           teamsId: state.selectedDepart.teamsId.map((team) =>
             team._id === payload ? { ...team, isDeleted: true } : team
           ),
-        };
+        }; 
       }
     },
     /**
