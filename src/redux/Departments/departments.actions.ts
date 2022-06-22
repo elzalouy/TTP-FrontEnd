@@ -35,7 +35,6 @@ export const createDepartment = createAsyncThunk<any, any, any>(
       let department: ApiResponse<any> = await DepartmentsApi.createDepartment(
         args.data
       );
-      console.log(args.data);
       if (department.ok && department.data) {
         args.setNames([]);
         args.setData("");
@@ -50,7 +49,6 @@ export const createDepartment = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        console.log(department.data);
         return department.data;
       }
       toast.error(department.data.message);
