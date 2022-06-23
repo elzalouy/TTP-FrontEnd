@@ -137,7 +137,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
       task.append("name", data.name);
       task.append("categoryId", data.categoryId);
       task.append("subCategoryId", data.subCategoryId);
-      task.append("teamId", data.teamId);
+      if (newTask.teamId !== null) task.append("teamId", data.teamId);
       task.append(
         "projectId",
         selectedProject?.project?._id ? selectedProject?.project?._id : ""
