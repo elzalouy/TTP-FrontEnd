@@ -17,13 +17,12 @@ export const openConnection = (user: User | null) => {
     console.log("client is connected");
   });
 
-  // if (user?.type === "admin") {
-  //   IO.emit("joined admin");
-  // }
-  // if (user?.role === "PM") {
-  //   IO.emit("joined manager");
-  // }
-  // IO.emit("joined user", { id: user?._id });
-
+  if (user?.role === "OM") {
+    Io.emit("joined-admin");
+  }
+  if (user?.role === "PM") {
+    Io.emit("joined-manager");
+  }
+  Io.emit("joined-user", { id: user?._id });
   return Io;
 };
