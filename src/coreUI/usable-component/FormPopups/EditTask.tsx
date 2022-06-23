@@ -172,7 +172,6 @@ const EditTask: React.FC<Props> = (props) => {
       task.append("name", newTask.name);
       task.append("categoryId", newTask.categoryId);
       task.append("subCategoryId", newTask.subCategoryId);
-      task.append("teamId", newTask.teamId);
       task.append("status", newTask.status);
       task.append("deadline", newTask.deadline.toString());
       task.append("cardId", newTask.cardId);
@@ -186,10 +185,11 @@ const EditTask: React.FC<Props> = (props) => {
       task.append("listId", newTask.listId);
       task.append("description", data?.description);
       task.append("deleteFiles", JSON.stringify(state.deleteFiles));
+      if(newTask.teamId !== null) task.append("teamId", newTask.teamId);
       dispatch(
         editTaskFromBoard({ data: task, dispatch, setShow: props.setShow })
-      );
-    }
+        );
+      }
   };
 
   const onChangeFiles = () => {

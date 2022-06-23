@@ -15,22 +15,12 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import SelectInput2 from "../Inputs/SelectInput2";
 import PopUp from "../Popup/PopUp";
-
-import {
-  categoriesActions,
-  Category,
-  selectAllCategories,
-  selectSelectedCategory,
-} from "../../../redux/Categories";
+import { Category, selectAllCategories } from "../../../redux/Categories";
 import { Department, selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import {
-  createProjectTask,
   createTaskFromBoard,
-  ProjectsActions,
-  selectLoading,
   selectNewProject,
-  selectSelectedDepartment,
   selectSelectedProject,
 } from "../../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
@@ -66,7 +56,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
-  const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
@@ -108,8 +97,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   }, [watchDeadline]);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-
     let newTask = {
       name: data.name,
       categoryId: data?.categoryId,
@@ -580,7 +567,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                {loadingTask ? (
+                {selectedProject.loading ? (
                   <CircularProgress
                     sx={{
                       color: "white",
