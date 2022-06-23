@@ -362,7 +362,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       // state.loading = true;
     });
     builder.addCase(editTaskFromBoard.fulfilled, (state, action) => {
+      console.log("edit task fullfilled");
       state.editTask = undefined;
+      state.editTaskLoading = false;
       let tasks = [...state.allTasks];
       let index = tasks.findIndex((item) => item._id === action.payload?._id);
       if (index >= 0) {
@@ -379,9 +381,11 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       }
     });
     builder.addCase(editTaskFromBoard.rejected, (state, action) => {
+      console.log("edit task rejected");
       state.editTaskLoading = false;
     });
     builder.addCase(editTaskFromBoard.pending, (state, action) => {
+      console.log("edit task pending");
       state.editTaskLoading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});
