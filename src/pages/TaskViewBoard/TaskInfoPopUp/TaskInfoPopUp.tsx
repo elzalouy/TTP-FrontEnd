@@ -193,7 +193,8 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
             </div>
           )}
           <Box
-            marginTop={1}
+            marginTop={2}
+            marginX={"10px"}
             alignItems="center"
             display={"inline-flex"}
             className="files"
@@ -212,10 +213,6 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                     sx={taskFormFilesStyles}
                   >
                     {item?.name}
-                    <CloseIcon
-                      sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                      htmlColor="#92929D"
-                    />
                   </Typography>
                 ))}
             </>

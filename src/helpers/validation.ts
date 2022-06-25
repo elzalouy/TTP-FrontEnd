@@ -50,11 +50,11 @@ const createTaskSchema = Joi.object({
     "string.min": "You should create project first",
     "any.required": "You should create project first",
   }),
-  name: Joi.string().required().min(4).max(20).messages({
+  name: Joi.string().required().min(6).max(40).messages({
     "string.base": "Task Name is required",
     "string.empty": "Task name should be string with min 4 chars",
-    "string.min": "Task name length should be Min 4 chars",
-    "string.max": "Task name length should be Max 20 chars",
+    "string.min": "Task name length should be Min 6 chars",
+    "string.max": "Task name length should be Max 60 chars",
     "any.required": "Task Name is required",
   }),
   categoryId: Joi.string().required().messages({

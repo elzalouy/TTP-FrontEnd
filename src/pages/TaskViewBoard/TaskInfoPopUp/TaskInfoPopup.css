@@ -1,18 +1,23 @@
 .input {
     margin: 10px 0px;
     padding: 5px;
-    border-radius: 5px;
+   /*  border-radius: 5px; */
     width: 100%;
     outline: none;
-    border: 1px solid #B4B6C4;
+    border: none;
+    cursor: default;
+    border-top: 1px solid #B4B6C4;
+
 }
 
 .textarea {
     margin: 10px 0px;
     padding: 5px;
-    border-radius: 5px;
+  /*   border-radius: 5px; */
     width: 100%;
     outline: none;
-    border: 1px solid #B4B6C4;
+    cursor: default;
+    border: none;
+    border-top: 1px solid #B4B6C4;
     resize: none;
 }
