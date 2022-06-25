@@ -85,6 +85,13 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
     }
   }, [props.task]);
 
+  const generateURL = () => {
+    let boardURL = departments.find(
+      (dep) => dep.boardId === props.task?.boardId
+    );
+    return boardURL?.boardURL;
+  };
+
   const onCloseModel = () => {
     dispatch(toggleViewTaskPopup("none"));
   };
@@ -136,7 +143,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                       textTransform={"capitalize"}
                       sx={taskFormFilesStyles}
                     >
-                      {item?.name}
+                      Images
                     </Typography>
                   ))}
               </>
@@ -161,7 +168,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                   name="name"
                   control={control}
                   render={(props) => (
-                    <Typography typography={"h2"}>
+                    <Typography typography={"h2"} textTransform={"capitalize"}>
                       {props.field.value}
                     </Typography>
                   )}
@@ -299,6 +306,18 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
               </div>
             )}
           </Grid>
+        </Grid>
+        <Grid display={"flex"} justifyContent={"center"} alignItems={"center"}>
+          <button
+          className="redirect-button"
+            onClick={(e) => {
+              e.preventDefault();
+              let url = generateURL();
+              if (url) {
+                window.location.href = url;
+              }
+            }}
+          >Open in trello</button>
         </Grid>
       </PopUp>
     </>

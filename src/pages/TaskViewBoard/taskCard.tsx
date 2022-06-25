@@ -29,6 +29,7 @@ import "swiper/css/navigation";
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
 import { toggleViewTaskPopup } from "../../redux/Ui";
+import { Link } from "react-router-dom";
 interface DataTypes {
   index: number;
   item: Task;
@@ -163,7 +164,10 @@ const TaskCard: React.FC<DataTypes> = ({
               justifyContent="flex-start"
               alignItems="center"
             >
-              <Typography sx={{ fontWeight: "bold", cursor:"pointer"}} onClick={onViewTask}>
+              <Typography
+                sx={{ fontWeight: "bold", cursor: "pointer",textTransform:"capitalize" }}
+                onClick={onViewTask}
+              >
                 {name}
               </Typography>
               {item.status !== "not clear" && item.status !== "cancled" && (

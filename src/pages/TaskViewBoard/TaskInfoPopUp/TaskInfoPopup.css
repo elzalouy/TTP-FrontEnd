@@ -125,3 +125,19 @@
   text-align: center;
   border-radius: 5px;
 }
+
+.redirect-button{
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #111;
+  color: white;
+  text-align: center;
+  margin: 20px 0px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.redirect-button:hover{
+  background-color: rgb(50, 50, 50);
+}
