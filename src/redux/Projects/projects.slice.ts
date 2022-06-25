@@ -116,6 +116,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onEditTask: (state = projectsState, action: PayloadAction<any>) => {
       state.editTask = action.payload;
     },
+    onViewTask: (state = projectsState, action: PayloadAction<any>) => {
+      state.viewTask = action.payload;
+    },
     onDeleteTask: (state = projectsState, action: PayloadAction<any>) => {
       state.deleteTask = action.payload;
     },

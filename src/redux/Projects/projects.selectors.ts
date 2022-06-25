@@ -75,6 +75,8 @@ export const selectSharedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "Shared"
   );
+
+export const selectViewTaskData = (state: RootState) => state.projects.viewTask;
 export const selectTasks = (state: RootState) => state.projects.allTasks;
 export const selectEditTaskValues = (state: RootState) =>
   state.projects.editTask;

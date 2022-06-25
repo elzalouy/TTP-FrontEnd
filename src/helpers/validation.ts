@@ -114,7 +114,7 @@ export const editTaskSchema = Joi.object({
   id: Joi.string()
     .required()
     .messages({ "any.required": "Task id is required" }),
-  name: Joi.string().optional().min(4).max(20).messages({
+  name: Joi.string().optional().min(6).max(40).messages({
     "string.base": "Task Name is required",
     "string.empty": "Task name should be string with min 4 chars",
     "string.min": "Task name length should be Min 4 chars",
@@ -128,7 +128,7 @@ export const editTaskSchema = Joi.object({
     .required()
     .messages({ "any.required": "Card id is required" }),
   deleteFiles: Joi.string().optional(),
-  subCategoryId: Joi.string().optional().messages({
+  subCategoryId: Joi.string().optional().allow(null, "").messages({
     "string.base": "Sub Category is required",
     "string.empty": "Sub Category should be selected",
   }),

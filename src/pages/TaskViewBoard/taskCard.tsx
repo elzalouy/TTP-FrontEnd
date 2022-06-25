@@ -6,7 +6,12 @@ import IMAGES from "../../assets/img/Images";
 import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
-import { downloadAttachment, Project, Task } from "../../redux/Projects";
+import {
+  downloadAttachment,
+  Project,
+  ProjectsActions,
+  Task,
+} from "../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -23,6 +28,7 @@ import "swiper/css/navigation";
 
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
+import { toggleViewTaskPopup } from "../../redux/Ui";
 interface DataTypes {
   index: number;
   item: Task;
@@ -71,7 +77,7 @@ const TaskCard: React.FC<DataTypes> = ({
       setTaskFiles(others);
     }
   }, [item]);
-  
+
   useEffect(() => {
     if (status !== "Not Started") {
       if (deadline === null || deadline === "") {
@@ -129,7 +135,12 @@ const TaskCard: React.FC<DataTypes> = ({
       downloadAttachment({ cardId: item.cardId, attachmentId: file?.trelloId })
     );
   };
-  
+
+  const onViewTask = () => {
+    dispatch(toggleViewTaskPopup("flex"));
+    dispatch(ProjectsActions.onViewTask(item));
+  };
+
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -152,7 +163,9 @@ const TaskCard: React.FC<DataTypes> = ({
               justifyContent="flex-start"
               alignItems="center"
             >
-              <Typography sx={{ fontWeight: "bold" }}>{name}</Typography>
+              <Typography sx={{ fontWeight: "bold", cursor:"pointer"}} onClick={onViewTask}>
+                {name}
+              </Typography>
               {item.status !== "not clear" && item.status !== "cancled" && (
                 <TasksPopover item={item} />
               )}
@@ -296,7 +309,8 @@ const TaskCard: React.FC<DataTypes> = ({
                       {status !== "Not Started" && (
                         <img
                           src={
-                            (typeof remainingDays === "string" || remainingDays <= 2)
+                            typeof remainingDays === "string" ||
+                            remainingDays <= 2
                               ? IMAGES.scheduleRed
                               : remainingDays > 2 && remainingDays <= 5
                               ? IMAGES.scheduleOrange

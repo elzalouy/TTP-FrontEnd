@@ -20,18 +20,23 @@ import {
   selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
+  selectViewTaskData,
   Task,
 } from "../../redux/Projects";
+import { selectViewTask } from "../../redux/Ui/UI.selectors";
 import CreateNewTask from "./CreateNewTask";
 import TaskCard from "./taskCard";
+import TaskInfoPopUp from "./TaskInfoPopUp/TaskInfoPopUp";
 import "./taskViewBoard.css";
 const DragField: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const inProgressTasks = useAppSelector(selectInProgressTasks);
+  const viewTaskData = useAppSelector(selectViewTaskData)
   const doneTasks = useAppSelector(selectDoneTasks);
   const reviewTasks = useAppSelector(selectReviewTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
+  const viewTask = useAppSelector(selectViewTask);
   const notStartedTasks = useAppSelector(selectNotStartedTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);
@@ -260,6 +265,7 @@ const DragField: React.FC = (props: any) => {
                       </Typography> */}
                     </Stack>
                     {column?.NewTask}
+                    <TaskInfoPopUp show={viewTask} task={viewTaskData} />
                     {column &&
                       column?.items?.map((item: Task, index) => {
                         return (
