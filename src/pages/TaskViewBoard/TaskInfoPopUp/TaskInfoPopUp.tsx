@@ -309,7 +309,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
         </Grid>
         <Grid display={"flex"} justifyContent={"center"} alignItems={"center"}>
           <button
-          className="redirect-button"
+            className="redirect-button"
             onClick={(e) => {
               e.preventDefault();
               let url = generateURL();
@@ -317,7 +317,9 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 window.location.href = url;
               }
             }}
-          >Open in trello</button>
+          >
+            Open in trello
+          </button>
         </Grid>
       </PopUp>
     </>
