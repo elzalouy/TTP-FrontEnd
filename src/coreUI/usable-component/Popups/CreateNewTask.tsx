@@ -177,7 +177,17 @@ const CreateNewTask: React.FC<Props> = (props) => {
           })
         );
         setFiles([]);
-      } else toast.error(result.error);
+      } else
+        toast.error("There was an error creating a task", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
     }
   };
 

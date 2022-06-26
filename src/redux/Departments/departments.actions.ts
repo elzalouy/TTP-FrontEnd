@@ -54,7 +54,7 @@ export const createDepartment = createAsyncThunk<any, any, any>(
       toast.error(department.data.message);
       return rejectWithValue(department.data?.message);
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error while creating the Department", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

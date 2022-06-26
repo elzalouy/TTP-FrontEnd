@@ -184,7 +184,6 @@ const EditTask: React.FC<Props> = (props) => {
       task.append("description", data?.description);
       task.append("deleteFiles", JSON.stringify(state.deleteFiles));
       if (newTask.teamId !== null) task.append("teamId", newTask.teamId);
-      console.log(task.getAll("attachedFiles"));
       dispatch(
         editTaskFromBoard({
           data: task,
@@ -207,9 +206,11 @@ const EditTask: React.FC<Props> = (props) => {
       selectedDepartment: null,
     });
   };
+
   const onChangeFiles = () => {
     files.current?.click();
   };
+
   const onSetFiles = () => {
     let State = { ...state };
     let newfiles = files.current?.files;
@@ -234,7 +235,7 @@ const EditTask: React.FC<Props> = (props) => {
       let files = [...State?.task?.attachedFiles];
       files = files.filter((file) => file._id !== item._id);
       task.attachedFiles = files;
-      State.task = task;
+      State.task = task;      
     } else if (item?.name && item?.size) {
       let file: File = item;
       let newfiles = [...State.newFiles];

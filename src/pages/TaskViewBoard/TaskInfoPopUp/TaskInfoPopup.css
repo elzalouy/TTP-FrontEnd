@@ -134,6 +134,8 @@
   margin: 20px 0px;
   text-transform: uppercase;
   font-weight: 600;
+  outline: none;
+  border: none;
   cursor: pointer;
 }
 

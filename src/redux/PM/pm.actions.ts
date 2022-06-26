@@ -77,7 +77,7 @@ export const createPM = createAsyncThunk<any, any, any>(
         }
       );
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error trying to create a PM from the server", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -120,7 +120,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
         progress: undefined,
       });
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server while updating the PM", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,

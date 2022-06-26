@@ -69,7 +69,7 @@ const NotificationContainer = (props: Props) => {
       spacing={4}
       bgcolor="#FAFAFB"
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} mb={hideLoading ? 6 : 0}>
         <NotificationHeader />
       </Grid>
       {/* <Grid item xs={12}>
