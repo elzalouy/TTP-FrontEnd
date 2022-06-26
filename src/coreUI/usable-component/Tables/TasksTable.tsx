@@ -9,13 +9,15 @@ import {
 } from "@mui/material";
 import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
-import "../../../App.css"
-import { Project, Task } from "../../../redux/Projects";
+import "../../../App.css";
+import { Project, ProjectsActions, Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
+import { useDispatch } from "react-redux";
+import { toggleViewTaskPopup } from "../../../redux/Ui";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];
@@ -31,6 +33,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
 }) => {
   const history = useHistory();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
 
@@ -47,8 +50,16 @@ const TasksTable: React.FC<TasksTableProps> = ({
     }
   };
 
+  const handleTaskViewModal = (task: Task) => {
+    dispatch(toggleViewTaskPopup("flex"));
+    dispatch(ProjectsActions.onOpenTask(task));
+  };
+
   return (
-    <TableContainer sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }} className="customScrollBar">
+    <TableContainer
+      sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
+      className="customScrollBar"
+    >
       <Table style={MD ? { width: "150%" } : { width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -165,6 +176,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                     />
                   </TableCell>
                   <TableCell
+                    onClick={() => handleTaskViewModal(item)}
                     align="left"
                     style={
                       checkIndexForLastRow(index, tasks)
@@ -174,6 +186,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                             padding: "12px 8px 12px 0px",
                             textTransform: "capitalize",
                             width: "130px",
+                            cursor: "pointer",
                           }
                         : {
                             color: "#334D6E",
@@ -181,6 +194,7 @@ const TasksTable: React.FC<TasksTableProps> = ({
                             padding: "0px 8px 0px 0px",
                             textTransform: "capitalize",
                             width: "130px",
+                            cursor: "pointer",
                           }
                     }
                   >
@@ -200,6 +214,8 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           ? "sharedStatus"
                           : "endedStatus"
                       }
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleTaskViewModal(item)}
                     >
                       {status === "inProgress" ? "In Progress" : status}
                     </div>

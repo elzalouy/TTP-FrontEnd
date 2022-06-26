@@ -246,15 +246,11 @@ const AddNewTeam: React.FC<Props> = () => {
                   <tr key={index}>
                     <td>{team.name}</td>
                     <td>
-                      {getDepartmentsNameById(team.departmentId, team._id)
-                        .length === 0
-                        ? "No Department Assigned"
-                        : getDepartmentsNameById(
-                            team.departmentId,
-                            team._id
-                          ).map((item) => {
-                            return <p className="teamNames">{item}</p>;
-                          })}
+                      {getDepartmentsNameById(team.departmentId, team._id).map(
+                        (item) => {
+                          return <p className="teamNames">{item}</p>;
+                        }
+                      )}
                     </td>
                     <td>
                       <img
