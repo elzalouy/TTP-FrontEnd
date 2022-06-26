@@ -8,10 +8,8 @@ type Props = {
   minWidthSize?: string;
   maxWidthSize?: string;
   padding?: string;
+  minHeightSize?: string;
   children: object;
-  maxHeight?: string;
-  minHeight?: string;
-  overflowY?: boolean;
   color?: string;
 };
 
@@ -23,31 +21,34 @@ const PopUp: React.FC<Props> = ({
   minWidthSize,
   color,
   maxWidthSize,
-  maxHeight,
-  minHeight,
-  overflowY,
+  minHeightSize,
 }) => {
   return (
-    <Box
+    <div
       className="container-popup"
-      padding={padding}
-      style={{ display: show, background: color }}
+      style={{ display: show, backgroundColor: color }}
     >
       <div
         className="pop-up customScrollBar"
-        style={{
-          overflowY: overflowY === true ? "scroll" : "hidden",
-          width: widthSize,
-          minWidth: minWidthSize,
-          maxWidth: maxWidthSize,
-          minHeight: minHeight,
-          maxHeight: maxHeight,
-          padding: padding,
-        }}
+        style={
+          padding
+            ? {
+                width: widthSize,
+                minWidth: minWidthSize,
+                maxWidth: maxWidthSize,
+                padding: padding,
+              }
+            : {
+                width: widthSize,
+                minWidth: minWidthSize,
+                maxWidth: maxWidthSize,
+                minHeight: minHeightSize,
+              }
+        }
       >
         {children}
       </div>
-    </Box>
+    </div>
   );
 };
 
