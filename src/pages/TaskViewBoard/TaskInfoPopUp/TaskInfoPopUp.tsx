@@ -125,36 +125,37 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
           flexDirection={LG ? "column-reverse" : "row"}
           mx={"10px"}
         >
-          <Grid
-            justifyContent={"center"}
-            alignItems={"center"}
-            display={"flex"}
-            flex={1}
-          >
-            <Box
-              alignItems="center"
+          {viewTask?.attachedFiles && viewTask?.attachedFiles.length > 0 && (
+            <Grid
+              justifyContent={"center"}
+              alignItems={"center"}
               display={"flex"}
-              className="files-task-view"
+              flex={1}
+              maxHeight={"500px"}
+              position={"relative"}
             >
-              <>
-                {viewTask?.attachedFiles &&
-                  viewTask?.attachedFiles.length > 0 &&
-                  viewTask.attachedFiles?.map((item: any) => {
-                    console.log(item);
-                    return (
-                      <div className="image-container">
-                        <img src={item.url} alt={item.name} className="img" />
-                      </div>
-                    );
-                  })}
-              </>
-            </Box>
-          </Grid>
+              <Box
+                alignItems="center"
+                display={"flex"}
+                className="files-task-view customScrollbar"
+              >
+                {viewTask.attachedFiles?.map((item: any) => {
+                  console.log(item);
+                  return (
+                    <div className="image-container">
+                      <img src={item.url} alt={item.name} className="img" />
+                    </div>
+                  );
+                })}
+              </Box>
+            </Grid>
+          )}
           <Grid
             display="flex"
             flexDirection={"column"}
             justifyContent={"space-between"}
             flex={1}
+            maxHeight={"500px"}
             flexWrap={"wrap"}
           >
             <Grid
