@@ -529,8 +529,26 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
         window.open(response.data?.url);
         return response.data;
       }
+      toast.error("The attachment was deleted from the board.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(response.data);
     } catch (error) {
+      toast.error("The attachment was deleted from the board.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return rejectWithValue(error);
     }
   }
