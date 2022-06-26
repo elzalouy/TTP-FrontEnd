@@ -250,7 +250,7 @@ const EditTask: React.FC<Props> = (props) => {
 
   return (
     <>
-      <PopUp overflowY={true} show={props.show} minWidthSize="50vw">
+      <PopUp show={props.show} minWidthSize="50vw">
         <Grid
           direction={"row"}
           justifyContent="space-between"

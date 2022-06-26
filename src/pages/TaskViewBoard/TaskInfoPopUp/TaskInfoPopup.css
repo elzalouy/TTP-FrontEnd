@@ -1,0 +1,142 @@
+.input {
+  margin: 10px 0px;
+  padding: 5px;
+  /*    border-radius: 5px; */
+  width: 100%;
+  outline: none;
+  border: none;
+  cursor: default;
+  /*  border-top: 1px solid #B4B6C4; */
+}
+
+.form-inputs-grid {
+  display: flex;
+  flex: 1 1;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.textarea {
+  margin: 10px 0px;
+  padding: 5px;
+  /*   border-radius: 5px; */
+  width: 100%;
+  outline: none;
+  cursor: default;
+  border: none;
+  /*   border-top: 1px solid #B4B6C4; */
+  padding: 5px;
+  resize: none;
+}
+
+.form-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-header-date {
+  padding: 5px;
+  border-radius: 5px;
+  color: gray;
+  font-size: 0.75rem;
+}
+
+.sharedStatus {
+  color: #967974;
+  background-color: #eee6e5;
+  width: auto;
+  margin: 0px;
+  font-size: 14px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.reviewStatus {
+  color: #40b4f7;
+  background-color: #d1e6f3;
+  width: auto;
+  font-size: 14px;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.doneStatus {
+  color: #0f6b74;
+  background-color: #d9f3f5;
+  width: auto;
+  font-size: 14px;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.inProgressStatus {
+  background-color: #fff8dd;
+  color: #ffc400;
+  width: auto;
+  margin: 0px;
+  font-size: 14px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.notClearStatus {
+  background-color: #f7f0e7;
+  color: #ffac38;
+  width: auto;
+  margin: 0px;
+  font-size: 14px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.notStartedStatus {
+  background-color: #f0f0f0;
+  color: #919090;
+  width: auto;
+  font-size: 14px;
+  margin: 0px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.endedStatus {
+  color: #fc5a5a;
+  background-color: #ffeeee;
+  width: auto;
+  margin: 0px;
+  font-size: 14px;
+  padding: 2px 15px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.redirect-button {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #111;
+  color: white;
+  text-align: center;
+  margin: 20px 0px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.redirect-button:hover {
+  background-color: rgb(50, 50, 50);
+}

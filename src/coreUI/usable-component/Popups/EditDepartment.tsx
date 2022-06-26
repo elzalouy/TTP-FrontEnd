@@ -182,12 +182,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
 
   return (
     <>
-      <PopUp
-        overflowY={true}
-        show={Show}
-        minWidthSize="30vw"
-        maxWidthSize="300px"
-      >
+      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
         <div>
           <img
             className="closeIcon"

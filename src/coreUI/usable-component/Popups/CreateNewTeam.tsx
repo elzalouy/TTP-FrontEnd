@@ -123,7 +123,7 @@ const AddNewTeam: React.FC<Props> = () => {
         setShow={setShowDelete}
         team={selectedTeam}
       />
-      <PopUp overflowY={true} show={Show} minWidthSize="30vw">
+      <PopUp show={Show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"

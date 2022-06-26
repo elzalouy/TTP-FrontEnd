@@ -64,7 +64,7 @@ const EditPM: React.FC<Props> = (props: Props) => {
         </button>
       )}
 
-      <PopUp overflowY={true} show={toggler} minWidthSize="30vw">
+      <PopUp show={toggler} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"

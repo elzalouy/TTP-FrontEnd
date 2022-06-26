@@ -143,7 +143,6 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <p>Create new department</p>
       </div>
       <PopUp
-        overflowY={true}
         show={Show}
         minWidthSize="30vw"
         maxWidthSize="300px"

@@ -71,7 +71,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   };
   return (
     <>
-      <PopUp overflowY={true} show={show} widthSize="30vw">
+      <PopUp show={show} widthSize="30vw">
         <Box sx={{ paddingLeft: "15px" }}>
           <Box>
             <img

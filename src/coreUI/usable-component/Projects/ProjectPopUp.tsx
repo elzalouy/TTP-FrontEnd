@@ -116,7 +116,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   };
 
   return (
-    <PopUp overflowY={true} show={createProjectPopup}>
+    <PopUp show={createProjectPopup}>
       <Grid
         container
         position="relative"

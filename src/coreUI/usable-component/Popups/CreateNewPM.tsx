@@ -64,7 +64,7 @@ const CreateNewPM: React.FC<Props> = () => {
       >
         Create new PM
       </button>
-      <PopUp overflowY={true} show={show} minWidthSize="30vw">
+      <PopUp show={show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"

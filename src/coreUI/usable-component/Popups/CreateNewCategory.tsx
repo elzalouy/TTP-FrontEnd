@@ -139,7 +139,6 @@ const CreateNewCategory: React.FC<Props> = () => {
         </Typography>
       </Box>
       <PopUp
-        overflowY={true}
         show={Show}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}

@@ -131,7 +131,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   return (
     <>
       <PopUp
-        overflowY={true}
         show={display}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}

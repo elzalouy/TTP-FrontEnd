@@ -243,7 +243,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setShow={setConfirm}
         setTrigger={setTrigger}
       />
-      <PopUp overflowY={true} show={show} minWidthSize="50vw">
+      <PopUp show={show} minWidthSize="50vw">
         <div>
           <img
             className="closeIcon"

@@ -23,6 +23,7 @@ import {
   Task,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
+import TaskInfoPopUp from "./TaskInfoPopUp/TaskInfoPopUp";
 const DragField: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
@@ -260,6 +261,7 @@ const DragField: React.FC = (props: any) => {
                       </Typography> */}
                     </Stack>
                     {column?.NewTask}
+                    <TaskInfoPopUp show={viewTask} task={viewTaskData} />
                     {column &&
                       column?.items?.map((item: Task, index) => {
                         return (

@@ -86,7 +86,6 @@ const EditCategory: React.FC<Props> = ({
   return (
     <>
       <PopUp
-        overflowY={true}
         show={editCatDisplay}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "50vw" : "30vw"}

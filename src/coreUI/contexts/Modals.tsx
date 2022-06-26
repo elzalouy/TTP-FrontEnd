@@ -24,7 +24,6 @@ import {
   toggleCreateProjectPopup,
   toggleTask,
 } from "../../redux/Ui";
-import TaskDetails from "../usable-component/Popups/TaskDetails";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ const Modals: React.FC = (props) => {
       <Grid marginLeft={50}>
         <NewProjectPopUp setShow={showCreateProject} />
       </Grid>
-      <TaskDetails show={openTask} setShow={showTask} />
       {props.children}
     </>
   );
