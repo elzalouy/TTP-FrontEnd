@@ -139,6 +139,7 @@ const CreateNewCategory: React.FC<Props> = () => {
         </Typography>
       </Box>
       <PopUp
+        overflowY={true}
         show={Show}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}
@@ -231,7 +232,7 @@ const CreateNewCategory: React.FC<Props> = () => {
               ))}
             <br />
           </div>
-          <div className="controllers">   
+          <div className="controllers">
             <button className="controllers-done" onClick={handleSubmit}>
               {loadingCat ? (
                 <CircularProgress sx={AddNewCategoryCircularProgressStyles} />

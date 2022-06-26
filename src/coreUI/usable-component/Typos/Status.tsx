@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import * as React from "react";
 
 interface StatusProps {
-  status: string;
+  status?: string | null;
 }
 
 const Status: React.FC<StatusProps> = (props) => {
@@ -46,7 +46,10 @@ const Status: React.FC<StatusProps> = (props) => {
   };
   return (
     <>
-      <Typography sx={statusStyle}>{props.status}</Typography>
+      <Typography sx={statusStyle}>
+        {props.status}
+        {props.children}
+      </Typography>
     </>
   );
 };

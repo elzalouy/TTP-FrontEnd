@@ -13,15 +13,15 @@ import {
   Box,
 } from "@mui/material";
 import "../../../themes/style.css";
-import "../../../App.css"
-import MailLockIcon from '@mui/icons-material/MailLock';
-import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import "../../../App.css";
+import MailLockIcon from "@mui/icons-material/MailLock";
+import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { FC, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import _ from "lodash";
 import { PMsActions, ProjectManager, resendMail } from "../../../redux/PM";
-import EditPM from "../FormPopups/EditPM";
-import DeletePM from "../FormPopups/DeletePM";
+import EditPM from "../Popups/EditPM";
+import DeletePM from "../Popups/DeletePM";
 import { useDispatch } from "react-redux";
 import {
   toggleDeleteProjectManagerPopup,
@@ -86,7 +86,10 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
     <>
       <EditPM hideButton />
       <DeletePM hideButton />
-      <TableContainer style={{paddingTop:"10px"}} className="customScrollBar">
+      <TableContainer
+        style={{ paddingTop: "10px" }}
+        className="customScrollBar"
+      >
         <Table
           size="small"
           aria-label="a dense table"
@@ -177,18 +180,27 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
               )?.length;
 
               return (
-                <TableRow className="trow" role="checkbox" tabIndex={-1} key={_id}>
+                <TableRow
+                  className="trow"
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={_id}
+                >
                   <TableCell
                     align="left"
-                    style={MD ? {
-                      width: "300px",
-                      margin: "0px",
-                      paddingLeft:"20px"
-                    }: {
-                      width: "300px",
-                      margin: "0px",
-                      paddingLeft:"40px"
-                    }}
+                    style={
+                      MD
+                        ? {
+                            width: "300px",
+                            margin: "0px",
+                            paddingLeft: "20px",
+                          }
+                        : {
+                            width: "300px",
+                            margin: "0px",
+                            paddingLeft: "40px",
+                          }
+                    }
                   >
                     <Stack
                       direction="row"

@@ -22,7 +22,6 @@
   animation: zoomIn 0.3s;
   overflow: auto;
 }
-
 .small-pop-up {
   min-width: 350px;
   max-width: 95vw;
@@ -44,14 +43,13 @@
   }
 }
 
-@media (max-width:1000px) {
+@media (max-width: 1000px) {
   .pop-up {
     width: 80vw !important;
   }
 }
 
-@media (max-width:900px) {
-
+@media (max-width: 900px) {
   .container-popup {
     width: 100vw;
     left: 0;
@@ -69,7 +67,7 @@
   }
 }
 
-@media (max-width:800px) {
+@media (max-width: 800px) {
   .pop-up {
     width: 60vw !important;
     background-color: white;
@@ -91,10 +89,9 @@
     animation: zoomIn 0.3s;
     overflow: auto;
   }
-
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .pop-up {
     width: 80vw !important;
     background-color: white;

@@ -5,18 +5,18 @@ import moment from "moment";
 import { stat } from "fs";
 
 const notifiSlice: Slice<Notifis> = createSlice({
-  name: "clients",
+  name: "notifications",
   initialState: NotifiState,
   reducers: {
-    onSort: (state = NotifiState, { payload }: AnyAction) => { },
-    onSearch: (state = NotifiState, { payload }: AnyAction) => { },
+    onSort: (state = NotifiState, { payload }: AnyAction) => {},
+    onSearch: (state = NotifiState, { payload }: AnyAction) => {},
     updateCounter: (state = NotifiState, { payload }: AnyAction) => {
       state.counter = state.counter + 1;
       state.notifi = [payload, ...state.notifi];
     },
     setHideLoadingState: (state = NotifiState, { payload }: AnyAction) => {
       state.hideLoading = payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllNotifi.rejected, (state) => {
@@ -56,5 +56,6 @@ const notifiSlice: Slice<Notifis> = createSlice({
     );
   },
 });
-export const {onSort,onSearch,updateCounter,setHideLoadingState} = notifiSlice.actions;
+export const { onSort, onSearch, updateCounter, setHideLoadingState } =
+  notifiSlice.actions;
 export default notifiSlice.reducer;

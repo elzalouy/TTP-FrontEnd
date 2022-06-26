@@ -1,161 +1,126 @@
-import * as React from "react";
-import SelectInput2 from "../Inputs/SelectInput2";
-import PopUp from "../Popup/PopUp";
-import IMAGES from "../../../assets/img/Images";
-import Joi from "joi";
-import moment from "moment";
-import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { Category, selectAllCategories } from "../../../redux/Categories";
-import { Department, selectAllDepartments } from "../../../redux/Departments";
-import { useAppSelector } from "../../../redux/hooks";
-import { Close as CloseIcon } from "@mui/icons-material";
 import {
+  Box,
   Button,
+  ButtonBase,
   CircularProgress,
   Grid,
   TextField,
   TextFieldProps,
   Typography,
 } from "@mui/material";
+import { Dispatch } from "@reduxjs/toolkit";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import SelectInput2 from "../Inputs/SelectInput2";
+import PopUp from "../Popup/PopUp";
+import { Category, selectAllCategories } from "../../../redux/Categories";
+import { Department, selectAllDepartments } from "../../../redux/Departments";
+import { useAppSelector } from "../../../redux/hooks";
 import {
-  editTaskFromBoard,
-  editTaskLoading,
-  ProjectsActions,
-  selectAllProjects,
+  createTaskFromBoard,
+  selectNewProject,
   selectSelectedProject,
-  Task,
 } from "../../../redux/Projects";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import { validateEditTask } from "../../../helpers/validation";
+
+import IMAGES from "../../../assets/img/Images";
+import {
+  valdiateCreateTask,
+  validateTaskFilesSchema,
+} from "../../../helpers/validation";
+import Joi from "joi";
+import moment from "moment";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
-import { AnyListenerPredicate } from "@reduxjs/toolkit/dist/listenerMiddleware/types";
 import { selectRole } from "../../../redux/Auth";
-import { Box } from "@mui/system";
-import _ from "lodash";
 
-const EditTask: React.FC<Props> = (props) => {
-  // here is the clean order of code
-  // we want to seperate some rendered lines of design code as a seperated component
-  // our State first
-  const [state, setState] = React.useState<State>({
-    newFiles: [],
-    deleteFiles: [],
-    task: {
-      _id: "",
+type Props = {
+  show: string;
+  setShow: (val: string) => void;
+};
+
+const CreateNewTask: React.FC<Props> = (props) => {
+  const dispatch: Dispatch<any> = useDispatch();
+  const Dispatch = useDispatch();
+  const files = React.useRef<HTMLInputElement>(null);
+  const [Files, setFiles] = React.useState<(File | null)[]>([]);
+  const [error, setError] = React.useState<{
+    error: Joi.ValidationError | undefined;
+    value: any;
+    warning: Joi.ValidationError | undefined;
+  }>({ error: undefined, value: undefined, warning: undefined });
+  const departments = useAppSelector(selectAllDepartments);
+  const categories = useAppSelector(selectAllCategories);
+  const selectedProject = useAppSelector(selectSelectedProject);
+  const newProject = useAppSelector(selectNewProject);
+  const { createProjectPopup } = useAppSelector(selectUi);
+  const [selectedDepartment, setSelectedDepartment] = React.useState<
+    Department | any
+  >();
+  const [selectedCategory, setSelectCategory] = React.useState<Category>();
+  const role = useAppSelector(selectRole);
+
+  const { register, handleSubmit, watch, control, reset, setValue } = useForm({
+    defaultValues: {
       name: "",
-      projectId: "",
       categoryId: "",
       subCategoryId: "",
       teamId: "",
-      status: "",
-      start: "",
-      deliveryDate: "",
-      done: "",
-      turnoverTime: "",
-      attachedFiles: [],
-      attachedCard: "",
+      deadline: null,
+      attachedFiles: "",
+      selectedDepartmentId: "",
       description: "",
-      cardId: "",
-      listId: "",
-      boardId: "",
+      file: "",
     },
-    error: {
-      error: undefined,
-      value: null,
-      warning: undefined,
-    },
-    selectedDepartment: null,
-    selectedCategory: null,
   });
-  const dispatch = useDispatch();
-  const departments = useAppSelector(selectAllDepartments);
-  const categories = useAppSelector(selectAllCategories);
-  const loadingTask = useAppSelector(editTaskLoading);
-  const selectedProject = useAppSelector(selectSelectedProject);
-  const { editTask: id } = useAppSelector(selectAllProjects);
-  const { editTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, control, reset, setValue } = useForm();
-  const role = useAppSelector(selectRole);
-
-  const files = React.useRef<HTMLInputElement>(null);
-
-  // secondly hooks here
-  React.useEffect(() => {
-    let State = { ...state };
-    let task = selectedProject.tasks.find((item) => item._id === id);
-    if (task) {
-      State.task = task;
-      let dep = departments.find((item) => item.boardId === task?.boardId);
-      setValue("name", task.name);
-      setValue("attachedFiles", task.attachedFiles);
-      setValue("categoryId", task.categoryId);
-      setValue("deadline", task.deadline === null ? "" : task.deadline);
-      setValue("description", task.description);
-      setValue("file", task.file);
-      setValue("teamId", task.teamId);
-      setValue("selectedDepartmentId", dep ? dep._id : "");
-      setValue("subCategoryId", task.subCategoryId);
-      State.selectedCategory = categories.find(
-        (item) => item._id === task?.categoryId
-      );
-      State.selectedDepartment = dep;
-    }
-    setState(State);
-  }, [id]);
+  const watchDeadline = watch().deadline;
 
   React.useEffect(() => {
-    if (editTaskPopup === "none") {
-      reset();
+    let today = moment().format();
+    let deadline = moment(watchDeadline).format();
+    if (moment(today).isAfter(moment(deadline))) {
+      toast.warning("Deadline has already passed today's date", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        toastId: "mail",
+      });
     }
-  }, [editTaskPopup]);
-
-  // finally handling events functions here
-  const onChangeDepartment = (e: any) => {
-    let State = { ...state };
-    setValue("selectedDepartmentId", e.target.value);
-    State.selectedDepartment = departments.find(
-      (item) => item._id === e.target.value
-    );
-    setState(State);
-  };
-
-  const onChangeCategory = (e: any) => {
-    let State = { ...state };
-    setValue("categoryId", e.target.value);
-    State.selectedCategory = categories.find(
-      (item) => item._id === e.target.value
-    );
-    setState(State);
-  };
+  }, [watchDeadline]);
 
   const onSubmit = async (data: any) => {
-    let State = { ...state };
     let newTask = {
-      id: State.task._id,
       name: data.name,
       categoryId: data?.categoryId,
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
-      status: State.task.status,
-      deadline: data?.deadline ? moment(data?.deadline).toDate() : "",
-      attachedFiles: state?.newFiles,
-      deleteFiles: JSON.stringify(state.deleteFiles),
-      listId: data?.teamId
-        ? state.selectedDepartment?.teamsId?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
-        : state.selectedDepartment?.defaultListId,
-      boardId: state.selectedDepartment?.boardId,
+      projectId: selectedProject?.project?._id,
+      status: data?.teamId ? "inProgress" : "Tasks Board",
+      start: new Date().toUTCString(),
+      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
+      deliveryDate: null,
+      done: null,
+      turnoverTime: null,
+      attachedFiles: Files,
+      listId:
+        data?.teamId !== "" && data?.teamId !== null
+          ? selectedDepartment?.teamsId?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : selectedDepartment?.defaultListId,
+      boardId: selectedDepartment?.boardId,
       description: data?.description,
-      cardId: state.task?.cardId,
     };
-    let validateResult = validateEditTask(newTask);
+    let validateResult = valdiateCreateTask(newTask);
     if (validateResult.error) {
-      State.error = validateResult;
-      setState(State);
+      setError(validateResult);
       toast.error(validateResult.error.message, {
         position: "top-right",
         autoClose: 1500,
@@ -168,74 +133,92 @@ const EditTask: React.FC<Props> = (props) => {
       });
     } else {
       let task = new FormData();
-      task.append("id", newTask.id);
-      task.append("name", newTask.name);
-      task.append("categoryId", newTask.categoryId);
-      task.append("subCategoryId", newTask.subCategoryId);
-      task.append("status", newTask.status);
-      task.append("deadline", newTask.deadline.toString());
-      task.append("cardId", newTask.cardId);
-      if (state.newFiles) {
-        let data: Array<any> = Array.from(state.newFiles);
-        for (let i = 0; i < data.length; i++) {
-          task.append("attachedFiles", data[i]);
+      task.append("name", data.name);
+      task.append("categoryId", data.categoryId);
+      task.append("subCategoryId", data.subCategoryId);
+      if (newTask.teamId !== null) task.append("teamId", data.teamId);
+      task.append(
+        "projectId",
+        selectedProject?.project?._id ? selectedProject?.project?._id : ""
+      );
+      task.append("status", data?.teamId ? "inProgress" : "Tasks Board");
+      task.append("start", new Date().toUTCString());
+      task.append(
+        "deadline",
+        data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
+      );
+      let files: Array<any> = Array.from(Files);
+      let result = validateTaskFilesSchema(files);
+      if (result.error === null) {
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+            task.append("attachedFiles", files[i]);
+          }
         }
-      }
-      task.append("boardId", newTask.boardId);
-      task.append("listId", newTask.listId);
-      task.append("description", data?.description);
-      task.append("deleteFiles", JSON.stringify(state.deleteFiles));
-      if(newTask.teamId !== null) task.append("teamId", newTask.teamId);
-      dispatch(
-        editTaskFromBoard({ data: task, dispatch, setShow: props.setShow })
+        task.append(
+          "boardId",
+          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
         );
-      }
+        task.append(
+          "listId",
+          data?.teamId
+            ? selectedDepartment?.teamsId?.find(
+                (item: any) => item._id === data.teamId
+              )?.listId
+            : selectedDepartment?.defaultListId
+        );
+        task.append("description", data?.description);
+        dispatch(
+          createTaskFromBoard({
+            data: task,
+            dispatch: dispatch,
+            setShow: props.setShow,
+            reset: reset,
+          })
+        );
+        setFiles([]);
+      } else toast.error(result.error);
+    }
   };
 
   const onChangeFiles = () => {
     files.current?.click();
   };
+
   const onSetFiles = () => {
-    let State = { ...state };
     let newfiles = files.current?.files;
+    let items = [...Files];
     if (newfiles) {
-      let items = [...state.newFiles];
       for (let i = 0; i < newfiles.length; i++) {
         items.push(newfiles.item(i));
       }
-      items = _.uniq(items);
-      State.newFiles = items;
-      setState(State);
     }
-    if (files?.current?.value) files.current.value = "";
+    setFiles(items);
   };
 
-  const onRemoveFile = (item: any) => {
-    let State = { ...state };
-    if (item?._id) {
-      let task = { ...State.task };
-      State.deleteFiles.push(item);
-      State.deleteFiles = _.uniq([...State.deleteFiles]);
-      let files = [...State?.task?.attachedFiles];
-      files = files.filter((file) => file._id !== item._id);
-      task.attachedFiles = files;
-      State.task = task;
-    } else if (item?.name && item?.size) {
-      let file: File = item;
-      let newfiles = [...State.newFiles];
-      newfiles = newfiles.filter((file) => file !== item);
-      State.newFiles = newfiles;
-    }
-    setState(State);
+  const onRemoveFile = (item: File | null) => {
+    let newFiles = Files;
+    newFiles = newFiles?.filter((file) => file !== item);
+    setFiles(newFiles);
   };
-  const onCloseModel = () => {
-    dispatch(ProjectsActions.onEditTask(""));
-    props.setShow("none");
+
+  const onChangeDepartment = (e: any) => {
+    setValue("selectedDepartmentId", e.target.value);
+    let dep = departments.find((item) => item._id === e.target.value);
+    setSelectedDepartment(dep);
+    setValue("teamId", "");
+  };
+
+  const onChangeCategory = (e: any) => {
+    setValue("categoryId", e.target.value);
+    const cat = categories.find((item) => item._id === e.target.value);
+    setSelectCategory(cat);
+    setValue("subCategoryId", "");
   };
 
   return (
     <>
-      <PopUp show={props.show} minWidthSize="50vw">
+      <PopUp overflowY={true} show={props.show} minWidthSize="50vw">
         <Grid
           direction={"row"}
           justifyContent="space-between"
@@ -247,10 +230,15 @@ const EditTask: React.FC<Props> = (props) => {
             className="closeIcon"
             src={IMAGES.closeicon}
             alt="closeIcon"
-            onClick={onCloseModel}
+            onClick={() => {
+              setValue("deadline", null);
+              props.setShow("none");
+              setFiles([]);
+              reset();
+            }}
           />
           <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
-            Edit task
+            Create task
           </Typography>
         </Grid>
         <div className="step2">
@@ -265,12 +253,9 @@ const EditTask: React.FC<Props> = (props) => {
                   render={(props) => (
                     <TextField
                       {...register("name")}
-                      value={props.field.value}
-                      error={state?.error?.error?.details[0].path.includes(
-                        "name"
-                      )}
+                      error={error.error?.details[0].path.includes("name")}
                       id="outlined-error"
-                      sx={editTaskNameStyles}
+                      sx={createNewTaskNameStyles}
                       placeholder="Task name"
                       onChange={props.field.onChange}
                     />
@@ -286,9 +271,7 @@ const EditTask: React.FC<Props> = (props) => {
                   render={(props) => (
                     <SelectInput2
                       {...register("selectedDepartmentId")}
-                      error={state.error.error?.details[0].path.includes(
-                        "listId"
-                      )}
+                      error={error.error?.details[0].path.includes("listId")}
                       handleChange={onChangeDepartment}
                       selectText={
                         departments.find(
@@ -336,30 +319,31 @@ const EditTask: React.FC<Props> = (props) => {
                           }}
                         >
                           <TextField
-                            placeholder="deadline"
-                            error={state.error.error?.details[0].path.includes(
+                            placeholder="Deadline"
+                            error={error.error?.details[0].path.includes(
                               "deadline"
                             )}
                             {...params}
                             onChange={params.onChange}
-                            value={params.value}
-                            sx={editTaskDeadlineStyles}
+                            sx={createNewTaskDeadlineStyles}
                           />
-                          <img
-                            className="closeIcon"
-                            src={IMAGES.closeicon}
-                            style={{
-                              width: "10px",
-                              height: "10px",
-                              position: "absolute",
-                              right: "13px",
-                              bottom: "17px",
-                            }}
-                            alt="closeIcon"
-                            onClick={() => {
-                              setValue("deadline", null);
-                            }}
-                          />
+                          {watch().deadline !== null && (
+                            <img
+                              className="closeIcon"
+                              src={IMAGES.closeicon}
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                position: "absolute",
+                                right: "13px",
+                                bottom: "17px",
+                              }}
+                              alt="closeIcon"
+                              onClick={() => {
+                                setValue("deadline", null);
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     />
@@ -375,7 +359,7 @@ const EditTask: React.FC<Props> = (props) => {
                   render={(props) => (
                     <SelectInput2
                       {...register("categoryId")}
-                      error={state.error?.error?.details[0].path.includes(
+                      error={error?.error?.details[0].path.includes(
                         "categoryId"
                       )}
                       handleChange={onChangeCategory}
@@ -408,15 +392,14 @@ const EditTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <TextField
-                      error={state.error.error?.details[0]?.path.includes(
+                      error={error.error?.details[0]?.path.includes(
                         "description"
                       )}
                       {...register("description")}
-                      value={props.field.value}
                       id="outlined-multiline-static"
                       multiline
                       placeholder="Write about your task"
-                      sx={editTaskDescStyles}
+                      sx={createNewTaskDescriptionStyles}
                       rows={5}
                       onChange={props.field.onChange}
                     />
@@ -431,28 +414,26 @@ const EditTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <SelectInput2
-                      error={state.error?.error?.details[0].path.includes(
+                      error={error?.error?.details[0].path.includes(
                         "subCategoryId"
                       )}
                       handleChange={props.field.onChange}
                       selectText={
-                        state.selectedCategory?.subCategoriesId?.find(
+                        selectedCategory?.subCategoriesId?.find(
                           (item) => item._id === props.field.value
                         )?.subCategory
                       }
                       {...register("subCategoryId")}
                       selectValue={props.field.value}
                       options={
-                        state.selectedCategory?.subCategoriesId
-                          ? state.selectedCategory?.subCategoriesId?.map(
-                              (item) => {
-                                return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.subCategory,
-                                };
-                              }
-                            )
+                        selectedCategory?.subCategoriesId
+                          ? selectedCategory?.subCategoriesId?.map((item) => {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.subCategory,
+                              };
+                            })
                           : []
                       }
                     />
@@ -468,18 +449,18 @@ const EditTask: React.FC<Props> = (props) => {
                       control={control}
                       render={(props) => (
                         <SelectInput2
-                          error={state.error?.error?.details[0]?.path.includes(
+                          error={error?.error?.details[0]?.path.includes(
                             "listId"
                           )}
                           handleChange={props.field.onChange}
                           selectText={
-                            state.selectedDepartment?.teamsId?.find(
+                            selectedDepartment?.teamsId?.find(
                               (item: any) => item._id === props.field.value
                             )?.name
                           }
                           {...register("teamId")}
                           handleOnClick={() => {
-                            if (state.selectedDepartment?.teamsId.length === 0) {
+                            if (selectedDepartment?.teamsId.length === 0) {
                               toast.warning("There are no existing teams", {
                                 position: "top-right",
                                 autoClose: 1500,
@@ -494,8 +475,8 @@ const EditTask: React.FC<Props> = (props) => {
                           }}
                           selectValue={props.field.value}
                           options={
-                            state.selectedDepartment?.teamsId
-                              ? state.selectedDepartment?.teamsId?.map(
+                            selectedDepartment?.teamsId
+                              ? selectedDepartment?.teamsId?.map(
                                   (item: any) => {
                                     if (!item.isDeleted) {
                                       return {
@@ -522,77 +503,63 @@ const EditTask: React.FC<Props> = (props) => {
               </div>
             </div>
             <Box
-              marginTop={1}
-              alignItems="center"
-              display={"inline-flex"}
-              className="files"
+              marginX={1}
+              marginY={3}
+              maxWidth={"50vw"}
+              width="50vw"
+              sx={{
+                overflowX: "scroll",
+                overflowY: "hidden",
+                display: "inline-flex",
+              }}
+              flexDirection="row"
             >
               <input
-                {...register("file")}
                 onChange={onSetFiles}
                 ref={files}
                 type="file"
                 style={{ display: "none" }}
                 multiple
               />
-              <Button onClick={onChangeFiles} sx={taskFormFileAddStyles}>
+              <ButtonBase onClick={onChangeFiles} sx={createNewTaskFilesStyles}>
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
                   style={{
                     color: "white",
                     fontSize: "12px",
                     marginLeft: "5px",
+                    width: "auto",
                   }}
                 >
-                  {state.task?.attachedFiles
-                    ? state.newFiles?.length + state.task?.attachedFiles?.length
-                    : state.newFiles.length}
+                  {Files && Files.length > 0 ? Files?.length : ""}
                 </span>
-              </Button>
-              <>
-                {state?.newFiles &&
-                  state.newFiles.length > 0 &&
-                  state.newFiles?.map((item, index) => (
+              </ButtonBase>
+              {Files &&
+                Files.length > 0 &&
+                Files?.map((item, index) => (
+                  <Box
+                    key={index}
+                    marginLeft={1}
+                    bgcolor={"#F1F1F5"}
+                    padding={0.5}
+                    borderRadius={1}
+                    color="#92929D"
+                    sx={createNewTaskFilesItemStyles}
+                    onClick={() => onRemoveFile(item)}
+                  >
                     <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={0.5}
-                      borderRadius={1}
-                      color="#92929D"
-                      sx={taskFormFilesStyles}
-                      onClick={() => onRemoveFile(item)}
+                      lineHeight={"32px"}
+                      height={"32px"}
+                      width={"calc(100%)"}
                     >
                       {item?.name}
-                      <CloseIcon
-                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                        htmlColor="#92929D"
-                      />
                     </Typography>
-                  ))}
-              </>
-              <>
-                {state?.task?.attachedFiles &&
-                  state.task?.attachedFiles.length > 0 &&
-                  state.task.attachedFiles?.map((item, index) => (
-                    <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={0.5}
-                      borderRadius={1}
-                      color="#92929D"
-                      sx={taskFormFilesStyles}
-                      onClick={() => onRemoveFile(item)}
-                    >
-                      {item?.name}
-                      <CloseIcon
-                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                        htmlColor="#92929D"
-                      />
-                    </Typography>
-                  ))}
-              </>
+                    <CloseIcon
+                      sx={{ fontSize: "14px", marginLeft: 0.5 }}
+                      htmlColor="#92929D"
+                    />
+                  </Box>
+                ))}
             </Box>
             <div>
               <button
@@ -600,7 +567,7 @@ const EditTask: React.FC<Props> = (props) => {
                 type="submit"
                 className="addTaskBtn"
               >
-                {loadingTask ? (
+                {selectedProject.loading ? (
                   <CircularProgress
                     sx={{
                       color: "white",
@@ -609,7 +576,7 @@ const EditTask: React.FC<Props> = (props) => {
                     }}
                   />
                 ) : (
-                  "Update Task"
+                  "Add task"
                 )}
               </button>
             </div>
@@ -620,63 +587,11 @@ const EditTask: React.FC<Props> = (props) => {
   );
 };
 
-export default EditTask;
+export default CreateNewTask;
 
-type Props = {
-  show: string;
-  setShow: (val: string) => void;
-};
+//SX Style Objects
 
-interface State {
-  newFiles: (File | null)[];
-  deleteFiles: {
-    name: string;
-    mimeType: string;
-    trelloId: string;
-    url: string;
-  }[];
-  task: Task;
-  error: {
-    error: Joi.ValidationError | undefined;
-    value: any;
-    warning: Joi.ValidationError | undefined;
-  };
-  selectedDepartment: Department | any;
-  selectedCategory: Category | null | undefined;
-}
-
-//SX Styles Objects
-
-const taskFormFilesStyles = {
-  cursor: "pointer",
-  height: "35px",
-  textAlign: "center",
-  alignContent: "center",
-  paddingTop: 1,
-};
-const editTaskDescStyles = {
-  paddingTop: 1,
-  width: "100%",
-  "& .MuiOutlinedInput-input": {
-    borderRadius: "6px",
-    background: "white !important",
-  },
-};
-
-const editTaskDeadlineStyles = {
-  width: "100%",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const editTaskNameStyles = {
+const createNewTaskNameStyles = {
   width: "100%",
   marginTop: 1,
   "& .MuiOutlinedInput-input": {
@@ -689,18 +604,54 @@ const editTaskNameStyles = {
   },
 };
 
-const taskFormFileAddStyles = {
+const createNewTaskDeadlineStyles = {
+  width: "100%",
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const createNewTaskDescriptionStyles = {
+  paddingTop: 1,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    borderRadius: "6px",
+    background: "white !important",
+  },
+};
+
+const createNewTaskFilesStyles = {
   backgroundColor: "#00ACBA",
-  width: "40px",
+  width: "46px !important",
   height: "32px",
   borderRadius: "5px",
+  paddingX: 1,
   ":hover": {
     backgroundColor: "#00ACBA",
   },
   "& .MuiButton-root": {
+    width: "46px !important",
     ":hover": {
       backgroundColor: "#00ACBA",
       color: "white",
     },
   },
+};
+
+const createNewTaskFilesItemStyles = {
+  width: "auto",
+  cursor: "pointer",
+  height: "32px",
+  textAlign: "start",
+  alignContent: "center",
+  justifySelf: "center",
+  justifyContent: "center",
+  alignItems: "center",
+  display: "inline-flex",
 };

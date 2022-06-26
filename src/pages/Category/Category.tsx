@@ -4,9 +4,9 @@ import CategoryCard from "./CategoryCard";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import SearchBox from "../../coreUI/usable-component/Inputs/SearchBox";
-import CreateNewCategory from "../../coreUI/usable-component/FormPopups/CreateNewCategory";
-import CreateSubCategory from "../../coreUI/usable-component/FormPopups/CreateSubCategory";
-import EditCategory from "../../coreUI/usable-component/FormPopups/EditCategory";
+import CreateNewCategory from "../../coreUI/usable-component/Popups/CreateNewCategory";
+import CreateSubCategory from "../../coreUI/usable-component/Popups/CreateSubCategory";
+import EditCategory from "../../coreUI/usable-component/Popups/EditCategory";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { getAllCategories } from "../../redux/Categories";
@@ -36,7 +36,6 @@ const Category: React.FC<Props> = () => {
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    
     setSearch(e.target.value);
     dispatch(categoriesActions.onSearch(e.target.value));
   };
@@ -48,14 +47,13 @@ const Category: React.FC<Props> = () => {
     setDisplay(value);
   };
 
-
   const handleSetEditCatDisplay = (value: string) => {
     setEditCatDisply(value);
   };
 
   return (
     <Box className="category-page" sx={{ width: "100%" }}>
-      <Box sx={MD ? {paddingTop:"50px"} : { paddingTop: "0px" }}>
+      <Box sx={MD ? { paddingTop: "50px" } : { paddingTop: "0px" }}>
         <Typography
           fontSize={24}
           variant="h2"

@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import "./popUp.css";
 
@@ -6,8 +7,11 @@ type Props = {
   widthSize?: string;
   minWidthSize?: string;
   maxWidthSize?: string;
-  padding?:string;
+  padding?: string;
   children: object;
+  maxHeight?: string;
+  minHeight?: string;
+  overflowY?: boolean;
 };
 
 const PopUp: React.FC<Props> = ({
@@ -17,23 +21,31 @@ const PopUp: React.FC<Props> = ({
   padding,
   minWidthSize,
   maxWidthSize,
+  maxHeight,
+  minHeight,
+  overflowY,
 }) => {
   return (
-    <div className="container-popup" style={{ display: show }}>
+    <Box
+      className="container-popup"
+      padding={padding}
+      style={{ display: show }}
+    >
       <div
         className="pop-up customScrollBar"
-        style={padding ?{ width: widthSize,
-          minWidth: minWidthSize,
-          maxWidth: maxWidthSize,padding:padding} : {
+        style={{
+          overflowY: overflowY === true ? "scroll" : "hidden",
           width: widthSize,
           minWidth: minWidthSize,
           maxWidth: maxWidthSize,
-          
+          minHeight: minHeight,
+          maxHeight: maxHeight,
+          padding: padding,
         }}
       >
         {children}
       </div>
-    </div>
+    </Box>
   );
 };
 

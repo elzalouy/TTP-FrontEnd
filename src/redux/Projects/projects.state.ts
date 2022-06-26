@@ -78,6 +78,12 @@ export interface ProjectsInterface {
   editTaskLoading: boolean | undefined;
   sorting: string | null;
   filteredProjects: Project[] | null;
+  openTaskDetails: {
+    task: Task | null;
+    pmName: string | null;
+    department: string | null;
+    member: string | null;
+  };
 }
 
 const PorjectsState: ProjectsInterface = {
@@ -142,5 +148,11 @@ const PorjectsState: ProjectsInterface = {
   editTaskLoading: undefined,
   sorting: null,
   filteredProjects: null,
+  openTaskDetails: {
+    task: null,
+    pmName: null,
+    department: "",
+    member: "",
+  },
 };
 export default PorjectsState;

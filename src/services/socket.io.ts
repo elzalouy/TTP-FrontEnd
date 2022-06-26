@@ -16,8 +16,7 @@ export const openConnection = (user: User | null) => {
   let Io = socket.on("connect", () => {
     console.log("client is connected");
   });
-
-  if (user?.role === "OM") {
+  if (user?.type === "admin") {
     Io.emit("joined-admin");
   }
   if (user?.role === "PM") {

@@ -7,12 +7,10 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter } from "react-router-dom";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
-import * as serviceWorkerRegistration from "./utils/serviceWorkerRegistration";
-
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
-import "./i18n/i18n";
+import "./helpers/i18n";
 import "./assets/fonts/Cairo-Black.ttf";
 import "./assets/fonts/Cairo-Bold.ttf";
 import "./assets/fonts/Cairo-Regular.ttf";
@@ -34,4 +32,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-

@@ -43,7 +43,7 @@ const DeleteTask: React.FC<Props> = (props) => {
         </IconButton>
       </Box>
 
-      <PopUp show={props.Show} widthSize="25vw">
+      <PopUp overflowY={true} show={props.Show} widthSize="25vw">
         <div className="task-delete-container">
           <div className="imageAlert">
             <img src={deleteIcon} />

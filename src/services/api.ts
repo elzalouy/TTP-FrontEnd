@@ -23,9 +23,7 @@ export const removeAuthToken = () => {
   try {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const setAuthToken = (token: string) => {

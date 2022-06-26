@@ -182,7 +182,12 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
 
   return (
     <>
-      <PopUp show={Show} minWidthSize="30vw" maxWidthSize="300px">
+      <PopUp
+        overflowY={true}
+        show={Show}
+        minWidthSize="30vw"
+        maxWidthSize="300px"
+      >
         <div>
           <img
             className="closeIcon"
@@ -333,7 +338,6 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         <br />
 
         <div className="controllers">
-        
           <button className="controllers-done" onClick={() => handleSubmit()}>
             {depLoading ? (
               <CircularProgress sx={{ color: "white", padding: "10px" }} />

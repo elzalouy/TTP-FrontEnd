@@ -12,7 +12,7 @@ import { styled } from "@mui/material/styles";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import CategoryDrop from "../../coreUI/usable-component/Dropdowns/CategoryDrop";
-import DeleteCategory from "../../coreUI/usable-component/FormPopups/DeleteCategory";
+import DeleteCategory from "../../coreUI/usable-component/Popups/DeleteCategory";
 
 type Props = {};
 interface IProps {

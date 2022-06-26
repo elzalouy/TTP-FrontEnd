@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Toolbar, AppBar, Drawer, IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import "./AppBar.css";
-import { Logo, Notification } from "../../../coreUI/usable-elements/Images";
+import { Logo, Notification } from "../../../usable-elements/Images";
 import { RouteComponentProps, useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
 import zIndex from "@mui/material/styles/zIndex";
@@ -22,9 +22,9 @@ const Bar: FC = (props: any) => {
       sx={{
         display: { lg: "none", md: "none", sm: "block", xs: "block" },
         bgcolor: "white",
-        margin:"0px",
-        boxShadow:"none",
-        zIndex:1
+        margin: "0px",
+        boxShadow: "none",
+        zIndex: 1,
       }}
     >
       <Toolbar
@@ -44,14 +44,20 @@ const Bar: FC = (props: any) => {
           open={open}
           setOpen={setOpen}
         />
-        <IconButton style={{padding:"0px"}} onClick={()=>{
-          history.push("/Overview")
-        }}>
+        <IconButton
+          style={{ padding: "0px" }}
+          onClick={() => {
+            history.push("/Overview");
+          }}
+        >
           <Logo />
         </IconButton>
-        <IconButton style={{padding:"0px"}} onClick={()=>{
-          history.push("/notifications")
-        }}>
+        <IconButton
+          style={{ padding: "0px" }}
+          onClick={() => {
+            history.push("/notifications");
+          }}
+        >
           <Notification />
         </IconButton>
       </Toolbar>

@@ -15,9 +15,8 @@ import * as React from "react";
 import "./slider.css";
 import Avatar from "react-avatar";
 import { styled } from "@mui/material/styles";
-import { Logo } from "../../../coreUI/usable-elements/Images";
+import { Logo } from "../../../../coreUI/usable-elements/Images";
 import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
-import IMAGES from "../../../assets/img/Images";
 import DrawerItem from "./DrawerItem";
 import { useDispatch } from "react-redux";
 import {
@@ -26,20 +25,21 @@ import {
   selectIsLogout,
   selectRole,
   selectUser,
-} from "../../../redux/Auth";
+} from "../../../../redux/Auth";
 import { Redirect, useHistory } from "react-router";
-import DepartmentIcon from "../../../assets/icons/DepartmentIcon";
-import Overviewicon from "../../../assets/icons/Overview";
-import ProjectsIcon from "../../../assets/icons/ProjectsIcon";
-import PersonIcon from "../../../assets/icons/Person";
-import ClientIcon from "../../../assets/icons/ClientIcon";
-import TaskIcon from "../../../assets/icons/TaskIcon";
-import CategoryIcon from "../../../assets/icons/CategoryIcon";
-import NotificationIcon from "../../../assets/icons/Notification";
-import { useAppSelector } from "../../../redux/hooks";
-import { toggleLogOutPopup, toggleSideMenu } from "../../../redux/Ui";
-import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
-import { counterNotif } from "../../../redux/notification";
+import IMAGES from "../../../../assets/img/Images";
+import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
+import Overviewicon from "../../../../assets/icons/Overview";
+import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
+import PersonIcon from "../../../../assets/icons/Person";
+import ClientIcon from "../../../../assets/icons/ClientIcon";
+import TaskIcon from "../../../../assets/icons/TaskIcon";
+import CategoryIcon from "../../../../assets/icons/CategoryIcon";
+import NotificationIcon from "../../../../assets/icons/Notification";
+import { useAppSelector } from "../../../../redux/hooks";
+import { toggleLogOutPopup, toggleSideMenu } from "../../../../redux/Ui";
+import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
+import { counterNotif } from "../../../../redux/notification";
 
 interface BarProps extends AppBarProps {}
 

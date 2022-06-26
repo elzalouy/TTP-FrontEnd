@@ -3,10 +3,10 @@ import IMAGES from "../../assets/img/Images";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import { Department } from "../../redux/Departments";
 import DepartmentDrop from "../../coreUI/usable-component/Dropdowns/DepartmentDrop";
-import EditDepartment from "../../coreUI/usable-component/FormPopups/EditDepartment";
+import EditDepartment from "../../coreUI/usable-component/Popups/EditDepartment";
 import { useDispatch } from "react-redux";
 import { departmentsActions } from "../../redux/Departments";
-import DeleteDepartment from "../../coreUI/usable-component/FormPopups/DeleteDepartment";
+import DeleteDepartment from "../../coreUI/usable-component/Popups/DeleteDepartment";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import {

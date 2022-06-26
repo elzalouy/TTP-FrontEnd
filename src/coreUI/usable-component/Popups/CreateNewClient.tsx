@@ -89,7 +89,7 @@ const CreateNewClient: React.FC<Props> = () => {
         <Typography>Create new client</Typography>
       </Box>
 
-      <PopUp show={Show} widthSize="491px">
+      <PopUp overflowY={true} show={Show} widthSize="491px">
         <Box>
           <Box>
             <img

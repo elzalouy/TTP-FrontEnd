@@ -147,13 +147,16 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         );
         if (taskIndex >= 0) {
           allTasks[taskIndex] = action.payload;
-        }
-        // update project tasks
-        let index = projectTasks.findIndex(
-          (item) => item._id === action.payload._id
-        );
-        if (index >= 0) {
-          projectTasks[index] = action.payload;
+          // update project tasks
+          let index = projectTasks.findIndex(
+            (item) => item._id === action.payload._id
+          );
+          if (index >= 0) {
+            projectTasks[index] = action.payload;
+          }
+        } else {
+          allTasks.push(action.payload);
+          projectTasks.push(action.payload);
         }
         state.allTasks = [...allTasks];
         state.selectedProject.tasks = [...projectTasks];
@@ -170,6 +173,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           (item) => item._id !== action.payload._id
         );
       }
+    },
+    onOpenTask: (state = projectsState, action: PayloadAction<any>) => {
+      state.openTaskDetails = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -271,6 +277,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           state.filteredTasks.find(({ _id }) => task._id === _id)
         );
       }
+      state.selectedProject.tasks = [...action.payload].filter(
+        (item) => item.projectId === state.selectedProject.project?._id
+      );
     });
     builder.addCase(filterTasks.rejected, (state) => {
       state.loading = false;
@@ -362,7 +371,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       // state.loading = true;
     });
     builder.addCase(editTaskFromBoard.fulfilled, (state, action) => {
-      console.log("edit task fullfilled");
       state.editTask = undefined;
       state.editTaskLoading = false;
       let tasks = [...state.allTasks];
@@ -381,11 +389,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       }
     });
     builder.addCase(editTaskFromBoard.rejected, (state, action) => {
-      console.log("edit task rejected");
       state.editTaskLoading = false;
     });
     builder.addCase(editTaskFromBoard.pending, (state, action) => {
-      console.log("edit task pending");
       state.editTaskLoading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});

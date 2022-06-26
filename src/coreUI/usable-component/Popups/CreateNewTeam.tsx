@@ -52,7 +52,6 @@ const AddNewTeam: React.FC<Props> = () => {
       let teamsData = department.teamsId.some((el) => el._id === team);
       if (teamsData) return department.name;
     });
-    console.log(departmentName);
     // return departmentName[0]?.name;
     return departmentName;
   };
@@ -124,7 +123,7 @@ const AddNewTeam: React.FC<Props> = () => {
         setShow={setShowDelete}
         team={selectedTeam}
       />
-      <PopUp show={Show} minWidthSize="30vw">
+      <PopUp overflowY={true} show={Show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"

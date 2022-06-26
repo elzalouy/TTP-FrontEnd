@@ -64,7 +64,7 @@ const CreateNewPM: React.FC<Props> = () => {
       >
         Create new PM
       </button>
-      <PopUp show={show} minWidthSize="30vw">
+      <PopUp overflowY={true} show={show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"
@@ -120,7 +120,6 @@ const CreateNewPM: React.FC<Props> = () => {
           />
         </div>
         <div className="controllers">
-      
           <button className="controllers-done" onClick={createNewUser}>
             Done
           </button>

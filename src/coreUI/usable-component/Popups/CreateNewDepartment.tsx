@@ -3,7 +3,6 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../Popup/PopUp";
 import "./popups-style.css";
 import { useState } from "react";
-import { color } from "@mui/system";
 import { selectAllMembers } from "../../../redux/techMember/techMembers.selectors";
 import { useAppSelector } from "../../../redux/hooks";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +14,6 @@ import {
 import { toast } from "react-toastify";
 import { Controller, useForm } from "react-hook-form";
 import SelectInput2 from "../Inputs/SelectInput2";
-import { register } from "../../../utils/serviceWorkerRegistration";
 import { generateID } from "../../../helpers/IdGenerator";
 import { CircularProgress } from "@mui/material";
 
@@ -145,6 +143,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
         <p>Create new department</p>
       </div>
       <PopUp
+        overflowY={true}
         show={Show}
         minWidthSize="30vw"
         maxWidthSize="300px"
@@ -249,8 +248,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
                   }
                 }}
                 handleChange={(e: any) => {
-                  console.log(e.target.value);
-                  if(e.target.value !== ""){
+                  if (e.target.value !== "") {
                     setData(e.target.value);
                   }
                 }}

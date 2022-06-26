@@ -94,7 +94,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const watchStartDate = watch().startDate;
   const watchDeadline = watch().deadline;
 
- /*  React.useEffect(() => {
+  /*  React.useEffect(() => {
     let today = moment().format();
     let deadline = moment(watchDeadline).format();
     let startDate = moment(watchStartDate).format();
@@ -243,7 +243,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setShow={setConfirm}
         setTrigger={setTrigger}
       />
-      <PopUp show={show} minWidthSize="50vw">
+      <PopUp overflowY={true} show={show} minWidthSize="50vw">
         <div>
           <img
             className="closeIcon"

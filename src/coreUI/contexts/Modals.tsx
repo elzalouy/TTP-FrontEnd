@@ -1,12 +1,17 @@
 import * as React from "react";
+import NewProjectPopUp from "../usable-component/Projects/ProjectPopUp";
+import CreateNewTask from "../usable-component/Popups/CreateNewTask";
+import DeleteClient from "../usable-component/Popups/DeleteClient";
+import DeleteProject from "../usable-component/Popups/DeleteProject";
+import EditClient from "../usable-component/Popups/EditClient";
+import EditProject from "../usable-component/Popups/EditProject";
+import EditTask from "../usable-component/Popups/EditTask";
+import LogoutPopup from "../usable-component/Popups/LogoutPopup";
+import DeleteTask from "../usable-component/Popups/DeleteTask";
 import { useDispatch } from "react-redux";
-import DeleteClient from "../FormPopups/DeleteClient";
-import DeleteProject from "../FormPopups/DeleteProject";
-import EditClient from "../FormPopups/EditClient";
-import EditProject from "../FormPopups/EditProject";
-import EditTask from "../FormPopups/EditTask";
-import LogoutPopup from "../FormPopups/LogoutPopup";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
+import { selectUi } from "../../redux/Ui/UI.selectors";
+import { Grid } from "@mui/material";
 import {
   openDeleteProjectPopup,
   openEditProjectPopup,
@@ -17,14 +22,11 @@ import {
   toggleEditTaskPopup,
   openDeleteTaskPopup,
   toggleCreateProjectPopup,
-} from "../../../redux/Ui";
-import { selectUi } from "../../../redux/Ui/UI.selectors";
-import DeleteTask from "../FormPopups/DeleteTask";
-import { Grid } from "@mui/material";
-import NewProjectPopUp from "../Projects/ProjectPopUp";
-import CreateNewTask from "../FormPopups/CreateNewTask";
+  toggleTask,
+} from "../../redux/Ui";
+import TaskDetails from "../usable-component/Popups/TaskDetails";
 
-const PopUps: React.FC = () => {
+const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
   const {
     deleteProjectPopup,
@@ -35,6 +37,7 @@ const PopUps: React.FC = () => {
     logoutPopup,
     editTaskPopup,
     deleteTaskPopup,
+    openTask,
   } = useAppSelector(selectUi);
   const showDeleteProjectPopup = (val: string) => {
     dispatch(openDeleteProjectPopup(val));
@@ -63,6 +66,9 @@ const PopUps: React.FC = () => {
   const showCreateProject = (val: string) => {
     dispatch(toggleCreateProjectPopup(val));
   };
+  const showTask = (value: string) => {
+    dispatch(toggleTask(value));
+  };
   return (
     <>
       <DeleteProject
@@ -79,8 +85,10 @@ const PopUps: React.FC = () => {
       <Grid marginLeft={50}>
         <NewProjectPopUp setShow={showCreateProject} />
       </Grid>
+      <TaskDetails show={openTask} setShow={showTask} />
+      {props.children}
     </>
   );
 };
 
-export default PopUps;
+export default Modals;

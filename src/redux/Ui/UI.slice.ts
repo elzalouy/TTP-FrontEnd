@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice, Slice } from "@reduxjs/toolkit";
+import { UseFormGetFieldState } from "react-hook-form";
 import { start } from "repl";
 import UiState, { UiInterface } from "./UI.state";
 
@@ -48,63 +49,61 @@ const UISlice: Slice<UiInterface> = createSlice({
     toggleCreateProjectPopup: (state = UiState, action: PayloadAction<any>) => {
       state.createProjectPopup = action.payload;
     },
+    toggleTask: (state = UiState, action: PayloadAction<any>) => {
+      state.openTask = action.payload;
+    },
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
-      state.newProjectHook = !state.newProjectHook
+      state.newProjectHook = !state.newProjectHook;
     },
     fireUpdateProjectHook: (state = UiState, action: PayloadAction<any>) => {
-      state.updateProjectHook = !state.updateProjectHook
+      state.updateProjectHook = !state.updateProjectHook;
     },
     fireDeleteTaskHook: (state = UiState, action: PayloadAction<any>) => {
-      state.deleteTasksHook = !state.deleteTasksHook
+      state.deleteTasksHook = !state.deleteTasksHook;
     },
     fireDeleteProjectHook: (state = UiState) => {
-      state.deleteProjectHook = !state.deleteProjectHook
+      state.deleteProjectHook = !state.deleteProjectHook;
     },
     fireNewTeamHook: (state = UiState) => {
-      state.createTeamHook = !state.createTeamHook
+      state.createTeamHook = !state.createTeamHook;
     },
     fireUpdateDepartmentHook: (state = UiState) => {
-      state.updateDepartmentHook =
-        !state.updateDepartmentHook
+      state.updateDepartmentHook = !state.updateDepartmentHook;
     },
     fireCreateProjectHook: (state = UiState) => {
-      state.createProjectHook =
-        !state.createProjectHook
+      state.createProjectHook = !state.createProjectHook;
     },
     fireCreateDepartmentHook: (state = UiState) => {
-      state.createDepartmentHook =
-        !state.createDepartmentHook
+      state.createDepartmentHook = !state.createDepartmentHook;
     },
     fireCreateCategoryHook: (state = UiState) => {
-      state.createCategoryHook =
-        !state.createCategoryHook
+      state.createCategoryHook = !state.createCategoryHook;
     },
     fireEditTaskHook: (state = UiState) => {
-      state.editTaskHook = !state.editTaskHook
+      state.editTaskHook = !state.editTaskHook;
     },
     fireCreatePMHook: (state = UiState) => {
-      state.createPMHook = !state.createPMHook
+      state.createPMHook = !state.createPMHook;
     },
     fireEditPMHook: (state = UiState) => {
-      state.editPMHook = !state.createPMHook
+      state.editPMHook = !state.createPMHook;
     },
     fireMoveTaskHook: (state = UiState) => {
-      state.moveTaskHook = !state.moveTaskHook
+      state.moveTaskHook = !state.moveTaskHook;
     },
     fireDeleteDepartmentHook: (state = UiState) => {
-      state.deleteDepartmentHook =
-        !state.deleteDepartmentHook
+      state.deleteDepartmentHook = !state.deleteDepartmentHook;
     },
     fireMoveTaskOnTrello: (state = UiState, action: PayloadAction<any>) => {
       state.moveTaskOnTrelloHook = action.payload;
     },
     fireDeleteCategoryHook: (state = UiState) => {
-      state.deleteCategoryHook = !state.deleteCategoryHook
+      state.deleteCategoryHook = !state.deleteCategoryHook;
     },
     fireDeleteTeamHook: (state = UiState) => {
       state.deleteTeamHook = !state.deleteTeamHook;
-    }
+    },
   },
 });
 export default UISlice.reducer;
@@ -138,5 +137,6 @@ export const {
   fireCreateProjectHook,
   fireDeleteTeamHook,
   fireMoveTaskOnTrello,
+  toggleTask,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

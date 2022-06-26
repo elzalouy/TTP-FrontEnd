@@ -1,10 +1,9 @@
 import "./slider.css";
 import React, { useEffect, useState } from "react";
 import AppDrawer from "./Drawer";
-import { useAppSelector } from "../../../redux/hooks";
-import { toggleSideMenu } from "../../../redux/Ui";
-import { selectSideMenuToggle } from "../../../redux/Ui/UI.selectors";
-
+import { useAppSelector } from "../../../../redux/hooks";
+import { toggleSideMenu } from "../../../../redux/Ui";
+import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
 const Sidebar = (props: any) => {
   const [select, setSelected] = useState("");
   useEffect(() => {

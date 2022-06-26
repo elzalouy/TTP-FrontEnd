@@ -1,24 +1,10 @@
-// import { CssBaseline } from "@mui/material";
-// import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import "./Layout.css";
-// import { useHistory } from "react-router";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import React from "react";
 import Sidebar from "./partials/Sidebar/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
-import { checkAuthToken } from "../services/api";
-// import { useDispatch } from "react-redux";
-// import { getUserInfo, selectIsAuth, selectIsLogout } from "../redux/Auth";
-// import { getAllDepartments } from "../redux/Departments";
-// import { getAllCategories } from "../redux/Categories";
-// import { getAllClients } from "../redux/Clients";
-// import { getPMs } from "../redux/PM";
-// import { getAllMembers } from "../redux/techMember";
-// import { getAllProjects, getAllTasks } from "../redux/Projects";
-// import { useAppSelector } from "../redux/hooks";
-import AuthRedirection from "../pages/AuthPage/AuthRedirection/AuthRedirection";
-import { selectIsAuth, selectIsLogout } from "../redux/Auth";
-import { useAppSelector } from "../redux/hooks";
+import AuthRedirection from "../../pages/AuthPage/AuthRedirection/AuthRedirection";
+import { checkAuthToken } from "../../services/api";
+import { Route, Redirect, useLocation } from "react-router-dom";
+import "./Layout.css";
 
 interface Props {
   component: React.ReactNode;

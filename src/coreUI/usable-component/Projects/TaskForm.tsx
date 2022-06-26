@@ -24,7 +24,10 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import IMAGES from "../../../assets/img/Images";
-import { valdiateCreateTask } from "../../../helpers/validation";
+import {
+  valdiateCreateTask,
+  validateTaskFilesSchema,
+} from "../../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
@@ -114,41 +117,44 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       task.append("name", data.name);
       task.append("categoryId", data.categoryId);
       task.append("subCategoryId", data.subCategoryId);
-      task.append("teamId", data.teamId);
+      if (newTask.teamId !== null) task.append("teamId", data.teamId);
       task.append(
         "projectId",
         newProject?.project?._id ? newProject?.project?._id : ""
       );
-      task.append("status", "Tasks Board");
+      task.append("status", data?.teamId ? "inProgress" : "Tasks Board");
       task.append("start", new Date().toUTCString());
       task.append(
         "deadline",
         data?.deadline ? moment(data.deadline).toDate().toUTCString() : ""
       );
-      if (Files) {
-        let data: Array<any> = Array.from(Files);
-        for (let i = 0; i < data.length; i++) {
-          task.append("attachedFiles", data[i]);
+      let files: Array<any> = Array.from(Files);
+      let result = validateTaskFilesSchema(files);
+      if (result.error === null) {
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+            task.append("attachedFiles", files[i]);
+          }
         }
-      }
-      task.append(
-        "boardId",
-        selectedDepartment?.boardId ? selectedDepartment.boardId : ""
-      );
-      task.append(
-        "listId",
-        data?.teamId
-          ? selectedDepartment?.teamsId?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
-          : selectedDepartment?.defaultListId
-      );
-      task.append("description", data?.description);
-      dispatch(createProjectTask(newTask));
-      reset();
-      setFiles([]);
-      setSelectedDepartment(undefined);
-      setSelectCategory(undefined);
+        task.append(
+          "boardId",
+          selectedDepartment?.boardId ? selectedDepartment.boardId : ""
+        );
+        task.append(
+          "listId",
+          data?.teamId
+            ? selectedDepartment?.teamsId?.find(
+                (item: any) => item._id === data.teamId
+              )?.listId
+            : selectedDepartment?.defaultListId
+        );
+        task.append("description", data?.description);
+        dispatch(createProjectTask(task));
+        reset();
+        setFiles([]);
+        setSelectedDepartment(undefined);
+        setSelectCategory(undefined);
+      } else toast.error(result.error);
     }
   };
 

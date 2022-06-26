@@ -24,7 +24,7 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       let projects = await api.getHttpProjects();
       if (projects?.status === 401 || projects?.status === 403) {
         rejectWithValue("Un Authorized");
-        dispatch(logout(true)); 
+        dispatch(logout(true));
       }
       if (projects.ok) return projects.data;
       throw projects.problem;
@@ -493,6 +493,7 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
     try {
       let response: ApiResponse<any> = await api.editTask(args.data);
       if (response.ok && response.data) {
+        args.resetState();
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;

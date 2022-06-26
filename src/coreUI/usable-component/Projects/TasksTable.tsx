@@ -28,7 +28,7 @@ import {
 } from "../../../redux/Projects";
 import { selectAllMembers } from "../../../redux/techMember";
 import { UiActions } from "../../../redux/Ui";
-import ConfirmDeleteTask from "../FormPopups/ConfirmDeleteTask";
+import ConfirmDeleteTask from "../Popups/ConfirmDeleteTask";
 
 interface TasksProps {
   setCurrentStep: any;

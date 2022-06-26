@@ -1,26 +1,19 @@
-import { Grid, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import IMAGES from "../../assets/img/Images";
-import { useAppSelector } from "../../redux/hooks";
 import DragField from "./DragField";
+import React, { useEffect } from "react";
+import TaskIcon from "../../assets/icons/TaskIcon";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
+import { Box } from "@mui/system";
+import { RouteComponentProps } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Grid, Stack, Typography } from "@mui/material";
 import {
-  getAllProjects,
-  getProject,
-  getTasks,
   ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
 } from "../../redux/Projects";
 import "./taskViewBoard.css";
-import { RouteComponentProps } from "react-router-dom";
-import SelectInput from "../../coreUI/usable-component/Inputs/SelectInput";
-import TasksIcon from "../../assets/icons/TasksIcon";
-import { AssignmentOutlined as AddignmentIcon } from "@mui/icons-material";
-import { getPMs } from "../../redux/PM";
-import { Controller, useForm } from "react-hook-form";
-import TaskIcon from "../../assets/icons/TaskIcon";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];

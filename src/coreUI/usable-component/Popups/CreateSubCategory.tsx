@@ -49,7 +49,7 @@ const createNewSubCatInputStyle = {
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
   },
-}
+};
 
 const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const dispatch = useDispatch();
@@ -131,6 +131,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   return (
     <>
       <PopUp
+        overflowY={true}
         show={display}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}
@@ -203,7 +204,6 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
           </div>
           <br />
           <div className="controllers">
-          
             <button className="controllers-done" onClick={handleSubmit}>
               {loadingCat ? (
                 <CircularProgress sx={createNewSubCatLoading} />

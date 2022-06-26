@@ -8,10 +8,11 @@ export interface UiInterface {
   createTaskPopup: string;
   editProjectManagerPopup: string;
   deleteProjectManagerPopup: string;
-  isSideMenuOpened: boolean;
+  openTask: string;
   logoutPopup: string;
   createProjectPopup: string;
   moveTaskOnTrelloHook: any;
+  isSideMenuOpened: boolean;
   /*
     this hooks shouldn't be used except for updating
     the state of the project while a certain exndpoint or function called 
@@ -28,8 +29,8 @@ export interface UiInterface {
   createPMHook: boolean | undefined;
   editPMHook: boolean | undefined;
   moveTaskHook: boolean | undefined;
-  createProjectHook : boolean | undefined;
-  createCategoryHook : boolean | undefined;
+  createProjectHook: boolean | undefined;
+  createCategoryHook: boolean | undefined;
   deleteDepartmentHook: boolean | undefined;
   deleteCategoryHook: boolean | undefined;
   deleteTeamHook: boolean | undefined;
@@ -48,6 +49,7 @@ const UiState: UiInterface = {
   isSideMenuOpened: true,
   createProjectPopup: "none",
   moveTaskOnTrelloHook: undefined,
+  openTask: "none",
   /*
   this hooks shouldn't be used except for updating
   the state of the project while a certain exndpoint or function called 
@@ -58,9 +60,9 @@ const UiState: UiInterface = {
   deleteTasksHook: undefined,
   deleteProjectHook: undefined,
   createTeamHook: undefined,
-  createCategoryHook : undefined,
+  createCategoryHook: undefined,
   updateDepartmentHook: undefined,
-  createProjectHook:undefined,
+  createProjectHook: undefined,
   createDepartmentHook: undefined,
   editTaskHook: undefined,
   createPMHook: undefined,

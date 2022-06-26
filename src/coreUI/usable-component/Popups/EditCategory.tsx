@@ -86,6 +86,7 @@ const EditCategory: React.FC<Props> = ({
   return (
     <>
       <PopUp
+        overflowY={true}
         show={editCatDisplay}
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "50vw" : "30vw"}
@@ -169,7 +170,6 @@ const EditCategory: React.FC<Props> = ({
         </div>
         <br />
         <div className="controllers">
-        
           <button className="controllers-done" onClick={handleSubmit}>
             Done
           </button>

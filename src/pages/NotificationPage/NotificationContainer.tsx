@@ -43,15 +43,16 @@ const NotificationContainer = (props: Props) => {
   }, [user]);
 
   // watch notification update
-  useEffect(() => {
-    let socket = openConnection(user);
-    socket.on("notification update", (data: any) => {
-      dispatch(updateCounter(data));
-    });
-    return () => {
-      socket.off("notification update");
-    };
-  }, []);
+  // useEffect(() => {
+  //   let socket = openConnection(user);
+  //   socket.on("notification update", (data: any) => {
+  //     console.log("update notification");
+  //     dispatch(updateCounter(data));
+  //   });
+  //   return () => {
+  //     socket.off("notification update");
+  //   };
+  // }, []);
 
   const handleLoadMore = async () => {
     setLoading(true);

@@ -1,10 +1,9 @@
+// TODO it should be under the project folder in pages as a new folder called CreateProject
 import React, { useState } from "react";
 import "./createNewProject.css";
 import Box from "@mui/material/Box";
-import NewProjectPopUp from "../../../coreUI/usable-component/Projects/ProjectPopUp";
 import { useAppSelector } from "../../../redux/hooks";
 import {
-  ProjectsActions,
   selectNotStartedProjects,
   selectLoading,
 } from "../../../redux/Projects";
@@ -14,7 +13,7 @@ import IMAGES from "../../../assets/img/Images";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../../redux/Ui";
-import Loading from "../../../coreUI/usable-elements/Loading"
+import Loading from "../../../coreUI/usable-elements/Loading";
 import TableBox from "../../../coreUI/usable-component/Boxes/TableBox";
 import ProjectsTable from "../../../coreUI/usable-component/Tables/ProjectsTable";
 import { selectPMs } from "../../../redux/PM";
@@ -48,31 +47,35 @@ const CreateNewProject: React.FC<Props> = (props) => {
     >
       <Box
         id="project-container"
-        sx={notStartedProjects?.length === 0 ? {
-          display: "flex",
-          justifyContent:"flex-end",
-          flexDirection: "column",
-          width: "100%",
-          borderRadius: "12px",
-          backgroundColor: "#F1F1F4",
-          py: 1,
-          px: 0,
-          mb: 1,
-          font: "normal normal 600 16px/30px Cairo",
-          color: "#505050",
-        } : {
-          display: "flex",
-          justifyContent:"flex-end",
-          flexDirection: "column",
-          width: "100%",
-          borderRadius: "12px",
-          backgroundColor: "#F1F1F4",
-          py: 1,
-          px: 0,
-          mb: 4,
-          font: "normal normal 600 16px/30px Cairo",
-          color: "#505050",
-        }}
+        sx={
+          notStartedProjects?.length === 0
+            ? {
+                display: "flex",
+                justifyContent: "flex-end",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "12px",
+                backgroundColor: "#F1F1F4",
+                py: 1,
+                px: 0,
+                mb: 1,
+                font: "normal normal 600 16px/30px Cairo",
+                color: "#505050",
+              }
+            : {
+                display: "flex",
+                justifyContent: "flex-end",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "12px",
+                backgroundColor: "#F1F1F4",
+                py: 1,
+                px: 0,
+                mb: 4,
+                font: "normal normal 600 16px/30px Cairo",
+                color: "#505050",
+              }
+        }
       >
         {loading === false ? (
           <ProjectsTable
@@ -101,7 +104,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
               color: "#909090",
             }}
           >
-            <Loading color="grey" type="spinningBubbles"/> Loading More
+            <Loading color="grey" type="spinningBubbles" /> Loading More
           </Box>
         )}
         <Box

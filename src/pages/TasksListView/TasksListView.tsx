@@ -21,7 +21,7 @@ import {
   getAllTasks,
 } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/techMember";
-import DeleteTask from "../../coreUI/usable-component/FormPopups/DeleteTaskFromTaskTable";
+import DeleteTask from "../../coreUI/usable-component/Popups/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 import Loading from "../../coreUI/usable-elements/Loading";
 interface Props {

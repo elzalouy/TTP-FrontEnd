@@ -2,7 +2,7 @@ import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import CreateNewPM from "../../coreUI/usable-component/FormPopups/CreateNewPM";
+import CreateNewPM from "../../coreUI/usable-component/Popups/CreateNewPM";
 import "./projectManagers.css";
 import ProjectManagersTable from "../../coreUI/usable-component/Tables/PMtable";
 import { useAppSelector } from "../../redux/hooks";

@@ -2,11 +2,11 @@ import React, { useRef, useEffect } from "react";
 import { useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import "./dropdowns-style.css";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 type Props = {
   handleSetShowDelete: (value: string) => void;
-  color?:string
+  color?: string;
 };
 
 /**
@@ -14,10 +14,7 @@ type Props = {
  */
 function useOutsideAlerter(ref: any) {}
 
-const CategoryDrop: React.FC<Props> = ({
-  handleSetShowDelete,
-  color
-}) => {
+const CategoryDrop: React.FC<Props> = ({ handleSetShowDelete, color }) => {
   const [Show, setShow] = useState<string>("none");
 
   const wrapperRef: React.MutableRefObject<any> = useRef(null);
@@ -44,9 +41,8 @@ const CategoryDrop: React.FC<Props> = ({
           else setShow("none");
         }}
       >
-        <MoreHorizIcon style={{color:color}}/>
+        <MoreHorizIcon style={{ color: color }} />
       </button>
-
       <div
         className="dropdown-container"
         style={{ display: Show }}
