@@ -75,16 +75,10 @@ export interface ProjectsInterface {
   deleteTask: string | undefined;
   editProject: Project | undefined;
   editTask: string | undefined;
-  viewTask: Task;
   editTaskLoading: boolean | undefined;
   sorting: string | null;
   filteredProjects: Project[] | null;
-  openTaskDetails: {
-    task: Task | null;
-    pmName: string | null;
-    department: string | null;
-    member: string | null;
-  };
+  openTaskDetails: Task;
 }
 
 const PorjectsState: ProjectsInterface = {
@@ -144,7 +138,12 @@ const PorjectsState: ProjectsInterface = {
   deleteProject: undefined,
   deleteProjectTasks: undefined,
   deleteTask: undefined,
-  viewTask: {
+  editProject: undefined,
+  editTask: "",
+  editTaskLoading: undefined,
+  sorting: null,
+  filteredProjects: null,
+  openTaskDetails: {
     _id: "",
     name: "",
     projectId: "",
@@ -166,17 +165,6 @@ const PorjectsState: ProjectsInterface = {
     boardId: "",
     file: undefined,
     description: "",
-  },
-  editProject: undefined,
-  editTask: "",
-  editTaskLoading: undefined,
-  sorting: null,
-  filteredProjects: null,
-  openTaskDetails: {
-    task: null,
-    pmName: null,
-    department: "",
-    member: "",
   },
 };
 export default PorjectsState;

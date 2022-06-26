@@ -137,17 +137,12 @@ const TaskCard: React.FC<DataTypes> = ({
       downloadAttachment({ cardId: item.cardId, attachmentId: file?.trelloId })
     );
   };
+
   const openTask = () => {
-    dispatch(
-      ProjectsActions.onOpenTask({
-        task: item,
-        pmName: project?.projectManagerName,
-        department: data?.department,
-        member: data?.member,
-      })
-    );
-    dispatch(toggleTask("flex"));
+    dispatch(ProjectsActions.onOpenTask(item));
+    dispatch(toggleViewTaskPopup("flex"));
   };
+
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -184,9 +179,9 @@ const TaskCard: React.FC<DataTypes> = ({
                 <TasksPopover item={item} />
               )}
             </Stack>
-            <Box onClick={openTask}>
-              <Box onClick={openTask}>
-                <Typography color={"#696974"} onClick={openTask}>
+            <Box>
+              <Box>
+                <Typography color={"#696974"}>
                   {project?.projectManager?.name}
                 </Typography>
               </Box>

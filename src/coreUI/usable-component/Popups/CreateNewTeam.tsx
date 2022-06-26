@@ -52,6 +52,7 @@ const AddNewTeam: React.FC<Props> = () => {
       let teamsData = department.teamsId.some((el) => el._id === team);
       if (teamsData) return department.name;
     });
+    departmentName.map((item) => item !== undefined);
     // return departmentName[0]?.name;
     return departmentName;
   };
@@ -245,11 +246,15 @@ const AddNewTeam: React.FC<Props> = () => {
                   <tr key={index}>
                     <td>{team.name}</td>
                     <td>
-                      {getDepartmentsNameById(team.departmentId, team._id).map(
-                        (item) => (
-                          <p className="teamNames">{item}</p>
-                        )
-                      )}
+                      {getDepartmentsNameById(team.departmentId, team._id)
+                        .length === 0
+                        ? "No Department Assigned"
+                        : getDepartmentsNameById(
+                            team.departmentId,
+                            team._id
+                          ).map((item) => {
+                            return <p className="teamNames">{item}</p>;
+                          })}
                     </td>
                     <td>
                       <img

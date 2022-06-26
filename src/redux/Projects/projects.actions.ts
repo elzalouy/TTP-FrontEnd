@@ -115,7 +115,7 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server while creating the task", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -139,7 +139,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server while filtering the task", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -162,7 +162,7 @@ export const getTasks = createAsyncThunk<any, any, any>(
       if (tasks?.ok) return tasks?.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server while fetching the tasks", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -185,7 +185,7 @@ export const getProject = createAsyncThunk<any, any, any>(
       if (projects.ok) return projects?.data[0];
       throw projects.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server while fetching the projects", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -224,7 +224,7 @@ export const filterTasks = createAsyncThunk<any, any, any>(
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error filtering the tasks from the server", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -263,7 +263,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error deleting the tasks from the server", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -297,7 +297,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error while deleting the tasks from server", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -524,7 +524,7 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-
+      console.log(response);
       if (response.ok) {
         window.open(response.data?.url);
         return response.data;

@@ -101,7 +101,7 @@ export const deleteClient = createAsyncThunk<any, any, any>(
         progress: undefined,
       });
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error from the server", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,

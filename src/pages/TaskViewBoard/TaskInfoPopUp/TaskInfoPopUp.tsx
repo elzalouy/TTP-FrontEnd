@@ -10,7 +10,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { selectRole } from "../../../redux/Auth";
 import { selectViewTask } from "../../../redux/Ui/UI.selectors";
-import { Task } from "../../../redux/Projects";
+import { selectTaskDetails, Task } from "../../../redux/Projects";
 import { toggleViewTaskPopup } from "../../../redux/Ui";
 import { selectAllDepartments } from "../../../redux/Departments";
 import { selectDepartmentMembers } from "../../../redux/techMember";
@@ -29,7 +29,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
   const categories = useAppSelector(selectAllCategories);
   const teams = useAppSelector(selectDepartmentMembers);
   const subCategories = useAppSelector(selectSubCategories);
-  const viewTask = useAppSelector(selectViewTask);
+  const viewTask = useAppSelector(selectTaskDetails);
   const { register, control, setValue } = useForm();
   const role = useAppSelector(selectRole);
   const theme = useTheme();
@@ -59,35 +59,35 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    setValue("name", props.task?.name);
-    setValue("selectedDepartmentId", props.task?.boardId);
-    setValue("description", props.task?.description);
-    setValue("categoryId", props.task?.categoryId);
-    setValue("subCategoryId", props.task?.subCategoryId);
-    setValue("teamId", props.task?.teamId);
-    if (props.task !== undefined) {
+    setValue("name", viewTask?.name);
+    setValue("selectedDepartmentId", viewTask?.boardId);
+    setValue("description", viewTask?.description);
+    setValue("categoryId", viewTask?.categoryId);
+    setValue("subCategoryId", viewTask?.subCategoryId);
+    setValue("teamId", viewTask?.teamId);
+    if (viewTask !== undefined) {
       let names = getAllTaskDetails(
-        props.task?.boardId,
-        props.task?.categoryId,
-        props.task?.subCategoryId,
-        props.task?.teamId
+        viewTask?.boardId,
+        viewTask?.categoryId,
+        viewTask?.subCategoryId,
+        viewTask?.teamId
       );
       setValue("selectedDepartmentId", names.depName);
       setValue("categoryId", names.catName);
       setValue("subCategoryId", names.subCatName);
       setValue("teamId", names.teamName);
     }
-    if (props.task?.deadline) {
-      let date = moment(props.task.deadline).format("LL");
+    if (viewTask?.deadline) {
+      let date = moment(viewTask.deadline).format("LL");
       setValue("deadline", date);
     } else {
-      setValue("deadline", props.task?.deadline);
+      setValue("deadline", viewTask?.deadline);
     }
-  }, [props.task]);
+  }, [viewTask]);
 
   const generateURL = () => {
     let boardURL = departments.find(
-      (dep) => dep.boardId === props.task?.boardId
+      (dep) => dep.boardId === viewTask?.boardId
     );
     return boardURL?.boardURL;
   };
@@ -100,7 +100,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
     <>
       <PopUp
         minHeightSize="40vh"
-        show={viewTask}
+        show={props.show}
         minWidthSize="50vw"
         color="rgb(0 0 0 / 10%)"
       >
@@ -130,9 +130,9 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
           <Grid flex={1}>
             <Box alignItems="center" display={"flex"} className="files">
               <>
-                {props.task?.attachedFiles &&
-                  props.task?.attachedFiles.length > 0 &&
-                  props.task.attachedFiles?.map((item: any, index) => (
+                {viewTask?.attachedFiles &&
+                  viewTask?.attachedFiles.length > 0 &&
+                  viewTask.attachedFiles?.map((item: any, index) => (
                     <Typography
                       key={index}
                       marginX={0.5}
@@ -175,7 +175,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 />
               </div>
               <div className="form-header">
-                {props.task?.deadline && (
+                {viewTask?.deadline && (
                   <div className="form-header">
                     <Controller
                       name="deadline"
@@ -191,22 +191,22 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 <div className="form-header">
                   <span
                     className={
-                      props.task?.status === "inProgress"
+                      viewTask?.status === "inProgress"
                         ? "inProgressStatus"
-                        : props.task?.status === "Review"
+                        : viewTask?.status === "Review"
                         ? "reviewStatus"
-                        : props.task?.status === "Not Clear"
+                        : viewTask?.status === "Not Clear"
                         ? "notClearStatus"
-                        : props.task?.status === "Tasks Board"
+                        : viewTask?.status === "Tasks Board"
                         ? "notStartedStatus"
-                        : props.task?.status === "Done"
+                        : viewTask?.status === "Done"
                         ? "doneStatus"
-                        : props.task?.status === "Shared"
+                        : viewTask?.status === "Shared"
                         ? "sharedStatus"
                         : "endedStatus"
                     }
                   >
-                    {props.task?.status}
+                    {viewTask?.status}
                   </span>
                 </div>
               </div>
@@ -246,7 +246,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                   )}
                 />
               </div>
-              {props.task?.subCategoryId && (
+              {viewTask?.subCategoryId && (
                 <div>
                   <label className="label-project">Sub category</label>
                   <br />
@@ -265,7 +265,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                   />
                 </div>
               )}
-              {role === "OM" && props.task?.teamId && (
+              {role === "OM" && viewTask?.teamId && (
                 <div>
                   <label className="label-project">Assign to Team</label>
                   <br />
@@ -285,7 +285,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 </div>
               )}
             </div>
-            {props.task?.description && (
+            {viewTask?.description && (
               <div>
                 <label className="label-project">Description</label>
                 <br />

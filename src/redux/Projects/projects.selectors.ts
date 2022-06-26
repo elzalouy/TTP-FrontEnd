@@ -76,7 +76,6 @@ export const selectSharedTasks = (state: RootState) =>
     (item) => item.status === "Shared"
   );
 
-export const selectViewTaskData = (state: RootState) => state.projects.viewTask;
 export const selectTasks = (state: RootState) => state.projects.allTasks;
 export const selectEditTaskValues = (state: RootState) =>
   state.projects.editTask;
@@ -84,4 +83,4 @@ export const selectedDeleteTaskId = (state: RootState) =>
   state.projects.deleteTask;
 export const editTaskLoading = (state: RootState) =>
   state.projects.editTaskLoading;
-export const taskDetails = (state: RootState) => state.projects.openTaskDetails;
+export const selectTaskDetails = (state: RootState) => state.projects.openTaskDetails;

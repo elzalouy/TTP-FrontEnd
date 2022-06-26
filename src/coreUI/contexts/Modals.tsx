@@ -23,7 +23,9 @@ import {
   openDeleteTaskPopup,
   toggleCreateProjectPopup,
   toggleTask,
+  toggleViewTaskPopup,
 } from "../../redux/Ui";
+import TaskInfoPopUp from "../../pages/TaskViewBoard/TaskInfoPopUp/TaskInfoPopUp";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -36,8 +38,9 @@ const Modals: React.FC = (props) => {
     logoutPopup,
     editTaskPopup,
     deleteTaskPopup,
-    openTask,
+    viewTaskPopup
   } = useAppSelector(selectUi);
+
   const showDeleteProjectPopup = (val: string) => {
     dispatch(openDeleteProjectPopup(val));
   };
@@ -65,15 +68,20 @@ const Modals: React.FC = (props) => {
   const showCreateProject = (val: string) => {
     dispatch(toggleCreateProjectPopup(val));
   };
-  const showTask = (value: string) => {
+/*   const showTask = (value: string) => {
     dispatch(toggleTask(value));
+  }; */
+  const showViewTaskModal = (value: string) => {
+    dispatch(toggleViewTaskPopup(value));
   };
+
   return (
     <>
       <DeleteProject
         show={deleteProjectPopup}
         setShow={showDeleteProjectPopup}
       />
+      <TaskInfoPopUp show={viewTaskPopup} setShow={showViewTaskModal} />
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />

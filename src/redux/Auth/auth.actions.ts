@@ -20,7 +20,7 @@ export const signIn = createAsyncThunk<any, any, any>(
       }
       return result.data;
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("There was an error logging in", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -115,7 +115,7 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
         return result.data
       };
     } catch (error: any) {
-      toast.error(error, {
+      toast.error("An error was encountered , Please try again later", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
