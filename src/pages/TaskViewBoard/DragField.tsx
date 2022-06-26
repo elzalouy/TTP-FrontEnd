@@ -256,9 +256,6 @@ const DragField: React.FC = (props: any) => {
                         <span className={column?.header}>{column.name}</span>{" "}
                         {column.items.length}
                       </Typography>
-                      {/*  <Typography style={{ padding: "12px" }}>
-                        <img src={IMAGES.taskFilter} alt="more" />
-                      </Typography> */}
                     </Stack>
                     {column?.NewTask}
                     <TaskInfoPopUp show={viewTask} task={viewTaskData} />
