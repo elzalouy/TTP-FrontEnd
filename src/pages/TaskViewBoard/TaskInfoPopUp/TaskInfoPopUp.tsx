@@ -86,9 +86,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
   }, [viewTask]);
 
   const generateURL = () => {
-    let boardURL = departments.find(
-      (dep) => dep.boardId === viewTask?.boardId
-    );
+    let boardURL = departments.find((dep) => dep.boardId === viewTask?.boardId);
     return boardURL?.boardURL;
   };
 
@@ -127,25 +125,28 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
           flexDirection={LG ? "column-reverse" : "row"}
           mx={"10px"}
         >
-          <Grid flex={1}>
-            <Box alignItems="center" display={"flex"} className="files">
+          <Grid
+            justifyContent={"center"}
+            alignItems={"center"}
+            display={"flex"}
+            flex={1}
+          >
+            <Box
+              alignItems="center"
+              display={"flex"}
+              className="files-task-view"
+            >
               <>
                 {viewTask?.attachedFiles &&
                   viewTask?.attachedFiles.length > 0 &&
-                  viewTask.attachedFiles?.map((item: any, index) => (
-                    <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={1}
-                      borderRadius={1}
-                      color="#92929D"
-                      textTransform={"capitalize"}
-                      sx={taskFormFilesStyles}
-                    >
-                      Images
-                    </Typography>
-                  ))}
+                  viewTask.attachedFiles?.map((item: any) => {
+                    console.log(item);
+                    return (
+                      <div className="image-container">
+                        <img src={item.url} alt={item.name} className="img" />
+                      </div>
+                    );
+                  })}
               </>
             </Box>
           </Grid>

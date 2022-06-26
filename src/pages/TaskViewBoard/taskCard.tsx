@@ -139,7 +139,7 @@ const TaskCard: React.FC<DataTypes> = ({
 
   const onViewTask = () => {
     dispatch(toggleViewTaskPopup("flex"));
-    dispatch(ProjectsActions.onViewTask(item));
+    dispatch(ProjectsActions.onOpenTask(item));
   };
 
   return (

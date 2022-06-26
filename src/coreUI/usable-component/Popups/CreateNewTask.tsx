@@ -200,10 +200,29 @@ const CreateNewTask: React.FC<Props> = (props) => {
     let items = [...Files];
     if (newfiles) {
       for (let i = 0; i < newfiles.length; i++) {
-        items.push(newfiles.item(i));
+        if (
+          newfiles &&
+          newfiles.item(i) &&
+          typeof newfiles.item(i)?.size === "number"
+        ) {
+          if (newfiles.item(i)!.size < 10000000) {
+            items.push(newfiles.item(i));
+          } else {
+            toast.warn("Please select an attachment with less than 10MB", {
+              position: "top-right",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        }
       }
     }
     setFiles(items);
+    toast.clearWaitingQueue();
   };
 
   const onRemoveFile = (item: File | null) => {
