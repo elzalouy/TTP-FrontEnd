@@ -57,8 +57,6 @@ const SelectInput2: React.FC<Props> = ({
 
   const open = Boolean(anchorEl);
 
-  
-
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };

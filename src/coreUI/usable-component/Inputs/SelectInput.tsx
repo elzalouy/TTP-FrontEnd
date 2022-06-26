@@ -123,19 +123,19 @@ const SelectInput: React.FC<Props> = ({
           </Typography>
         ) : (
           <Typography
-          lineHeight={1}
-          textOverflow="hidden"
-          overflow={"hidden"}
-          textTransform="capitalize"
-          variant="h5"
-          height={40}
-          fontSize={14}
-          fontWeight={"700"}
-          color="#44444F"
-          sx={{
-            paddingTop: 1.5,
-            overflow: "hidden",
-          }}
+            lineHeight={1}
+            textOverflow="hidden"
+            overflow={"hidden"}
+            textTransform="capitalize"
+            variant="h5"
+            height={40}
+            fontSize={14}
+            fontWeight={"700"}
+            color="#44444F"
+            sx={{
+              paddingTop: 1.5,
+              overflow: "hidden",
+            }}
           >
             {Value
               ? Value === "inProgress"

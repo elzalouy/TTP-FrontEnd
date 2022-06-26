@@ -25,6 +25,9 @@ const UISlice: Slice<UiInterface> = createSlice({
     openCreateTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.createTaskPopup = action.payload;
     },
+    toggleViewTaskPopup: (state = UiState, action: PayloadAction<any>) => {
+      state.viewTaskPopup = action.payload;
+    },
     toggleEditProjectManagerPopup: (
       state = UiState,
       action: PayloadAction<any>
@@ -120,6 +123,7 @@ export const {
   toggleLogOutPopup,
   toggleEditTaskPopup,
   toggleCreateProjectPopup,
+  toggleViewTaskPopup,
   fireNewProjectHook,
   fireUpdateProjectHook,
   fireDeleteTaskHook,

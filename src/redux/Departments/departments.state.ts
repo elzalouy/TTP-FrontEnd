@@ -10,6 +10,7 @@ export interface Department {
   inProgressListId: string;
   canceldListId: string;
   color: string;
+  boardURL:string;
   mainBoard: boolean;
   teamsId: {
     _id: string;

@@ -1,16 +1,15 @@
-import { BoltRounded } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import IMAGES from "../../assets/img/Images";
 import { selectAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
+import { selectViewTask } from "../../redux/Ui/UI.selectors";
+import CreateNewTask from "./CreateNewTask";
+import TaskCard from "./taskCard";
 import {
-  getProject,
-  getTasks,
   moveTask,
   selectCancledTasks,
   selectDoneTasks,
@@ -20,18 +19,19 @@ import {
   selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
+  selectViewTaskData,
   Task,
 } from "../../redux/Projects";
-import CreateNewTask from "./CreateNewTask";
-import TaskCard from "./taskCard";
 import "./taskViewBoard.css";
 const DragField: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const inProgressTasks = useAppSelector(selectInProgressTasks);
+  const viewTaskData = useAppSelector(selectViewTaskData);
   const doneTasks = useAppSelector(selectDoneTasks);
   const reviewTasks = useAppSelector(selectReviewTasks);
   const notClearTasks = useAppSelector(selectNotClearTasks);
+  const viewTask = useAppSelector(selectViewTask);
   const notStartedTasks = useAppSelector(selectNotStartedTasks);
   const cancledTasks = useAppSelector(selectCancledTasks);
   const sharedTasks = useAppSelector(selectSharedTasks);

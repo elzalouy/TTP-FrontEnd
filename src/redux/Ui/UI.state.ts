@@ -6,6 +6,7 @@ export interface UiInterface {
   editClientPopup: string;
   deleteClientPopup: string;
   createTaskPopup: string;
+  viewTaskPopup:string;
   editProjectManagerPopup: string;
   deleteProjectManagerPopup: string;
   openTask: string;
@@ -42,6 +43,7 @@ const UiState: UiInterface = {
   editTaskPopup: "none",
   editClientPopup: "none",
   deleteClientPopup: "none",
+  viewTaskPopup:"none",
   createTaskPopup: "none",
   editProjectManagerPopup: "none",
   deleteProjectManagerPopup: "none",

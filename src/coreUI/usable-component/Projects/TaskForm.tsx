@@ -204,7 +204,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     const cat = categories.find((item) => item._id === e.target.value);
     setSelectCategory(cat);
   };
-
   return (
     <>
       <div className="step2">

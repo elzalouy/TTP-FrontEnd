@@ -351,7 +351,7 @@ const EditTask: React.FC<Props> = (props) => {
                           }}
                         >
                           <TextField
-                            placeholder="deadline"
+                            placeholder="Deadline"
                             error={state.error.error?.details[0].path.includes(
                               "deadline"
                             )}
@@ -671,6 +671,7 @@ const taskFormFilesStyles = {
   alignContent: "center",
   paddingTop: 1,
 };
+
 const editTaskDescStyles = {
   paddingTop: 1,
   width: "100%",

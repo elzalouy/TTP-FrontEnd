@@ -24,11 +24,13 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
   const onEditTask = async () => {
     await dispatch(ProjectsActions.onEditTask(item._id));
     dispatch(toggleEditTaskPopup("flex"));
     handleClose();
   };
+
   const onDeleteTask = () => {
     dispatch(ProjectsActions.onDeleteTask(item._id));
     dispatch(openDeleteTaskPopup("flex"));

@@ -12,6 +12,7 @@ type Props = {
   maxHeight?: string;
   minHeight?: string;
   overflowY?: boolean;
+  color?: string;
 };
 
 const PopUp: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const PopUp: React.FC<Props> = ({
   widthSize,
   padding,
   minWidthSize,
+  color,
   maxWidthSize,
   maxHeight,
   minHeight,
@@ -29,7 +31,7 @@ const PopUp: React.FC<Props> = ({
     <Box
       className="container-popup"
       padding={padding}
-      style={{ display: show }}
+      style={{ display: show, background: color }}
     >
       <div
         className="pop-up customScrollBar"

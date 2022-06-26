@@ -75,6 +75,7 @@ export interface ProjectsInterface {
   deleteTask: string | undefined;
   editProject: Project | undefined;
   editTask: string | undefined;
+  viewTask: Task;
   editTaskLoading: boolean | undefined;
   sorting: string | null;
   filteredProjects: Project[] | null;
@@ -143,6 +144,29 @@ const PorjectsState: ProjectsInterface = {
   deleteProject: undefined,
   deleteProjectTasks: undefined,
   deleteTask: undefined,
+  viewTask: {
+    _id: "",
+    name: "",
+    projectId: "",
+    categoryId: "",
+    subCategoryId: "",
+    teamId: "",
+    countNotClear: 0,
+    countShared: 0,
+    status: "",
+    start: new Date(),
+    deadline: new Date(),
+    deliveryDate: new Date(),
+    done: new Date(),
+    turnoverTime: 0,
+    attachedFiles: [],
+    attachedCard: "",
+    listId: "",
+    cardId: "",
+    boardId: "",
+    file: undefined,
+    description: "",
+  },
   editProject: undefined,
   editTask: "",
   editTaskLoading: undefined,

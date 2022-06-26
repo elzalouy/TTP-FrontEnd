@@ -29,6 +29,8 @@ import "swiper/css/navigation";
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
 import { toggleTask } from "../../redux/Ui";
+import { toggleViewTaskPopup } from "../../redux/Ui";
+import { Link } from "react-router-dom";
 interface DataTypes {
   index: number;
   item: Task;
@@ -169,7 +171,11 @@ const TaskCard: React.FC<DataTypes> = ({
               alignItems="center"
             >
               <Typography
-                sx={{ fontWeight: "bold", cursor: "pointer" }}
+                sx={{
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  textTransform: "capitalize",
+                }}
                 onClick={openTask}
               >
                 {name}
