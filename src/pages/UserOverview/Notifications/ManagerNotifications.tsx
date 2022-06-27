@@ -5,7 +5,6 @@ import _ from "lodash";
 import { RouteComponentProps } from "react-router";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectSatistics } from "../../../redux/Statistics";
-import { Task } from "../../../redux/Projects";
 import { setWidth } from "../../../helpers/generalUtils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
@@ -18,6 +17,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
 }

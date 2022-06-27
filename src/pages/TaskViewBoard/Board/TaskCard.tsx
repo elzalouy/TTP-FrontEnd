@@ -2,21 +2,16 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box, style } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import IMAGES from "../../assets/img/Images";
-import TasksPopover from "../../coreUI/usable-component/Popovers/TasksPopover";
-import { selectAllDepartments } from "../../redux/Departments";
-import { useAppSelector } from "../../redux/hooks";
-import {
-  downloadAttachment,
-  Project,
-  ProjectsActions,
-  Task,
-} from "../../redux/Projects";
+import IMAGES from "../../../assets/img/Images";
+import TasksPopover from "../../../coreUI/usable-component/Popovers/TasksPopover";
+import { selectAllDepartments } from "../../../redux/Departments";
+import { useAppSelector } from "../../../redux/hooks";
+import { downloadAttachment, ProjectsActions } from "../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
-} from "../../helpers/generalUtils";
-import { selectAllMembers } from "../../redux/techMember";
+} from "../../../helpers/generalUtils";
+import { selectAllMembers } from "../../../redux/techMember";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import {
@@ -28,8 +23,9 @@ import "swiper/css/navigation";
 
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
-import { toggleViewTaskPopup } from "../../redux/Ui";
+import { toggleViewTaskPopup } from "../../../redux/Ui";
 import { Link } from "react-router-dom";
+import { Project, Task } from "../../../interfaces/models/Projects";
 interface DataTypes {
   index: number;
   item: Task;

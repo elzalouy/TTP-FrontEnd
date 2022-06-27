@@ -5,7 +5,7 @@ import LoggedInContainer from "./coreUI/layout/Layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
 import TasksListView from "./pages/TasksListView/TasksListView";
-import TasksBoardView from "./pages/TaskViewBoard/TaskViewBoard";
+import TasksBoardView from "./pages/TaskViewBoard/Board/TaskViewBoard";
 import Departments from "./pages/Departments/departments";
 import Forget from "./pages/AuthPage/forget";
 import Projects from "./pages/Projects/projects";

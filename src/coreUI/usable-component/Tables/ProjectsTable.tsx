@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { ProjectManager } from "../../../redux/PM";
-import { Project, selectAllProjects } from "../../../redux/Projects";
+import { selectAllProjects } from "../../../redux/Projects";
 import { projectsTableStyle } from "../../../themes/Styles";
 import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
@@ -20,7 +20,8 @@ import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectRole } from "../../../redux/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
-import "../../../App.css"
+import "../../../App.css";
+import { Project } from "../../../interfaces/models/Projects";
 
 interface ProjectsTableProps {
   progress?: boolean;

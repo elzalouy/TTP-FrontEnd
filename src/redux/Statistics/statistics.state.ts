@@ -1,4 +1,4 @@
-import { Project, Task } from "../Projects";
+import { Project, Task } from "../../interfaces/models/Projects";
 
 export interface StatisticsInterface {
   loading: boolean;

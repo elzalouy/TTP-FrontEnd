@@ -15,7 +15,6 @@ import TasksTable from "../../coreUI/usable-component/Tables/TasksTable";
 import {
   filterTasks,
   selectAllProjects,
-  ProjectsInterface,
   ProjectsActions,
   deleteTasks,
   getAllTasks,
@@ -24,6 +23,7 @@ import { selectAllMembers } from "../../redux/techMember";
 import DeleteTask from "../../coreUI/usable-component/Popups/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 import Loading from "../../coreUI/usable-elements/Loading";
+import { ProjectsInterface } from "../../interfaces/models/Projects";
 interface Props {
   projectId?: string;
 }

@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import api from "../../services/endpoints/projects";
-import { Project } from "./projects.state";
 import {
   fireCreateProjectHook,
   fireDeleteProjectHook,
@@ -16,6 +15,7 @@ import { generateID } from "../../helpers/IdGenerator";
 import { Department } from "../Departments";
 import { logout } from "../Auth";
 import moment from "moment";
+import { Project } from "../../interfaces/models/Projects";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
@@ -115,16 +115,19 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
-      toast.error("There was an error from the server while creating the task", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      toast.error(
+        "There was an error from the server while creating the task",
+        {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        }
+      );
       args.reset();
       return rejectWithValue(error);
     }
@@ -139,16 +142,19 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
     } catch (error: any) {
-      toast.error("There was an error from the server while filtering the task", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      toast.error(
+        "There was an error from the server while filtering the task",
+        {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        }
+      );
       return rejectWithValue(error);
     }
   }
@@ -162,16 +168,19 @@ export const getTasks = createAsyncThunk<any, any, any>(
       if (tasks?.ok) return tasks?.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error("There was an error from the server while fetching the tasks", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      toast.error(
+        "There was an error from the server while fetching the tasks",
+        {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        }
+      );
       return rejectWithValue(error);
     }
   }
@@ -185,16 +194,19 @@ export const getProject = createAsyncThunk<any, any, any>(
       if (projects.ok) return projects?.data[0];
       throw projects.problem;
     } catch (error: any) {
-      toast.error("There was an error from the server while fetching the projects", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      toast.error(
+        "There was an error from the server while fetching the projects",
+        {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        }
+      );
       return rejectWithValue(error);
     }
   }

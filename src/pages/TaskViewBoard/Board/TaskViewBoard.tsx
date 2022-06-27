@@ -1,9 +1,9 @@
-import IMAGES from "../../assets/img/Images";
+import IMAGES from "../../../assets/img/Images";
 import DragField from "./DragField";
 import React, { useEffect } from "react";
-import TaskIcon from "../../assets/icons/TaskIcon";
+import TaskIcon from "../../../assets/icons/TaskIcon";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../../redux/hooks";
 import { Box } from "@mui/system";
 import { RouteComponentProps } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,7 @@ import {
   ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
-} from "../../redux/Projects";
+} from "../../../redux/Projects";
 import "./taskViewBoard.css";
 
 interface TasksViewBoard {

@@ -1,7 +1,6 @@
 import * as React from "react";
 import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import IMAGES from "../../../assets/img/Images";
-import "./TaskInfoPopup.css";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -10,15 +9,17 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { selectRole } from "../../../redux/Auth";
 import { selectViewTask } from "../../../redux/Ui/UI.selectors";
-import { selectTaskDetails, Task } from "../../../redux/Projects";
+import { selectTaskDetails } from "../../../redux/Projects";
 import { toggleViewTaskPopup } from "../../../redux/Ui";
 import { selectAllDepartments } from "../../../redux/Departments";
 import { selectDepartmentMembers } from "../../../redux/techMember";
+import { Task } from "../../../interfaces/models/Projects";
 import {
   selectAllCategories,
   selectSubCategories,
   SubCategory,
 } from "../../../redux/Categories";
+import "./TaskInfo.css";
 
 const TaskInfoPopUp: React.FC<Props> = (props) => {
   // here is the clean order of code

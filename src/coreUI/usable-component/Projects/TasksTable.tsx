@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import IMAGES from "../../../assets/img/Images";
 import { generateID } from "../../../helpers/IdGenerator";
+import { Task } from "../../../interfaces/models/Projects";
 import { selectAllCategories } from "../../../redux/Categories";
 import { selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
@@ -24,7 +25,6 @@ import {
   ProjectsActions,
   selectNewProject,
   selectSelectedDepartment,
-  Task,
 } from "../../../redux/Projects";
 import { selectAllMembers } from "../../../redux/techMember";
 import { UiActions } from "../../../redux/Ui";

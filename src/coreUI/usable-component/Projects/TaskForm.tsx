@@ -24,15 +24,15 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import IMAGES from "../../../assets/img/Images";
-import {
-  valdiateCreateTask,
-  validateTaskFilesSchema,
-} from "../../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
 import { selectRole } from "../../../redux/Auth";
+import {
+  valdiateCreateTask,
+  validateTaskFilesSchema,
+} from "../../../services/validations/task.schema";
 
 interface TaskFormProps {}
 

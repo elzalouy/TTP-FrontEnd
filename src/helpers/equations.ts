@@ -1,5 +1,5 @@
-import { Task } from "../redux/Projects/projects.state";
 import _ from "lodash";
+import { Task } from "../interfaces/models/Projects";
 
 export const isCloseToDeadline = (
   deadline: string,

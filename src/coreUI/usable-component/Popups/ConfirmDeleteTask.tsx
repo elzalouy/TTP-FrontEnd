@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import SmallPopUp from "../Popup/SmallPopup";
 import { logout } from "../../../redux/Auth";
-import { deleteTask, ProjectsActions, Task } from "../../../redux/Projects";
+import { deleteTask, ProjectsActions } from "../../../redux/Projects";
 import { toggleLogOutPopup } from "../../../redux/Ui";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import { Task } from "../../../interfaces/models/Projects";
 
 interface LogoutPopupProps {
   show: string;
@@ -26,26 +27,26 @@ const ConfirmDeleteTask: React.FC<LogoutPopupProps> = ({
         <img src={deleteIcon} />
       </div>
       <p className="warning-text">Are you sure you want to delete this task?</p>
-        <div className="controllers">
-          <button
-            className="controllers-cancel"
-            onClick={() => {
-              setShow("none");
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className="controllers-delete"
-            onClick={() => {
-              setShow("none");
-              dispatch(deleteTask({ data: { id: task._id }, dispatch }));
-              dispatch(ProjectsActions.onDeleteNewProjectTask(task));
-            }}
-          >
-            Delete
-          </button>
-        </div>
+      <div className="controllers">
+        <button
+          className="controllers-cancel"
+          onClick={() => {
+            setShow("none");
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          className="controllers-delete"
+          onClick={() => {
+            setShow("none");
+            dispatch(deleteTask({ data: { id: task._id }, dispatch }));
+            dispatch(ProjectsActions.onDeleteNewProjectTask(task));
+          }}
+        >
+          Delete
+        </button>
+      </div>
     </SmallPopUp>
   );
 };

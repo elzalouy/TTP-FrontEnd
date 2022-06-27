@@ -1,17 +1,9 @@
 import * as React from "react";
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableCell,
-  Checkbox,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { useAppSelector } from "../../../redux/hooks";
-import { selectAllProjects, Task } from "../../../redux/Projects";
+import { selectAllProjects } from "../../../redux/Projects";
 import TasksTable from "../../../coreUI/usable-component/Tables/OverviewTasksTable";
+import { Task } from "../../../interfaces/models/Projects";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;

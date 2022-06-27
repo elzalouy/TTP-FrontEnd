@@ -7,7 +7,8 @@ import IMAGES from "../../../assets/img/Images";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
-import { ProjectsActions, Task } from "../../../redux/Projects";
+import { ProjectsActions } from "../../../redux/Projects";
+import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   item: Task;
 }
@@ -24,7 +25,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const onEditTask = async () => {
     await dispatch(ProjectsActions.onEditTask(item._id));
     dispatch(toggleEditTaskPopup("flex"));

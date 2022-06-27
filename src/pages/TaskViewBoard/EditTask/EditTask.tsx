@@ -1,6 +1,6 @@
 import * as React from "react";
-import SelectInput2 from "../Inputs/SelectInput2";
-import PopUp from "../Popup/PopUp";
+import SelectInput2 from "../../../coreUI/usable-component/Inputs/SelectInput2";
+import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import IMAGES from "../../../assets/img/Images";
 import Joi from "joi";
 import moment from "moment";
@@ -10,9 +10,7 @@ import { toast } from "react-toastify";
 import { Category, selectAllCategories } from "../../../redux/Categories";
 import { Department, selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
-import { Close as CloseIcon } from "@mui/icons-material";
 import {
-  Button,
   CircularProgress,
   Grid,
   TextField,
@@ -25,16 +23,16 @@ import {
   ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
-  Task,
 } from "../../../redux/Projects";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import { validateEditTask } from "../../../helpers/validation";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
-import { AnyListenerPredicate } from "@reduxjs/toolkit/dist/listenerMiddleware/types";
 import { selectRole } from "../../../redux/Auth";
-import { Box } from "@mui/system";
+import { Task } from "../../../interfaces/models/Projects";
+import { validateEditTask } from "../../../services/validations/task.schema";
+import AttachetFiles from "./AttachedFiles";
 import _ from "lodash";
+import DateInput from "./DateInput";
 
 const EditTask: React.FC<Props> = (props) => {
   // here is the clean order of code
@@ -140,7 +138,7 @@ const EditTask: React.FC<Props> = (props) => {
       status: State.task.status,
       deadline: data?.deadline ? moment(data?.deadline).toDate() : "",
       attachedFiles: state?.newFiles,
-      deleteFiles: JSON.stringify(state.deleteFiles),
+      deleteFiles: state.deleteFiles,
       listId: data?.teamId
         ? state.selectedDepartment?.teamsId?.find(
             (item: any) => item._id === data.teamId
@@ -150,46 +148,18 @@ const EditTask: React.FC<Props> = (props) => {
       description: data?.description,
       cardId: state.task?.cardId,
     };
-    let validateResult = validateEditTask(newTask);
-    if (validateResult.error) {
-      State.error = validateResult;
+
+    let { error, warning, value, FileError, FormDatatask } =
+      validateEditTask(newTask);
+    if (error || FileError) {
+      State.error = { error, warning, value };
       setState(State);
-      toast.error(validateResult.error.message, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
     } else {
-      let task = new FormData();
-      task.append("id", newTask.id);
-      task.append("name", newTask.name);
-      task.append("categoryId", newTask.categoryId);
-      task.append("subCategoryId", newTask.subCategoryId);
-      task.append("status", newTask.status);
-      task.append("deadline", newTask.deadline.toString());
-      task.append("cardId", newTask.cardId);
-      if (state.newFiles) {
-        let data: Array<any> = Array.from(state.newFiles);
-        for (let i = 0; i < data.length; i++) {
-          task.append("attachedFiles", data[i]);
-        }
-      }
-      task.append("boardId", newTask.boardId);
-      task.append("listId", newTask.listId);
-      task.append("description", data?.description);
-      task.append("deleteFiles", JSON.stringify(state.deleteFiles));
-      if (newTask.teamId !== null) task.append("teamId", newTask.teamId);
       dispatch(
         editTaskFromBoard({
-          data: task,
+          data: FormDatatask,
           dispatch,
           resetState,
-          setState,
           setShow: props.setShow,
         })
       );
@@ -245,7 +215,7 @@ const EditTask: React.FC<Props> = (props) => {
       let files = [...State?.task?.attachedFiles];
       files = files.filter((file) => file._id !== item._id);
       task.attachedFiles = files;
-      State.task = task;      
+      State.task = task;
     } else if (item?.name && item?.size) {
       let file: File = item;
       let newfiles = [...State.newFiles];
@@ -254,6 +224,7 @@ const EditTask: React.FC<Props> = (props) => {
     }
     setState(State);
   };
+
   const onCloseModel = () => {
     dispatch(ProjectsActions.onEditTask(""));
     props.setShow("none");
@@ -262,6 +233,7 @@ const EditTask: React.FC<Props> = (props) => {
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
+        {/* Title component */}
         <Grid
           direction={"row"}
           justifyContent="space-between"
@@ -279,9 +251,11 @@ const EditTask: React.FC<Props> = (props) => {
             Edit task
           </Typography>
         </Grid>
+
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
+              {/* input component */}
               <div>
                 <label className="label-project">Task name</label>
                 <br />
@@ -340,56 +314,13 @@ const EditTask: React.FC<Props> = (props) => {
               <div>
                 <label className="label-project">Deadline date</label>
                 <br />
-                <Controller
+                <DateInput
                   name="deadline"
+                  state={state}
                   control={control}
-                  render={(props) => (
-                    <MobileDatePicker
-                      {...register("deadline")}
-                      inputFormat="YYYY-MM-DD"
-                      value={props.field.value}
-                      onChange={props.field.onChange}
-                      leftArrowButtonText="arrow"
-                      renderInput={(
-                        params: JSX.IntrinsicAttributes & TextFieldProps
-                      ) => (
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            position: "relative",
-                          }}
-                        >
-                          <TextField
-                            placeholder="Deadline"
-                            error={state.error.error?.details[0].path.includes(
-                              "deadline"
-                            )}
-                            {...params}
-                            onChange={params.onChange}
-                            value={params.value}
-                            sx={editTaskDeadlineStyles}
-                          />
-                          <img
-                            className="closeIcon"
-                            src={IMAGES.closeicon}
-                            style={{
-                              width: "10px",
-                              height: "10px",
-                              position: "absolute",
-                              right: "13px",
-                              bottom: "17px",
-                            }}
-                            alt="closeIcon"
-                            onClick={() => {
-                              setValue("deadline", null);
-                            }}
-                          />
-                        </div>
-                      )}
-                    />
-                  )}
+                  placeholder="deadline"
+                  register={register}
+                  setValue={setValue}
                 />
               </div>
               <div>
@@ -549,79 +480,14 @@ const EditTask: React.FC<Props> = (props) => {
                 )}
               </div>
             </div>
-            <Box
-              marginTop={1}
-              alignItems="center"
-              display={"inline-flex"}
-              className="files"
-            >
-              <input
-                {...register("file")}
-                onChange={onSetFiles}
-                ref={files}
-                type="file"
-                style={{ display: "none" }}
-                multiple
-              />
-              <Button onClick={onChangeFiles} sx={taskFormFileAddStyles}>
-                <img src={IMAGES.fileicon} alt="Upload" />
-                <span
-                  style={{
-                    color: "white",
-                    fontSize: "12px",
-                    marginLeft: "5px",
-                  }}
-                >
-                  {state.task?.attachedFiles
-                    ? state.newFiles?.length + state.task?.attachedFiles?.length
-                    : state.newFiles.length}
-                </span>
-              </Button>
-              <>
-                {state?.newFiles &&
-                  state.newFiles.length > 0 &&
-                  state.newFiles?.map((item, index) => (
-                    <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={0.5}
-                      borderRadius={1}
-                      color="#92929D"
-                      sx={taskFormFilesStyles}
-                      onClick={() => onRemoveFile(item)}
-                    >
-                      {item?.name}
-                      <CloseIcon
-                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                        htmlColor="#92929D"
-                      />
-                    </Typography>
-                  ))}
-              </>
-              <>
-                {state?.task?.attachedFiles &&
-                  state.task?.attachedFiles.length > 0 &&
-                  state.task.attachedFiles?.map((item, index) => (
-                    <Typography
-                      key={index}
-                      marginX={0.5}
-                      bgcolor={"#F1F1F5"}
-                      padding={0.5}
-                      borderRadius={1}
-                      color="#92929D"
-                      sx={taskFormFilesStyles}
-                      onClick={() => onRemoveFile(item)}
-                    >
-                      {item?.name}
-                      <CloseIcon
-                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                        htmlColor="#92929D"
-                      />
-                    </Typography>
-                  ))}
-              </>
-            </Box>
+            <AttachetFiles
+              register={register}
+              onSetFiles={onSetFiles}
+              onChangeFiles={onChangeFiles}
+              state={state}
+              onRemoveFile={onRemoveFile}
+              files={files}
+            />
             <div>
               <button
                 style={{ marginBottom: "20px" }}
@@ -675,33 +541,12 @@ interface State {
 
 //SX Styles Objects
 
-const taskFormFilesStyles = {
-  cursor: "pointer",
-  height: "35px",
-  textAlign: "center",
-  alignContent: "center",
-  paddingTop: 1,
-};
-
 const editTaskDescStyles = {
   paddingTop: 1,
   width: "100%",
   "& .MuiOutlinedInput-input": {
     borderRadius: "6px",
     background: "white !important",
-  },
-};
-
-const editTaskDeadlineStyles = {
-  width: "100%",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
   },
 };
 
@@ -715,21 +560,5 @@ const editTaskNameStyles = {
   },
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
-  },
-};
-
-const taskFormFileAddStyles = {
-  backgroundColor: "#00ACBA",
-  width: "40px",
-  height: "32px",
-  borderRadius: "5px",
-  ":hover": {
-    backgroundColor: "#00ACBA",
-  },
-  "& .MuiButton-root": {
-    ":hover": {
-      backgroundColor: "#00ACBA",
-      color: "white",
-    },
   },
 };

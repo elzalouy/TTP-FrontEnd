@@ -17,9 +17,10 @@ import {
   getTasks,
   moveTask,
 } from "./projects.actions";
-import projectsState, { ProjectsInterface, Task } from "./projects.state";
+import projectsState from "./projects.state";
 import _ from "lodash";
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { ProjectsInterface, Task } from "../../interfaces/models/Projects";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
   initialState: projectsState,

@@ -83,4 +83,5 @@ export const selectedDeleteTaskId = (state: RootState) =>
   state.projects.deleteTask;
 export const editTaskLoading = (state: RootState) =>
   state.projects.editTaskLoading;
-export const selectTaskDetails = (state: RootState) => state.projects.openTaskDetails;
+export const selectTaskDetails = (state: RootState) =>
+  state.projects.openTaskDetails;

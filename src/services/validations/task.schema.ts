@@ -1,48 +1,5 @@
 import Joi from "joi";
-
-const createProjectSchema = Joi.object({
-  name: Joi.string().required().min(4).messages({
-    "string.base": "Project Name is required",
-    "string.empty": "Project name should be string with min 4 chars",
-    "string.min": "Project name length should be Min 4 chars",
-    "string.max": "Project name length should be Max 20 chars",
-    "any.required": "Project Name is required",
-  }),
-  projectManager: Joi.string().required().min(5).messages({
-    "string.base": "Project Manager id is required",
-    "string.empty": "Project Manager id should be string",
-    "string.min": "Project Manager id length should be Min 4 chars",
-    "any.required": "Project Manager is required",
-  }),
-  projectManagerName: Joi.string().required().min(2).max(50).messages({
-    "string.base": "Project Manager Name  should be string",
-    "string.empty": "Project Manager Name  is required",
-    "string.min": "Project Manager Name length should be Min 2 chars",
-    "string.required": "Project Manager is required",
-  }),
-  projectDeadline: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Project Deadline is required",
-  }),
-  startDate: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Project Start Date is required",
-  }),
-  clientId: Joi.string().required().min(2).max(50).messages({
-    "any.required": "Client is required",
-    "string.base": "Client should be string",
-    "string.empty": "Client is required",
-    "string.min": "Client length should be Min 2 chars",
-  }),
-  numberOfFinishedTasks: Joi.number().optional().allow(null, 0),
-  numberOfTasks: Joi.number().optional().allow(null, 0),
-  projectStatus: Joi.string()
-    .optional()
-    .allow("", null)
-    .valid("inProgress", "Not Started"),
-  completedDate: Joi.date().optional().allow(null),
-  adminId: Joi.string().messages({
-    "any.required": "Admin id is required for creating a project",
-  }),
-});
+import { ToastError } from "../../coreUI/usable-component/Typos/Alert";
 const createTaskSchema = Joi.object({
   projectId: Joi.string().required().min(4).messages({
     "string.base": "You should create project first",
@@ -127,7 +84,6 @@ export const editTaskSchema = Joi.object({
   cardId: Joi.string()
     .required()
     .messages({ "any.required": "Card id is required" }),
-  deleteFiles: Joi.string().optional(),
   subCategoryId: Joi.string().optional().allow(null, "").messages({
     "string.base": "Sub Category is required",
     "string.empty": "Sub Category should be selected",
@@ -172,16 +128,43 @@ export const editTaskSchema = Joi.object({
     "any.required": "Department is required",
   }),
   attachedFiles: Joi.array().optional().allow(null),
+  deleteFiles: Joi.array().optional().allow(null),
   description: Joi.string().optional().allow(""),
 });
-
-const validateCreateProject = (data: any) => {
-  let { error, value, warning } = createProjectSchema.validate(data);
-  return { error, value, warning };
-};
 export const validateEditTask = (data: any) => {
   let { error, value, warning } = editTaskSchema.validate(data);
-  return { error, value, warning };
+  if (error) {
+    ToastError(error.message);
+    return { error, value, warning };
+  } else {
+    let task = new FormData();
+    if (data.attachedFiles) {
+      let result = validateTaskFilesSchema(data.attachedFiles);
+      if (result.error) {
+        ToastError(result.error);
+        return { FileError: "Files must not exceed 10 Migabyte" };
+      }
+      let newfiles: Array<any> = Array.from(data.attachedFiles);
+      for (let i = 0; i < newfiles.length; i++) {
+        console.log(newfiles[0]);
+        task.append("attachedFiles", newfiles[i]);
+      }
+    }
+    task.append("deleteFiles", JSON.stringify(data.deleteFiles));
+    console.log(task.get("deleteFiles"));
+    if (data.teamId !== null) task.append("teamId", data.teamId);
+    task.append("id", data.id);
+    task.append("name", data.name);
+    task.append("categoryId", data.categoryId);
+    task.append("subCategoryId", data.subCategoryId);
+    task.append("status", data.status);
+    task.append("deadline", data.deadline.toString());
+    task.append("cardId", data.cardId);
+    task.append("boardId", data.boardId);
+    task.append("listId", data.listId);
+    task.append("description", data.description);
+    return { FormDatatask: task };
+  }
 };
 const valdiateCreateTask = (data: any) => {
   let { error, value, warning } = createTaskSchema.validate(data);
@@ -198,15 +181,15 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
     let item = files[i];
     if (item.size > 10000000) {
       response = {
-        error: `The file ${item.name} has exceeded the max size 10 MB`,
+        error: `The file ${item.name} has exceeded the max size 1 MB`,
         value: files,
       };
       break;
     }
     totalSizeInBytes += item.size;
-    if (totalSizeInBytes >= 20000000) {
+    if (totalSizeInBytes >= 10000000) {
       response = {
-        error: "Files has exceeded the max size 20 MB",
+        error: "Files has exceeded the max size 10 MB",
         value: files,
       };
       break;
@@ -216,4 +199,4 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
   else return { error: null, value: files };
 };
 
-export { validateCreateProject, valdiateCreateTask };
+export { valdiateCreateTask };

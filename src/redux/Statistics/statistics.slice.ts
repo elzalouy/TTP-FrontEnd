@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
 import StatisticsState, { StatisticsInterface } from "./statistics.state";
-import { Project, Task } from "../Projects";
 import {
   isCloseToDeadline,
   setTasksBoardToArrays,
   setTasksToArrays,
 } from "../../helpers/equations";
-import { User } from "../Auth";
+import { Project, Task } from "../../interfaces/models/Projects";
+import { User } from "../../interfaces/models/user";
 const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,

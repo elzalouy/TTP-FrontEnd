@@ -10,7 +10,7 @@ import {
 import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
 import "../../../App.css";
-import { Project, ProjectsActions, Task } from "../../../redux/Projects";
+import { ProjectsActions } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
@@ -18,6 +18,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import { useDispatch } from "react-redux";
 import { toggleViewTaskPopup } from "../../../redux/Ui";
+import { Project, Task } from "../../../interfaces/models/Projects";
 interface TasksTableProps {
   tasks: Task[];
   projects: Project[];

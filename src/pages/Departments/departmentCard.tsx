@@ -9,13 +9,7 @@ import { departmentsActions } from "../../redux/Departments";
 import DeleteDepartment from "../../coreUI/usable-component/Popups/DeleteDepartment";
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
-import {
-  selectAllProjects,
-  selectDoneTasks,
-  selectInProgressTasks,
-  selectTasks,
-  Task,
-} from "../../redux/Projects";
+import { selectAllProjects, selectTasks } from "../../redux/Projects";
 
 type Status =
   | "Tasks Board"

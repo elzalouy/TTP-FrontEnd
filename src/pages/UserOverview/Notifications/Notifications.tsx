@@ -5,9 +5,9 @@ import { RouteComponentProps } from "react-router";
 import PopoverComponent from "../../../coreUI/usable-component/Popup/ScrollOver";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectSatistics } from "../../../redux/Statistics";
-import { Task } from "../../../redux/Projects";
 import Status from "../../../coreUI/usable-component/Typos/Status";
 import _ from "lodash";
+import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
 }
