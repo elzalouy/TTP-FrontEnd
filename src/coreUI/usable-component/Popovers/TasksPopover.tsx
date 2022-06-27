@@ -2,12 +2,16 @@ import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../../../themes/Styles";
-
 import IMAGES from "../../../assets/img/Images";
+import OfflineShareIcon from "@mui/icons-material/OfflineShare";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
-import { ProjectsActions, selectTaskDetails, Task } from "../../../redux/Projects";
+import {
+  ProjectsActions,
+  selectTaskDetails,
+  Task,
+} from "../../../redux/Projects";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectAllDepartments } from "../../../redux/Departments";
 interface Props {
@@ -22,6 +26,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     null
   );
   const open = Boolean(anchorEl);
+
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
@@ -30,15 +35,20 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
   };
 
   const generateURL = () => {
-    let boardURL = departments.find((dep) => dep.boardId === viewTask?.boardId);
+    let boardURL = departments.find((dep) => dep.boardId === item?.boardId);
     return boardURL?.boardURL;
   };
+
+  const url = generateURL();
 
   const onDeleteTask = () => {
     dispatch(ProjectsActions.onDeleteTask(item._id));
     dispatch(openDeleteTaskPopup("flex"));
     handleClose();
   };
+
+  console.log(url);
+
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
@@ -62,21 +72,23 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
         }}
       >
         <Box display={"grid"} padding={1}>
-          <Button
-            variant="text"
-            className={styles.grayButton}
-            onClick={(e) => {
-              e.preventDefault();
-              let url = generateURL();
-              if (url) {
-                window.location.href = url;
-              }
-              handleClose();
+          <a
+            href={url}
+            target="_blank"
+            style={{
+              textDecoration: "none",
+              color: "#505050",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
-            Open in trello
-          </Button>
+            <OfflineShareIcon
+              sx={{ width: "25px", marginRight: "4px", paddingRight: "5px" }}
+            />
+            <Button variant="text" className={styles.grayButton}>
+              Open in trello
+            </Button>
+          </a>
           <Button
             onClick={onDeleteTask}
             variant="text"

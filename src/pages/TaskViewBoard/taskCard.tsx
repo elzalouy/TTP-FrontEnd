@@ -179,7 +179,7 @@ const TaskCard: React.FC<DataTypes> = ({
                 <TasksPopover item={item} />
               )}
             </Stack>
-            <Box>
+            <Box onClick={onViewTask}>
               <Typography color={"#696974"}>
                 {project?.projectManager?.name}
               </Typography>
