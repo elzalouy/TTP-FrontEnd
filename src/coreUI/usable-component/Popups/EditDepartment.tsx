@@ -335,7 +335,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         <div className="controllers">
           <button className="controllers-done" onClick={() => handleSubmit()}>
             {depLoading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
+              <CircularProgress sx={{ color: "white", padding: "0px" }} />
             ) : (
               "Done"
             )}

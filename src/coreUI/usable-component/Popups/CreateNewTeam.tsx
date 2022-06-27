@@ -52,9 +52,20 @@ const AddNewTeam: React.FC<Props> = () => {
       let teamsData = department.teamsId.some((el) => el._id === team);
       if (teamsData) return department.name;
     });
-    departmentName.map((item) => item !== undefined);
-    // return departmentName[0]?.name;
-    return departmentName;
+    let data: string[] = [];
+    //Mapping true values to a new array
+    departmentName.forEach((item) => {
+      if (item !== undefined) {
+        data.push(item);
+      }
+    });
+    if (data.length === 0) {
+      return "No Department selected";
+    } else {
+      return data.map((item) => {
+        return <p className="teamName">{item}</p>;
+      });
+    }
   };
 
   /*   const getDepartmentById = (id: string) => {
@@ -246,11 +257,7 @@ const AddNewTeam: React.FC<Props> = () => {
                   <tr key={index}>
                     <td>{team.name}</td>
                     <td>
-                      {getDepartmentsNameById(team.departmentId, team._id).map(
-                        (item) => {
-                          return <p className="teamNames">{item}</p>;
-                        }
-                      )}
+                      {getDepartmentsNameById(team.departmentId, team._id)}
                     </td>
                     <td>
                       <img
