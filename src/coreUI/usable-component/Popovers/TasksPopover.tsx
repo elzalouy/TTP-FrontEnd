@@ -85,7 +85,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             <img
               src={IMAGES.trelloIcon}
               width={18}
-              style={{ marginRight: 10 }}
+              style={{ marginRight:2 , marginLeft:8 }}
             ></img>
             <Button variant="text" className={styles.grayButton}>
               Open in trello
