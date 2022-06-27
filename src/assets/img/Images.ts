@@ -59,6 +59,7 @@ const IMAGES = {
   overViewProjectsIcon: require("./OverviewProjectsIcon.svg").default,
   overviewTasksIcon: require("./OverviewTasksIcon.svg").default,
   deleteIconAlert: require("./deleteAlert.png").default,
+  trelloIcon: require("./trello.png"),
   logoutIconAlert: require("./logoutAlert.png").default,
 };
 export default IMAGES;

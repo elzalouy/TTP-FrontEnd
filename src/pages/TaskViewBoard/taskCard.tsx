@@ -179,7 +179,7 @@ const TaskCard: React.FC<DataTypes> = ({
                 <TasksPopover item={item} />
               )}
             </Stack>
-            <Box onClick={onViewTask}>
+            <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
               <Typography color={"#696974"}>
                 {project?.projectManager?.name}
               </Typography>
@@ -229,15 +229,19 @@ const TaskCard: React.FC<DataTypes> = ({
                             />
                           </SwiperSlide>
                         ))}
-                        <div ref={navigationPrevRef}>
-                          <ArrowBackIosNewIcon
-                            className="prev"
-                            htmlColor="black"
-                          />
-                        </div>
-                        <div ref={navigationNextRef}>
-                          <ArrowForwardIosIcon className="next" />
-                        </div>
+                        {taskImages.length > 1 && (
+                          <>
+                            <div ref={navigationPrevRef}>
+                              <ArrowBackIosNewIcon
+                                className="prev"
+                                htmlColor="black"
+                              />
+                            </div>
+                            <div ref={navigationNextRef}>
+                              <ArrowForwardIosIcon className="next" />
+                            </div>
+                          </>
+                        )}
                       </Swiper>
                     </>
                   )}

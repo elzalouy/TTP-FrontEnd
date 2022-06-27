@@ -82,9 +82,11 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
               alignItems: "center",
             }}
           >
-            <OfflineShareIcon
-              sx={{ width: "25px", marginRight: "4px", paddingRight: "5px" }}
-            />
+            <img
+              src={IMAGES.trelloIcon}
+              width={18}
+              style={{ marginRight: 10 }}
+            ></img>
             <Button variant="text" className={styles.grayButton}>
               Open in trello
             </Button>
