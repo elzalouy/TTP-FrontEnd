@@ -28,7 +28,7 @@ import "swiper/css/navigation";
 
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
-import { toggleViewTaskPopup } from "../../redux/Ui";
+import { toggleEditTaskPopup, toggleViewTaskPopup } from "../../redux/Ui";
 import { Link } from "react-router-dom";
 interface DataTypes {
   index: number;
@@ -137,8 +137,9 @@ const TaskCard: React.FC<DataTypes> = ({
     );
   };
 
-  const onViewTask = () => {
-    dispatch(toggleViewTaskPopup("flex"));
+  const onViewTask = async () => {
+    dispatch(ProjectsActions.onEditTask(item._id));
+    dispatch(toggleEditTaskPopup("flex"));
     dispatch(ProjectsActions.onOpenTask(item));
   };
 

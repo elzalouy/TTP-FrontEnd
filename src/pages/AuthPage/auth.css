@@ -3,12 +3,12 @@
   src: url(../../assets/fonts/Cairo-Bold.ttf);
 }
 
-body{
+body {
   /* Fixing height issues since there is an added 100% height for taskCard */
   height: auto !important;
 }
 
-.bold{
+.bold {
   font-family: "Cairo-Bold" !important;
   font-weight: bolder !important;
 }
@@ -50,30 +50,25 @@ body{
   margin-top: 1.5em;
 }
 
-.password-container{
+.password-container {
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
   position: relative;
   margin-top: 10px;
-  border: solid 0.5px #b4b6c4;
+  border: none;
+  outline: none;
   padding-right: 0px;
 }
 
-
-/* 
-.password-container:active{
-  outline: 1px solid black;
-} */
-
-.password-input{
+.password-input {
   display: block;
-  font-family: "Cairo",sans-serif;
+  font-family: "Cairo", sans-serif;
   width: 100%;
   color: black;
   padding: 11px;
-  border: none;
+  border: solid 0.5px #b4b6c4;
   outline: none;
   text-align: left;
   text-decoration: none;
@@ -81,7 +76,7 @@ body{
   margin-right: 0px;
 }
 
-.password-icon{
+.password-icon {
   position: absolute !important;
   right: 0;
 }
@@ -89,7 +84,7 @@ body{
 .f-inputs {
   display: block;
   margin-top: 10px;
-  font-family: "Cairo",sans-serif;
+  font-family: "Cairo", sans-serif;
 }
 
 .btn-auth {
@@ -134,23 +129,23 @@ body{
   border-radius: 5px;
 }
 
-.f-inputs:active{
-  outline: 1px solid black;
+.f-inputs:active {
+  border: 0.5px solid black;
   border-radius: 5px;
 }
 
-.f-inputs:focus{
-  outline: 1px solid black;
+.f-inputs:focus {
+  border: 0.5px solid black;
   border-radius: 5px;
 }
 
-.password-input:active{
-  outline: 1px solid black;
+.password-input:active {
+  border: 0.5px solid black;
   border-radius: 5px;
 }
 
-.password-input:focus{
-  outline: 1px solid black;
+.password-input:focus {
+  border: 0.5px solid black;
   border-radius: 5px;
 }
 
