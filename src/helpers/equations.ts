@@ -93,3 +93,9 @@ export const setTasksBoardToArrays = (tasks: Task[]) => {
   });
   return sortedTasks;
 };
+export const formatFileName = (name: string) => {
+  let val = _.split(name, ".");
+  console.log(val);
+  let zeroval = _.truncate(val[0], { length: 10 });
+  return `${zeroval}.${val[val.length - 1]}`;
+};

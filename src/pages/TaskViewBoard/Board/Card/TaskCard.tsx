@@ -6,10 +6,7 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../redux/Departments";
 import { useAppSelector } from "../../../../redux/hooks";
-import {
-  downloadAttachment,
-  ProjectsActions,
-} from "../../../../redux/Projects";
+import { ProjectsActions } from "../../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -21,16 +18,18 @@ import {
   ArrowBackIosNew as ArrowBackIosNewIcon,
   ArrowForwardIos as ArrowForwardIosIcon,
 } from "@mui/icons-material";
-import "swiper/css";
-import "swiper/css/navigation";
-
-import "./taskCard.css";
 import { useDispatch } from "react-redux";
 import { toggleEditTaskPopup } from "../../../../redux/Ui";
-import { Link } from "react-router-dom";
-import { Project, Task } from "../../../../interfaces/models/Projects";
+import {
+  Project,
+  Task,
+  TaskFile,
+} from "../../../../interfaces/models/Projects";
+import "swiper/css";
+import "swiper/css/navigation";
+import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
-interface DataTypes {
+interface TaskCartProps {
   index: number;
   item: Task;
   project: Project | null | undefined;
@@ -43,7 +42,7 @@ interface Fallback {
   flag: boolean;
 }
 
-const TaskCard: React.FC<DataTypes> = ({
+const TaskCard: React.FC<TaskCartProps> = ({
   item,
   index,
   project,
