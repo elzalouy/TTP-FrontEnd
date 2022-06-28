@@ -1,5 +1,8 @@
-TODO solve the duplicating issue
-TODO filter the attachedFiles to (documents, images)
-TODO  image doesn't been showing. (solved from saif side)
+10:30 > 11:00
+TODO fix attachedFiles list in the card
+TODO fix upload error (backend)
 
-TODO fix notification issue
+
+TODO filter the attachedFiles to (documents, images)
+
+TODO add a notification for moving tasks to  not clear list

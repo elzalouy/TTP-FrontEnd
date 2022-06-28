@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import CreateNewTask from "./CreateTaskBtn";
-import TaskCard from "./TaskCard";
+import TaskCard from "./Card/TaskCard";
 import {
   moveTask,
   selectCancledTasks,

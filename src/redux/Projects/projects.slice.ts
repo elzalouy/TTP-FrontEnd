@@ -117,7 +117,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onEditTask: (state = projectsState, action: PayloadAction<any>) => {
       state.editTask = action.payload;
     },
-  /*   onViewTask: (state = projectsState, action: PayloadAction<any>) => {
+    /*   onViewTask: (state = projectsState, action: PayloadAction<any>) => {
       state.viewTask = action.payload;
     }, */
     onDeleteTask: (state = projectsState, action: PayloadAction<any>) => {
@@ -146,24 +146,21 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         let allTasks = [...state.allTasks];
         let projectTasks = [...state.selectedProject.tasks];
         // update all tasks
-        let taskIndex = allTasks.findIndex(
+        let taskIndexInTasks = allTasks.findIndex(
           (item) => item._id === action.payload._id
         );
-        if (taskIndex >= 0) {
-          allTasks[taskIndex] = action.payload;
-          // update project tasks
-          let index = projectTasks.findIndex(
-            (item) => item._id === action.payload._id
-          );
-          if (index >= 0) {
-            projectTasks[index] = action.payload;
-          }
-        } else {
-          allTasks.push(action.payload);
-          projectTasks.push(action.payload);
-        }
-        state.allTasks = [...allTasks];
-        state.selectedProject.tasks = [...projectTasks];
+        let taskIndexInSelectedPro = projectTasks.findIndex(
+          (item) => item._id === action.payload._id
+        );
+        if (taskIndexInTasks >= 0) allTasks[taskIndexInTasks] = action.payload;
+        else allTasks.push(action.payload);
+
+        if (taskIndexInSelectedPro >= 0)
+          projectTasks[taskIndexInSelectedPro] = action.payload;
+        else projectTasks.push(action.payload);
+
+        state.allTasks = _.uniqBy([...allTasks], "_id");
+        state.selectedProject.tasks = _.uniqBy([...projectTasks], "_id");
       }
     },
     deleteTask: (state = projectsState, action: PayloadAction<any>) => {

@@ -2,23 +2,28 @@ import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../../../themes/Styles";
-
 import IMAGES from "../../../assets/img/Images";
+import OfflineShareIcon from "@mui/icons-material/OfflineShare";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
-import { ProjectsActions } from "../../../redux/Projects";
+import { ProjectsActions, selectTaskDetails } from "../../../redux/Projects";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectAllDepartments } from "../../../redux/Departments";
 import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   item: Task;
 }
 const TasksPopover: React.FC<Props> = ({ item }) => {
   const dispatch = useDispatch();
+  const departments = useAppSelector(selectAllDepartments);
+  const viewTask = useAppSelector(selectTaskDetails);
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
   const open = Boolean(anchorEl);
+
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
@@ -31,12 +36,20 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     dispatch(toggleEditTaskPopup("flex"));
     handleClose();
   };
+  const generateURL = () => {
+    let boardURL = departments.find((dep) => dep.boardId === item?.boardId);
+    return boardURL?.boardURL;
+  };
+  const url = generateURL();
 
   const onDeleteTask = () => {
     dispatch(ProjectsActions.onDeleteTask(item._id));
     dispatch(openDeleteTaskPopup("flex"));
     handleClose();
   };
+
+  console.log(url);
+
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
@@ -60,14 +73,25 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
         }}
       >
         <Box display={"grid"} padding={1}>
-          <Button
-            variant="text"
-            onClick={onEditTask}
-            className={styles.grayButton}
+          <a
+            href={url}
+            target="_blank"
+            style={{
+              textDecoration: "none",
+              color: "#505050",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
-            Edit Task
-          </Button>
+            <img
+              src={IMAGES.trelloIcon}
+              width={18}
+              style={{ marginRight: 2, marginLeft: 8 }}
+            ></img>
+            <Button variant="text" className={styles.grayButton}>
+              Open in trello
+            </Button>
+          </a>
           <Button
             onClick={onDeleteTask}
             variant="text"

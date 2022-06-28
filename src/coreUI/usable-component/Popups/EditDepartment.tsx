@@ -264,20 +264,6 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                     setData(e.target.value);
                   }
                 }}
-                handleOnClick={(e) => {
-                  if (teamsData.techMembers.length === 0) {
-                    toast.warning("There are no existing teams", {
-                      position: "top-right",
-                      autoClose: 1500,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      toastId: generateID(),
-                    });
-                  }
-                }}
                 selectText={splitData[1]}
                 {...register("team")}
                 selectValue={Data}
@@ -335,7 +321,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
         <div className="controllers">
           <button className="controllers-done" onClick={() => handleSubmit()}>
             {depLoading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
+              <CircularProgress sx={{ color: "white", padding: "0px" }} />
             ) : (
               "Done"
             )}

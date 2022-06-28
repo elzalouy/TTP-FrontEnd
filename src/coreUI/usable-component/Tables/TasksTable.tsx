@@ -51,11 +51,6 @@ const TasksTable: React.FC<TasksTableProps> = ({
     }
   };
 
-  const handleTaskViewModal = (task: Task) => {
-    dispatch(toggleViewTaskPopup("flex"));
-    dispatch(ProjectsActions.onOpenTask(task));
-  };
-
   return (
     <TableContainer
       sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
@@ -177,7 +172,6 @@ const TasksTable: React.FC<TasksTableProps> = ({
                     />
                   </TableCell>
                   <TableCell
-                    onClick={() => handleTaskViewModal(item)}
                     align="left"
                     style={
                       checkIndexForLastRow(index, tasks)
@@ -216,7 +210,6 @@ const TasksTable: React.FC<TasksTableProps> = ({
                           : "endedStatus"
                       }
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleTaskViewModal(item)}
                     >
                       {status === "inProgress" ? "In Progress" : status}
                     </div>

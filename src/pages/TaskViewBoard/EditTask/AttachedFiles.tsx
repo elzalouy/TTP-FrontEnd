@@ -3,15 +3,7 @@ import { Box, ButtonBase, Typography } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import IMAGES from "../../../assets/img/Images";
 import { attachedFilesStyle } from "./styles";
-
-interface AttachetFilesProps {
-  register: any;
-  onSetFiles: any;
-  files: any;
-  onChangeFiles: any;
-  state: any;
-  onRemoveFile: any;
-}
+import { AttachetFilesProps } from "../../../interfaces/views/BoardView";
 
 const AttachetFiles: React.FC<AttachetFilesProps> = ({
   register,
@@ -51,7 +43,7 @@ const AttachetFiles: React.FC<AttachetFilesProps> = ({
               padding={0.5}
               borderRadius={1}
               color="#92929D"
-              className={styles.newfiles}
+              className={styles.attachedfiles}
               onClick={() => onRemoveFile(item)}
             >
               {item?.name}

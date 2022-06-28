@@ -2,16 +2,19 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box, style } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import IMAGES from "../../../assets/img/Images";
-import TasksPopover from "../../../coreUI/usable-component/Popovers/TasksPopover";
-import { selectAllDepartments } from "../../../redux/Departments";
-import { useAppSelector } from "../../../redux/hooks";
-import { downloadAttachment, ProjectsActions } from "../../../redux/Projects";
+import IMAGES from "../../../../assets/img/Images";
+import TasksPopover from "../../../../coreUI/usable-component/Popovers/TasksPopover";
+import { selectAllDepartments } from "../../../../redux/Departments";
+import { useAppSelector } from "../../../../redux/hooks";
+import {
+  downloadAttachment,
+  ProjectsActions,
+} from "../../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
-} from "../../../helpers/generalUtils";
-import { selectAllMembers } from "../../../redux/techMember";
+} from "../../../../helpers/generalUtils";
+import { selectAllMembers } from "../../../../redux/techMember";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import {
@@ -23,9 +26,10 @@ import "swiper/css/navigation";
 
 import "./taskCard.css";
 import { useDispatch } from "react-redux";
-import { toggleViewTaskPopup } from "../../../redux/Ui";
+import { toggleEditTaskPopup } from "../../../../redux/Ui";
 import { Link } from "react-router-dom";
-import { Project, Task } from "../../../interfaces/models/Projects";
+import { Project, Task } from "../../../../interfaces/models/Projects";
+import TaskFiles from "./TaskFiles";
 interface DataTypes {
   index: number;
   item: Task;
@@ -127,14 +131,10 @@ const TaskCard: React.FC<DataTypes> = ({
       return `${Math.abs(day)} Days ago`;
     }
   };
-  const onDownload = (file: any) => {
-    dispatch(
-      downloadAttachment({ cardId: item.cardId, attachmentId: file?.trelloId })
-    );
-  };
 
-  const onViewTask = () => {
-    dispatch(toggleViewTaskPopup("flex"));
+  const onViewTask = async () => {
+    dispatch(ProjectsActions.onEditTask(item._id));
+    dispatch(toggleEditTaskPopup("flex"));
     dispatch(ProjectsActions.onOpenTask(item));
   };
 
@@ -174,7 +174,7 @@ const TaskCard: React.FC<DataTypes> = ({
                 <TasksPopover item={item} />
               )}
             </Stack>
-            <Box>
+            <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
               <Typography color={"#696974"}>
                 {project?.projectManager?.name}
               </Typography>
@@ -224,55 +224,24 @@ const TaskCard: React.FC<DataTypes> = ({
                             />
                           </SwiperSlide>
                         ))}
-                        <div ref={navigationPrevRef}>
-                          <ArrowBackIosNewIcon
-                            className="prev"
-                            htmlColor="black"
-                          />
-                        </div>
-                        <div ref={navigationNextRef}>
-                          <ArrowForwardIosIcon className="next" />
-                        </div>
+                        {taskImages.length > 1 && (
+                          <>
+                            <div ref={navigationPrevRef}>
+                              <ArrowBackIosNewIcon
+                                className="prev"
+                                htmlColor="black"
+                              />
+                            </div>
+                            <div ref={navigationNextRef}>
+                              <ArrowForwardIosIcon className="next" />
+                            </div>
+                          </>
+                        )}
                       </Swiper>
                     </>
                   )}
-                  <Stack
-                    direction="row"
-                    marginTop="12px"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    overflow={"hidden"}
-                    width="100%"
-                  >
-                    <img src={IMAGES.attachment} alt="more" />
-                    <Typography
-                      style={{ paddingLeft: "5px", color: "#92929D" }}
-                    >
-                      {item?.attachedFiles.length}
-                    </Typography>
-                    <Box
-                      flexDirection={"row"}
-                      sx={{
-                        display: "inline-flex",
-                        width: "100%",
-                        overflowX: "scroll",
-                      }}
-                    >
-                      {taskFiles &&
-                        taskFiles.length > 0 &&
-                        taskFiles.map((item) => (
-                          <>
-                            <Typography
-                              variant={"body2"}
-                              onClick={() => onDownload(item)}
-                              className="fileUpload"
-                            >
-                              {item?.name}
-                            </Typography>
-                          </>
-                        ))}
-                    </Box>
-                  </Stack>
+                  {/* stack files */}
+                  <TaskFiles taskFiles={taskFiles} cardId={item.cardId} />
                 </>
               )}
             </Grid>

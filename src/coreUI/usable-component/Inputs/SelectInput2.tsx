@@ -14,9 +14,9 @@ import { ArrowDropUp } from "@mui/icons-material";
 import { ArrowDropDown as ArrowDownIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { isOptionsEmpty } from "../../../helpers/generalUtils";
+import { ToastWarning } from "../Typos/Alert";
 interface Props {
   handleChange: (e: any) => void;
-  handleOnClick?: (e: any) => void;
   options?: {
     id?: string;
     value?: string;
@@ -44,27 +44,24 @@ const selectInputGridTwoStyles = {
 const SelectInput2: React.FC<Props> = ({
   handleChange,
   options = [],
-  selectValue,
   label,
   selectText,
-  handleOnClick,
-  error,
 }) => {
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-
   const open = Boolean(anchorEl);
-
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const checkEmpty = () => {
+    console.log("label,", label, "options, ", options);
+    if (options.length === 0) ToastWarning(`${label} is empty`);
+  };
   return (
     <Grid
       sx={selectInputGridTwoStyles}
@@ -72,8 +69,8 @@ const SelectInput2: React.FC<Props> = ({
       alignItems={"center"}
       direction="row"
       className="select"
+      onClick={checkEmpty}
       container
-      onClick={handleOnClick}
     >
       <Grid
         onClick={handleOpen}
@@ -84,7 +81,7 @@ const SelectInput2: React.FC<Props> = ({
         display="inline-flex"
         xs={10}
       >
-        <Typography
+        {/* <Typography
           maxWidth={140}
           overflow={"hidden"}
           color="#696974"
@@ -92,7 +89,7 @@ const SelectInput2: React.FC<Props> = ({
           fontWeight={"400"}
         >
           {label}
-        </Typography>
+        </Typography> */}
         {selectText ? (
           <Typography
             lineHeight={1}

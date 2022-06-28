@@ -470,20 +470,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                             )?.name
                           }
                           {...register("teamId")}
-                          handleOnClick={() => {
-                            if (selectedDepartment?.teamsId.length === 0) {
-                              toast.warning("There are no existing teams", {
-                                position: "top-right",
-                                autoClose: 1500,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                toastId: generateID(),
-                              });
-                            }
-                          }}
+                          label={"Teams"}
                           selectValue={props.field.value}
                           options={
                             selectedDepartment?.teamsId
