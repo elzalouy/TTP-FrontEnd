@@ -72,8 +72,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [taskImages, setTaskImages] = useState<any[]>();
   const [taskFiles, setTaskFiles] = useState<any[]>();
 
-  console.log(error);
-
   /// set files
   useEffect(() => {
     let mimeTypes = ["image/png", "image/png", "image/jpeg", "image/svg"];
