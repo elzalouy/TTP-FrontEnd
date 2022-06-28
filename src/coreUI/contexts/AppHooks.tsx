@@ -158,14 +158,14 @@ const AppHooks: React.FC = (props) => {
     }
   }, [deleteDepartmentHook]);
 
-  // Edit Task hook
-  React.useEffect(() => {
-    if (editTaskHook !== undefined) {
-      console.log("edit Task hook fired.");
-      dispatch(getAllTasks(null));
-      // dispatch(setHideLoadingState(false));
-    }
-  }, [editTaskHook]);
+  // // Edit Task hook
+  // React.useEffect(() => {
+  //   if (editTaskHook !== undefined) {
+  //     console.log("edit Task hook fired.");
+  //     dispatch(getAllTasks(null));
+  //     // dispatch(setHideLoadingState(false));
+  //   }
+  // }, [editTaskHook]);
 
   // move task
   React.useEffect(() => {
@@ -180,7 +180,7 @@ const AppHooks: React.FC = (props) => {
     if (updateTaskData !== null) {
       dispatch(ProjectsActions.updateTaskData(updateTaskData));
       setUpdateTaskData(null);
-      dispatch(setHideLoadingState(false));
+      // dispatch(setHideLoadingState(false));
     }
   }, [updateTaskData]);
   // delete task event from backend

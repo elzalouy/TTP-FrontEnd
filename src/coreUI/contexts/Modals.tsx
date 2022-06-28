@@ -1,11 +1,11 @@
 import * as React from "react";
 import NewProjectPopUp from "../usable-component/Projects/ProjectPopUp";
-import CreateNewTask from "../usable-component/Popups/CreateNewTask";
+import CreateNewTask from "../../pages/TaskViewBoard/CreateTask/CreateNewTask";
 import DeleteClient from "../usable-component/Popups/DeleteClient";
 import DeleteProject from "../usable-component/Popups/DeleteProject";
 import EditClient from "../usable-component/Popups/EditClient";
 import EditProject from "../usable-component/Popups/EditProject";
-import EditTask from "../usable-component/Popups/EditTask";
+import EditTask from "../../pages/TaskViewBoard/EditTask/EditTask";
 import LogoutPopup from "../usable-component/Popups/LogoutPopup";
 import DeleteTask from "../usable-component/Popups/DeleteTask";
 import { useDispatch } from "react-redux";
@@ -25,7 +25,7 @@ import {
   toggleTask,
   toggleViewTaskPopup,
 } from "../../redux/Ui";
-import TaskInfoPopUp from "../../pages/TaskViewBoard/TaskInfoPopUp/TaskInfoPopUp";
+import TaskInfo from "../../pages/TaskViewBoard/TaskInfo/TaskInfo";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Modals: React.FC = (props) => {
     logoutPopup,
     editTaskPopup,
     deleteTaskPopup,
-    viewTaskPopup
+    viewTaskPopup,
   } = useAppSelector(selectUi);
 
   const showDeleteProjectPopup = (val: string) => {
@@ -68,7 +68,7 @@ const Modals: React.FC = (props) => {
   const showCreateProject = (val: string) => {
     dispatch(toggleCreateProjectPopup(val));
   };
-/*   const showTask = (value: string) => {
+  /*   const showTask = (value: string) => {
     dispatch(toggleTask(value));
   }; */
   const showViewTaskModal = (value: string) => {
@@ -81,7 +81,7 @@ const Modals: React.FC = (props) => {
         show={deleteProjectPopup}
         setShow={showDeleteProjectPopup}
       />
-      <TaskInfoPopUp show={viewTaskPopup} setShow={showViewTaskModal} />
+      <TaskInfo show={viewTaskPopup} setShow={showViewTaskModal} />
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />

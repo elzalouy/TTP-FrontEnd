@@ -4,11 +4,10 @@ import { Box } from "@mui/system";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { selectAllDepartments } from "../../redux/Departments";
-import { useAppSelector } from "../../redux/hooks";
-import { selectViewTask } from "../../redux/Ui/UI.selectors";
-import CreateNewTask from "./CreateNewTask";
-import TaskCard from "./taskCard";
+import { selectAllDepartments } from "../../../redux/Departments";
+import { useAppSelector } from "../../../redux/hooks";
+import CreateNewTask from "./CreateTaskBtn";
+import TaskCard from "./Card/TaskCard";
 import {
   moveTask,
   selectCancledTasks,
@@ -19,10 +18,9 @@ import {
   selectReviewTasks,
   selectSelectedProject,
   selectSharedTasks,
-  Task,
-} from "../../redux/Projects";
+} from "../../../redux/Projects";
 import "./taskViewBoard.css";
-import TaskInfoPopUp from "./TaskInfoPopUp/TaskInfoPopUp";
+import { Task } from "../../../interfaces/models/Projects";
 const DragField: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);

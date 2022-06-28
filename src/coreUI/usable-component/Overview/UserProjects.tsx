@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import * as React from "react";
 import {
-  Project,
   selectAllProjects,
   selectInprogressProjects,
 } from "../../../redux/Projects";
@@ -10,6 +9,7 @@ import { selectPMs } from "../../../redux/PM";
 import TableBox from "../Boxes/TableBox";
 import ProjectsTable from "../Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
+import { Project } from "../../../interfaces/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];

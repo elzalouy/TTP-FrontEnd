@@ -12,13 +12,13 @@ import { makeStyles } from "@material-ui/styles";
 
 import "../../../pages/TasksListView/TasksListView.css";
 import * as React from "react";
-import { Project, Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { RouteComponentProps, useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import Status from "../Typos/Status";
+import { Project, Task } from "../../../interfaces/models/Projects";
 interface OverviewTasksTableProps {
   tasks?: Task[] | null;
   projects: Project[];

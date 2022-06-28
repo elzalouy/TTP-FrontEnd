@@ -1,3 +1,11 @@
+export interface Team {
+  _id: string;
+  name: string;
+  departmentId: string;
+  listId: string;
+  isDeleted?: boolean;
+  idInTrello?: string;
+}
 export interface Department {
   _id: string;
   name: string;
@@ -10,16 +18,9 @@ export interface Department {
   inProgressListId: string;
   canceldListId: string;
   color: string;
-  boardURL:string;
+  boardURL: string;
   mainBoard: boolean;
-  teamsId: {
-    _id: string;
-    name: string;
-    departmentId: string;
-    listId: string;
-    isDeleted?: boolean;
-    idInTrello?:string;
-  }[];
+  teamsId: Team[];
   totalInProgress: number;
   totalDone: number;
 }

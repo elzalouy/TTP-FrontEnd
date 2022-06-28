@@ -1,11 +1,11 @@
 import moment from "moment";
-import { Task } from "../redux/Projects";
+import { Task } from "../interfaces/models/Projects";
 
 interface options {
   id?: string;
   value?: string;
   text?: string;
-};
+}
 
 export const setWidth = (size: boolean, open: boolean) => {
   if (size && open) {
@@ -49,10 +49,14 @@ export const calculateStatusBasedOnDeadline = (data: any) => {
 };
 
 export const checkProjectStatusName = (status: string | undefined) => {
-  if (status === "deliver before deadline" || status === "deliver on time" || status === "late") {
+  if (
+    status === "deliver before deadline" ||
+    status === "deliver on time" ||
+    status === "late"
+  ) {
     return "Done";
   }
-}
+};
 
 export const checkIndexForLastRow = (index: number, tasks: Task[]) => {
   let length = tasks.length - 1;
@@ -62,7 +66,7 @@ export const checkIndexForLastRow = (index: number, tasks: Task[]) => {
   } else {
     return false;
   }
-}
+};
 
 export const checkStatusAndSetBorder = (status: string) => {
   if (status === "Tasks Board") {
@@ -116,4 +120,4 @@ export const isOptionsEmpty = (options: options[]) => {
   } else {
     return false;
   }
-}
+};

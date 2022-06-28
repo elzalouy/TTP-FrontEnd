@@ -19,9 +19,9 @@ import ScrollOver from "../../../coreUI/usable-component/Popup/ScrollOver";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectSatistics } from "../../../redux/Statistics";
 import Status from "../../../coreUI/usable-component/Typos/Status";
-import { Task } from "../../../redux/Projects";
 import _ from "lodash";
 import { setWidth } from "../../../helpers/generalUtils";
+import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
 }

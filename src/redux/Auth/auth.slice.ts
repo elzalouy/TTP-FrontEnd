@@ -1,6 +1,7 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { generateID } from "../../helpers/IdGenerator";
+import { UserInterface } from "../../interfaces/models/user";
 import {
   forgotPassword,
   getUserInfo,
@@ -8,7 +9,7 @@ import {
   newPassword,
   signIn,
 } from "./auth.actions";
-import initialState, { UserInterface } from "./auth.state";
+import initialState from "./auth.state";
 
 const AuthSlice: Slice<UserInterface> = createSlice({
   name: "Auth",
@@ -39,7 +40,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page: "login"
+          page: "login",
         };
         state.authState = false;
         state.logoutState = true;
@@ -71,7 +72,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page: "forgotPassword"
+          page: "forgotPassword",
         };
       } else {
         state.User = payload;
@@ -95,14 +96,14 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         password: "",
         role: "",
         trelloMemberId: "",
-        image: ""
+        image: "",
       };
       state.authState = false;
       state.logoutState = payload;
       state.Payload = {
         msg: "",
         status: "",
-      }
+      };
       if (!payload) {
         toast.success("Logout successful", {
           position: "top-right",
@@ -143,7 +144,7 @@ const AuthSlice: Slice<UserInterface> = createSlice({
         state.Payload = {
           msg: payload.msg,
           status: payload.status,
-          page: "newPassword"
+          page: "newPassword",
         };
       } else {
         toast.success("New password set successfully", {

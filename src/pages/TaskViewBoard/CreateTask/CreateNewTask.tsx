@@ -13,8 +13,8 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import SelectInput2 from "../Inputs/SelectInput2";
-import PopUp from "../Popup/PopUp";
+import SelectInput2 from "../../../coreUI/usable-component/Inputs/SelectInput2";
+import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import { Category, selectAllCategories } from "../../../redux/Categories";
 import { Department, selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
@@ -25,17 +25,20 @@ import {
 } from "../../../redux/Projects";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-
 import IMAGES from "../../../assets/img/Images";
-import {
-  valdiateCreateTask,
-  validateTaskFilesSchema,
-} from "../../../helpers/validation";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
 import { selectRole } from "../../../redux/Auth";
+import {
+  valdiateCreateTask,
+  validateTaskFilesSchema,
+} from "../../../services/validations/task.schema";
+import {
+  ToastError,
+  ToastWarning,
+} from "../../../coreUI/usable-component/Typos/Alert";
 
 type Props = {
   show: string;
@@ -55,8 +58,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
-  const newProject = useAppSelector(selectNewProject);
-  const { createProjectPopup } = useAppSelector(selectUi);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
     Department | any
   >();
@@ -82,16 +83,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
     let today = moment().format();
     let deadline = moment(watchDeadline).format();
     if (moment(today).isAfter(moment(deadline))) {
-      toast.warning("Deadline has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastWarning("Deadline has already passed today's date");
     }
   }, [watchDeadline]);
 
@@ -177,17 +169,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
           })
         );
         setFiles([]);
-      } else
-        toast.error("There was an error creating a task", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        });
+      } else ToastError("Deadline has already passed today's date");
     }
   };
 
@@ -488,20 +470,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                             )?.name
                           }
                           {...register("teamId")}
-                          handleOnClick={() => {
-                            if (selectedDepartment?.teamsId.length === 0) {
-                              toast.warning("There are no existing teams", {
-                                position: "top-right",
-                                autoClose: 1500,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                toastId: generateID(),
-                              });
-                            }
-                          }}
+                          label={"Teams"}
                           selectValue={props.field.value}
                           options={
                             selectedDepartment?.teamsId
@@ -531,25 +500,24 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 )}
               </div>
             </div>
+            <input
+              onChange={onSetFiles}
+              ref={files}
+              type="file"
+              style={{ display: "none" }}
+              multiple
+            />
             <Box
               marginX={1}
               marginY={3}
-              maxWidth={"50vw"}
-              width="50vw"
               sx={{
-                overflowX: "scroll",
-                overflowY: "hidden",
-                display: "inline-flex",
+                marginX: 1,
+                marginY: 3,
+                display: "inline",
+                with: "50w",
+                flexDirection: "row",
               }}
-              flexDirection="row"
             >
-              <input
-                onChange={onSetFiles}
-                ref={files}
-                type="file"
-                style={{ display: "none" }}
-                multiple
-              />
               <ButtonBase onClick={onChangeFiles} sx={createNewTaskFilesStyles}>
                 <img src={IMAGES.fileicon} alt="Upload" />
                 <span
@@ -563,32 +531,39 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   {Files && Files.length > 0 ? Files?.length : ""}
                 </span>
               </ButtonBase>
-              {Files &&
-                Files.length > 0 &&
-                Files?.map((item, index) => (
-                  <Box
-                    key={index}
-                    marginLeft={1}
-                    bgcolor={"#F1F1F5"}
-                    padding={0.5}
-                    borderRadius={1}
-                    color="#92929D"
-                    sx={createNewTaskFilesItemStyles}
-                    onClick={() => onRemoveFile(item)}
-                  >
-                    <Typography
-                      lineHeight={"32px"}
-                      height={"32px"}
-                      width={"calc(100%)"}
+              <Box
+                sx={{
+                  overflowX: "scroll",
+                  overflowY: "hidden",
+                }}
+              >
+                {Files &&
+                  Files.length > 0 &&
+                  Files?.map((item, index) => (
+                    <Box
+                      key={index}
+                      marginLeft={1}
+                      bgcolor={"#F1F1F5"}
+                      padding={0.5}
+                      borderRadius={1}
+                      color="#92929D"
+                      sx={createNewTaskFilesItemStyles}
+                      onClick={() => onRemoveFile(item)}
                     >
-                      {item?.name}
-                    </Typography>
-                    <CloseIcon
-                      sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                      htmlColor="#92929D"
-                    />
-                  </Box>
-                ))}
+                      <Typography
+                        lineHeight={"32px"}
+                        height={"32px"}
+                        width={"calc(100%)"}
+                      >
+                        {item?.name}
+                      </Typography>
+                      <CloseIcon
+                        sx={{ fontSize: "14px", marginLeft: 0.5 }}
+                        htmlColor="#92929D"
+                      />
+                    </Box>
+                  ))}
+              </Box>
             </Box>
             <div>
               <button
@@ -663,9 +638,11 @@ const createNewTaskFilesStyles = {
   paddingX: 1,
   ":hover": {
     backgroundColor: "#00ACBA",
+    paddingX: 1,
   },
   "& .MuiButton-root": {
     width: "46px !important",
+    paddingX: 1,
     ":hover": {
       backgroundColor: "#00ACBA",
       color: "white",
@@ -676,7 +653,7 @@ const createNewTaskFilesStyles = {
 const createNewTaskFilesItemStyles = {
   width: "auto",
   cursor: "pointer",
-  height: "32px",
+  height: "35px",
   textAlign: "start",
   alignContent: "center",
   justifySelf: "center",

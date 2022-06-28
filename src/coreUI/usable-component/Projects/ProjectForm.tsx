@@ -11,6 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../../../redux/Clients";
 import {
+  Alert,
   Button,
   ButtonBase,
   CircularProgress,
@@ -26,60 +27,19 @@ import SelectInput2 from "../Inputs/SelectInput2";
 // import { Restore } from "@mui/icons-material";
 
 import moment from "moment";
-import { validateCreateProject } from "../../../helpers/validation";
 import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
 import IMAGES from "../../../assets/img/Images";
+import { validateCreateProject } from "../../../services/validations/project.schema";
+import { ToastError, ToastWarning } from "../Typos/Alert";
 
 interface ProjectFormProps {
   setcurrentStep: any;
   setShow: any;
 }
-
-//SX Styles Objects
-const projectFormNameStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const projectFormStartDateStyles = {
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const projectFormDeadlineStyles = {
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const ProjectForm: React.FC<ProjectFormProps> = ({
-  setShow,
-  setcurrentStep,
-}) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -108,28 +68,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     let deadline = moment(watchDeadline).format();
     let startDate = moment(watchStartDate).format();
     if (moment(today).isAfter(moment(deadline))) {
-      toast.warning("Deadline has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastWarning("Deadline has already passed today's date");
     }
     if (moment(today).isAfter(moment(startDate))) {
-      toast.warning("Start Date has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastWarning("Start Date has already passed today's date");
     }
   }, [watchStartDate, watchDeadline]);
 
@@ -169,16 +111,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
     if (isValid.error) {
       setError(isValid);
-      toast.error(isValid.error.message, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError(isValid.error.message);
     } else {
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
     }
@@ -435,3 +368,41 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 };
 
 export default ProjectForm;
+
+//SX Styles Objects
+const projectFormNameStyles = {
+  width: "100%",
+  marginTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const projectFormStartDateStyles = {
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};
+
+const projectFormDeadlineStyles = {
+  paddingTop: 1,
+  "& .MuiOutlinedInput-input": {
+    height: "13px !important",
+    borderRadius: "6px",
+    background: "white !important",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+  },
+};

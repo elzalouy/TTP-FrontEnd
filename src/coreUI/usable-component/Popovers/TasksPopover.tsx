@@ -7,13 +7,10 @@ import OfflineShareIcon from "@mui/icons-material/OfflineShare";
 import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../redux/Ui";
-import {
-  ProjectsActions,
-  selectTaskDetails,
-  Task,
-} from "../../../redux/Projects";
+import { ProjectsActions, selectTaskDetails } from "../../../redux/Projects";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectAllDepartments } from "../../../redux/Departments";
+import { Task } from "../../../interfaces/models/Projects";
 interface Props {
   item: Task;
 }
@@ -34,11 +31,15 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     setAnchorEl(null);
   };
 
+  const onEditTask = async () => {
+    await dispatch(ProjectsActions.onEditTask(item._id));
+    dispatch(toggleEditTaskPopup("flex"));
+    handleClose();
+  };
   const generateURL = () => {
     let boardURL = departments.find((dep) => dep.boardId === item?.boardId);
     return boardURL?.boardURL;
   };
-
   const url = generateURL();
 
   const onDeleteTask = () => {
@@ -83,7 +84,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             <img
               src={IMAGES.trelloIcon}
               width={18}
-              style={{ marginRight:2 , marginLeft:8 }}
+              style={{ marginRight: 2, marginLeft: 8 }}
             ></img>
             <Button variant="text" className={styles.grayButton}>
               Open in trello
