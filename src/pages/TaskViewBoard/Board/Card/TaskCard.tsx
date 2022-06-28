@@ -36,6 +36,12 @@ interface TaskCartProps {
   footerStyle: string;
   column?: any;
 }
+
+interface Fallback {
+  index: number | null;
+  flag: boolean;
+}
+
 const TaskCard: React.FC<TaskCartProps> = ({
   item,
   index,
@@ -59,8 +65,14 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const [taskImages, setTaskImages] = useState<TaskFile[]>();
-  const [taskFiles, setTaskFiles] = useState<TaskFile[]>();
+  const [error, setError] = useState({
+    flag: false,
+    url: "",
+  });
+  const [taskImages, setTaskImages] = useState<any[]>();
+  const [taskFiles, setTaskFiles] = useState<any[]>();
+
+  console.log(error);
 
   /// set files
   useEffect(() => {
@@ -118,6 +130,13 @@ const TaskCard: React.FC<TaskCartProps> = ({
     )?.name;
     setData(newData);
   }, []);
+
+  const handleImageError = (index: number) => {
+    let fallback: Fallback = { flag: false, index: null };
+    fallback.flag = true;
+    fallback.index = index;
+    return fallback;
+  };
 
   const getRemainingDays = (day: number) => {
     if (day > 0) {
@@ -208,22 +227,41 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {taskImages.map((item) => {
-                          console.log(item);
-                          return (
-                            <SwiperSlide className="swiper-slide">
-                              <img
-                                style={{
-                                  width: "100%",
-                                  height: 120,
-                                  borderRadius: 8,
-                                  marginTop: "10px",
-                                }}
-                                src={item?.url}
-                                alt="more"
-                              />
-                            </SwiperSlide>
-                          );
+                        {error.flag && (
+                          <div className="fallback-container">
+                           {/*  <p>You need to be authorized to view this image.</p> */}
+                            <a
+                              href={error.url}
+                              className="login-link"
+                              target="_blank"
+                            >
+                             You need to be authorized to view this image. Click here to Login.
+                            </a>
+                          </div>
+                        )}
+                        {taskImages.map((item, index) => {
+                          if (!error.flag) {
+                            return (
+                              <SwiperSlide className="swiper-slide">
+                                <img
+                                  style={{
+                                    width: "100%",
+                                    height: 120,
+                                    borderRadius: 8,
+                                    marginTop: "10px",
+                                  }}
+                                  onError={() =>
+                                    setError({
+                                      flag: true,
+                                      url: item?.url,
+                                    })
+                                  }
+                                  src={item?.url}
+                                  alt="more"
+                                />
+                              </SwiperSlide>
+                            );
+                          }
                         })}
                         {taskImages.length > 1 && (
                           <>
