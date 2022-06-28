@@ -160,7 +160,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         else projectTasks.push(action.payload);
 
         state.allTasks = _.uniqBy([...allTasks], "_id");
-        state.selectedProject.tasks = _.uniqBy([...projectTasks], "_id");
+        let selectedProject = { ...state.selectedProject };
+        selectedProject.tasks = [..._.uniqBy([...projectTasks], "_id")];
+        state.selectedProject = selectedProject;
+        console.log("unique tasks", allTasks);
       }
     },
     deleteTask: (state = projectsState, action: PayloadAction<any>) => {
@@ -222,7 +225,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.selectedProject.loading = false;
       if (action.payload?._id) {
         let selectedProject = { ...state.selectedProject };
-        selectedProject.tasks.push(action?.payload);
+        let tasks = [...selectedProject.tasks];
+        if (tasks.findIndex(item => item._id === action.payload._id) < 0) tasks.push(action.payload);
+        selectedProject.tasks = [...tasks];
         state.selectedProject = selectedProject;
       }
     });

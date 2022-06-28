@@ -254,7 +254,7 @@ const DragField: React.FC = (props: any) => {
                     </Stack>
                     {column?.NewTask}
                     {column &&
-                      column?.items?.map((item: Task, index) => {
+                      column?.items?.map((item: Task, index: number) => {
                         return (
                           <Box key={item._id} className={column.border}>
                             <TaskCard
