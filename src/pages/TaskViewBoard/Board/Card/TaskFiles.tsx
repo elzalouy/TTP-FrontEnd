@@ -1,17 +1,22 @@
 import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import _ from "lodash";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../../../assets/img/Images";
+import { formatFileName } from "../../../../helpers/equations";
+import { TaskFile } from "../../../../interfaces/models/Projects";
 import { downloadAttachment } from "../../../../redux/Projects";
+import { taskFilesStyles } from "../styles";
 
 interface TaskFilesProps {
-  taskFiles?: any[];
+  taskFiles?: TaskFile[];
   cardId: string;
 }
 
 const TaskFiles: React.FC<TaskFilesProps> = ({ taskFiles, cardId }) => {
   const dispatch = useDispatch();
+  const styles = taskFilesStyles()();
   const onDownload = (file: any) => {
     dispatch(
       downloadAttachment({
@@ -20,15 +25,9 @@ const TaskFiles: React.FC<TaskFilesProps> = ({ taskFiles, cardId }) => {
       })
     );
   };
+
   return (
-    <Stack
-      direction="row"
-      marginTop="12px"
-      justifyContent="flex-start"
-      alignItems="center"
-      overflow={"hidden"}
-      width="100%"
-    >
+    <Box className={styles.container}>
       {taskFiles && taskFiles.length > 0 && (
         <>
           <img src={IMAGES.attachment} alt="more" />
@@ -37,29 +36,24 @@ const TaskFiles: React.FC<TaskFilesProps> = ({ taskFiles, cardId }) => {
           </Typography>
         </>
       )}
-      <Box
-        flexDirection={"row"}
-        sx={{
-          display: "inline-flex",
-          width: "100%",
-          overflowX: "scroll",
-        }}
-      >
+      <Box className={styles.scrollContent}>
         {taskFiles &&
           taskFiles.length > 0 &&
-          taskFiles.map((item) => (
-            <>
-              <Typography
-                variant={"body2"}
-                onClick={() => onDownload(item)}
-                className="fileUpload"
-              >
-                {item?.name}
-              </Typography>
-            </>
-          ))}
+          taskFiles.map((item) => {
+            let name = formatFileName(item.name);
+            return (
+              <>
+                <Typography
+                  onClick={() => onDownload(item)}
+                  className={styles.file}
+                >
+                  {name}
+                </Typography>
+              </>
+            );
+          })}
       </Box>
-    </Stack>
+    </Box>
   );
 };
 

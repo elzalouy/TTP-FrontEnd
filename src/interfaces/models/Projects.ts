@@ -1,5 +1,11 @@
 import { Department } from "../../redux/Departments";
-
+export interface TaskFile {
+  _id: string;
+  name: string;
+  mimeType: string;
+  trelloId: string;
+  url: string;
+}
 export interface Task {
   _id: string;
   name: string;
@@ -15,13 +21,7 @@ export interface Task {
   deliveryDate?: any;
   done: any;
   turnoverTime: any;
-  attachedFiles: {
-    _id: string;
-    name: string;
-    mimeType: string;
-    trelloId: string;
-    url: string;
-  }[];
+  attachedFiles: TaskFile[];
   attachedCard: string;
   listId: string;
   cardId: string;

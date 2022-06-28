@@ -6,10 +6,7 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../redux/Departments";
 import { useAppSelector } from "../../../../redux/hooks";
-import {
-  downloadAttachment,
-  ProjectsActions,
-} from "../../../../redux/Projects";
+import { ProjectsActions } from "../../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -21,24 +18,25 @@ import {
   ArrowBackIosNew as ArrowBackIosNewIcon,
   ArrowForwardIos as ArrowForwardIosIcon,
 } from "@mui/icons-material";
-import "swiper/css";
-import "swiper/css/navigation";
-
-import "./taskCard.css";
 import { useDispatch } from "react-redux";
 import { toggleEditTaskPopup } from "../../../../redux/Ui";
-import { Link } from "react-router-dom";
-import { Project, Task } from "../../../../interfaces/models/Projects";
+import {
+  Project,
+  Task,
+  TaskFile,
+} from "../../../../interfaces/models/Projects";
+import "swiper/css";
+import "swiper/css/navigation";
+import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
-interface DataTypes {
+interface TaskCartProps {
   index: number;
   item: Task;
   project: Project | null | undefined;
   footerStyle: string;
   column?: any;
 }
-
-const TaskCard: React.FC<DataTypes> = ({
+const TaskCard: React.FC<TaskCartProps> = ({
   item,
   index,
   project,
@@ -61,8 +59,8 @@ const TaskCard: React.FC<DataTypes> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const [taskImages, setTaskImages] = useState<any[]>();
-  const [taskFiles, setTaskFiles] = useState<any[]>();
+  const [taskImages, setTaskImages] = useState<TaskFile[]>();
+  const [taskFiles, setTaskFiles] = useState<TaskFile[]>();
 
   /// set files
   useEffect(() => {
