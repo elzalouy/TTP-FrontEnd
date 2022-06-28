@@ -48,8 +48,6 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     handleClose();
   };
 
-  console.log(url);
-
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>

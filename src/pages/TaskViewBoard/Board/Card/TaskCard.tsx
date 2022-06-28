@@ -208,20 +208,23 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {taskImages.map((item) => (
-                          <SwiperSlide className="swiper-slide">
-                            <img
-                              style={{
-                                width: "100%",
-                                height: 120,
-                                borderRadius: 8,
-                                marginTop: "10px",
-                              }}
-                              src={item?.url}
-                              alt="more"
-                            />
-                          </SwiperSlide>
-                        ))}
+                        {taskImages.map((item) => {
+                          console.log(item);
+                          return (
+                            <SwiperSlide className="swiper-slide">
+                              <img
+                                style={{
+                                  width: "100%",
+                                  height: 120,
+                                  borderRadius: 8,
+                                  marginTop: "10px",
+                                }}
+                                src={item?.url}
+                                alt="more"
+                              />
+                            </SwiperSlide>
+                          );
+                        })}
                         {taskImages.length > 1 && (
                           <>
                             <div ref={navigationPrevRef}>
