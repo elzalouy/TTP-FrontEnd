@@ -61,8 +61,8 @@ const TaskCard: React.FC<DataTypes> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const [taskImages, setTaskImages] = useState<any[]>();
-  const [taskFiles, setTaskFiles] = useState<any[]>();
+  const [taskImages, setTaskImages] = useState<any[]>([]);
+  const [taskFiles, setTaskFiles] = useState<any[]>([]);
 
   /// set files
   useEffect(() => {
@@ -215,20 +215,23 @@ const TaskCard: React.FC<DataTypes> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {taskImages.map((item) => (
-                          <SwiperSlide className="swiper-slide">
-                            <img
-                              style={{
-                                width: "100%",
-                                height: 120,
-                                borderRadius: 8,
-                                marginTop: "10px",
-                              }}
-                              src={item?.url}
-                              alt="more"
-                            />
-                          </SwiperSlide>
-                        ))}
+                        {taskImages.map((item) => {
+                          console.log(item);
+                          return (
+                            <SwiperSlide className="swiper-slide">
+                              <img
+                                style={{
+                                  width: "100%",
+                                  height: 120,
+                                  borderRadius: 8,
+                                  marginTop: "10px",
+                                }}
+                                src={item?.src}
+                                alt="more"
+                              />
+                            </SwiperSlide>
+                          );
+                        })}
                         {taskImages.length > 1 && (
                           <>
                             <div ref={navigationPrevRef}>
