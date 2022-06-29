@@ -42,7 +42,7 @@ export const createTeam = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let team: ApiResponse<any> = await api.createTechMember(args.data);
-      if (team.ok && team.data && team.data?.status === 200) {
+      if (team.ok && team.data) {
         args.dispatch(fireNewTeamHook(""));
         toast.success("Team created successfully", {
           position: "top-right",
@@ -53,9 +53,7 @@ export const createTeam = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        let newteam = team.data;
-        delete newteam.status;
-        return newteam;
+        return team.data;
       } else return [];
     } catch (error) {
       rejectWithValue(error);
