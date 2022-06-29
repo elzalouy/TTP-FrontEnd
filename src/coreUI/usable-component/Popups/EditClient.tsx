@@ -37,7 +37,6 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     setData(client);
   }, [dispatch, client]);
 
-  console.log(Data);
 
   const handleSubmit = async (e: any) => {
     try {

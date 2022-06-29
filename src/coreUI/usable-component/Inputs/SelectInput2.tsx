@@ -59,7 +59,6 @@ const SelectInput2: React.FC<Props> = ({
     setAnchorEl(null);
   };
   const checkEmpty = () => {
-    console.log("label,", label, "options, ", options);
     if (options.length === 0) ToastWarning(`${label} is empty`);
   };
   return (

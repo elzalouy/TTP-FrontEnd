@@ -46,7 +46,7 @@ const NotificationContainer = (props: Props) => {
   // useEffect(() => {
   //   let socket = openConnection(user);
   //   socket.on("notification update", (data: any) => {
-  //     console.log("update notification");
+ 
   //     dispatch(updateCounter(data));
   //   });
   //   return () => {
