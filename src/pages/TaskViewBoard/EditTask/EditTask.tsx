@@ -2,14 +2,18 @@ import * as React from "react";
 import _ from "lodash";
 import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import moment from "moment";
-import AttachetFiles from "./AttachedFiles";
+import AttachetFiles from "../../../coreUI/usable-component/Lists/AttachFiles";
 import DateInput from "./DateInput";
 import Input from "./Input";
 import Select from "./Select";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { selectAllCategories } from "../../../redux/Categories";
+import {
+  Category,
+  selectAllCategories,
+  SubCategory,
+} from "../../../redux/Categories";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { selectRole } from "../../../redux/Auth";
 import { validateEditTask } from "../../../services/validations/task.schema";
@@ -18,7 +22,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import {
   EditTaskProps,
-  EditTaskState,
+  CRUDTaskState,
   initialState,
 } from "../../../interfaces/views/BoardView";
 import {
@@ -40,7 +44,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const { register, handleSubmit, control, reset, setValue, watch } = useForm();
   const role = useAppSelector(selectRole);
   const files = React.useRef<HTMLInputElement>(null);
-  const [state, setState] = React.useState<EditTaskState>(initialState);
+  const [state, setState] = React.useState<CRUDTaskState>(initialState);
 
   React.useEffect(() => {
     let State = { ...state };
@@ -77,6 +81,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const onChangeDepartment = (e: any) => {
     let State = { ...state };
     setValue("selectedDepartmentId", e.target.value);
+    setValue("teamId", "");
     let dep = departments.find((item) => item._id === e.target.value);
     State.selectedDepartment = dep;
     State.selectedDepatmentTeams = dep?.teamsId.filter(
@@ -88,6 +93,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const onChangeCategory = (e: any) => {
     let State = { ...state };
     setValue("categoryId", e.target.value);
+    setValue("subCategoryId", "");
     State.selectedCategory = categories.find(
       (item) => item._id === e.target.value
     );
@@ -103,7 +109,9 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       status: State.task.status,
-      deadline: data?.deadline ? moment(data?.deadline).toDate() : "",
+      deadline: data?.deadline
+        ? moment(data?.deadline).toDate().toString()
+        : "",
       attachedFiles: state?.newFiles,
       deleteFiles: state.deleteFiles,
       listId: data?.teamId
@@ -197,7 +205,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     <>
       <PopUp show={props.show} minWidthSize="50vw">
         {/* Title component */}
-        <EditTaskTitle setShow={props.setShow} title="Edit task" />
+        <EditTaskTitle setShow={props.setShow} title="Edit task" reset={reset} />
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
@@ -286,19 +294,21 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   register={register}
                   selectText={
                     state.selectedCategory?.subCategoriesId?.find(
-                      (item) => item._id === watch().subCategoryId
+                      (item: SubCategory) => item._id === watch().subCategoryId
                     )?.subCategory
                   }
                   selectValue={watch().subCategoryId}
                   options={
                     state.selectedCategory?.subCategoriesId
-                      ? state.selectedCategory?.subCategoriesId?.map((item) => {
-                          return {
-                            id: item._id ? item._id : "",
-                            value: item._id ? item._id : "",
-                            text: item.subCategory,
-                          };
-                        })
+                      ? state.selectedCategory?.subCategoriesId?.map(
+                          (item: SubCategory) => {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.subCategory,
+                            };
+                          }
+                        )
                       : []
                   }
                 />
@@ -317,7 +327,13 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                             (item: any) => item._id === watch().teamId
                           )?.name
                         }
-                        options={state.selectedDepatmentTeams}
+                        options={state.selectedDepatmentTeams?.map((item) => {
+                          return {
+                            id: item._id,
+                            value: item._id,
+                            text: item.name,
+                          };
+                        })}
                       />
                     </>
                   )}

@@ -233,12 +233,12 @@ const CreateNewDepartment: React.FC<Props> = () => {
             control={control}
             render={(props) => (
               <SelectInput2
-                label="Teams"
                 handleChange={(e: any) => {
                   if (e.target.value !== "") {
                     setData(e.target.value);
                   }
                 }}
+                label={"Teams list"}
                 selectText={getTeamName(Data)}
                 {...register("team")}
                 selectValue={getTeamName(Data)}

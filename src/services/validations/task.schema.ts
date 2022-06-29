@@ -158,7 +158,7 @@ export const validateEditTask = (data: any) => {
     task.append("categoryId", data.categoryId);
     task.append("subCategoryId", data.subCategoryId);
     task.append("status", data.status);
-    task.append("deadline", data.deadline.toString());
+    task.append("deadline", data.deadline);
     task.append("cardId", data.cardId);
     task.append("boardId", data.boardId);
     task.append("listId", data.listId);
@@ -168,7 +168,36 @@ export const validateEditTask = (data: any) => {
 };
 const valdiateCreateTask = (data: any) => {
   let { error, value, warning } = createTaskSchema.validate(data);
-  return { error, value, warning };
+  if (error) {
+    ToastError(error.message);
+    return { error, value, warning };
+  } else {
+    let task = new FormData();
+    if (data.attachedFiles) {
+      let result = validateTaskFilesSchema(data.attachedFiles);
+      if (result.error) {
+        ToastError(result.error);
+        return { FileError: "Files must not exceed 10 Migabyte" };
+      }
+      let newfiles: Array<any> = Array.from(data.attachedFiles);
+      for (let i = 0; i < newfiles.length; i++) {
+        console.log(newfiles[0]);
+        task.append("attachedFiles", newfiles[i]);
+      }
+    }
+    if (data.teamId !== null) task.append("teamId", data.teamId);
+    task.append("name", data.name);
+    task.append("categoryId", data.categoryId);
+    task.append("subCategoryId", data.subCategoryId);
+    task.append("status", data.status);
+    task.append("deadline", data.deadline);
+    task.append("boardId", data.boardId);
+    task.append("listId", data.listId);
+    task.append("description", data.description);
+    task.append("projectId", data.projectId);
+    task.append("start", data.start);
+    return { FormDatatask: task };
+  }
 };
 
 export const validateTaskFilesSchema = (files: File[] | any[]) => {
@@ -181,7 +210,7 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
     let item = files[i];
     if (item.size > 10000000) {
       response = {
-        error: `The file ${item.name} has exceeded the max size 1 MB`,
+        error: `The file ${item.name} has exceeded the max size 10 MB`,
         value: files,
       };
       break;

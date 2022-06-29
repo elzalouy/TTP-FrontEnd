@@ -16,6 +16,11 @@ import { Department } from "../Departments";
 import { logout } from "../Auth";
 import moment from "moment";
 import { Project } from "../../interfaces/models/Projects";
+import {
+  ToastError,
+  ToastSuccess,
+  ToastWarning,
+} from "../../coreUI/usable-component/Typos/Alert";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
@@ -42,15 +47,7 @@ export const createProject = createAsyncThunk<any, any, any>(
       if (result.ok) {
         args.dispatch(fireCreateProjectHook(""));
         args.setcurrentStep(1);
-        toast.success("Project created successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Project created successfully");
         return result.data;
       }
       return rejectWithValue(result.data);
@@ -65,15 +62,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args);
       if (result.ok) {
-        toast.success("Task have been saved to the Database", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Task have been saved to the Database");
         return result.data;
       }
       return rejectWithValue(result.data);
@@ -88,46 +77,17 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
+        args.resetState();
         args.dispatch(fireEditTaskHook(""));
         args.setShow("none");
-        toast.success("Task have been save to the Database", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        args.reset();
+        ToastSuccess("Task have been save to the Database");
         return result.data;
       } else {
-        toast.error(result?.data[0]?.message, {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        args.reset();
+        ToastError(result?.data[0]?.message);
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
-      toast.error(
-        "There was an error from the server while creating the task",
-        {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        }
-      );
+      ToastError("There was an error from the server while creating the task");
       args.reset();
       return rejectWithValue(error);
     }
@@ -142,19 +102,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
     } catch (error: any) {
-      toast.error(
-        "There was an error from the server while filtering the task",
-        {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        }
-      );
+      ToastError("There was an error from the server while filtering the task");
       return rejectWithValue(error);
     }
   }
@@ -168,19 +116,7 @@ export const getTasks = createAsyncThunk<any, any, any>(
       if (tasks?.ok) return tasks?.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error(
-        "There was an error from the server while fetching the tasks",
-        {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        }
-      );
+      ToastError("There was an error from the server while fetching the tasks");
       return rejectWithValue(error);
     }
   }
@@ -194,18 +130,8 @@ export const getProject = createAsyncThunk<any, any, any>(
       if (projects.ok) return projects?.data[0];
       throw projects.problem;
     } catch (error: any) {
-      toast.error(
-        "There was an error from the server while fetching the projects",
-        {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        }
+      ToastError(
+        "There was an error from the server while fetching the projects"
       );
       return rejectWithValue(error);
     }
@@ -236,16 +162,7 @@ export const filterTasks = createAsyncThunk<any, any, any>(
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
-      toast.error("There was an error filtering the tasks from the server", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("There was an error filtering the tasks from the server");
       return rejectWithValue(error);
     }
   }
@@ -257,15 +174,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteProjectTasks(args.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
-        toast.success("Project Tasks deleted first.", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Project Tasks deleted first.");
         if (args.deleteProject) {
           let data = args.data;
           let dispatch = args.disptach;
@@ -275,16 +184,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast.error("There was an error deleting the tasks from the server", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("There was an error deleting the tasks from the server");
       return rejectWithValue(error);
     }
   }
@@ -296,29 +196,12 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteTasks(args.data);
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
-        toast.success("Tasks deleted.", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Tasks deleted.");
         return args.ids;
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast.error("There was an error while deleting the tasks from server", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("There was an error while deleting the tasks from server");
       return rejectWithValue(error);
     }
   }
@@ -330,29 +213,12 @@ export const deleteProject = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteProject(args.data);
       if (deleteResult?.ok) {
         args.dispatch(fireDeleteProjectHook(""));
-        toast.success("Project Deleted Sucessfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Project Deleted Sucessfully");
         return true;
       }
       throw deleteResult.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError(error);
       return rejectWithValue(error);
     }
   }
@@ -365,28 +231,11 @@ export const deleteTask = createAsyncThunk<any, any, any>(
       let deleteResult = await api.deleteTask(args?.data);
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));
-        toast.success("Tasks deleted from DB and Trello", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Tasks deleted from DB and Trello");
         return deleteResult.data;
       } else throw deleteResult.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError(error);
       return rejectWithValue(error);
     }
   }
@@ -398,28 +247,11 @@ export const editProject = createAsyncThunk<any, any, any>(
       let editResult = await api.editProject(args.data);
       if (editResult.ok) {
         args.dispatch(fireUpdateProjectHook(""));
-        toast.success("Project updated successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Project updated successfully");
         return true;
       } else throw editResult.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError(error);
       return rejectWithValue(error);
     }
   }
@@ -478,16 +310,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
         return moveResult.data;
       } else throw moveResult.problem;
     } catch (error: any) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError(error);
       return rejectWithValue(error);
     }
   }
@@ -510,15 +333,7 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
         args.dispatch(fireEditTaskHook(""));
         return response.data;
       } else {
-        toast.error(response.data?.message, {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastError(response.data?.message);
         return rejectWithValue(response.data);
       }
     } catch (error) {
@@ -526,6 +341,7 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const downloadAttachment = createAsyncThunk<any, any, any>(
   "tasks/downloadAttachment",
   async (
@@ -536,31 +352,15 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-     
+
       if (response.ok) {
         window.open(response.data?.url);
         return response.data;
       }
-      toast.error("The attachment was deleted from the board.", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      ToastError("The attachment was deleted from the board.");
       return rejectWithValue(response.data);
     } catch (error) {
-      toast.error("The attachment was deleted from the board.", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      ToastError("The attachment was deleted from the board.");
       return rejectWithValue(error);
     }
   }

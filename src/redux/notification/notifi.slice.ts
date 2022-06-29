@@ -2,9 +2,9 @@ import { AnyAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { getAllNotifi, updateNotifi } from "./notifi.actions";
 import NotifiState, { NotifiData, Notifis } from "./notifi.state";
 import moment from "moment";
-import _ from "lodash";
 import { stat } from "fs";
 import { removeDuplicatesFromArrayOfObjectsUsingOneProperty } from "../../helpers/generalUtils";
+import _ from "lodash";
 
 const notifiSlice: Slice<Notifis> = createSlice({
   name: "notifications",
@@ -13,8 +13,14 @@ const notifiSlice: Slice<Notifis> = createSlice({
     onSort: (state = NotifiState, { payload }: AnyAction) => { },
     onSearch: (state = NotifiState, { payload }: AnyAction) => { },
     updateCounter: (state = NotifiState, { payload }: AnyAction) => {
-      state.counter = state.counter + 1;
-      state.notifi = [payload, ...state.notifi];
+      console.log(payload);
+      let notifiaction = state.notifi.findIndex(
+        (item) => item._id === payload?._id
+      );
+      if (notifiaction <= 0) {
+        state.counter = state.counter + 1;
+        state.notifi = [payload, ...state.notifi];
+      }
     },
     setHideLoadingState: (state = NotifiState, { payload }: AnyAction) => {
       state.hideLoading = payload;

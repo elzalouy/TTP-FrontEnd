@@ -213,11 +213,12 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
           control={control}
           render={(props) => (
             <SelectInput2
+              label="Colors list"
               handleChange={handleChange}
               selectText={color}
               {...register("color")}
               selectValue={color}
-              label="Colors"
+  
               options={
                 colors
                   ? colors.map((color) => {
@@ -260,12 +261,13 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
             control={control}
             render={(props) => (
               <SelectInput2
+                label="Teams list"
                 handleChange={(e) => {
                   if (e.target.value !== "") {
                     setData(e.target.value);
                   }
                 }}
-                label="Teams"
+ 
                 selectText={splitData[1]}
                 {...register("team")}
                 selectValue={Data}
