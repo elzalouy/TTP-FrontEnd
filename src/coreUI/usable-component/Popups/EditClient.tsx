@@ -31,11 +31,13 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
   const [Data, setData] = useState<any>();
-
   const [ImageView, setImageView] = useState<string | null>(null);
+
   useEffect(() => {
     setData(client);
   }, [dispatch, client]);
+
+  console.log(Data);
 
   const handleSubmit = async (e: any) => {
     try {
@@ -55,6 +57,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const fileUpload = () => {
     fileInput.current?.click();
   };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     var data = { ...Data };
     if (e.target.name === "image") {
@@ -101,7 +104,13 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               hidden
             />
             <img
-              src={Data?.image === "null" ? IMAGES.imgupload : Data?.image}
+              src={
+                Data?.image === "null"
+                  ? IMAGES.imgupload
+                  : !ImageView
+                  ? Data?.image
+                  : ImageView
+              }
               style={{
                 width: "9em",
                 height: "9em",
