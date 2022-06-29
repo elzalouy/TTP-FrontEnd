@@ -146,12 +146,12 @@ export const validateEditTask = (data: any) => {
       }
       let newfiles: Array<any> = Array.from(data.attachedFiles);
       for (let i = 0; i < newfiles.length; i++) {
-        console.log(newfiles[0]);
+
         task.append("attachedFiles", newfiles[i]);
       }
     }
     task.append("deleteFiles", JSON.stringify(data.deleteFiles));
-    console.log(task.get("deleteFiles"));
+
     if (data.teamId !== null) task.append("teamId", data.teamId);
     task.append("id", data.id);
     task.append("name", data.name);

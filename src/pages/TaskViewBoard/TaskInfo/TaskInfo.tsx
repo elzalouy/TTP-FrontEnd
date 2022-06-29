@@ -136,7 +136,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 className="files-task-view customScrollbar"
               >
                 {viewTask.attachedFiles?.map((item: any) => {
-                  console.log(item);
+                
                   return (
                     <div className="image-container">
                       <img src={item.url} alt={item.name} className="img" />

@@ -163,7 +163,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         let selectedProject = { ...state.selectedProject };
         selectedProject.tasks = [..._.uniqBy([...projectTasks], "_id")];
         state.selectedProject = selectedProject;
-        console.log("unique tasks", allTasks);
+    
       }
     },
     deleteTask: (state = projectsState, action: PayloadAction<any>) => {
