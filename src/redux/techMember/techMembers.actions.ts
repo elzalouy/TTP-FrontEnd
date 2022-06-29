@@ -4,13 +4,14 @@ import { toast } from "react-toastify";
 import { fireDeleteTeamHook, fireNewTeamHook } from "../Ui";
 import { removeAuthToken } from "../../services/api";
 import { logout } from "../Auth";
+import { ApiResponse } from "apisauce";
 
 export const getTechMembersByDeptId = createAsyncThunk<any, any, any>(
   "techMembers/getByDeptId",
-  async (args, { rejectWithValue ,dispatch}) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
-      let members = await api.getHttpTechMembers({
-        departmentId:args
+      let members: ApiResponse<any> = await api.getHttpTechMembers({
+        departmentId: args,
       });
       if (members?.status === 401 || members?.status === 403) {
         rejectWithValue("Un Authorized");
@@ -40,8 +41,8 @@ export const createTeam = createAsyncThunk<any, any, any>(
   "techMembers/createTeam",
   async (args: any, { rejectWithValue }) => {
     try {
-      let team = await api.createTechMember(args.data);
-      if (team.ok && team.data) {
+      let team: ApiResponse<any> = await api.createTechMember(args.data);
+      if (team.ok && team.data && team.data?.status === 200) {
         args.dispatch(fireNewTeamHook(""));
         toast.success("Team created successfully", {
           position: "top-right",
@@ -52,7 +53,9 @@ export const createTeam = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        return args.data;
+        let newteam = team.data;
+        delete newteam.status;
+        return newteam;
       } else return [];
     } catch (error) {
       rejectWithValue(error);
