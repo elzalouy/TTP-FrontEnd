@@ -205,7 +205,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     <>
       <PopUp show={props.show} minWidthSize="50vw">
         {/* Title component */}
-        <EditTaskTitle setShow={props.setShow} title="Edit task" />
+        <EditTaskTitle
+          reset={resetState}
+          setShow={props.setShow}
+          title="Edit task"
+        />
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
