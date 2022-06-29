@@ -98,16 +98,16 @@ const CreateNewCategory: React.FC<Props> = () => {
       selectedSubCategory: subCategories,
     };
     try {
-      const checkNames = allCategories.find(
+      /*  const checkNames = allCategories.find(
         (cat) => cat.category === body.category
       );
-      if (!checkNames) {
-        await dispatch(createCategory({ data: body, dispatch }));
-        setShow("none");
-        setMainCategory("");
-        setSubCategory("");
-        setsubCategories([]);
-      } else {
+      if (!checkNames) { */
+      await dispatch(createCategory({ data: body, dispatch }));
+      setShow("none");
+      setMainCategory("");
+      setSubCategory("");
+      setsubCategories([]);
+      /*   } else {
         toast.error("Category name already exist", {
           position: "top-right",
           autoClose: 1500,
@@ -118,7 +118,7 @@ const CreateNewCategory: React.FC<Props> = () => {
           progress: undefined,
           toastId: generateID(),
         });
-      }
+      } */
     } catch (error: any) {
       setErrors(error.message);
     }
