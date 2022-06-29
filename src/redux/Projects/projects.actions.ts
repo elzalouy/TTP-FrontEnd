@@ -96,7 +96,6 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
         args.setShow("none");
         args.resetState();
         ToastSuccess("Task have been save to the Database");
-        args.reset();
         return result.data;
       } else {
         toast.error(result?.data[0]?.message, {
@@ -108,7 +107,6 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
           draggable: true,
           progress: undefined,
         });
-        args.reset();
         return rejectWithValue(result.data);
       }
     } catch (error: any) {
@@ -533,7 +531,7 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-     
+
       if (response.ok) {
         window.open(response.data?.url);
         return response.data;
