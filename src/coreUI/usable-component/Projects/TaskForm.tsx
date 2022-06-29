@@ -246,6 +246,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Departments list"
                     error={error.error?.details[0].path.includes("listId")}
                     handleChange={onChangeDepartment}
                     selectText={selectedDepartment?.name}
@@ -330,6 +331,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Categories list"
                     error={error?.error?.details[0].path.includes("categoryId")}
                     handleChange={onChangeCategory}
                     selectText={
@@ -383,6 +385,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Sub Ctegories list"
                     error={error?.error?.details[0].path.includes(
                       "subCategoryId"
                     )}
@@ -418,6 +421,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     control={control}
                     render={(props) => (
                       <SelectInput2
+                        label="Teams list"
                         error={error?.error?.details[0]?.path.includes(
                           "listId"
                         )}

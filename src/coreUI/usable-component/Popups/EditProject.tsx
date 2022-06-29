@@ -289,6 +289,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Clients list"
                     handleChange={props.field.onChange}
                     selectText={
                       clients.find(
@@ -426,6 +427,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Project status list"
                     handleChange={props.field.onChange}
                     selectText={getStatus(props.field.value)}
                     selectValue={props.field.value}
@@ -450,6 +452,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                    label="Project managers list"
                     handleChange={props.field.onChange}
                     selectText={getPM(props.field.value)}
                     selectValue={props.field.value}

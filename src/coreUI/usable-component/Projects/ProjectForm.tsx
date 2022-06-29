@@ -151,6 +151,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             control={control}
             render={(props) => (
               <SelectInput2
+                label="Clients list"
                 error={validateError.error?.details[0].path.includes(
                   "clientId"
                 )}
@@ -301,6 +302,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             control={control}
             render={(props) => (
               <SelectInput2
+                label="Project managers list"
                 error={validateError.error?.details[0].path.includes(
                   "projectManager"
                 )}

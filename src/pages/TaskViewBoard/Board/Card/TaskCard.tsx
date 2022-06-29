@@ -72,11 +72,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [taskImages, setTaskImages] = useState<any[]>();
   const [taskFiles, setTaskFiles] = useState<any[]>();
 
-  console.log(error);
-
   /// set files
   useEffect(() => {
-    let mimeTypes = ["image/png", "image/png", "image/jpeg", "image/svg"];
+    let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
     if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
       let images = item.attachedFiles.filter((item) =>
         mimeTypes.includes(item.mimeType)
@@ -93,8 +91,8 @@ const TaskCard: React.FC<TaskCartProps> = ({
     if (status !== "Not Started") {
       if (deadline === null || deadline === "") {
         setRemaningDays("Deadline is required");
-        setDaysBgColor("#E4DADC");
-        setDaysColor("#2C2C2C");
+        setDaysBgColor("#F1CBCC");
+        setDaysColor("#FF0000");
       } else {
         const floatDays =
           (new Date(deadline).getTime() - new Date().getTime()) /
@@ -229,13 +227,14 @@ const TaskCard: React.FC<TaskCartProps> = ({
                       >
                         {error.flag && (
                           <div className="fallback-container">
-                           {/*  <p>You need to be authorized to view this image.</p> */}
+                            {/*  <p>You need to be authorized to view this image.</p> */}
                             <a
                               href={error.url}
                               className="login-link"
                               target="_blank"
                             >
-                             You need to be authorized to view this image. Click here to Login.
+                              You need to be authorized to view this image.
+                              Click here to Login.
                             </a>
                           </div>
                         )}

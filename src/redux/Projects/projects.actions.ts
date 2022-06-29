@@ -16,6 +16,10 @@ import { Department } from "../Departments";
 import { logout } from "../Auth";
 import moment from "moment";
 import { Project } from "../../interfaces/models/Projects";
+import {
+  ToastSuccess,
+  ToastWarning,
+} from "../../coreUI/usable-component/Typos/Alert";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
@@ -90,15 +94,8 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
       if (result.ok) {
         args.dispatch(fireEditTaskHook(""));
         args.setShow("none");
-        toast.success("Task have been save to the Database", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        args.resetState();
+        ToastSuccess("Task have been save to the Database");
         args.reset();
         return result.data;
       } else {

@@ -193,6 +193,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             <SelectInput2
               handleChange={handleChange}
               selectText={color}
+              label="Colors list"
               {...register("color")}
               selectValue={color}
               options={
@@ -237,6 +238,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
                     setData(e.target.value);
                   }
                 }}
+                label={"Teams list"}
                 selectText={getTeamName(Data)}
                 {...register("team")}
                 selectValue={getTeamName(Data)}

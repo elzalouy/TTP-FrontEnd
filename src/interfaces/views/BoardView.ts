@@ -28,7 +28,7 @@ export interface DateInputProps {
   label: string;
 }
 
-export interface EditTaskState {
+export interface CRUDTaskState {
   newFiles: (File | null)[];
   deleteFiles: {
     name: string;
@@ -56,7 +56,7 @@ export interface AttachetFilesProps {
   onRemoveFile: any;
 }
 
-export const initialState = {
+export const initialState: CRUDTaskState = {
   newFiles: [],
   deleteFiles: [],
   task: {

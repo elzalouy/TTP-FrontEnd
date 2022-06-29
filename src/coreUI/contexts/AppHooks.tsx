@@ -203,9 +203,6 @@ const AppHooks: React.FC = (props) => {
     if (user?._id) {
       let socket = openConnection(user);
       socket.on("create-task", (data: any) => {
-        console.log("create task trello,", data);
-      });
-      socket.on("create-task", (data: any) => {
         console.log("create task,", data);
         setUpdateTaskData(data);
       });
