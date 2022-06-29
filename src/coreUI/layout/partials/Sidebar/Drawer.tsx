@@ -40,6 +40,7 @@ import { useAppSelector } from "../../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
 import { counterNotif } from "../../../../redux/notification";
+import { getAllProjects } from "../../../../redux/Projects";
 
 interface BarProps extends AppBarProps {}
 
@@ -119,7 +120,10 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="1"
-              onClick={() => history.push("/projects")}
+              onClick={() => {
+                dispatch(getAllProjects(null));
+                history.push("/projects");
+              }}
               path={"/projects"}
               Icon={() => <ProjectsIcon />}
               text="Projects"

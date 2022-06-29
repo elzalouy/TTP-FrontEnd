@@ -192,8 +192,8 @@ const CreateNewDepartment: React.FC<Props> = () => {
           render={(props) => (
             <SelectInput2
               handleChange={handleChange}
+              label="Colors"
               selectText={color}
-              label="Colors list"
               {...register("color")}
               selectValue={color}
               options={
