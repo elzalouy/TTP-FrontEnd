@@ -1,5 +1,6 @@
 import moment from "moment";
 import { Task } from "../interfaces/models/Projects";
+import { NotifiData } from "../redux/notification";
 
 interface options {
   id?: string;
@@ -121,3 +122,24 @@ export const isOptionsEmpty = (options: options[]) => {
     return false;
   }
 };
+
+export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (data: any[]) => {
+  let flag = 0;
+  //This flag here return one instance of the notification from all duplicates
+  let test = data.filter((notifi: NotifiData) => {
+    let newdata = data.some((item: NotifiData) => {
+      if (notifi.title === item.title) {
+        if (flag === 0) {
+          //Here we filter and return the element once and then set the flag closed to returning duplicates
+          flag++;
+          return true;
+        } else {
+          return false;
+        }
+      }
+    })
+    return newdata;
+  })
+  return test;
+
+}

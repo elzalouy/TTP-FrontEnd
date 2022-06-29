@@ -217,6 +217,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
               selectText={color}
               {...register("color")}
               selectValue={color}
+              label="Colors"
               options={
                 colors
                   ? colors.map((color) => {
@@ -264,6 +265,7 @@ const EditDepartment: React.FC<Props> = ({ Show, handleSetShow }) => {
                     setData(e.target.value);
                   }
                 }}
+                label="Teams"
                 selectText={splitData[1]}
                 {...register("team")}
                 selectValue={Data}

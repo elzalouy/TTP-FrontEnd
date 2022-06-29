@@ -281,6 +281,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   control={control}
                   render={(props) => (
                     <SelectInput2
+                    label="Department Name"
                       {...register("selectedDepartmentId")}
                       error={error.error?.details[0].path.includes("listId")}
                       handleChange={onChangeDepartment}
@@ -373,6 +374,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                       error={error?.error?.details[0].path.includes(
                         "categoryId"
                       )}
+                      label="Category"
                       handleChange={onChangeCategory}
                       selectText={
                         categories?.find(
@@ -434,6 +436,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                           (item) => item._id === props.field.value
                         )?.subCategory
                       }
+                      label="Sub Category"
                       {...register("subCategoryId")}
                       selectValue={props.field.value}
                       options={

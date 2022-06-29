@@ -192,6 +192,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
           render={(props) => (
             <SelectInput2
               handleChange={handleChange}
+              label="Colors"
               selectText={color}
               {...register("color")}
               selectValue={color}
@@ -232,6 +233,7 @@ const CreateNewDepartment: React.FC<Props> = () => {
             control={control}
             render={(props) => (
               <SelectInput2
+                label="Teams"
                 handleChange={(e: any) => {
                   if (e.target.value !== "") {
                     setData(e.target.value);

@@ -295,6 +295,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         (item) => item.clientId === props.field.value
                       )?.clientName
                     }
+                    label="Client Name"
                     selectValue={props.field.value}
                     options={
                       clients
@@ -426,6 +427,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <SelectInput2
+                  label="Project status"
                     handleChange={props.field.onChange}
                     selectText={getStatus(props.field.value)}
                     selectValue={props.field.value}
@@ -452,6 +454,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <SelectInput2
                     handleChange={props.field.onChange}
                     selectText={getPM(props.field.value)}
+                    label="Project Manager"
                     selectValue={props.field.value}
                     options={
                       PMs?.length > 0
