@@ -52,9 +52,9 @@ const Projects: React.FC<ProjectsProps> = (props) => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
 
-  // useEffect(() => {
-  //   dispatch(getAllProjects(null));
-  // }, []);
+  useEffect(() => {
+    dispatch(getAllProjects(null));
+  }, []);
 
   const onHandleChange = (e: any) => {
     let data = watch();
