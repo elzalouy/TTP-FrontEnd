@@ -1,8 +1,6 @@
 import { AnyAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { getAllNotifi, updateNotifi } from "./notifi.actions";
 import NotifiState, { Notifis } from "./notifi.state";
-import moment from "moment";
-import { stat } from "fs";
 import _ from "lodash";
 
 const notifiSlice: Slice<Notifis> = createSlice({
@@ -12,7 +10,6 @@ const notifiSlice: Slice<Notifis> = createSlice({
     onSort: (state = NotifiState, { payload }: AnyAction) => {},
     onSearch: (state = NotifiState, { payload }: AnyAction) => {},
     updateCounter: (state = NotifiState, { payload }: AnyAction) => {
-      console.log(payload);
       let notifiaction = state.notifi.findIndex(
         (item) => item._id === payload?._id
       );

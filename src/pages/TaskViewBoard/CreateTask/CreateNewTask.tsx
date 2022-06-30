@@ -19,6 +19,7 @@ import { selectRole } from "../../../redux/Auth";
 import { valdiateCreateTask } from "../../../services/validations/task.schema";
 import {
   CRUDTaskState,
+  initialHookFormTaskState,
   initialState,
 } from "../../../interfaces/views/BoardView";
 import {
@@ -38,10 +39,19 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
   const { createTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, control, reset, setValue, watch } = useForm();
+  const { register, handleSubmit, control, reset, setValue, watch } = useForm({
+    defaultValues: initialHookFormTaskState,
+  });
   const role = useAppSelector(selectRole);
   const files = React.useRef<HTMLInputElement>(null);
   const [state, setState] = React.useState<CRUDTaskState>(initialState);
+
+  React.useEffect(() => {
+    console.log(createTaskPopup);
+    if (createTaskPopup === "none") {
+      reset();
+    }
+  }, [createTaskPopup]);
 
   // React.useEffect(() => {
   //   let today = moment().format();
@@ -52,7 +62,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   // }, [watchDeadline]);
 
   const onSubmit = async (data: any) => {
-    console.log("new one");
     let State = { ...state };
     let newTask = {
       name: data.name,
@@ -115,15 +124,8 @@ const CreateNewTask: React.FC<Props> = (props) => {
   };
 
   const resetState = () => {
-    setState({
-      newFiles: [],
-      deleteFiles: [],
-      task: state.task,
-      error: { error: undefined, value: undefined, warning: undefined },
-      selectedCategory: null,
-      selectedDepartment: null,
-      selectedDepatmentTeams: undefined,
-    });
+    setState(initialState);
+    reset();
   };
 
   const onChangeFiles = () => {
@@ -178,7 +180,11 @@ const CreateNewTask: React.FC<Props> = (props) => {
     <>
       <PopUp show={props.show} minWidthSize="50vw">
         {/* Title component */}
-        <EditTaskTitle setShow={props.setShow} title="Create task" />
+        <EditTaskTitle
+          setShow={props.setShow}
+          reset={reset}
+          title="Create task"
+        />
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">

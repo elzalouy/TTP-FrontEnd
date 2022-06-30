@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi, { string } from "joi";
 import { Category } from "../../redux/Categories";
 import { Department, Team } from "../../redux/Departments";
 import { Task } from "../models/Projects";
@@ -16,6 +16,7 @@ export interface InputProps {
   placeholder?: string;
   multiline?: boolean;
   rows?: number;
+  id?: string;
 }
 
 export interface DateInputProps {
@@ -55,7 +56,19 @@ export interface AttachetFilesProps {
   state: any;
   onRemoveFile: any;
 }
-
+export const initialHookFormTaskState: any = {
+  name: "",
+  projectId: "",
+  categoryId: "",
+  subCategoryId: "",
+  teamId: "",
+  status: "",
+  description: "",
+  selectedDepartmentId: "",
+  deadline: null,
+  attachedFiles: undefined,
+  file: null,
+};
 export const initialState: CRUDTaskState = {
   newFiles: [],
   deleteFiles: [],

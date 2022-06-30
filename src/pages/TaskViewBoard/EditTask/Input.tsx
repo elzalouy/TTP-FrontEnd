@@ -13,10 +13,11 @@ const Input: React.FC<InputProps> = ({
   multiline,
   label,
   rows,
+  id,
 }) => {
   const style = inputStyle()();
   return (
-    <div>
+    <div id={id}>
       <Typography className="label-project">{label}</Typography>
       <Controller
         name={name}
@@ -28,8 +29,8 @@ const Input: React.FC<InputProps> = ({
             error={state?.error?.error?.details[0].path.includes(name)}
             id="outlined-error"
             className={multiline ? style.multilineInput : style.input}
-            multiline={multiline}
-            rows={rows}
+            multiline={multiline ? multiline : undefined}
+            rows={rows ? rows : undefined}
             placeholder={placeholder}
             onChange={props.field.onChange}
           />

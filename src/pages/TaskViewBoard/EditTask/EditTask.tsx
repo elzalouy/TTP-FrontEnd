@@ -24,6 +24,7 @@ import {
   EditTaskProps,
   CRUDTaskState,
   initialState,
+  initialHookFormTaskState,
 } from "../../../interfaces/views/BoardView";
 import {
   editTaskFromBoard,
@@ -41,7 +42,9 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const { editTask: id } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, control, reset, setValue, watch } = useForm();
+  const { register, handleSubmit, control, reset, setValue, watch } = useForm({
+    defaultValues: initialHookFormTaskState,
+  });
   const role = useAppSelector(selectRole);
   const files = React.useRef<HTMLInputElement>(null);
   const [state, setState] = React.useState<CRUDTaskState>(initialState);
@@ -142,15 +145,8 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   };
 
   const resetState = () => {
-    setState({
-      newFiles: [],
-      deleteFiles: [],
-      task: state.task,
-      error: { error: undefined, value: undefined, warning: undefined },
-      selectedCategory: null,
-      selectedDepartment: null,
-      selectedDepatmentTeams: undefined,
-    });
+    setState(initialState);
+    reset();
   };
 
   const onChangeFiles = () => {
@@ -205,7 +201,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     <>
       <PopUp show={props.show} minWidthSize="50vw">
         {/* Title component */}
-        <EditTaskTitle setShow={props.setShow} title="Edit task" />
+        <EditTaskTitle
+          setShow={props.setShow}
+          reset={reset}
+          title="Edit task"
+        />
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
@@ -284,6 +284,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 rows={5}
                 placeholder={"Write about your task"}
                 state={state}
+                id="editDescription"
               />
               <div>
                 <Select

@@ -7,11 +7,17 @@ import { ProjectsActions } from "../../../redux/Projects";
 interface EditTaskTitleProps {
   title: string;
   setShow: any;
+  reset?: any;
 }
 
-const EditTaskTitle: React.FC<EditTaskTitleProps> = ({ title, setShow }) => {
+const EditTaskTitle: React.FC<EditTaskTitleProps> = ({
+  title,
+  setShow,
+  reset,
+}) => {
   const dispatch = useDispatch();
   const onCloseModel = () => {
+    reset();
     dispatch(ProjectsActions.onEditTask(""));
     setShow("none");
   };
