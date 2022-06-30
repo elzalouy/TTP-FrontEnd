@@ -1,19 +1,16 @@
 import { AnyAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { getAllNotifi, updateNotifi } from "./notifi.actions";
-import NotifiState, { NotifiData, Notifis } from "./notifi.state";
-import moment from "moment";
-import { stat } from "fs";
-import { removeDuplicatesFromArrayOfObjectsUsingOneProperty } from "../../helpers/generalUtils";
+import NotifiState, { Notifis } from "./notifi.state";
 import _ from "lodash";
+import { removeDuplicatesFromArrayOfObjectsUsingOneProperty } from "../../helpers/generalUtils";
 
 const notifiSlice: Slice<Notifis> = createSlice({
   name: "notifications",
   initialState: NotifiState,
   reducers: {
-    onSort: (state = NotifiState, { payload }: AnyAction) => { },
-    onSearch: (state = NotifiState, { payload }: AnyAction) => { },
+    onSort: (state = NotifiState, { payload }: AnyAction) => {},
+    onSearch: (state = NotifiState, { payload }: AnyAction) => {},
     updateCounter: (state = NotifiState, { payload }: AnyAction) => {
-      console.log(payload);
       let notifiaction = state.notifi.findIndex(
         (item) => item._id === payload?._id
       );
