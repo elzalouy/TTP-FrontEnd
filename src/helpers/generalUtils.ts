@@ -123,23 +123,20 @@ export const isOptionsEmpty = (options: options[]) => {
   }
 };
 
-export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (data: any[]) => {
-  let flag = 0;
-  //This flag here return one instance of the notification from all duplicates
-  let test = data.filter((notifi: NotifiData) => {
-    let newdata = data.some((item: NotifiData) => {
-      if (notifi.title === item.title) {
-        if (flag === 0) {
-          //Here we filter and return the element once and then set the flag closed to returning duplicates
-          flag++;
-          return true;
-        } else {
-          return false;
-        }
-      }
-    })
-    return newdata;
-  })
-  return test;
+export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (dataToFilterFrom: any[], dataToFilterWith?: any[]) => {
+  if (dataToFilterWith?.length === 0) {
+    //Initial fetch will have an empty state
+    dataToFilterWith = dataToFilterFrom;
+  }
+  //Declaring a new set because set makes the values unique
+  let uniqueSet = new Set();
 
+  
+  let filteredArr = dataToFilterFrom.filter((el: NotifiData) => {
+    let duplicate = uniqueSet.has(el.title);
+    uniqueSet.add(el.title);
+    return !duplicate;
+  });
+  console.log(filteredArr);
+  return filteredArr;
 }

@@ -45,8 +45,8 @@ const notifiSlice: Slice<Notifis> = createSlice({
             : !item.projectManagerViewed
         );
         state.loading = false;
-        let filteredPayload = removeDuplicatesFromArrayOfObjectsUsingOneProperty(action.payload.data);
-        state.notifi = [...state.notifi, ...filteredPayload];
+        let filteredPayload = removeDuplicatesFromArrayOfObjectsUsingOneProperty([...state.notifi, ...action.payload.data], state.notifi);
+        state.notifi = [...filteredPayload];
         state.counter = counter.length;
       }
     );

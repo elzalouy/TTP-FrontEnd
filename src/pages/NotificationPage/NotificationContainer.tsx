@@ -87,7 +87,7 @@ const NotificationContainer = (props: Props) => {
               textTransform: "capitalize",
               maxHeight: "40px",
               background: "black",
-              height: "40px",
+              height: "35px",
               width: "80px",
               color: "white",
               borderRadius: "10px",
@@ -98,9 +98,9 @@ const NotificationContainer = (props: Props) => {
               <CircularProgress
                 sx={{
                   color: "white",
-                  padding: "8px",
-                  height: "35px !important",
-                  width: "35px !important",
+                  height: "20px !important",
+                  width: "20px !important",
+                  marginTop:"5px"
                 }}
               />
             ) : (
