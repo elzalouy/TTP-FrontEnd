@@ -121,7 +121,6 @@ const AppDrawer: React.FC = (props: any) => {
               open={open}
               key="1"
               onClick={() => {
-                dispatch(getAllProjects(null));
                 history.push("/projects");
               }}
               path={"/projects"}
