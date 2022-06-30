@@ -123,7 +123,9 @@ export const isOptionsEmpty = (options: options[]) => {
   }
 };
 
-export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (data: any[]) => {
+export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (
+  data: any[]
+) => {
   let flag = 0;
   //This flag here return one instance of the notification from all duplicates
   let test = data.filter((notifi: NotifiData) => {
@@ -137,9 +139,8 @@ export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (data: any[]) 
           return false;
         }
       }
-    })
+    });
     return newdata;
-  })
+  });
   return test;
-
-}
+};
