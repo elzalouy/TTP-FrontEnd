@@ -4,7 +4,11 @@ import NotificationFilter from "./NotificationFilter";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import { useDispatch } from "react-redux";
-import { getAllNotifi, updateNotifi } from "../../redux/notification";
+import {
+  getAllNotifi,
+  setHideLoadingState,
+  updateNotifi,
+} from "../../redux/notification";
 import {
   notifiDataSelector,
   loadingNotification,
@@ -15,6 +19,7 @@ import { updateCounter } from "../../redux/notification";
 import { openConnection } from "../../services/socket.io";
 import { selectRole, selectUser } from "../../redux/Auth";
 import { CircularProgress } from "@mui/material";
+import { selectUi } from "../../redux/Ui/UI.selectors";
 
 type Props = {};
 // if
@@ -29,6 +34,16 @@ const NotificationContainer = (props: Props) => {
   const [loading, setLoading] = useState(false);
   // const buttonLoading = useAppSelector(loadingNotification);
   const hideLoading = useAppSelector(selectHideLoading);
+  const {
+    newProjectHook,
+    updateProjectHook,
+    deleteTasksHook,
+    deleteProjectHook,
+    createTeamHook,
+    editTaskHook,
+    moveTaskHook,
+    createProjectHook,
+  } = useAppSelector(selectUi);
 
   useEffect(() => {
     if (user && user._id) {
@@ -42,11 +57,23 @@ const NotificationContainer = (props: Props) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    dispatch(setHideLoadingState(false));
+  }, [
+    updateProjectHook,
+    deleteTasksHook,
+    deleteProjectHook,
+    createTeamHook,
+    editTaskHook,
+    moveTaskHook,
+    createProjectHook,
+  ]);
+
   // watch notification update
   // useEffect(() => {
   //   let socket = openConnection(user);
   //   socket.on("notification update", (data: any) => {
- 
+
   //     dispatch(updateCounter(data));
   //   });
   //   return () => {
@@ -100,7 +127,7 @@ const NotificationContainer = (props: Props) => {
                   color: "white",
                   height: "20px !important",
                   width: "20px !important",
-                  marginTop:"5px"
+                  marginTop: "5px",
                 }}
               />
             ) : (

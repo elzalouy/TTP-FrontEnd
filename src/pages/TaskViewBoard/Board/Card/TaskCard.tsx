@@ -195,6 +195,15 @@ const TaskCard: React.FC<TaskCartProps> = ({
               </Typography>
             </Box>
             <Grid direction="row">
+              {error.flag && (
+                <div className="fallback-container">
+                  {/*  <p>You need to be authorized to view this image.</p> */}
+                  <a href={error.url} className="login-link" target="_blank">
+                    You need to be authorized to view this image. Click here to
+                    Login.
+                  </a>
+                </div>
+              )}
               {item?.attachedFiles?.length > 0 && (
                 <>
                   {taskImages && taskImages.length > 0 && (
@@ -225,19 +234,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {error.flag && (
-                          <div className="fallback-container">
-                            {/*  <p>You need to be authorized to view this image.</p> */}
-                            <a
-                              href={error.url}
-                              className="login-link"
-                              target="_blank"
-                            >
-                              You need to be authorized to view this image.
-                              Click here to Login.
-                            </a>
-                          </div>
-                        )}
                         {taskImages.map((item, index) => {
                           if (!error.flag) {
                             return (

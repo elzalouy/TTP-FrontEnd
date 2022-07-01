@@ -3,13 +3,14 @@ import { getAllNotifi, updateNotifi } from "./notifi.actions";
 import NotifiState, { Notifis } from "./notifi.state";
 import _ from "lodash";
 import { removeDuplicatesFromArrayOfObjectsUsingOneProperty } from "../../helpers/generalUtils";
+import { stat } from "fs";
 
 const notifiSlice: Slice<Notifis> = createSlice({
   name: "notifications",
   initialState: NotifiState,
   reducers: {
-    onSort: (state = NotifiState, { payload }: AnyAction) => {},
-    onSearch: (state = NotifiState, { payload }: AnyAction) => {},
+    onSort: (state = NotifiState, { payload }: AnyAction) => { },
+    onSearch: (state = NotifiState, { payload }: AnyAction) => { },
     updateCounter: (state = NotifiState, { payload }: AnyAction) => {
       let notifiaction = state.notifi.findIndex(
         (item) => item._id === payload?._id
@@ -33,9 +34,6 @@ const notifiSlice: Slice<Notifis> = createSlice({
     builder.addCase(
       getAllNotifi.fulfilled,
       (state, action: PayloadAction<any>) => {
-        if (action.payload.data.length === 0) {
-          state.hideLoading = true;
-        }
         let counter = action.payload.data.filter((item: any) =>
           action.payload.role === "OM"
             ? !item.adminViewed
@@ -43,6 +41,10 @@ const notifiSlice: Slice<Notifis> = createSlice({
         );
         state.loading = false;
         let filteredPayload = removeDuplicatesFromArrayOfObjectsUsingOneProperty([...state.notifi, ...action.payload.data], state.notifi);
+        if (filteredPayload.length === state.notifi.length) {
+          //The state length being same as filtered payload length indicates the filtered data is the same result as before
+          state.hideLoading = true;
+        }
         state.notifi = [...filteredPayload];
         state.counter = counter.length;
       }

@@ -137,6 +137,5 @@ export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (dataToFilterF
     uniqueSet.add(el.title);
     return !duplicate;
   });
-  console.log(filteredArr);
   return filteredArr;
 }
