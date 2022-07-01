@@ -6,7 +6,10 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../redux/Departments";
 import { useAppSelector } from "../../../../redux/hooks";
-import { ProjectsActions } from "../../../../redux/Projects";
+import {
+  downloadAttachment,
+  ProjectsActions,
+} from "../../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -37,11 +40,6 @@ interface TaskCartProps {
   column?: any;
 }
 
-interface Fallback {
-  index: number | null;
-  flag: boolean;
-}
-
 const TaskCard: React.FC<TaskCartProps> = ({
   item,
   index,
@@ -68,6 +66,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [error, setError] = useState({
     flag: false,
     url: "",
+    trelloId: "",
   });
   const [taskImages, setTaskImages] = useState<any[]>();
   const [taskFiles, setTaskFiles] = useState<any[]>();
@@ -129,12 +128,12 @@ const TaskCard: React.FC<TaskCartProps> = ({
     setData(newData);
   }, []);
 
-  const handleImageError = (index: number) => {
+  /* const handleImageError = (index: number) => {
     let fallback: Fallback = { flag: false, index: null };
     fallback.flag = true;
     fallback.index = index;
     return fallback;
-  };
+  }; */
 
   const getRemainingDays = (day: number) => {
     if (day > 0) {
@@ -196,7 +195,19 @@ const TaskCard: React.FC<TaskCartProps> = ({
             </Box>
             <Grid direction="row">
               {error.flag && (
-                <div className="fallback-container">
+                <div
+                  className="fallback-container"
+                  onLoad={() => {
+                    dispatch(
+                      downloadAttachment({
+                        cardId: item?.cardId,
+                        attachmentId: error?.trelloId,
+                        //This property below disabled opening the attachment after validation
+                        openUrl: false,
+                      })
+                    );
+                  }}
+                >
                   {/*  <p>You need to be authorized to view this image.</p> */}
                   <a href={error.url} className="login-link" target="_blank">
                     You need to be authorized to view this image. Click here to
@@ -234,7 +245,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {taskImages.map((item, index) => {
+                        {taskImages.map((image, index) => {
                           if (!error.flag) {
                             return (
                               <SwiperSlide className="swiper-slide">
@@ -245,13 +256,24 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                     borderRadius: 8,
                                     marginTop: "10px",
                                   }}
-                                  onError={() =>
+                                  onLoad={() => {
+                                    dispatch(
+                                      downloadAttachment({
+                                        cardId: item?.cardId,
+                                        attachmentId: image?.trelloId,
+                                        //This property below disabled opening the attachment after validation
+                                        openUrl: false,
+                                      })
+                                    );
+                                  }}
+                                  onError={() => {
                                     setError({
                                       flag: true,
-                                      url: item?.url,
-                                    })
-                                  }
-                                  src={item?.url}
+                                      url: image?.url,
+                                      trelloId: image?.trelloId,
+                                    });
+                                  }}
+                                  src={image?.url}
                                   alt="more"
                                 />
                               </SwiperSlide>

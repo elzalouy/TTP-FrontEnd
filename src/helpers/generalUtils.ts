@@ -1,3 +1,4 @@
+import axios from "axios";
 import moment from "moment";
 import { Task } from "../interfaces/models/Projects";
 import { NotifiData } from "../redux/notification";
@@ -131,7 +132,7 @@ export const removeDuplicatesFromArrayOfObjectsUsingOneProperty = (dataToFilterF
   //Declaring a new set because set makes the values unique
   let uniqueSet = new Set();
 
-  
+
   let filteredArr = dataToFilterFrom.filter((el: NotifiData) => {
     let duplicate = uniqueSet.has(el.title);
     uniqueSet.add(el.title);

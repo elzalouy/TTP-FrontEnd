@@ -345,16 +345,17 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
 export const downloadAttachment = createAsyncThunk<any, any, any>(
   "tasks/downloadAttachment",
   async (
-    args: { cardId: string; attachmentId: string },
+    args: { cardId: string; attachmentId: string , openUrl:boolean},
     { rejectWithValue }
   ) => {
     try {
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-      console.log(response);
       if (response.ok) {
-        window.open(response.data?.url);
+        if(args.openUrl !== false){
+          window.open(response.data?.url);
+        }
         return response.data;
       }
       ToastError("The attachment was deleted from the board.");
