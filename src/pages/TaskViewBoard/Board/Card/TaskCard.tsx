@@ -87,6 +87,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   }, [item]);
 
   useEffect(() => {
+    //This useEffect runs when there is a flag for unauthorized image request and makes checks attachment status by calling the download action
     if (error.flag) {
       dispatch(
         downloadAttachment({
