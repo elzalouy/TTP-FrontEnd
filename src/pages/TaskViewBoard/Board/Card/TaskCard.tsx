@@ -87,6 +87,19 @@ const TaskCard: React.FC<TaskCartProps> = ({
   }, [item]);
 
   useEffect(() => {
+    if (error.flag) {
+      dispatch(
+        downloadAttachment({
+          cardId: item?.cardId,
+          attachmentId: error?.trelloId,
+          //This property below disabled opening the attachment after validation
+          openUrl: false,
+        })
+      );
+    }
+  }, [error.flag]);
+
+  useEffect(() => {
     if (status !== "Not Started") {
       if (deadline === null || deadline === "") {
         setRemaningDays("Deadline is required");
@@ -195,20 +208,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
             </Box>
             <Grid direction="row">
               {error.flag && (
-                <div
-                  className="fallback-container"
-                  onLoad={() => {
-                    dispatch(
-                      downloadAttachment({
-                        cardId: item?.cardId,
-                        attachmentId: error?.trelloId,
-                        //This property below disabled opening the attachment after validation
-                        openUrl: false,
-                      })
-                    );
-                  }}
-                >
-                  {/*  <p>You need to be authorized to view this image.</p> */}
+                <div className="fallback-container">
                   <a href={error.url} className="login-link" target="_blank">
                     You need to be authorized to view this image. Click here to
                     Login.
