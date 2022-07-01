@@ -32,6 +32,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
+import { toast } from "react-toastify";
 interface TaskCartProps {
   index: number;
   item: Task;
@@ -89,6 +90,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   useEffect(() => {
     //This useEffect runs when there is a flag for unauthorized image request and makes checks attachment status by calling the download action
     if (error.flag) {
+      toast.clearWaitingQueue();
       dispatch(
         downloadAttachment({
           cardId: item?.cardId,
