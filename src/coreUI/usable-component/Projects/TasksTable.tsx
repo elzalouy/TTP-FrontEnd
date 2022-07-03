@@ -26,7 +26,7 @@ import {
   selectNewProject,
   selectSelectedDepartment,
 } from "../../../redux/Projects";
-import { selectAllMembers } from "../../../redux/techMember";
+import { selectAllMembers } from "../../../redux/TechMember";
 import { UiActions } from "../../../redux/Ui";
 import ConfirmDeleteTask from "../Popups/ConfirmDeleteTask";
 

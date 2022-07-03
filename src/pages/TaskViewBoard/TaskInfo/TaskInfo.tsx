@@ -12,7 +12,7 @@ import { selectViewTask } from "../../../redux/Ui/UI.selectors";
 import { selectTaskDetails } from "../../../redux/Projects";
 import { toggleViewTaskPopup } from "../../../redux/Ui";
 import { selectAllDepartments } from "../../../redux/Departments";
-import { selectDepartmentMembers } from "../../../redux/techMember";
+import { selectDepartmentMembers } from "../../../redux/TechMember";
 import { Task } from "../../../interfaces/models/Projects";
 import {
   selectAllCategories,
@@ -136,7 +136,6 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 className="files-task-view customScrollbar"
               >
                 {viewTask.attachedFiles?.map((item: any) => {
-                
                   return (
                     <div className="image-container">
                       <img src={item.url} alt={item.name} className="img" />

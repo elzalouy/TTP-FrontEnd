@@ -5,4 +5,5 @@ export const selectDepartmentMembers = (state: RootState) =>
 
 export const selectAllMembers = (state: RootState) => state?.techMembers;
 
-export const selectAllTeamMembers = (state: RootState) => state?.techMembers.techMembers;
+export const selectAllTeamMembers = (state: RootState) =>
+  state?.techMembers.techMembers;

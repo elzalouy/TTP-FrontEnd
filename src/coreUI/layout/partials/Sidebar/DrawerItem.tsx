@@ -31,16 +31,20 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
           justifyContent: "center",
         }}
       >
-        <Badge badgeContent={props.padge} color="error">
-          {Icon && <Icon />}
-        </Badge>
+        {props?.padge && props.padge > 0 ? (
+          <Badge badgeContent={props.padge} color="error">
+            {Icon && <Icon />}
+          </Badge>
+        ) : (
+          <>{Icon && <Icon />}</>
+        )}
       </ListItemIcon>
       <ListItemText
         sx={{
           color: props.select === props.path ? "white" : "#808191",
           opacity: props.open ? 1 : 0,
           ":hover": {
-            color:"#FFF !important"
+            color: "#FFF !important",
           },
         }}
       >

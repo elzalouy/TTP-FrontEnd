@@ -3,7 +3,7 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../Popup/PopUp";
 import "./popups-style.css";
 import { useState } from "react";
-import { selectAllMembers } from "../../../redux/techMember/techMembers.selectors";
+import { selectAllMembers } from "../../../redux/TechMember/techMembers.selectors";
 import { useAppSelector } from "../../../redux/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import {

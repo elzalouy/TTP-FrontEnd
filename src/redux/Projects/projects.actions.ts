@@ -533,7 +533,7 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
-     
+
       if (response.ok) {
         window.open(response.data?.url);
         return response.data;

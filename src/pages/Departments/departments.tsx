@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DepartmentCard from "./departmentCard";
-import "./departments.css";
 import CreateNewDepartment from "../../coreUI/usable-component/Popups/CreateNewDepartment";
 import CreateNewTeam from "../../coreUI/usable-component/Popups/CreateNewTeam";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { Department, getAllDepartments } from "../../redux/Departments";
+import { Department } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
-import { selectAllMembers } from "../../redux/techMember/techMembers.selectors";
 import { selectRole } from "../../redux/Auth";
 import { toast } from "react-toastify";
+import "./departments.css";
 
 interface IProps {
   alternatingColor: string[][];
 }
+
 const Departments: React.FC<IProps> = () => {
   const [department, setDepartment] = useState<null | Department[]>(null);
   let departmentData = useAppSelector(selectAllDepartments);

@@ -17,11 +17,9 @@ import {
   selectDepartmentMembers,
   TechMemberInterface,
   TechMembersInterface,
-} from "../../../redux/techMember";
+} from "../../../redux/TechMember";
 import SelectInput2 from "../Inputs/SelectInput2";
 import { CircularProgress, IconButton } from "@mui/material";
-import { departmentsActions } from "../../../redux/Departments";
-import { toast } from "react-toastify";
 import DeleteTeam from "./DeleteTeam";
 
 type Props = {};

@@ -17,10 +17,9 @@ export const openConnection = (user: User | null) => {
     console.log("client is connected");
   });
   if (user?.role === "OM") {
-    Io.emit("joined-admin");
+    Io.emit("joined-OM", user);
   } else if (user?.role === "PM") {
-    Io.emit("joined-manager");
+    Io.emit("joined-PM", user);
   }
-  Io.emit("joined-user", { id: user?._id });
   return Io;
 };

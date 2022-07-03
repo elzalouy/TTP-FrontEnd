@@ -12,19 +12,6 @@ const NotificationHeader = (props: Props) => {
           Notificaiton
         </Typography>
       </Grid>
-      {/* <Grid item xs={12}>
-        <Typography
-          variant="subtitle1"
-          gutterBottom
-          component="div"
-          sx={{
-            color: "#797979 !important",
-          }}
-        >
-          The page contains project notifications. "Ex: Move the project to
-          shared box."
-        </Typography>
-      </Grid> */}
     </Grid>
   );
 };

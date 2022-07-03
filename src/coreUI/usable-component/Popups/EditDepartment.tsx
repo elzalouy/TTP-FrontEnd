@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import "./popups-style.css";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectedDepart } from "../../../redux/Departments/departments.selectors";
-import { selectAllMembers } from "../../../redux/techMember/techMembers.selectors";
+import { selectAllMembers } from "../../../redux/TechMember/techMembers.selectors";
 import { useDispatch } from "react-redux";
 import {
   updateDepartment,
@@ -13,14 +13,9 @@ import {
   selectDepartmentLoading,
   departmentsActions,
 } from "../../../redux/Departments";
-import { error } from "console";
 import { useForm, Controller } from "react-hook-form";
 import SelectInput2 from "../Inputs/SelectInput2";
-import departments from "../../../services/endpoints/departments";
 import { CircularProgress } from "@mui/material";
-import { deleteTeam } from "../../../redux/techMember";
-import { toast } from "react-toastify";
-import { generateID } from "../../../helpers/IdGenerator";
 
 type Props = {
   Show: string;

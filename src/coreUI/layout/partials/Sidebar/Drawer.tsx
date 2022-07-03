@@ -39,7 +39,7 @@ import NotificationIcon from "../../../../assets/icons/Notification";
 import { useAppSelector } from "../../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
-import { counterNotif } from "../../../../redux/notification";
+import { selectUnNotifiedNum } from "../../../../redux/Notification";
 
 interface BarProps extends AppBarProps {}
 
@@ -49,7 +49,7 @@ const AppDrawer: React.FC = (props: any) => {
   const user = useAppSelector(selectUser);
   const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
-  const counter = useAppSelector(counterNotif);
+  const userNotificationsNo = useAppSelector(selectUnNotifiedNum);
   const history = useHistory();
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -65,7 +65,9 @@ const AppDrawer: React.FC = (props: any) => {
   const setOpen = () => {
     dispatch(toggleSideMenu(!open));
   };
-
+  const updateNotified = () => {
+    console.log("update notified");
+  };
   return (
     <>
       <Drawer
@@ -202,7 +204,7 @@ const AppDrawer: React.FC = (props: any) => {
               src={IMAGES.notification}
               Icon={() => <NotificationIcon />}
               text="Notifications"
-              padge={counter}
+              padge={userNotificationsNo}
             />
           </List>
         </List>

@@ -4,7 +4,7 @@ import SmallPopUp from "../Popup/SmallPopup";
 import { departmentsActions } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import { deleteTask, selectedDeleteTaskId } from "../../../redux/Projects";
-import { deleteTeam, TechMemberInterface } from "../../../redux/techMember";
+import { deleteTeam, TechMemberInterface } from "../../../redux/TechMember";
 import { openDeleteTaskPopup } from "../../../redux/Ui";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 

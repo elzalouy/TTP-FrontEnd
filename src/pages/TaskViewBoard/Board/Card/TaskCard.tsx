@@ -11,7 +11,7 @@ import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
 } from "../../../../helpers/generalUtils";
-import { selectAllMembers } from "../../../../redux/techMember";
+import { selectAllMembers } from "../../../../redux/TechMember";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import {

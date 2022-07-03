@@ -19,7 +19,7 @@ import {
   deleteTasks,
   getAllTasks,
 } from "../../redux/Projects";
-import { selectAllMembers } from "../../redux/techMember";
+import { selectAllMembers } from "../../redux/TechMember";
 import DeleteTask from "../../coreUI/usable-component/Popups/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 import Loading from "../../coreUI/usable-elements/Loading";

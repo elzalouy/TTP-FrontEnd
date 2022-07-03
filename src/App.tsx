@@ -15,7 +15,7 @@ import ProjectManagers from "./pages/projectManagers/PM";
 import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "./redux/Clients";
-import { getPMs, PMsActions } from "./redux/PM";
+import { getPMs } from "./redux/PM";
 import { getAllDepartments } from "./redux/Departments";
 import { getAllCategories } from "./redux/Categories";
 import {
@@ -24,28 +24,28 @@ import {
   selectAllProjects,
 } from "./redux/Projects";
 import { ToastContainer } from "react-toastify";
-import { getAllMembers } from "./redux/techMember";
+import { getAllMembers } from "./redux/TechMember";
 import OverView from "./pages/UserOverview/OverView";
 import "react-toastify/dist/ReactToastify.css";
+import AppHooks from "./coreUI/contexts/AppHooks";
 import PopUps from "./coreUI/contexts/Modals";
-import { Box } from "@mui/system";
 import NotFound from "./pages/NotFound/NotFound";
 import UpdatePassword from "./pages/AuthPage/update";
+import { Box } from "@mui/system";
+import { getUnNotified } from "./redux/Notification";
 import { useAppSelector } from "./redux/hooks";
-import { getUserInfo, logout, selectIsAuth, selectUser } from "./redux/Auth";
-import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
-import AppHooks from "./coreUI/contexts/AppHooks";
 import { checkAuthToken } from "./services/api";
-import "swiper/css";
+import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
+import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
 import "swiper/css/navigation";
+import "swiper/css";
 
-const App: React.FC = (props) => {
+const App: React.FC = () => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);
   const user = useAppSelector(selectUser);
-  // const logOut = useAppSelector(selectIsLogout);
 
   useEffect(() => {
     let id = localStorage.getItem("id");
@@ -67,12 +67,12 @@ const App: React.FC = (props) => {
       dispatch(getAllMembers(null));
       dispatch(getAllProjects(null));
       dispatch(getAllTasks(null));
+      dispatch(getUnNotified(null));
       setMounted(true);
     }
   }, [dispatch, isAuthed]);
 
   useEffect(() => {
-    console.log("update statistic hook fired");
     if (projects.projects.length > 0) {
       if (user?.role === "OM") {
         dispatch(
