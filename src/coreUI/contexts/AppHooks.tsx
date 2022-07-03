@@ -199,9 +199,11 @@ const AppHooks: React.FC = (props) => {
         setNewDepartment(data);
       });
       socket.on("notification-update", (data: any) => {
-        console.log("update notification", data);
-        dispatch(getUnNotified(null));
-        dispatch(getNotifications(`/0/10`));
+        if (isAuthed) {
+          console.log("update notification", data);
+          dispatch(getUnNotified(null));
+          dispatch(getNotifications(`/0/10`));
+        }
       });
     }
   }, [user, dispatch]);
