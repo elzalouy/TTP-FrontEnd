@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Typography } from "@mui/material";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectAllProjects } from "../../../redux/Projects";
-import TasksTable from "../../../coreUI/usable-component/Tables/OverviewTasksTable";
-import { Task } from "../../../interfaces/models/Projects";
+import { useAppSelector } from "../../redux/hooks";
+import { selectAllProjects } from "../../redux/Projects";
+import TasksTable from "../../coreUI/usable-component/Tables/OverviewTasksTable";
+import { Task } from "../../interfaces/models/Projects";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;

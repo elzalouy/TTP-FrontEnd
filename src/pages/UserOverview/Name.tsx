@@ -8,7 +8,13 @@ interface UserNameProps {
 const UserName: React.FC<UserNameProps> = (props) => {
   return (
     <>
-      <Typography variant="h4" component="h4" textTransform={"capitalize"} fontSize={"24px"} color="#11142D">
+      <Typography
+        variant="h4"
+        component="h4"
+        textTransform={"capitalize"}
+        fontSize={"24px"}
+        color="#11142D"
+      >
         Hi
       </Typography>
       {props?.loading ? (

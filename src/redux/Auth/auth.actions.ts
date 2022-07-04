@@ -59,9 +59,9 @@ export const logout = createAsyncThunk<any, any, any>(
       if (result.ok === true) {
         removeAuthToken();
         if (args) {
-          return true
+          return true;
         } else {
-          return false
+          return false;
         }
       } else return result.data;
     } catch (error) {
@@ -112,8 +112,8 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
           progress: undefined,
           toastId: generateID(),
         });
-        return result.data
-      };
+        return result.data;
+      }
     } catch (error: any) {
       toast.error("An error was encountered , Please try again later", {
         position: "top-right",

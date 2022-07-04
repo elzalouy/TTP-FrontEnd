@@ -3,13 +3,13 @@ import * as React from "react";
 import {
   selectAllProjects,
   selectInprogressProjects,
-} from "../../../redux/Projects";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectPMs } from "../../../redux/PM";
-import TableBox from "../Boxes/TableBox";
-import ProjectsTable from "../Tables/ProjectsTable";
+} from "../../redux/Projects";
+import { useAppSelector } from "../../redux/hooks";
+import { selectPMs } from "../../redux/PM";
+import TableBox from "../../coreUI/usable-component/Boxes/TableBox";
+import ProjectsTable from "../../coreUI/usable-component/Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
-import { Project } from "../../../interfaces/models/Projects";
+import { Project } from "../../interfaces/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];

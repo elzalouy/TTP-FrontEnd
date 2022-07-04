@@ -1,10 +1,10 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
 import { FC, useEffect } from "react";
-import UserName from "../../coreUI/usable-component/Overview/Name";
-import UserProjects from "../../coreUI/usable-component/Overview/UserProjects";
-import UserStatus from "../../coreUI/usable-component/Overview/StatusCard";
-import UserTasks from "../../coreUI/usable-component/Overview/UserTasks";
+import UserName from "./Name";
+import UserProjects from "./UserProjects";
+import UserStatus from "./StatusCard";
+import UserTasks from "./UserTasks";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications/Notifications";
 import { RouteComponentProps } from "react-router";
