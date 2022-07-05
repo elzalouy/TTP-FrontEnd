@@ -11,7 +11,7 @@ import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllProjects, selectTasks } from "../../redux/Projects";
 
-type Status =
+export type Status =
   | "Tasks Board"
   | "Review"
   | "Shared"

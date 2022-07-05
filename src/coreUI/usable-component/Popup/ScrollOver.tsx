@@ -4,6 +4,7 @@ import * as React from "react";
 interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
+  notification?: boolean;
 }
 
 const popoverStyles = {
@@ -17,11 +18,22 @@ const popoverStyles = {
   boxShadow: "0px 5px 15px 5px #FAFAFB;",
 };
 
+const popoverStylesNotification = {
+  backgroundColor: "white",
+  borderRadius: "4px",
+  width: "100%",
+  boxShadow: "0px 5px 15px 5px #FAFAFB;",
+};
+
 const ScrollOver: React.FC<ScrollOverProps> = (props) => {
   return (
     <>
       {props.popover ? (
-        <Stack sx={popoverStyles}>{props.children}</Stack>
+        <Stack
+          sx={props.notification ? popoverStylesNotification : popoverStyles}
+        >
+          {props.children}
+        </Stack>
       ) : (
         props.children
       )}

@@ -172,6 +172,7 @@ const OverView: FC<Props> = (props) => {
               xs={12}
               justifyContent="center"
               alignItems="center"
+              marginY={MD ? 2 : 0}
             >
               {role === "OM" ? (
                 <ManagerNotifications {...props} />
