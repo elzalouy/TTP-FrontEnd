@@ -61,7 +61,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
     <Paper className={css.Paper}>
       <TableContainer
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
-        className={css.tableContainer}
+        className={css.tableContainer + " " + "customScrollBar"}
       >
         <Table stickyHeader={true} style={{ borderRadius: 3 }}>
           <TableHead style={{ position: "relative", top: 0, zIndex: 1 }}>
@@ -135,18 +135,5 @@ const Style = makeStyles((theme: any) => ({
     maxHeight: "300px",
     overflow: "scroll",
     padding: 0,
-    "&::-webkit-scrollbar": {
-      display: "block !important",
-      width: "3px !important",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#ECECEC !important",
-      borderRadius: 5,
-    },
-    "&::-webkit-scrollbar-button": {
-      color: "#9FA1AB !important",
-      width: "3px !important",
-      borderRadius: 5,
-    },
   },
 }));

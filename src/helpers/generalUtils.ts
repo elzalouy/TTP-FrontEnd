@@ -11,7 +11,7 @@ interface options {
 
 export const setWidth = (size: boolean, open: boolean) => {
   if (size && open) {
-    return "80%";
+    return "100%";
   } else if (!size && open) {
     return "29.5%";
   } else if (!size && !open) {
