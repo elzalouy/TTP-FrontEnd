@@ -202,8 +202,8 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       <PopUp show={props.show} minWidthSize="50vw">
         {/* Title component */}
         <EditTaskTitle
+          reset={resetState}
           setShow={props.setShow}
-          reset={reset}
           title="Edit task"
         />
         <div className="step2">

@@ -41,6 +41,7 @@ import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
 import TaskIcon from "../../../../assets/icons/TaskIcon";
 import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
 import { toggleLogOutPopup } from "../../../../redux/Ui";
+import { getAllProjects } from "../../../../redux/Projects";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";
@@ -110,7 +111,10 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               select={props.select}
               open={props.open}
               key="1"
-              onClick={() => history.push("/projects")}
+              onClick={() => {
+                dispatch(getAllProjects(null));
+                history.push("/projects");
+              }}
               Icon={() => <ProjectsIcon />}
               path={"/projects"}
               src={IMAGES.projectsicon}

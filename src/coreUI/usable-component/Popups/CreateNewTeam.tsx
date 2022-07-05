@@ -186,6 +186,7 @@ const AddNewTeam: React.FC<Props> = () => {
           }}
           selectText={getDepartmentName(Team)}
           selectValue={getDepartmentName(Team)}
+          label="Teams"
           options={
             departments
               ? departments.map((dep) => {

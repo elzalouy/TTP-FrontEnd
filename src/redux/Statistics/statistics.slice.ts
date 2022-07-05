@@ -17,9 +17,12 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       state = StatisticsState,
       action: PayloadAction<any>
     ) => {
+      // get projects and tasks and the user
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
       let user: User = action.payload.user;
+
+      //check the user
       if (user && user?.role?.length > 0) {
         if (projects && projects.length > 0) {
           state.OM.projectsCloseToDeadlines = projects.filter(

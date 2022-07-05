@@ -7,7 +7,7 @@ import { ProjectsActions } from "../../../redux/Projects";
 interface EditTaskTitleProps {
   title: string;
   setShow: any;
-  reset?: any;
+  reset: any;
 }
 
 const EditTaskTitle: React.FC<EditTaskTitleProps> = ({

@@ -121,7 +121,9 @@ const AppDrawer: React.FC = (props: any) => {
               select={props.select}
               open={open}
               key="1"
-              onClick={() => history.push("/projects")}
+              onClick={() => {
+                history.push("/projects");
+              }}
               path={"/projects"}
               Icon={() => <ProjectsIcon />}
               text="Projects"
