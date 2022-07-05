@@ -64,7 +64,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
         className={css.tableContainer + " " + "customScrollBar"}
       >
         <Table stickyHeader={true} style={{ borderRadius: 3 }}>
-          <TableHead style={{ position: "relative", top: 0, zIndex: 1 }}>
+          <TableHead style={{ position: "relative", top: 0, zIndex: 0 }}>
             <TableRow
               sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2 }}
             >
