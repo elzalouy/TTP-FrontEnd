@@ -83,7 +83,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
       boardId: state.selectedDepartment?.boardId,
       description: data?.description,
     };
-    console.log(newTask);
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);
     if (error || FileError) {

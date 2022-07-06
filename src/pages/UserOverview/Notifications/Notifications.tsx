@@ -48,7 +48,7 @@ const Notifications: React.FC<Props> = (props) => {
       height: open
         ? flat && flat?.length <= 4
           ? `${flat?.length * 60 + 76}px`
-          : "300px"
+          : "400px"
         : "auto",
       overflowY: "scroll",
       "&::-webkit-scrollbar": {
@@ -87,13 +87,6 @@ const Notifications: React.FC<Props> = (props) => {
                 hidden={tab == tabItem ? false : true}
                 id={tabItem}
                 tabIndex={index}
-                height={
-                  open === true
-                    ? flattenTasks?.length && flattenTasks?.length <= 2
-                      ? `${flattenTasks?.length * 60 + 76}px !important`
-                      : "600px"
-                    : "auto"
-                }
                 sx={cssTabContent(tabItem)}
               >
                 {tasks &&
@@ -145,7 +138,7 @@ const Notifications: React.FC<Props> = (props) => {
                           >{`${day},  ${month}  ${year}`}</Typography>
                         </Box>
                         {TArray?.length > 0 &&
-                          (open === true ? TArray : TArray.slice(0, 2)).map(
+                          (open === true ? TArray : TArray.slice(0, 1)).map(
                             (item) => {
                               return (
                                 <Box key={index} sx={cssNotiBox}>

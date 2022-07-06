@@ -93,7 +93,7 @@ const App: React.FC = () => {
         );
       }
     }
-  }, [projects.allTasks, projects.projects, user]);
+  }, [projects.allTasks, projects.projects]);
 
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>

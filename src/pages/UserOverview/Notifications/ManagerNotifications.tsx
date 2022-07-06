@@ -55,7 +55,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       height: open
         ? flat && flat?.length <= 4
           ? `${flat?.length * 60 + 76}px`
-          : "280px"
+          : "400px"
         : "auto",
       overflowY: "scroll",
       "&::-webkit-scrollbar": {
@@ -105,7 +105,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                 : tabItem === "1"
                 ? statistics.OM.review
                 : statistics.OM.shared;
-            let flattenTasks: Task[] = _.flattenDeep(tasks);
+            if (tasks && tasks.length > 0 && open === false) {
+              tasks = [tasks[0]];
+            }
             return (
               <Box
                 key={index}
@@ -114,13 +116,6 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                 hidden={tab == tabItem ? false : true}
                 id={tabItem}
                 tabIndex={index}
-                height={
-                  open === true
-                    ? flattenTasks?.length && flattenTasks?.length <= 2
-                      ? `${flattenTasks?.length * 60 + 76}px !important`
-                      : "600px"
-                    : "auto"
-                }
                 sx={cssTabContent(tabItem)}
               >
                 {tasks &&

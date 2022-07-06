@@ -146,7 +146,6 @@ export const validateEditTask = (data: any) => {
       }
       let newfiles: Array<any> = Array.from(data.attachedFiles);
       for (let i = 0; i < newfiles.length; i++) {
-
         task.append("attachedFiles", newfiles[i]);
       }
     }
@@ -196,6 +195,7 @@ const valdiateCreateTask = (data: any) => {
     task.append("description", data.description);
     task.append("projectId", data.projectId);
     task.append("start", data.start);
+
     return { FormDatatask: task };
   }
 };

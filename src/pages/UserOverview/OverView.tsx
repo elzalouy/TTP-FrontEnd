@@ -206,7 +206,6 @@ const OverView: FC<Props> = (props) => {
             md={12}
             lg={6}
             paddingLeft={SM ? 0 : 2}
-            // direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
             marginBottom={5}
