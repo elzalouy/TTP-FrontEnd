@@ -65,9 +65,6 @@ const AppDrawer: React.FC = (props: any) => {
   const setOpen = () => {
     dispatch(toggleSideMenu(!open));
   };
-  const updateNotified = () => {
-    console.log("update notified");
-  };
   return (
     <>
       <Drawer

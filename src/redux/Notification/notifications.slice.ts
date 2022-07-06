@@ -17,7 +17,6 @@ const notifiSlice: Slice<NotificationsState> = createSlice({
       getNotifications.fulfilled,
       (state = NotificationState, action: PayloadAction<any>) => {
         state.loading = false;
-        console.log(action.payload, state.current, state.notifications);
         if (action.payload.current === state.current + 1) {
           state.notifications = [
             ...state.notifications,

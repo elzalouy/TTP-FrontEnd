@@ -47,7 +47,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
   const [state, setState] = React.useState<CRUDTaskState>(initialState);
 
   React.useEffect(() => {
-    console.log(createTaskPopup);
     if (createTaskPopup === "none") {
       reset();
     }

@@ -18,9 +18,6 @@ export const isCloseToDeadline = (
         deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
           new Date().getTime() / (1000 * 60 * 60 * 24)
       );
-      console.log("total days", totalDays);
-      console.log("remained days", remained);
-
       if (remained <= 0) return true;
       else if (remained > 0 && (remained / totalDays) * 100 > percent)
         return false;
