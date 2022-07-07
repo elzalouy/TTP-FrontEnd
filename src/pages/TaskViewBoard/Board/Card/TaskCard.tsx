@@ -100,7 +100,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
         })
       );
     }
-  }, [error.flag]);
+  }, []);
 
   useEffect(() => {
     if (status !== "Not Started") {
