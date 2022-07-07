@@ -6,10 +6,7 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/usable-component/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../redux/Departments";
 import { useAppSelector } from "../../../../redux/hooks";
-import {
-  downloadAttachment,
-  ProjectsActions,
-} from "../../../../redux/Projects";
+import { ProjectsActions } from "../../../../redux/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -69,8 +66,8 @@ const TaskCard: React.FC<TaskCartProps> = ({
     url: "",
     trelloId: "",
   });
-  const [taskImages, setTaskImages] = useState<any[]>();
-  const [taskFiles, setTaskFiles] = useState<any[]>();
+  const [taskImages, setTaskImages] = useState<any[]>([]);
+  const [taskFiles, setTaskFiles] = useState<any[]>([]);
 
   /// set files
   useEffect(() => {
@@ -86,21 +83,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
       setTaskFiles(others);
     }
   }, [item]);
-
-  useEffect(() => {
-    //This useEffect runs when there is a flag for unauthorized image request and makes checks attachment status by calling the download action
-    if (error.flag) {
-      toast.clearWaitingQueue();
-      dispatch(
-        downloadAttachment({
-          cardId: item?.cardId,
-          attachmentId: error?.trelloId,
-          //This property below disabled opening the attachment after validation
-          openUrl: false,
-        })
-      );
-    }
-  }, []);
 
   useEffect(() => {
     if (status !== "Not Started") {
@@ -144,13 +126,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
     setData(newData);
   }, []);
 
-  /* const handleImageError = (index: number) => {
-    let fallback: Fallback = { flag: false, index: null };
-    fallback.flag = true;
-    fallback.index = index;
-    return fallback;
-  }; */
-
   const getRemainingDays = (day: number) => {
     if (day > 0) {
       return `${day} Days Left`;
@@ -167,7 +142,11 @@ const TaskCard: React.FC<TaskCartProps> = ({
     dispatch(toggleEditTaskPopup("flex"));
     dispatch(ProjectsActions.onOpenTask(item));
   };
-
+  const setImageError = (index: any) => {
+    let images = [...taskImages];
+    images[index] = { ...images[index], error: true };
+    setTaskImages(images);
+  };
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -210,14 +189,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
               </Typography>
             </Box>
             <Grid direction="row">
-              {error.flag && (
-                <div className="fallback-container">
-                  <a href={error.url} className="login-link" target="_blank">
-                    You need to be authorized to view this image. Click here to
-                    Login.
-                  </a>
-                </div>
-              )}
               {item?.attachedFiles?.length > 0 && (
                 <>
                   {taskImages && taskImages.length > 0 && (
@@ -249,39 +220,37 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         className="swiper"
                       >
                         {taskImages.map((image, index) => {
-                          if (!error.flag) {
+                          if (image?.error === true)
                             return (
-                              <SwiperSlide className="swiper-slide">
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    borderRadius: 8,
-                                    marginTop: "10px",
-                                  }}
-                                  onLoad={() => {
-                                    dispatch(
-                                      downloadAttachment({
-                                        cardId: item?.cardId,
-                                        attachmentId: image?.trelloId,
-                                        //This property below disabled opening the attachment after validation
-                                        openUrl: false,
-                                      })
-                                    );
-                                  }}
-                                  onError={() => {
-                                    setError({
-                                      flag: true,
-                                      url: image?.url,
-                                      trelloId: image?.trelloId,
-                                    });
-                                  }}
-                                  src={image?.url}
-                                  alt="more"
-                                />
-                              </SwiperSlide>
+                              <div className="fallback-container">
+                                <a
+                                  href={image.url}
+                                  className="login-link"
+                                  target="_blank"
+                                >
+                                  May be the image not existed anymore, or you
+                                  are not authorized on trelloId. Click here to
+                                  figure out
+                                </a>
+                              </div>
                             );
-                          }
+                          return (
+                            <SwiperSlide key={index} className="swiper-slide">
+                              <img
+                                style={{
+                                  width: "100%",
+                                  height: 120,
+                                  borderRadius: 8,
+                                  marginTop: "10px",
+                                }}
+                                onError={(e) => {
+                                  setImageError(index);
+                                }}
+                                src={image?.url}
+                                alt="more"
+                              />
+                            </SwiperSlide>
+                          );
                         })}
                         {taskImages.length > 1 && (
                           <>

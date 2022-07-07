@@ -29,11 +29,6 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
 
-  const onHandleSort = (e: any) => {
-    let data = watch();
-    dispatch(ProjectsActions.onSortProjectTasks(data.deadline));
-  };
-
   return (
     <Grid
       container

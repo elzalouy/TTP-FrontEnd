@@ -1,12 +1,10 @@
-import { Stack, Typography } from "@mui/material";
+import * as React from "react";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import _ from "lodash";
-import * as React from "react";
-import { useDispatch } from "react-redux";
 import IMAGES from "../../../../assets/img/Images";
 import { formatFileName } from "../../../../helpers/equations";
 import { TaskFile } from "../../../../interfaces/models/Projects";
-import { downloadAttachment } from "../../../../redux/Projects";
 import { taskFilesStyles } from "../styles";
 
 interface TaskFilesProps {
@@ -15,15 +13,9 @@ interface TaskFilesProps {
 }
 
 const TaskFiles: React.FC<TaskFilesProps> = ({ taskFiles, cardId }) => {
-  const dispatch = useDispatch();
   const styles = taskFilesStyles()();
-  const onDownload = (file: any) => {
-    dispatch(
-      downloadAttachment({
-        cardId: cardId,
-        attachmentId: file.trelloId,
-      })
-    );
+  const onDownload = (file: TaskFile) => {
+    window.open(file.url);
   };
 
   return (
