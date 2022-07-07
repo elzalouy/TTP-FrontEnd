@@ -228,9 +228,8 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   className="login-link"
                                   target="_blank"
                                 >
-                                  May be the image not existed anymore, or you
-                                  are not authorized on trelloId. Click here to
-                                  figure out
+                                  you are not authorized on trelloId to see this
+                                  attachment. Click here to sign in first
                                 </a>
                               </div>
                             );
