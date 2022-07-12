@@ -15,7 +15,7 @@ import { generateID } from "../../helpers/IdGenerator";
 import { Department } from "../Departments";
 import { logout } from "../Auth";
 import moment from "moment";
-import { Project } from "../../interfaces/models/Projects";
+import { Project, Task } from "../../interfaces/models/Projects";
 import {
   ToastError,
   ToastSuccess,
@@ -306,7 +306,10 @@ export const moveTask = createAsyncThunk<any, any, any>(
       let moveResult: ApiResponse<any> = await api.moveTask(Data);
       if (moveResult.ok) {
         args.dispatch(fireMoveTaskHook(""));
-        return moveResult.data;
+        let returnValue: Task = { ...task };
+        returnValue.status = value;
+        returnValue.listId = newlist;
+        return returnValue;
       } else throw moveResult.problem;
     } catch (error: any) {
       ToastError(error);

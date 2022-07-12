@@ -401,7 +401,16 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.editTaskLoading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});
-    // builder.addCase(moveTask.)
+    builder.addCase(moveTask.fulfilled, (state, action) => {
+      let index = state.selectedProject.tasks.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      state.selectedProject.tasks[index] = action.payload;
+      index = state.allTasks.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      state.allTasks[index] = action.payload;
+    });
   },
 });
 export const ProjectsActions = projectsSlice.actions;

@@ -22,20 +22,13 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let tasks: Task[] = action.payload.tasks;
       let user: User = action.payload.user;
 
-      console.log("set statistics for ", projects, tasks, user);
-
       //check the user
       if (user && user?.role?.length > 0) {
         if (projects && projects.length > 0) {
-          console.log("projects length > 0");
           state.OM.projectsCloseToDeadlines = projects.filter(
             (item) =>
               item.projectDeadline &&
               isCloseToDeadline(item.projectDeadline, item.startDate, 35)
-          );
-          console.log(
-            "projects close to deadline",
-            state.OM.projectsCloseToDeadlines
           );
         }
         if (tasks && tasks.length > 0) {

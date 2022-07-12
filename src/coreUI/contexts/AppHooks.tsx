@@ -151,12 +151,12 @@ const AppHooks: React.FC = (props) => {
   // }, [editTaskHook]);
 
   // move task
-  React.useEffect(() => {
-    if (moveTaskHook !== undefined) {
-      console.log("move task hook fired");
-      dispatch(getAllTasks(null));
-    }
-  }, [moveTaskHook]);
+  // React.useEffect(() => {
+  //   if (moveTaskHook !== undefined) {
+  //     console.log("move task hook fired");
+  //     dispatch(getAllTasks(null));
+  //   }
+  // }, [moveTaskHook]);
   // Update task event from backend
   React.useEffect(() => {
     if (updateTaskData !== null) {
@@ -182,25 +182,22 @@ const AppHooks: React.FC = (props) => {
     if (user?._id) {
       let socket = openConnection(user);
       socket.on("create-task", (data: any) => {
-        console.log("create task,", data);
         setUpdateTaskData(data);
       });
       socket.on("update-task", (data: any) => {
-        console.log("update task,", data);
         setUpdateTaskData(data);
       });
       socket.on("delete-task", (data: any) => {
-        console.log("delete task", data);
         setDeleteTaskData(data);
       });
       // it should delete the department from the store
-      socket.on("new-department-error", (data) => console.log(data));
+      socket.on("new-department-error", () => {});
       socket.on("new-department", (data) => {
         setNewDepartment(data);
       });
       socket.on("notification-update", (data: any) => {
         if (isAuthed) {
-          console.log("update notification", data);
+          console.log("update notifications");
           dispatch(getUnNotified(null));
           dispatch(getNotifications(`/0/10`));
         }

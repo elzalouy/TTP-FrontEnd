@@ -180,7 +180,6 @@ const valdiateCreateTask = (data: any) => {
       }
       let newfiles: Array<any> = Array.from(data.attachedFiles);
       for (let i = 0; i < newfiles.length; i++) {
-        console.log(newfiles[0]);
         task.append("attachedFiles", newfiles[i]);
       }
     }
