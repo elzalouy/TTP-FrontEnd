@@ -101,3 +101,17 @@ export const initialState: CRUDTaskState = {
   selectedCategory: null,
   selectedDepatmentTeams: [],
 };
+export const videoTypes = [
+  "video/mp4",
+  "video/3gpp",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-msvideo",
+  "video/mpeg",
+  "video/dvd",
+  "video/xvid",
+  "video/x-flv",
+  "video/x-f4v",
+  "video/divx",
+  "video/mov",
+];

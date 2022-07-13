@@ -29,7 +29,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
-import { toast } from "react-toastify";
+import { videoTypes } from "../../../../interfaces/views/BoardView";
+
 interface TaskCartProps {
   index: number;
   item: Task;
@@ -46,6 +47,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   footerStyle,
 }) => {
   const dispatch = useDispatch();
+
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
   const techMembers = useAppSelector(selectAllMembers);

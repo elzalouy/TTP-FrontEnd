@@ -59,6 +59,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("mounting", mounted);
     if (!mounted && checkAuthToken()) {
       dispatch(getAllDepartments(null));
       dispatch(getAllCategories(null));
@@ -70,8 +71,11 @@ const App: React.FC = () => {
       dispatch(getUnNotified(null));
       setMounted(true);
     }
-  }, [dispatch, isAuthed]);
-
+  }, [dispatch, mounted]);
+  useEffect(() => {
+    console.log("auth changes");
+    setMounted(false);
+  }, [isAuthed]);
   useEffect(() => {
     if (projects.projects.length > 0) {
       if (user?.role === "OM") {
