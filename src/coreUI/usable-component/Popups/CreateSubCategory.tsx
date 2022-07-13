@@ -179,9 +179,7 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   placeholder="Ex: Al-shaqran"
                   value={title}
                   onChange={(e) => {
-                    if (e.target.value !== "") {
-                      setTitle(e.target.value);
-                    }
+                    setTitle(e.target.value);
                   }}
                   required
                   sx={createSubCatMainCatStyle}
