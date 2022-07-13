@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { openConnection } from "../../services/socket.io";
 import { selectIsAuth, selectUser } from "../../redux/Auth";
-import { getAllClients } from "../../redux/Clients";
+import { clientsActions, getAllClients } from "../../redux/Clients";
 import { departmentsActions, getAllDepartments } from "../../redux/Departments";
 import { useAppSelector } from "../../redux/hooks";
 import {
@@ -14,6 +14,7 @@ import { selectUi } from "../../redux/Ui/UI.selectors";
 import { getAllCategories } from "../../redux/Categories";
 import { getAllMembers } from "../../redux/TechMember";
 import { getNotifications, getUnNotified } from "../../redux/Notification";
+import { ToastSuccess } from "../usable-component/Typos/Alert";
 
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -142,22 +143,6 @@ const AppHooks: React.FC = (props) => {
     }
   }, [deleteDepartmentHook]);
 
-  // // Edit Task hook
-  // React.useEffect(() => {
-  //   if (editTaskHook !== undefined) {
-  //     console.log("edit Task hook fired.");
-  //     dispatch(getAllTasks(null));
-  //   }
-  // }, [editTaskHook]);
-
-  // move task
-  // React.useEffect(() => {
-  //   if (moveTaskHook !== undefined) {
-  //     console.log("move task hook fired");
-  //     dispatch(getAllTasks(null));
-  //   }
-  // }, [moveTaskHook]);
-  // Update task event from backend
   React.useEffect(() => {
     if (updateTaskData !== null) {
       dispatch(ProjectsActions.updateTaskData(updateTaskData));
@@ -201,6 +186,11 @@ const AppHooks: React.FC = (props) => {
           dispatch(getUnNotified(null));
           dispatch(getNotifications(`/0/10`));
         }
+      });
+      socket.on("create-client", (client) => {
+        console.log("create client socket event fired", client);
+        ToastSuccess("New Client created");
+        dispatch(clientsActions.createClient(client));
       });
     }
   }, [user, dispatch]);

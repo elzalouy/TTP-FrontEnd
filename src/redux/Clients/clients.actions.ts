@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { ToastSuccess } from "../../coreUI/usable-component/Typos/Alert";
 import { generateID } from "../../helpers/IdGenerator";
 import { removeAuthToken } from "../../services/api";
 import ClientsApi from "../../services/endpoints/clients";
@@ -7,7 +8,7 @@ import { logout } from "../Auth";
 
 export const getAllClients = createAsyncThunk<any, any, any>(
   "clients/getAll",
-  async (args: any, { rejectWithValue ,dispatch}) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let result = await ClientsApi.getClients();
       if (result?.status === 401 || result?.status === 403) {
@@ -27,19 +28,17 @@ export const creatClient = createAsyncThunk<any, any, any>(
   "client/createClient",
   async (data: any, { rejectWithValue }) => {
     try {
-      let client = await ClientsApi.createClient(data);
-      if (client.ok && client.data) {
-        toast.success("Client created successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        return client.data;
-      } else return [];
+      let formData: FormData = data;
+      let result = {
+        clientName: formData.get("clientName"),
+        image: formData.get("image"),
+        doneProject: 0,
+        inProgressProject: 0,
+        inProgressTask: 0,
+      };
+      console.log(result);
+      ClientsApi.createClient(data);
+      return result;
     } catch (error) {
       rejectWithValue(error);
     }
@@ -109,7 +108,7 @@ export const deleteClient = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
       rejectWithValue(error);
     }

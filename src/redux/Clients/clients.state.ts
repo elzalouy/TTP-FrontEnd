@@ -5,7 +5,7 @@ export interface Client {
   inProgressProject: any;
   inProgressTask: any;
   createdAt: string;
-  image: string;
+  image: string | File;
 }
 export interface UpdateClientInterface {
   _id: string;

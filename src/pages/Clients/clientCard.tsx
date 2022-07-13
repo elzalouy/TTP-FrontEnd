@@ -1,6 +1,6 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IMAGES from "../../assets/img/Images";
 import { Client } from "./clients";
 import moment from "moment";
@@ -28,6 +28,14 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
   const notStartedProject = useAppSelector(selectNotStartedProjects);
   const projects = useAppSelector(selectAllProjects);
   const tasks = useAppSelector(selectTasks);
+  const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    if (image?.size && image?.name) {
+      const objectUrl = URL.createObjectURL(image);
+      setPreview(objectUrl);
+    } else setPreview(image);
+  }, [image]);
 
   const getTasksByClientIdAndStatus = (__status__: Status) => {
     let clientProjects = projects.projects.filter(
@@ -70,7 +78,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               alignItems="center"
             >
               <img
-                src={image === "null" ? IMAGES.avatarClients : image}
+                src={preview === "" ? IMAGES.avatarClients : preview}
                 alt="avatar"
                 style={{
                   width: "52px",

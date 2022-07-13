@@ -52,6 +52,18 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         state.clientsData[index] = client;
       }
     },
+    createClient: (state = clientState, action: PayloadAction<any>) => {
+      let index = state.clientsData.findIndex(
+        (item) => item.clientName === action.payload.clientName
+      );
+      if (index >= 0) state.clientsData[index] = action.payload;
+      else state.clientsData = [...state.clientsData, action.payload];
+      index = state.selectedClient.findIndex(
+        (item) => item.clientName === action.payload.clientName
+      );
+      if (index >= 0) state.selectedClient[index] = action.payload;
+      else state.selectedClient = [...state.clientsData, action.payload];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllClients.rejected, (state) => {

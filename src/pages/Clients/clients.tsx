@@ -31,7 +31,7 @@ export interface Client {
   inProgressProject: string[] | number;
   inProgressTask: string[];
   createdAt: string;
-  image: string;
+  image: any;
 }
 
 const options: { id: string; value: string; text: string }[] = [
