@@ -102,11 +102,25 @@ const CreateNewCategory: React.FC<Props> = () => {
         (cat) => cat.category === body.category
       );
       if (!checkNames) { */
-      await dispatch(createCategory({ data: body, dispatch }));
-      setShow("none");
-      setMainCategory("");
-      setSubCategory("");
-      setsubCategories([]);
+      if (mainCategory.length !== 0) {
+        await dispatch(createCategory({ data: body, dispatch }));
+        setShow("none");
+        setMainCategory("");
+        setSubCategory("");
+        setsubCategories([]);
+      }else{
+        toast.error("Category name cannot be set empty", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
+      }
+
       /*   } else {
         toast.error("Category name already exist", {
           position: "top-right",
