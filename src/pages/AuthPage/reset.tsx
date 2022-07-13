@@ -145,7 +145,7 @@ const ResetPassword: React.FC<Props> = ({ history }) => {
           md={6}
           height={"100%"}
           bgcolor={"white"}
-          paddingX={5}
+          paddingX={SM ? 1 : 5}
           paddingTop={6}
           paddingBottom={4}
         >

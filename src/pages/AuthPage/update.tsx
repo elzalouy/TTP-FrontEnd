@@ -148,7 +148,7 @@ const UpdatePassword: React.FC<Props> = ({ history, location, match }) => {
           md={6}
           height={"100%"}
           bgcolor={"white"}
-          paddingX={5}
+          paddingX={SM ? 1 : 5}
           paddingTop={6}
           paddingBottom={4}
         >
