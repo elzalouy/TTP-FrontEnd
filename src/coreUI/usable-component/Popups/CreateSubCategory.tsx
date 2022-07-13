@@ -16,6 +16,8 @@ import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
+import { toast } from "react-toastify";
+import { generateID } from "../../../helpers/IdGenerator";
 
 type Props = {
   display: string;
@@ -120,9 +122,22 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
       category: title,
     };
     try {
-      await dispatch(updateCategory(body));
-      setsubCategories([]);
-      handleSetDisplay("none");
+      if (title?.length !== 0) {
+        await dispatch(updateCategory(body));
+        setsubCategories([]);
+        handleSetDisplay("none");
+      } else {
+        toast.error("Category name cannot be set empty", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          toastId: generateID(),
+        });
+      }
     } catch (error: any) {
       setErrors(error.message);
     }
@@ -163,7 +178,11 @@ const AddSubCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                   name="mainCategory"
                   placeholder="Ex: Al-shaqran"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value !== "") {
+                      setTitle(e.target.value);
+                    }
+                  }}
                   required
                   sx={createSubCatMainCatStyle}
                 />
