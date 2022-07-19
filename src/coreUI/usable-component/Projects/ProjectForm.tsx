@@ -32,7 +32,10 @@ import Joi from "joi";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { generateID } from "../../../helpers/IdGenerator";
 import IMAGES from "../../../assets/img/Images";
-import { validateCreateProject } from "../../../services/validations/project.schema";
+import {
+  validateCreateProject,
+  validateDate,
+} from "../../../services/validations/project.schema";
 import { ToastError, ToastWarning } from "../Typos/Alert";
 
 interface ProjectFormProps {
@@ -51,29 +54,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
   });
   // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
-  const watchStartDate = watch().startDate;
-  const watchDeadline = watch().deadline;
   const loading = useAppSelector(selectLoading);
   const clients = useAppSelector(selectClientsNames);
-  const user = useAppSelector(selectUser);
   const PMs = useAppSelector(selectPMs);
   const { createProjectPopup } = useAppSelector(selectUi);
 
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
-
-  React.useEffect(() => {
-    let today = moment().format();
-    let deadline = moment(watchDeadline).format();
-    let startDate = moment(watchStartDate).format();
-    if (moment(today).isAfter(moment(deadline))) {
-      ToastWarning("Deadline has already passed today's date");
-    }
-    if (moment(today).isAfter(moment(startDate))) {
-      ToastWarning("Start Date has already passed today's date");
-    }
-  }, [watchStartDate, watchDeadline]);
 
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
@@ -187,7 +175,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                onChange={props.field.onChange}
+                onChange={(e) => {
+                  validateDate(
+                    moment(e).toDate(),
+                    "Start date is not greater than now",
+                    "now"
+                  );
+                  props.field.onChange(e);
+                }}
                 leftArrowButtonText="arrow"
                 renderInput={(
                   params: JSX.IntrinsicAttributes & TextFieldProps
@@ -244,7 +239,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                onChange={props.field.onChange}
+                onChange={(e) => {
+                  validateDate(
+                    moment(e).toDate(),
+                    "Deadline is not greater than Today",
+                    "now"
+                  );
+                  props.field.onChange(e);
+                }}
                 leftArrowButtonText="arrow"
                 renderInput={({
                   className,

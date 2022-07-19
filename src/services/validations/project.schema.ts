@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { ToastWarning } from "../../coreUI/usable-component/Typos/Alert";
 const createProjectSchema = Joi.object({
   name: Joi.string().required().min(4).messages({
     "string.base": "Project Name is required",
@@ -19,12 +20,20 @@ const createProjectSchema = Joi.object({
     "string.min": "Project Manager Name length should be Min 2 chars",
     "string.required": "Project Manager is required",
   }),
-  projectDeadline: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Project Deadline is required",
-  }),
-  startDate: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Project Start Date is required",
-  }),
+  projectDeadline: Joi.date()
+    .optional()
+    .label("project deadline")
+    .allow(null, "")
+    .messages({
+      "any.required": "Project Deadline is required",
+    }),
+  startDate: Joi.date()
+    .label("start date")
+    .optional()
+    .allow(null, "")
+    .messages({
+      "any.required": "Project Start Date is required",
+    }),
   clientId: Joi.string().required().min(2).max(50).messages({
     "any.required": "Client is required",
     "string.base": "Client should be string",
@@ -42,7 +51,13 @@ const createProjectSchema = Joi.object({
     "any.required": "Admin id is required for creating a project",
   }),
 });
-
+export const validateDate = (date: any, msg: any, greater: any) => {
+  let dateSchema = Joi.object({
+    date: Joi.date().greater(greater).message(msg).optional().allow(null, ""),
+  });
+  let result = dateSchema.validate({ date: date });
+  if (result.error) ToastWarning(result.error.details[0].message);
+};
 const validateCreateProject = (data: any) => {
   let { error, value, warning } = createProjectSchema.validate(data);
   return { error, value, warning };

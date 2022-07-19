@@ -5,6 +5,8 @@ import { TextField, TextFieldProps } from "@mui/material";
 import IMAGES from "../../../assets/img/Images";
 import { dateInputStyle } from "./styles";
 import { DateInputProps } from "../../../interfaces/views/BoardView";
+import { validateDate } from "../../../services/validations/project.schema";
+import moment from "moment";
 // now we can consider it a reusable component and moved it (think of my brother) #EzatElzalouy
 const DateInput: React.FC<DateInputProps> = ({
   control,
@@ -29,7 +31,14 @@ const DateInput: React.FC<DateInputProps> = ({
               {...register(name)}
               inputFormat="YYYY-MM-DD"
               value={props.field.value}
-              onChange={props.field.onChange}
+              onChange={(e: any) => {
+                validateDate(
+                  moment(e).toDate(),
+                  "Deadline is not greater than now",
+                  "now"
+                );
+                props.field.onChange(e);
+              }}
               leftArrowButtonText="arrow"
               renderInput={(
                 params: JSX.IntrinsicAttributes & TextFieldProps

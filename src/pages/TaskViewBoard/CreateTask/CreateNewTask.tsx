@@ -52,14 +52,6 @@ const CreateNewTask: React.FC<Props> = (props) => {
     }
   }, [createTaskPopup]);
 
-  // React.useEffect(() => {
-  //   let today = moment().format();
-  //   let deadline = moment(watchDeadline).format();
-  //   if (moment(today).isAfter(moment(deadline))) {
-  //     ToastWarning("Deadline has already passed today's date");
-  //   }
-  // }, [watchDeadline]);
-
   const onSubmit = async (data: any) => {
     let State = { ...state };
     let newTask = {

@@ -33,6 +33,7 @@ import {
   valdiateCreateTask,
   validateTaskFilesSchema,
 } from "../../../services/validations/task.schema";
+import { validateDate } from "../../../services/validations/project.schema";
 
 interface TaskFormProps {}
 
@@ -158,23 +159,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     }
   };
 
-  React.useEffect(() => {
-    let today = moment().format();
-    let deadline = moment(watchDeadline).format();
-    if (moment(today).isAfter(moment(deadline))) {
-      toast.warning("Deadline has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
-    }
-  }, [watchDeadline]);
-
   const onChangeFiles = () => {
     files.current?.click();
   };
@@ -277,7 +261,14 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    onChange={props.field.onChange}
+                    onChange={(e) => {
+                      validateDate(
+                        moment(e).toDate(),
+                        "Deadline is not greater than now",
+                        "now"
+                      );
+                      props.field.onChange(e);
+                    }}
                     leftArrowButtonText="arrow"
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
