@@ -29,6 +29,7 @@ import {
   getStatus,
 } from "../../../helpers/generalUtils";
 import { toast } from "react-toastify";
+import { validateDate } from "../../../services/validations/project.schema";
 
 type Props = {
   show: string;
@@ -91,38 +92,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
-  const watchStartDate = watch().startDate;
-  const watchDeadline = watch().deadline;
-
-  /*  React.useEffect(() => {
-    let today = moment().format();
-    let deadline = moment(watchDeadline).format();
-    let startDate = moment(watchStartDate).format();
-    if (moment(today).isAfter(moment(deadline))) {
-      toast.warning("Deadline has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
-    }
-    if (moment(today).isAfter(moment(startDate))) {
-      toast.warning("Start Date has already passed today's date", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
-    }
-  }, [watchStartDate, watchDeadline]); */
 
   useEffect(() => {
     setValue("clientId", project?.clientId);
@@ -321,7 +290,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    onChange={props.field.onChange}
+                    onChange={(e) => {
+                      validateDate(
+                        moment(e).toDate(),
+                        "Deadline is not greater than now",
+                        "now"
+                      );
+                      props.field.onChange(e);
+                    }}
                     leftArrowButtonText="arrow"
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
@@ -375,7 +351,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    onChange={props.field.onChange}
+                    onChange={(e) => {
+                      validateDate(
+                        moment(e).toDate(),
+                        "Deadline is not greater than now",
+                        "now"
+                      );
+                      props.field.onChange(e);
+                    }}
                     leftArrowButtonText="arrow"
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
