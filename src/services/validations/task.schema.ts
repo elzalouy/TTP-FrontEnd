@@ -199,7 +199,7 @@ const valdiateCreateTask = (data: any) => {
   }
 };
 
-export const validateTaskFilesSchema = (files: File[] | any[]) => {
+export const validateTaskFilesSchema = (files: File[]) => {
   let response: {
     error: string | null;
     value: any;
@@ -210,6 +210,13 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
     if (item.size > 10000000) {
       response = {
         error: `The file ${item.name} has exceeded the max size 10 MB`,
+        value: files,
+      };
+      break;
+    }
+    if (!MimeTypes.includes(item.type)) {
+      response = {
+        error: `This file ${item.name} with type of file ${item.type} is not allowed.`,
         value: files,
       };
       break;
@@ -226,5 +233,29 @@ export const validateTaskFilesSchema = (files: File[] | any[]) => {
   if (response !== null) return response;
   else return { error: null, value: files };
 };
-
+const MimeTypes = [
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/svg",
+  "text/csv",
+  "application/msword", // .doc
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+  "image/gif",
+  "application/pdf",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "video/mp4",
+  "video/3gpp",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-msvideo",
+  "video/mpeg",
+  "video/dvd",
+  "video/xvid",
+  "video/x-flv",
+  "video/x-f4v",
+  "video/divx",
+  "video/mov",
+];
 export { valdiateCreateTask };
