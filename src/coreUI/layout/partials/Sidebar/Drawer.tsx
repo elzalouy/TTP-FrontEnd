@@ -40,6 +40,7 @@ import { useAppSelector } from "../../../../redux/hooks";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../../redux/Ui";
 import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
 import { selectUnNotifiedNum } from "../../../../redux/Notification";
+import { getPMs } from "../../../../redux/PM";
 
 interface BarProps extends AppBarProps {}
 
@@ -65,6 +66,7 @@ const AppDrawer: React.FC = (props: any) => {
   const setOpen = () => {
     dispatch(toggleSideMenu(!open));
   };
+
   return (
     <>
       <Drawer
@@ -230,7 +232,6 @@ const AppDrawer: React.FC = (props: any) => {
                       ? user?.name
                       : user?.user?.name
                   }
-                  value="86%"
                   size="40"
                   round
                   color="#FFC500"
@@ -274,10 +275,10 @@ const AppDrawer: React.FC = (props: any) => {
                       {user?.user?.role === undefined
                         ? user?.role === "OM"
                           ? "Admin"
-                          : "Project Manager"
+                          :  user?.role === "PM" ? "Project Manager" : ""
                         : user?.user?.role === "OM"
                         ? "Admin"
-                        : "Project Manager"}
+                        : user?.user?.role === "PM" ? "Project Manager" : ""}
                     </Typography>
                   </Box>
                   <Box sx={{ cursor: "pointer" }}>
