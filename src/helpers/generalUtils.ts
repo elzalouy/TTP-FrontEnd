@@ -122,3 +122,9 @@ export const isOptionsEmpty = (options: options[]) => {
     return false;
   }
 };
+
+export const getYesterdaysDate = () => {
+  let today = new Date();
+  today.setDate(today.getDate() - 1);
+  return today;
+}

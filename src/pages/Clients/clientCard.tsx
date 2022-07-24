@@ -78,7 +78,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               alignItems="center"
             >
               <img
-                src={preview === "" ? IMAGES.avatarClients : preview}
+                src={["",null,undefined,'null','undefined'].includes(preview) ? IMAGES.avatarClients : preview}
                 alt="avatar"
                 style={{
                   width: "52px",

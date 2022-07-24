@@ -215,7 +215,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 name="deadline"
                 state={state}
                 control={control}
-                placeholder="deadline"
+                placeholder="Deadline"
                 register={register}
                 setValue={setValue}
               />
