@@ -34,6 +34,7 @@ import {
   validateTaskFilesSchema,
 } from "../../../services/validations/task.schema";
 import { validateDate } from "../../../services/validations/project.schema";
+import { getYesterdaysDate } from "../../../helpers/generalUtils";
 
 interface TaskFormProps {}
 
@@ -264,8 +265,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Deadline is not greater than now",
-                        "now"
+                        "Deadline has passed today's date" ,
+                          getYesterdaysDate()
                       );
                       props.field.onChange(e);
                     }}

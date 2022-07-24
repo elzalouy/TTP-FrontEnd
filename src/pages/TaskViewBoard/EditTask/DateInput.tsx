@@ -7,6 +7,7 @@ import { dateInputStyle } from "./styles";
 import { DateInputProps } from "../../../interfaces/views/BoardView";
 import { validateDate } from "../../../services/validations/project.schema";
 import moment from "moment";
+import { getYesterdaysDate } from "../../../helpers/generalUtils";
 // now we can consider it a reusable component and moved it (think of my brother) #EzatElzalouy
 const DateInput: React.FC<DateInputProps> = ({
   control,
@@ -34,8 +35,8 @@ const DateInput: React.FC<DateInputProps> = ({
               onChange={(e: any) => {
                 validateDate(
                   moment(e).toDate(),
-                  "Deadline is not greater than now",
-                  "now"
+                  "Deadline has passed today's date" ,
+                    getYesterdaysDate()
                 );
                 props.field.onChange(e);
               }}

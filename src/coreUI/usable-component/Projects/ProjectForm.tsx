@@ -37,6 +37,7 @@ import {
   validateDate,
 } from "../../../services/validations/project.schema";
 import { ToastError, ToastWarning } from "../Typos/Alert";
+import { getYesterdaysDate } from "../../../helpers/generalUtils";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -178,8 +179,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
-                    "Start date is not greater than now",
-                    "now"
+                    "Start date has passed today's date" ,
+                      getYesterdaysDate()
                   );
                   props.field.onChange(e);
                 }}
@@ -242,8 +243,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
-                    "Deadline is not greater than Today",
-                    "now"
+                    "Deadline has passed today's date",
+                      getYesterdaysDate()
                   );
                   props.field.onChange(e);
                 }}

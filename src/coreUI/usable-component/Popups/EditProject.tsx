@@ -27,6 +27,7 @@ import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
   getStatus,
+  getYesterdaysDate,
 } from "../../../helpers/generalUtils";
 import { toast } from "react-toastify";
 import { validateDate } from "../../../services/validations/project.schema";
@@ -293,8 +294,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Deadline is not greater than now",
-                        "now"
+                        "Start date has passed today's date" ,
+                        getYesterdaysDate()
                       );
                       props.field.onChange(e);
                     }}
@@ -354,8 +355,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Deadline is not greater than now",
-                        "now"
+                        "Deadline has passed today's date" ,
+                        getYesterdaysDate()
                       );
                       props.field.onChange(e);
                     }}
