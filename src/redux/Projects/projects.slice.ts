@@ -88,6 +88,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           new Date(a.deadline) > new Date(b.deadline) ? -1 : 1
         );
       state.allTasks = tasks;
+      state.filteredTasks = tasks; //The sorted data must be change
     },
     onSortProjectTasks: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
