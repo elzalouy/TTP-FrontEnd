@@ -52,16 +52,8 @@ export const createPM = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.createUser(args.data);
+      console.log(PMs);
       if (PMs.ok && PMs.data) {
-        toast.success("Project Manager created successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         args.dispatch(fireCreatePMHook(""));
         return PMs.data;
       }

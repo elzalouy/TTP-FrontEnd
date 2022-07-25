@@ -1,4 +1,5 @@
 import { AnyAction, createSlice, Slice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import {
   getPMs,
   createPM,
@@ -39,7 +40,28 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
     });
     builder.addCase(createPM.fulfilled, (state, action) => {
       state.loading = false;
-      state.PMs = [...state.PMs, action.payload];
+      if(action.payload.status !== 400){
+        toast.success("Project Manager created successfully", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        state.PMs = [...state.PMs, action.payload];
+      }else{
+        toast.warn("The Email address is already in use, Please try a different Email address", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     });
     builder.addCase(deletePM.rejected, (state) => {
       state.loading = false;

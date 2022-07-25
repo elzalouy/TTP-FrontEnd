@@ -154,37 +154,36 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setTrigger(false);
   };
 
-  const onSubmitEdit = () => {
+  const showAlertBasedOnDate = () => {
     let data = watch();
-
-    if (updateDate) {
-      if (data.startDate === null || data.deadline === null) {
-        data.status = "Not Started";
-      } else {
-        data.status = "inProgress";
-      }
-      executeEditProject(data);
-      return;
-    }
 
     if (data.startDate === null && data.deadline === null) {
       setAlert("Starting date and Deadline");
-      if (data.status === "Done" || data.status === "inProgress") {
+      if (data.status === "Done") {
         setConfirm("flex");
+      } else if (data.status === "inProgress") {
+        data.status = "Not Started";
+        setTrigger(true);
       } else {
         setTrigger(true);
       }
     } else if (data.startDate === null && data.deadline !== null) {
       setAlert("Starting date");
-      if (data.status === "Done" || data.status === "inProgress") {
+      if (data.status === "Done") {
         setConfirm("flex");
+      } else if (data.status === "inProgress") {
+        data.status = "Not Started";
+        setTrigger(true);
       } else {
         setTrigger(true);
       }
     } else if (data.startDate !== null && data.deadline === null) {
       setAlert("Deadline");
-      if (data.status === "Done" || data.status === "inProgress") {
+      if (data.status === "Done") {
         setConfirm("flex");
+      } else if (data.status === "inProgress") {
+        data.status = "Not Started";
+        setTrigger(true);
       } else {
         setTrigger(true);
       }
@@ -202,6 +201,30 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setTrigger(true);
       }
     }
+  }
+
+  const onSubmitEdit = () => {
+    let data = watch();
+
+    if (updateDate) {
+      //This block runs if you make changes to the date values inside the form
+      if (data.startDate === null || data.deadline === null) {
+        //We want to show alerts if uses does not add dates but update status 
+        if (data.status === "Done" || data.status === "inProgress") {
+          showAlertBasedOnDate();
+        }
+        data.status = "Not Started";
+      } else if ((data.startDate !== null || data.deadline !== null) && data.status === "Done") {
+        setConfirm("flex");
+      } else {
+        data.status = "inProgress";
+      }
+      executeEditProject(data);
+      return;
+    }
+
+    //This method is called only if no changes are made to date values but to the status inside the form
+    showAlertBasedOnDate();
   };
 
   return (
@@ -270,12 +293,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     options={
                       clients
                         ? clients?.map((item) => {
-                            return {
-                              id: item.clientId,
-                              value: item.clientId,
-                              text: item.clientName,
-                            };
-                          })
+                          return {
+                            id: item.clientId,
+                            value: item.clientId,
+                            text: item.clientName,
+                          };
+                        })
                         : []
                     }
                   />
@@ -294,7 +317,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Start date has passed today's date" ,
+                        "Start date has passed today's date",
                         getYesterdaysDate()
                       );
                       props.field.onChange(e);
@@ -355,7 +378,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Deadline has passed today's date" ,
+                        "Deadline has passed today's date",
                         getYesterdaysDate()
                       );
                       props.field.onChange(e);
@@ -443,12 +466,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     options={
                       PMs?.length > 0
                         ? PMs.map((item) => {
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.name,
-                            };
-                          })
+                          return {
+                            id: item._id,
+                            value: item._id,
+                            text: item.name,
+                          };
+                        })
                         : []
                     }
                   />

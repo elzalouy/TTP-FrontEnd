@@ -28,12 +28,6 @@ const CreateNewPM: React.FC<Props> = () => {
       if (!username || !email) {
         setError(true);
       } else {
-        let emailArr = PMs.map((pm) => pm.email);
-        let validate = emailArr.find((e) => e === email);
-        if (validate) {
-          setValidationError(true);
-          return;
-        }
         dispatch(
           createPM({
             data: {
