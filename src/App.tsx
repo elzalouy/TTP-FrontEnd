@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import LoggedInContainer from "./coreUI/layout/Layout";
 import Login from "./pages/AuthPage/login";
 import ResetPassword from "./pages/AuthPage/reset";
@@ -50,6 +50,7 @@ const App: React.FC = () => {
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
+      console.log("user id", id);
       dispatch(
         getUserInfo({
           id: id,
@@ -59,8 +60,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("mounting", mounted);
-    if (!mounted && checkAuthToken()) {
+    if (!mounted && isAuthed) {
       dispatch(getAllDepartments(null));
       dispatch(getAllCategories(null));
       dispatch(getAllClients(null));
@@ -71,9 +71,8 @@ const App: React.FC = () => {
       dispatch(getUnNotified(null));
       setMounted(true);
     }
-  }, [dispatch, mounted]);
+  }, [dispatch, mounted, isAuthed]);
   useEffect(() => {
-    console.log("auth changes");
     setMounted(false);
   }, [isAuthed]);
   useEffect(() => {
@@ -176,6 +175,7 @@ const App: React.FC = () => {
             component={OverView}
             key="/overview"
           />
+          {isAuthed && <Redirect from="/" to="/Overview" />}
           {!isAuthed && <Route path="*" component={NotFound} key="/notfound" />}
           {isAuthed && (
             <LoggedInContainer

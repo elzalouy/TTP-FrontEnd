@@ -18,8 +18,6 @@ const LoggedInContainer: React.FC<Props> = ({
   ...rest
 }: any) => {
   const { pathname } = useLocation();
-  // const isAuthed = useAppSelector(selectIsAuth);
-  // const isLogout = useAppSelector(selectIsLogout);
 
   if (!checkAuthToken()) {
     return <AuthRedirection />;
@@ -30,16 +28,13 @@ const LoggedInContainer: React.FC<Props> = ({
       <Route
         {...rest}
         render={(props) => {
-          if (pathname === "/") {
-            return <Redirect to={"Overview"} />;
-          } else
-            return (
-              <div key={rest.location.key} style={{ display: "flex" }}>
-                {!notfound && <Sidebar {...rest} {...props} />}
-                <Bar {...props} {...rest} />
-                <Component key={rest?.location?.key} {...props} {...rest} />
-              </div>
-            );
+          return (
+            <div key={rest.location.key} style={{ display: "flex" }}>
+              {!notfound && <Sidebar {...rest} {...props} />}
+              <Bar {...props} {...rest} />
+              <Component key={rest?.location?.key} {...props} {...rest} />
+            </div>
+          );
         }}
       />
     </div>

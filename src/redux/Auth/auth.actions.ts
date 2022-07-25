@@ -56,8 +56,8 @@ export const logout = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       let result = await api.signOut();
+      removeAuthToken();
       if (result.ok === true) {
-        removeAuthToken();
         if (args) {
           return true;
         } else {
