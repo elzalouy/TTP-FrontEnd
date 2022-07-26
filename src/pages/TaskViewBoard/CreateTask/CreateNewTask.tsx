@@ -279,30 +279,26 @@ const CreateNewTask: React.FC<Props> = (props) => {
                   }
                 />
                 <Box paddingTop={2}>
-                  {role === "OM" && (
-                    <>
-                      <Select
-                        name="teamId"
-                        label={"Assign to team"}
-                        control={control}
-                        state={state}
-                        register={register}
-                        selectValue={watch().teamId}
-                        selectText={
-                          state.selectedDepatmentTeams?.find(
-                            (item) => item._id === watch().teamId
-                          )?.name
-                        }
-                        options={state.selectedDepatmentTeams?.map((item) => {
-                          return {
-                            id: item._id,
-                            value: item._id,
-                            text: item.name,
-                          };
-                        })}
-                      />
-                    </>
-                  )}
+                  <Select
+                    name="teamId"
+                    label={"Assign to team"}
+                    control={control}
+                    state={state}
+                    register={register}
+                    selectValue={watch().teamId}
+                    selectText={
+                      state.selectedDepatmentTeams?.find(
+                        (item) => item._id === watch().teamId
+                      )?.name
+                    }
+                    options={state.selectedDepatmentTeams?.map((item) => {
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    })}
+                  />
                 </Box>
               </div>
             </div>

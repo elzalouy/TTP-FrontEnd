@@ -265,8 +265,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
-                        "Deadline has passed today's date" ,
-                          getYesterdaysDate()
+                        "Deadline has passed today's date",
+                        getYesterdaysDate()
                       );
                       props.field.onChange(e);
                     }}
@@ -404,51 +404,45 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 )}
               />
               <br />
-              {role === "OM" && (
-                <>
-                  <label className="label-project">Assign to Team</label>
-                  <br />
-                  <Controller
-                    name="teamId"
-                    control={control}
-                    render={(props) => (
-                      <SelectInput2
-                        label="Teams list"
-                        error={error?.error?.details[0]?.path.includes(
-                          "listId"
-                        )}
-                        handleChange={props.field.onChange}
-                        selectText={
-                          selectedDepartment?.teamsId?.find(
-                            (item: any) => item._id === props.field.value
-                          )?.name
-                        }
-                        {...register("teamId")}
-                        selectValue={props.field.value}
-                        options={
-                          selectedDepartment?.teamsId
-                            ? selectedDepartment?.teamsId?.map((item: any) => {
-                                if (!item.isDeleted) {
-                                  return {
-                                    id: item._id ? item._id : "",
-                                    value: item._id ? item._id : "",
-                                    text: item.name,
-                                  };
-                                } else {
-                                  return {
-                                    id: "",
-                                    value: "",
-                                    text: "",
-                                  };
-                                }
-                              })
-                            : []
-                        }
-                      />
-                    )}
+              <label className="label-project">Assign to Team</label>
+              <br />
+              <Controller
+                name="teamId"
+                control={control}
+                render={(props) => (
+                  <SelectInput2
+                    label="Teams list"
+                    error={error?.error?.details[0]?.path.includes("listId")}
+                    handleChange={props.field.onChange}
+                    selectText={
+                      selectedDepartment?.teamsId?.find(
+                        (item: any) => item._id === props.field.value
+                      )?.name
+                    }
+                    {...register("teamId")}
+                    selectValue={props.field.value}
+                    options={
+                      selectedDepartment?.teamsId
+                        ? selectedDepartment?.teamsId?.map((item: any) => {
+                            if (!item.isDeleted) {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.name,
+                              };
+                            } else {
+                              return {
+                                id: "",
+                                value: "",
+                                text: "",
+                              };
+                            }
+                          })
+                        : []
+                    }
                   />
-                </>
-              )}
+                )}
+              />
             </div>
             <Box alignItems="center" display={"inline-flex"} className="files">
               <input

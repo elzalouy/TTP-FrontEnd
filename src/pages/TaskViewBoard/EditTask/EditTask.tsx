@@ -247,7 +247,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 name="deadline"
                 state={state}
                 control={control}
-              placeholder="Deadline"
+                placeholder="Deadline"
                 register={register}
                 setValue={setValue}
               />
@@ -314,30 +314,26 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   }
                 />
                 <Box paddingTop={2}>
-                  {role === "OM" && (
-                    <>
-                      <Select
-                        name="teamId"
-                        label={"Assign to team"}
-                        control={control}
-                        state={state}
-                        register={register}
-                        selectValue={watch().teamId}
-                        selectText={
-                          state.selectedDepartment?.teamsId?.find(
-                            (item: any) => item._id === watch().teamId
-                          )?.name
-                        }
-                        options={state.selectedDepatmentTeams?.map((item) => {
-                          return {
-                            id: item._id,
-                            value: item._id,
-                            text: item.name,
-                          };
-                        })}
-                      />
-                    </>
-                  )}
+                  <Select
+                    name="teamId"
+                    label={"Assign to team"}
+                    control={control}
+                    state={state}
+                    register={register}
+                    selectValue={watch().teamId}
+                    selectText={
+                      state.selectedDepartment?.teamsId?.find(
+                        (item: any) => item._id === watch().teamId
+                      )?.name
+                    }
+                    options={state.selectedDepatmentTeams?.map((item) => {
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    })}
+                  />
                 </Box>
               </div>
             </div>
