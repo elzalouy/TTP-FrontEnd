@@ -36,7 +36,7 @@ import {
 import { validateDate } from "../../../services/validations/project.schema";
 import { getYesterdaysDate } from "../../../helpers/generalUtils";
 
-interface TaskFormProps {}
+interface TaskFormProps { }
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -79,6 +79,15 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     reset();
   }, [createProjectPopup]);
 
+  React.useEffect(() => {
+    //This triggers task form reset only when the response is recieved 
+    reset();
+    setFiles([]);
+    setSelectedDepartment(undefined);
+    setSelectCategory(undefined);
+  }, [newProject.tasks]);
+
+
   const onSubmit = async (data: any) => {
     let newTask = {
       name: data.name,
@@ -95,8 +104,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       attachedFiles: null,
       listId: data?.teamId
         ? selectedDepartment?.teamsId?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
+          (item: any) => item._id === data.teamId
+        )?.listId
         : selectedDepartment?.defaultListId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
@@ -146,16 +155,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
           "listId",
           data?.teamId
             ? selectedDepartment?.teamsId?.find(
-                (item: any) => item._id === data.teamId
-              )?.listId
+              (item: any) => item._id === data.teamId
+            )?.listId
             : selectedDepartment?.defaultListId
         );
         task.append("description", data?.description);
         dispatch(createProjectTask(task));
-        reset();
-        setFiles([]);
-        setSelectedDepartment(undefined);
-        setSelectCategory(undefined);
       } else toast.error(result.error);
     }
   };
@@ -240,12 +245,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       departments
                         ? departments?.map((item) => {
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.name,
-                            };
-                          })
+                          return {
+                            id: item._id,
+                            value: item._id,
+                            text: item.name,
+                          };
+                        })
                         : []
                     }
                   />
@@ -335,12 +340,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       categories
                         ? categories?.map((item) => {
-                            return {
-                              id: item._id ? item._id : "",
-                              value: item._id ? item._id : "",
-                              text: item.category,
-                            };
-                          })
+                          return {
+                            id: item._id ? item._id : "",
+                            value: item._id ? item._id : "",
+                            text: item.category,
+                          };
+                        })
                         : []
                     }
                   />
@@ -392,12 +397,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       selectedCategory?.subCategoriesId
                         ? selectedCategory?.subCategoriesId?.map((item) => {
-                            return {
-                              id: item._id ? item._id : "",
-                              value: item._id ? item._id : "",
-                              text: item.subCategory,
-                            };
-                          })
+                          return {
+                            id: item._id ? item._id : "",
+                            value: item._id ? item._id : "",
+                            text: item.subCategory,
+                          };
+                        })
                         : []
                     }
                   />
@@ -424,20 +429,20 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       selectedDepartment?.teamsId
                         ? selectedDepartment?.teamsId?.map((item: any) => {
-                            if (!item.isDeleted) {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.name,
-                              };
-                            } else {
-                              return {
-                                id: "",
-                                value: "",
-                                text: "",
-                              };
-                            }
-                          })
+                          if (!item.isDeleted) {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.name,
+                            };
+                          } else {
+                            return {
+                              id: "",
+                              value: "",
+                              text: "",
+                            };
+                          }
+                        })
                         : []
                     }
                   />
