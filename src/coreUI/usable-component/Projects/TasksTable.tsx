@@ -109,7 +109,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
         </h4>
       </Grid>
       <Grid xs={12} item>
-        <TableContainer component={Paper}>
+        <TableContainer className="table-container-task-form" component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -131,6 +131,11 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                 <TableCell align="right">
                   <Typography color="#334D6E" fontSize={14}>
                     Deadline date
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography color="#334D6E" fontSize={14}>
+                    
                   </Typography>
                 </TableCell>
               </TableRow>
