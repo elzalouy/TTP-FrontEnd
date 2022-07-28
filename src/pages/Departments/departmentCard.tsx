@@ -10,6 +10,7 @@ import DeleteDepartment from "../../coreUI/usable-component/Popups/DeleteDepartm
 import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import { selectAllProjects, selectTasks } from "../../redux/Projects";
+import DepartmentPopover from "../../coreUI/usable-component/Popovers/DepartmentPopover";
 
 export type Status =
   | "Tasks Board"
@@ -80,7 +81,7 @@ const DepartmentCard: React.FC<Props> = ({
       >
         <h2>{department.name}</h2>
         {role !== "PM" && (
-          <DepartmentDrop
+          <DepartmentPopover
             color={colors[department.color][1]}
             handleSetShow={handleSetShow}
             handleSetShowDelete={handleSetShowDelete}

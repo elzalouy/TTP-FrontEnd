@@ -13,6 +13,7 @@ import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import CategoryDrop from "../../coreUI/usable-component/Dropdowns/CategoryDrop";
 import DeleteCategory from "../../coreUI/usable-component/Popups/DeleteCategory";
+import CategoryPopover from "../../coreUI/usable-component/Popovers/CategoryPopover";
 
 type Props = {};
 interface IProps {
@@ -95,7 +96,7 @@ const CategoryCard: React.FC<IProps> = ({
           {mainCategory}
         </Typography>
         {role !== "PM" && (
-          <CategoryDrop
+          <CategoryPopover
             color={fontColor}
             handleSetShowDelete={handleSetShowDelete}
           />
