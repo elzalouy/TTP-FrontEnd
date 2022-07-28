@@ -193,6 +193,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                   sx={cssMoreBtn}
                   fullWidth={false}
                   onClick={() => setOpen(!open)}
+                  disableRipple={true}
                 >
                   {open ? (
                     <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
