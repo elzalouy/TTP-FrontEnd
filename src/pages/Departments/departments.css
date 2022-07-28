@@ -29,6 +29,10 @@
   overflow: hidden;
 }
 
+.department-Card:hover{
+  box-shadow: 0px 6px 20px #0000001A;
+}
+
 .dp-card-header {
   display: flex;
   justify-content: space-between;
