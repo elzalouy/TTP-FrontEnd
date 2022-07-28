@@ -103,7 +103,7 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
             justifyContent={"center"}
             alignItems="center"
           >
-            <TaskIcon stroke="black" />
+            {/* <TaskIcon stroke="black" /> */}
             <Typography
               fontWeight={"600"}
               fontSize={16}
