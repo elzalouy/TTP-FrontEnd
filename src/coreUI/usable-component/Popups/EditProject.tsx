@@ -28,6 +28,7 @@ import {
   calculateStatusBasedOnDeadline,
   getStatus,
   getYesterdaysDate,
+  notNullorFalsy,
 } from "../../../helpers/generalUtils";
 import { toast } from "react-toastify";
 import { validateDate } from "../../../services/validations/project.schema";
@@ -314,6 +315,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
+                    cancelText={""}
+                    okText={""}
+                    disableCloseOnSelect={false}
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -342,7 +346,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           sx={editProjectStartDateStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
-                          watch().startDate !== null && (
+                          notNullorFalsy(watch().startDate) && (
                             <img
                               className="closeIcon"
                               src={IMAGES.closeicon}
@@ -375,6 +379,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
+                    cancelText={""}
+                    okText={""}
+                    disableCloseOnSelect={false}
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -403,7 +410,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           sx={editProjectDeadlineStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
-                          watch().deadline !== null && (
+                          notNullorFalsy(watch().deadline) && (
                             <img
                               className="closeIcon"
                               src={IMAGES.closeicon}

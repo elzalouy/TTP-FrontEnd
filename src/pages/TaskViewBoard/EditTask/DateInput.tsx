@@ -31,6 +31,9 @@ const DateInput: React.FC<DateInputProps> = ({
             <MobileDatePicker
               {...register(name)}
               inputFormat="YYYY-MM-DD"
+              cancelText={""}
+              okText={""}
+              disableCloseOnSelect={false}
               value={props.field.value}
               onChange={(e: any) => {
                 validateDate(

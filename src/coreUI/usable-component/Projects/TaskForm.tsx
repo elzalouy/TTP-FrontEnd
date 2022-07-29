@@ -266,6 +266,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
+                    cancelText={""}
+                    okText={""}
+                    disableCloseOnSelect={false}
                     value={props.field.value}
                     onChange={(e) => {
                       validateDate(
