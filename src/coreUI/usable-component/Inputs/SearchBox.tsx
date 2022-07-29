@@ -34,6 +34,7 @@ const Search: React.FC<Props> = (props) => {
       <IconButton
         type="button"
         onClick={props.onChange}
+        disableRipple={true}
         sx={{ p: "10px" }}
         aria-label="search"
       >

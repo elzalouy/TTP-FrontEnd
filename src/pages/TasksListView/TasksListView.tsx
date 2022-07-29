@@ -134,41 +134,9 @@ const Tasks: React.FC<Props> = (props: any) => {
               </Box>
             </>
           )}
-          <Grid marginX={0.5} item xs={6} sm={12} md={12} lg={12} marginY={1}>
-            <Box
-              style={
-                SM
-                  ? {
-                      backgroundColor: "#fafafa",
-                      width: "100%",
-                      marginLeft: "5px",
-                    }
-                  : {
-                      backgroundColor: "#fafafa",
-                      width: "100%",
-                      marginLeft: "0px",
-                    }
-              }
-            >
-              <Controller
-                name="name"
-                control={control}
-                render={(props) => (
-                  <SearchBox
-                    onChange={(e) => {
-                      props.field.onChange(e);
-                      onHandleChange(e);
-                    }}
-                    value={props.field.value}
-                    placeholder="Search"
-                  />
-                )}
-              />
-            </Box>
-          </Grid>
         </Grid>
       </Grid>
-      <Grid marginBottom={2} container direction={"row"} alignItems={"center"}>
+      <Grid marginBottom={2} container direction={"row"} alignItems={"center"} width={"100%"} wrap={MD ? "wrap" : "nowrap"}>
         {filter && (
           <>
             <Grid
@@ -176,7 +144,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               item
               xs={6}
               sm={3}
-              md={2}
+              md={3}
               lg={2}
               marginY={1}
               flex={1}
@@ -205,7 +173,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               />
             </Grid>
             <div style={{ width: "20px" }}></div>
-            <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={2} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="status"
@@ -281,7 +249,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid> */}
-            <Grid marginX={0.5} item xs={4} sm={3} md={2} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={2} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="projectId"
@@ -353,13 +321,47 @@ const Tasks: React.FC<Props> = (props: any) => {
           </>
         )}
         <div style={{ width: "20px" }}></div>
-        <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={1}>
-          <DeleteTask
-            task={selects}
-            Show={Show}
-            setShow={setShow}
-            onDelete={onDeleteTasks}
-          />
+        <Grid width="100%" display="flex" justifyContent={"flex-end"} alignItems="center">
+          <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
+            <DeleteTask
+              task={selects}
+              Show={Show}
+              setShow={setShow}
+              onDelete={onDeleteTasks}
+            />
+          </Grid>
+          <Grid marginX={0.5} item xs={6} sm={6} md={6} lg={6} marginY={1}>
+            <Box
+              style={
+                SM
+                  ? {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "5px",
+                  }
+                  : {
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "0px",
+                  }
+              }
+            >
+              <Controller
+                name="name"
+                control={control}
+                render={(props) => (
+                  <SearchBox
+                    onChange={(e) => {
+                      props.field.onChange(e);
+                      onHandleChange(e);
+                    }}
+                    value={props.field.value}
+                    placeholder="Search"
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
         </Grid>
       </Grid>
       {projects.loading === true ? (
