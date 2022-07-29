@@ -127,9 +127,9 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
           />
           <br />
           <Box className="controllers">
-            <button className="cancelBtn-client" onClick={handleClose}>
+            {/* <button className="cancelBtn-client" onClick={handleClose}>
               Cancel
-            </button>
+            </button> */}
             <button className="blackBtn-client" onClick={handleSubmit}>
               {loadingClient ? (
                 <CircularProgress sx={editClientLoadingStyles} />

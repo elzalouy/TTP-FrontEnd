@@ -44,6 +44,7 @@
   color: black;
   padding: 10px;
   border-radius: 5px;
+  font-size: 15px;
   border: none;
   font-weight: bold;
   margin: 10px 0;
@@ -60,11 +61,15 @@
   background-color: black;
   color: #ffffff;
   padding: 10px;
+  font-size: 15px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
   margin: 10px 0;
   margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .blackBtn-client {
@@ -73,11 +78,15 @@
   height: 42px;
   background-color: black;
   color: #ffffff;
+  font-size: 15px;
   padding: 10px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
   margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cancelBtn-client {
@@ -87,9 +96,13 @@
   background-color: #f4f4f4;
   color: black;
   padding: 10px;
+  font-size: 15px;
   border-radius: 5px;
   border: none;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 10px 0;
 }
 
@@ -173,6 +186,8 @@
   cursor: pointer;
   margin-top: 4px;
 }
+
+
 
 .popup-select {
   width: 100%;

@@ -77,7 +77,7 @@ const CreateNewPM: React.FC<Props> = () => {
         </div>
 
         <div>
-          <p className="popup-title bold">Add new Project Manager</p>
+          <p className="popup-title">Add new Project Manager</p>
           {error && (
             <p className="popup-error">Please fill all the empty field</p>
           )}
@@ -89,7 +89,7 @@ const CreateNewPM: React.FC<Props> = () => {
           {emailFormat && (
             <p className="popup-error">Please enter a valid email format</p>
           )}
-          <label className="popup-label bold">Project manager name</label>
+          <label className="popup-label">Project manager name</label>
           <input
             className="popup-input"
             type="text"

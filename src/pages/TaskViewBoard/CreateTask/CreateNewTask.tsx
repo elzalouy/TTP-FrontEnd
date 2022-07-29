@@ -302,7 +302,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 </Box>
               </div>
             </div>
-            <Box paddingTop={2}>
+            <Box paddingTop={2} paddingX={1}>
               <AttachetFiles
                 register={register}
                 onSetFiles={onSetFiles}

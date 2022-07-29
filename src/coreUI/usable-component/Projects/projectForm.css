@@ -12,6 +12,10 @@
     width: 100%;
 }
 
+.closeIconProject{
+    cursor: pointer;
+}
+
 .textfield{
     width: 100%;
 }
