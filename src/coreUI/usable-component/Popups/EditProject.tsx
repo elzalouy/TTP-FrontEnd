@@ -157,6 +157,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const showAlertBasedOnDate = (data: any) => {
     if (data.startDate === null && data.deadline === null) {
+      //If there is no start date and deadline
       setAlert("Starting date and Deadline");
       if (data.status === "Done") {
         setConfirm("flex");
@@ -167,6 +168,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setTrigger(true);
       }
     } else if (data.startDate === null && data.deadline !== null) {
+      //If there is only no start date 
       setAlert("Starting date");
       if (data.status === "Done") {
         setConfirm("flex");
@@ -177,6 +179,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setTrigger(true);
       }
     } else if (data.startDate !== null && data.deadline === null) {
+      //If there is only no deadline
       setAlert("Deadline");
       if (data.status === "Done") {
         setConfirm("flex");
@@ -187,6 +190,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setTrigger(true);
       }
     } else {
+      //If both values are added
       setAlert("");
       if (data.status === "Done") {
         setConfirm("flex");
@@ -202,6 +206,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     }
   }
 
+  console.log(updateDate);
+
   const onSubmitEdit = () => {
     let data = watch();
 
@@ -213,9 +219,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           showAlertBasedOnDate(data);
         }
         data.status = "Not Started";
+      } else if ((data.startDate === null && data.deadline !== null) || (data.startDate !== null && data.deadline === null)) {
+        //If any one date is not null , we will move to not started
+        data.status = "Not Started";
       } else if ((data.startDate !== null || data.deadline !== null) && data.status === "Done") {
+        //If any both date are not null with status done we will take a confirmation
         setConfirm("flex");
-      } else {
+      } else if ((data.startDate !== null || data.deadline !== null) && data.status === "inProgress") {
+        //If any both date are not null with status in progress we will take a confirmation
         data.status = "inProgress";
       }
       executeEditProject(data);
@@ -316,6 +327,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     okText={""}
                     disableCloseOnSelect={false}
                     onChange={(e) => {
+                      setUpdateDate(true);
                       validateDate(
                         moment(e).toDate(),
                         "Start date has passed today's date",
@@ -380,6 +392,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     okText={""}
                     disableCloseOnSelect={false}
                     onChange={(e) => {
+                      setUpdateDate(true);
                       validateDate(
                         moment(e).toDate(),
                         "Deadline has passed today's date",
