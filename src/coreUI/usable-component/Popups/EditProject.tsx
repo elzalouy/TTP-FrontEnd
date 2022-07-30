@@ -103,6 +103,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("status", project?.projectStatus);
     setValue("startDate", project?.startDate);
   }, [project]);
+  
+  console.log(watch().deadline,"Deadline");
+  console.log(watch().startDate,"Startdate");
+  
 
   useEffect(() => {
     if (trigger) {
@@ -324,7 +328,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         "Start date has passed today's date",
                         getYesterdaysDate()
                       );
-                      props.field.onChange(e);
+                      props.field.onChange(moment(e).toDate());
                     }}
                     leftArrowButtonText="arrow"
                     renderInput={(
@@ -388,7 +392,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                         "Deadline has passed today's date",
                         getYesterdaysDate()
                       );
-                      props.field.onChange(e);
+                      props.field.onChange(moment(e).toDate());
                     }}
                     leftArrowButtonText="arrow"
                     renderInput={(

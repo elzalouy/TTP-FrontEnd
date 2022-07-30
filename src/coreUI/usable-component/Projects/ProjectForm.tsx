@@ -185,7 +185,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                     "Start date has passed today's date" ,
                       getYesterdaysDate()
                   );
-                  props.field.onChange(e);
+                  props.field.onChange(moment(e).toDate());
                 }}
                 leftArrowButtonText="arrow"
                 renderInput={(
@@ -252,7 +252,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                     "Deadline has passed today's date",
                       getYesterdaysDate()
                   );
-                  props.field.onChange(e);
+                  props.field.onChange(moment(e).toDate());
                 }}
                 leftArrowButtonText="arrow"
                 renderInput={({
