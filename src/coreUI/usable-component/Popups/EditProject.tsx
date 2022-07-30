@@ -104,10 +104,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("startDate", project?.startDate);
   }, [project]);
   
-  console.log(watch().deadline,"Deadline");
-  console.log(watch().startDate,"Startdate");
-  
-
   useEffect(() => {
     if (trigger) {
       let data = watch();
