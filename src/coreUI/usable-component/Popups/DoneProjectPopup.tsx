@@ -20,8 +20,6 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
   alert,
   setAlert,
 }) => {
-  const history = useHistory();
-
   return (
     <SmallPopUp show={show} zIndex={9999}>
       <p className="warning-text">

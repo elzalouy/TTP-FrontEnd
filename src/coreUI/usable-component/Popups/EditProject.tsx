@@ -220,11 +220,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       }
       executeEditProject(data);
       return;
-    } else {
-      //This block is called only if no changes are made to date values but to the status inside the form
-      showAlertBasedOnDate(data);
-      executeEditProject(data);
     }
+    //This block is called only if no changes are made to date values but to the status inside the form
+    showAlertBasedOnDate(data);
   };
 
   return (

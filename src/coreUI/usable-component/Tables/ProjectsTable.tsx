@@ -22,6 +22,7 @@ import { selectRole } from "../../../redux/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
 import "../../../App.css";
 import { Project } from "../../../interfaces/models/Projects";
+import projects from "../../../services/endpoints/projects";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -40,7 +41,6 @@ interface ProjectsTableProps {
 const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const role = useAppSelector(selectRole);
-  const projects = useAppSelector(selectAllProjects);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
