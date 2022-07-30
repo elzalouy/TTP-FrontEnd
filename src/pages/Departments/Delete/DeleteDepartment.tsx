@@ -1,8 +1,7 @@
 import React from "react";
 import IMAGES from "../../../assets/img/Images";
-import SmallPopUp from "../Popup/SmallPopup";
+import SmallPopUp from "../../../coreUI/usable-component/Popup/SmallPopup";
 import { useState } from "react";
-import "./popups-style.css";
 import { useDispatch } from "react-redux";
 import {
   deleteDepartment,
@@ -12,26 +11,24 @@ import { useAppSelector } from "../../../redux/hooks";
 import { selectedDepart } from "../../../redux/Departments/departments.selectors";
 import { Typography } from "@mui/material";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import "../../../coreUI/usable-component/Popups/popups-style.css";
 
 type Props = {
-  showDelete: string;
-  handleSetShowDelete: (value: string) => void;
+  show: string;
+  setShow: (value: string) => void;
 };
 
-const DeleteDepartment: React.FC<Props> = ({
-  showDelete,
-  handleSetShowDelete,
-}) => {
+const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const depData = useAppSelector(selectedDepart);
 
   const handleSubmit = () => {
     dispatch(deleteDepartment({ data: { _id: depData?._id }, dispatch }));
-    handleSetShowDelete("none");
+    setShow("none");
   };
 
   return (
-    <SmallPopUp show={showDelete}>
+    <SmallPopUp show={show}>
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>
@@ -47,7 +44,7 @@ const DeleteDepartment: React.FC<Props> = ({
           <button
             className="controllers-cancel"
             onClick={() => {
-              handleSetShowDelete("none");
+              setShow("none");
             }}
           >
             Cancel

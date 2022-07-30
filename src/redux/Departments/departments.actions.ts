@@ -1,21 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import DepartmentsApi from "../../services/endpoints/departments";
+import api from "../../services/endpoints/departments";
 import { toast } from "react-toastify";
-import {
-  fireCreateDepartmentHook,
-  fireDeleteDepartmentHook,
-  fireUpdateDepartmentHook,
-} from "../Ui";
-import { myReducer } from "../store";
-import { removeAuthToken } from "../../services/api";
+import { fireDeleteDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
 import { logout } from "../Auth";
 import { ApiResponse } from "apisauce";
+import {
+  ToastError,
+  ToastSuccess,
+} from "../../coreUI/usable-component/Typos/Alert";
 
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
-  async (args: any, { rejectWithValue, dispatch }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
-      let departments = await DepartmentsApi.getDepartments();
+      let departments = await api.getDepartments();
       if (departments?.status === 401 || departments?.status === 403) {
         rejectWithValue("Un Authorized");
         dispatch(logout(true));
@@ -32,37 +30,15 @@ export const createDepartment = createAsyncThunk<any, any, any>(
   "departments/createDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department: ApiResponse<any> = await DepartmentsApi.createDepartment(
-        args.data
-      );
-      if (department.ok && department.data) {
-        args.setNames([]);
-        args.setData("");
-        args.setShow("none");
-        args.dispatch(fireCreateDepartmentHook(""));
-        toast.success("Department created successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+      let department: ApiResponse<any> = await api.createDepartment(args.data);
+      if (department.ok) {
+        ToastSuccess("Department created successfully");
         return department.data;
       }
-      toast.error(department.data.message);
+      ToastError(department.data.message);
       return rejectWithValue(department.data?.message);
     } catch (error: any) {
-      toast.error("There was an error while creating the Department", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      ToastError("There was an error while creating the Department");
       rejectWithValue(error);
     }
   }
@@ -72,18 +48,10 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
   "departments/updateDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.updateDepartment(args.data);
+      let department = await api.updateDepartment(args.data);
       if (department.ok && department.data) {
-        args.dispatch(fireUpdateDepartmentHook(""));
-        toast.success("Department updated successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        // args.dispatch(fireUpdateDepartmentHook(""));
+        ToastSuccess("Department updated successfully");
         return department.data;
       } else return [];
     } catch (error) {
@@ -96,9 +64,9 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
   "departments/deleteDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department = await DepartmentsApi.deleteDepartment(args?.data);
+      let department = await api.deleteDepartment(args?.data);
       if (department.ok && department.data) {
-        args?.dispatch(fireDeleteDepartmentHook(""));
+        // args?.dispatch(fireDeleteDepartmentHook(""));
         toast.success("Department deleted successfully", {
           position: "top-right",
           autoClose: 5000,

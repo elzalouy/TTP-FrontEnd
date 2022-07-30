@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import IMAGES from "../../assets/img/Images";
 import Ttp from "../../assets/img/ttp_logo.png";
-import Input from "../../coreUI/usable-component/Inputs/Input";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import {
@@ -204,16 +203,19 @@ const Login: React.FC<Props> = ({ history }) => {
                   type={visible ? "text" : "password"}
                   autoComplete="new-password"
                   className="password-input"
-                  onChange={(e:any) => {
-                    setValue("password",e.target.value)
+                  onChange={(e: any) => {
+                    setValue("password", e.target.value);
                     setFailed({
                       message: "",
                       status: false,
-                    })
+                    });
                   }}
                   placeholder="Password"
                 />
-                <IconButton className="password-icon" onClick={() => setVisiblity((state) => !state)}>
+                <IconButton
+                  className="password-icon"
+                  onClick={() => setVisiblity((state) => !state)}
+                >
                   {!visible ? (
                     <VisibilityOff style={{ color: "#b4b6c4" }} />
                   ) : (
@@ -246,9 +248,13 @@ const Login: React.FC<Props> = ({ history }) => {
             )}
           </Button>
           <Link
-            sx={{ textDecoration: "none", cursor: "pointer" , ":hover" : {
-              textDecoration : "underline"
-            }}}
+            sx={{
+              textDecoration: "none",
+              cursor: "pointer",
+              ":hover": {
+                textDecoration: "underline",
+              },
+            }}
             onClick={() => history.push("/ForgetPassword")}
           >
             <Typography

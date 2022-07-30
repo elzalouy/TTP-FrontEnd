@@ -67,9 +67,8 @@
   color: #0079bf;
 }
 
-.tasks-count>img {
+.tasks-count > img {
   margin-right: 5px;
-
 }
 
 .teams {
@@ -113,7 +112,6 @@
 .InProgress {
   flex: 1;
   padding: 2%;
-
 }
 
 .Done {
@@ -167,7 +165,6 @@ select.select-filter {
   font-weight: bold;
 }
 
-
 .teams::-webkit-scrollbar {
   height: 3px !important;
 }
@@ -176,7 +173,7 @@ select.select-filter {
 .teams::-webkit-scrollbar-track {
   background: transparent;
 }
- 
+
 /* Handle */
 .teams::-webkit-scrollbar-thumb {
   background: transparent;
@@ -184,19 +181,19 @@ select.select-filter {
 
 /* Handle on hover */
 .teams::-webkit-scrollbar-thumb:hover {
-  background: #555 !important; 
+  background: #555 !important;
 }
 
-@media (max-width:900px) {
-  .all-departments{
+@media (max-width: 900px) {
+  .all-departments {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (max-width:600px) {
-  .all-departments{
+@media (max-width: 600px) {
+  .all-departments {
     grid-template-columns: 1fr;
   }
-  .department-tools{
+  .department-tools {
     margin-top: 50px;
   }
 }

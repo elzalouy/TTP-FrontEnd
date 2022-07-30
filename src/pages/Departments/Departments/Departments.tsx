@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import DepartmentCard from "./departmentCard";
-import CreateNewDepartment from "../../coreUI/usable-component/Popups/CreateNewDepartment";
-import CreateNewTeam from "../../coreUI/usable-component/Popups/CreateNewTeam";
+import DepartmentCard from "./Card";
+import CreateNewDepartment from "../Create/CreateNewDepartment";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Department } from "../../redux/Departments";
-import { useAppSelector } from "../../redux/hooks";
-import { selectAllDepartments } from "../../redux/Departments/departments.selectors";
-import { selectRole } from "../../redux/Auth";
+import { Department } from "../../../redux/Departments";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectAllDepartments } from "../../../redux/Departments/departments.selectors";
+import { selectRole } from "../../../redux/Auth";
 import { toast } from "react-toastify";
 import "./departments.css";
 
@@ -20,24 +19,11 @@ const Departments: React.FC<IProps> = () => {
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getAllDepartments(null));
-  // }, []);
 
   useEffect(() => {
     setDepartment(departmentData);
-    //For preventing duplication of toasts
     toast.clearWaitingQueue();
   }, [departmentData]);
-
-  const alternatingColor = [
-    ["#0079BF", "#E1EDF6"],
-    ["#B04632", "#F3E8E7"],
-    ["#D29034", "#F7F0E7"],
-    ["#783DBD", "#EFEBF2"],
-    ["#00AECC", "#E1F3F7"],
-  ];
 
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
@@ -71,9 +57,9 @@ const Departments: React.FC<IProps> = () => {
         >
           Departments
         </Typography>
-        <div className="department-tools">
+        {/* <div className="department-tools">
           {role !== "PM" && <CreateNewTeam />}
-        </div>
+        </div> */}
       </Box>
       <div className="all-departments">
         {department?.map((dep: Department) => (
@@ -84,10 +70,17 @@ const Departments: React.FC<IProps> = () => {
             key={dep._id}
           />
         ))}
-
         {role !== "PM" && <CreateNewDepartment />}
       </div>
     </Box>
   );
 };
 export default Departments;
+
+const alternatingColor = [
+  ["#0079BF", "#E1EDF6"],
+  ["#B04632", "#F3E8E7"],
+  ["#D29034", "#F7F0E7"],
+  ["#783DBD", "#EFEBF2"],
+  ["#00AECC", "#E1F3F7"],
+];

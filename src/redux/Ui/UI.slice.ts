@@ -1,6 +1,4 @@
 import { PayloadAction, createSlice, Slice } from "@reduxjs/toolkit";
-import { UseFormGetFieldState } from "react-hook-form";
-import { start } from "repl";
 import UiState, { UiInterface } from "./UI.state";
 
 const UISlice: Slice<UiInterface> = createSlice({
@@ -24,6 +22,9 @@ const UISlice: Slice<UiInterface> = createSlice({
     },
     openCreateTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.createTaskPopup = action.payload;
+    },
+    toggleEditDepartment: (state = UiState, action: PayloadAction<any>) => {
+      state.editDepartmentPopup = action.payload;
     },
     toggleViewTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.viewTaskPopup = action.payload;
@@ -54,6 +55,9 @@ const UISlice: Slice<UiInterface> = createSlice({
     },
     toggleTask: (state = UiState, action: PayloadAction<any>) => {
       state.openTask = action.payload;
+    },
+    toggleDeleteDepartment: (state = UiState, action: PayloadAction<any>) => {
+      state.deleteDepartmentPopup = action.payload;
     },
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
@@ -117,6 +121,7 @@ export const {
   openEditClientPopup,
   openDeleteClientPopup,
   openCreateTaskPopup,
+  toggleEditDepartment,
   toggleEditProjectManagerPopup,
   toggleDeleteProjectManagerPopup,
   toggleSideMenu,
@@ -141,6 +146,7 @@ export const {
   fireCreateProjectHook,
   fireDeleteTeamHook,
   fireMoveTaskOnTrello,
+  toggleDeleteDepartment,
   toggleTask,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

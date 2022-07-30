@@ -15,7 +15,7 @@ import {
   selectSharedTasks,
   selectTasks,
 } from "../../redux/Projects";
-import { Status } from "../Departments/departmentCard";
+import { Status } from "../Departments/Departments/Card";
 interface IProps {
   client: Client;
 }
@@ -78,7 +78,11 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               alignItems="center"
             >
               <img
-                src={["",null,undefined,'null','undefined'].includes(preview) ? IMAGES.avatarClients : preview}
+                src={
+                  ["", null, undefined, "null", "undefined"].includes(preview)
+                    ? IMAGES.avatarClients
+                    : preview
+                }
                 alt="avatar"
                 style={{
                   width: "52px",

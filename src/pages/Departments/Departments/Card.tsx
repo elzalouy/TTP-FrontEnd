@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import IMAGES from "../../assets/img/Images";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import { Department } from "../../redux/Departments";
-import DepartmentDrop from "../../coreUI/usable-component/Dropdowns/DepartmentDrop";
-import EditDepartment from "../../coreUI/usable-component/Popups/EditDepartment";
+import { Department } from "../../../redux/Departments";
+import DepartmentDrop from "../../../coreUI/usable-component/Dropdowns/DepartmentDrop";
+import EditDepartment from "../Edit/EditDepartment";
 import { useDispatch } from "react-redux";
-import { departmentsActions } from "../../redux/Departments";
-import DeleteDepartment from "../../coreUI/usable-component/Popups/DeleteDepartment";
-import { selectRole } from "../../redux/Auth";
-import { useAppSelector } from "../../redux/hooks";
-import { selectAllProjects, selectTasks } from "../../redux/Projects";
+import { departmentsActions } from "../../../redux/Departments";
+import DeleteDepartment from "../Delete/DeleteDepartment";
+import { selectRole } from "../../../redux/Auth";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectAllProjects, selectTasks } from "../../../redux/Projects";
+import {
+  toggleDeleteDepartment,
+  toggleEditDepartment,
+} from "../../../redux/Ui";
 
 export type Status =
   | "Tasks Board"
@@ -37,11 +39,7 @@ const colors: any = {
   sky: ["#00AECC1A", "#00AECC"],
   grey: ["#838C911A", "#838C91"],
 };
-const DepartmentCard: React.FC<Props> = ({
-  backgroundColor,
-  fontColor,
-  department,
-}) => {
+const DepartmentCard: React.FC<Props> = ({ department }) => {
   const [Show, setShow] = useState("none");
   const [showDelete, setShowDelete] = useState("none");
   const dispatch = useDispatch();
@@ -50,12 +48,12 @@ const DepartmentCard: React.FC<Props> = ({
   const tasks = useAppSelector(selectTasks);
 
   const handleSetShow = (value: string) => {
-    setShow(value);
+    dispatch(toggleEditDepartment("flex"));
     dispatch(departmentsActions.selecteDepartment(department));
   };
 
   const handleSetShowDelete = (value: string) => {
-    setShowDelete(value);
+    dispatch(toggleDeleteDepartment("flex"));
     dispatch(departmentsActions.selecteDepartment(department));
   };
 
@@ -122,11 +120,6 @@ const DepartmentCard: React.FC<Props> = ({
           </p>
         </div>
       </div>
-      <EditDepartment Show={Show} handleSetShow={handleSetShow} />
-      <DeleteDepartment
-        showDelete={showDelete}
-        handleSetShowDelete={handleSetShowDelete}
-      />
     </div>
   );
 };

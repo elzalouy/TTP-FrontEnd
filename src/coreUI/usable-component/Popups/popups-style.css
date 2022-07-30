@@ -274,7 +274,17 @@
   width: 100px;
   margin: 5px 0 0 5px;
 }
-
+.gray-btn {
+  background-color: "#b4b6c4";
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100px;
+  height: 48px;
+  margin: 5px 0 0 5px;
+}
 .add-teams-section {
   width: 100%;
   display: flex;
@@ -292,7 +302,7 @@
   border-radius: 5px;
 }
 
-.teamNames{
+.teamNames {
   text-transform: capitalize;
   margin: 2px 0px;
 }
@@ -454,7 +464,6 @@ table.allTask-table td.deleteTd {
   margin-top: 10px;
 }
 
-
 /* width */
 .allTeam-table-container::-webkit-scrollbar {
   display: block !important;
@@ -530,22 +539,22 @@ table.allTeam-table td.deleteTd {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
 } */
-.add-new-cat>img {
+.add-new-cat > img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-cat>p {
+.add-new-cat > p {
   padding: 5px;
   font-weight: 600;
 }
 
-.add-new-dep>img {
+.add-new-dep > img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-dep>p {
+.add-new-dep > p {
   padding: 5px;
   font-weight: 600;
 }
