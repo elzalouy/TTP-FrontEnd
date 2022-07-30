@@ -87,6 +87,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue,
     formState: { isDirty },
   } = useForm();
+  const data = watch();
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const project = useAppSelector(selectEditProject);
@@ -106,7 +107,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   useEffect(() => {
     if (trigger) {
-      let data = watch();
       executeEditProject(data);
     }
   }, [trigger]);
@@ -128,22 +128,22 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     }
   };
 
-  const executeEditProject = (data: any) => {
+  const executeEditProject = (formData: any) => {
     let editProject = { ...project };
-
+    
     if (alert === "Not Started" || alert === "inProgress") {
-      data.status = "inProgress";
+      formData.status = "inProgress";
     }
 
-    editProject.name = data.name;
-    editProject.projectManager = data.projectManager;
+    editProject.name = formData.name;
+    editProject.projectManager = formData.projectManager;
     editProject.projectManagerName = PMs.find(
-      (item) => item._id === data.projectManager
+      (item) => item._id === formData.projectManager
     )?.name;
-    editProject.projectDeadline = data.deadline;
-    editProject.clientId = data.clientId;
-    editProject.projectStatus = data.status;
-    editProject.startDate = data.startDate;
+    editProject.projectDeadline = formData.deadline;
+    editProject.clientId = formData.clientId;
+    editProject.projectStatus = formData.status;
+    editProject.startDate = formData.startDate;
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
@@ -152,88 +152,77 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
+    setUpdateDate(false);
     setTrigger(false);
   };
 
-  const showAlertBasedOnDate = (data: any) => {
-    if (data.startDate === null && data.deadline === null) {
-      //If there is no start date and deadline
+  const showAlertBasedOnDate = () => {
+    let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
+    let onlyDeadlineIsNull = data.deadline === null && data.startDate !== null;
+    let bothDatesAreNull = data.deadline === null && data.startDate === null;
+    let bothDatesAreNotNull = data.deadline !== null && data.startDate !== null;
+    let done = data.status === "Done";
+    let inProgress = data.status === "inProgress";
+
+    if (updateDate) {
+      if (inProgress || done) {
+        if (onlyDeadlineIsNull || onlyStartDateIsNull || bothDatesAreNull) {
+          //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started 
+          data.status = "Not Started";
+        }
+      }
+      //Exits the function and returns data
+      return data;
+    }
+
+    if (bothDatesAreNull) {
       setAlert("Starting date and Deadline");
-      if (data.status === "Done") {
+      if (done) {
         setConfirm("flex");
-      } else if (data.status === "inProgress") {
+      } else if (inProgress) {
         setConfirm("flex");
         data.status = "Not Started";
       } else {
         setTrigger(true);
       }
-    } else if (data.startDate === null && data.deadline !== null) {
-      //If there is only no start date 
+    } else if (onlyStartDateIsNull) {
       setAlert("Starting date");
-      if (data.status === "Done") {
+      if (done) {
         setConfirm("flex");
-      } else if (data.status === "inProgress") {
+      } else if (inProgress) {
+        setConfirm("flex");
         data.status = "Not Started";
-        setTrigger(true);
       } else {
         setTrigger(true);
       }
-    } else if (data.startDate !== null && data.deadline === null) {
-      //If there is only no deadline
+    } else if (onlyDeadlineIsNull) {
       setAlert("Deadline");
-      if (data.status === "Done") {
+      if (done) {
         setConfirm("flex");
-      } else if (data.status === "inProgress") {
+      } else if (inProgress) {
+        setConfirm("flex");
         data.status = "Not Started";
-        setTrigger(true);
       } else {
         setTrigger(true);
       }
-    } else {
-      //If both values are added
+    } else if (bothDatesAreNotNull) {
       setAlert("");
-      if (data.status === "Done") {
+      if (done) {
         setConfirm("flex");
-      } else if (data.status === "inProgress") {
-        setAlert("inProgress");
-        setConfirm("none");
+      } else if (inProgress) {
         setTrigger(true);
       } else {
         setAlert("Not Started");
-        setConfirm("none");
         setTrigger(true);
+
+        //Here the setTrigger when true triggers execute project not needing to return data
       }
     }
   }
 
-  console.log(updateDate);
-
   const onSubmitEdit = () => {
-    let data = watch();
-
-    if (updateDate) {
-      //This block runs if you make changes to the date values inside the form
-      if (data.startDate === null || data.deadline === null) {
-        //We want to show alerts if uses does not add dates but update status 
-        if (data.status === "Done" || data.status === "inProgress") {
-          showAlertBasedOnDate(data);
-        }
-        data.status = "Not Started";
-      } else if ((data.startDate === null && data.deadline !== null) || (data.startDate !== null && data.deadline === null)) {
-        //If any one date is not null , we will move to not started
-        data.status = "Not Started";
-      } else if ((data.startDate !== null || data.deadline !== null) && data.status === "Done") {
-        //If any both date are not null with status done we will take a confirmation
-        setConfirm("flex");
-      } else if ((data.startDate !== null || data.deadline !== null) && data.status === "inProgress") {
-        //If any both date are not null with status in progress we will take a confirmation
-        data.status = "inProgress";
-      }
-      executeEditProject(data);
-      return;
-    }
-    //This block is called only if no changes are made to date values but to the status inside the form
-    showAlertBasedOnDate(data);
+    const result = showAlertBasedOnDate();
+    executeEditProject(result);
   };
 
   return (
@@ -327,7 +316,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     okText={""}
                     disableCloseOnSelect={false}
                     onChange={(e) => {
-                      setUpdateDate(true);
                       validateDate(
                         moment(e).toDate(),
                         "Start date has passed today's date",
@@ -392,7 +380,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     okText={""}
                     disableCloseOnSelect={false}
                     onChange={(e) => {
-                      setUpdateDate(true);
+
                       validateDate(
                         moment(e).toDate(),
                         "Deadline has passed today's date",
