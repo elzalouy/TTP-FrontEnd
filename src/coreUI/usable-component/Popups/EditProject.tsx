@@ -103,7 +103,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("status", project?.projectStatus);
     setValue("startDate", project?.startDate);
   }, [project]);
-  
+
   useEffect(() => {
     if (trigger) {
       let data = watch();
@@ -155,16 +155,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setTrigger(false);
   };
 
-  const showAlertBasedOnDate = () => {
-    let data = watch();
-
+  const showAlertBasedOnDate = (data: any) => {
     if (data.startDate === null && data.deadline === null) {
       setAlert("Starting date and Deadline");
       if (data.status === "Done") {
         setConfirm("flex");
       } else if (data.status === "inProgress") {
+        setConfirm("flex");
         data.status = "Not Started";
-        setTrigger(true);
       } else {
         setTrigger(true);
       }
@@ -212,7 +210,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       if (data.startDate === null || data.deadline === null) {
         //We want to show alerts if uses does not add dates but update status 
         if (data.status === "Done" || data.status === "inProgress") {
-          showAlertBasedOnDate();
+          showAlertBasedOnDate(data);
         }
         data.status = "Not Started";
       } else if ((data.startDate !== null || data.deadline !== null) && data.status === "Done") {
@@ -222,10 +220,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       }
       executeEditProject(data);
       return;
+    } else {
+      //This block is called only if no changes are made to date values but to the status inside the form
+      showAlertBasedOnDate(data);
+      executeEditProject(data);
     }
-
-    //This method is called only if no changes are made to date values but to the status inside the form
-    showAlertBasedOnDate();
   };
 
   return (

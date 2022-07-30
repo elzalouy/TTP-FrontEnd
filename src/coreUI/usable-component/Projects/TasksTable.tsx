@@ -97,7 +97,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
   };
 
   return (
-    <Grid container width="800px">
+    <Grid container>
       <ConfirmDeleteTask
         show={show}
         setShow={setShowToggle}
