@@ -69,6 +69,7 @@ const NotificationContainer = (props: Props) => {
           >
             {loading ? (
               <CircularProgress
+                disableShrink
                 sx={{
                   color: "white",
                   height: "20px !important",
