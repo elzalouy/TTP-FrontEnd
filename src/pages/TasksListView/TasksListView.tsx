@@ -145,7 +145,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               xs={6}
               sm={3}
               md={3}
-              lg={2}
+              lg={4}
               marginY={1}
               flex={1}
             >
@@ -173,7 +173,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               />
             </Grid>
             <div style={{ width: "20px" }}></div>
-            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={4} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="status"
@@ -249,7 +249,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid> */}
-            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="projectId"

@@ -51,16 +51,20 @@ const SelectInput2: React.FC<Props> = ({
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+
   const open = Boolean(anchorEl);
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const checkEmpty = () => {
     if (options.length === 0) ToastWarning(`${label} is empty`);
   };
+
   return (
     <Grid
       sx={selectInputGridTwoStyles}
@@ -99,6 +103,7 @@ const SelectInput2: React.FC<Props> = ({
             fontSize={14}
             textTransform="capitalize"
             fontWeight={"700"}
+            noWrap
             color="#44444F"
             sx={{
               paddingTop: 1.5,
@@ -151,16 +156,16 @@ const SelectInput2: React.FC<Props> = ({
         sx={
           isOptionsEmpty(options)
             ? {
-                borderRadius: "10px",
-                width: "calc(96% - 11px) !important;",
-                zIndex: 2001,
-                opacity: "0",
-              }
+              borderRadius: "10px",
+              width: "calc(96% - 11px) !important;",
+              zIndex: 2001,
+              opacity: "0",
+            }
             : {
-                borderRadius: "10px",
-                width: "calc(96% - 11px) !important;",
-                zIndex: 2001,
-              }
+              borderRadius: "10px",
+              width: "calc(96% - 11px) !important;",
+              zIndex: 2001,
+            }
         }
         anchorEl={anchorEl}
         anchorReference="anchorEl"

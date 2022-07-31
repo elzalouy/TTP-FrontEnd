@@ -129,11 +129,10 @@ export const getYesterdaysDate = () => {
   return today;
 }
 
-export const notNullorFalsy = (date : string | null | undefined) => {
-  if([undefined,null,"",0].includes(date)){
-    return false 
-  }else{
+export const notNullorFalsy = (date: string | null | undefined) => {
+  if ([undefined, null, "", 0].includes(date)) {
+    return false
+  } else {
     return true
   }
 }
-

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Grid,
-  MenuItem,
   Popover,
-  Select,
-  Typography,
+  Typography
 } from "@mui/material";
 import { popOverStyle } from "../../../themes/Styles";
 import "../../../themes/style.css";
@@ -33,7 +30,6 @@ interface Props {
 const selectInputGridStyles = {
   width: "100%",
   height: 40,
-  background: "#FFFFFF",
   borderRadius: "10px",
   overflow: "hidden",
   cursor: "pointer",
@@ -49,7 +45,6 @@ const SelectInput: React.FC<Props> = ({
   handleOnClick,
   error,
 }) => {
-  const [Label, setLabel] = useState(label);
   const [Value, setValue] = useState(selectText);
 
   const styles = popOverStyle()();
@@ -76,6 +71,7 @@ const SelectInput: React.FC<Props> = ({
   return (
     <Grid
       sx={selectInputGridStyles}
+      display={"flex"}
       justifyContent="space-between"
       alignItems={"center"}
       direction="row"
@@ -90,27 +86,33 @@ const SelectInput: React.FC<Props> = ({
         alignItems="center"
         paddingLeft={1}
         display="inline-flex"
+        sx={{ background: "#FFF" }}
         xs={10}
       >
-        <Typography
-          maxWidth={140}
-          overflow={"hidden"}
-          color="#696974"
-          fontSize={14}
-          textTransform="capitalize"
-          fontWeight={"400"}
-          paddingRight={1}
-        >
-          {Label}
-        </Typography>
+          <Typography
+            maxWidth={140}
+            width={"fit-content"}
+            overflow={"hidden"}
+            flex={3}
+            color="#696974"
+            noWrap
+            fontSize={14}
+            textTransform="capitalize"
+            fontWeight={"400"}
+            paddingRight={1}
+          >
+            {label}
+          </Typography>
         {selectText ? (
           <Typography
             lineHeight={1}
             textOverflow="hidden"
             overflow={"hidden"}
+            flex={3}
             variant="h5"
             height={40}
             fontSize={14}
+            noWrap
             textTransform="capitalize"
             fontWeight={"700"}
             color="#44444F"
@@ -127,6 +129,7 @@ const SelectInput: React.FC<Props> = ({
             textOverflow="hidden"
             overflow={"hidden"}
             textTransform="capitalize"
+            flex={3}
             variant="h5"
             height={40}
             fontSize={14}
@@ -144,24 +147,21 @@ const SelectInput: React.FC<Props> = ({
               : placeholder || "All"}
           </Typography>
         )}
-      </Grid>
-      <Grid item>
-        <Box display={"inline-flex"} onClick={handleOpen}>
-          <Box
-            height={40}
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 1,
-              paddingRight: 1,
-            }}
-          >
-            {open && options.length > 1 ? (
-              <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
-            ) : (
-              <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
-            )}
-          </Box>
+        <Box
+          height={40}
+          flex={1}
+          sx={{
+            justifyContent: "flex-end",
+            alignItems: "center",
+            paddingTop: 1,
+            paddingRight: 1,
+          }}
+        >
+          {open && options.length > 1 ? (
+            <ArrowDropUp onClick={handleClose} htmlColor="#92929D" />
+          ) : (
+            <ArrowDownIcon onClick={handleOpen} htmlColor="#92929D" />
+          )}
         </Box>
       </Grid>
       <Popover
@@ -170,16 +170,16 @@ const SelectInput: React.FC<Props> = ({
         sx={
           isOptionsEmpty(options)
             ? {
-                borderRadius: "10px",
-                width: "calc(96% - 11px) !important;",
-                zIndex: 2001,
-                opacity: "0",
-              }
+              borderRadius: "10px",
+              width: "calc(96% - 11px) !important;",
+              zIndex: 2001,
+              opacity: "0",
+            }
             : {
-                borderRadius: "10px",
-                width: "calc(96% - 11px) !important;",
-                zIndex: 2001,
-              }
+              borderRadius: "10px",
+              width: "calc(96% - 11px) !important;",
+              zIndex: 2001,
+            }
         }
         anchorEl={anchorEl}
         anchorReference="anchorEl"
