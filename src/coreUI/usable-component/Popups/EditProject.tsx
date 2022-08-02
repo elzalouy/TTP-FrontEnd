@@ -130,7 +130,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const executeEditProject = (formData: any) => {
     let editProject = { ...project };
-    
+
     if (alert === "Not Started" || alert === "inProgress") {
       formData.status = "inProgress";
     }
@@ -150,11 +150,16 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       editProject.projectStatus = status;
     }
 
+    console.log(editProject, ": Data sent to dispatch action");
+
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
     setUpdateDate(false);
     setTrigger(false);
   };
+
+  if (typeof project?.projectStatus !== "undefined") console.log(project?.projectStatus, ": Current Status");
+  if (typeof data?.status !== "undefined") console.log(data?.status, ": Updated Status");
 
   const showAlertBasedOnDate = () => {
     let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
@@ -222,6 +227,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const onSubmitEdit = () => {
     const result = showAlertBasedOnDate();
+    console.log(result, ": On Submit Data");
     executeEditProject(result);
   };
 
