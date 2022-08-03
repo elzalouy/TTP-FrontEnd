@@ -147,8 +147,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
-      console.log(status , "Undefined");
-      editProject.projectStatus = status;
+      if (!([typeof status, status].includes("undefined"))) {
+        editProject.projectStatus = status;
+      }
     }
 
     console.log(editProject, ": Data sent to dispatch action");
@@ -238,7 +239,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
   let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
 
-  let status = calculateStatusBasedOnDeadline(project?.projectDeadline);
+  let statusFunction = calculateStatusBasedOnDeadline(project?.projectDeadline);
 
   return (
     <>
@@ -274,7 +275,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           <p>{formattedToday}</p>
           <p>{data.status} Form Status</p>
           <p>{project?.projectStatus} Project Status</p>
-          <p>{status} Status</p>
+          <p>{statusFunction} Status</p>
         </div>
         <div>
           <div className="inputs-grid">
