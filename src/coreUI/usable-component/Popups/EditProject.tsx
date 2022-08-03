@@ -233,13 +233,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     executeEditProject(result);
   };
 
-  let formattedDeadline = moment(data.deadline).format("MM-DD-YYYY");
-  let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
-  let onTime = moment(formattedToday).isSame(formattedDeadline);
-  let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
-  let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
-
-  let statusFunction = calculateStatusBasedOnDeadline(project?.projectDeadline);
+  let statusFunction = calculateStatusBasedOnDeadline(data?.deadline);
 
   return (
     <>
@@ -271,14 +265,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         </div>
         <p className="popup-title">Edit project</p>
         <div>
-          <p>{formattedDeadline}</p>
-          <p>{formattedToday}</p>
-          <p>{data.status} Form Status</p>
-          <p>{project?.projectStatus} Project Status</p>
           <p>{statusFunction} Status</p>
-          <p>{typeof onTime}</p>
-          <p>{typeof beforeDeadline}</p>
-          <p>{typeof afterDeadline}</p>
         </div>
         <div>
           <div className="inputs-grid">
