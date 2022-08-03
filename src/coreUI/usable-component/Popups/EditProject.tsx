@@ -147,6 +147,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
+      console.log(status , "Undefined");
       editProject.projectStatus = status;
     }
 
@@ -237,6 +238,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
   let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
 
+  let status = calculateStatusBasedOnDeadline(project?.projectDeadline);
+
   return (
     <>
       <DoneProjectConfirm
@@ -269,9 +272,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         <div>
           <p>{formattedDeadline}</p>
           <p>{formattedToday}</p>
-          <p>{onTime}</p>
-          <p>{beforeDeadline}</p>
-          <p>{afterDeadline}</p>
+          <p>{data.status} Form Status</p>
+          <p>{project?.projectStatus} Project Status</p>
+          <p>{status} Status</p>
         </div>
         <div>
           <div className="inputs-grid">
