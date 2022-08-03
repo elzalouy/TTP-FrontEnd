@@ -276,6 +276,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           <p>{data.status} Form Status</p>
           <p>{project?.projectStatus} Project Status</p>
           <p>{statusFunction} Status</p>
+          <p>{typeof onTime}</p>
+          <p>{typeof beforeDeadline}</p>
+          <p>{typeof afterDeadline}</p>
         </div>
         <div>
           <div className="inputs-grid">
