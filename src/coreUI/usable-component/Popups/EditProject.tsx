@@ -116,6 +116,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     return pm?.name;
   };
 
+  console.log(moment(new Date()).format("YYYY-MM-DD"));
+
   const checkProjectStatus = (status: string | undefined) => {
     if (
       status === "deliver before deadline" ||
@@ -150,16 +152,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       editProject.projectStatus = status;
     }
 
-    console.log(editProject, ": Data sent to dispatch action");
-
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
     setUpdateDate(false);
     setTrigger(false);
   };
-
-  if (typeof project?.projectStatus !== "undefined") console.log(project?.projectStatus, ": Current Status");
-  if (typeof data?.status !== "undefined") console.log(data?.status, ": Updated Status");
 
   const showAlertBasedOnDate = () => {
     let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
@@ -227,15 +224,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const onSubmitEdit = () => {
     const result = showAlertBasedOnDate();
-    console.log(result, ": On Submit Data");
     executeEditProject(result);
   };
-
-  let formattedDeadline = moment(data.deadline).format("MM-DD-YYYY");
-  let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
-  let onTime = moment(formattedToday).isSame(formattedDeadline);
-  let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
-  let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
 
   return (
     <>
@@ -266,13 +256,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           />
         </div>
         <p className="popup-title">Edit project</p>
-        <div>
-          <p>{formattedDeadline}</p>
-          <p>{formattedToday}</p>
-          <p>{onTime}</p>
-          <p>{beforeDeadline}</p>
-          <p>{afterDeadline}</p>
-        </div>
         <div>
           <div className="inputs-grid">
             <div>

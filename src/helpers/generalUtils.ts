@@ -35,8 +35,8 @@ export const getStatus = (status: string | undefined) => {
 };
 
 export const calculateStatusBasedOnDeadline = (data: any) => {
-  let formattedDeadline = moment(data).format("MM-DD-YYYY");
-  let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
+  let formattedDeadline = moment(data).format("YYYY-MM-DD");
+  let formattedToday = moment(new Date()).format("YYYY-MM-DD");
   let onTime = moment(formattedToday).isSame(formattedDeadline);
   let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
   let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
