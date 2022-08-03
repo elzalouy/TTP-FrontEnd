@@ -64,6 +64,8 @@ const NotificationContainer = (props: Props) => {
               width: "80px",
               color: "white",
               borderRadius: "10px",
+              border:"none",
+              outline:"none"
             }}
             onClick={handleLoadMore}
           >
@@ -72,6 +74,7 @@ const NotificationContainer = (props: Props) => {
                 disableShrink
                 sx={{
                   color: "white",
+                  padding:"0px",
                   height: "20px !important",
                   width: "20px !important",
                   marginTop: "5px",
