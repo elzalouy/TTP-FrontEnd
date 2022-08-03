@@ -148,20 +148,16 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
       if (!([typeof status, status].includes("undefined"))) {
+        //Setting project status only if status is not undefined
         editProject.projectStatus = status;
       }
     }
-
-    console.log(editProject, ": Data sent to dispatch action");
 
     dispatch(editProjectAction({ data: editProject, dispatch }));
     setShow("none");
     setUpdateDate(false);
     setTrigger(false);
   };
-
-  if (typeof project?.projectStatus !== "undefined") console.log(project?.projectStatus, ": Current Status");
-  if (typeof data?.status !== "undefined") console.log(data?.status, ": Updated Status");
 
   const showAlertBasedOnDate = () => {
     let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
@@ -233,8 +229,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     executeEditProject(result);
   };
 
-  let statusFunction = calculateStatusBasedOnDeadline(data?.deadline);
-
   return (
     <>
       <DoneProjectConfirm
@@ -264,9 +258,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           />
         </div>
         <p className="popup-title">Edit project</p>
-        <div>
-          <p>{statusFunction} Status</p>
-        </div>
         <div>
           <div className="inputs-grid">
             <div>
