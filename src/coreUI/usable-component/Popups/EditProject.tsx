@@ -149,7 +149,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
-      editProject.projectStatus = status;
+      if (!([typeof status, status].includes("undefined"))) {
+        //Setting project status only if status is not undefined
+        editProject.projectStatus = status;
+      }
     }
 
     dispatch(editProjectAction({ data: editProject, dispatch }));
