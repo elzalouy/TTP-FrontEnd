@@ -74,12 +74,12 @@ const Clients: React.FC<Props> = () => {
     dispatch(clientsActions.onSearch(e.target.value));
   };
 
-  const handleChangeFilter = (e: SelectChangeEvent<string>) => {
+ /*  const handleChangeFilter = (e: SelectChangeEvent<string>) => {
     setFilter({
       sortDate: e.target.value,
     });
     dispatch(clientsActions.onSort(e.target.value));
-  };
+  }; */
 
   useEffect(() => {
     if (clientData) {

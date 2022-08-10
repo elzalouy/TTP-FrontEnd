@@ -17,7 +17,6 @@ import {
   selectAllProjects,
   ProjectsActions,
   deleteTasks,
-  getAllTasks,
 } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/TechMember";
 import DeleteTask from "../../coreUI/usable-component/Popups/DeleteTaskFromTaskTable";
@@ -30,8 +29,6 @@ interface Props {
 const Tasks: React.FC<Props> = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const techMembers = useAppSelector(selectAllMembers);
-  const pMs = useAppSelector(selectPMs);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,7 +36,7 @@ const Tasks: React.FC<Props> = (props: any) => {
   const LG = useMediaQuery(theme.breakpoints.up("md"));
   const [Show, setShow] = React.useState("none");
   const [filter, setFilter] = React.useState(true);
-  const { register, watch, control, setValue } = useForm();
+  const { watch, control, setValue } = useForm();
 
   React.useEffect(() => {
     //To clear all filters on each page change
@@ -64,7 +61,6 @@ const Tasks: React.FC<Props> = (props: any) => {
   };
 
   const onDeleteTasks = async () => {
-    let filter = watch();
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
   };
@@ -352,6 +348,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                 render={(props) => (
                   <SearchBox
                     onChange={(e) => {
+                      console.log(e);
                       props.field.onChange(e);
                       onHandleChange(e);
                     }}
