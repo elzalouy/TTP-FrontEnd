@@ -109,7 +109,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
         </h4>
       </Grid>
       <Grid xs={12} item>
-        <TableContainer component={Paper}>
+        <TableContainer className="table-container-task-form" component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -133,6 +133,9 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                     Deadline date
                   </Typography>
                 </TableCell>
+                <TableCell align="right">
+                  <Typography color="#334D6E" fontSize={14}></Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,10 +155,8 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                       <Typography color="#707683" fontSize={14}>
                         {task &&
                           deps
-                            .find((item) =>
-                              item.teamsId.findIndex((i) => i._id === task._id)
-                            )
-                            ?.teamsId?.find((item) => item._id === task.teamId)
+                            .find((item) => item.boardId === task.boardId)
+                            ?.teams?.find((item) => item._id === task.teamId)
                             ?.name}
                       </Typography>
                     </TableCell>

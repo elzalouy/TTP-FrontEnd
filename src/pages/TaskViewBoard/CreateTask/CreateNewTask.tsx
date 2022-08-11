@@ -18,22 +18,21 @@ import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { selectRole } from "../../../redux/Auth";
 import { valdiateCreateTask } from "../../../services/validations/task.schema";
 import {
+  createTaskFromBoard,
+  selectSelectedProject,
+} from "../../../redux/Projects";
+import {
   CRUDTaskState,
   initialHookFormTaskState,
   initialState,
 } from "../../../interfaces/views/BoardView";
-import {
-  createTaskFromBoard,
-  editTaskLoading,
-  selectSelectedProject,
-} from "../../../redux/Projects";
 
-type Props = {
+interface Props {
   show: string;
   setShow: (val: string) => void;
-};
+}
 
-const CreateNewTask: React.FC<Props> = (props) => {
+const CreateNewTask = ({ show, setShow }: Props) => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
@@ -67,10 +66,11 @@ const CreateNewTask: React.FC<Props> = (props) => {
         : "",
       attachedFiles: state?.newFiles,
       listId: data?.teamId
-        ? state.selectedDepartment?.teamsId?.find(
+        ? state.selectedDepartment?.teams?.find(
             (item: any) => item._id === data.teamId
           )?.listId
-        : state.selectedDepartment?.defaultListId,
+        : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
+            ?.listId,
       boardId: state.selectedDepartment?.boardId,
       description: data?.description,
     };
@@ -85,7 +85,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
           data: FormDatatask,
           dispatch,
           resetState,
-          setShow: props.setShow,
+          setShow: setShow,
         })
       );
     }
@@ -96,11 +96,14 @@ const CreateNewTask: React.FC<Props> = (props) => {
     setValue("selectedDepartmentId", e.target.value);
     setValue("teamId", "");
     let dep = departments.find((item) => item._id === e.target.value);
-    State.selectedDepartment = dep;
-    State.selectedDepatmentTeams = dep?.teamsId.filter(
-      (item) => item.isDeleted === false
-    );
-    setState(State);
+    if (dep && dep.teams) {
+      State.selectedDepartment = dep;
+      console.log(State.selectedDepartment);
+      State.selectedDepatmentTeams = dep.teams.filter(
+        (item) => item.isDeleted === false
+      );
+      setState(State);
+    }
   };
 
   const onChangeCategory = (e: any) => {
@@ -168,9 +171,9 @@ const CreateNewTask: React.FC<Props> = (props) => {
 
   return (
     <>
-      <PopUp show={props.show} minWidthSize="50vw">
+      <PopUp show={show} minWidthSize="50vw">
         <EditTaskTitle
-          setShow={props.setShow}
+          setShow={setShow}
           reset={resetState}
           title="Create task"
         />
@@ -302,7 +305,7 @@ const CreateNewTask: React.FC<Props> = (props) => {
                 </Box>
               </div>
             </div>
-            <Box paddingTop={2}>
+            <Box paddingTop={2} paddingX={1}>
               <AttachetFiles
                 register={register}
                 onSetFiles={onSetFiles}

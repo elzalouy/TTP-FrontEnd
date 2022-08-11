@@ -6,6 +6,7 @@
   border-radius: 0;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 1px 1px 0px;
   margin-bottom: 30px;
+  width: 100%;
 }
 .tsk-header {
   margin: 50px 0px 30px 0px;

@@ -5,10 +5,8 @@ import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../redux/hooks";
-import { Close as CloseIcon } from "@mui/icons-material";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { selectRole } from "../../../redux/Auth";
-import { selectViewTask } from "../../../redux/Ui/UI.selectors";
 import { selectTaskDetails } from "../../../redux/Projects";
 import { toggleViewTaskPopup } from "../../../redux/Ui";
 import { selectAllDepartments } from "../../../redux/Departments";
@@ -17,7 +15,6 @@ import { Task } from "../../../interfaces/models/Projects";
 import {
   selectAllCategories,
   selectSubCategories,
-  SubCategory,
 } from "../../../redux/Categories";
 import "./TaskInfo.css";
 
@@ -30,7 +27,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
   const categories = useAppSelector(selectAllCategories);
   const teams = useAppSelector(selectDepartmentMembers);
   const subCategories = useAppSelector(selectSubCategories);
-  const viewTask = useAppSelector(selectTaskDetails);
+  const task = useAppSelector(selectTaskDetails);
   const { register, control, setValue } = useForm();
   const role = useAppSelector(selectRole);
   const theme = useTheme();
@@ -60,31 +57,31 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    setValue("name", viewTask?.name);
-    setValue("selectedDepartmentId", viewTask?.boardId);
-    setValue("description", viewTask?.description);
-    setValue("categoryId", viewTask?.categoryId);
-    setValue("subCategoryId", viewTask?.subCategoryId);
-    setValue("teamId", viewTask?.teamId);
-    if (viewTask !== undefined) {
+    setValue("name", task?.name);
+    setValue("selectedDepartmentId", task?.boardId);
+    setValue("description", task?.description);
+    setValue("categoryId", task?.categoryId);
+    setValue("subCategoryId", task?.subCategoryId);
+    setValue("teamId", task?.teamId);
+    if (task !== undefined) {
       let names = getAllTaskDetails(
-        viewTask?.boardId,
-        viewTask?.categoryId,
-        viewTask?.subCategoryId,
-        viewTask?.teamId
+        task?.boardId,
+        task?.categoryId,
+        task?.subCategoryId,
+        task?.teamId
       );
       setValue("selectedDepartmentId", names.depName);
       setValue("categoryId", names.catName);
       setValue("subCategoryId", names.subCatName);
       setValue("teamId", names.teamName);
     }
-    if (viewTask?.deadline) {
-      let date = moment(viewTask.deadline).format("LL");
+    if (task?.deadline) {
+      let date = moment(task.deadline).format("LL");
       setValue("deadline", date);
     } else {
-      setValue("deadline", viewTask?.deadline);
+      setValue("deadline", task?.deadline);
     }
-  }, [viewTask]);
+  }, [task]);
 
   const onCloseModel = () => {
     dispatch(toggleViewTaskPopup("none"));
@@ -121,7 +118,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
           flexDirection={LG ? "column-reverse" : "row"}
           mx={"10px"}
         >
-          {viewTask?.attachedFiles && viewTask?.attachedFiles.length > 0 && (
+          {task?.attachedFiles && task?.attachedFiles.length > 0 && (
             <Grid
               justifyContent={"center"}
               alignItems={"center"}
@@ -135,7 +132,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 display={"flex"}
                 className="files-task-view customScrollbar"
               >
-                {viewTask.attachedFiles?.map((item: any) => {
+                {task.attachedFiles?.map((item: any) => {
                   return (
                     <div className="image-container">
                       <img src={item.url} alt={item.name} className="img" />
@@ -172,7 +169,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 />
               </div>
               <div className="form-header">
-                {viewTask?.deadline && (
+                {task?.deadline && (
                   <div className="form-header">
                     <Controller
                       name="deadline"
@@ -188,22 +185,22 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 <div className="form-header">
                   <span
                     className={
-                      viewTask?.status === "inProgress"
+                      task?.status === "inProgress"
                         ? "inProgressStatus"
-                        : viewTask?.status === "Review"
+                        : task?.status === "Review"
                         ? "reviewStatus"
-                        : viewTask?.status === "Not Clear"
+                        : task?.status === "Not Clear"
                         ? "notClearStatus"
-                        : viewTask?.status === "Tasks Board"
+                        : task?.status === "Tasks Board"
                         ? "notStartedStatus"
-                        : viewTask?.status === "Done"
+                        : task?.status === "Done"
                         ? "doneStatus"
-                        : viewTask?.status === "Shared"
+                        : task?.status === "Shared"
                         ? "sharedStatus"
                         : "endedStatus"
                     }
                   >
-                    {viewTask?.status}
+                    {task?.status}
                   </span>
                 </div>
               </div>
@@ -243,7 +240,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                   )}
                 />
               </div>
-              {viewTask?.subCategoryId && (
+              {task?.subCategoryId && (
                 <div>
                   <label className="label-project">Sub category</label>
                   <br />
@@ -262,7 +259,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                   />
                 </div>
               )}
-              {role === "OM" && viewTask?.teamId && (
+              {role === "OM" && task?.teamId && (
                 <div>
                   <label className="label-project">Assign to Team</label>
                   <br />
@@ -282,7 +279,7 @@ const TaskInfoPopUp: React.FC<Props> = (props) => {
                 </div>
               )}
             </div>
-            {viewTask?.description && (
+            {task?.description && (
               <div>
                 <label className="label-project">Description</label>
                 <br />
@@ -315,13 +312,4 @@ type Props = {
   show: string;
   setShow?: (val: string) => void;
   task?: Task;
-};
-
-const taskFormFilesStyles = {
-  cursor: "pointer",
-  height: "35px",
-  textAlign: "center",
-  alignContent: "center",
-  paddingTop: 1,
-  wordWrap: "break-all",
 };

@@ -68,7 +68,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
         (item) => item._id === task?.categoryId
       );
       State.selectedDepartment = dep;
-      State.selectedDepatmentTeams = dep?.teamsId.filter(
+      State.selectedDepatmentTeams = dep?.teams?.filter(
         (item) => item.isDeleted === false
       );
     }
@@ -87,7 +87,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     setValue("teamId", "");
     let dep = departments.find((item) => item._id === e.target.value);
     State.selectedDepartment = dep;
-    State.selectedDepatmentTeams = dep?.teamsId.filter(
+    State.selectedDepatmentTeams = dep?.teams?.filter(
       (item) => item.isDeleted === false
     );
     setState(State);
@@ -118,10 +118,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       attachedFiles: state?.newFiles,
       deleteFiles: state.deleteFiles,
       listId: data?.teamId
-        ? state.selectedDepartment?.teamsId?.find(
+        ? state.selectedDepartment?.teams?.find(
             (item: any) => item._id === data.teamId
           )?.listId
-        : state.selectedDepartment?.defaultListId,
+        : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
+            ?.listId,
       boardId: state.selectedDepartment?.boardId,
       description: data?.description,
       cardId: state.task?.cardId,
@@ -322,7 +323,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     register={register}
                     selectValue={watch().teamId}
                     selectText={
-                      state.selectedDepartment?.teamsId?.find(
+                      state.selectedDepartment?.teams?.find(
                         (item: any) => item._id === watch().teamId
                       )?.name
                     }
@@ -337,7 +338,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 </Box>
               </div>
             </div>
-            <Box paddingTop={2}>
+            <Box paddingTop={2} paddingX={1}>
               <AttachetFiles
                 register={register}
                 onSetFiles={onSetFiles}

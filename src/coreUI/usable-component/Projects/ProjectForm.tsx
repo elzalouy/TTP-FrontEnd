@@ -37,7 +37,7 @@ import {
   validateDate,
 } from "../../../services/validations/project.schema";
 import { ToastError, ToastWarning } from "../Typos/Alert";
-import { getYesterdaysDate } from "../../../helpers/generalUtils";
+import { getYesterdaysDate, notNullorFalsy } from "../../../helpers/generalUtils";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -176,6 +176,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
+                cancelText={""}
+                okText={""}
+                disableCloseOnSelect={false}
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -207,7 +210,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       onChange={params.onChange}
                       sx={projectFormStartDateStyles}
                     />
-                    {watch().startDate !== null && (
+                    {notNullorFalsy(watch().startDate) && (
                       <img
                         className="closeIcon"
                         src={IMAGES.closeicon}
@@ -240,6 +243,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
+                cancelText={""}
+                okText={""}
+                disableCloseOnSelect={false}
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -274,7 +280,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       placeholder="Deadline"
                       sx={projectFormDeadlineStyles}
                     />
-                    {watch().deadline !== null && (
+                    {notNullorFalsy(watch().deadline) && (
                       <img
                         className="closeIcon"
                         src={IMAGES.closeicon}

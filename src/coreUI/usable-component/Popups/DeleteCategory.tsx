@@ -1,15 +1,8 @@
 import React from "react";
-import IMAGES from "../../../assets/img/Images";
 import SmallPopUp from "../Popup/SmallPopup";
-import { useState } from "react";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
-import {
-  deleteDepartment,
-  getAllDepartments,
-} from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
-import { selectedDepart } from "../../../redux/Departments/departments.selectors";
 import { Typography } from "@mui/material";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 import {

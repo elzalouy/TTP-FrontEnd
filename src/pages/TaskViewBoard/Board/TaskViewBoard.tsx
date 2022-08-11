@@ -69,29 +69,6 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
           <Box className="filter-icon">
             <img src={IMAGES.filtericon} alt="sortout" />
           </Box>
-          {/* <Box marginLeft={2} className="select-task-board">
-            <Controller
-              name="deadline"
-              control={control}
-              render={(props) => (
-                <SelectInput
-                customValue="Due date"
-                  {...props}
-                  options={[
-                    { id: "asc", text: "Ascending", value: "asc" },
-                    { id: "desc", text: "Descending", value: "desc" },
-                  ]}
-                  selectText={props.field.value}
-                  handleChange={(e) => {
-                    props.field.onChange(e);
-                    onHandleSort(e);
-                  }}
-                  selectValue="duedate"
-                  label="Sort By:"
-                />
-              )}
-            />
-          </Box> */}
           <Box
             sx={{ cursor: "pointer" }}
             onClick={() =>
@@ -103,7 +80,6 @@ const TaskViewBoard: React.FC<TasksViewBoard> = (props: any) => {
             justifyContent={"center"}
             alignItems="center"
           >
-            <TaskIcon stroke="black" />
             <Typography
               fontWeight={"600"}
               fontSize={16}

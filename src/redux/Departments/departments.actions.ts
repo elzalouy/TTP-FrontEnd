@@ -1,9 +1,12 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/endpoints/departments";
-import { toast } from "react-toastify";
-import { fireDeleteDepartmentHook, fireUpdateDepartmentHook } from "../Ui";
 import { logout } from "../Auth";
 import { ApiResponse } from "apisauce";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  fireDeleteDepartmentHook,
+  fireUpdateDepartmentHook,
+  toggleEditDepartment,
+} from "../Ui";
 import {
   ToastError,
   ToastSuccess,
@@ -14,12 +17,11 @@ export const getAllDepartments = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue, dispatch }) => {
     try {
       let departments = await api.getDepartments();
+      if (departments.ok && departments.data) return departments.data;
       if (departments?.status === 401 || departments?.status === 403) {
         rejectWithValue("Un Authorized");
         dispatch(logout(true));
-      }
-      if (departments.ok && departments.data) return departments.data;
-      else return [];
+      } else return [];
     } catch (error) {
       rejectWithValue(error);
     }
@@ -33,13 +35,16 @@ export const createDepartment = createAsyncThunk<any, any, any>(
       let department: ApiResponse<any> = await api.createDepartment(args.data);
       if (department.ok) {
         ToastSuccess("Department created successfully");
+        args.onInitState();
+        args.reset();
         return department.data;
       }
-      ToastError(department.data.message);
-      return rejectWithValue(department.data?.message);
+      ToastError(department.data);
+      args.onSetLoading(false);
+      return rejectWithValue(department.data);
     } catch (error: any) {
-      ToastError("There was an error while creating the Department");
-      rejectWithValue(error);
+      ToastError(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -48,14 +53,23 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
   "departments/updateDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department = await api.updateDepartment(args.data);
-      if (department.ok && department.data) {
-        // args.dispatch(fireUpdateDepartmentHook(""));
+      let department: ApiResponse<any> = await api.updateDepartment(
+        args.id,
+        args.data
+      );
+      if (department.ok) {
+        args.dispatch(fireUpdateDepartmentHook(""));
+        args.dispatch(toggleEditDepartment("none"));
+        args.onInitState();
         ToastSuccess("Department updated successfully");
         return department.data;
-      } else return [];
-    } catch (error) {
-      rejectWithValue(error);
+      }
+      args.stopLoading();
+      ToastError(department.data);
+      return rejectWithValue(department.data);
+    } catch (error: any) {
+      ToastError(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -64,22 +78,17 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
   "departments/deleteDepartment",
   async (args: any, { rejectWithValue }) => {
     try {
-      let department = await api.deleteDepartment(args?.data);
-      if (department.ok && department.data) {
-        // args?.dispatch(fireDeleteDepartmentHook(""));
-        toast.success("Department deleted successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        return { ...args.data };
-      } else return [];
-    } catch (error) {
-      rejectWithValue(error);
+      let department: ApiResponse<any> = await api.deleteDepartment(args?.id);
+      if (department.ok) {
+        ToastSuccess("Department deleted successfully");
+        args.setShow("none");
+        args.dispatch(fireDeleteDepartmentHook(""));
+        return department.data._id;
+      }
+      return rejectWithValue(department.data);
+    } catch (error: any) {
+      ToastError(error);
+      return rejectWithValue(error);
     }
   }
 );

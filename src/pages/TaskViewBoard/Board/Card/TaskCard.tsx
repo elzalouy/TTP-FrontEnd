@@ -13,18 +13,14 @@ import {
 } from "../../../../helpers/generalUtils";
 import { selectAllMembers } from "../../../../redux/TechMember";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper";
+import { Autoplay, Navigation } from "swiper";
 import {
   ArrowBackIosNew as ArrowBackIosNewIcon,
   ArrowForwardIos as ArrowForwardIosIcon,
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { toggleEditTaskPopup } from "../../../../redux/Ui";
-import {
-  Project,
-  Task,
-  TaskFile,
-} from "../../../../interfaces/models/Projects";
+import { Project, Task } from "../../../../interfaces/models/Projects";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
@@ -119,11 +115,12 @@ const TaskCard: React.FC<TaskCartProps> = ({
       setDaysColor("#2C2C2C");
     }
     let newData = { ...data };
-    newData.member = techMembers.techMembers.find(
-      (member) => member._id === item.teamId
-    )?.name;
+    let dep = departments.find((item) => item.boardId === boardId);
     newData.department = departments.find(
       (item) => item.boardId === boardId
+    )?.name;
+    newData.member = dep?.teams?.find(
+      (member) => member._id === item.teamId
     )?.name;
     setData(newData);
   }, []);

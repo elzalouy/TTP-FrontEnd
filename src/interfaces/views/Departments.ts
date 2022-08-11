@@ -1,32 +1,8 @@
 import Joi from "joi";
+import { IDepartmentState, ITeam } from "../models/Departments";
+// constants
 
-export interface IEditDepartmentProps {
-  Show: string;
-  setShow: (value: string) => void;
-}
-export interface ICreateDepartmentProps {}
-
-export interface ICreateDepartmentState {
-  department: {
-    name: string;
-    color: string;
-    teams: { name: string }[];
-    totalInProgress: number;
-    totalDone: number;
-  };
-  formData: { name: string; color: string; team: string };
-  colors: string[];
-  show: string;
-  loading: boolean;
-  error: {
-    error?: Joi.ValidationError;
-    warning?: Joi.ValidationError | undefined;
-    value?: any;
-  };
-}
-export interface IEditDepartmentState extends ICreateDepartmentState {}
-
-const color = [
+export const color = [
   "blue",
   "orange",
   "green",
@@ -37,15 +13,43 @@ const color = [
   "sky",
   "grey",
 ];
+export const cardColorsValues: any = {
+  blue: ["#0079BF1A", "#0079BF"],
+  orange: ["#D290341A", "#D29034"],
+  green: ["#5198391A", "#519839"],
+  red: ["#B046321A", "#B04632"],
+  purple: ["#89609E1A", "#89609E"],
+  pink: ["#CD5A911A", "#CD5A91"],
+  lime: ["#4BBF6B1A", "#4BBF6B"],
+  sky: ["#00AECC1A", "#00AECC"],
+  grey: ["#838C911A", "#838C91"],
+};
+// Read
+export interface IDepartmentsComponentProps {
+  cardColors?: any;
+  department: IDepartmentState;
+}
+export interface IDepartmentsComponentState {
+  doneTasks: number;
+  notDoneTasks: number;
+}
+// Create
+export interface ICreateDepartmentProps {}
+export interface ICreateDepartmentState {
+  teams: ITeam[];
+  formData: { name: string; color: string; team: string };
+  colors: string[];
+  show: string;
+  loading: boolean;
+  error: {
+    error?: Joi.ValidationError;
+    warning?: Joi.ValidationError | undefined;
+    value?: any;
+  };
+}
 
 export const IcreateDepartmentInit: ICreateDepartmentState = {
-  department: {
-    name: "",
-    color: "blue",
-    teams: [],
-    totalInProgress: 0,
-    totalDone: 0,
-  },
+  teams: [],
   colors: color,
   formData: { team: "", name: "", color: "blue" },
   show: "none",
@@ -56,5 +60,40 @@ export const IcreateDepartmentInit: ICreateDepartmentState = {
     warning: undefined,
   },
 };
-export const editDepartmentInitState: ICreateDepartmentState =
-  IcreateDepartmentInit;
+
+// Edit
+export interface IEditDepartmentProps {
+  Show: string;
+  setShow: (value: string) => void;
+}
+
+export interface IEditDepartmentState {
+  _id?: string;
+  teams: ITeam[];
+  addTeams?: string[];
+  removeTeams?: string[];
+  formData: { name: string; color: string; team: string };
+  colors: string[];
+  show: string;
+  loading: boolean;
+  error: {
+    error?: Joi.ValidationError;
+    warning?: Joi.ValidationError | undefined;
+    value?: any;
+  };
+}
+
+export const editDepartmentInitState: IEditDepartmentState = {
+  addTeams: [],
+  removeTeams: [],
+  teams: [],
+  colors: color,
+  formData: { team: "", name: "", color: "blue" },
+  show: "none",
+  loading: false,
+  error: {
+    error: undefined,
+    value: undefined,
+    warning: undefined,
+  },
+};

@@ -39,6 +39,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           width: "100%",
           borderRadius: 2.5,
           height: "100%",
+          userSelect:"none",
+          "&:hover" : {
+            boxShadow: "0px 2px 10px #0000001A",
+          }
         }}
       >
         <CardContent

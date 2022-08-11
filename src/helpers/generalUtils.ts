@@ -128,3 +128,11 @@ export const getYesterdaysDate = () => {
   today.setDate(today.getDate() - 1);
   return today;
 }
+
+export const notNullorFalsy = (date : string | null | undefined) => {
+  if([undefined,null,"",0].includes(date)){
+    return false 
+  }else{
+    return true
+  }
+}

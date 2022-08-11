@@ -66,7 +66,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
         <Table stickyHeader={true} style={{ borderRadius: 3 }}>
           <TableHead style={{ position: "relative", top: 0, zIndex: 0 }}>
             <TableRow
-              sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2 }}
+              sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2}}
             >
               <TableCell style={cssHeadTableCell}>Status</TableCell>
               <TableCell style={cssHeadTableCell}>Task Name</TableCell>
@@ -130,6 +130,7 @@ const Style = makeStyles((theme: any) => ({
     textTransform: "capitalize",
     width: "130px",
     align: "left",
+    cursor:"pointer",
   },
   tableContainer: {
     maxHeight: "300px",

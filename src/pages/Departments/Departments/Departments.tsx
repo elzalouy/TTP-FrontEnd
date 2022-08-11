@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from "react";
 import DepartmentCard from "./Card";
 import CreateNewDepartment from "../Create/CreateNewDepartment";
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Department } from "../../../redux/Departments";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectAllDepartments } from "../../../redux/Departments/departments.selectors";
 import { selectRole } from "../../../redux/Auth";
-import { toast } from "react-toastify";
+import { useAppSelector } from "../../../redux/hooks";
+import { IDepartmentState } from "../../../interfaces/models/Departments";
+import { selectAllDepartments } from "../../../redux/Departments/departments.selectors";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import "./departments.css";
 
-interface IProps {
-  alternatingColor: string[][];
-}
-
-const Departments: React.FC<IProps> = () => {
-  const [department, setDepartment] = useState<null | Department[]>(null);
-  let departmentData = useAppSelector(selectAllDepartments);
+const Departments = () => {
+  let departments = useAppSelector(selectAllDepartments);
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    setDepartment(departmentData);
-    toast.clearWaitingQueue();
-  }, [departmentData]);
 
   return (
     <Box className="departments-page" sx={{ width: "100%" }}>
@@ -57,18 +45,10 @@ const Departments: React.FC<IProps> = () => {
         >
           Departments
         </Typography>
-        {/* <div className="department-tools">
-          {role !== "PM" && <CreateNewTeam />}
-        </div> */}
       </Box>
       <div className="all-departments">
-        {department?.map((dep: Department) => (
-          <DepartmentCard
-            backgroundColor={alternatingColor[0][1]}
-            fontColor={alternatingColor[0][0]}
-            department={dep}
-            key={dep._id}
-          />
+        {departments?.map((dep: IDepartmentState) => (
+          <DepartmentCard department={dep} key={dep._id} />
         ))}
         {role !== "PM" && <CreateNewDepartment />}
       </div>
@@ -76,11 +56,3 @@ const Departments: React.FC<IProps> = () => {
   );
 };
 export default Departments;
-
-const alternatingColor = [
-  ["#0079BF", "#E1EDF6"],
-  ["#B04632", "#F3E8E7"],
-  ["#D29034", "#F7F0E7"],
-  ["#783DBD", "#EFEBF2"],
-  ["#00AECC", "#E1F3F7"],
-];

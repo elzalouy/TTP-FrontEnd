@@ -15,16 +15,16 @@ import { useState } from "react";
 import { ToastWarning } from "../../../coreUI/usable-component/Typos/Alert";
 import { CircularProgress } from "@mui/material";
 import { createDepartment } from "../../../redux/Departments";
-import { CreateDepartmantJoiSchema } from "../../../services/validations/department.schema";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { CreateDepartmantJoiSchema } from "../../../services/validations/department.schema";
 import {
   IcreateDepartmentInit,
   ICreateDepartmentProps,
   ICreateDepartmentState,
 } from "../../../interfaces/views/Departments";
 import "../../../coreUI/usable-component/Popups/popups-style.css";
-
+import _ from "lodash";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
@@ -40,27 +40,18 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
     let State = { ...state };
     setState({ ...State, show: "flex" });
   };
-
   const onCloseModal = () => {
     setState({ ...state, show: "none" });
   };
 
-  const onAddNewTeam = () => {
-    let team = watch().team;
-    setState({
-      ...state,
-      department: {
-        ...state.department,
-        teams: [...state.department.teams, { name: team }],
-      },
-    });
+  const onChangeTeams = (index?: number) => {
+    let teams = [...state.teams];
+    let name = watch().team;
+    if (index !== undefined) {
+      _.remove(teams, teams[index]);
+    } else teams.push({ name: name, listId: "", isDeleted: false });
+    setState({ ...state, teams: teams });
     resetField("team");
-  };
-
-  const onRemoveTeam = (name: string) => {
-    let teams = [...state.department.teams];
-    teams = teams.filter((item) => item.name !== name);
-    setState({ ...state, department: { ...state.department, teams: teams } });
   };
 
   const onSubmit = async () => {
@@ -69,20 +60,23 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
     let department = {
       name: data.name,
       color: data.color,
-      totalInProgress: 0,
-      totalDone: 0,
-      teams: [...state.department.teams],
+      teams: [...state.teams],
     };
     let validation = CreateDepartmantJoiSchema.validate(department);
     if (validation.error) {
       setState({ ...state, error: validation });
       ToastWarning(validation.error.details[0].message);
     } else {
-      await dispatch(createDepartment({ data: department }));
-      reset();
-      onInitState();
+      await dispatch(
+        createDepartment({
+          data: department,
+          onInitState,
+          reset,
+          onSetLoading: (bool: boolean) =>
+            setState({ ...state, loading: bool }),
+        })
+      );
     }
-    setState({ ...state, loading: false });
   };
   return (
     <>
@@ -131,8 +125,8 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               handleChange={props.field.onChange}
               label="Colors"
               {...register("color")}
-              selectText={state.department.color}
-              selectValue={state.department.color}
+              selectText={props.field.value}
+              selectValue={props.field.value}
               options={
                 state.colors
                   ? state.colors.map((color) => {
@@ -168,10 +162,10 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           <Box height={"60%"} paddingTop={2}>
             <button
               className="gray-btn"
-              onClick={onAddNewTeam}
+              onClick={() => onChangeTeams()}
               disabled={watch().team.length <= 2}
               style={{
-                background: watch().team.length >= 2 ? "#ffc500" : "#b4b6c4",
+                background: watch().team.length > 2 ? "#ffc500" : "#b4b6c4",
               }}
             >
               Add
@@ -179,14 +173,14 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           </Box>
         </Box>
         <div className="names-container">
-          {state.department.teams.map((el, index) => {
+          {state.teams.map((el, index) => {
             return (
               <div
                 key={index}
                 className="team-name-badge"
-                onClick={(e) => onRemoveTeam(el.name)}
+                onClick={(e) => onChangeTeams(index)}
               >
-                <p className="name-of-badge">{el.name}</p>
+                <p className="name-of-badge">{el?.name}</p>
                 <img
                   src={IMAGES.closeicon}
                   alt="close"
@@ -199,15 +193,15 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           })}
         </div>
         <br />
-        <Box sx={submitBtn}>
+        <div className="controllers">
           <button className="controllers-done" onClick={onSubmit}>
             {state.loading ? (
-              <CircularProgress sx={createNewDepLoadingStyles} />
+              <CircularProgress sx={{ color: "white", padding: "0px" }} />
             ) : (
               "Done"
             )}
           </button>
-        </Box>
+        </div>
       </PopUp>
     </>
   );
@@ -217,6 +211,8 @@ export default CreateNewDepartment;
 const submitBtn = {
   width: "100%",
   textAlign: "center",
+  justifyContent: "center",
+  alignItems: "center",
 };
 const createNewDepLoadingStyles = {
   color: "white",

@@ -1,67 +1,120 @@
+import _ from "lodash";
 import React from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/usable-component/Popup/PopUp";
 import Input from "../../../coreUI/usable-component/Inputs/Dashboard/Input";
 import SelectInput2 from "../../../coreUI/usable-component/Inputs/SelectInput2";
+import { selectUi } from "../../../redux/Ui/UI.selectors";
 import { useDispatch } from "react-redux";
+import { ToastWarning } from "../../../coreUI/usable-component/Typos/Alert";
 import { useAppSelector } from "../../../redux/hooks";
-import { selectedDepart } from "../../../redux/Departments/departments.selectors";
-import { CircularProgress } from "@mui/material";
-import { selectAllMembers } from "../../../redux/TechMember/techMembers.selectors";
+import { toggleEditDepartment } from "../../../redux/Ui";
+import { editDepartmentSchema } from "../../../services/validations/department.schema";
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import {
+  selectEditDepartment,
   updateDepartment,
-  selectDepartmentLoading,
-  departmentsActions,
 } from "../../../redux/Departments";
-import "../../../coreUI/usable-component/Popups/popups-style.css";
 import {
   editDepartmentInitState,
   IEditDepartmentProps,
   IEditDepartmentState,
 } from "../../../interfaces/views/Departments";
-import { selectUi } from "../../../redux/Ui/UI.selectors";
-import { toggleEditDepartment } from "../../../redux/Ui";
+import "../../../coreUI/usable-component/Popups/popups-style.css";
 
-const EditDepartment: React.FC<IEditDepartmentProps> = ({ Show, setShow }) => {
+const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
   const dispatch = useDispatch();
+  // toggleEditDepartment > editDepartmentData
+  const selectedDepartment = useAppSelector(selectEditDepartment);
   const { editDepartmentPopup } = useAppSelector(selectUi);
   const [state, setState] = useState<IEditDepartmentState>(
     editDepartmentInitState
   );
-  const { register, control, watch, reset, resetField } = useForm({
+  const { register, control, watch, resetField, setValue, reset } = useForm({
     defaultValues: state.formData,
   });
+
+  useEffect(() => {
+    if (
+      selectedDepartment &&
+      selectedDepartment.name &&
+      selectedDepartment.color &&
+      selectedDepartment.teams
+    ) {
+      setValue("name", selectedDepartment?.name);
+      setValue("color", selectedDepartment?.color);
+      setState({
+        ...state,
+        teams: selectedDepartment?.teams.filter(
+          (item) => item.isDeleted === false
+        ),
+      });
+    }
+  }, [selectedDepartment, editDepartmentPopup]);
+
   const onClose = () => {
+    onInitState();
     dispatch(toggleEditDepartment("none"));
   };
+
   const onInitState = () => {
+    reset();
     setState(editDepartmentInitState);
   };
-  const onAddNewTeam = () => {
-    let team = watch().team;
-    setState({
-      ...state,
-      department: {
-        ...state.department,
-        teams: [...state.department.teams, { name: team }],
-      },
-    });
+
+  const onChangeNewTeams = (index?: number) => {
+    if (state.addTeams && state.removeTeams) {
+      let teams = [...state.addTeams];
+      let team = watch().team;
+      if (index !== undefined) _.remove(teams, (item) => item === teams[index]);
+      else teams.push(team);
+      setState({
+        ...state,
+        addTeams: teams,
+      });
+    }
     resetField("team");
   };
-  const onRemoveTeam = (name: string) => {
-    let teams = [...state.department.teams];
-    teams = teams.filter((item) => item.name !== name);
-    setState({
-      ...state,
-      department: { ...state.department, teams: teams },
-    });
+  const onRemoveOldTeam = (id: string, index: number) => {
+    // Remove old team
+    let teams = [...state.teams];
+    let removeTeams = state.removeTeams ? [...state?.removeTeams] : [];
+    if (id !== "" && id !== undefined)
+      teams = teams.filter((item) => item._id !== id);
+    removeTeams.push(id);
+    setState({ ...state, removeTeams: removeTeams, teams: teams });
   };
   const handleSubmit = async () => {
-    // 1. set loading
     setState({ ...state, loading: true });
     let data = watch();
+    let department = {
+      name: data.name,
+      color: data.color,
+      removeTeams: state.removeTeams,
+      addTeams: state.addTeams,
+    };
+
+    let validation = editDepartmentSchema(
+      state.teams
+        .filter((item) => item.isDeleted === false)
+        .map((item) => item.name)
+    ).validate(department);
+    if (validation.error) {
+      setState({ ...state, error: validation });
+      ToastWarning(validation.error.details[0].message);
+    } else {
+      await dispatch(
+        updateDepartment({
+          id: selectedDepartment?._id,
+          data: department,
+          onInitState,
+          dispatch,
+          stopLoading: () => setState({ ...state, loading: false }),
+        })
+      );
+    }
   };
 
   return (
@@ -82,21 +135,14 @@ const EditDepartment: React.FC<IEditDepartmentProps> = ({ Show, setShow }) => {
           />
         </div>
         <p className="popup-title">Edit department</p>
-        <label className="popup-label-nt">Department name</label>
-        <Controller
+        <Input
           name="name"
           control={control}
-          render={(props) => (
-            <Input
-              name="name"
-              control={control}
-              register={register}
-              label={"Department name"}
-              placeholder={"department name"}
-              state={state}
-              id="editDepartmentName"
-            />
-          )}
+          register={register}
+          label={"Department name"}
+          placeholder={"department name"}
+          state={state}
+          id="editDepartmentName"
         />
         <label className="popup-label-nt">Color</label>
         <Controller
@@ -106,8 +152,8 @@ const EditDepartment: React.FC<IEditDepartmentProps> = ({ Show, setShow }) => {
             <SelectInput2
               label="Colors list"
               handleChange={props.field.onChange}
-              selectText={state.department.color}
-              selectValue={state.department.color}
+              selectText={props.field.value}
+              selectValue={props.field.value}
               {...register("color")}
               options={
                 state.colors
@@ -123,54 +169,75 @@ const EditDepartment: React.FC<IEditDepartmentProps> = ({ Show, setShow }) => {
             />
           )}
         />
-        <label className="popup-label-nt">Teams</label>
-        <div className="add-teams-section">
-          <Controller
-            name="team"
-            control={control}
-            render={(props) => (
-              <Input
-                name="team"
-                control={control}
-                register={register}
-                label={"Teams"}
-                state={state}
-                id="editDepartmentTeams"
-              />
-            )}
-          />
-          <button
-            className="orange-btn"
-            onClick={onAddNewTeam}
-            disabled={watch().team.length <= 2}
-            style={{
-              background: watch().team.length >= 2 ? "#ffc500" : "#b4b6c4",
-            }}
-          >
-            Add
-          </button>
-        </div>
+
+        <Box sx={{ display: "inline-flex", width: "100%", paddingTop: 1 }}>
+          <Box width={"75%"}>
+            <Input
+              name="team"
+              control={control}
+              register={register}
+              label={"Teams"}
+              state={state}
+              id="editDepartmentTeams"
+            />
+          </Box>
+          <Box height={"60%"} paddingTop={2}>
+            <button
+              className="orange-btn"
+              onClick={() => onChangeNewTeams()}
+              disabled={watch().team.length <= 3}
+              style={{
+                background: watch().team.length > 2 ? "#ffc500" : "#b4b6c4",
+              }}
+            >
+              Add
+            </button>
+          </Box>
+        </Box>
         <div className="names-container">
-          {state.department.teams.map((el, index) => {
-            if (el) {
-              return (
-                <div
-                  className="team-name-badge"
-                  key={index}
-                  onClick={(e) => onRemoveTeam(el.name)}
-                >
-                  <p className="name-of-badge">{el.name}</p>
-                  <img
-                    src={IMAGES.closeicon}
-                    alt="close"
-                    width="9px"
-                    height="9px"
-                    className="pointer"
-                  />
-                </div>
-              );
-            }
-          })}
+          {selectedDepartment &&
+            state.teams &&
+            state?.teams.map((el, index) => {
+              if (el)
+                return (
+                  <div
+                    className="team-name-badge"
+                    key={index}
+                    onClick={(e) =>
+                      onRemoveOldTeam(el?._id ? el._id : "", index)
+                    }
+                  >
+                    <p className="name-of-badge">{el.name}</p>
+                    <img
+                      src={IMAGES.closeicon}
+                      alt="close"
+                      width="9px"
+                      height="9px"
+                      className="pointer"
+                    />
+                  </div>
+                );
+            })}
+          {state.addTeams &&
+            state?.addTeams.map((el, index) => {
+              if (el)
+                return (
+                  <div
+                    className="team-name-badge"
+                    key={index}
+                    onClick={(e) => onChangeNewTeams(index)}
+                  >
+                    <p className="name-of-badge">{el}</p>
+                    <img
+                      src={IMAGES.closeicon}
+                      alt="close"
+                      width="9px"
+                      height="9px"
+                      className="pointer"
+                    />
+                  </div>
+                );
+            })}
         </div>
         <br />
         <div className="controllers">

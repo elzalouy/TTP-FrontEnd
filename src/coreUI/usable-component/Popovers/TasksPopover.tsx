@@ -71,25 +71,26 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
         }}
       >
         <Box display={"grid"} padding={1}>
-          <a
-            href={url}
-            target="_blank"
-            style={{
-              textDecoration: "none",
-              color: "#505050",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <img
-              src={IMAGES.trelloIcon}
-              width={18}
-              style={{ marginRight: 2, marginLeft: 8 }}
-            ></img>
-            <Button variant="text" className={styles.grayButton}>
-              Open in trello
-            </Button>
-          </a>
+          <Button variant="text" disableRipple={true} className={styles.grayButton}>
+            <a
+              href={url}
+              target="_blank"
+              className={styles.grayButton}
+              style={{
+                textDecoration: "none",
+                color: "#505050",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={IMAGES.trelloIcon}
+                width={18}
+                style={{ marginRight: 2, marginLeft: 1 }}
+              ></img>
+              <span style={{marginLeft:7}}>Open in trello</span>
+            </a>
+          </Button>
           <Button
             onClick={onDeleteTask}
             variant="text"

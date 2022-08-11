@@ -30,97 +30,97 @@ interface teamData {
 }
 
 const AddNewTeam: React.FC<Props> = () => {
-  const dispatch = useDispatch();
-  const departments = useAppSelector(selectAllDepartments);
-  const depLoading = useAppSelector(selectDepartmentLoading);
-  const DepBasedTeams = useAppSelector(selectDepartmentMembers);
-  const [showDelete, setShowDelete] = useState("none");
-  const [Show, setShow] = useState("none");
-  const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
-  const [AllTeam, setAllTeam] = useState<teamData[]>([]);
-  const [removeTeams, setRemoveTeams] = useState<TechMembersInterface[]>([]);
-  const [selectedTeam, setSelectedTeam] = useState<TechMemberInterface>();
+  // const dispatch = useDispatch();
+  // const departments = useAppSelector(selectAllDepartments);
+  // const depLoading = useAppSelector(selectDepartmentLoading);
+  // const DepBasedTeams = useAppSelector(selectDepartmentMembers);
+  // const [showDelete, setShowDelete] = useState("none");
+  // const [Show, setShow] = useState("none");
+  // const [Team, setTeam] = useState<teamData>({ name: "", department: "" });
+  // const [AllTeam, setAllTeam] = useState<teamData[]>([]);
+  // const [removeTeams, setRemoveTeams] = useState<TechMembersInterface[]>([]);
+  // const [selectedTeam, setSelectedTeam] = useState<TechMemberInterface>();
 
-  /*  const onSubmit = () => {
-    dispatch(deleteTeam({ data: removeTeams, dispatch }));
-  }; */
+  // /*  const onSubmit = () => {
+  //   dispatch(deleteTeam({ data: removeTeams, dispatch }));
+  // }; */
 
-  const getDepartmentsNameById = (id: string, team: string | undefined) => {
-    let departmentName = departments.map((department) => {
-      let teamsData = department.teamsId.some((el) => el._id === team);
-      if (teamsData) return department.name;
-    });
-    let data: string[] = [];
-    //Mapping true values to a new array
-    departmentName.forEach((item) => {
-      if (item !== undefined) {
-        data.push(item);
-      }
-    });
-    if (data.length === 0) {
-      return "No Department selected";
-    } else {
-      return data.map((item) => {
-        return <p className="teamName">{item}</p>;
-      });
-    }
-  };
+  // const getDepartmentsNameById = (id: string, team: string | undefined) => {
+  //   let departmentName = departments.map((department) => {
+  //     let teamsData = department.teamsId.some((el) => el._id === team);
+  //     if (teamsData) return department.name;
+  //   });
+  //   let data: string[] = [];
+  //   //Mapping true values to a new array
+  //   departmentName.forEach((item) => {
+  //     if (item !== undefined) {
+  //       data.push(item);
+  //     }
+  //   });
+  //   if (data.length === 0) {
+  //     return "No Department selected";
+  //   } else {
+  //     return data.map((item) => {
+  //       return <p className="teamName">{item}</p>;
+  //     });
+  //   }
+  // };
 
-  /*   const getDepartmentById = (id: string) => {
-    let dep = departments.find((department) => {
-      if (id === department._id) {
-        return department;
-      }
-    });
-    return dep;
-  }; */
+  // /*   const getDepartmentById = (id: string) => {
+  //   let dep = departments.find((department) => {
+  //     if (id === department._id) {
+  //       return department;
+  //     }
+  //   });
+  //   return dep;
+  // }; */
 
-  const getDepartmentName = (team: teamData) => {
-    let departmentID = team.department.split(",");
-    let departmentName = departments.filter((department) => {
-      if (departmentID[0] === department._id) {
-        return department.name;
-      }
-    });
-    return departmentName[0]?.name;
-  };
+  // const getDepartmentName = (team: teamData) => {
+  //   let departmentID = team.department.split(",");
+  //   let departmentName = departments.filter((department) => {
+  //     if (departmentID[0] === department._id) {
+  //       return department.name;
+  //     }
+  //   });
+  //   return departmentName[0]?.name;
+  // };
 
-  useEffect(() => {
-    let id = Team.department.split(",")[0];
-    if (id.length !== 0 && Team.name === "") {
-      dispatch(getTechMembersByDeptId(id));
-    }
-  }, [Team.department]);
+  // useEffect(() => {
+  //   let id = Team.department.split(",")[0];
+  //   if (id.length !== 0 && Team.name === "") {
+  //     dispatch(getTechMembersByDeptId(id));
+  //   }
+  // }, [Team.department]);
 
-  useEffect(() => {
-    setTeam({
-      name: "",
-      department: "",
-    });
-    setAllTeam([]);
-    dispatch(getAllMembers(null));
-  }, [Show]);
+  // useEffect(() => {
+  //   setTeam({
+  //     name: "",
+  //     department: "",
+  //   });
+  //   setAllTeam([]);
+  //   dispatch(getAllMembers(null));
+  // }, [Show]);
 
-  const handleAddTeam = async () => {
-    for (let i = 0; i < AllTeam.length; i++) {
-      let depData = AllTeam[i].department.split(",");
-      const data = {
-        name: AllTeam[i].name,
-        departmentId: depData[0],
-        boardId: depData[1],
-      };
-      if (AllTeam[i]) {
-        dispatch(createTeam({ data: data, dispatch }));
-      }
-    }
-    setTeam({ name: "", department: "" });
-    setAllTeam([]);
-    setShow("none");
-  };
+  // const handleAddTeam = async () => {
+  //   for (let i = 0; i < AllTeam.length; i++) {
+  //     let depData = AllTeam[i].department.split(",");
+  //     const data = {
+  //       name: AllTeam[i].name,
+  //       departmentId: depData[0],
+  //       boardId: depData[1],
+  //     };
+  //     if (AllTeam[i]) {
+  //       dispatch(createTeam({ data: data, dispatch }));
+  //     }
+  //   }
+  //   setTeam({ name: "", department: "" });
+  //   setAllTeam([]);
+  //   setShow("none");
+  // };
 
   return (
     <>
-      <button
+      {/* <button
         className="black-btn ml-auto"
         onClick={() => {
           setShow("flex");
@@ -132,8 +132,8 @@ const AddNewTeam: React.FC<Props> = () => {
         show={showDelete}
         setShow={setShowDelete}
         team={selectedTeam}
-      />
-      <PopUp show={Show} minWidthSize="30vw">
+      /> */}
+      {/* <PopUp show={Show} minWidthSize="30vw">
         <div>
           <img
             className="closeIcon"
@@ -162,24 +162,6 @@ const AddNewTeam: React.FC<Props> = () => {
         />
 
         <label className="popup-label-nt">Department</label>
-        {/*     <select
-          className="popup-select"
-          onChange={(e) => {
-            setTeam({ ...Team, department: e.target.value });
-          }}
-          value={Team.department}
-          defaultValue=""
-          style={{
-            marginBottom: "1em",
-          }}
-        >
-          <option value="">Select Department</option>
-          {departments?.map((dep: any) => (
-            <option key={dep._id} value={`${dep._id},${dep.boardId}`}>
-              {dep.name}
-            </option>
-          ))}
-        </select> */}
         <SelectInput2
           handleChange={(e) => {
             setTeam({ ...Team, department: e.target.value });
@@ -326,7 +308,7 @@ const AddNewTeam: React.FC<Props> = () => {
             )}
           </button>
         </div>
-      </PopUp>
+      </PopUp>  */}
     </>
   );
 };

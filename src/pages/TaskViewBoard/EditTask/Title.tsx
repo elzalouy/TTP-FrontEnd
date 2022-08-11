@@ -35,6 +35,7 @@ const EditTaskTitle: React.FC<EditTaskTitleProps> = ({
         src={IMAGES.closeicon}
         alt="closeIcon"
         onClick={onCloseModel}
+      style={{cursor:"pointer"}}
       />
       <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
         {title}
