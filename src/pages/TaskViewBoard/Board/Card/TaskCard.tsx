@@ -178,7 +178,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
               >
                 {name}
               </Typography>
-              {item.status !== "not clear" && item.status !== "cancled" && (
+              {item.status !== "Not Clear" && item.status !== "Cancled" && (
                 <TasksPopover item={item} />
               )}
             </Stack>
@@ -271,9 +271,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
                 </>
               )}
             </Grid>
-            {item.status !== "cancled" ? (
+            {item.status !== "Cancled" ? (
               <>
-                {item.status === "done" ? (
+                {item.status === "Done" ? (
                   <>
                     <Stack
                       direction="row"
