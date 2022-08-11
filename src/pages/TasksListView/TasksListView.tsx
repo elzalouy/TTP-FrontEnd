@@ -17,7 +17,6 @@ import {
   selectAllProjects,
   ProjectsActions,
   deleteTasks,
-  getAllTasks,
 } from "../../redux/Projects";
 import { selectAllMembers } from "../../redux/TechMember";
 import DeleteTask from "../../coreUI/usable-component/Popups/DeleteTaskFromTaskTable";
@@ -30,8 +29,6 @@ interface Props {
 const Tasks: React.FC<Props> = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const techMembers = useAppSelector(selectAllMembers);
-  const pMs = useAppSelector(selectPMs);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,7 +36,7 @@ const Tasks: React.FC<Props> = (props: any) => {
   const LG = useMediaQuery(theme.breakpoints.up("md"));
   const [Show, setShow] = React.useState("none");
   const [filter, setFilter] = React.useState(true);
-  const { register, watch, control, setValue } = useForm();
+  const { watch, control, setValue } = useForm();
 
   React.useEffect(() => {
     //To clear all filters on each page change
@@ -64,7 +61,6 @@ const Tasks: React.FC<Props> = (props: any) => {
   };
 
   const onDeleteTasks = async () => {
-    let filter = watch();
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
   };
@@ -145,7 +141,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               xs={6}
               sm={3}
               md={3}
-              lg={2}
+              lg={4}
               marginY={1}
               flex={1}
             >
@@ -173,7 +169,7 @@ const Tasks: React.FC<Props> = (props: any) => {
               />
             </Grid>
             <div style={{ width: "20px" }}></div>
-            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={4} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="status"
@@ -249,7 +245,7 @@ const Tasks: React.FC<Props> = (props: any) => {
             />
           </Box>
         </Grid> */}
-            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={2} marginY={1}>
+            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
               <Box className="tasks-option">
                 <Controller
                   name="projectId"
@@ -352,6 +348,7 @@ const Tasks: React.FC<Props> = (props: any) => {
                 render={(props) => (
                   <SearchBox
                     onChange={(e) => {
+                      console.log(e);
                       props.field.onChange(e);
                       onHandleChange(e);
                     }}

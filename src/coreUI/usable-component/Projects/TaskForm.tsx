@@ -278,7 +278,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         "Deadline has passed today's date",
                         getYesterdaysDate()
                       );
-                      props.field.onChange(e);
+                      props.field.onChange(moment(e).toDate());
                     }}
                     leftArrowButtonText="arrow"
                     renderInput={(

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { isAfter, isSameDay, isBefore, format, parse } from "date-fns"
 import moment from "moment";
 import { Task } from "../interfaces/models/Projects";
 
@@ -35,17 +35,21 @@ export const getStatus = (status: string | undefined) => {
 };
 
 export const calculateStatusBasedOnDeadline = (data: any) => {
-  let formattedDeadline = moment(data).format("MM-DD-YYYY");
-  let formattedToday = moment(new Date().toUTCString()).format("MM-DD-YYYY");
-  let onTime = moment(formattedToday).isSame(formattedDeadline);
-  let beforeDeadline = moment(formattedToday).isBefore(formattedDeadline);
-  let afterDeadline = moment(formattedToday).isAfter(formattedDeadline);
-  if (afterDeadline) {
-    return "late";
-  } else if (beforeDeadline) {
-    return "deliver before deadline";
-  } else if (onTime) {
-    return "deliver on time";
+  if(!([typeof data , data].includes("undefined" || "null"))){
+    let formattedDeadline = format(new Date(data), "dd-mm-yyyy");
+    let deadlineDate = parse(formattedDeadline, "dd-mm-yyyy", new Date());
+    let formattedToday = format(new Date(), "dd-mm-yyyy");
+    let todayDate = parse(formattedToday, "dd-mm-yyyy", new Date());
+    let onTime = isSameDay(todayDate, deadlineDate);
+    let beforeDeadline = isBefore(todayDate, deadlineDate);
+    let afterDeadline = isAfter(todayDate, deadlineDate);
+    if (afterDeadline) {
+      return "late";
+    } else if (beforeDeadline) {
+      return "deliver before deadline";
+    } else if (onTime) {
+      return "deliver on time";
+    }
   }
 };
 
@@ -129,10 +133,10 @@ export const getYesterdaysDate = () => {
   return today;
 }
 
-export const notNullorFalsy = (date : string | null | undefined) => {
-  if([undefined,null,"",0].includes(date)){
-    return false 
-  }else{
+export const notNullorFalsy = (date: string | null | undefined) => {
+  if ([undefined, null, "", 0].includes(date)) {
+    return false
+  } else {
     return true
   }
 }

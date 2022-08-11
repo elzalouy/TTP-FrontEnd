@@ -22,6 +22,7 @@ const DeleteTask: React.FC<Props> = (props) => {
         className="filter-icon"
       >
         <IconButton
+          disableRipple
           onClick={() => {
             if (props.task.length !== 0) {
               props.setShow("flex");
