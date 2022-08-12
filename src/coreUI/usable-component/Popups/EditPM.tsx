@@ -19,11 +19,14 @@ const EditPM: React.FC<Props> = (props: Props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<boolean>(false);
+  const [emailFormat, setEmailFormat] = useState(false);
   const dispatch = useDispatch();
   const currentPM = useAppSelector(selectPMs);
   const currentData = currentPM.filter((element) => {
     return element._id === _id;
   });
+  const pattern =
+    /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
   useEffect(() => {
     setUsername(currentData[0]?.name);
@@ -34,20 +37,25 @@ const EditPM: React.FC<Props> = (props: Props) => {
     if (!username || !email) {
       setError(true);
     } else {
-      dispatch(
-        updatePM({
-          data: {
-            id: _id,
-            name: username,
-            email: email,
-          },
-          dispatch,
-        })
-      );
-      setError(false);
-      setUsername("");
-      setEmail("");
-      dispatch(toggleEditProjectManagerPopup("none"));
+      let validate = pattern.test(email);
+      if (!validate) {
+        setEmailFormat(true);
+      } else {
+        dispatch(
+          updatePM({
+            data: {
+              id: _id,
+              name: username,
+              email: email,
+            },
+            dispatch,
+          })
+        );
+        setError(false);
+        setUsername("");
+        setEmail("");
+        dispatch(toggleEditProjectManagerPopup("none"));
+      }
     }
   };
 
@@ -83,6 +91,9 @@ const EditPM: React.FC<Props> = (props: Props) => {
         <p className="popup-title">Edit project manager</p>
         {error && (
           <p className="popup-error">Please fill all the empty field</p>
+        )}
+        {emailFormat && (
+          <p className="popup-error">Please enter a valid email format</p>
         )}
         <div>
           <label className="popup-label">Project manager name</label>
