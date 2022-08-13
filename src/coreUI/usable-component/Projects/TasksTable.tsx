@@ -134,9 +134,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography color="#334D6E" fontSize={14}>
-                    
-                  </Typography>
+                  <Typography color="#334D6E" fontSize={14}></Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -157,10 +155,8 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
                       <Typography color="#707683" fontSize={14}>
                         {task &&
                           deps
-                            .find((item) =>
-                              item.teamsId.findIndex((i) => i._id === task._id)
-                            )
-                            ?.teamsId?.find((item) => item._id === task.teamId)
+                            .find((item) => item.boardId === task.boardId)
+                            ?.teams?.find((item) => item._id === task.teamId)
                             ?.name}
                       </Typography>
                     </TableCell>

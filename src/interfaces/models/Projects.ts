@@ -1,4 +1,5 @@
-import { Department } from "../../redux/Departments";
+import { IDepartmentState } from "./Departments";
+
 export interface TaskFile {
   _id: string;
   name: string;
@@ -60,7 +61,7 @@ export interface ProjectsInterface {
     project: Project;
     tasks: Task[];
     newTask: Task;
-    selectedDepartment: Department | null;
+    selectedDepartment: IDepartmentState | null;
     newProjectHook: boolean;
   };
   selectedProject: {

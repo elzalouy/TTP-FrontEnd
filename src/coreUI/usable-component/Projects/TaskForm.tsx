@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import SelectInput2 from "../Inputs/SelectInput2";
 import "./projectForm.css";
 import { Category, selectAllCategories } from "../../../redux/Categories";
-import { Department, selectAllDepartments } from "../../../redux/Departments";
+import { selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import {
   createProjectTask,
@@ -35,8 +35,9 @@ import {
 } from "../../../services/validations/task.schema";
 import { validateDate } from "../../../services/validations/project.schema";
 import { getYesterdaysDate } from "../../../helpers/generalUtils";
+import { IDepartmentState } from "../../../interfaces/models/Departments";
 
-interface TaskFormProps { }
+interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -50,10 +51,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const loadingTask = useAppSelector(selectLoading);
-  // const selectedCategory = useAppSelector(selectSelectedCategory);
   const newProject = useAppSelector(selectNewProject);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
-    Department | any
+    IDepartmentState | any
   >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
   const { createProjectPopup } = useAppSelector(selectUi);
@@ -80,13 +80,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   }, [createProjectPopup]);
 
   React.useEffect(() => {
-    //This triggers task form reset only when the response is recieved 
+    //This triggers task form reset only when the response is recieved
     reset();
     setFiles([]);
     setSelectedDepartment(undefined);
     setSelectCategory(undefined);
   }, [newProject.tasks]);
-
 
   const onSubmit = async (data: any) => {
     let newTask = {
@@ -103,10 +102,11 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       turnoverTime: null,
       attachedFiles: null,
       listId: data?.teamId
-        ? selectedDepartment?.teamsId?.find(
-          (item: any) => item._id === data.teamId
-        )?.listId
-        : selectedDepartment?.defaultListId,
+        ? selectedDepartment?.teams?.find(
+            (item: any) => item._id === data.teamId
+          )?.listId
+        : selectedDepartment?.lists?.find((l: any) => (l.name = "Tasks Board"))
+            ?.listId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
     };
@@ -154,10 +154,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
         task.append(
           "listId",
           data?.teamId
-            ? selectedDepartment?.teamsId?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
-            : selectedDepartment?.defaultListId
+            ? selectedDepartment?.teams
+                ?.find((item: any) => item._id === data.teamId)
+                ?.listId.toString()
+            : selectedDepartment?.lists
+                .find((i: any) => i.name === "Tasks Board")
+                ?.listId.toString()
         );
         task.append("description", data?.description);
         dispatch(createProjectTask(task));
@@ -245,12 +247,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       departments
                         ? departments?.map((item) => {
-                          return {
-                            id: item._id,
-                            value: item._id,
-                            text: item.name,
-                          };
-                        })
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                          })
                         : []
                     }
                   />
@@ -343,12 +345,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       categories
                         ? categories?.map((item) => {
-                          return {
-                            id: item._id ? item._id : "",
-                            value: item._id ? item._id : "",
-                            text: item.category,
-                          };
-                        })
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.category,
+                            };
+                          })
                         : []
                     }
                   />
@@ -400,12 +402,12 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     options={
                       selectedCategory?.subCategoriesId
                         ? selectedCategory?.subCategoriesId?.map((item) => {
-                          return {
-                            id: item._id ? item._id : "",
-                            value: item._id ? item._id : "",
-                            text: item.subCategory,
-                          };
-                        })
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.subCategory,
+                            };
+                          })
                         : []
                     }
                   />
@@ -423,29 +425,29 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     error={error?.error?.details[0]?.path.includes("listId")}
                     handleChange={props.field.onChange}
                     selectText={
-                      selectedDepartment?.teamsId?.find(
+                      selectedDepartment?.teams?.find(
                         (item: any) => item._id === props.field.value
                       )?.name
                     }
                     {...register("teamId")}
                     selectValue={props.field.value}
                     options={
-                      selectedDepartment?.teamsId
-                        ? selectedDepartment?.teamsId?.map((item: any) => {
-                          if (!item.isDeleted) {
-                            return {
-                              id: item._id ? item._id : "",
-                              value: item._id ? item._id : "",
-                              text: item.name,
-                            };
-                          } else {
-                            return {
-                              id: "",
-                              value: "",
-                              text: "",
-                            };
-                          }
-                        })
+                      selectedDepartment?.teams
+                        ? selectedDepartment?.teams?.map((item: any) => {
+                            if (!item.isDeleted) {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.name,
+                              };
+                            } else {
+                              return {
+                                id: "",
+                                value: "",
+                                text: "",
+                              };
+                            }
+                          })
                         : []
                     }
                   />

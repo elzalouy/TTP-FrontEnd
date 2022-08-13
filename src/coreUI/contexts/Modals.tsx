@@ -22,10 +22,13 @@ import {
   toggleEditTaskPopup,
   openDeleteTaskPopup,
   toggleCreateProjectPopup,
-  toggleTask,
   toggleViewTaskPopup,
+  toggleEditDepartment,
+  toggleDeleteDepartment,
 } from "../../redux/Ui";
 import TaskInfo from "../../pages/TaskViewBoard/TaskInfo/TaskInfo";
+import EditDepartment from "../../pages/Departments/Edit/EditDepartment";
+import DeleteDepartment from "../../pages/Departments/Delete/DeleteDepartment";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -39,41 +42,43 @@ const Modals: React.FC = (props) => {
     editTaskPopup,
     deleteTaskPopup,
     viewTaskPopup,
+    editDepartmentPopup,
+    deleteDepartmentPopup,
   } = useAppSelector(selectUi);
 
-  const showDeleteProjectPopup = (val: string) => {
+  const showDeleteProjectPopup = (val: string) =>
     dispatch(openDeleteProjectPopup(val));
-  };
-  const showEditProjectPopup = (val: string) => {
+
+  const showEditProjectPopup = (val: string) =>
     dispatch(openEditProjectPopup(val));
-  };
-  const showEditClientPopup = (val: string) => {
+
+  const showEditClientPopup = (val: string) =>
     dispatch(openEditClientPopup(val));
-  };
-  const showDeleteClientPopup = (val: string) => {
+
+  const showDeleteClientPopup = (val: string) =>
     dispatch(openDeleteClientPopup(val));
-  };
-  const showCreateTaskPopup = (val: string) => {
+
+  const showCreateTaskPopup = (val: string) =>
     dispatch(openCreateTaskPopup(val));
-  };
-  const showLoggoutPopup = (val: string) => {
-    dispatch(toggleLogOutPopup(val));
-  };
-  const showEditTaskPopup = (val: string) => {
-    dispatch(toggleEditTaskPopup(val));
-  };
-  const showDeleteTaskPopup = (val: string) => {
+
+  const showLoggoutPopup = (val: string) => dispatch(toggleLogOutPopup(val));
+
+  const showEditTaskPopup = (val: string) => dispatch(toggleEditTaskPopup(val));
+
+  const showDeleteTaskPopup = (val: string) =>
     dispatch(openDeleteTaskPopup(val));
-  };
-  const showCreateProject = (val: string) => {
+
+  const showCreateProject = (val: string) =>
     dispatch(toggleCreateProjectPopup(val));
-  };
-  /*   const showTask = (value: string) => {
-    dispatch(toggleTask(value));
-  }; */
-  const showViewTaskModal = (value: string) => {
+
+  const showViewTaskModal = (value: string) =>
     dispatch(toggleViewTaskPopup(value));
-  };
+
+  const showEditDepartment = (value: string) =>
+    dispatch(toggleEditDepartment(value));
+
+  const showDeleteDepartmentPopup = (value: string) =>
+    dispatch(toggleDeleteDepartment(value));
 
   return (
     <>
@@ -92,6 +97,12 @@ const Modals: React.FC = (props) => {
       <Grid marginLeft={50}>
         <NewProjectPopUp setShow={showCreateProject} />
       </Grid>
+      <EditDepartment Show={editDepartmentPopup} setShow={showEditDepartment} />
+      <DeleteDepartment
+        show={deleteDepartmentPopup}
+        setShow={showDeleteDepartmentPopup}
+      />
+
       {props.children}
     </>
   );

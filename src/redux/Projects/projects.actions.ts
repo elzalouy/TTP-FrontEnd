@@ -12,7 +12,6 @@ import {
 } from "../Ui";
 import { removeAuthToken } from "../../services/api";
 import { generateID } from "../../helpers/IdGenerator";
-import { Department } from "../Departments";
 import { logout } from "../Auth";
 import moment from "moment";
 import { Project, Task } from "../../interfaces/models/Projects";
@@ -21,6 +20,7 @@ import {
   ToastSuccess,
   ToastWarning,
 } from "../../coreUI/usable-component/Typos/Alert";
+import { IDepartmentState, IList } from "../../interfaces/models/Departments";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
   "prjects/get",
@@ -259,58 +259,29 @@ export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (args, { rejectWithValue }) => {
     try {
-      let newlist = "";
       let liststr = "";
-      let department: Department = args?.department;
+      let department: IDepartmentState = args?.department;
       let value = args?.value;
       let task = args?.task;
-      switch (value) {
-        case "Not Clear":
-          newlist = department.notClearListId;
-          liststr = "notClearListId";
-          break;
-        case "Tasks Board":
-          newlist = department.defaultListId;
-          liststr = "defaultListId";
-          break;
-        case "inProgress":
-          newlist = department.inProgressListId;
-          liststr = "inProgressListId";
-          break;
-        case "Review":
-          newlist = department.reviewListId;
-          liststr = "reviewListId";
-          break;
-        case "Shared":
-          newlist = department.sharedListID;
-          liststr = "sharedListID";
-          break;
-        case "Cancled":
-          newlist = department.canceldListId;
-          liststr = "canceldListId";
-          break;
-        case "Done":
-          newlist = department.doneListId;
-          liststr = "doneListId";
-          break;
-
-        default:
-          break;
+      let newlist: IList | undefined = department?.lists?.find(
+        (item) => item.name === value
+      );
+      if (newlist?.name && newlist.listId) {
+        let Data: any = {
+          cardId: task.cardId,
+          listId: newlist.listId,
+          status: newlist.name,
+          list: liststr,
+        };
+        let moveResult: ApiResponse<any> = await api.moveTask(Data);
+        if (moveResult.ok) {
+          args.dispatch(fireMoveTaskHook(""));
+          let returnValue: Task = { ...task };
+          returnValue.status = newlist.name;
+          returnValue.listId = newlist.listId;
+          return returnValue;
+        } else throw moveResult.problem;
       }
-      let Data: any = {
-        cardId: task.cardId,
-        listId: newlist,
-        status: value,
-        list: liststr,
-      };
-      let moveResult: ApiResponse<any> = await api.moveTask(Data);
-      if (moveResult.ok) {
-        args.dispatch(fireMoveTaskHook(""));
-        let returnValue: Task = { ...task };
-        returnValue.status = value;
-        returnValue.listId = newlist;
-        return returnValue;
-      } else throw moveResult.problem;
     } catch (error: any) {
       ToastError(error);
       return rejectWithValue(error);
