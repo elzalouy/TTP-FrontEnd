@@ -27,6 +27,7 @@ interface Props {
   selectValue: string | undefined;
   selectText: string | undefined;
   error?: Boolean | undefined;
+  id?:string;
 }
 
 const selectInputGridTwoStyles = {
@@ -44,6 +45,7 @@ const selectInputGridTwoStyles = {
 const SelectInput2: React.FC<Props> = ({
   handleChange,
   options = [],
+  id,
   label,
   selectText,
 }) => {
@@ -83,6 +85,7 @@ const SelectInput2: React.FC<Props> = ({
         paddingLeft={1}
         display="inline-flex"
         xs={10}
+        id={id}
       >
         {/* <Typography
           maxWidth={140}

@@ -116,6 +116,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     return pm?.name;
   };
 
+  console.log(moment(new Date()).format("YYYY-MM-DD"));
+
   const checkProjectStatus = (status: string | undefined) => {
     if (
       status === "deliver before deadline" ||
@@ -225,7 +227,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const onSubmitEdit = () => {
     const result = showAlertBasedOnDate();
-    console.log(result, ": On Submit Data");
     executeEditProject(result);
   };
 

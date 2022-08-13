@@ -3,8 +3,7 @@ import PopUp from "../Popup/PopUp";
 import IMAGES from "../../../assets/img/Images";
 import "./popups-style.css";
 import { useDispatch } from "react-redux";
-import { createPM, selectPMs } from "../../../redux/PM";
-import { useAppSelector } from "../../../redux/hooks";
+import { createPM } from "../../../redux/PM";
 
 type Props = {};
 
@@ -14,9 +13,7 @@ const CreateNewPM: React.FC<Props> = () => {
   const [email, setEmail] = useState("");
   const [emailFormat, setEmailFormat] = useState(false);
   const [error, setError] = useState<boolean>(false);
-  const [validationError, setValidationError] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const PMs = useAppSelector(selectPMs);
   const pattern =
     /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
@@ -80,11 +77,6 @@ const CreateNewPM: React.FC<Props> = () => {
           <p className="popup-title">Add new Project Manager</p>
           {error && (
             <p className="popup-error">Please fill all the empty field</p>
-          )}
-          {validationError && (
-            <p className="popup-error">
-              This user already exist , please try a different email
-            </p>
           )}
           {emailFormat && (
             <p className="popup-error">Please enter a valid email format</p>

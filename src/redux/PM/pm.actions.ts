@@ -102,7 +102,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
         args.dispatch(fireEditPMHook(""));
         return PMs.data;
       }
-      toast.error(PMs?.originalError?.message,{
+      toast.error("Could not update PM , Please try again",{
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
