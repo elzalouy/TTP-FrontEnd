@@ -123,7 +123,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <TextField
                 className="textfield"
                 error={validateError.error?.details[0]?.path?.includes("name")}
-                id="outlined-error"
+                id="outlined-error project-name"
                 {...register("name")}
                 sx={projectFormNameStyles}
                 placeholder="Project name"
@@ -145,6 +145,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                   "clientId"
                 )}
                 handleChange={props.field.onChange}
+                id="client-new-project"
                 selectText={
                   clients.find((item) => item.clientId === props.field.value)
                     ?.clientName
@@ -316,6 +317,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                   "projectManager"
                 )}
                 handleChange={props.field.onChange}
+                id="pm-new-project"
                 selectText={
                   PMs.find((item) => item._id === props.field.value)?.name
                 }

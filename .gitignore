@@ -1,3 +1,7 @@
 # dependencies
 /node_modules
 .yarn
+
+#testing
+/cypress/videos
+/cypress/screenshots
