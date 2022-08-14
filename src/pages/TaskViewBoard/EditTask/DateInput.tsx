@@ -12,7 +12,7 @@ import { getYesterdaysDate } from "../../../helpers/generalUtils";
 const DateInput: React.FC<DateInputProps> = ({
   control,
   register,
-  state, // should be the error
+  state,
   setValue,
   placeholder,
   name,
@@ -38,8 +38,8 @@ const DateInput: React.FC<DateInputProps> = ({
               onChange={(e: any) => {
                 validateDate(
                   moment(e).toDate(),
-                  "Deadline has passed today's date" ,
-                    getYesterdaysDate()
+                  "Deadline has passed today's date",
+                  getYesterdaysDate()
                 );
                 props.field.onChange(moment(e).toDate());
               }}

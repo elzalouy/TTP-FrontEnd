@@ -149,7 +149,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
-      if (!([typeof status, status].includes("undefined"))) {
+      if (![typeof status, status].includes("undefined")) {
         //Setting project status only if status is not undefined
         editProject.projectStatus = status;
       }
@@ -172,7 +172,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     if (updateDate) {
       if (inProgress || done) {
         if (onlyDeadlineIsNull || onlyStartDateIsNull || bothDatesAreNull) {
-          //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started 
+          //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started
           data.status = "Not Started";
         }
       }
@@ -223,7 +223,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         //Here the setTrigger when true triggers execute project not needing to return data
       }
     }
-  }
+  };
 
   const onSubmitEdit = () => {
     const result = showAlertBasedOnDate();
@@ -296,12 +296,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     options={
                       clients
                         ? clients?.map((item) => {
-                          return {
-                            id: item.clientId,
-                            value: item.clientId,
-                            text: item.clientName,
-                          };
-                        })
+                            return {
+                              id: item.clientId,
+                              value: item.clientId,
+                              text: item.clientName,
+                            };
+                          })
                         : []
                     }
                   />
@@ -317,9 +317,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    cancelText={""}
-                    okText={""}
-                    disableCloseOnSelect={false}
+                    // cancelText={""}
+                    // okText={""}
+                    // disableCloseOnSelect={false}
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -381,11 +381,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    cancelText={""}
-                    okText={""}
-                    disableCloseOnSelect={false}
+                    // cancelText={""}
+                    // okText={""}
+                    // disableCloseOnSelect={false}
                     onChange={(e) => {
-
                       validateDate(
                         moment(e).toDate(),
                         "Deadline has passed today's date",
@@ -476,12 +475,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     options={
                       PMs?.length > 0
                         ? PMs.map((item) => {
-                          return {
-                            id: item._id,
-                            value: item._id,
-                            text: item.name,
-                          };
-                        })
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                          })
                         : []
                     }
                   />

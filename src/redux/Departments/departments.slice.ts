@@ -1,78 +1,25 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import {
+  IDepartmentsSlice,
+  IDepartmentState,
+} from "../../interfaces/models/Departments";
+import {
   getAllDepartments,
   createDepartment,
   updateDepartment,
   deleteDepartment,
 } from "./departments.actions";
-import initialState, { DepartmentsIterface } from "./departments.state";
+import initialState from "./departments.state";
 
-const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
+const DepartmentsSlice: Slice<IDepartmentsSlice> = createSlice({
   name: "departments",
   initialState: initialState,
   reducers: {
-    selecteDepartment: (
-      state = initialState,
-      { payload }: PayloadAction<any>
-    ) => {
-      state.selectedDepart = payload;
-    },
-    updateDepartmentTeams: (
-      state = initialState,
-      { payload }: PayloadAction<any>
-    ) => {
-      /* //This function gives real time delete effect in the UI
-      state.departments = state.departments.map((dep) => {
-        let updatededTeams = dep.teamsId.map((team) =>
-          team._id === payload ? { ...team, isDeleted: true } : team
-        );
-        if (payload) {
-          return { ...dep, teamsId: updatededTeams };
-        } else {
-          return dep;
-        }
-      });
-      state.departments.map((dep) =>
-        dep.teamsId.map((team) =>
-          team._id === payload ? { ...team, isDeleted: true } : team
-        )
-      ); */
-      if (state.selectedDepart !== null) {
-        state.selectedDepart = {
-          ...state.selectedDepart,
-          teamsId: state.selectedDepart.teamsId.map((team) =>
-            team._id === payload ? { ...team, isDeleted: true } : team
-          ),
-        }; 
-      }
-    },
-    /**
-     * replace Department
-     * In case of there are a response came from backend socket service ,
-     * it will recieve the new data and either add a new department or replace the existed one
-     * @param data
-     */
-    replaceDepartment: (
-      state = initialState,
-      { payload }: PayloadAction<any>
-    ) => {
-      if (payload._id) {
-        let dep = state.departments.findIndex(
-          (item) => item._id === payload._id
-        );
-        if (dep >= 0) state.departments[dep] = payload;
-        else state.departments.push(payload);
-      }
-    },
-    deleteDepartment: (
-      state = initialState,
-      { payload }: PayloadAction<any>
-    ) => {
-      if (payload.id) {
-        state.departments = state.departments.filter(
-          (item) => item._id !== payload.id
-        );
-      }
+    changeState: (state = initialState, action: PayloadAction<any>) => {
+      state.delete = action.payload?.delete
+        ? action.payload?.delete
+        : undefined;
+      state.edit = action.payload?.edit ? action.payload?.edit : undefined;
     },
   },
   extraReducers: (builder) => {
@@ -115,15 +62,17 @@ const DepartmentsSlice: Slice<DepartmentsIterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(deleteDepartment.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(deleteDepartment.fulfilled, (state, { payload }) => {
       state.loading = false;
       let oldData = state.departments;
-      oldData = oldData.filter((dep: any) => dep._id !== payload);
+      oldData = oldData.filter((dep: IDepartmentState) => dep?._id !== payload);
+      console.log({ afterDelete: oldData, payload });
       state.departments = oldData;
     });
   },
 });
+export const { changeState } = DepartmentsSlice.actions;
 export const departmentsActions = DepartmentsSlice.actions;
 export default DepartmentsSlice.reducer;

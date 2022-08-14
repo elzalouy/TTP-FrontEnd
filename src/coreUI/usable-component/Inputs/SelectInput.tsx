@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Grid,
-  Popover,
-  Typography
-} from "@mui/material";
+import { Box, Grid, Popover, Typography } from "@mui/material";
 import { popOverStyle } from "../../../themes/Styles";
 import "../../../themes/style.css";
 import { ArrowDropUp } from "@mui/icons-material";
@@ -89,20 +84,20 @@ const SelectInput: React.FC<Props> = ({
         sx={{ background: "#FFF" }}
         xs={10}
       >
-          <Typography
-            maxWidth={140}
-            width={"fit-content"}
-            overflow={"hidden"}
-            flex={3}
-            color="#696974"
-            noWrap
-            fontSize={14}
-            textTransform="capitalize"
-            fontWeight={"400"}
-            paddingRight={1}
-          >
-            {label}
-          </Typography>
+        <Typography
+          maxWidth={140}
+          width={"fit-content"}
+          overflow={"hidden"}
+          flex={3}
+          color="#696974"
+          noWrap
+          fontSize={14}
+          textTransform="capitalize"
+          fontWeight={"400"}
+          paddingRight={1}
+        >
+          {label}
+        </Typography>
         {selectText ? (
           <Typography
             lineHeight={1}
@@ -170,16 +165,16 @@ const SelectInput: React.FC<Props> = ({
         sx={
           isOptionsEmpty(options)
             ? {
-              borderRadius: "10px",
-              width: "calc(96% - 11px) !important;",
-              zIndex: 2001,
-              opacity: "0",
-            }
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+                opacity: "0",
+              }
             : {
-              borderRadius: "10px",
-              width: "calc(96% - 11px) !important;",
-              zIndex: 2001,
-            }
+                borderRadius: "10px",
+                width: "calc(96% - 11px) !important;",
+                zIndex: 2001,
+              }
         }
         anchorEl={anchorEl}
         anchorReference="anchorEl"
@@ -202,6 +197,7 @@ const SelectInput: React.FC<Props> = ({
               return (
                 <>
                   <label
+                    key={item.id}
                     htmlFor={item.id}
                     className="Option"
                     style={{

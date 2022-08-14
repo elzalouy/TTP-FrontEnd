@@ -6,12 +6,14 @@ export interface UiInterface {
   editClientPopup: string;
   deleteClientPopup: string;
   createTaskPopup: string;
-  viewTaskPopup:string;
+  viewTaskPopup: string;
   editProjectManagerPopup: string;
   deleteProjectManagerPopup: string;
   openTask: string;
   logoutPopup: string;
   createProjectPopup: string;
+  editDepartmentPopup: string;
+  deleteDepartmentPopup: string;
   moveTaskOnTrelloHook: any;
   isSideMenuOpened: boolean;
   /*
@@ -40,10 +42,12 @@ const UiState: UiInterface = {
   deleteProjectPopup: "none",
   deleteTaskPopup: "none",
   editProjectPopup: "none",
+  editDepartmentPopup: "none",
+  deleteDepartmentPopup: "none",
   editTaskPopup: "none",
   editClientPopup: "none",
   deleteClientPopup: "none",
-  viewTaskPopup:"none",
+  viewTaskPopup: "none",
   createTaskPopup: "none",
   editProjectManagerPopup: "none",
   deleteProjectManagerPopup: "none",
@@ -63,14 +67,14 @@ const UiState: UiInterface = {
   deleteProjectHook: undefined,
   createTeamHook: undefined,
   createCategoryHook: undefined,
-  updateDepartmentHook: undefined,
   createProjectHook: undefined,
-  createDepartmentHook: undefined,
   editTaskHook: undefined,
   createPMHook: undefined,
   editPMHook: undefined,
   moveTaskHook: undefined,
+  updateDepartmentHook: undefined,
   deleteDepartmentHook: undefined,
+  createDepartmentHook: undefined,
   deleteCategoryHook: undefined,
   deleteTeamHook: undefined,
 };

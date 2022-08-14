@@ -1,12 +1,13 @@
-import Joi, { string } from "joi";
+import Joi from "joi";
 import { Category } from "../../redux/Categories";
-import { Department, Team } from "../../redux/Departments";
+import { IDepartmentState, ITeam } from "../models/Departments";
 import { Task } from "../models/Projects";
 
 export type EditTaskProps = {
   show: string;
   setShow: (val: string) => void;
 };
+
 export interface InputProps {
   name: string;
   control: any;
@@ -43,18 +44,18 @@ export interface CRUDTaskState {
     value: any;
     warning: Joi.ValidationError | undefined;
   };
-  selectedDepartment: Department | any;
-  selectedDepatmentTeams: Team[] | undefined;
+  selectedDepartment?: IDepartmentState;
+  selectedDepatmentTeams: ITeam[] | undefined;
   selectedCategory: Category | null | undefined;
 }
 
 export interface AttachetFilesProps {
+  state: any;
+  files: any;
   register: any;
   onSetFiles: any;
-  files: any;
-  onChangeFiles: any;
-  state: any;
   onRemoveFile: any;
+  onChangeFiles: any;
 }
 
 export const initialHookFormTaskState: any = {
@@ -97,10 +98,21 @@ export const initialState: CRUDTaskState = {
     value: null,
     warning: undefined,
   },
-  selectedDepartment: null,
+  selectedDepartment: undefined,
   selectedCategory: null,
   selectedDepatmentTeams: [],
 };
+
+//Constants
+export type Status =
+  | "Tasks Board"
+  | "Review"
+  | "Shared"
+  | "Done"
+  | "Cancled"
+  | "inProgress"
+  | "Not Clear";
+
 export const videoTypes = [
   "video/mp4",
   "video/3gpp",

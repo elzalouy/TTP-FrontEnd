@@ -9,13 +9,10 @@ import { selectRole } from "../../redux/Auth";
 import { useAppSelector } from "../../redux/hooks";
 import {
   selectAllProjects,
-  selectDoneTasks,
-  selectInProgressTasks,
   selectNotStartedProjects,
-  selectSharedTasks,
   selectTasks,
 } from "../../redux/Projects";
-import { Status } from "../Departments/departmentCard";
+import { Status } from "../../interfaces/views/BoardView";
 interface IProps {
   client: Client;
 }
@@ -78,7 +75,11 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               alignItems="center"
             >
               <img
-                src={["",null,undefined,'null','undefined'].includes(preview) ? IMAGES.avatarClients : preview}
+                src={
+                  ["", null, undefined, "null", "undefined"].includes(preview)
+                    ? IMAGES.avatarClients
+                    : preview
+                }
                 alt="avatar"
                 style={{
                   width: "52px",
@@ -114,32 +115,6 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
           justifyContent={"space-between"}
           alignItems="center"
         >
-          {/* <Grid item style={{ textAlign: "center" }}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              In Progress Task
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {inProgressTask}
-            </Typography>
-          </Grid> */}
-          {/* <Grid
-            item
-            width="1px !important"
-            paddingTop={0.5}
-            overflow={"hidden"}
-            sx={{ opacity: 0.5 }}
-          >
-            <hr
-              color="#88888885"
-              style={{ width: "1px !important" }}
-              className="hrVertical"
-            />
-          </Grid> */}
           <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
               sx={{ fontSize: 11 }}
