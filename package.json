@@ -106,8 +106,8 @@
     "build": "react-scripts build",
     "cypress:start:app": "cross-env BROWSER=none react-scripts -r @cypress/instrument-cra start",
     "cypress:start:wait": "start-server-and-test cypress:start:app http://localhost:3000",
-    "cypress:open": "cypress:start:wait -- \"cypress open\" ",
-    "cypress:run": "cypress:start:wait -- \"cypress run\" ",
+    "cypress:open": "yarn run cypress:start:wait -- \"cypress open\" ",
+    "cypress:run": "yarn run cypress:start:wait -- \"cypress run\" ",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
