@@ -13,11 +13,11 @@
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 
-Cypress.Commands.add("login", () => {
+Cypress.Commands.add("login", (email:string,password:string) => {
     cy
         .visit('/')
-        .get('input[placeholder*="Email Address"]').type('zed.saheer5@gmail.com')
-        .get('input[placeholder*="Password"]').type('12345678')
+        .get('input[placeholder*="Email Address"]').type(email)
+        .get('input[placeholder*="Password"]').type(password)
         .get('button').contains('Login').click()
         .wait(2000)
 });

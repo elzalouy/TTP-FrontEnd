@@ -4,8 +4,8 @@ declare namespace Cypress {
     interface Chainable {
       /**
        * Custom command to automate the steps of login
-       * @example cy.login()
+       * @example cy.login(email:string,password:string)
        */
-      login(): Chainable<Element>;
+      login(email:string,password:string): Chainable<Element>;
     }
   }
