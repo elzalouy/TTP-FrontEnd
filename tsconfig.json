@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "ES5"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,7 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["cypress"]
+    "types": ["cypress","node","jest", "mocha"]
   },
   "include": ["src", "src/utils/custom.d.ts"],
   "exclude": ["**/*.cy.ts"]
