@@ -65,6 +65,7 @@ const SelectInput: React.FC<Props> = ({
 
   return (
     <Grid
+      data-testid="selectInput"
       sx={selectInputGridStyles}
       display={"flex"}
       justifyContent="space-between"

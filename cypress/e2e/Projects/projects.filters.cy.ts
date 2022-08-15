@@ -2,8 +2,8 @@ import { Project } from "../../../src/interfaces/models/Projects";
 import { Client } from "../../../src/redux/Clients/clients.state";
 
 let projects: Cypress.Chainable<Cypress.AUTWindow>,
-  projectsData: Project,
-  clients: Client[],
+  projectsData: Project[] = [],
+  clients: Client[] = [],
   status = [
     "Not Started",
     "deliver on time",
@@ -15,7 +15,6 @@ let projects: Cypress.Chainable<Cypress.AUTWindow>,
 
 describe("Create Project", () => {
   // Arrange
-
   before(() => {
     // Act Before all
     cy.login("zed.saheer5@gmail.com", "12345678");
@@ -38,7 +37,7 @@ describe("Create Project", () => {
 
   it("Should have four filter selectors", () => {
     //Arrange
-    let filterOptions = projects.find("#prject-filter-selector");
+    let filterOptions = projects.find("#filter-projects");
     //Act
     filterOptions.should("have.length", 4);
     // Assert
