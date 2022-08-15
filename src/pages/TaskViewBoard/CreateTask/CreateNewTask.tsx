@@ -185,14 +185,14 @@ const CreateNewTask = ({ show, setShow }: Props) => {
                 label="Task name"
                 placeholder="Task name"
                 control={control}
-                id_test="task-name"
+                dataTestId="task-name"
                 register={register}
                 state={state}
               />
               <Select
                 state={state}
                 control={control}
-                id="department-new-task"
+                dataTestId="department-new-task"
                 register={register}
                 name="selectedDepartmentId"
                 label={"Department name"}
@@ -227,7 +227,7 @@ const CreateNewTask = ({ show, setShow }: Props) => {
               <Select
                 label="Category"
                 name="categoryId"
-                id="category-new-task"
+                dataTestId="category-new-task"
                 control={control}
                 register={register}
                 state={state}
