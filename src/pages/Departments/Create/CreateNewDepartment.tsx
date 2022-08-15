@@ -80,7 +80,11 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   };
   return (
     <>
-      <div className="add-new-dep" onClick={onOpenModal}>
+      <div
+        data-test="createDepartmentBtn"
+        className="add-new-dep"
+        onClick={onOpenModal}
+      >
         <img src={IMAGES.plus} alt="add" />
         <p>Create new department</p>
       </div>
@@ -106,6 +110,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           control={control}
           render={(props) => (
             <Input
+              dataTestId="departmentName"
               name="name"
               control={control}
               register={register}
@@ -194,7 +199,11 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         </div>
         <br />
         <div className="controllers">
-          <button className="controllers-done" onClick={onSubmit}>
+          <button
+            data-test="addNewDepartmentBtn"
+            className="controllers-done"
+            onClick={onSubmit}
+          >
             {state.loading ? (
               <CircularProgress sx={{ color: "white", padding: "0px" }} />
             ) : (

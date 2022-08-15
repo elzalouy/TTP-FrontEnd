@@ -14,6 +14,7 @@ const Input: React.FC<InputProps> = ({
   label,
   rows,
   id,
+  dataTestId,
 }) => {
   const style = inputStyle()();
   return (
@@ -27,7 +28,7 @@ const Input: React.FC<InputProps> = ({
             {...register(name)}
             value={props.field.value}
             error={state?.error?.error?.details[0].path.includes(name)}
-            id="outlined-error"
+            id={"outlined-error" + " " + dataTestId}
             className={multiline ? style.multilineInput : style.input}
             multiline={multiline ? multiline : undefined}
             rows={rows ? rows : undefined}

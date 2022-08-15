@@ -1,6 +1,7 @@
 import { defineConfig } from "cypress";
 
 export default defineConfig({
+  projectId: 'chf9rw',
   component: {
     devServer: {
       framework: "create-react-app",
@@ -12,6 +13,6 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl:"http://localhost:3000",
+    baseUrl: "http://localhost:3000",
   },
 });

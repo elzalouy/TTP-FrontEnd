@@ -220,7 +220,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <TextField
                     error={error.error?.details[0].path.includes("name")}
-                    id="outlined-error"
+                    id="outlined-error task-name"
                     className="textfield"
                     sx={taskFormNameStyles}
                     placeholder="Task name"
@@ -244,6 +244,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     selectText={selectedDepartment?.name}
                     {...register("selectedDepartmentId")}
                     selectValue={props.field.value}
+                    id="department-new-task"
                     options={
                       departments
                         ? departments?.map((item) => {
@@ -268,9 +269,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
-                    cancelText={""}
-                    okText={""}
-                    disableCloseOnSelect={false}
+                    // // cancelText={""}
+                    // // okText={""}
+                    // disableCloseOnSelect={false}
                     value={props.field.value}
                     onChange={(e) => {
                       validateDate(
@@ -334,6 +335,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <SelectInput2
                     label="Categories list"
+                    id="category-new-task"
                     error={error?.error?.details[0].path.includes("categoryId")}
                     handleChange={onChangeCategory}
                     selectText={

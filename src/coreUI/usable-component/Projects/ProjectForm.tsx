@@ -37,7 +37,10 @@ import {
   validateDate,
 } from "../../../services/validations/project.schema";
 import { ToastError, ToastWarning } from "../Typos/Alert";
-import { getYesterdaysDate, notNullorFalsy } from "../../../helpers/generalUtils";
+import {
+  getYesterdaysDate,
+  notNullorFalsy,
+} from "../../../helpers/generalUtils";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -177,14 +180,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                cancelText={""}
-                okText={""}
-                disableCloseOnSelect={false}
+                // cancelText={""}
+                // okText={""}
+                // disableCloseOnSelect={false}
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
-                    "Start date has passed today's date" ,
-                      getYesterdaysDate()
+                    "Start date has passed today's date",
+                    getYesterdaysDate()
                   );
                   props.field.onChange(moment(e).toDate());
                 }}
@@ -244,14 +247,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                cancelText={""}
-                okText={""}
-                disableCloseOnSelect={false}
+                // cancelText={""}
+                // okText={""}
+                // disableCloseOnSelect={false}
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
                     "Deadline has passed today's date",
-                      getYesterdaysDate()
+                    getYesterdaysDate()
                   );
                   props.field.onChange(moment(e).toDate());
                 }}

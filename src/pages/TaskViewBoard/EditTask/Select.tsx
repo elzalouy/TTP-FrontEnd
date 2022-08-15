@@ -14,6 +14,7 @@ interface SelectProps {
   selectText: string | undefined;
   selectValue: string | undefined;
   options: any;
+  dataTestId?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -25,6 +26,7 @@ const Select: React.FC<SelectProps> = ({
   label,
   register,
   handleChange,
+  dataTestId,
 }) => {
   return (
     <div>
@@ -37,6 +39,7 @@ const Select: React.FC<SelectProps> = ({
           <SelectInput2
             {...register(name)}
             label={label}
+            data-test-id={dataTestId}
             error={state.error.error?.details[0].path.includes("listId")}
             handleChange={handleChange ? handleChange : props.field.onChange}
             selectText={selectText}

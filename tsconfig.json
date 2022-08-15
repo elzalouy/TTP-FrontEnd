@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "noImplicitAny": true,
+   "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "ES5"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,7 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["cypress", "jest", "node", "mocha"]
+    "types": ["cypress","node","jest", "mocha"]
   },
   "include": ["src", "src/utils/custom.d.ts"],
   "exclude": ["**/*.cy.ts"]
