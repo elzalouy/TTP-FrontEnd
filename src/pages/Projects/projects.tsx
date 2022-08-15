@@ -123,7 +123,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           )}
         </Grid>
         <Grid
-          data-testid="filter-projects"
+          data-test-id="filter-projects"
           margin={1}
           item
           xs={5}
@@ -148,7 +148,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
         {filter && (
           <>
             <Grid
-              data-testid="filter-projects"
+              data-test-id="filter-projects"
               display={{
                 xs: filter ? "block" : "none",
                 sm: filter ? "block" : "none",
@@ -186,7 +186,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               />
             </Grid>
             <Grid
-              data-testid="filter-projects"
+              data-test-id="filter-projects"
               display={{
                 xs: filter ? "block" : "none",
                 sm: filter ? "block" : "none",
@@ -231,7 +231,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               />
             </Grid>
             <Grid
-              data-testid="filter-projects"
+              data-test-id="filter-projects"
               display={{
                 xs: filter ? "block" : "none",
                 sm: filter ? "block" : "none",
@@ -277,7 +277,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
               />
             </Grid>
             <Grid
-              data-testid="filter-projects"
+              data-test-id="filter-projects"
               display={{
                 xs: filter ? "block" : "none",
                 sm: filter ? "block" : "none",
@@ -341,7 +341,7 @@ const Projects: React.FC<ProjectsProps> = (props) => {
           </>
         )}
         <Grid
-          data-testid="filter-projects"
+          data-test-id="filter-projects"
           margin={1}
           item
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}

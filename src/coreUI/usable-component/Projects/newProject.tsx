@@ -122,7 +122,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
             py: 1,
             my: 1,
           }}
-          data-test="create-project"
+          data-test-id="create-project"
         >
           <img
             src={IMAGES.plus}

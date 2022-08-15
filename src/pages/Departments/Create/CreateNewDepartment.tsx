@@ -81,7 +81,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   return (
     <>
       <div
-        data-test="createDepartmentBtn"
+        data-test-id="createDepartmentBtn"
         className="add-new-dep"
         onClick={onOpenModal}
       >
@@ -154,6 +154,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               control={control}
               render={(props) => (
                 <Input
+                  dataTestId="departmentTeam"
                   name="team"
                   control={control}
                   register={register}
@@ -166,6 +167,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           </Box>
           <Box height={"60%"} paddingTop={2}>
             <button
+              data-test-id="addTeamBtn"
               className="gray-btn"
               onClick={() => onChangeTeams()}
               disabled={watch().team.length <= 2}
@@ -200,7 +202,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         <br />
         <div className="controllers">
           <button
-            data-test="addNewDepartmentBtn"
+            data-test-id="addNewDepartmentBtn"
             className="controllers-done"
             onClick={onSubmit}
           >
