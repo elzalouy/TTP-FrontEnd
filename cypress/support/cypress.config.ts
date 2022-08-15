@@ -5,10 +5,12 @@ config();
 export default defineConfig({
   e2e: {
     env: {
+      PROD_URL:"https://ttp-back-v1.herokuapp.com/api/",
       DEV_URL: "http://localhost:5000/api/",
-      SOCKET_DEV_URL: "http://localhost:5000",
-      PM_USER_EMAIL: "zed.saheer5@gmail.com",
-      PM_USER_PASSWORD: "12345678",
+      SOCKET_PROD_URL: "https://ttp-back-v1.herokuapp.com",
+      SOCKET_DEV_URL: "http://localhost:5000monog",
+      AM_USER_EMAIL: "zed.saheer5@gmail.com",
+      AM_USER_PASSWORD: "12345678",
     },
   },
 });
