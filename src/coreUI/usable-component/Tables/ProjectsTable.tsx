@@ -271,7 +271,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       cursor: "pointer",
                       borderColor: setBorder(project),
                     }}
-                    className={classes.tcellRight}
+                    className={"project-actions-container" + " " + classes.tcellRight}
                     align={props.align}
                   >
                     {role !== "PM" && (
