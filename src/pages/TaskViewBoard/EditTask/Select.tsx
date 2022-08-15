@@ -39,7 +39,7 @@ const Select: React.FC<SelectProps> = ({
           <SelectInput2
             {...register(name)}
             label={label}
-            data-test-id={dataTestId}
+            id={dataTestId}
             error={state.error.error?.details[0].path.includes("listId")}
             handleChange={handleChange ? handleChange : props.field.onChange}
             selectText={selectText}

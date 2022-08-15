@@ -243,7 +243,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         <div className="controllers">
           <button className="controllers-done" onClick={() => handleSubmit()}>
             {state.loading ? (
-              <CircularProgress sx={{ color: "white", padding: "0px" }} />
+              <CircularProgress sx={{ color: "white", padding: "10px" }} />
             ) : (
               "Done"
             )}

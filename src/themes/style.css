@@ -20,7 +20,9 @@
   border: none !important;
   outline: none !important;
   text-transform: capitalize !important;
+  border-radius: 5px;
 }
 .Option:hover {
   background-color: #f1f1f4 !important;
+  border-radius: 5px;
 }

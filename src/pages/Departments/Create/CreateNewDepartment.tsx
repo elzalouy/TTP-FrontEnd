@@ -115,7 +115,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               control={control}
               register={register}
               label={"Department name"}
-              placeholder={"department name"}
+              placeholder={"Department name"}
               state={state}
               id="editDepartmentName"
             />
@@ -207,7 +207,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
             onClick={onSubmit}
           >
             {state.loading ? (
-              <CircularProgress sx={{ color: "white", padding: "0px" }} />
+              <CircularProgress sx={{ color: "white", padding: "10px" }} />
             ) : (
               "Done"
             )}

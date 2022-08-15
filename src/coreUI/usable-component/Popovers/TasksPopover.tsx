@@ -50,8 +50,8 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
 
   return (
     <div>
-      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
-        <Typography variant="h3" fontWeight={"bold"}>
+      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }} className="task-actions">
+        <Typography variant="h3" fontWeight={"bold"} >
           <img src={IMAGES.moreGrey} alt="more" />
         </Typography>
       </Box>
@@ -88,13 +88,14 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
                 width={18}
                 style={{ marginRight: 2, marginLeft: 1 }}
               ></img>
-              <span style={{marginLeft:7}}>Open in trello</span>
+              <span style={{ marginLeft: 7 }}>Open in trello</span>
             </a>
           </Button>
           <Button
             onClick={onDeleteTask}
             variant="text"
             className={styles.redButton}
+            id="delete-task-button"
           >
             <img
               src={IMAGES.deleteicon2}

@@ -213,7 +213,7 @@ const SelectInput: React.FC<Props> = ({
                       fontSize: 13,
                       paddingTop: 5,
                       paddingBottom: 5,
-                      borderRadius: 0,
+                      borderRadius: 5,
                     }}
                   >
                     {item.text}
@@ -234,7 +234,7 @@ const SelectInput: React.FC<Props> = ({
                       fontSize: 13,
                       paddingTop: 5,
                       paddingBottom: 5,
-                      borderRadius: 0,
+                      borderRadius: 5,
                     }}
                     onClick={(e) => {
                       handleChange(e);

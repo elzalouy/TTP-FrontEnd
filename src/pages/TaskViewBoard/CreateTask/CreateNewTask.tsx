@@ -320,9 +320,9 @@ const CreateNewTask = ({ show, setShow }: Props) => {
             </Box>
             <div>
               <button
-                style={{ marginBottom: "20px" }}
+                style={{ marginBottom: "20px"}}
                 type="submit"
-                className="addTaskBtn"
+                className="addTaskBtn fontSize"
               >
                 {selectedProject.loading ? (
                   <CircularProgress

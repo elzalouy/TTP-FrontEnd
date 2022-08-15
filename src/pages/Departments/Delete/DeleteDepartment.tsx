@@ -48,7 +48,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
           </button>
           <button className="controllers-delete" onClick={handleSubmit}>
             {loading ? (
-              <CircularProgress sx={{ color: "white", padding: "0px" }} />
+              <CircularProgress sx={{ color: "white", padding: "10px" }} />
             ) : (
               "Delete"
             )}
