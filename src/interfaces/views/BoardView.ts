@@ -18,7 +18,7 @@ export interface InputProps {
   multiline?: boolean;
   rows?: number;
   id?: string;
-  dataTest?: string;
+  dataTestId?: string;
 }
 
 export interface DateInputProps {

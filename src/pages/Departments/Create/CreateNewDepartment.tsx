@@ -110,7 +110,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           control={control}
           render={(props) => (
             <Input
-              dataTest="departmentName"
+              dataTestId="departmentName"
               name="name"
               control={control}
               register={register}

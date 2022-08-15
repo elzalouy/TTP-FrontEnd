@@ -42,8 +42,8 @@ const ProjectPopover: React.FC<Props> = (props) => {
     handleClose();
   };
   return (
-    <div>
-      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }} data-test="project-actions">
+    <div className="project-actions-wrapper">
+      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }} className="project-actions">
         <Typography variant="h3" fontWeight={"bold"}>
           <img src={IMAGES.moreGrey} alt="more" />
         </Typography>

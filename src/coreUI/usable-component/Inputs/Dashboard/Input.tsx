@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = ({
   label,
   rows,
   id,
-  dataTest,
+  dataTestId,
 }) => {
   const style = inputStyle()();
   return (
@@ -25,7 +25,7 @@ const Input: React.FC<InputProps> = ({
         control={control}
         render={(props) => (
           <TextField
-            data-test={dataTest}
+            data-test-id={dataTestId}
             {...register(name)}
             value={props.field.value}
             error={state?.error?.error?.details[0].path.includes(name)}

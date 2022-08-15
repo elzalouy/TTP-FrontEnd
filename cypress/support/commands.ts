@@ -1,20 +1,6 @@
 // @ts-check
 ///<reference path="../global.d.ts" />
 
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-
 import { mount } from "cypress/react";
 
 Cypress.Commands.add("mount", mount);
@@ -33,8 +19,8 @@ Cypress.Commands.add("login", (email: any, password: any) => {
   });
 });
 Cypress.Commands.add("getBySel", (selector, ...args) => {
-  return cy.get(`[data-test="${selector}"]`, ...args);
+  return cy.get(`[data-test-id="${selector}"]`, ...args);
 });
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
-  return cy.get(`[data-test*="${selector}"]`, ...args);
+  return cy.get(`[data-test-id*="${selector}"]`, ...args);
 });
