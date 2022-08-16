@@ -56,6 +56,7 @@ const DepartmentCard = ({
     <>
       {department && department?.color && (
         <div
+          data-test-id={`departments-card-${department._id}`}
           className="department-Card"
           style={{ backgroundColor: cardColors[department.color][0] }}
         >

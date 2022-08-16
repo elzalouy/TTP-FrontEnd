@@ -16,7 +16,7 @@ import { ToastWarning } from "../../../coreUI/usable-component/Typos/Alert";
 import { CircularProgress } from "@mui/material";
 import { createDepartment } from "../../../redux/Departments";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CreateDepartmantJoiSchema } from "../../../services/validations/department.schema";
 import {
   IcreateDepartmentInit,
@@ -110,7 +110,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           control={control}
           render={(props) => (
             <Input
-              dataTestId="departmentName"
+              dataTestId="create-dep-Name"
               name="name"
               control={control}
               register={register}
@@ -154,7 +154,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               control={control}
               render={(props) => (
                 <Input
-                  dataTestId="departmentTeam"
+                  dataTestId="create-dep-teamName"
                   name="team"
                   control={control}
                   register={register}
@@ -167,7 +167,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           </Box>
           <Box height={"60%"} paddingTop={2}>
             <button
-              data-test-id="addTeamBtn"
+              data-test-id="create-dep-add-team"
               className="gray-btn"
               onClick={() => onChangeTeams()}
               disabled={watch().team.length <= 2}
@@ -202,7 +202,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         <br />
         <div className="controllers">
           <button
-            data-test-id="addNewDepartmentBtn"
+            data-test-id="create-dep-submit"
             className="controllers-done"
             onClick={onSubmit}
           >

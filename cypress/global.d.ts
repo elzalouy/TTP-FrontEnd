@@ -24,6 +24,7 @@ declare global {
         dataTestPrefixAttribute: string,
         args?: any
       ): Chainable<JQuery<HTMLElement>>;
+      getByName(byname: string, args?: any): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
