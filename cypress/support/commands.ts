@@ -24,3 +24,6 @@ Cypress.Commands.add("getBySel", (selector, ...args) => {
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
   return cy.get(`[data-test-id*="${selector}"]`, ...args);
 });
+Cypress.Commands.add("getByName", (selector, ...args) => {
+  return cy.get(`input[name=${selector}]`, ...args);
+});
