@@ -200,7 +200,9 @@
 }
 
 .addTaskBtn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 5px auto;
   cursor: pointer;
   width: 263px;
@@ -212,6 +214,10 @@
   border-radius: 5px;
   border: none;
   font-weight: bold;
+}
+
+.fontSize{
+  font-size: 15px !important;
 }
 
 .upload-btn-wrapper {
