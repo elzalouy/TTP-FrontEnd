@@ -1,41 +1,41 @@
+import { Close as CloseIcon } from "@mui/icons-material";
 import {
   Box,
   Button,
   CircularProgress,
   TextField,
   TextFieldProps,
-  Typography,
+  Typography
 } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { Dispatch } from "@reduxjs/toolkit";
+import Joi from "joi";
+import moment from "moment";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import SelectInput2 from "../Inputs/SelectInput2";
-import "./projectForm.css";
+import IMAGES from "../../../assets/img/Images";
+import { getYesterdaysDate } from "../../../helpers/generalUtils";
+import { generateID } from "../../../helpers/IdGenerator";
+import { IDepartmentState } from "../../../interfaces/models/Departments";
+import { selectRole } from "../../../redux/Auth";
 import { Category, selectAllCategories } from "../../../redux/Categories";
 import { selectAllDepartments } from "../../../redux/Departments";
 import { useAppSelector } from "../../../redux/hooks";
 import {
   createProjectTask,
   selectLoading,
-  selectNewProject,
+  selectNewProject
 } from "../../../redux/Projects";
-import { Close as CloseIcon } from "@mui/icons-material";
-import { MobileDatePicker } from "@mui/x-date-pickers";
-import IMAGES from "../../../assets/img/Images";
-import Joi from "joi";
-import moment from "moment";
 import { selectUi } from "../../../redux/Ui/UI.selectors";
-import { generateID } from "../../../helpers/IdGenerator";
-import { selectRole } from "../../../redux/Auth";
+import { validateDate } from "../../../services/validations/project.schema";
 import {
   valdiateCreateTask,
-  validateTaskFilesSchema,
+  validateTaskFilesSchema
 } from "../../../services/validations/task.schema";
-import { validateDate } from "../../../services/validations/project.schema";
-import { getYesterdaysDate } from "../../../helpers/generalUtils";
-import { IDepartmentState } from "../../../interfaces/models/Departments";
+import SelectInput2 from "../Inputs/SelectInput2";
+import "./projectForm.css";
 
 interface TaskFormProps {}
 
@@ -269,10 +269,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
-                    // // cancelText={""}
-                    // // okText={""}
-                    // disableCloseOnSelect={false}
                     value={props.field.value}
+                    closeOnSelect
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -302,6 +300,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                           onChange={params.onChange}
                           placeholder="Deadline"
                           sx={taskFormDeadlineStyles}
+                        
                         />
                         {watch().deadline !== null && (
                           <img

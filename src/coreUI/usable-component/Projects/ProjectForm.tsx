@@ -1,46 +1,34 @@
-import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { selectClientsNames } from "../../../redux/Clients/clients.selectors";
-import { useAppSelector } from "../../../redux/hooks";
-import { getPMs, selectPMs } from "../../../redux/PM";
 import {
-  createProject,
-  ProjectsActions,
-  selectLoading,
-} from "../../../redux/Projects";
-import { useDispatch } from "react-redux";
-import { getAllClients } from "../../../redux/Clients";
-import {
-  Alert,
-  Button,
-  ButtonBase,
-  CircularProgress,
-  Grid,
-  Input,
-  InputAdornment,
-  TextField,
-  TextFieldProps,
+  Button, CircularProgress,
+  Grid, TextField,
+  TextFieldProps
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import { selectUser } from "../../../redux/Auth";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { selectClientsNames } from "../../../redux/Clients/clients.selectors";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectPMs } from "../../../redux/PM";
+import {
+  createProject, selectLoading
+} from "../../../redux/Projects";
 import SelectInput2 from "../Inputs/SelectInput2";
 // import { Restore } from "@mui/icons-material";
 
-import moment from "moment";
-import { toast } from "react-toastify";
 import Joi from "joi";
-import { selectUi } from "../../../redux/Ui/UI.selectors";
-import { generateID } from "../../../helpers/IdGenerator";
+import moment from "moment";
 import IMAGES from "../../../assets/img/Images";
 import {
-  validateCreateProject,
-  validateDate,
-} from "../../../services/validations/project.schema";
-import { ToastError, ToastWarning } from "../Typos/Alert";
-import {
   getYesterdaysDate,
-  notNullorFalsy,
+  notNullorFalsy
 } from "../../../helpers/generalUtils";
+import { selectUi } from "../../../redux/Ui/UI.selectors";
+import {
+  validateCreateProject,
+  validateDate
+} from "../../../services/validations/project.schema";
+import { ToastError } from "../Typos/Alert";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -180,9 +168,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                // cancelText={""}
-                // okText={""}
-                // disableCloseOnSelect={false}
+                closeOnSelect
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -213,6 +199,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       placeholder="Start Date"
                       onChange={params.onChange}
                       sx={projectFormStartDateStyles}
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                     {notNullorFalsy(watch().startDate) && (
                       <img
@@ -283,6 +272,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       {...register("deadline")}
                       placeholder="Deadline"
                       sx={projectFormDeadlineStyles}
+                     
                     />
                     {notNullorFalsy(watch().deadline) && (
                       <img

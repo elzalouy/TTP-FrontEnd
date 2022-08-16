@@ -1,37 +1,29 @@
-import React, { useEffect, useState } from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../Popup/PopUp";
-import "./popups-style.css";
-import {
-  Controller,
-  FieldValue,
-  FieldValues,
-  useForm,
-  UseFormWatch,
-} from "react-hook-form";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectClientsNames } from "../../../redux/Clients";
-import { selectPMs } from "../../../redux/PM";
-import {
-  selectEditProject,
-  editProject as editProjectAction,
-} from "../../../redux/Projects";
-import { useDispatch } from "react-redux";
-import { MobileDatePicker } from "@mui/x-date-pickers";
-import { fireUpdateProjectHook } from "../../../redux/Ui";
 import { TextField, TextFieldProps } from "@mui/material";
-import SelectInput2 from "../Inputs/SelectInput2";
-import DoneProjectConfirm from "./DoneProjectPopup";
+import { DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
-import { date } from "joi";
+import React, { useEffect, useState } from "react";
+import {
+  Controller, useForm
+} from "react-hook-form";
+import { useDispatch } from "react-redux";
+import IMAGES from "../../../assets/img/Images";
 import {
   calculateStatusBasedOnDeadline,
   getStatus,
   getYesterdaysDate,
-  notNullorFalsy,
+  notNullorFalsy
 } from "../../../helpers/generalUtils";
-import { toast } from "react-toastify";
+import { selectClientsNames } from "../../../redux/Clients";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectPMs } from "../../../redux/PM";
+import {
+  editProject as editProjectAction, selectEditProject
+} from "../../../redux/Projects";
 import { validateDate } from "../../../services/validations/project.schema";
+import SelectInput2 from "../Inputs/SelectInput2";
+import PopUp from "../Popup/PopUp";
+import DoneProjectConfirm from "./DoneProjectPopup";
+import "./popups-style.css";
 
 type Props = {
   show: string;
@@ -314,7 +306,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <MobileDatePicker
+                  <DesktopDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
                     // cancelText={""}
@@ -345,6 +337,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Start Date"
                           onChange={params.onChange}
+                          InputProps={{
+                            readOnly: true,
+                          }}
                           sx={editProjectStartDateStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
@@ -381,9 +376,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    // cancelText={""}
-                    // okText={""}
-                    // disableCloseOnSelect={false}
+                    closeOnSelect
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
