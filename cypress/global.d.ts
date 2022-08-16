@@ -5,7 +5,7 @@ declare global {
     interface Chainable {
       /**
        * Custom command to automate the steps of login
-       * @example cy.login()
+       * @example cy.login(email:"example@mail.com",password:"12345678")
        */
       mount: typeof mount;
       login(name: string, password: string);

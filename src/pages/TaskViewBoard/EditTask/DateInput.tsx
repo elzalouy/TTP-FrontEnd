@@ -27,13 +27,12 @@ const DateInput: React.FC<DateInputProps> = ({
         <Controller
           name={name}
           control={control}
-          render={(props) => (
-            <MobileDatePicker
+          render={(props) => {
+            return <MobileDatePicker
               {...register(name)}
               inputFormat="YYYY-MM-DD"
               cancelText={""}
               okText={""}
-              disableCloseOnSelect={false}
               value={props.field.value}
               onChange={(e: any) => {
                 validateDate(
@@ -63,7 +62,7 @@ const DateInput: React.FC<DateInputProps> = ({
                     value={params.value}
                     className={style.textField}
                   />
-                  <img
+                  {props.field.value !== null && <img
                     className="closeIcon"
                     src={IMAGES.closeicon}
                     style={{
@@ -77,11 +76,11 @@ const DateInput: React.FC<DateInputProps> = ({
                     onClick={() => {
                       setValue("deadline", null);
                     }}
-                  />
+                  />}
                 </div>
               )}
             />
-          )}
+          }}
         />
       </div>
     </>

@@ -259,6 +259,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       <IconButton
                         disableRipple
                         onClick={(e) => toggleDeletePopUp(e, cellData)}
+                        data-test-id="delete-pm-button"
                       >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
                       </IconButton>
