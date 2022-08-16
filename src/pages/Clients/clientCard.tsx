@@ -66,7 +66,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
 
   return (
     <Box>
-      <Grid container direction="column" className="client-card">
+      <Grid container direction="column" className="client-card" data-test-id="client-card">
         <Grid container justifyContent="space-between" marginBottom={1.5}>
           <Box alignItems={"center"}>
             <Stack
@@ -95,6 +95,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               >
                 <Typography
                   sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+                  data-test-id="client-name-header"
                 >
                   {clientName}
                 </Typography>
@@ -124,7 +125,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             >
               Active Projects
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography sx={{ fontWeight: "bold" }} data-test-id="active-projects-clients">
               {getAllActiveProjects()}
             </Typography>
           </Grid>

@@ -146,12 +146,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   clients
                     ? clients?.map((item) => {
-                        return {
-                          id: item.clientId,
-                          value: item.clientId,
-                          text: item.clientName,
-                        };
-                      })
+                      return {
+                        id: item.clientId,
+                        value: item.clientId,
+                        text: item.clientName,
+                      };
+                    })
                     : []
                 }
               />
@@ -236,9 +236,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                // cancelText={""}
-                // okText={""}
-                // disableCloseOnSelect={false}
+                closeOnSelect
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -272,7 +270,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       {...register("deadline")}
                       placeholder="Deadline"
                       sx={projectFormDeadlineStyles}
-                     
+
                     />
                     {notNullorFalsy(watch().deadline) && (
                       <img
@@ -319,12 +317,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   PMs
                     ? PMs?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      })
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    })
                     : []
                 }
               />

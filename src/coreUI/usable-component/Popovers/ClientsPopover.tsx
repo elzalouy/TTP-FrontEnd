@@ -58,7 +58,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
   };
   return (
     <div>
-      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }}>
+      <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }} data-test-id="client-actions">
         <MoreIcon color="#783DBD" />
       </Box>
       <Popover
@@ -94,6 +94,7 @@ const ClientsPopover: React.FC<Props> = ({ client }) => {
             variant="text"
             onClick={showDeleteClientPopup}
             className={styles.redButton}
+            data-test-id="client-delete-button"
           >
             <img
               alt=""
