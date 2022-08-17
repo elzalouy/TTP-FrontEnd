@@ -13,9 +13,9 @@ const ClientTaskNumberCard: FC<Props> = ({ title, getTasksByClientIdAndStatus, p
     return (
         <div className="task-number-card">
             <Typography
-                sx={{ fontSize: 11 }}
+                sx={{ fontSize: 12,fontWeight:"600 !important" }}
                 variant="caption"
-                style={{ color: "#808191" }}
+                style={{ color: "black" }}
                 className="counter-title"
             >
                 {title}

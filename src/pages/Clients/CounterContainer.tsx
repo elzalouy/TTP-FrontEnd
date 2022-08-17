@@ -14,8 +14,8 @@ const CounterContainer: FC<Props> = ({ getTasksByClientIdAndStatus }) => {
         >
             <div className="counter-container-scroll-wrapper">
                 <ClientTaskNumberCard title="Shared Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Shared"} />
-                <ClientTaskNumberCard title="Done Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Done"} />
                 <ClientTaskNumberCard title="In Progress Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"inProgress"} />
+                <ClientTaskNumberCard title="Done Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Done"} />
             </div>
         </div>
     )

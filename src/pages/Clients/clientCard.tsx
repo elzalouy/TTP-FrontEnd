@@ -120,14 +120,14 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
         >
           <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
-              sx={{ fontSize: 11 }}
+              sx={{ fontSize: 13 }}
               variant="caption"
               style={{ color: "#808191" }}
               className="counter-title"
             >
               Active Projects
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }} data-test-id="active-projects-clients">
+            <Typography sx={{ fontWeight: "bold" , fontSize:"18px"}} data-test-id="active-projects-clients">
               {getAllActiveProjects()}
             </Typography>
           </Grid>
@@ -146,14 +146,14 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
           </Grid>
           <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
-              sx={{ fontSize: 11 }}
+              sx={{ fontSize: 13 }}
               variant="caption"
               style={{ color: "#808191" }}
               className="counter-title"
             >
               Done Projects
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
+            <Typography sx={{ fontWeight: "bold", fontSize:"18px" }}>{doneProject}</Typography>
           </Grid>
           <CounterContainer getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} />
         </Grid>
