@@ -461,6 +461,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 onChange={onSetFiles}
                 ref={files}
                 type="file"
+                data-test-id="project-task-file"
                 style={{ display: "none" }}
                 multiple
               />
