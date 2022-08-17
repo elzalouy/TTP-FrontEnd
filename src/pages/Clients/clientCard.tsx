@@ -13,6 +13,8 @@ import {
   selectTasks,
 } from "../../redux/Projects";
 import { Status } from "../../interfaces/views/BoardView";
+import CounterContainer from "./CounterContainer"
+
 interface IProps {
   client: Client;
 }
@@ -153,80 +155,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
             </Typography>
             <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
           </Grid>
-        </Grid>
-        <Grid
-          container
-          className="counter-container"
-          justifyContent={"space-between"}
-          alignItems="center"
-          marginTop={1}
-        >
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              Shared Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {getTasksByClientIdAndStatus("Shared")}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            width="1px !important"
-            paddingTop={0.5}
-            overflow={"hidden"}
-            sx={{ opacity: 0.5 }}
-          >
-            <hr
-              color="#88888885"
-              style={{ width: "1px !important" }}
-              className="hrVertical"
-            />
-          </Grid>
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              In Progress Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {" "}
-              {getTasksByClientIdAndStatus("inProgress")}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            width="1px !important"
-            paddingTop={0.5}
-            overflow={"hidden"}
-            sx={{ opacity: 0.5 }}
-          >
-            <hr
-              color="#88888885"
-              style={{ width: "1px !important" }}
-              className="hrVertical"
-            />
-          </Grid>
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              Done Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {getTasksByClientIdAndStatus("Done")}
-            </Typography>
-          </Grid>
+          <CounterContainer getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} />
         </Grid>
       </Grid>
     </Box>
