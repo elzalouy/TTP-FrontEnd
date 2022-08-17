@@ -2,6 +2,7 @@
 ///<reference path="../global.d.ts" />
 
 import { mount } from "cypress/react";
+import 'cypress-file-upload';
 
 Cypress.Commands.add("mount", mount);
 Cypress.Commands.add("login", (email: string, password: string) => {
