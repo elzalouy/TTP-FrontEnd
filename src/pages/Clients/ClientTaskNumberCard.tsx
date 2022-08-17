@@ -1,5 +1,6 @@
-import { Grid, Typography } from '@mui/material';
-import React, { FC } from 'react'
+import { Typography } from '@mui/material';
+import { FC } from 'react'
+import "./clients.css"
 import { Status } from '../../interfaces/views/BoardView';
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
 
 const ClientTaskNumberCard: FC<Props> = ({ title, getTasksByClientIdAndStatus, param }) => {
     return (
-        <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
+        <div className="task-number-card">
             <Typography
                 sx={{ fontSize: 11 }}
                 variant="caption"
@@ -19,10 +20,10 @@ const ClientTaskNumberCard: FC<Props> = ({ title, getTasksByClientIdAndStatus, p
             >
                 {title}
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography className="task-number">
                 {getTasksByClientIdAndStatus(param)}
             </Typography>
-        </Grid>
+        </div>
     )
 }
 

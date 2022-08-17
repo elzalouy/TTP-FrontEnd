@@ -1,8 +1,7 @@
-import { Typography } from '@mui/material'
-import React, { FC } from 'react'
-import { Grid } from '@mui/material'
+import { FC } from 'react'
 import { Status } from '../../interfaces/views/BoardView'
 import ClientTaskNumberCard from './ClientTaskNumberCard'
+import "./clients.css"
 
 type Props = {
     getTasksByClientIdAndStatus: ((__status__: Status) => number)
@@ -10,17 +9,15 @@ type Props = {
 
 const CounterContainer: FC<Props> = ({ getTasksByClientIdAndStatus }) => {
     return (
-        <Grid
-            container
-            className="counter-container"
-            justifyContent={"space-between"}
-            alignItems="center"
-            marginTop={1}
+        <div
+            className="counter-container-tasks bounce"
         >
-            <ClientTaskNumberCard title="Shared Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Shared"} />
-            <ClientTaskNumberCard title="Done Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Done"} />
-            <ClientTaskNumberCard title="In Progress Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"inProgress"} />
-        </Grid>
+            <div className="counter-container-scroll-wrapper">
+                <ClientTaskNumberCard title="Shared Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Shared"} />
+                <ClientTaskNumberCard title="Done Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"Done"} />
+                <ClientTaskNumberCard title="In Progress Tasks" getTasksByClientIdAndStatus={getTasksByClientIdAndStatus} param={"inProgress"} />
+            </div>
+        </div>
     )
 }
 
