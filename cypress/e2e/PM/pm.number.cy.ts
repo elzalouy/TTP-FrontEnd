@@ -52,7 +52,7 @@ describe('Check change in Project count of PM', () => {
 
     it('It should delete the project', () => {
         cy.visit('/projects');
-        cy.wait(500).get('tr').contains('tr', 'Automated Project').within(() => {
+        cy.wait(1000).get('tr').contains('tr', 'Automated Project').within(() => {
             return cy.get('.project-actions > h3').click()
         });
         cy.get('button[id=delete-project-button]').click()

@@ -5,7 +5,7 @@ beforeEach(() => {
 
 describe("Check Inital numbers in client", () => {
     it('It should create a new client', () => {
-        cy.get('[data-test-id="create-client-button"]').click();
+        cy.get('[data-test-id="create-client-button"]').click().wait(1000);
         cy.get('[data-test-id="client-name"]').type('Automated Client');
         cy.get('[data-test-id="client-submit-button"]').click();
         cy.get('[data-test-id="client-name-header"]').within(() => {

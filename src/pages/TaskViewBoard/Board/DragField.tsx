@@ -241,6 +241,7 @@ const DragField: React.FC = (props: any) => {
                     minWidth={"312px"}
                     height="100%"
                     sx={{ overflowY: "scroll" }}
+                    data-test-id="task-card-container"
                   >
                     <Stack
                       direction="row"

@@ -19,7 +19,7 @@ describe("Create Task", () => {
     cy.get("tr").contains("Automated").wait(1000).click();
     cy.url().should("include", "/TasksBoard");
     cy.get(".add-new-task").click().wait(500);
-    cy.get("input[id$=task-name]").type("Automated Task");
+    cy.get("input[id$=task-name]").first().type("Automated Task");
     cy.get("div[id=department-new-task]")
       .click()
       .get(".Option")
@@ -31,15 +31,26 @@ describe("Create Task", () => {
   });
 });
 
+describe("Edit Task",()=>{
+  it('It should edit the name of the task',()=>{
+    cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
+    cy.url().should('include', '/TasksBoard');
+    cy.get('.task-card').contains('Automated Task').click();
+    cy.get("input[id$=edit-task-name]").clear().type("Automated Task Updated");
+    cy.get('[data-test-id="edit-task-button"]').click().wait(1000);
+    cy.get(".task-card").contains("Automated Task Updated").should("be.visible");
+  })
+})
+
 describe("Delete Task", () => {
 
   it('It should delete the task', () => {
-    cy.get('tr').contains('Automated Project').should('be.visible').click();
+    cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
     cy.url().should('include', '/TasksBoard');
-    cy.get('.task-card').contains('Automated Task').siblings('div').click();
-    cy.get('button[id=delete-task-button]').click().wait(2000);
-    cy.get('[data-test-id="delete-task-button-confirm"]').click();
-    cy.get('.task-card').should('not.have.text', 'Automated Project');
+    cy.get('.task-card').contains('Automated Task Updated').siblings('div').click();
+    cy.get('button[id=delete-task-button]').click();
+    cy.get('[data-test-id="delete-task-button-confirm"]').click().wait(500);
+    cy.get('[data-test-id="task-card-container"]').should('not.have.text','Automated Task Updated');
   })
 
   it('It should delete the project', () => {

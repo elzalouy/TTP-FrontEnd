@@ -220,7 +220,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <TextField
                     error={error.error?.details[0].path.includes("name")}
-                    id="outlined-error task-name"
+                    id="outlined-error project-task-name"
                     className="textfield"
                     sx={taskFormNameStyles}
                     placeholder="Task name"
