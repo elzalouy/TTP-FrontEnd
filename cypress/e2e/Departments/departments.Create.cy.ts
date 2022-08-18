@@ -1,23 +1,23 @@
-import { should } from "chai";
+before(function () {
+  cy.login("zed.saheer5@gmail.com", "12345678");
+  cy.visit("/Departments").wait(1000);
+});
 
 describe("Create Department", () => {
   // open the Departments page and open create Department modal before all cases.
-  before(() => {
-    cy.log(Cypress.env("OM_USER_EMAIL"));
-    cy.login("zed.saheer5@gmail.com", "12345678");
-    cy.visit("/Departments").wait(1000);
+  beforeEach(function () {
     let createDepartmentBtn = cy.getBySel("createDepartmentBtn");
-    createDepartmentBtn.click().wait(1000);
+    createDepartmentBtn.click({ force: true }).wait(100);
   });
-
   it("should return toast message : department name is less than 2 chars", () => {
     cy.getBySel("create-dep-Name").type("n");
-    cy.getBySel("create-dep-submit").click().wait(1000);
+    cy.getBySel("create-dep-submit").click().wait(100);
     cy.get(".Toastify")
-      .contains(
-        "Department team name should contains at least 2 char, and max 61 chars."
-      )
+      .contains(`"Department Name" length must be at least 2 characters long`)
       .should("be.ok");
+    cy.getBySel("create-dep-close-modal").click({
+      force: true,
+    });
   });
 
   it("should have a disabled addTeam btn, if chars is less than 2 chars", () => {
@@ -27,6 +27,9 @@ describe("Create Department", () => {
       "disabled",
       "disabled"
     );
+    cy.getBySel("create-dep-close-modal").click({
+      force: true,
+    });
   });
 
   it("should have a diabled=false addTeam button, if chars is more than 2 chars", () => {
@@ -36,30 +39,51 @@ describe("Create Department", () => {
       "disabled",
       "disabled"
     );
+    cy.getBySel("create-dep-close-modal").click({
+      force: true,
+    });
   });
+
   it("shouldn't have duplicated names in teams", () => {
-    cy.getBySel("create-dep-Name").type("department test case");
+    cy.getBySel("create-dep-Name").type("Automated");
     cy.getBySel("create-dep-teamName").type("team");
     cy.getBySel("create-dep-add-team").click().wait(200);
     cy.getBySel("create-dep-teamName").type("team");
     cy.getBySel("create-dep-add-team").click().wait(200);
-    cy.getBySel("create-dep-submit").click();
-    cy.get(".Toastify")
-      .contains("Department teams should have a unique names")
-      .should("be.ok");
+    cy.getBySel("create-dep-submit")
+      .click()
+      .wait(200)
+      .then(() => {
+        cy.get(".Toastify").should(
+          "contain.text",
+          `"department teams" contains a duplicate value`
+        );
+      });
+    cy.getBySel("create-dep-close-modal").click({
+      force: true,
+    });
   });
+
   it("should create deparmtent in list, and toast a message", () => {
-    cy.getBySel("create-dep-Name").type("department test case");
+    cy.getBySel("create-dep-Name").type("Automated");
     cy.getBySel("create-dep-teamName").type("team").wait(200);
     cy.getBySel("create-dep-add-team").click().wait(200);
     cy.getBySel("create-dep-teamName").type("team 2").wait(200);
     cy.getBySel("create-dep-add-team").click().wait(200);
-    cy.getBySel("create-dep-submit").click().wait(4000);
-    cy.get(".Toastify")
-      .contains("Department created successfully")
-      .should("be.ok");
-    cy.getBySelLike("departments-card-").then((items) => {
-      expect(items[items.length - 1]).to.contain.text("department test case");
+    cy.getBySel("create-dep-submit")
+      .click()
+      .wait(3000)
+      .then(() => {
+        cy.get(".Toastify")
+          .contains("Department created successfully")
+          .should("be.ok");
+        cy.getBySelLike("departments-card-").then((items) => {
+          expect(items[items.length - 1]).to.contain.text("Automated");
+        });
+      });
+    cy.getBySel("create-dep-close-modal").click({
+      force: true,
+      multiple: true,
     });
     // we can also use cy.getBySelLike("").eq(0/1/2 index) or cy.getBySelLike("").each((item,index)=>{ cy.wrap(item).should()})
   });

@@ -8,13 +8,21 @@ type Props = {
   widthSize?: string;
   children: object;
   zIndex?: number;
+  dataTestId?: string;
 };
 
-const SmallPopUp: React.FC<Props> = ({ show, children, widthSize, zIndex }) => {
+const SmallPopUp: React.FC<Props> = ({
+  show,
+  children,
+  widthSize,
+  zIndex,
+  dataTestId,
+}) => {
   const isSideMenuOpened = useAppSelector(selectSideMenuToggle);
 
   return (
     <div
+      data-test-id={dataTestId}
       className="container-popup"
       style={
         !isSideMenuOpened

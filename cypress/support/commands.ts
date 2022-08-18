@@ -2,6 +2,7 @@
 ///<reference path="../global.d.ts" />
 
 import { mount } from "cypress/react";
+import { Task } from "../../src/interfaces/models/Projects";
 
 Cypress.Commands.add("mount", mount);
 Cypress.Commands.add("login", (email: any, password: any) => {
@@ -18,6 +19,33 @@ Cypress.Commands.add("login", (email: any, password: any) => {
     cy.visit("/");
   });
 });
+Cypress.Commands.add("getTasks", () => {
+  return cy.request({
+    method: "GET",
+    url: "http://localhost:5000/api/getTasks",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+});
+Cypress.Commands.add("getDepartments", () => {
+  return cy.request({
+    method: "GET",
+    url: "http://localhost:5000/api/getDeps",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+});
+Cypress.Commands.add("deleteAllDepartments", () =>
+  cy.request({
+    method: "DELETE",
+    url: "http://localhost:5000/api/dropTestCollection",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  })
+);
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-test-id="${selector}"]`, ...args);
 });

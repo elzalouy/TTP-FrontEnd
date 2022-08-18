@@ -25,7 +25,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
   };
 
   return (
-    <SmallPopUp show={show}>
+    <SmallPopUp dataTestId="delete-department-popup" show={show}>
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>
@@ -39,6 +39,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <button
+            data-test-id="delete-department-cancel"
             className="controllers-cancel"
             onClick={() => {
               setShow("none");
@@ -46,7 +47,11 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
           >
             Cancel
           </button>
-          <button className="controllers-delete" onClick={handleSubmit}>
+          <button
+            data-test-id="delete-department-submit"
+            className="controllers-delete"
+            onClick={handleSubmit}
+          >
             {loading ? (
               <CircularProgress sx={{ color: "white", padding: "10px" }} />
             ) : (

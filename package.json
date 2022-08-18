@@ -108,6 +108,7 @@
     "cypress:start:wait": "start-server-and-test cypress:start:app http://localhost:3000",
     "cypress:open": "yarn run cypress:start:wait -- \"cypress open\" ",
     "cypress:run": "yarn run cypress:start:wait -- \"cypress run\" ",
+    "cypress:run:Departments": "yarn run cypress:start:wait -- \"cypress run --spec 'cypress/Deartments/*.ts'\" ",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

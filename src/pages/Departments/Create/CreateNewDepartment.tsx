@@ -35,13 +35,15 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   });
   const onInitState = () => {
     setState(IcreateDepartmentInit);
+    reset();
   };
   const onOpenModal = () => {
     let State = { ...state };
     setState({ ...State, show: "flex" });
   };
   const onCloseModal = () => {
-    setState({ ...state, show: "none" });
+    setState(IcreateDepartmentInit);
+    reset();
   };
 
   const onChangeTeams = (index?: number) => {
@@ -96,6 +98,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
       >
         <div>
           <img
+            data-test-id="create-dep-close-modal"
             className="closeIcon"
             width="9"
             height="9"

@@ -15,14 +15,14 @@ const popoverStyles = {
   width: "inherit",
   marginLeft: 0,
   marginRight: 5,
-  boxShadow: "0px 5px 15px 5px #FAFAFB;",
+  boxShadow: "10px 10px 10px 10px #0000001A;",
 };
 
 const popoverStylesNotification = {
   backgroundColor: "white",
   borderRadius: "4px",
   width: "100%",
-  boxShadow: "0px 5px 15px 5px #FAFAFB;",
+  boxShadow: "10px 10px 10px 10px #0000001A;",
 };
 
 const ScrollOver: React.FC<ScrollOverProps> = (props) => {

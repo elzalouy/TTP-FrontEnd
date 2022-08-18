@@ -129,6 +129,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                     }
                   >
                     <Typography
+                      data-test-id={`projects-row-name-${project._id}`}
                       fontWeight={"700"}
                       variant="h5"
                       fontSize={14}
@@ -206,6 +207,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                           variant="h4"
                           color="#00ACBA"
                           fontSize={14}
+                          data-test-id={`projects-row-NoOfTasks-${project._id}`}
                         >
                           {NoOfFinished}/{NoOfTasks}
                         </Typography>
@@ -271,7 +273,9 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       cursor: "pointer",
                       borderColor: setBorder(project),
                     }}
-                    className={"project-actions-container" + " " + classes.tcellRight}
+                    className={
+                      "project-actions-container" + " " + classes.tcellRight
+                    }
                     align={props.align}
                   >
                     {role !== "PM" && (
