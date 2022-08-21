@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ToastError } from "../../coreUI/usable-component/Typos/Alert";
+import { ToastError } from "../../coreUI/components/Typos/Alert";
 const createTaskSchema = Joi.object({
   projectId: Joi.string().required().min(4).messages({
     "string.base": "You should create project first",

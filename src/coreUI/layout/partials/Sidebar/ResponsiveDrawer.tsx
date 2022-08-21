@@ -28,10 +28,10 @@ import {
   selectImage,
   selectRole,
   selectUser,
-} from "../../../../redux/Auth";
+} from "../../../../models/Auth";
 import IMAGES from "../../../../assets/img/Images";
 import { RouteComponentProps, useHistory } from "react-router";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppSelector } from "../../../../models/hooks";
 import Overviewicon from "../../../../assets/icons/Overview";
 import PersonIcon from "../../../../assets/icons/Person";
 import CategoryIcon from "../../../../assets/icons/CategoryIcon";
@@ -40,8 +40,8 @@ import NotificationIcon from "../../../../assets/icons/Notification";
 import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
 import TaskIcon from "../../../../assets/icons/TaskIcon";
 import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
-import { toggleLogOutPopup } from "../../../../redux/Ui";
-import { getAllProjects } from "../../../../redux/Projects";
+import { toggleLogOutPopup } from "../../../../models/Ui";
+import { getAllProjects } from "../../../../models/Projects";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
   // const drawerWidth = "17%";

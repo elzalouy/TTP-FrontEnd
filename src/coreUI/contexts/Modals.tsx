@@ -1,17 +1,18 @@
 import * as React from "react";
-import NewProjectPopUp from "../usable-component/Projects/ProjectPopUp";
-import CreateNewTask from "../../pages/TaskViewBoard/CreateTask/CreateNewTask";
-import DeleteClient from "../usable-component/Popups/DeleteClient";
-import DeleteProject from "../usable-component/Popups/DeleteProject";
-import EditClient from "../usable-component/Popups/EditClient";
-import EditProject from "../usable-component/Popups/EditProject";
-import EditTask from "../../pages/TaskViewBoard/EditTask/EditTask";
-import LogoutPopup from "../usable-component/Popups/LogoutPopup";
-import DeleteTask from "../usable-component/Popups/DeleteTask";
+import NewProjectPopUp from "../../views/Projects/Create/Create/ProjectPopUp";
+import CreateNewTask from "../../views/TaskViewBoard/Create/CreateNewTask";
+import DeleteClient from "../../views/Clients/Delete/DeleteClient";
+import DeleteProject from "../../views/Projects/Delete/DeleteProject";
+import EditClient from "../../views/Clients/Edit/EditClient";
+import EditProject from "../../views/Projects/Edit/EditProject";
+import EditTask from "../../views/TaskViewBoard/Edit/EditTask";
+import { Logout } from "../../views/Auth";
+import DeleteTask from "../../views/TaskViewBoard/Delete/DeleteTask";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
-import { selectUi } from "../../redux/Ui/UI.selectors";
+import { useAppSelector } from "../../models/hooks";
+import { selectUi } from "../../models/Ui/UI.selectors";
 import { Grid } from "@mui/material";
+import { TaskInfoPopUp } from "../../views";
 import {
   openDeleteProjectPopup,
   openEditProjectPopup,
@@ -25,10 +26,9 @@ import {
   toggleViewTaskPopup,
   toggleEditDepartment,
   toggleDeleteDepartment,
-} from "../../redux/Ui";
-import TaskInfo from "../../pages/TaskViewBoard/TaskInfo/TaskInfo";
-import EditDepartment from "../../pages/Departments/Edit/EditDepartment";
-import DeleteDepartment from "../../pages/Departments/Delete/DeleteDepartment";
+} from "../../models/Ui";
+import EditDepartment from "../../views/Departments/Edit/EditDepartment";
+import DeleteDepartment from "../../views/Departments/Delete/DeleteDepartment";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -86,12 +86,12 @@ const Modals: React.FC = (props) => {
         show={deleteProjectPopup}
         setShow={showDeleteProjectPopup}
       />
-      <TaskInfo show={viewTaskPopup} setShow={showViewTaskModal} />
+      <TaskInfoPopUp show={viewTaskPopup} setShow={showViewTaskModal} />
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
       <CreateNewTask setShow={showCreateTaskPopup} show={createTaskPopup} />
-      <LogoutPopup setShow={showLoggoutPopup} show={logoutPopup} />
+      <Logout setShow={showLoggoutPopup} show={logoutPopup} />
       <EditTask show={editTaskPopup} setShow={showEditTaskPopup} />
       <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />
       <Grid marginLeft={50}>

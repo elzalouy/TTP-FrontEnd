@@ -1,4 +1,4 @@
-import { Project } from "../../../src/interfaces/models/Projects";
+import { Project } from "../../../src../types/models/Projects";
 import { Client } from "../../../src/redux/Clients/clients.state";
 
 let projects: Cypress.Chainable<Cypress.AUTWindow>,

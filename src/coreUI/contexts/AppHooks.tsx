@@ -1,20 +1,23 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { openConnection } from "../../services/socket.io";
-import { selectIsAuth, selectUser } from "../../redux/Auth";
-import { clientsActions, getAllClients } from "../../redux/Clients";
-import { departmentsActions, getAllDepartments } from "../../redux/Departments";
-import { useAppSelector } from "../../redux/hooks";
+import { selectIsAuth, selectUser } from "../../models/Auth";
+import { clientsActions, getAllClients } from "../../models/Clients";
+import {
+  departmentsActions,
+  getAllDepartments,
+} from "../../models/Departments";
+import { useAppSelector } from "../../models/hooks";
 import {
   getAllProjects,
   getAllTasks,
   ProjectsActions,
-} from "../../redux/Projects";
-import { selectUi } from "../../redux/Ui/UI.selectors";
-import { getAllCategories } from "../../redux/Categories";
-import { getAllMembers } from "../../redux/TechMember";
-import { getNotifications, getUnNotified } from "../../redux/Notification";
-import { ToastSuccess } from "../usable-component/Typos/Alert";
+} from "../../models/Projects";
+import { selectUi } from "../../models/Ui/UI.selectors";
+import { getAllCategories } from "../../models/Categories";
+import { getAllMembers } from "../../models/TechMember";
+import { getNotifications, getUnNotified } from "../../models/Notifications";
+import { ToastSuccess } from "../components/Typos/Alert";
 
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();

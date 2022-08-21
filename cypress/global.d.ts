@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 import { mount } from "cypress/react";
+import { IDepartmentsSlice } from "../src../types/models/Departments";
+import { Task as ProjectTask } from "../src../types/models/Projects";
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -9,16 +11,22 @@ declare global {
        */
       mount: typeof mount;
       login(name: string, password: string);
-
+      getTasks(): Chainable<Cypress.Response<IDepartmentsSlice[]>>;
+      getDepartments(): Chainable<Cypress.Response<ProjectTask[]>>;
+      deleteAllDepartments(): Chainable<Cypress.Response<string>>;
       /**
-       * getBySel yields elements with a data-test attribute that match a specified selector.
+       * getBySel
+       *
+       *  yields elements with a data-test attribute that match a specified selector.
        */
       getBySel(
         dataTestAttribute: string,
         args?: any
       ): Chainable<JQuery<HTMLElement>>;
       /**
-       *  getBySelLike yields elements with a data-test attribute that contains a specified selector.
+       *  getBySelLike
+       *
+       *  yields elements with a data-test attribute that contains a specified selector.
        */
       getBySelLike(
         dataTestPrefixAttribute: string,
