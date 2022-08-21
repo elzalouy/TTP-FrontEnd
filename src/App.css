@@ -66,8 +66,7 @@ body {
   background-color: #fafafb;
 }
 
-@media (max-width:900px) {
-
+@media (max-width: 900px) {
   /* width */
   .customScrollBar::-webkit-scrollbar {
     display: block !important;
@@ -83,7 +82,7 @@ body {
 
   /* Handle */
   .customScrollBar::-webkit-scrollbar-thumb {
-    background: black;
+    background: rgb(36, 32, 32);
     border-radius: 5px;
   }
 

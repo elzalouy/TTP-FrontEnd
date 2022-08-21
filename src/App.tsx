@@ -1,45 +1,47 @@
-import "./App.css";
-import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Login,
+  ResetPassword,
+  Forget,
+  UpdatePassword,
+  OverView,
+  TasksBoardView,
+  TasksListView,
+  Projects,
+  ProjectManagers,
+  Notifications,
+  NotFound,
+  Departments,
+  Clients,
+  Categories,
+} from "./views";
 import LoggedInContainer from "./coreUI/layout/Layout";
-import Login from "./pages/AuthPage/login";
-import ResetPassword from "./pages/AuthPage/reset";
-import TasksListView from "./pages/TasksListView/TasksListView";
-import TasksBoardView from "./pages/TaskViewBoard/Board/TaskViewBoard";
-import Departments from "./pages/Departments/Departments/Departments";
-import Forget from "./pages/AuthPage/forget";
-import Projects from "./pages/Projects/projects";
-import Category from "./pages/Category/Category";
-import Clients from "./pages/Clients/clients";
-import ProjectManagers from "./pages/projectManagers/PM";
-import NotificationContainer from "./pages/NotificationPage/NotificationContainer";
 import { useDispatch } from "react-redux";
-import { getAllClients } from "./redux/Clients";
-import { getPMs } from "./redux/PM";
-import { getAllDepartments } from "./redux/Departments";
-import { getAllCategories } from "./redux/Categories";
+import { getAllClients } from "./models/Clients";
+import { getPMs } from "./models/PM";
+import { getAllDepartments } from "./models/Departments";
+import { getAllCategories } from "./models/Categories";
 import {
   getAllProjects,
   getAllTasks,
   selectAllProjects,
-} from "./redux/Projects";
+} from "./models/Projects";
 import { ToastContainer } from "react-toastify";
-import { getAllMembers } from "./redux/TechMember";
-import OverView from "./pages/UserOverview/OverView";
+import { getAllMembers } from "./models/TechMember";
 import "react-toastify/dist/ReactToastify.css";
 import AppHooks from "./coreUI/contexts/AppHooks";
 import PopUps from "./coreUI/contexts/Modals";
-import NotFound from "./pages/NotFound/NotFound";
-import UpdatePassword from "./pages/AuthPage/update";
 import { Box } from "@mui/system";
-import { getUnNotified } from "./redux/Notification";
-import { useAppSelector } from "./redux/hooks";
+import { getUnNotified } from "./models/Notifications";
+import { useAppSelector } from "./models/hooks";
 import { checkAuthToken } from "./services/api";
-import { getUserInfo, selectIsAuth, selectUser } from "./redux/Auth";
-import { setStatisticsForOm, setStatisticsForPm } from "./redux/Statistics";
+import { getUserInfo, selectIsAuth, selectUser } from "./models/Auth";
+import { setStatisticsForOm, setStatisticsForPm } from "./models/Statistics";
+import "./App.css";
 import "swiper/css/navigation";
 import "swiper/css";
-
+import UIComponents from "./views/UiComponents";
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
@@ -159,7 +161,7 @@ const App: React.FC = () => {
           <LoggedInContainer
             path="/Categories"
             key="/categories"
-            component={Category}
+            component={Categories}
           />
           <LoggedInContainer
             path="/ProjectManagers"
@@ -169,13 +171,16 @@ const App: React.FC = () => {
           <LoggedInContainer
             path="/notifications"
             key="/notifications"
-            component={NotificationContainer}
+            component={Notifications}
           />
           <LoggedInContainer
             path="/Overview"
             component={OverView}
             key="/overview"
           />
+          {process.env.NODE_ENV === "development" && (
+            <Route key="/DevComponents" path="/Dev" component={UIComponents} />
+          )}
           {isAuthed && <Redirect from="/" to="/Overview" />}
           {!isAuthed && <Route path="*" component={NotFound} key="/notfound" />}
           {isAuthed && (

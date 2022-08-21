@@ -25,7 +25,7 @@ import {
   selectIsLogout,
   selectRole,
   selectUser,
-} from "../../../../redux/Auth";
+} from "../../../../models/Auth";
 import { Redirect, useHistory } from "react-router";
 import IMAGES from "../../../../assets/img/Images";
 import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
@@ -36,11 +36,11 @@ import ClientIcon from "../../../../assets/icons/ClientIcon";
 import TaskIcon from "../../../../assets/icons/TaskIcon";
 import CategoryIcon from "../../../../assets/icons/CategoryIcon";
 import NotificationIcon from "../../../../assets/icons/Notification";
-import { useAppSelector } from "../../../../redux/hooks";
-import { toggleLogOutPopup, toggleSideMenu } from "../../../../redux/Ui";
-import { selectSideMenuToggle } from "../../../../redux/Ui/UI.selectors";
-import { selectUnNotifiedNum } from "../../../../redux/Notification";
-import { getPMs } from "../../../../redux/PM";
+import { useAppSelector } from "../../../../models/hooks";
+import { toggleLogOutPopup, toggleSideMenu } from "../../../../models/Ui";
+import { selectSideMenuToggle } from "../../../../models/Ui/UI.selectors";
+import { selectUnNotifiedNum } from "../../../../models/Notifications";
+import { getPMs } from "../../../../models/PM";
 
 interface BarProps extends AppBarProps {}
 
@@ -275,10 +275,14 @@ const AppDrawer: React.FC = (props: any) => {
                       {user?.user?.role === undefined
                         ? user?.role === "OM"
                           ? "Admin"
-                          :  user?.role === "PM" ? "Project Manager" : ""
+                          : user?.role === "PM"
+                          ? "Project Manager"
+                          : ""
                         : user?.user?.role === "OM"
                         ? "Admin"
-                        : user?.user?.role === "PM" ? "Project Manager" : ""}
+                        : user?.user?.role === "PM"
+                        ? "Project Manager"
+                        : ""}
                     </Typography>
                   </Box>
                   <Box sx={{ cursor: "pointer" }}>

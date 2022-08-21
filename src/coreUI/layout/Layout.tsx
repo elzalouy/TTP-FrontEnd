@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "./partials/Sidebar/Sidebar";
 import Bar from "./partials/TopBar/AppBar";
-import AuthRedirection from "../../pages/AuthPage/AuthRedirection/AuthRedirection";
+import AuthRedirection from "../../views/Auth/AuthRedirection/AuthRedirection";
 import { checkAuthToken } from "../../services/api";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import "./Layout.css";

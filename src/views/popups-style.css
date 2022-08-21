@@ -1,0 +1,662 @@
+.bold {
+  font-family: "Cairo-Bold" !important;
+  font-weight: bolder !important;
+}
+
+.normal {
+  font-family: "Cairo" !important;
+  font-weight: normal !important;
+}
+
+.black-btn {
+  cursor: pointer;
+  text-transform: capitalize;
+  /* margin-left: auto; */
+  background-color: black;
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 20px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.controllers {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.controllers-small-popup {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.controllers-cancel {
+  cursor: pointer;
+  width: 190px;
+  max-width: 48%;
+  height: 45px;
+  background-color: #f4f4f4;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controllers-done {
+  cursor: pointer;
+  width: 190px;
+  max-width: 48%;
+  height: 45px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blackBtn-client {
+  cursor: pointer;
+  width: 180px;
+  height: 42px;
+  background-color: black;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cancelBtn-client {
+  cursor: pointer;
+  width: 180px;
+  height: 42px;
+  background-color: #f4f4f4;
+  color: black;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.controllers-center {
+  justify-content: center !important;
+  align-items: center;
+}
+
+.controllers-delete {
+  cursor: pointer;
+  width: 200px;
+  max-width: 45%;
+  height: 45px;
+  background-color: #ff1a1a;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.css-e55tyi-MuiFormControl-root-MuiTextField-root {
+  min-width: 145px;
+  width: 100%;
+}
+
+.popup-title {
+  font-size: 18px;
+  margin-bottom: 3em;
+  color: #30bcc7;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.popup-error {
+  color: red;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 10px 0;
+}
+
+.popup-label {
+  display: block;
+  font-weight: bold !important;
+  margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
+}
+
+.popup-label-nt {
+  display: block;
+  font-weight: bold !important;
+  margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
+}
+
+.popup-input {
+  width: 100%;
+  font-size: 15px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: solid 0.5px #b4b6c4;
+  color: #000;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.text-input input {
+  background: #fff !important;
+}
+
+.inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.closeIcon {
+  float: right;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.popup-select {
+  width: 100%;
+  padding: 11px;
+  border: solid 0.5px #b4b6c4;
+  border-radius: 5px;
+  color: #1f1f1f;
+  margin-top: 5px;
+  transition: all 0.5s ease-in-out !important;
+}
+
+.addTaskBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px auto;
+  cursor: pointer;
+  width: 263px;
+  max-width: 80%;
+  height: 45px;
+  background-color: black;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+}
+
+.fontSize {
+  font-size: 15px !important;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btnFile {
+  border: 0;
+  color: white;
+  background-color: #00acba;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 60px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.custom-file-input {
+  cursor: pointer;
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.row-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.added-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f5;
+  color: #92929d;
+  margin: 0 5px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.title-added-file {
+  padding: 0 5px;
+}
+
+.separator {
+  width: 100%;
+  margin-top: 5px;
+  border: 0.5px solid #ebeff2;
+}
+
+.warning-text {
+  margin: 20px 8px 0px;
+  color: black;
+  text-align: center;
+}
+
+.margin-cover {
+  margin: 5px 10px;
+}
+
+.orange-btn {
+  background-color: #ffc500;
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100px;
+  margin: 5px 0 0 5px;
+}
+.gray-btn {
+  background-color: "#b4b6c4";
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100px;
+  height: 48px;
+  margin: 5px 0 0 5px;
+}
+.add-teams-section {
+  width: 100%;
+  display: flex;
+}
+
+.new-team-alert {
+  position: absolute;
+  left: 300px;
+  font-size: 10px;
+  text-transform: uppercase;
+  top: 12px;
+  color: yellowgreen;
+  border: 1px solid;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.teamNames {
+  text-transform: capitalize;
+  margin: 2px 0px;
+}
+
+.add-subcategory {
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 0px 36px;
+  font-size: 16px;
+  height: 50px;
+  color: black;
+  background-color: #ffc500;
+  font-weight: bold;
+  width: 100px;
+}
+
+.add-subcategory-cnc {
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-bottom: 0px;
+  font-size: 16px;
+  justify-content: center;
+  height: 50px;
+  color: black;
+  background-color: #ffc500;
+  font-weight: bold;
+  width: 100%;
+}
+
+.names-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 15px;
+}
+
+.team-name-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  margin: 5px;
+  min-width: 50px;
+  padding: 5px;
+}
+
+.name-of-badge {
+  padding: 0 10px 0 0;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.popup-textarea {
+  width: 100%;
+  font-size: initial;
+  padding: 11px;
+  border-radius: 5px;
+  border: solid 0.5px;
+  border-color: #b4b6c4;
+  color: #b4b6c4;
+  margin: 0;
+  margin-top: 5px;
+  font-family: "Cairo", sans-serif;
+}
+
+table.allTask-table {
+  margin: 15px 0;
+  width: 100%;
+  background-color: #fcfcfc;
+  border: 0px !important;
+  color: rgb(83, 83, 83);
+}
+
+.th {
+  color: #334d6e;
+}
+
+table.allTask-table,
+tr {
+  border-style: solid;
+  border-collapse: collapse;
+}
+
+tr {
+  border: 0px solid;
+  border-bottom: 1px solid #ebeff2;
+}
+
+table.allTask-table th {
+  text-align: left;
+}
+
+table.allTask-table td.deleteTd {
+  text-align: center;
+}
+
+/* CUSTOM OF MUI FOR STEPPER */
+
+.MuiStepIcon-root.Mui-active {
+  color: #00acba !important;
+}
+
+.MuiStepIcon-root.Mui-completed {
+  color: #00acba !important;
+}
+
+.MuiStepLabel-label.Mui-active {
+  color: #00acba !important;
+  font-weight: bold !important;
+}
+
+.step2 {
+  animation: filling 0.5s;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.add-team-btn {
+  background-color: #ffc500;
+  color: black;
+  font-weight: bold;
+  border: 0;
+  border-radius: 5px;
+  padding: 11px;
+  width: 100%;
+  margin: 30px 0;
+  margin-top: 35px;
+}
+
+/* TABLE ADD NEW TEAM */
+.addTeamTable-Header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.allTeam-table-container {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+/* width */
+.allTeam-table-container::-webkit-scrollbar {
+  display: block !important;
+  width: 5px;
+}
+
+/* Track */
+.allTeam-table-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+.allTeam-table-container::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.allTeam-table-container::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+table.allTeam-table {
+  margin: 15px 0;
+  width: 100%;
+  background-color: #fcfcfc;
+  border: 0px !important;
+  color: rgb(83, 83, 83);
+}
+
+table.allTeam-table,
+tr {
+  border-style: solid;
+  border-collapse: collapse;
+}
+
+.allTeam-table tr {
+  border: 0px solid;
+  border-bottom: 1px solid #ebeff2;
+  height: 3.5em;
+}
+
+table.allTeam-table th {
+  text-align: left;
+}
+
+table.allTeam-table td.deleteTd {
+  text-align: center;
+}
+
+.add-new-dep {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #ededed;
+  min-height: 200px;
+}
+
+.add-new-cat {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #ededed;
+  transition: transform 0.5s, box-shadow 1s;
+}
+
+/* .add-new-cat:hover {
+  transform: scale(1.02) perspective(0px);
+  box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
+} */
+.add-new-cat > img {
+  width: 22px;
+  height: 22px;
+}
+
+.add-new-cat > p {
+  padding: 5px;
+  font-weight: 600;
+}
+
+.add-new-dep > img {
+  width: 22px;
+  height: 22px;
+}
+
+.add-new-dep > p {
+  padding: 5px;
+  font-weight: 600;
+}
+
+.css-hz1bth-MuiDialog-container {
+  position: relative;
+  left: 17%;
+  width: 87vw;
+}
+
+@keyframes filling {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.input-auth {
+  color: #000;
+  border-color: #e4e4e4;
+}
+
+@media (max-width: 1200px) {
+  .new-team-alert {
+    left: 350px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .new-team-alert {
+    left: 300px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .new-team-alert {
+    left: 600px;
+  }
+}
+
+@media (max-width: 800px) {
+  .new-team-alert {
+    left: 300px;
+  }
+
+  .inputs-grid {
+    grid-template-columns: 1fr;
+    width: 55vw !important;
+  }
+
+  .controllers {
+    margin-top: 20px;
+  }
+
+  .controllers-done {
+    width: 150px;
+  }
+}
+
+@media (max-width: 600px) {
+  .black-btn {
+    font-size: 15px;
+  }
+
+  .inputs-grid {
+    grid-template-columns: 1fr;
+    width: 70vw !important;
+  }
+
+  .controllers {
+    margin-top: 20px;
+  }
+
+  .controllers-done {
+    width: 150px;
+  }
+}
+
+@media (max-width: 400px) {
+  .add-subcategory-cnc {
+    margin-left: 0px;
+  }
+}

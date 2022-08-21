@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { User } from "../interfaces/models/user";
+import { User } from "../types/models/user";
 import apiUrl from "./api.json";
 
 export const openConnection = (user: User | null) => {

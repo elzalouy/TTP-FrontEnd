@@ -1,0 +1,50 @@
+.delete-title {
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+.container-popup > .popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.task-delete-container {
+  margin-top: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.controllers-dt {
+  display: flex;
+  justify-content: space-between;
+}
+.hr-dt {
+  color: #ebeff2;
+  text-align: center;
+  width: 100%;
+}
+.cancelBtn-dt {
+  cursor: pointer;
+  width: 130px;
+  height: 35px;
+  background-color: #f4f4f4;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 20px 0 0;
+}
+
+.redBtn {
+  cursor: pointer;
+  width: 130px;
+  height: 35px;
+  background-color: #ff1a1a;
+  color: #ffffff;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+}

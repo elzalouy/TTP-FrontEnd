@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ToastWarning } from "../../coreUI/usable-component/Typos/Alert";
+import { ToastWarning } from "../../coreUI/components/Typos/Alert";
 const createProjectSchema = Joi.object({
   name: Joi.string().required().min(4).messages({
     "string.base": "Project Name is required",

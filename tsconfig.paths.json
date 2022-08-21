@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "views":["./src/view/index.ts"]
+        }
+    }   
+}

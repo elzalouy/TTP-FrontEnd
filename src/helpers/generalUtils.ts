@@ -1,6 +1,6 @@
-import { isAfter, isSameDay, isBefore, format, parse } from "date-fns"
+import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
 import moment from "moment";
-import { Task } from "../interfaces/models/Projects";
+import { Task } from "../types/models/Projects";
 
 interface options {
   id?: string;
@@ -35,7 +35,7 @@ export const getStatus = (status: string | undefined) => {
 };
 
 export const calculateStatusBasedOnDeadline = (data: any) => {
-  if(!([typeof data , data].includes("undefined" || "null"))){
+  if (![typeof data, data].includes("undefined" || "null")) {
     let formattedDeadline = format(new Date(data), "dd-mm-yyyy");
     let deadlineDate = parse(formattedDeadline, "dd-mm-yyyy", new Date());
     let formattedToday = format(new Date(), "dd-mm-yyyy");
@@ -131,12 +131,12 @@ export const getYesterdaysDate = () => {
   let today = new Date();
   today.setDate(today.getDate() - 1);
   return today;
-}
+};
 
 export const notNullorFalsy = (date: string | null | undefined) => {
   if ([undefined, null, "", 0].includes(date)) {
-    return false
+    return false;
   } else {
-    return true
+    return true;
   }
-}
+};

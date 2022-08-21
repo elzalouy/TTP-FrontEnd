@@ -2,7 +2,7 @@
 ///<reference path="../global.d.ts" />
 
 import { mount } from "cypress/react";
-import { Task } from "../../src/interfaces/models/Projects";
+import { Task } from "../../src../types/models/Projects";
 
 Cypress.Commands.add("mount", mount);
 Cypress.Commands.add("login", (email: any, password: any) => {

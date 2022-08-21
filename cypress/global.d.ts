@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { mount } from "cypress/react";
-import { IDepartmentsSlice } from "../src/interfaces/models/Departments";
-import { Task as ProjectTask } from "../src/interfaces/models/Projects";
+import { IDepartmentsSlice } from "../src../types/models/Departments";
+import { Task as ProjectTask } from "../src../types/models/Projects";
 declare global {
   namespace Cypress {
     interface Chainable {
