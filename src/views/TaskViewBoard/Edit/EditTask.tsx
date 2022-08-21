@@ -217,6 +217,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 control={control}
                 register={register}
                 state={state}
+                dataTestId="edit-task-name"
               />
               <Select
                 state={state}
@@ -353,6 +354,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 style={{ marginBottom: "20px" }}
                 type="submit"
                 className="addTaskBtn"
+                data-test-id="edit-task-button"
               >
                 {loadingTask ? (
                   <CircularProgress

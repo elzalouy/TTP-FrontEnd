@@ -220,7 +220,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <TextField
                     error={error.error?.details[0].path.includes("name")}
-                    id="outlined-error task-name"
+                    id="outlined-error project-task-name"
                     className="textfield"
                     sx={taskFormNameStyles}
                     placeholder="Task name"
@@ -269,10 +269,8 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 render={(props) => (
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
-                    // // cancelText={""}
-                    // // okText={""}
-                    // disableCloseOnSelect={false}
                     value={props.field.value}
+                    closeOnSelect
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -462,6 +460,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 onChange={onSetFiles}
                 ref={files}
                 type="file"
+                data-test-id="project-task-file"
                 style={{ display: "none" }}
                 multiple
               />

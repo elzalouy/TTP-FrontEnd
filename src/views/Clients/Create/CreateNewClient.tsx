@@ -84,6 +84,7 @@ const CreateNewClient: React.FC<Props> = () => {
         onClick={() => {
           setShow("flex");
         }}
+        data-test-id="create-client-button"
       >
         <img src={IMAGES.plus} alt="add" />
         <Typography>Create new client</Typography>
@@ -140,11 +141,12 @@ const CreateNewClient: React.FC<Props> = () => {
               value={Data.clientName}
               onChange={onChange}
               required
+              data-test-id="client-name"
             />
             <br />
 
             <Box className="controllers">
-              <button className="blackBtn-client">
+              <button className="blackBtn-client" data-test-id="client-submit-button">
                 {loadingClient ? (
                   <CircularProgress
                     sx={{

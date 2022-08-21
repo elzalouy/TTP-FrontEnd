@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
-import { Client } from "./Clients";
+import { Client as IClient } from "./Clients";
 import moment from "moment";
 import ClientsPopover from "./ClientsPopover";
 import { selectRole } from "../../../models/Auth";
@@ -13,12 +13,13 @@ import {
   selectTasks,
 } from "../../../models/Projects";
 import { Status } from "../../../types/views/BoardView";
+import CounterContainer from "./CounterContainer";
 
 interface IProps {
-  client: Client;
+  client: IClient;
 }
 
-const ClientCard: React.FC<IProps> = ({ client }) => {
+const Client: React.FC<IProps> = ({ client }) => {
   const { _id, clientName, createdAt, doneProject, inProgressProject, image } =
     client;
 
@@ -67,7 +68,12 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
 
   return (
     <Box>
-      <Grid container direction="column" className="client-card">
+      <Grid
+        container
+        direction="column"
+        className="client-card"
+        data-test-id="client-card"
+      >
         <Grid container justifyContent="space-between" marginBottom={1.5}>
           <Box alignItems={"center"}>
             <Stack
@@ -96,6 +102,7 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
               >
                 <Typography
                   sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+                  data-test-id="client-name-header"
                 >
                   {clientName}
                 </Typography>
@@ -118,14 +125,17 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
         >
           <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
-              sx={{ fontSize: 11 }}
+              sx={{ fontSize: 13 }}
               variant="caption"
               style={{ color: "#808191" }}
               className="counter-title"
             >
               Active Projects
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography
+              sx={{ fontWeight: "bold", fontSize: "18px" }}
+              data-test-id="active-projects-clients"
+            >
               {getAllActiveProjects()}
             </Typography>
           </Grid>
@@ -144,93 +154,23 @@ const ClientCard: React.FC<IProps> = ({ client }) => {
           </Grid>
           <Grid item xs={5} style={{ textAlign: "center" }}>
             <Typography
-              sx={{ fontSize: 11 }}
+              sx={{ fontSize: 13 }}
               variant="caption"
               style={{ color: "#808191" }}
               className="counter-title"
             >
               Done Projects
             </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>{doneProject}</Typography>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          className="counter-container"
-          justifyContent={"space-between"}
-          alignItems="center"
-          marginTop={1}
-        >
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              Shared Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {getTasksByClientIdAndStatus("Shared")}
+            <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
+              {doneProject}
             </Typography>
           </Grid>
-          <Grid
-            item
-            width="1px !important"
-            paddingTop={0.5}
-            overflow={"hidden"}
-            sx={{ opacity: 0.5 }}
-          >
-            <hr
-              color="#88888885"
-              style={{ width: "1px !important" }}
-              className="hrVertical"
-            />
-          </Grid>
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              In Progress Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {" "}
-              {getTasksByClientIdAndStatus("inProgress")}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            width="1px !important"
-            paddingTop={0.5}
-            overflow={"hidden"}
-            sx={{ opacity: 0.5 }}
-          >
-            <hr
-              color="#88888885"
-              style={{ width: "1px !important" }}
-              className="hrVertical"
-            />
-          </Grid>
-          <Grid item xs={5} style={{ textAlign: "center", flex: "1" }} flex={1}>
-            <Typography
-              sx={{ fontSize: 11 }}
-              variant="caption"
-              style={{ color: "#808191" }}
-              className="counter-title"
-            >
-              Done Tasks
-            </Typography>
-            <Typography sx={{ fontWeight: "bold" }}>
-              {getTasksByClientIdAndStatus("Done")}
-            </Typography>
-          </Grid>
+          <CounterContainer
+            getTasksByClientIdAndStatus={getTasksByClientIdAndStatus}
+          />
         </Grid>
       </Grid>
     </Box>
   );
 };
-
-export default ClientCard;
+export default Client;

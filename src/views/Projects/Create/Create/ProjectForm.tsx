@@ -23,10 +23,7 @@ import {
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import SelectInput2 from "../../../../coreUI/components/Inputs/SelectInput2";
-// import { Restore } from "@mui/icons-material";
 
-import moment from "moment";
-import { toast } from "react-toastify";
 import Joi from "joi";
 import { selectUi } from "../../../../models/Ui/UI.selectors";
 import { generateID } from "../../../../helpers/IdGenerator";
@@ -43,6 +40,7 @@ import {
   getYesterdaysDate,
   notNullorFalsy,
 } from "../../../../helpers/generalUtils";
+import moment from "moment";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -182,9 +180,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                // cancelText={""}
-                // okText={""}
-                // disableCloseOnSelect={false}
+                closeOnSelect
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -215,6 +211,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       placeholder="Start Date"
                       onChange={params.onChange}
                       sx={projectFormStartDateStyles}
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                     {notNullorFalsy(watch().startDate) && (
                       <img
@@ -249,9 +248,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                // cancelText={""}
-                // okText={""}
-                // disableCloseOnSelect={false}
+                closeOnSelect
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),

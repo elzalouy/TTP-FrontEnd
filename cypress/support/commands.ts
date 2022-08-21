@@ -2,10 +2,10 @@
 ///<reference path="../global.d.ts" />
 
 import { mount } from "cypress/react";
-import { Task } from "../../src../types/models/Projects";
+import "cypress-file-upload";
 
 Cypress.Commands.add("mount", mount);
-Cypress.Commands.add("login", (email: any, password: any) => {
+Cypress.Commands.add("login", (email: string, password: string) => {
   cy.request({
     method: "POST",
     url: "http://localhost:5000/api/signIn",

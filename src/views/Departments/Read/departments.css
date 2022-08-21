@@ -97,7 +97,8 @@
 
 .counter-container {
   display: flex;
-  width: 100%;
+  width: 350px;
+  max-width: 350px;
   align-items: center;
 }
 

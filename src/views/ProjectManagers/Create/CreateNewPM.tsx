@@ -52,6 +52,7 @@ const CreateNewPM: React.FC<Props> = () => {
         onClick={() => {
           setShow("flex");
         }}
+        data-test-id="create-pm-button"
       >
         Create new PM
       </button>
@@ -86,6 +87,7 @@ const CreateNewPM: React.FC<Props> = () => {
             className="popup-input"
             type="text"
             value={username}
+            data-test-id="pm-name"
             placeholder="PM name"
             onChange={(e) => {
               setUsername(e.target.value);
@@ -96,6 +98,7 @@ const CreateNewPM: React.FC<Props> = () => {
           <input
             className="popup-input"
             type="email"
+            data-test-id="pm-email"
             value={email}
             placeholder="user@example.com"
             onChange={(e) => {
@@ -106,7 +109,7 @@ const CreateNewPM: React.FC<Props> = () => {
           />
         </div>
         <div className="controllers">
-          <button className="controllers-done" onClick={createNewUser}>
+          <button className="controllers-done" data-test-id="submit-pm" onClick={createNewUser}>
             Done
           </button>
         </div>

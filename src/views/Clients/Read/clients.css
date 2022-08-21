@@ -74,6 +74,70 @@
   height: 35px;
 }
 
+.counter-title {
+  font-weight: 100;
+  margin-bottom: 0px;
+  color: #474747;
+}
+
+.counter-container-tasks {
+  width: 360px;
+  margin-top: 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.counter-container-scroll-wrapper {
+  width: 400px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.task-number-card {
+  display: flex;
+  box-shadow: 0px 3px 20px #0000000D;
+  width: 135px;
+  border-radius: 5px;
+  background-color: #F1F1F5;
+  justify-content: space-around;
+  align-items: center;
+  height: 30px;
+}
+
+.task-number-card:not(:first-child) {
+  margin-left: 15px;
+}
+
+.task-number {
+  font-size: 18px;
+  font-weight: bolder;
+  color: #783DBD;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-duration: 0.6s;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateX(100%);
+  }
+
+  50% {
+    transform: translateX(0%);
+  }
+
+  75% {
+    transform: translateX(-5%);
+  }
+
+  to {
+    transform: translateX(0%);
+    ;
+  }
+}
+
 @media (max-width:900px) {
   .all-clients {
     grid-template-columns: 1fr 1fr;

@@ -20,6 +20,7 @@ const AttachetFiles: React.FC<AttachetFilesProps> = ({
       <input
         {...register("file")}
         onChange={onSetFiles}
+        data-test-id="task-file"
         ref={files}
         type="file"
         style={{ display: "none" }}

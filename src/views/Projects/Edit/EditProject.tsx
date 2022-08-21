@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 // import "../../popups-style.css";
-import {
-  Controller,
-  FieldValue,
-  FieldValues,
-  useForm,
-  UseFormWatch,
-} from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useAppSelector } from "../../../models/hooks";
 import { selectClientsNames } from "../../../models/Clients";
 import { selectPMs } from "../../../models/PM";
@@ -17,7 +11,7 @@ import {
   editProject as editProjectAction,
 } from "../../../models/Projects";
 import { useDispatch } from "react-redux";
-import { MobileDatePicker } from "@mui/x-date-pickers";
+import { DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
 import { fireUpdateProjectHook } from "../../../models/Ui";
 import { TextField, TextFieldProps } from "@mui/material";
 import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
@@ -30,8 +24,8 @@ import {
   getYesterdaysDate,
   notNullorFalsy,
 } from "../../../helpers/generalUtils";
-import { toast } from "react-toastify";
-import { validateDate } from "../../../services/validations/project.schema";
+import "../../popups-style.css";
+import { validateDate } from "src/services/validations/project.schema";
 
 type Props = {
   show: string;
@@ -314,7 +308,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <MobileDatePicker
+                  <DesktopDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
                     // cancelText={""}
@@ -345,6 +339,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Start Date"
                           onChange={params.onChange}
+                          InputProps={{
+                            readOnly: true,
+                          }}
                           sx={editProjectStartDateStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
@@ -381,9 +378,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    // cancelText={""}
-                    // okText={""}
-                    // disableCloseOnSelect={false}
+                    closeOnSelect
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),

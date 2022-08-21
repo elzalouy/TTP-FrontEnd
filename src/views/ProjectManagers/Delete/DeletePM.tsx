@@ -53,6 +53,7 @@ const DeletePM = (props: Props) => {
                 dispatch(deletePM(_id));
                 dispatch(toggleDeleteProjectManagerPopup("none"));
               }}
+              data-test-id="delete-pm-button"
             >
               Delete
             </button>

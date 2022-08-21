@@ -231,10 +231,10 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     {email}
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{inProgress}</Typography>
+                    <Typography color="#707683" data-test-id="number-inprogress-pm">{inProgress}</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683">{done}</Typography>
+                    <Typography color="#707683" data-test-id="number-done-pm">{done}</Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>
@@ -257,6 +257,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                       <IconButton
                         disableRipple
                         onClick={(e) => toggleDeletePopUp(e, cellData)}
+                        data-test-id="delete-pm-button"
                       >
                         <img src={IMAGES.deleteicon} alt="deleteicon" />
                       </IconButton>
