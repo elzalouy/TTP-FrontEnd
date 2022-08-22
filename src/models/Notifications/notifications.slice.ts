@@ -6,7 +6,7 @@ import {
   updateNotified,
 } from "./notifications.actions";
 import NotificationState from "./notifications.state";
-import { NotificationsState } from "../../types/models/Notificationss";
+import { NotificationsState } from "../../types/models/Notifications";
 
 const notifiSlice: Slice<NotificationsState> = createSlice({
   name: "notifications",

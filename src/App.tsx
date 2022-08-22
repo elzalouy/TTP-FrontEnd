@@ -101,7 +101,7 @@ const App: React.FC = () => {
           })
         );
       }
-    } else dispatch(setStatisticsEmpty());
+    } else dispatch(setStatisticsEmpty(null));
   }, [projects.allTasks, projects.projects]);
 
   return (
