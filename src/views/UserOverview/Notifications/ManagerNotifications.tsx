@@ -18,6 +18,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Task } from "../../../types/models/Projects";
+import IMAGES from "src/assets/img/Images";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -52,11 +53,8 @@ const ManagerNotifications: React.FC<Props> = (props) => {
         : statistics.OM.shared;
     let flat = _.flattenDeep(tasks);
     return {
-      height: open
-        ? flat && flat?.length <= 4
-          ? `${flat?.length * 60 + 76}px`
-          : "400px"
-        : "auto",
+      position: "relative",
+      height: open ? `500px` : `200px`,
       overflowY: "scroll",
       "&::-webkit-scrollbar": {
         display: open ? "block !important" : "none",
@@ -75,7 +73,13 @@ const ManagerNotifications: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box width={setWidth(MD, open)} overflow="hidden">
+    <Box
+      width={setWidth(MD, open)}
+      sx={{
+        boxShadow: "0px 10px 20px #00000005;",
+      }}
+      overflow="hidden"
+    >
       <ScrollOver setPopover={setOpen} popover={open} notification={MD}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
@@ -188,22 +192,43 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                     );
                   })}
 
-                <Button
-                  variant="text"
-                  sx={cssMoreBtn}
-                  fullWidth={false}
-                  onClick={() => setOpen(!open)}
-                  disableRipple={true}
-                >
-                  {open ? (
-                    <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                <>
+                  {tasks && tasks.length > 0 ? (
+                    <Button
+                      variant="text"
+                      sx={cssMoreBtn}
+                      fullWidth={false}
+                      onClick={() => setOpen(!open)}
+                      disableRipple={true}
+                    >
+                      {open ? (
+                        <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                      ) : (
+                        <KeyboardArrowDown
+                          htmlColor="#9FA1AB"
+                          sx={cssMoreIcon}
+                        />
+                      )}
+                      <Typography sx={cssMoreText}>
+                        {open ? "See Less" : "See More"}
+                      </Typography>
+                    </Button>
                   ) : (
-                    <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                    <>
+                      <Box textAlign={"center"} width="100%">
+                        <img
+                          src={IMAGES.OverviewNotificationsEmpty}
+                          width="170px"
+                          height={"170px"}
+                          alt=""
+                        />
+                        <Typography fontSize={"16px"} color="#505050">
+                          Nothing have been moved !!
+                        </Typography>
+                      </Box>
+                    </>
                   )}
-                  <Typography sx={cssMoreText}>
-                    {open ? "See Less" : "See More"}
-                  </Typography>
-                </Button>
+                </>
               </Box>
             );
           })}
@@ -266,7 +291,9 @@ const cssNotiSubTitle = {
 };
 const cssMoreBtn = {
   width: "100%",
-  justifyContent: "center",
+  position: "absolute",
+  bottom: "0px",
+  left: "0px",
   paddingTop: 1,
   ":hover": {
     backgroundColor: "transparent",

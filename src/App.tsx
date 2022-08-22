@@ -37,7 +37,11 @@ import { getUnNotified } from "./models/Notifications";
 import { useAppSelector } from "./models/hooks";
 import { checkAuthToken } from "./services/api";
 import { getUserInfo, selectIsAuth, selectUser } from "./models/Auth";
-import { setStatisticsForOm, setStatisticsForPm } from "./models/Statistics";
+import {
+  setStatisticsEmpty,
+  setStatisticsForOm,
+  setStatisticsForPm,
+} from "./models/Statistics";
 import "./App.css";
 import "swiper/css/navigation";
 import "swiper/css";
@@ -97,7 +101,7 @@ const App: React.FC = () => {
           })
         );
       }
-    }
+    } else dispatch(setStatisticsEmpty());
   }, [projects.allTasks, projects.projects]);
 
   return (

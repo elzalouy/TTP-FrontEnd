@@ -1,18 +1,20 @@
 import * as React from "react";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useAppSelector } from "../../models/hooks";
 import { selectAllProjects } from "../../models/Projects";
 import TasksTable from "../../coreUI/components/Tables/OverviewTasksTable";
 import { Task } from "../../types/models/Projects";
+import IMAGES from "src/assets/img/Images";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;
+  img?: any;
+  caption?: string;
 }
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
   const [selects, setAllSelected] = React.useState<string[]>([]);
-
   return (
     <>
       <Typography
@@ -25,24 +27,14 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
       >
         {props.title}
       </Typography>
-      {props.tasks?.length === 0 ? (
-        <p
-          style={{
-            textTransform: "capitalize",
-            margin: "10px",
-            color: "rgb(154,154,152)",
-          }}
-        >
-          There are currently no {props.title}
-        </p>
-      ) : (
-        <TasksTable
-          selects={selects}
-          setAllSelected={setAllSelected}
-          projects={projects.projects}
-          tasks={props?.tasks}
-        />
-      )}
+      <TasksTable
+        selects={selects}
+        setAllSelected={setAllSelected}
+        projects={projects.projects}
+        tasks={props?.tasks}
+        img={props?.img}
+        caption={props.caption}
+      />
     </>
   );
 };

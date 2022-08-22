@@ -40,6 +40,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           state.OM.taskBoardLength = taskBoard.length;
           state.OM.reviewLength = review.length;
           state.OM.sharedLength = shared.length;
+          state.OM.inProgressLength = inprogress.length;
           state.OM.taskboard = setTasksBoardToArrays(taskBoard);
           state.OM.review = setTasksToArrays(review);
           state.OM.shared = setTasksToArrays(shared);
@@ -99,8 +100,14 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       }
       state.loading = false;
     },
+    setStatisticsEmpty: (
+      state = StatisticsState,
+      action: PayloadAction<any>
+    ) => {
+      state.loading = false;
+    },
   },
 });
-export const { setStatisticsForOm, setStatisticsForPm } =
+export const { setStatisticsForOm, setStatisticsForPm, setStatisticsEmpty } =
   StatisticsSlice.actions;
 export default StatisticsSlice.reducer;

@@ -9,9 +9,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { ProjectManager } from "../../../models/PM";
-import { selectAllProjects } from "../../../models/Projects";
 import { projectsTableStyle } from "../../../coreUI/themes/Styles";
-import { CheckBoxOutlined as CheckIcon } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../../../views/Projects/Read/ProjectPopover";
 import { useTheme } from "@mui/material/styles";
@@ -22,7 +20,6 @@ import { selectRole } from "../../../models/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
 import "../../../App.css";
 import { Project } from "../../../types/models/Projects";
-import projects from "../../../services/endpoints/projects";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -59,161 +56,191 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
     }
   };
 
-  if (props.condition) {
-    return null;
-  } else {
-    return (
-      <Table
-        className={classes.table}
-        style={
-          SM
-            ? { width: "140%", borderColor: "#EBEFF2" }
-            : { width: "100%", borderColor: "#EBEFF2" }
-        }
-        aria-label="simple table"
-      >
-        {props.expanded === true && (
-          <TableHead>
-            <TableRow className={classes.thead}>
-              <TableCell
-                sx={{
-                  borderBottom: "none",
-                  borderTopLeftRadius: "10px",
-                  borderBottomLeftRadius: "10px",
-                }}
-              >
-                Project title
-              </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-                Start date
-              </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-                {props.progress ? "Progress" : "Tasks"}
-              </TableCell>
-              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-                Deadline date
-              </TableCell>
-              {props.status === "Done" && (
-                <TableCell sx={{ borderBottom: "none" }} align={props.align}>
-                  End status
-                </TableCell>
-              )}
-              <TableCell
-                sx={{
-                  borderBottom: "none",
-                  borderTopRightRadius: "10px",
-                  borderBottomRightRadius: "10px",
-                }}
-                align="right"
-              ></TableCell>
-            </TableRow>
-          </TableHead>
-        )}
-        <TableBody>
-          {props.expanded === true &&
-            props.projects &&
-            props?.projects?.map((project: Project) => {
-              let NoOfTasks = project.NoOfTasks;
-              let NoOfFinished = project.NoOfFinishedTasks;
+  if (props.condition) return null;
 
-              return (
-                <TableRow className={classes.tbody} key={project._id}>
-                  <TableCell
-                    className={classes.tcellLeft}
-                    sx={{
-                      cursor: "pointer",
-                      borderColor: setBorder(project),
+  return (
+    <Table
+      className={classes.table}
+      style={
+        SM
+          ? { width: "140%", borderColor: "#EBEFF2" }
+          : { width: "100%", borderColor: "#EBEFF2" }
+      }
+      aria-label="simple table"
+    >
+      {props.expanded === true && (
+        <TableHead>
+          <TableRow className={classes.thead}>
+            <TableCell
+              sx={{
+                borderBottom: "none",
+                borderTopLeftRadius: "10px",
+                borderBottomLeftRadius: "10px",
+              }}
+            >
+              Project title
+            </TableCell>
+            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+              Start date
+            </TableCell>
+            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+              {props.progress ? "Progress" : "Tasks"}
+            </TableCell>
+            <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+              Deadline date
+            </TableCell>
+            {props.status === "Done" && (
+              <TableCell sx={{ borderBottom: "none" }} align={props.align}>
+                End status
+              </TableCell>
+            )}
+            <TableCell
+              sx={{
+                borderBottom: "none",
+                borderTopRightRadius: "10px",
+                borderBottomRightRadius: "10px",
+              }}
+              align="right"
+            ></TableCell>
+          </TableRow>
+        </TableHead>
+      )}
+      <TableBody>
+        {props.expanded === true &&
+          props.projects &&
+          props?.projects?.map((project: Project) => {
+            let NoOfTasks = project.NoOfTasks;
+            let NoOfFinished = project.NoOfFinishedTasks;
+
+            return (
+              <TableRow className={classes.tbody} key={project._id}>
+                <TableCell
+                  className={classes.tcellLeft}
+                  sx={{
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
+                  }}
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
+                >
+                  <Typography
+                    data-test-id={`projects-row-name-${project._id}`}
+                    fontWeight={"700"}
+                    variant="h5"
+                    fontSize={14}
+                    fontFamily={"Cairo, Regular"}
+                    style={{
+                      marginBottom: 1,
+                      textDecorationLine:
+                        props.status === "Done" ? "line-through" : "none",
                     }}
-                    onClick={() =>
-                      props.history.push(`/TasksBoard/${project._id}`)
-                    }
                   >
+                    {project?.name}
+                  </Typography>
+                  <Typography variant={"h5"} fontSize={14} color="#696974">
+                    {project.projectManager?.name}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
+                  sx={{
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
+                  }}
+                  className={classes.tcellCenter}
+                  align={props.align}
+                >
+                  <Typography
+                    variant={props.textSize === "small" ? "h6" : "h5"}
+                    fontSize={14}
+                    color="#696974"
+                  >
+                    {project.startDate === null ? (
+                      <span style={{ color: "red" }}>
+                        Please add a Starting date
+                      </span>
+                    ) : (
+                      new Date(project.startDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    )}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
+                  sx={{
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
+                  }}
+                  className={classes.tcellCenterTask}
+                  align={props.align}
+                >
+                  {props.progress ? (
                     <Typography
-                      data-test-id={`projects-row-name-${project._id}`}
-                      fontWeight={"700"}
-                      variant="h5"
+                      paddingLeft={0.3}
+                      variant="h4"
+                      color="#00ACBA"
                       fontSize={14}
-                      fontFamily={"Cairo, Regular"}
-                      style={{
-                        marginBottom: 1,
-                        textDecorationLine:
-                          props.status === "Done" ? "line-through" : "none",
-                      }}
                     >
-                      {project?.name}
+                      {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
                     </Typography>
-                    <Typography variant={"h5"} fontSize={14} color="#696974">
-                      {project.projectManager?.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() =>
-                      props.history.push(`/TasksBoard/${project._id}`)
-                    }
-                    sx={{
-                      cursor: "pointer",
-                      borderColor: setBorder(project),
-                    }}
-                    className={classes.tcellCenter}
-                    align={props.align}
-                  >
-                    <Typography
-                      variant={props.textSize === "small" ? "h6" : "h5"}
-                      fontSize={14}
-                      color="#696974"
-                    >
-                      {project.startDate === null ? (
-                        <span style={{ color: "red" }}>
-                          Please add a Starting date
-                        </span>
-                      ) : (
-                        new Date(project.startDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )
-                      )}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    onClick={() =>
-                      props.history.push(`/TasksBoard/${project._id}`)
-                    }
-                    sx={{
-                      cursor: "pointer",
-                      borderColor: setBorder(project),
-                    }}
-                    className={classes.tcellCenterTask}
-                    align={props.align}
-                  >
-                    {props.progress ? (
+                  ) : (
+                    <Box sx={{ display: "inline-flex" }}>
+                      <TasksCheckIcon color="#00ACBA" />
                       <Typography
                         paddingLeft={0.3}
                         variant="h4"
                         color="#00ACBA"
                         fontSize={14}
+                        data-test-id={`projects-row-NoOfTasks-${project._id}`}
                       >
-                        {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
+                        {NoOfFinished}/{NoOfTasks}
                       </Typography>
+                    </Box>
+                  )}
+                </TableCell>
+                <TableCell
+                  onClick={() =>
+                    props.history.push(`/TasksBoard/${project._id}`)
+                  }
+                  sx={{
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
+                  }}
+                  className={classes.tcellCenter}
+                  align={props.align}
+                >
+                  <Typography
+                    variant={props.textSize === "small" ? "h6" : "h5"}
+                    color="#696974"
+                    fontSize={14}
+                  >
+                    {project.projectDeadline === null ? (
+                      <span style={{ color: "red" }}>
+                        Please add a Deadline
+                      </span>
                     ) : (
-                      <Box sx={{ display: "inline-flex" }}>
-                        <TasksCheckIcon color="#00ACBA" />
-                        <Typography
-                          paddingLeft={0.3}
-                          variant="h4"
-                          color="#00ACBA"
-                          fontSize={14}
-                          data-test-id={`projects-row-NoOfTasks-${project._id}`}
-                        >
-                          {NoOfFinished}/{NoOfTasks}
-                        </Typography>
-                      </Box>
+                      new Date(project.projectDeadline).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )
                     )}
-                  </TableCell>
+                  </Typography>
+                </TableCell>
+                {props.status === "Done" && (
                   <TableCell
                     onClick={() =>
                       props.history.push(`/TasksBoard/${project._id}`)
@@ -230,65 +257,30 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#696974"
                       fontSize={14}
                     >
-                      {project.projectDeadline === null ? (
-                        <span style={{ color: "red" }}>
-                          Please add a Deadline
-                        </span>
-                      ) : (
-                        new Date(project.projectDeadline).toLocaleDateString(
-                          "en-US",
-                          {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )
-                      )}
+                      {getStatus(project.projectStatus)}
                     </Typography>
                   </TableCell>
-                  {props.status === "Done" && (
-                    <TableCell
-                      onClick={() =>
-                        props.history.push(`/TasksBoard/${project._id}`)
-                      }
-                      sx={{
-                        cursor: "pointer",
-                        borderColor: setBorder(project),
-                      }}
-                      className={classes.tcellCenter}
-                      align={props.align}
-                    >
-                      <Typography
-                        variant={props.textSize === "small" ? "h6" : "h5"}
-                        color="#696974"
-                        fontSize={14}
-                      >
-                        {getStatus(project.projectStatus)}
-                      </Typography>
-                    </TableCell>
+                )}
+                <TableCell
+                  sx={{
+                    cursor: "pointer",
+                    borderColor: setBorder(project),
+                  }}
+                  className={
+                    "project-actions-container" + " " + classes.tcellRight
+                  }
+                  align={props.align}
+                >
+                  {role !== "PM" && (
+                    <ProjectPopover id={project?._id} {...props} />
                   )}
-                  <TableCell
-                    sx={{
-                      cursor: "pointer",
-                      borderColor: setBorder(project),
-                    }}
-                    className={
-                      "project-actions-container" + " " + classes.tcellRight
-                    }
-                    align={props.align}
-                  >
-                    {role !== "PM" && (
-                      <ProjectPopover id={project?._id} {...props} />
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    );
-  }
+                </TableCell>
+              </TableRow>
+            );
+          })}
+      </TableBody>
+    </Table>
+  );
 };
 
 export default ProjectsTable;

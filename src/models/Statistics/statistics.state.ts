@@ -10,6 +10,7 @@ export interface StatisticsInterface {
     shared: Task[][] | null;
     sharedLength: number;
     inProgress: Task[] | null;
+    inProgressLength: number;
     tasksCloseToDeadline: Task[] | null;
     projectsCloseToDeadlines: Project[] | null;
   };
@@ -37,6 +38,7 @@ const StatisticsState: StatisticsInterface = {
     sharedLength: 0,
     projectsCloseToDeadlines: null,
     tasksCloseToDeadline: null,
+    inProgressLength: 0,
   },
   PM: {
     projects: null,

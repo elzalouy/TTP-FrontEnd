@@ -149,7 +149,7 @@ export const OverView: FC<Props> = (props) => {
                     Icon={() => <img alt="2" src={IMAGES.overviewProjects} />}
                     title="In Progress Tasks"
                     pt={1.9}
-                    count={statistics.OM.inProgress?.length.toString()}
+                    count={statistics.OM.inProgressLength.toString()}
                   />
                   <UserStatus
                     loading={statistics.loading}
@@ -195,6 +195,8 @@ export const OverView: FC<Props> = (props) => {
               <UserTasks
                 tasks={statistics.OM.inProgress}
                 title={"Tasks In Progress"}
+                img={IMAGES.OverviewInProgressTasksEmpty}
+                caption="Working on agencies are easy !"
               />
             ) : (
               <UserTasks tasks={statistics.PM.shared} title={"Shared Tasks"} />
@@ -214,6 +216,8 @@ export const OverView: FC<Props> = (props) => {
               <UserTasks
                 tasks={statistics.OM.tasksCloseToDeadline}
                 title={"Tasks Close to Deadline"}
+                img={IMAGES.OverviewCloseToDeadlineEmpty}
+                caption={"Nothing to be worried about !"}
               />
             )}
             {role == "PM" && (

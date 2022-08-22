@@ -24,11 +24,11 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
             position: "absolute",
             zIndex: 6,
             backgroundColor: "white",
-            borderRadius: "4px",
+            borderRadius: "10px",
             width: "inherit",
             marginLeft: 0,
             marginRight: 5,
-            boxShadow: "5px 5px 5px 5px #0000001A;",
+            boxShadow: "0px 10px 20px #0000001A",
           }}
         >
           {props.children}
