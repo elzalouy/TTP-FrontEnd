@@ -16,7 +16,7 @@ Cypress.Commands.add("login", (email: string, password: string) => {
   }).then(({ body, status }) => {
     window.localStorage.setItem("token", body?.token);
     window.localStorage.setItem("id", body?._id);
-    cy.visit("/");
+    cy.visit("https://ttpweb-beta.herokuapp.com/");
   });
 });
 Cypress.Commands.add("getTasks", () => {

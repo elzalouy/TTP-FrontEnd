@@ -10,7 +10,7 @@ import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/SearchBox";
 import "./clients.css";
 import CreateNewClient from "../Create/CreateNewClient";
-import ClientCard from "./Client";
+import ClientCard from "./ClientCard";
 
 import { clientsDataSelector } from "../../../models/Clients/clients.selectors";
 import { useAppSelector } from "../../../models/hooks";
