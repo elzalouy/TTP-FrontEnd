@@ -1,6 +1,6 @@
 beforeEach(() => {
     cy.login("zed.saheer5@gmail.com", "12345678");
-    cy.visit('https://ttpweb-beta.herokuapp.com/ProjectManagers')
+    cy.visit('/ProjectManagers')
 });
 
 
@@ -19,7 +19,7 @@ describe('Check Project count of PM', () => {
     })
 
     it('It should create a new project with same PM', () => {
-        cy.visit('https://ttpweb-beta.herokuapp.com/projects');
+        cy.visit('/projects');
         cy.get('[data-test-id="create-project"]').click();
         cy.get('input[id$=project-name]').type('Automated Project');
         cy.get('div[id=client-new-project]').click().get('.Option').first().click();
@@ -31,7 +31,7 @@ describe('Check Project count of PM', () => {
         cy.get('button').contains('Next').click();
         cy.get('.closeIconProject').click().wait(2000);
         cy.get('tr').contains('Automated Project').click();
-        cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+        cy.url().should('include', '/TasksBoard');
     })
 });
 
@@ -51,7 +51,7 @@ describe('Check change in Project count of PM', () => {
     })
 
     it('It should delete the project', () => {
-        cy.visit('https://ttpweb-beta.herokuapp.com/projects');
+        cy.visit('/projects');
         cy.wait(1000).get('tr').contains('tr', 'Automated Project').within(() => {
             return cy.get('.project-actions > h3').click()
         });

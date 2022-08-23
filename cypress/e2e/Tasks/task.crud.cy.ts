@@ -1,6 +1,6 @@
 beforeEach(() => {
   cy.login("zed.saheer5@gmail.com", "12345678");
-  cy.visit('https://ttpweb-beta.herokuapp.com/projects');
+  cy.visit('/projects');
 });
 
 describe("Create Task", () => {
@@ -12,12 +12,12 @@ describe("Create Task", () => {
     cy.get('button').contains('Next').click();
     cy.get('.closeIconProject').click().wait(2000);
     cy.get('tr').contains('Automated Project').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
   })
 
   it("It should open a project and create a task", () => {
     cy.get("tr").contains("Automated").wait(1000).click();
-    cy.url().should("include", "https://ttpweb-beta.herokuapp.com/TasksBoard");
+    cy.url().should("include", "/TasksBoard");
     cy.get(".add-new-task").click().wait(500);
     cy.get("input[id$=task-name]").first().type("Automated Task");
     cy.get("div[id=department-new-task]")
@@ -34,7 +34,7 @@ describe("Create Task", () => {
 describe("Edit Task", () => {
   it('It should edit the name of the task', () => {
     cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
     cy.get('.task-card').contains('Automated Task').wait(2500).click();
     cy.get("input[id$=edit-task-name]").clear().type("Automated Task Updated");
     cy.get('[data-test-id="edit-task-button"]').click().wait(1000);
@@ -46,7 +46,7 @@ describe("Delete Task", () => {
 
   it('It should delete the task', () => {
     cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
     cy.get('.task-card').contains('Automated Task Updated').siblings('div').click();
     cy.get('button[id=delete-task-button]').click();
     cy.get('[data-test-id="delete-task-button-confirm"]').click().wait(500);
@@ -72,12 +72,12 @@ describe("Create Task with Attachment Image", () => {
     cy.get('button').contains('Next').click();
     cy.get('.closeIconProject').click().wait(2000);
     cy.get('tr').contains('Automated Project').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
   })
 
   it("It should open a project and create a task with image attachment", () => {
     cy.get("tr").contains("Automated").wait(1000).click();
-    cy.url().should("include", "https://ttpweb-beta.herokuapp.com/TasksBoard");
+    cy.url().should("include", "/TasksBoard");
     cy.get(".add-new-task").click().wait(500);
     cy.get("input[id$=task-name]").first().type("Automated Task With Attachment");
     cy.get("div[id=department-new-task]")
@@ -93,7 +93,7 @@ describe("Create Task with Attachment Image", () => {
 
   it('It should delete the task', () => {
     cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
     cy.get('.task-card').contains('Automated Task').siblings('div').click();
     cy.get('button[id=delete-task-button]').click();
     cy.get('[data-test-id="delete-task-button-confirm"]').click().wait(500);
@@ -113,7 +113,7 @@ describe("Create Task with Attachment Image", () => {
 describe("Edit Task with Attachment", () => {
   it('It should edit the name of the task', () => {
     cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
-    cy.url().should('include', 'https://ttpweb-beta.herokuapp.com/TasksBoard');
+    cy.url().should('include', '/TasksBoard');
     cy.get('.task-card').contains('Automated Task With Attachment').wait(2500).click();
     cy.get("input[id$=edit-task-name]").clear().type("Automated Task With Attachment Updated");
     cy.get('[data-test-id="edit-task-button"]').click().wait(1000);
