@@ -19,7 +19,7 @@ interface IProps {
   client: IClient;
 }
 
-const Client: React.FC<IProps> = ({ client }) => {
+const ClientCard: React.FC<IProps> = ({ client }) => {
   const { _id, clientName, createdAt, doneProject, inProgressProject, image } =
     client;
 
@@ -173,4 +173,4 @@ const Client: React.FC<IProps> = ({ client }) => {
     </Box>
   );
 };
-export default Client;
+export default ClientCard;

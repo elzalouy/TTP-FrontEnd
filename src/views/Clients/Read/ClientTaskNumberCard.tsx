@@ -17,10 +17,9 @@ const ClientTaskNumberCard: FC<Props> = ({
   return (
     <div className="task-number-card">
       <Typography
-        sx={{ fontSize: 12, fontWeight: "600 !important" }}
+        sx={{ fontSize: 12}}
         variant="caption"
-        style={{ color: "black" }}
-        className="counter-title"
+        className="counter-title-task"
       >
         {title}
       </Typography>

@@ -29,7 +29,7 @@
   overflow: hidden;
 }
 
-.department-Card:hover{
+.department-Card:hover {
   box-shadow: 0px 6px 20px #0000001A;
 }
 
@@ -71,7 +71,7 @@
   color: #0079bf;
 }
 
-.tasks-count > img {
+.tasks-count>img {
   margin-right: 5px;
 }
 
@@ -93,13 +93,6 @@
   border: 1.5px solid #1e89c750;
   height: fit-content;
   margin-top: 1em;
-}
-
-.counter-container {
-  display: flex;
-  width: 350px;
-  max-width: 350px;
-  align-items: center;
 }
 
 .counter-title {
@@ -194,10 +187,12 @@ select.select-filter {
     grid-template-columns: 1fr 1fr;
   }
 }
+
 @media (max-width: 600px) {
   .all-departments {
     grid-template-columns: 1fr;
   }
+
   .department-tools {
     margin-top: 50px;
   }
