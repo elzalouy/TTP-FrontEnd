@@ -82,7 +82,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
 
   const onChange = (e: any, props: any) => {
     e.preventDefault();
-    props.field.onChange(e);
+    console.log(e);
+    props.field.onChange(e.target.id);
     onHandleChange(e);
   };
 
@@ -190,8 +191,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               item
               xs={5}
               sm={4.5}
-              md={2}
-              lg={2}
+              md={2.2}
+              lg={2.2}
             >
               <Controller
                 name="projectManager"

@@ -1,5 +1,4 @@
 import React from "react";
-import { FilterProps } from "../components/Inputs/SelectFields/Filter";
 
 /**
  * useSelect
@@ -9,18 +8,15 @@ import { FilterProps } from "../components/Inputs/SelectFields/Filter";
  * @returns  value String
  */
 export function useSelect(
-  ref: React.MutableRefObject<HTMLUListElement | null>
+  ref: React.MutableRefObject<HTMLFieldSetElement | null>,
+  selectRef: React.MutableRefObject<HTMLUListElement | null>
 ) {
   React.useEffect(() => {
     function click(event: any) {
-      if (ref.current) {
-        if (ref.current.contains(event.target)) {
-          console.log(
-            event.target,
-            ref.current,
-            ref.current.contains(event.target)
-          );
-        } else ref.current.style.display = "none";
+      if (ref.current && selectRef.current) {
+        if (!ref.current.contains(event.target)) {
+          selectRef.current.style.display = "none";
+        }
       }
     }
     document?.addEventListener("click", (event: any) => click(event));

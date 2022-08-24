@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "baseUrl": "./",
     "target": "es5",
     "lib": [
@@ -8,6 +9,11 @@
       "esnext",
       "ES5"
     ],
+=======
+    "target": "es5",
+    "baseUrl": "./",
+    "lib": ["dom", "dom.iterable", "esnext", "ES5"],
+>>>>>>> b3a1bdde9a80ad3fb762e75db2b86d1ff56f9b23
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,10 +27,18 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+<<<<<<< HEAD
     "types": ["cypress","node","jest", "mocha"],
     
   },
   "include": ["src", "src/utils/custom.d.ts"],
   "exclude": ["**/*.cy.ts"],
   // "extends": "./tsconfig.paths.json",
+=======
+    "types": ["cypress", "node", "jest", "mocha"]
+  },
+  "include": ["src", "src/utils/custom.d.ts", "src"],
+  "exclude": ["**/*.cy.ts"],
+  // "extends": "/tsconfig.paths.json"
+>>>>>>> b3a1bdde9a80ad3fb762e75db2b86d1ff56f9b23
 }

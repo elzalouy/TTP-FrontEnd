@@ -8,9 +8,11 @@ type Props = {
 };
 
 const CounterContainer: FC<Props> = ({ getTasksByClientIdAndStatus }) => {
+
   return (
-    <div className="counter-container-tasks bounce">
-      <div className="counter-container-scroll-wrapper">
+    <div className="counter-container-tasks bounce clientScrollbar"
+    >
+      <div className='counter-container-scroll-wrapper'>
         <ClientTaskNumberCard
           title="Shared Tasks"
           getTasksByClientIdAndStatus={getTasksByClientIdAndStatus}

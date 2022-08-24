@@ -9,11 +9,11 @@ describe('Check Project count of PM', () => {
         cy.get('[data-test-id="create-pm-button"]').click();
         cy.get('[data-test-id="pm-name"]').type("Automated PM");
         cy.get('[data-test-id="pm-email"]').type("pm@gmail.com");
-        cy.get('[data-test-id="submit-pm"]').click();
+        cy.get('[data-test-id="submit-pm"]').click().wait(1000);
     })
 
     it('It should show inital number of projects for the PM', () => {
-        cy.wait(2000).get('tr').contains('tr', 'Automated PM').within(() => {
+        cy.wait(4000).get('tr').contains('tr', 'Automated PM').within(() => {
             return cy.get('[data-test-id="number-inprogress-pm"]').should("have.text","0");
         });
     })

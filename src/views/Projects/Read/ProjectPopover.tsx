@@ -41,6 +41,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
     dispatch(openEditProjectPopup("flex"));
     handleClose();
   };
+
   return (
     <div className="project-actions-wrapper">
       <Box

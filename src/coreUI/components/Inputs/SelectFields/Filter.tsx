@@ -17,10 +17,13 @@ export interface FilterProps {
 }
 
 const Filter = (props: FilterProps) => {
-  const filterRef: React.MutableRefObject<HTMLUListElement | null> =
+  const filterRef: React.MutableRefObject<HTMLFieldSetElement | null> =
+    React.useRef(null);
+  const selectRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
   const [state, setState] = React.useState({
     label: props.label,
+    isOpen: "none",
     text: "",
     value: "",
     options: [
@@ -37,18 +40,15 @@ const Filter = (props: FilterProps) => {
     },
   });
 
-  useSelect(filterRef);
+  useSelect(filterRef, selectRef);
 
   React.useEffect(() => {
     setState({ ...state, options: props.options });
   }, [props]);
 
   const setShow = () => {
-    if (filterRef.current) {
-      if (filterRef.current.style.display === "none")
-        filterRef.current.style.display = "flex";
-      else filterRef.current.style.display = "none";
-    }
+    if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
+    else setState({ ...state, isOpen: "none" });
   };
 
   const onSelect = (e: any) => {
@@ -56,7 +56,6 @@ const Filter = (props: FilterProps) => {
       (i) => i.id === e.target.id.toString()
     );
     if (option) {
-      console.log(option);
       setState({
         ...state,
         text: option.text,
@@ -70,7 +69,7 @@ const Filter = (props: FilterProps) => {
 
   return (
     <>
-      <fieldset id={`StyledFilter-${props.name}`}>
+      <fieldset ref={filterRef} id={`StyledFilter-${props.name}`}>
         <label
           onClick={setShow}
           id={props.label}
@@ -94,8 +93,8 @@ const Filter = (props: FilterProps) => {
           alt=""
         />
         <ul
-          ref={filterRef}
-          style={{ display: "none" }}
+          ref={selectRef}
+          style={{ display: state.isOpen }}
           onClick={setShow}
           id={state.label}
           className="options"

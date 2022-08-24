@@ -35,7 +35,7 @@ describe("Edit Task", () => {
   it('It should edit the name of the task', () => {
     cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
     cy.url().should('include', '/TasksBoard');
-    cy.get('.task-card').contains('Automated Task').click();
+    cy.get('.task-card').contains('Automated Task').wait(2500).click();
     cy.get("input[id$=edit-task-name]").clear().type("Automated Task Updated");
     cy.get('[data-test-id="edit-task-button"]').click().wait(1000);
     cy.get(".task-card").contains("Automated Task Updated").should("be.visible");
@@ -79,7 +79,7 @@ describe("Create Task with Attachment Image", () => {
     cy.get("tr").contains("Automated").wait(1000).click();
     cy.url().should("include", "/TasksBoard");
     cy.get(".add-new-task").click().wait(500);
-    cy.get("input[id$=task-name]").first().type("Automated Task");
+    cy.get("input[id$=task-name]").first().type("Automated Task With Attachment");
     cy.get("div[id=department-new-task]")
       .click()
       .get(".Option")
@@ -109,3 +109,14 @@ describe("Create Task with Attachment Image", () => {
     cy.get('tr').should('not.have.text', 'Automated Project');
   })
 });
+
+describe("Edit Task with Attachment", () => {
+  it('It should edit the name of the task', () => {
+    cy.wait(1000).get('tr').contains('Automated Project').should('be.visible').click();
+    cy.url().should('include', '/TasksBoard');
+    cy.get('.task-card').contains('Automated Task With Attachment').wait(2500).click();
+    cy.get("input[id$=edit-task-name]").clear().type("Automated Task With Attachment Updated");
+    cy.get('[data-test-id="edit-task-button"]').click().wait(1000);
+    cy.get(".task-card").contains("Automated Task With Attachment Updated").should("be.visible");
+  })
+})

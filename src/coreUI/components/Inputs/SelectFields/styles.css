@@ -7,6 +7,7 @@ fieldset[id*="StyledFilter"] {
   justify-content: space-between;
   position: relative;
   border: 0px;
+  margin-bottom: 5px;
 }
 fieldset[id*="StyledFilter"]:focus {
   border-color: transparent;
