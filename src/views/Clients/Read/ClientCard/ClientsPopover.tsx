@@ -1,12 +1,12 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
-import { popOverStyle } from "../../../coreUI/themes/Styles";
-import IMAGES from "../../../assets/img/Images";
+import { popOverStyle } from "../../../../coreUI/themes/Styles";
+import IMAGES from "../../../../assets/img/Images";
 import { useDispatch } from "react-redux";
-import { openEditClientPopup, openDeleteClientPopup } from "../../../models/Ui";
-import { Client, clientsActions } from "../../../models/Clients";
-import MoreIcon from "../../../assets/icons/moreIcon";
+import { openEditClientPopup, openDeleteClientPopup } from "../../../../models/Ui";
+import { Client, clientsActions } from "../../../../models/Clients";
+import MoreIcon from "../../../../assets/icons/moreIcon";
 interface Props {
   client: Client;
 }

@@ -1,36 +1,34 @@
 import { FC } from "react";
-import { Status } from "../../../types/views/BoardView";
-import ClientTaskNumberCard from "./ClientTaskNumberCard";
-import "./clients.css";
+import ClientTaskNumberCard from "../Data/TaskNumber";
+import "../../clients.css";
 
 type Props = {
-  getTasksByClientIdAndStatus: (__status__: Status) => number;
-};
+  id:string;
+}
 
-const CounterContainer: FC<Props> = ({ getTasksByClientIdAndStatus }) => {
-
+const TaskCounterContainer: FC<Props> = ({id}) => {
   return (
     <div className="counter-container-tasks bounce clientScrollbar"
     >
       <div className='counter-container-scroll-wrapper'>
         <ClientTaskNumberCard
           title="Shared Tasks"
-          getTasksByClientIdAndStatus={getTasksByClientIdAndStatus}
           param={"Shared"}
+          _id={id}
         />
         <ClientTaskNumberCard
           title="In Progress Tasks"
-          getTasksByClientIdAndStatus={getTasksByClientIdAndStatus}
           param={"inProgress"}
+          _id={id}
         />
         <ClientTaskNumberCard
           title="Done Tasks"
-          getTasksByClientIdAndStatus={getTasksByClientIdAndStatus}
           param={"Done"}
+          _id={id}
         />
       </div>
     </div>
   );
 };
 
-export default CounterContainer;
+export default TaskCounterContainer;
