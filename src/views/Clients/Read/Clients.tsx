@@ -1,20 +1,11 @@
-import {
-  Box,
-  SelectChangeEvent,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/SearchBox";
 import "./clients.css";
 import CreateNewClient from "../Create/CreateNewClient";
 import ClientCard from "./ClientCard";
-
 import { clientsDataSelector } from "../../../models/Clients/clients.selectors";
 import { useAppSelector } from "../../../models/hooks";
-import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
 import { clientsActions, getAllClients } from "../../../models/Clients";
@@ -55,10 +46,6 @@ export const Clients: React.FC<Props> = () => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
-  /*   useEffect(() => {
-    dispatch(getAllClients(null));
-  }, [dispatch]); */
-
   const [filter, setFilter] = useState<{
     sortDate: string;
   }>({
@@ -73,13 +60,6 @@ export const Clients: React.FC<Props> = () => {
     setSearch(e.target.value);
     dispatch(clientsActions.onSearch(e.target.value));
   };
-
-  /*  const handleChangeFilter = (e: SelectChangeEvent<string>) => {
-    setFilter({
-      sortDate: e.target.value,
-    });
-    dispatch(clientsActions.onSort(e.target.value));
-  }; */
 
   useEffect(() => {
     if (clientData) {
