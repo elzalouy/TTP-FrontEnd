@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-   "target": "es5",
-   "baseUrl": "./",
+    "baseUrl": "./",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -22,8 +22,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["cypress","node","jest", "mocha"],
+    
   },
-  "include": ["src", "src/utils/custom.d.ts","src"],
+  "include": ["src", "src/utils/custom.d.ts"],
   "exclude": ["**/*.cy.ts"],
-  "extends": "/tsconfig.paths.json"
+  // "extends": "./tsconfig.paths.json",
 }

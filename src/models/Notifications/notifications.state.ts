@@ -1,4 +1,4 @@
-import { NotificationsState } from "../../types/models/Notificationss";
+import { NotificationsState } from "../../../src/types/models/Notifications";
 
 const NotifiState: NotificationsState = {
   loading: false,
