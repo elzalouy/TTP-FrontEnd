@@ -5,27 +5,27 @@ import { useSelect } from "src/coreUI/hooks/useSelect";
 import "./styles.css";
 
 export interface FilterProps {
+  name: string;
+  label: string;
+  onSelect: any;
+  selected: string;
+  textTruncate: number;
   options: {
     id: string;
     value: string;
     text: string;
   }[];
-  label: string;
-  onSelect: any;
-  name: string;
-  textTruncate: number;
 }
 
-const Filter = (props: FilterProps) => {
-  const filterRef: React.MutableRefObject<HTMLFieldSetElement | null> =
+const Select = (props: FilterProps) => {
+  const fieldRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
   const selectRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
   const [state, setState] = React.useState({
     label: props.label,
     isOpen: "none",
-    text: "",
-    value: "",
+    selected: "",
     options: [
       {
         id: "",
@@ -33,43 +33,27 @@ const Filter = (props: FilterProps) => {
         text: "",
       },
     ],
-    selected: {
-      id: "",
-      value: "",
-      text: "",
-    },
   });
 
-  useSelect(filterRef, selectRef);
+  useSelect(fieldRef, selectRef);
 
   React.useEffect(() => {
     setState({ ...state, options: props.options });
   }, [props]);
-
+  React.useEffect(() => {
+    let selected = state.options.find(
+      (item) => item.id === props.selected
+    )?.text;
+    if (selected) setState({ ...state, selected: selected });
+  }, [props.selected]);
   const setShow = () => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
   };
 
-  const onSelect = (e: any) => {
-    let option = [...state.options].find(
-      (i) => i.id === e.target.id.toString()
-    );
-    if (option) {
-      setState({
-        ...state,
-        text: option.text,
-        value: option.value,
-        selected: option,
-      });
-    } else {
-      setState({ ...state, text: "All", value: "" });
-    }
-  };
-
   return (
     <>
-      <fieldset ref={filterRef} id={`StyledFilter-${props.name}`}>
+      <fieldset ref={fieldRef} id={`StyledFilter-${props.name}`}>
         <label
           onClick={setShow}
           id={props.label}
@@ -78,12 +62,12 @@ const Filter = (props: FilterProps) => {
         >
           <p className="label">{props.label}</p>
           <p className="value">
-            {state.value === ""
-              ? "All"
-              : _.truncate(state.text, {
+            {props.selected && props.selected !== ""
+              ? _.truncate(state.selected, {
                   length: props.textTruncate,
                   omission: ".",
-                })}
+                })
+              : "All"}
           </p>
         </label>
         <img
@@ -99,15 +83,7 @@ const Filter = (props: FilterProps) => {
           id={state.label}
           className="options"
         >
-          <li
-            className="option"
-            value={""}
-            id=""
-            onClick={(e) => {
-              onSelect(e);
-              props.onSelect(e);
-            }}
-          >
+          <li className="option" value={""} id="" onClick={props.onSelect}>
             All
           </li>
           {state.options?.map((item) => (
@@ -116,10 +92,7 @@ const Filter = (props: FilterProps) => {
               value={item.id}
               key={item.id}
               id={item.id}
-              onClick={(e) => {
-                onSelect(e);
-                props.onSelect(e);
-              }}
+              onClick={props.onSelect}
             >
               {item.text}
             </li>
@@ -130,4 +103,4 @@ const Filter = (props: FilterProps) => {
   );
 };
 
-export default Filter;
+export default Select;

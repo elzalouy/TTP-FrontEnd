@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import Filter from "src/coreUI/components/Inputs/SelectFields/Filter";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import TableContainer from "src/coreUI/components/Containers/TableContainer";
 
 type UIComponentsProps = {};
@@ -34,7 +34,7 @@ const UIComponents = ({}: UIComponentsProps) => {
           </TableContainer>
         </Grid>
         <Grid xs={3}>
-          <Filter
+          <Select
             name="test"
             textTruncate={2}
             label={"Project Manager : "}

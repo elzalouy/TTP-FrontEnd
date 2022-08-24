@@ -21,14 +21,13 @@ import { clientsDataSelector } from "../../../models/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import TableBox from "../../../coreUI/components/Containers/TableContainer";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
-import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
 import { selectRole } from "../../../models/Auth";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Filter from "src/coreUI/components/Inputs/SelectFields/Filter";
+import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -172,14 +171,15 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
+                    label="Due Date: "
+                    onSelect={(e: any) => onChange(e, props)}
+                    textTruncate={4}
                     options={[
                       { id: "asc", text: "Ascending", value: "asc" },
                       { id: "desc", text: "Descending", value: "desc" },
                     ]}
-                    label="Due Date: "
-                    name="sort"
-                    onSelect={(e: any) => onChange(e, props)}
-                    textTruncate={4}
                   />
                 )}
               />
@@ -199,7 +199,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
-                    name="projects"
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
                     label="Project Manager: "
                     options={[
                       ...PMs.map((item) => {
@@ -231,7 +232,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
-                    name="clients"
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
                     label="Client: "
                     options={[
                       ...clients?.map((item) => {
@@ -264,7 +266,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 render={(props) => (
                   <>
                     <Filter
-                      name="status"
+                      name={"projects-" + props.field.name}
+                      selected={props.field.value}
                       label="Status: "
                       options={[
                         {
