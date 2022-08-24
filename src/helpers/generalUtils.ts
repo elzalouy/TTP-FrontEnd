@@ -1,6 +1,7 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
 import moment from "moment";
-import { Task } from "../types/models/Projects";
+import { Status } from "src/types/views/BoardView";
+import { ProjectsInterface, Task } from "../types/models/Projects";
 
 interface options {
   id?: string;
@@ -139,4 +140,20 @@ export const notNullorFalsy = (date: string | null | undefined) => {
   } else {
     return true;
   }
+};
+
+export const getTasksByClientIdAndStatus = (__status__: Status , projects : ProjectsInterface , tasks:Task[],_id:string) => {
+  let clientProjects = projects.projects.filter(
+    (item) => item.clientId === _id
+  );
+  //Filter project based on client
+  let clientTasks = tasks.filter((item) =>
+    clientProjects.some((project) => project._id === item.projectId)
+  );
+  //Filter tasks based on client's projects
+  let tasksBasedStatus = clientTasks.filter(
+    (item) => item.status === __status__
+  );
+  //Filter tasks based on status need from the client's tasks
+  return tasksBasedStatus.length;
 };
