@@ -16,6 +16,11 @@ export interface IForgetForm {
   history: RouteComponentProps["history"];
   loading: boolean | null;
 }
+export interface ILoginForm {
+  failed: IFailed;
+  setFailed: React.Dispatch<React.SetStateAction<IFailed>>;
+  history: RouteComponentProps["history"];
+}
 
 export interface IResetForm {
   control: any;
