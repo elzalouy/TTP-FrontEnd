@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
 
   const style = inputStyle()();
-  let labelClassName = 'label-project';
+  let labelClassName = 'label-input';
 
   return (
     <div id={id}>
@@ -32,7 +32,6 @@ const Input: React.FC<InputProps> = ({
         render={({ field: { value, onChange } }) => {
           return <TextField
             data-test-id={dataTestId}
-            type={type}
             {...register(name, { required: required })}
             value={value}
             error={state?.error?.error?.details[0].path.includes(name)}

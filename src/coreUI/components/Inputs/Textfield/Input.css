@@ -10,3 +10,7 @@
     border: solid 1px #E4E4E4 !important;
     outline: none;
 }
+
+.label-input {
+    font-weight: 500;
+}

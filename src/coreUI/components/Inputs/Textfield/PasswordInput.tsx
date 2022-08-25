@@ -3,12 +3,13 @@ import { IconButton, Typography } from '@mui/material';
 import { FC } from 'react'
 import { Controller } from 'react-hook-form';
 import { PasswordInputProps } from 'src/types/components/Inputs';
+import "./Input.css"
 
 
-const PasswordInput: FC<PasswordInputProps> = ({name, label, control, register, visible, setVisiblity, minLength }) => {
+const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength }) => {
 
     console.log(setVisiblity);
-    
+
 
     return (
         <>
@@ -18,6 +19,7 @@ const PasswordInput: FC<PasswordInputProps> = ({name, label, control, register, 
                 paddingTop={3.5}
                 fontFamily={"Cairo"}
                 color="#000000"
+                className='label-input'
             >
                 {label}
             </Typography>
@@ -25,7 +27,7 @@ const PasswordInput: FC<PasswordInputProps> = ({name, label, control, register, 
                 name={name}
                 control={control}
                 render={({ field: { onChange } }) => (
-                    <div className="password-container">
+                    <div className="password-container ">
                         <input
                             {...register(name, { required: true, minLength: minLength && 8 })}
                             type={visible ? "text" : "password"}
