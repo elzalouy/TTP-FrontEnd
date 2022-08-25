@@ -308,12 +308,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <DesktopDatePicker
+                  <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
+                    closeOnSelect
                     value={props.field.value}
-                    // cancelText={""}
-                    // okText={""}
-                    // disableCloseOnSelect={false}
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
