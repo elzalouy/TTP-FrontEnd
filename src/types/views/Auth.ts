@@ -7,13 +7,18 @@ export interface IFailed {
   message: string;
 }
 
+export interface IForgetFormWrapper {
+  history: RouteComponentProps["history"];
+  visible: boolean;
+}
+
 export interface IForgetForm {
   control: any;
   register: any;
   errors: any;
+  history: RouteComponentProps["history"];
   onSubmit: any
   handleSubmit: UseFormHandleSubmit<IFormInputs>;
-  history: RouteComponentProps["history"];
   loading: boolean | null;
 }
 export interface ILoginForm {
