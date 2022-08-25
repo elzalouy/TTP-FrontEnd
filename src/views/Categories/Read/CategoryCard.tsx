@@ -18,7 +18,6 @@ interface IProps {
   mainCategory: string;
   subCategories: string[];
   handleSetDisplay: (value: string) => void;
-  handleSetEditCatDisplay: (value: string) => void;
   category: any;
 }
 const CategoryCard: React.FC<IProps> = ({
@@ -27,7 +26,6 @@ const CategoryCard: React.FC<IProps> = ({
   mainCategory,
   subCategories,
   handleSetDisplay,
-  handleSetEditCatDisplay,
   category,
 }) => {
   const dispatch = useDispatch();
@@ -95,6 +93,8 @@ const CategoryCard: React.FC<IProps> = ({
           <CategoryPopover
             color={fontColor}
             handleSetShowDelete={handleSetShowDelete}
+            handleSetDisplay={handleSetDisplay}
+            handleSetSelect={handleSetSelect}
           />
         )}
       </Box>
@@ -140,71 +140,6 @@ const CategoryCard: React.FC<IProps> = ({
               </Typography>
             ))}
         </Box>
-        <Grid
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          flexDirection="row"
-          width="100%"
-          container
-        >
-          <Grid xs={12}>
-            {role !== "PM" && (
-              <Button
-                sx={{
-                  color: fontColor,
-                  mb: 8.5,
-                  width: "100%",
-                  fontWeight: "bold",
-                  textTransform: "capitalize",
-                  border: 1,
-                  borderRadius: 1,
-                  borderColor: fontColor,
-                  mr: 1,
-                  paddingY: 1,
-                }}
-                onClick={() => {
-                  handleSetDisplay("flex");
-                  handleSetSelect();
-                }}
-              >
-                <Box
-                  sx={{
-                    mr: 1,
-                    border: 2,
-                    textAlign: "center",
-                    borderRadius: 1.5,
-                    display: "flex",
-                    fontSize: "15px",
-                    paddingX: 0.45,
-                    paddingY: 0.4,
-                  }}
-                >
-                  <AddOutlinedIcon style={{ fontSize: 15 }}></AddOutlinedIcon>
-                </Box>
-                <Typography fontSize={14} fontWeight={"bold"}>
-                  Manage Category
-                </Typography>
-              </Button>
-            )}
-          </Grid>
-          {/* <Grid xs={2}>
-            {role !== "PM" && (
-              <EditBtn
-                sx={{
-                  borderRadius: 1,
-                  border: 1,
-                  mb: 8.5,
-                  borderColor: fontColor,
-                  color: fontColor,
-                  height: "17%",
-                }}
-                onClick={() => handleSetEditCatDisplay("flex")}
-              >
-                <EditIcon width={20} height={20} color={fontColor} />
-              </EditBtn>
-            )}
-          </Grid> */}
-        </Grid>
       </Box>
     </Box>
   );

@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Category.css";
 import CategoryCard from "./CategoryCard";
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import SearchBox from "../../../coreUI/components/Inputs/SearchBox";
 import CreateNewCategory from "../Create/CreateNewCategory";
-import CreateSubCategory from "../Create/CreateSubCategory";
-import EditCategory from "../Edit/EditCategory";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
 import { getAllCategories } from "../../../models/Categories";
 import { selectAllCategories } from "../../../models/Categories/categories.selectores";
 import { categoriesActions } from "../../../models/Categories";
 import { selectRole } from "../../../models/Auth";
-import categories from "../../../services/endpoints/categories";
+import EditCategory from "../Edit/EditCategory";
 
 export const Categories = () => {
   const dispatch = useDispatch();
@@ -31,22 +27,11 @@ export const Categories = () => {
     ["#783DBD", "#EFEBF2"],
     ["#00AECC", "#E1F3F7"],
   ];
-  const handleSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setSearch(e.target.value);
-    dispatch(categoriesActions.onSearch(e.target.value));
-  };
 
   const [display, setDisplay] = useState<string>("none");
-  const [editCatDisplay, setEditCatDisply] = useState<string>("none");
 
   const handleSetDisplay = (value: string) => {
     setDisplay(value);
-  };
-
-  const handleSetEditCatDisplay = (value: string) => {
-    setEditCatDisply(value);
   };
 
   return (
@@ -90,7 +75,7 @@ export const Categories = () => {
               backgroundColor={alternatingColor[index % 5][1]}
               fontColor={alternatingColor[index % 5][0]}
               handleSetDisplay={handleSetDisplay}
-              handleSetEditCatDisplay={handleSetEditCatDisplay}
+              /* handleSetEditCatDisplay={handleSetEditCatDisplay} */
               category={category}
             />
           </Grid>
@@ -100,15 +85,9 @@ export const Categories = () => {
         </Grid>
       </Grid>
       {role !== "PM" && (
-        <CreateSubCategory
+        <EditCategory
           display={display}
           handleSetDisplay={handleSetDisplay}
-        />
-      )}
-      {role !== "PM" && (
-        <EditCategory
-          handleSetEditCatDisplay={handleSetEditCatDisplay}
-          editCatDisplay={editCatDisplay}
         />
       )}
     </Box>

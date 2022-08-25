@@ -9,12 +9,14 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 interface Props {
   history?: RouteComponentProps["history"];
   handleSetShowDelete: (value: string) => void;
+  handleSetDisplay: (value: string) => void;
+  handleSetSelect: () => void;
   color?: string;
 }
 
 //SX Styles Object
 
-const CategoryPopover: React.FC<Props> = ({ handleSetShowDelete, color }) => {
+const CategoryPopover: React.FC<Props> = ({ handleSetShowDelete, color, handleSetDisplay, handleSetSelect }) => {
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -24,9 +26,17 @@ const CategoryPopover: React.FC<Props> = ({ handleSetShowDelete, color }) => {
   const handleOpen = (e: any) => {
     setAnchorEl(e.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const showEditCategoryPopup = () => {
+    handleSetDisplay("flex");
+    handleSetSelect();
+    handleClose();
+  }
+
   const showDeleteDepartmentPopup = () => {
     handleClose();
     handleSetShowDelete("flex");
@@ -55,6 +65,14 @@ const CategoryPopover: React.FC<Props> = ({ handleSetShowDelete, color }) => {
         }}
       >
         <Box display={"grid"} padding={1}>
+          <Button
+            variant="text"
+            onClick={showEditCategoryPopup}
+            className={styles.grayButton}
+          >
+            <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
+            Edit Category
+          </Button>
           <Button
             onClick={showDeleteDepartmentPopup}
             variant="text"
