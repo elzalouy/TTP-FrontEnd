@@ -37,5 +37,5 @@ export interface PasswordInputProps {
 
 export interface IFormInputs {
   email: string;
-  password: string;
+  password?: string;
 }

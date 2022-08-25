@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import Ttp from "../../../assets/img/ttp_logo.png";
 import "../auth.css";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Redirect, RouteComponentProps } from "react-router";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Redirect } from "react-router";
 import IMAGES from "../../../assets/img/Images";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -23,21 +23,12 @@ import {
 import { useAppSelector } from "../../../models/hooks";
 import { toast } from "react-toastify";
 import { selectLoading } from "../../../models/Auth";
-
-interface Props {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-
-interface IFormInputs {
-  email: string;
-}
-
-interface IFailed {
-  status: number | string | boolean;
-  message: string;
-}
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { EmailMessage } from "./EmailMessage";
+import { IFormInputs } from "src/types/components/Inputs";
+import { IFailed } from "src/types/views/Auth";
+import { Props } from "../Login/Login";
+import ForgetForm from "./ForgetForm";
 
 export const Forget: React.FC<Props> = ({ history }) => {
   const {
@@ -111,8 +102,8 @@ export const Forget: React.FC<Props> = ({ history }) => {
           SM
             ? { boxShadow: "none" }
             : {
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-              }
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }
         }
       >
         <Grid
@@ -129,118 +120,39 @@ export const Forget: React.FC<Props> = ({ history }) => {
         >
           <img src={Ttp} alt="ttp" width="80" color="white" height="40" />
           {visible ? (
-            <>
-              <p className="success-text">
-                A reset link has been sent to your email successfully
-              </p>
-              <Link
-                sx={{ textDecoration: "none", cursor: "pointer" }}
-                onClick={() => history.push("/login")}
-              >
-                <Typography
-                  textAlign={"center"}
-                  variant={"h5"}
-                  sx={{
-                    fontWeight: "900",
-                    ":hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                  paddingTop={3.5}
-                  fontFamily={"Cairo"}
-                  color="black"
-                  className="bold"
-                >
-                  Go Back To Login
-                </Typography>
-              </Link>
-            </>
+            <EmailMessage history={history} />
           ) : (
-            <>
-              <Typography
-                variant={"h2"}
-                fontWeight={"900"}
-                paddingTop={12}
-                fontFamily={"Cairo"}
-                className="bold"
-              >
-                Forget Password
-              </Typography>
-              {failed.status && (
-                <p className="error-text">
-                  Sending email was unsuccessful : {failed.message}
-                </p>
-              )}
-              <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-                className="bold"
-              >
-                Email Address
-              </Typography>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    {...register("email", { required: true })}
-                    type="email"
-                    autoComplete="off"
-                    className="f-inputs"
-                    placeholder="Email Address"
-                    onChange={() => setFailed({ message: "", status: false })}
-                  />
-                )}
-              />
-              {errors.email?.type === "required" && (
-                <p className="error-text">Please enter your email</p>
-              )}
-              <Button
-                sx={{
-                  width: "100%",
-                  height: 40,
-                  borderRadius: 1.5,
-                  marginTop: 4,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-                variant="contained"
-                disableElevation
-                onClick={handleSubmit(onSubmit)}
-              >
-                {loading ? (
-                  <CircularProgress sx={{ color: "white", padding: "10px" }} />
-                ) : (
-                  "Send"
-                )}
-              </Button>
-              <Link
-                sx={{ textDecoration: "none", cursor: "pointer" }}
-                onClick={() => history.push("/login")}
-              >
-                <Typography
-                  textAlign={"center"}
-                  variant={"h5"}
-                  sx={{
-                    fontWeight: "900",
-                    ":hover": {
-                      textDecoration: "underline",
-                    },
-                  }}
-                  paddingTop={3.5}
-                  fontFamily={"Cairo"}
-                  color="black"
-                  className="bold"
-                >
-                  Go Back To Login
-                </Typography>
-              </Link>
-            </>
+            <ForgetForm
+              control={control}
+              register={register}
+              onSubmit={onSubmit}
+              handleSubmit={handleSubmit}
+              loading={loading}
+              history={history}
+              errors={errors}
+            />
           )}
+          <Link
+            sx={{ textDecoration: "none", cursor: "pointer" }}
+            onClick={() => history.push("/login")}
+          >
+            <Typography
+              textAlign={"center"}
+              variant={"h5"}
+              sx={{
+                fontWeight: "900",
+                ":hover": {
+                  textDecoration: "underline",
+                },
+              }}
+              paddingTop={3.5}
+              fontFamily={"Cairo"}
+              color="black"
+              className="bold"
+            >
+              Go Back To Login
+            </Typography>
+          </Link>
         </Grid>
         <Grid
           item
@@ -261,6 +173,6 @@ export const Forget: React.FC<Props> = ({ history }) => {
           />
         </Grid>
       </Grid>
-    </Grid>
+    </Grid >
   );
 };
