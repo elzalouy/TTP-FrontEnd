@@ -45,6 +45,11 @@ export interface IResetForm {
   };
 }
 
+export interface IUpdateForm {
+  history: RouteComponentProps["history"];
+  failed: IFailed;
+}
+
 export interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];

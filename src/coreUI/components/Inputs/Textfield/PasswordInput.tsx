@@ -27,7 +27,7 @@ const PasswordInput: FC<PasswordInputProps> = ({name, label, control, register, 
                 render={({ field: { onChange } }) => (
                     <div className="password-container">
                         <input
-                            {...register(name, { required: true, minLength: minLength })}
+                            {...register(name, { required: true, minLength: minLength && 8 })}
                             type={visible ? "text" : "password"}
                             autoComplete="new-password"
                             className="password-input"

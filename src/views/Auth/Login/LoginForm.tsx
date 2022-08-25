@@ -84,6 +84,7 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
                 setVisiblity={setVisiblity}
                 name="password"
                 label="Password"
+                minLength={false}
             />
             {errors.password?.type === "required" && (
                 <p className="error-text">Please enter your password</p>

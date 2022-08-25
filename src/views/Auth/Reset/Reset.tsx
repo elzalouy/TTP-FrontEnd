@@ -13,7 +13,7 @@ import { selectIsAuth, selectLoading } from "../../../models/Auth";
 import { IFormInputs } from "src/types/components/Inputs";
 import { IFailed, IParam, Props } from "src/types/views/Auth";
 import ResetForm from "./ResetForm";
-import AuthContainer from "../AuthComponents/AuthContainer";
+import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
 
 
 

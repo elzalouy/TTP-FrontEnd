@@ -35,10 +35,7 @@ export interface PasswordInputProps {
   register: any;
   visible: boolean;
   setVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
-  minLength?: {
-    value: number;
-    message: string;
-  }
+  minLength: boolean;
 }
 
 export interface IFormInputs {

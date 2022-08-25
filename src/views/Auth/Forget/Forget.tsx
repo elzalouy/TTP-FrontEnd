@@ -28,7 +28,7 @@ import { IFormInputs } from "src/types/components/Inputs";
 import { IFailed } from "src/types/views/Auth";
 import { Props } from "src/types/views/Auth";
 import ForgetForm from "./ForgetForm";
-import AuthContainer from "../AuthComponents/AuthContainer";
+import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
 import ForgetFormWrapper from "./ForgetFormWrapper";
 
 export const Forget: React.FC<Props> = ({ history }) => {

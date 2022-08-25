@@ -28,9 +28,13 @@ const ResetForm: FC<IResetForm> = ({ control, register, errors, failed, visible,
                 register={register}
                 setVisiblity={setVisible.newPassword}
                 visible={visible.newPassword}
+                minLength
             />
             {errors.newPassword?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
+            )}
+            {errors.newPassword?.message && (
+                <p className="error-text">{errors.confirmNewPassword?.message}</p>
             )}
             {errors.newPassword?.message && (
                 <p className="error-text">{errors.newPassword?.message}</p>
@@ -42,11 +46,15 @@ const ResetForm: FC<IResetForm> = ({ control, register, errors, failed, visible,
                 register={register}
                 setVisiblity={setVisible.confirmNewPassword}
                 visible={visible.confirmNewPassword}
+                minLength
             />
             {errors.confirmNewPassword?.type === "required" && (
                 <p className="error-text">
                     Please enter your new password again
                 </p>
+            )}
+            {errors.confirmNewPassword?.message && (
+                <p className="error-text">{errors.confirmNewPassword?.message}</p>
             )}
             {passwordError && (
                 <p className="error-text">
