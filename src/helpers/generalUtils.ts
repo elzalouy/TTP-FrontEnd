@@ -142,7 +142,7 @@ export const notNullorFalsy = (date: string | null | undefined) => {
   }
 };
 
-export const getTasksByClientIdAndStatus = (__status__: Status , projects : ProjectsInterface , tasks:Task[],_id:string) => {
+export const getTasksByClientIdAndStatus = (__status__: Status, projects: ProjectsInterface, tasks: Task[], _id: string) => {
   let clientProjects = projects.projects.filter(
     (item) => item.clientId === _id
   );
@@ -157,3 +157,17 @@ export const getTasksByClientIdAndStatus = (__status__: Status , projects : Proj
   //Filter tasks based on status need from the client's tasks
   return tasksBasedStatus.length;
 };
+
+export const checkValueAndShowOptions = (value: string) => {
+  console.log(value);
+  if (["Done","late","deliver on time","deliver before deadline"].includes(value)) {
+    return [
+      { value: "inProgress", text: "In Progress" },
+    ]
+  } else {
+    return [
+      { value: "inProgress", text: "In Progress" },
+      { value: "Done", text: "Done" },
+    ]
+  }
+}

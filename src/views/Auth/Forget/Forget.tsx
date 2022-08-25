@@ -103,7 +103,7 @@ export const Forget: React.FC<Props> = ({ history }) => {
         sm={11}
         md={6}
         lg={6}
-        height={550}
+        height={600}
         justifyContent={SM ? "flex-start" : "center"}
         container
         direction="row"

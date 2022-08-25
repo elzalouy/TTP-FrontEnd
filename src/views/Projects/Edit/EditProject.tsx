@@ -20,6 +20,7 @@ import moment from "moment";
 import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
+  checkValueAndShowOptions,
   getStatus,
   getYesterdaysDate,
   notNullorFalsy,
@@ -308,10 +309,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <MobileDatePicker
+                  <DesktopDatePicker
                     inputFormat="YYYY-MM-DD"
-                    closeOnSelect
                     value={props.field.value}
+                    // cancelText={""}
+                    // okText={""}
+                    // disableCloseOnSelect={false}
                     onChange={(e) => {
                       validateDate(
                         moment(e).toDate(),
@@ -440,10 +443,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     handleChange={props.field.onChange}
                     selectText={getStatus(props.field.value)}
                     selectValue={props.field.value}
-                    options={[
-                      { value: "inProgress", text: "In Progress" },
-                      { value: "Done", text: "Done" },
-                    ].map((item, i) => {
+                    options={checkValueAndShowOptions(props.field.value).map((item, i) => {
                       return {
                         id: item.value,
                         value: item.value,
