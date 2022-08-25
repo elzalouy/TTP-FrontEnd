@@ -24,15 +24,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /*   background-color: #fcfcfc; */
 }
+
 .unselectable {
-  -webkit-user-select: none; /* Chrome all / Safari all */
-  -moz-user-select: none; /* Firefox all */
-  -ms-user-select: none; /* IE 10+ */
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
 
   /* No support for these yet, use at own risk */
   -o-user-select: none;
   user-select: none;
 }
+
 .imageAlert {
   display: flex;
   width: 100%;
@@ -72,9 +77,13 @@ input:-webkit-autofill:active {
 
 body {
   background-color: #fafafb;
+  /* Below styles ensure fonts stay uniform accross all browsers */
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (max-width: 900px) {
+
   /* width */
   .customScrollBar::-webkit-scrollbar {
     display: block !important;

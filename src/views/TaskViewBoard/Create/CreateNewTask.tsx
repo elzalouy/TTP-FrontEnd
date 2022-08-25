@@ -1,7 +1,7 @@
 import * as React from "react";
 import _ from "lodash";
 import EditTaskTitle from "../Edit/Title";
-import Input from "../Edit/Input";
+import Input from "../../../coreUI/components/Inputs/Input";
 import Select from "../Edit/Select";
 import DateInput from "../Edit/DateInput";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";

@@ -4,7 +4,7 @@ import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import moment from "moment";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";
 import DateInput from "./DateInput";
-import Input from "./Input";
+import Input from "../../../coreUI/components/Inputs/Input";
 import Select from "./Select";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
