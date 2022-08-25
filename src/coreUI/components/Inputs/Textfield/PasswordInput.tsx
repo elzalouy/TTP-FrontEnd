@@ -1,11 +1,14 @@
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { IconButton, Typography } from '@mui/material';
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Controller } from 'react-hook-form';
 import { PasswordInputProps } from 'src/types/components/Inputs';
 
 
-const PasswordInput: FC<PasswordInputProps> = ({ control, register, visible, setVisiblity }) => {
+const PasswordInput: FC<PasswordInputProps> = ({name, label, control, register, visible, setVisiblity, minLength }) => {
+
+    console.log(setVisiblity);
+    
 
     return (
         <>
@@ -16,15 +19,15 @@ const PasswordInput: FC<PasswordInputProps> = ({ control, register, visible, set
                 fontFamily={"Cairo"}
                 color="#000000"
             >
-                Password
+                {label}
             </Typography>
             <Controller
-                name="password"
+                name={name}
                 control={control}
                 render={({ field: { onChange } }) => (
                     <div className="password-container">
                         <input
-                            {...register("password", { required: true })}
+                            {...register(name, { required: true, minLength: minLength })}
                             type={visible ? "text" : "password"}
                             autoComplete="new-password"
                             className="password-input"

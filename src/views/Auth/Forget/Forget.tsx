@@ -27,7 +27,7 @@ import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { EmailMessage } from "./EmailMessage";
 import { IFormInputs } from "src/types/components/Inputs";
 import { IFailed } from "src/types/views/Auth";
-import { Props } from "../Login/Login";
+import { Props } from "src/types/views/Auth";
 import ForgetForm from "./ForgetForm";
 
 export const Forget: React.FC<Props> = ({ history }) => {

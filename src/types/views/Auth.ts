@@ -16,3 +16,31 @@ export interface IForgetForm {
   history: RouteComponentProps["history"];
   loading: boolean | null;
 }
+
+export interface IResetForm {
+  control: any;
+  register: any;
+  errors: any;
+  failed: IFailed
+  visible: {
+    newPassword: boolean, confirmNewPassword: boolean
+  };
+  loading: boolean | null;
+  passwordError: boolean;
+  onSubmit: any
+  handleSubmit: UseFormHandleSubmit<IFormInputs>;
+  setVisible: {
+    newPassword: React.Dispatch<React.SetStateAction<boolean>>,
+    confirmNewPassword: React.Dispatch<React.SetStateAction<boolean>>
+  };
+}
+
+export interface Props {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+
+export interface IParam {
+  token: string;
+}

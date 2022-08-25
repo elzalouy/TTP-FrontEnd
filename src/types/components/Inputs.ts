@@ -29,13 +29,21 @@ export interface DateInputProps {
 }
 
 export interface PasswordInputProps {
+  name: string;
+  label: string
   control: any;
   register: any;
   visible: boolean;
   setVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
+  minLength?: {
+    value: number;
+    message: string;
+  }
 }
 
 export interface IFormInputs {
   email: string;
   password?: string;
+  newPassword?: string;
+  confirmNewPassword?: string
 }

@@ -25,14 +25,9 @@ import { useAppSelector } from "../../../models/hooks";
 import { toast } from "react-toastify";
 import "../auth.css";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import PasswordInput from "../AuthComponents/PasswordInput";
-import { IFailed } from "src/types/views/Auth";
+import PasswordInput from "../../../coreUI/components/Inputs/Textfield/PasswordInput";
+import { IFailed, Props } from "src/types/views/Auth";
 import { IFormInputs } from "src/types/components/Inputs";
-export interface Props {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
 
 const Login: React.FC<Props> = ({ history }) => {
   const {
@@ -157,6 +152,8 @@ const Login: React.FC<Props> = ({ history }) => {
             register={register}
             visible={visible}
             setVisiblity={setVisiblity}
+            name="password"
+            label="Password"
           />
           {errors.password?.type === "required" && (
             <p className="error-text">Please enter your password</p>
