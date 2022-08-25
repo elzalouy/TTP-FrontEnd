@@ -171,6 +171,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
+                    elementType="filter"
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Due Date: "
@@ -199,6 +200,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
+                    elementType="filter"
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Project Manager: "
@@ -232,6 +234,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <Filter
+                    elementType="filter"
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Client: "
@@ -266,6 +269,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 render={(props) => (
                   <>
                     <Filter
+                      elementType="filter"
                       name={"projects-" + props.field.name}
                       selected={props.field.value}
                       label="Status: "

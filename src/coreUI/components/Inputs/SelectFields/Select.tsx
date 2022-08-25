@@ -4,24 +4,30 @@ import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import "./styles.css";
 
+type elementType = "filter" | "select";
+
 export interface FilterProps {
+  elementType: elementType;
   name: string;
-  label: string;
   onSelect: any;
   selected: string;
-  textTruncate: number;
   options: {
     id: string;
     value: string;
     text: string;
   }[];
+  label?: string;
+  textTruncate?: number;
+  error?: string;
 }
 
 const Select = (props: FilterProps) => {
   const fieldRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
+
   const selectRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
+
   const [state, setState] = React.useState({
     label: props.label,
     isOpen: "none",
@@ -40,12 +46,15 @@ const Select = (props: FilterProps) => {
   React.useEffect(() => {
     setState({ ...state, options: props.options });
   }, [props]);
+
   React.useEffect(() => {
+    console.log("changed, ", props.selected);
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
     if (selected) setState({ ...state, selected: selected });
   }, [props.selected]);
+
   const setShow = () => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
@@ -53,27 +62,42 @@ const Select = (props: FilterProps) => {
 
   return (
     <>
-      <fieldset ref={fieldRef} id={`StyledFilter-${props.name}`}>
+      <fieldset
+        ref={fieldRef}
+        id={`${props.elementType}-${props.name}`}
+        data-error={props.error ? props.error : ""}
+      >
         <label
           onClick={setShow}
           id={props.label}
-          htmlFor="filter"
           className="labelValue unselectable"
         >
-          <p className="label">{props.label}</p>
+          {props.elementType === "filter" && (
+            <p className="label">{props.label}</p>
+          )}
           <p className="value">
-            {props.selected && props.selected !== ""
-              ? _.truncate(state.selected, {
-                  length: props.textTruncate,
-                  omission: ".",
-                })
-              : "All"}
+            {props.elementType === "select" ? (
+              state.selected === "" ? (
+                props.label
+              ) : (
+                state.selected
+              )
+            ) : (
+              <>
+                {props.selected && props.selected !== ""
+                  ? _.truncate(state.selected, {
+                      length: props.textTruncate,
+                      omission: ".",
+                    })
+                  : "All"}
+              </>
+            )}
           </p>
         </label>
         <img
           onClick={setShow}
           src={IMAGES.filterDropdown}
-          className="filterIcon"
+          className="leftIcon"
           alt=""
         />
         <ul
@@ -83,9 +107,11 @@ const Select = (props: FilterProps) => {
           id={state.label}
           className="options"
         >
-          <li className="option" value={""} id="" onClick={props.onSelect}>
-            All
-          </li>
+          {props.elementType === "filter" && (
+            <li className="option" value={""} id="" onClick={props.onSelect}>
+              All
+            </li>
+          )}
           {state.options?.map((item) => (
             <li
               className="option"

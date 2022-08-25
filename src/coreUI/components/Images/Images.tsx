@@ -1,13 +1,13 @@
-import logo from "../../assets/img/ttp_logo.png";
-import burgerIcon from "../../assets/img/burgerIcon.svg";
-import categories from "../../assets/img/categories.svg";
-import clients from "../../assets/img/clients.svg";
-import departmentIcon from "../../assets/img/departmentIcon.svg";
-import profileImageDemo from "../../assets/img/profileImageDemo.png";
-import projects from "../../assets/img/projects.svg";
-import tasks from "../../assets/img/tasks.svg";
-import img from "../../assets/img/Images";
-import overView from "../../assets/img/taskviewiconCopy.svg";
+import logo from "src/assets/img/ttp_logo.png";
+import burgerIcon from "src/assets/img/burgerIcon.svg";
+import categories from "src/assets/img/categories.svg";
+import clients from "src/assets/img/clients.svg";
+import departmentIcon from "src/assets/img/departmentIcon.svg";
+import profileImageDemo from "src/assets/img/profileImageDemo.png";
+import projects from "src/assets/img/projects.svg";
+import tasks from "src/assets/img/tasks.svg";
+import img from "src/assets/img/Images";
+import overView from "src/assets/img/taskviewiconCopy.svg";
 import { RouteComponentProps } from "react-router";
 
 interface Props {

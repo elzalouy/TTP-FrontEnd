@@ -1,4 +1,5 @@
-fieldset[id*="StyledFilter"] {
+/* Filter- */
+fieldset[id*="filter-"] {
   cursor: pointer;
   border-color: transparent !important;
   width: 100%;
@@ -9,22 +10,22 @@ fieldset[id*="StyledFilter"] {
   border: 0px;
   margin-bottom: 5px;
 }
-fieldset[id*="StyledFilter"]:focus {
+fieldset[id*="filter-"]:focus {
   border-color: transparent;
   outline-color: transparent;
 }
 
-fieldset[id*="StyledFilter"] select {
+fieldset[id*="filter-"] select {
   appearance: none;
   display: none;
 }
-fieldset[id*="StyledFilter"] .filterIcon {
+fieldset[id*="filter-"] .leftIcon {
   background-color: white;
   padding-inline: 10px;
   border-radius: 0px 10px 10px 0px;
   margin-left: 1px;
 }
-fieldset[id*="StyledFilter"] .labelValue {
+fieldset[id*="filter-"] .labelValue {
   font-size: 14px;
   background-color: white;
   border-radius: 10px 0px 0px 10px;
@@ -34,16 +35,16 @@ fieldset[id*="StyledFilter"] .labelValue {
   padding-block: 10px;
   width: 100%;
 }
-fieldset[id*="StyledFilter"] .label {
+fieldset[id*="filter-"] .label {
   padding-right: 5px;
   color: #696974;
   display: inline-block;
 }
-fieldset[id*="StyledFilter"] .value {
+fieldset[id*="filter-"] .value {
   font-weight: bold;
 }
 
-fieldset[id*="StyledFilter"] .options {
+fieldset[id*="filter-"] .options {
   position: absolute;
   width: 100%;
   top: 100%;
@@ -57,7 +58,7 @@ fieldset[id*="StyledFilter"] .options {
   padding: 7.5px !important;
 }
 
-fieldset[id*="StyledFilter"] .options .option {
+fieldset[id*="filter-"] .options .option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
@@ -66,10 +67,85 @@ fieldset[id*="StyledFilter"] .options .option {
   padding-block: 9px;
   padding-left: 10px;
 }
-fieldset[id*="StyledFilter"] .options .option:hover {
+fieldset[id*="filter-"] .options .option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
-fieldset[id*="StyledFilter"] select datalist::after {
+fieldset[id*="filter-"] select datalist::after {
+  display: initial;
+  appearance: none !important;
+}
+
+/* Select */
+
+fieldset[id*="select"] {
+  cursor: pointer;
+  /* border-color: transparent !important; */
+  width: 100%;
+  display: inline-flex;
+  border-radius: 6px;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 5px;
+  margin-top: 9px;
+  border: 0.5px solid #b4b6c4;
+}
+fieldset[id*="select"]:focus {
+  border-color: transparent;
+  outline-color: transparent;
+}
+fieldset[id*="select"][data-error="true"] {
+  border-color: red;
+}
+
+fieldset[id*="select"] .leftIcon {
+  background-color: white;
+  color: #92929d;
+  padding-inline: 10px;
+  border-radius: 0px 10px 10px 0px;
+}
+fieldset[id*="select"] .labelValue {
+  font-size: 14px;
+  background-color: white;
+  border-radius: 10px 0px 0px 10px;
+  display: inline-flex;
+  padding-left: 15px;
+  cursor: pointer;
+  padding-block: 10px;
+  width: 100%;
+}
+
+fieldset[id*="select"] .value {
+  color: #707683;
+  font-size: 14px;
+}
+
+fieldset[id*="select"] .options {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  margin-top: 8px;
+  list-style-type: none;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #f1f1f5;
+  box-shadow: 0px 5px 15px #44444f1a;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  padding: 7.5px !important;
+}
+
+fieldset[id*="select"] .options .option {
+  width: 100%;
+  border-radius: 8px;
+  color: #696974;
+  opacity: 1;
+  width: 100%;
+  padding-block: 9px;
+  padding-left: 10px;
+}
+fieldset[id*="select"] .options .option:hover {
+  background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
+}
+fieldset[id*="select"] select datalist::after {
   display: initial;
   appearance: none !important;
 }

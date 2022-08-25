@@ -41,6 +41,7 @@ import {
   notNullorFalsy,
 } from "../../../../helpers/generalUtils";
 import moment from "moment";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -142,19 +143,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             name="clientId"
             control={control}
             render={(props) => (
-              <SelectInput2
-                label="Clients list"
-                error={validateError.error?.details[0].path.includes(
-                  "clientId"
-                )}
-                handleChange={props.field.onChange}
-                id="client-new-project"
-                selectText={
-                  clients.find((item) => item.clientId === props.field.value)
-                    ?.clientName
-                }
-                {...register("clientId")}
-                selectValue={props.field.value}
+              <Select
+                elementType="select"
+                name="client"
+                label="Select"
+                onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+                selected={props.field.value}
                 options={
                   clients
                     ? clients?.map((item) => {
@@ -165,6 +159,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                         };
                       })
                     : []
+                }
+                error={
+                  validateError.error?.details[0]?.path?.includes("clientId")
+                    ? "true"
+                    : "false"
                 }
               />
             )}
