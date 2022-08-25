@@ -28,21 +28,8 @@ export interface ILoginForm {
 }
 
 export interface IResetForm {
-  control: any;
-  register: any;
-  errors: any;
   failed: IFailed
-  visible: {
-    newPassword: boolean, confirmNewPassword: boolean
-  };
-  loading: boolean | null;
-  passwordError: boolean;
-  onSubmit: any
-  handleSubmit: UseFormHandleSubmit<IFormInputs>;
-  setVisible: {
-    newPassword: React.Dispatch<React.SetStateAction<boolean>>,
-    confirmNewPassword: React.Dispatch<React.SetStateAction<boolean>>
-  };
+  history: RouteComponentProps["history"];
 }
 
 export interface IUpdateForm {

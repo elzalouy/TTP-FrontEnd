@@ -1,10 +1,55 @@
-import { Button, CircularProgress, Typography } from '@mui/material'
-import { FC } from 'react'
+import { Button, CircularProgress, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { FC, useState } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import PasswordInput from 'src/coreUI/components/Inputs/Textfield/PasswordInput'
-import { IResetForm } from 'src/types/views/Auth'
+import { selectLoading } from 'src/models/Auth'
+import { useAppSelector } from 'src/models/hooks'
+import { resetPMpassword } from 'src/models/PM'
+import { IFormInputs } from 'src/types/components/Inputs'
+import { IParam, IResetForm } from 'src/types/views/Auth'
 
-const ResetForm: FC<IResetForm> = ({ control, register, errors, failed, visible, setVisible, onSubmit, handleSubmit, passwordError, loading }) => {
+const ResetForm: FC<IResetForm> = ({ failed, history }) => {
 
+    const {
+        handleSubmit,
+        control,
+        register,
+        formState: { errors },
+    } = useForm<IFormInputs>();
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const [hidePassword, setHidePassword] = useState<boolean>(false);
+    const [hideConfirmPassword, setHideConfirmPassword] =
+        useState<boolean>(false);
+    const loading = useAppSelector(selectLoading);
+    const theme = useTheme();
+    const { token } = useParams<IParam>();
+    const SM = useMediaQuery(theme.breakpoints.down("sm"));
+    const dispatch = useDispatch();
+
+
+    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+        if (data.newPassword && data.confirmNewPassword) {
+            let pattern = new RegExp(data.newPassword);
+            if (pattern.test(data.confirmNewPassword)) {
+                setPasswordError(false);
+                dispatch(
+                    resetPMpassword({
+                        data: {
+                            id: `Bearer ${token}`,
+                            password: data.newPassword,
+                        },
+                        token: token,
+                    })
+                );
+                setTimeout(() => history.replace("/login"), 1200);
+            } else {
+                setPasswordError(true);
+            }
+        }
+
+    };
 
     return (
         <>
@@ -26,8 +71,8 @@ const ResetForm: FC<IResetForm> = ({ control, register, errors, failed, visible,
                 label="New Password"
                 control={control}
                 register={register}
-                setVisiblity={setVisible.newPassword}
-                visible={visible.newPassword}
+                setVisiblity={setHidePassword}
+                visible={hidePassword}
                 minLength
             />
             {errors.newPassword?.type === "required" && (
@@ -44,8 +89,8 @@ const ResetForm: FC<IResetForm> = ({ control, register, errors, failed, visible,
                 label="New Password"
                 control={control}
                 register={register}
-                setVisiblity={setVisible.confirmNewPassword}
-                visible={visible.confirmNewPassword}
+                setVisiblity={setHideConfirmPassword}
+                visible={hideConfirmPassword}
                 minLength
             />
             {errors.confirmNewPassword?.type === "required" && (
