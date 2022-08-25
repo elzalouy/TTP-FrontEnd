@@ -1,0 +1,12 @@
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border: 1px solid black !important;
+    outline: none !important;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input {
+   font-family: "Cairo" , sans-serif;
+}
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
+    border: solid 1px #E4E4E4 !important;
+    outline: none;
+}

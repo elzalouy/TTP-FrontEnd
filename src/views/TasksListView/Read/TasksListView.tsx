@@ -223,33 +223,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
               </Box>
             </Grid>
             <div style={{ width: "20px" }}></div>
-            {/* <Grid marginX={0.5} item xs={8} sm={4} md={2} lg={2} marginY={1}>
-          <Box className="tasks-option">
-            <Controller
-              name="projectManager"
-              control={control}
-              render={(props) => (
-                <SelectInput
-                  label={"Project Manager: "}
-                  {...props}
-                  options={[
-                    { id: "", value: "", text: "All" },
-                    ...pMs.map((pm) => {
-                      return { id: pm._id, value: pm.name, text: pm.name };
-                    }),
-                  ]}
-                  handleChange={(e) => {
-                    e.preventDefault();
-                    props.field.onChange(e);
-                    onHandleChange(e);
-                  }}
-                  selectValue={props.field.value}
-                  selectText={props.field.value}
-                />
-              )}
-            />
-          </Box>
-        </Grid> */}
+
             <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
               <Box className="tasks-option">
                 <Controller
@@ -286,41 +260,16 @@ export const TasksListView: React.FC<Props> = (props: any) => {
               </Box>
             </Grid>
             <div style={{ width: "20px" }}></div>
-            {/*  <Grid marginX={0.5} item xs={6} sm={3} md={2} lg={2} marginY={1}>
-          <Controller
-            name="memberId"
-            control={control}
-            render={(props) => (
-              <SelectInput
-                label={"Members:"}
-                {...props}
-                options={[
-                  { id: "", value: "", text: "All" },
-                  ...techMembers.techMembers.map((item) => {
-                    return {
-                      id: item._id,
-                      value: item._id,
-                      text: item.name,
-                    };
-                  }),
-                ]}
-                handleChange={(e) => {
-                  e.preventDefault();
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                selectValue={props.field.value}
-                selectText={
-                  techMembers.techMembers.find(
-                    (val) => val._id === props.field.value
-                  )?.name
-                }
-              />
-            )}
-          />
-        </Grid> */}
           </>
         )}
+        <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
+          <DeleteTask
+            task={selects}
+            Show={Show}
+            setShow={setShow}
+            onDelete={onDeleteTasks}
+          />
+        </Grid>
         <div style={{ width: "20px" }}></div>
         <Grid
           width="100%"
@@ -328,28 +277,20 @@ export const TasksListView: React.FC<Props> = (props: any) => {
           justifyContent={"flex-end"}
           alignItems="center"
         >
-          <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
-            <DeleteTask
-              task={selects}
-              Show={Show}
-              setShow={setShow}
-              onDelete={onDeleteTasks}
-            />
-          </Grid>
           <Grid marginX={0.5} item xs={6} sm={6} md={6} lg={6} marginY={1}>
             <Box
               style={
                 SM
                   ? {
-                      backgroundColor: "#fafafa",
-                      width: "100%",
-                      marginLeft: "5px",
-                    }
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "5px",
+                  }
                   : {
-                      backgroundColor: "#fafafa",
-                      width: "100%",
-                      marginLeft: "0px",
-                    }
+                    backgroundColor: "#fafafa",
+                    width: "100%",
+                    marginLeft: "0px",
+                  }
               }
             >
               <Controller

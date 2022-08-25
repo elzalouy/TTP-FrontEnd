@@ -1,7 +1,7 @@
 import React from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import Input from "../../../coreUI/components/Inputs/Input";
+import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 import { Box } from "@mui/system";
 import { useState } from "react";

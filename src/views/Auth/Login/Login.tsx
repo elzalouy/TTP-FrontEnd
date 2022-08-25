@@ -6,14 +6,13 @@ import {
   Button,
   Link,
   Typography,
-  IconButton,
   CircularProgress,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import IMAGES from "../../../assets/img/Images";
 import Ttp from "../../../assets/img/ttp_logo.png";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import {
   selectAuth,
@@ -23,31 +22,22 @@ import {
   signIn,
 } from "../../../models/Auth";
 import { useAppSelector } from "../../../models/hooks";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import "../auth.css";
-interface Props {
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import PasswordInput from "../AuthComponents/PasswordInput";
+import { IFailed } from "src/types/views/Auth";
+import { IFormInputs } from "src/types/components/Inputs";
+export interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
-}
-
-interface IFailed {
-  status: number | string | boolean;
-  message: string;
-}
-
-interface IFormInputs {
-  email: string;
-  password: string;
 }
 
 const Login: React.FC<Props> = ({ history }) => {
   const {
     handleSubmit,
     control,
-    setValue,
-    watch,
     formState: { errors },
     register,
   } = useForm<IFormInputs>();
@@ -98,6 +88,7 @@ const Login: React.FC<Props> = ({ history }) => {
   if (isAuth) {
     return <Redirect to={"/Overview"} />;
   }
+  
 
   return (
     <Grid
@@ -121,8 +112,8 @@ const Login: React.FC<Props> = ({ history }) => {
           SM
             ? { boxShadow: "none" }
             : {
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-              }
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }
         }
       >
         <Grid
@@ -142,88 +133,30 @@ const Login: React.FC<Props> = ({ history }) => {
             variant={"h2"}
             fontWeight={"bolder"}
             paddingTop={4}
+            paddingBottom={4}
             className="bold"
           >
             Login to your account
           </Typography>
           {failed.status && (
-            <p className="error-text">Invalid Email Address or Password</p>
+            <p className="error-text top-margin">Invalid Email Address or Password</p>
           )}
-          <Typography
-            variant={"h5"}
-            fontWeight={"700"}
-            paddingTop={3.5}
-            fontFamily={"Cairo"}
-            color="#000000"
-            className="bold"
-          >
-            Email Address
-          </Typography>
-          <Controller
+          <Input
             name="email"
+            label="Email Address"
+            placeholder="Email Address"
             control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                {...register("email", { required: true })}
-                type="email"
-                className="f-inputs"
-                placeholder="Email Address"
-                onChange={(e: any) => {
-                  setValue("email", e.target.value);
-                  setFailed({
-                    message: "",
-                    status: false,
-                  });
-                }}
-              />
-            )}
+            register={register}
+            required
           />
           {errors.email?.type === "required" && (
             <p className="error-text">Please enter your email address</p>
           )}
-          <Typography
-            variant={"h5"}
-            fontWeight={"700"}
-            paddingTop={3.5}
-            fontFamily={"Cairo"}
-            color="#000000"
-            className="bold"
-          >
-            Password
-          </Typography>
-          <Controller
-            name="password"
+          <PasswordInput
             control={control}
-            render={({ field }) => (
-              <div className="password-container">
-                <input
-                  {...field}
-                  {...register("password", { required: true })}
-                  type={visible ? "text" : "password"}
-                  autoComplete="new-password"
-                  className="password-input"
-                  onChange={(e: any) => {
-                    setValue("password", e.target.value);
-                    setFailed({
-                      message: "",
-                      status: false,
-                    });
-                  }}
-                  placeholder="Password"
-                />
-                <IconButton
-                  className="password-icon"
-                  onClick={() => setVisiblity((state) => !state)}
-                >
-                  {!visible ? (
-                    <VisibilityOff style={{ color: "#b4b6c4" }} />
-                  ) : (
-                    <Visibility style={{ color: "#b4b6c4" }} />
-                  )}
-                </IconButton>
-              </div>
-            )}
+            register={register}
+            visible={visible}
+            setVisiblity={setVisiblity}
           />
           {errors.password?.type === "required" && (
             <p className="error-text">Please enter your password</p>

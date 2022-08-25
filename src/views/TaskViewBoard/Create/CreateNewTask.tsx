@@ -1,7 +1,7 @@
 import * as React from "react";
 import _ from "lodash";
 import EditTaskTitle from "../Edit/Title";
-import Input from "../../../coreUI/components/Inputs/Input";
+import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import Select from "../Edit/Select";
 import DateInput from "../Edit/DateInput";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";
@@ -180,7 +180,7 @@ const CreateNewTask = ({ show, setShow }: Props) => {
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
-              <Input
+            <Input
                 name="name"
                 label="Task name"
                 placeholder="Task name"

@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
+import { NONE } from "apisauce";
 export const dateInputStyle = () => {
   return makeStyles((theme) => ({
     textField: {
@@ -27,6 +28,10 @@ export const inputStyle = () => {
       },
       "& .MuiOutlinedInput-notchedOutline": {
         borderRadius: "6px",
+        "&:active": {
+          border: "none !important",
+          outline: "none !important"
+        },
       },
     },
     multilineInput: {

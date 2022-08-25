@@ -1,8 +1,9 @@
 import { TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { Controller } from "react-hook-form";
-import { InputProps } from "../../../types/views/BoardView";
-import { inputStyle } from "./styles";
+import { InputProps } from "src/types/components/Inputs";
+import { inputStyle } from "../styles";
+import "./Input.css"
 
 const Input: React.FC<InputProps> = ({
   name,
@@ -15,28 +16,34 @@ const Input: React.FC<InputProps> = ({
   rows,
   id,
   dataTestId,
+  required,
+  type,
 }) => {
+
   const style = inputStyle()();
+  let labelClassName = 'label-project';
+
   return (
     <div id={id}>
-      <Typography className="label-project">{label}</Typography>
+      <Typography className={labelClassName}>{label}</Typography>
       <Controller
         name={name}
         control={control}
-        render={(props) => (
-          <TextField
+        render={({ field: { value, onChange } }) => {
+          return <TextField
             data-test-id={dataTestId}
-            {...register(name)}
-            value={props.field.value}
+            type={type}
+            {...register(name, { required: required })}
+            value={value}
             error={state?.error?.error?.details[0].path.includes(name)}
             id="outlined-error"
             className={multiline ? style.multilineInput : style.input}
             multiline={multiline ? multiline : undefined}
             rows={rows ? rows : undefined}
             placeholder={placeholder}
-            onChange={props.field.onChange}
+            onChange={onChange}
           />
-        )}
+        }}
       />
     </div>
   );

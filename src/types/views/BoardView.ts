@@ -8,29 +8,6 @@ export type EditTaskProps = {
   setShow: (val: string) => void;
 };
 
-export interface InputProps {
-  name: string;
-  control: any;
-  register: any;
-  state: any;
-  label: string;
-  placeholder?: string;
-  multiline?: boolean;
-  rows?: number;
-  id?: string;
-  dataTestId?: string;
-}
-
-export interface DateInputProps {
-  name: string;
-  control: any;
-  register: any;
-  state: any;
-  setValue: any;
-  placeholder: string;
-  label: string;
-}
-
 export interface CRUDTaskState {
   newFiles: (File | null)[];
   deleteFiles: {

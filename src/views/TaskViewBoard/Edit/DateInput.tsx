@@ -4,7 +4,7 @@ import moment from "moment";
 import * as React from "react";
 import { Controller } from "react-hook-form";
 import IMAGES from "../../../assets/img/Images";
-import { DateInputProps } from "../../../types/views/BoardView";
+import { DateInputProps } from "src/types/components/Inputs";
 import { validateDate } from "../../../services/validations/project.schema";
 import { dateInputStyle } from "./styles";
 import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";

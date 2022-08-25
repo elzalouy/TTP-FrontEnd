@@ -56,7 +56,7 @@ body {
   align-items: center;
   border-radius: 5px;
   position: relative;
-  margin-top: 10px;
+  margin-top: 5px;
   border: none;
   outline: none;
   padding-right: 0px;
@@ -68,7 +68,7 @@ body {
   width: 100%;
   color: black;
   padding: 11px;
-  border: solid 0.5px #b4b6c4;
+  border: solid 1px #E4E4E4;
   outline: none;
   text-align: left;
   text-decoration: none;
@@ -144,19 +144,24 @@ body {
   border-radius: 5px;
 }
 
+.password-input::placeholder {
+  color: #B1B1B5
+}
+
 .password-input:focus {
   border: 0.5px solid black;
   border-radius: 5px;
 }
 
-/* .Image {
-  background-color: black;
-}
- */
 .error-text {
   color: red;
   margin: 10px 0px;
   text-transform: capitalize;
+}
+
+.top-margin {
+  padding-bottom: 10px;
+  margin: 0px;
 }
 
 .success-text {
