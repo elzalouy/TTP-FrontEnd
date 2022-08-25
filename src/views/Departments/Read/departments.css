@@ -27,6 +27,7 @@
   padding: 15px;
   min-height: 200px;
   overflow: hidden;
+  transition: transform 0.5s, box-shadow 0.5s;
 }
 
 .department-Card:hover {
