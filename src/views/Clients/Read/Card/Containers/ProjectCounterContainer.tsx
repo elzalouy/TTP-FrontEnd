@@ -46,11 +46,6 @@ const ProjectCounterContainer: FC<Props> = ({
         dataTestId="active-projects-clients"
         number={projectNumber}
       />
-      <hr
-        color="#88888885"
-        style={{ width: "1px !important" }}
-        className="hrVertical"
-      />
       <ProjectNumber title="Done Projects" number={done} />
     </Grid>
   );
