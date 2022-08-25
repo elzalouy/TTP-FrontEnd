@@ -4,7 +4,6 @@ import { useAppSelector } from "../../models/hooks";
 import { selectAllProjects } from "../../models/Projects";
 import TasksTable from "../../coreUI/components/Tables/OverviewTasksTable";
 import { Task } from "../../types/models/Projects";
-import IMAGES from "src/assets/img/Images";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;

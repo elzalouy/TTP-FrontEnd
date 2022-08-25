@@ -61,6 +61,7 @@ const IMAGES = {
   deleteIconAlert: require("./deleteAlert.png").default,
   trelloIcon: require("./trello.png"),
   logoutIconAlert: require("./logoutAlert.png").default,
+  filterDropdown: require("./dropdownIcon.svg").default,
   OverviewInProgressTasksEmpty: require("./Overview/OverviewInProgressTasksEmpty.png"),
   OverviewCloseToDeadlineEmpty: require("./Overview/OverviewCloseToDeadlineEmpty.png"),
   OvervieCloseProjectsEmpty: require("./Overview/OvervieCloseProjectsEmpty.png"),

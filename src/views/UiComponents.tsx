@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import * as React from "react";
-import TableContainer from "../coreUI/components/Containers/TableContainer";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import TableContainer from "src/coreUI/components/Containers/TableContainer";
 
 type UIComponentsProps = {};
 
@@ -10,7 +10,7 @@ const UIComponents = ({}: UIComponentsProps) => {
       container
       justifyContent={"center"}
       alignItems={"center"}
-      sx={{ padding: 1 }}
+      sx={{ padding: 1, backgroundColor: "#FCFCFC" }}
     >
       {/* In Titled table Container */}
       <Grid xs={10}>
@@ -32,6 +32,18 @@ const UIComponents = ({}: UIComponentsProps) => {
           >
             table content will be here
           </TableContainer>
+        </Grid>
+        <Grid xs={3}>
+          <Select
+            name="test"
+            textTruncate={2}
+            label={"Project Manager : "}
+            options={[
+              { id: "1", text: "name", value: "value" },
+              { id: "2", text: "name 2 is too long", value: "value 2" },
+            ]}
+            onSelect={null}
+          />
         </Grid>
       </Grid>
     </Grid>

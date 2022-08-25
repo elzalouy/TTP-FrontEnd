@@ -21,13 +21,13 @@ import { clientsDataSelector } from "../../../models/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import TableBox from "../../../coreUI/components/Containers/TableContainer";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
-import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
 import { selectRole } from "../../../models/Auth";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -55,6 +55,13 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   useEffect(() => {
     dispatch(getAllProjects(null));
   }, []);
+  useEffect(() => {
+    if (MD) {
+      setFilter(false);
+    } else {
+      setFilter(true);
+    }
+  }, [MD]);
 
   const onHandleChange = (e: any) => {
     let data = watch();
@@ -72,19 +79,21 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
 
-  useEffect(() => {
-    if (MD) {
-      setFilter(false);
-    } else {
-      setFilter(true);
-    }
-  }, [MD]);
+  const onChange = (e: any, props: any) => {
+    e.preventDefault();
+    console.log(e);
+    props.field.onChange(e.target.id);
+    onHandleChange(e);
+  };
 
-  /* 
-  useEffect(() => {
-    setValue("name", "");
-  }, []); */
-
+  const isOpen = () => {
+    return {
+      xs: filter ? "block" : "none",
+      sm: filter ? "block" : "none",
+      md: "block",
+      lg: "block",
+    };
+  };
   return (
     <Grid
       overflow={"hidden"}
@@ -94,7 +103,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       marginX={{ sm: 1, xs: 1, md: 4, lg: 4 }}
       marginTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
     >
-      <Grid container xs={12} justifyContent="space-between" direction={"row"}>
+      <Grid container xs={12} direction={"row"}>
         <Grid item xs={4} sm={4} md={12} lg={12} marginBottom={4}>
           <Typography variant="h3" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
@@ -124,7 +133,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
         </Grid>
         <Grid
           data-test-id="filter-projects"
-          margin={1}
+          marginX={0.5}
           item
           xs={5}
           sm={5}
@@ -149,13 +158,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
           <>
             <Grid
               data-test-id="filter-projects"
-              display={{
-                xs: filter ? "block" : "none",
-                sm: filter ? "block" : "none",
-                md: "block",
-                lg: "block",
-              }}
-              margin={1}
+              display={() => isOpen()}
+              marginX={0.5}
               item
               xs={5}
               sm={4}
@@ -166,49 +170,39 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 name="deadline"
                 control={control}
                 render={(props) => (
-                  <SelectInput
-                    {...props}
+                  <Filter
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
                     label="Due Date: "
+                    onSelect={(e: any) => onChange(e, props)}
+                    textTruncate={4}
                     options={[
-                      { id: "All", text: "All", value: "" },
                       { id: "asc", text: "Ascending", value: "asc" },
                       { id: "desc", text: "Descending", value: "desc" },
                     ]}
-                    handleChange={(e) => {
-                      e.preventDefault();
-                      props.field.onChange(e);
-                      onHandleSort(e);
-                    }}
-                    selectValue={props.field.value}
-                    selectText={props.field.value}
                   />
                 )}
               />
             </Grid>
             <Grid
               data-test-id="filter-projects"
-              display={{
-                xs: filter ? "block" : "none",
-                sm: filter ? "block" : "none",
-                md: "block",
-                lg: "block",
-              }}
-              margin={1}
+              display={() => isOpen()}
+              marginX={0.5}
               item
               xs={5}
               sm={4.5}
-              md={2}
-              lg={2}
+              md={2.2}
+              lg={2.2}
             >
               <Controller
                 name="projectManager"
                 control={control}
                 render={(props) => (
-                  <SelectInput
+                  <Filter
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
                     label="Project Manager: "
-                    {...props}
                     options={[
-                      { id: "all", value: "", text: "All Project Managers" },
                       ...PMs.map((item) => {
                         return {
                           id: item._id,
@@ -217,28 +211,16 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                         };
                       }),
                     ]}
-                    handleChange={(e) => {
-                      e.preventDefault();
-                      props.field.onChange(e);
-                      onHandleChange(e);
-                    }}
-                    selectValue={props.field.value}
-                    selectText={
-                      PMs?.find((val) => val._id === props.field.value)?.name
-                    }
+                    onSelect={(e: any) => onChange(e, props)}
+                    textTruncate={2}
                   />
                 )}
               />
             </Grid>
             <Grid
               data-test-id="filter-projects"
-              display={{
-                xs: filter ? "block" : "none",
-                sm: filter ? "block" : "none",
-                md: "block",
-                lg: "block",
-              }}
-              margin={1}
+              display={() => isOpen()}
+              marginX={0.5}
               item
               xs={5}
               sm={4}
@@ -249,11 +231,11 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 name="clientId"
                 control={control}
                 render={(props) => (
-                  <SelectInput
-                    label={"Client: "}
-                    {...props}
+                  <Filter
+                    name={"projects-" + props.field.name}
+                    selected={props.field.value}
+                    label="Client: "
                     options={[
-                      { id: "all", value: "", text: "All Clients" },
                       ...clients?.map((item) => {
                         return {
                           id: item._id,
@@ -262,29 +244,16 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                         };
                       }),
                     ]}
-                    handleChange={(e) => {
-                      e.preventDefault();
-                      props.field.onChange(e);
-                      onHandleChange(e);
-                    }}
-                    selectValue={props.field.value}
-                    selectText={
-                      clients.find((val) => val._id === props.field.value)
-                        ?.clientName
-                    }
+                    onSelect={(e: any) => onChange(e, props)}
+                    textTruncate={10}
                   />
                 )}
               />
             </Grid>
             <Grid
               data-test-id="filter-projects"
-              display={{
-                xs: filter ? "block" : "none",
-                sm: filter ? "block" : "none",
-                md: "block",
-                lg: "block",
-              }}
-              margin={1}
+              display={() => isOpen()}
+              marginX={0.5}
               item
               xs={5}
               sm={4}
@@ -296,10 +265,11 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 control={control}
                 render={(props) => (
                   <>
-                    <SelectInput
+                    <Filter
+                      name={"projects-" + props.field.name}
+                      selected={props.field.value}
                       label="Status: "
                       options={[
-                        { id: "all", value: "", text: "All Status" },
                         {
                           id: "Not Started",
                           value: "Not Started",
@@ -326,13 +296,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                           text: "In Progress",
                         },
                       ]}
-                      handleChange={(e) => {
-                        e.preventDefault();
-                        props.field.onChange(e);
-                        onHandleChange(e);
-                      }}
-                      selectValue={props.field.value}
-                      selectText={props.field.value}
+                      onSelect={(e: any) => onChange(e, props)}
+                      textTruncate={5}
                     />
                   </>
                 )}
@@ -342,8 +307,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
         )}
         <Grid
           data-test-id="filter-projects"
-          margin={1}
           item
+          marginX={0.5}
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
           md={2.1}
           lg={2.1}

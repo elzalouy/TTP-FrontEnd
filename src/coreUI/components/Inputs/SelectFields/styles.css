@@ -1,0 +1,75 @@
+fieldset[id*="StyledFilter"] {
+  cursor: pointer;
+  border-color: transparent !important;
+  width: 100%;
+  display: inline-flex;
+  border-radius: 10px;
+  justify-content: space-between;
+  position: relative;
+  border: 0px;
+  margin-bottom: 5px;
+}
+fieldset[id*="StyledFilter"]:focus {
+  border-color: transparent;
+  outline-color: transparent;
+}
+
+fieldset[id*="StyledFilter"] select {
+  appearance: none;
+  display: none;
+}
+fieldset[id*="StyledFilter"] .filterIcon {
+  background-color: white;
+  padding-inline: 10px;
+  border-radius: 0px 10px 10px 0px;
+  margin-left: 1px;
+}
+fieldset[id*="StyledFilter"] .labelValue {
+  font-size: 14px;
+  background-color: white;
+  border-radius: 10px 0px 0px 10px;
+  display: inline-flex;
+  padding-left: 15px;
+  cursor: pointer;
+  padding-block: 10px;
+  width: 100%;
+}
+fieldset[id*="StyledFilter"] .label {
+  padding-right: 5px;
+  color: #696974;
+  display: inline-block;
+}
+fieldset[id*="StyledFilter"] .value {
+  font-weight: bold;
+}
+
+fieldset[id*="StyledFilter"] .options {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  margin-top: 8px;
+  list-style-type: none;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #f1f1f5;
+  box-shadow: 0px 5px 15px #44444f1a;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  padding: 7.5px !important;
+}
+
+fieldset[id*="StyledFilter"] .options .option {
+  width: 100%;
+  border-radius: 8px;
+  color: #696974;
+  opacity: 1;
+  width: 100%;
+  padding-block: 9px;
+  padding-left: 10px;
+}
+fieldset[id*="StyledFilter"] .options .option:hover {
+  background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
+}
+fieldset[id*="StyledFilter"] select datalist::after {
+  display: initial;
+  appearance: none !important;
+}

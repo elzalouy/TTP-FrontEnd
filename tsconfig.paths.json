@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
+   "baseUrl": "./src",
         "paths": {
-            "views":["./src/view/index.ts"]
-        }
-    }   
+      "src/*":["./src/*"],
+      "views/*":["./src/views/*"],
+    },
+  }
 }
