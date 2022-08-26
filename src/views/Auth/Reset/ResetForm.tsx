@@ -1,13 +1,13 @@
 import { Button, CircularProgress, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { FC, useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import PasswordInput from 'src/coreUI/components/Inputs/Textfield/PasswordInput'
 import { selectLoading } from 'src/models/Auth'
 import { useAppSelector } from 'src/models/hooks'
 import { resetPMpassword } from 'src/models/PM'
-import { IFormInputs } from 'src/types/components/Inputs'
+import { IIFormInputs } from 'src/types/components/Inputs'
 import { IParam, IResetForm } from 'src/types/views/Auth'
 
 const ResetForm: FC<IResetForm> = ({ failed, history }) => {
@@ -17,7 +17,7 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
         control,
         register,
         formState: { errors },
-    } = useForm<IFormInputs>();
+    } = useForm<IIFormInputs>();
     const [passwordError, setPasswordError] = useState<boolean>(false);
     const [hidePassword, setHidePassword] = useState<boolean>(false);
     const [hideConfirmPassword, setHideConfirmPassword] =
@@ -29,7 +29,7 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
     const dispatch = useDispatch();
 
 
-    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const onSubmit: SubmitHandler<IIFormInputs> = (data) => {
         if (data.newPassword && data.confirmNewPassword) {
             let pattern = new RegExp(data.newPassword);
             if (pattern.test(data.confirmNewPassword)) {

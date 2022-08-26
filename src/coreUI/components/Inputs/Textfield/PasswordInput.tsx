@@ -1,12 +1,12 @@
-import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { IconButton, Typography } from '@mui/material';
-import { FC } from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { FC } from 'react';
 import { Controller } from 'react-hook-form';
-import { PasswordInputProps } from 'src/types/components/Inputs';
-import "./Input.css"
+import { IPasswordInputProps } from 'src/types/components/Inputs';
+import "./Input.css";
 
 
-const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength, error, wrapper }) => {
+const PasswordInput: FC<IPasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength, error, wrapper }) => {
 
     return (
         <div className={wrapper ? 'password-input-wrapper' : ''}>

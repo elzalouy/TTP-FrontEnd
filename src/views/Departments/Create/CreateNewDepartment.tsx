@@ -207,15 +207,3 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
 };
 
 export default CreateNewDepartment;
-const submitBtn = {
-  width: "100%",
-  textAlign: "center",
-  justifyContent: "center",
-  alignItems: "center",
-};
-const createNewDepLoadingStyles = {
-  color: "white",
-  padding: "0px",
-  height: "25px !important",
-  width: "25px !important",
-};

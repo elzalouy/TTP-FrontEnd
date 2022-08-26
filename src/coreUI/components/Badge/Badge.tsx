@@ -12,6 +12,7 @@ const Badge: FC<IBadge> = ({ name, index, onChange }) => {
         <div
             key={index}
             className="badge-wrapper"
+            onClick={onChange}
         >
             <p className="badge-label">{label}</p>
             <img
@@ -20,7 +21,7 @@ const Badge: FC<IBadge> = ({ name, index, onChange }) => {
                 width="9px"
                 height="9px"
                 className="badge-close-icon"
-                onClick={onChange}
+
             />
         </div>
     )

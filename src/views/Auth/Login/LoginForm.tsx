@@ -6,9 +6,9 @@ import Input from 'src/coreUI/components/Inputs/Textfield/Input'
 import PasswordInput from 'src/coreUI/components/Inputs/Textfield/PasswordInput'
 import { selectLoading, signIn } from 'src/models/Auth'
 import { useAppSelector } from 'src/models/hooks'
-import { IFormInputs } from 'src/types/components/Inputs'
+import { IIFormInputs } from 'src/types/components/Inputs'
 import { ILoginForm } from 'src/types/views/Auth'
-import Ttp from "../../../assets/img/ttp_logo.png";
+import Ttp from "../../../assets/img/ttp_logo.png"
 
 
 const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
@@ -18,13 +18,13 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
         control,
         formState: { errors },
         register,
-    } = useForm<IFormInputs>();
+    } = useForm<IIFormInputs>();
     const loading = useAppSelector(selectLoading);
     const dispatch = useDispatch();
     const [visible, setVisiblity] = useState<boolean>(false);
     const theme = useTheme();
     const SM = useMediaQuery(theme.breakpoints.down("sm"));
-    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const onSubmit: SubmitHandler<IIFormInputs> = (data) => {
         dispatch(
             signIn({
                 data: {

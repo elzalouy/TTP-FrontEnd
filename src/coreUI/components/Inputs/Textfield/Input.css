@@ -3,7 +3,11 @@
 .core-ui-textfield-wrapper {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
 
+.core-ui-textfield-wrapper-margin{
+    margin-top: 20px;
 }
 
 .core-ui-textfield-label {
@@ -13,6 +17,7 @@
 }
 
 .core-ui-textfield {
+    width: 100%;
     height: 50px;
     padding: 10px;
     border: solid 1px #B4B6C4;
@@ -95,16 +100,16 @@
 /* Input error */
 
 .error-active {
-    border: 1px solid red;
+    border: 1px solid #FE1A1A;
     outline: none;
 }
 
 .error-active:active {
-    border: 1px solid red;
+    border: 1px solid #FE1A1A;
     outline: none;
 }
 
 .error-active:focus {
-    border: 1px solid red;
+    border: 1px solid #FE1A1A;
     outline: none;
 }

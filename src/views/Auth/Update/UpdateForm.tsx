@@ -1,14 +1,12 @@
-import { VisibilityOff, Visibility } from '@mui/icons-material'
-import { Typography, IconButton, Button, CircularProgress } from '@mui/material'
+import { Button, CircularProgress, Typography } from '@mui/material'
 import { FC, useState } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import PasswordInput from 'src/coreUI/components/Inputs/Textfield/PasswordInput'
-import { register } from 'src/helpers/serviceWorkerRegistration'
 import { newPassword, selectLoading } from 'src/models/Auth'
 import { useAppSelector } from 'src/models/hooks'
-import { IFormInputs } from 'src/types/components/Inputs'
+import { IIFormInputs } from 'src/types/components/Inputs'
 import { IParam, IUpdateForm } from 'src/types/views/Auth'
 
 const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
@@ -18,7 +16,7 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
         control,
         register,
         formState: { errors },
-    } = useForm<IFormInputs>();
+    } = useForm<IIFormInputs>();
     const [hidePassword, setHidePassword] = useState<boolean>(false);
     const [hideConfirmPassword, setHideConfirmPassword] =
         useState<boolean>(false);
@@ -27,7 +25,7 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
     const { token } = useParams<IParam>();
     const loading = useAppSelector(selectLoading);
 
-    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const onSubmit: SubmitHandler<IIFormInputs> = (data) => {
         if (data.confirmNewPassword && data.password) {
             let pattern = new RegExp(data.password);
             if (pattern.test(data.confirmNewPassword)) {

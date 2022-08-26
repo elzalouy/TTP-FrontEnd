@@ -1,10 +1,9 @@
-import { TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { Controller } from "react-hook-form";
-import { InputProps } from "src/types/components/Inputs";
+import { IInputProps } from "src/types/components/Inputs";
 import "./Input.css"
 
-const Input: React.FC<InputProps> = ({
+const Input: React.FC<IInputProps> = ({
   name,
   control,
   register,
@@ -13,13 +12,34 @@ const Input: React.FC<InputProps> = ({
   id,
   dataTestId,
   required,
-  error
+  error,
+  wrapper,
+  custom
 }) => {
 
+  /* CUSTOM INPUT FOR UNCONTROLLED FORMS */
+  /* We need to have both cases here as we are not concentrating on refactoring yet */
 
-  return (
-    <div id={id} className="core-ui-textfield-wrapper">
-      <label className="core-ui-textfield-label">{label}</label>
+  if (custom) {
+    return (
+      <div id={id} className={wrapper ? INPUT.wrapper_margin : INPUT.wrapper}>
+        <label className={INPUT.label}>{label}</label>
+        <input
+          data-test-id={dataTestId}
+          value={custom.value}
+          className={error ? INPUT.error : INPUT.input}
+          placeholder={placeholder}
+          onChange={custom.onChangeEvent}
+        />
+      </div>
+    );
+  }
+
+  /* INPUT FOR CONTROLLED FORMS USING REACT HOOK */
+
+  if (name) return (
+    <div id={id} className={wrapper ? INPUT.wrapper_margin : INPUT.wrapper}>
+      <label className={INPUT.label}>{label}</label>
       <Controller
         name={name}
         control={control}
@@ -28,7 +48,7 @@ const Input: React.FC<InputProps> = ({
             data-test-id={dataTestId}
             {...register(name, { required: required })}
             value={value}
-            className={error ? "core-ui-textfield error-active":"core-ui-textfield"}
+            className={error ? INPUT.error : INPUT.input}
             placeholder={placeholder}
             onChange={onChange}
           />
@@ -36,6 +56,19 @@ const Input: React.FC<InputProps> = ({
       />
     </div>
   );
+
+  /* SKIP RETURN ERRORS */
+  return null;
 };
 
 export default Input;
+
+
+/* Classname configuration for readability */
+const INPUT = {
+  wrapper: "core-ui-textfield-wrapper",
+  wrapper_margin: "core-ui-textfield-wrapper core-ui-textfield-wrapper-margin",
+  label: "core-ui-textfield-label",
+  input: "core-ui-textfield",
+  error: "core-ui-textfield error-active"
+}

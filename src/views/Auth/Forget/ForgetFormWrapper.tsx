@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { forgotPassword, selectLoading } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
-import { IFormInputs } from "src/types/components/Inputs";
+import { IIFormInputs } from "src/types/components/Inputs";
 import { IForgetFormWrapper } from "src/types/views/Auth";
 import Ttp from "../../../assets/img/ttp_logo.png";
 import ForgetForm from "./ForgetForm";
@@ -17,13 +17,13 @@ const ForgetFormWrapper: FC<IForgetFormWrapper> = ({ history, visible, failed })
         handleSubmit,
         formState: { errors },
         control,
-    } = useForm<IFormInputs>();
+    } = useForm<IIFormInputs>();
     const loading = useAppSelector(selectLoading);
     const theme = useTheme();
     const SM = useMediaQuery(theme.breakpoints.down("sm"));
     const dispatch = useDispatch();
 
-    const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const onSubmit: SubmitHandler<IIFormInputs> = (data) => {
         let pattern =
             /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
         let condition = pattern.test(data.email);

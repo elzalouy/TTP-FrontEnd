@@ -16,6 +16,8 @@ import { useAppSelector } from "../../../models/hooks";
 import { generateID } from "../../../helpers/IdGenerator";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import Button from "src/coreUI/components/Buttons/Button";
 
 //SX Style objects
 
@@ -59,9 +61,7 @@ const CreateNewCategory = () => {
   const [errors, setErrors] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const loadingCat = useAppSelector(selectCatLoading);
-  const allCategories = useAppSelector(selectAllCategories);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategories, setsubCategories] = useState<
     { _id: string; subCategory: string }[]
@@ -88,6 +88,7 @@ const CreateNewCategory = () => {
   const removeSubCategory = (id: any) => {
     setsubCategories(subCategories.filter((element) => element._id !== id));
   };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const body = {
@@ -176,76 +177,59 @@ const CreateNewCategory = () => {
           </p>
         </div>
         <Grid container>
-          <Grid item xs={12}>
-            <Typography
-              fontWeight={"700"}
-              fontSize={14}
-              paddingTop={4}
-              paddingBottom={1}
-            >
-              Main category
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-              <TextField
-                type="text"
-                className="text-input"
-                name="mainCategory"
-                placeholder="Ex: Al-shaqran"
-                value={mainCategory}
-                onChange={onMainChange}
+          <Input
+            label="Main category"
+            placeholder="Ex : Al-Shaqran"
+            custom={{
+              value: mainCategory, onChangeEvent: onMainChange
+            }}
+            required
+            wrapper
+          />
+          <Grid
+            container
+            alignItems="center"
+          >
+            <Grid item xs={9} lg={9}>
+              <Input
+                label="Sub Category"
+                placeholder="Sub Category"
+                custom={{
+                  value: subCategory, onChangeEvent: onSubChange
+                }}
+                wrapper
                 required
-                sx={addNewCategoryMainCategoryStyles}
               />
-            </div>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              fontWeight={"700"}
-              fontSize={14}
-              paddingTop={1}
-              paddingBottom={1}
-              color="black"
-            >
-              Sub-category
-            </Typography>
-          </Grid>
-          <Grid item xs={9} style={{ marginTop: "10px", paddingRight: "20px" }}>
-            <TextField
-              type="text"
-              name="subCategory"
-              value={subCategory}
-              className="text-input"
-              onChange={onSubChange}
-              placeholder="Sub category"
-              sx={addNewCategorySubCatStyles}
-            />
-          </Grid>
-          <Grid item xs={3} style={{ marginTop: "10px" }}>
-            <div className="add-subcategory-cnc" onClick={addSubCategory}>
-              Add
-            </div>
+            </Grid>
+            <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "42px" }}>
+              <Button
+                type="add"
+                size="small"
+                label="add"
+                onClick={addSubCategory}
+                loading={loadingCat}
+              />
+            </Grid>
           </Grid>
           <div className="subcategories">
             {subCategories &&
-              subCategories.map(({ index, subCategory }: any) => (
+              subCategories.map(({ _id, subCategory }: any) => (
                 <Badge
                   name={subCategory}
-                  index={index}
-                  onChange={() => removeSubCategory(index)}
+                  index={_id}
+                  onChange={() => removeSubCategory(_id)}
                 />
               ))}
             <br />
           </div>
           <div className="controllers">
-            <button className="controllers-done" onClick={handleSubmit}>
-              {loadingCat ? (
-                <CircularProgress sx={AddNewCategoryCircularProgressStyles} />
-              ) : (
-                "Done"
-              )}
-            </button>
+            <Button
+              type="main"
+              size="large"
+              label="done"
+              onClick={handleSubmit}
+              loading={loadingCat}
+            />
           </div>
         </Grid>
       </PopUp>
