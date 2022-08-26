@@ -30,26 +30,26 @@
 
 /* Production  */
 
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
     font-family: "Cairo", sans-serif;
 }
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
     border: solid 1px #E4E4E4 !important;
     outline: none;
 }
