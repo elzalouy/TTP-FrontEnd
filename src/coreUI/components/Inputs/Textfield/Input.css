@@ -1,4 +1,4 @@
-/* Dev */
+/* ______Dev________  */
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
@@ -27,30 +27,38 @@
     outline: none !important;
 }
 
+/* ______Production________  */
 
-/* Production  */
-
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
-    border: none !important;
+/* Root  */
+.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid black !important;
     outline: none !important;
 }
 
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover {
-    border: none !important;
-    outline: none !important;
-}
-
+/* Root Focus */
 .MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:focus-visible {
     border: none !important;
     outline: none !important;
 }
 
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
+.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j:focus-visible {
     border: none !important;
     outline: none !important;
 }
 
-.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+/* Root Hover */
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Fieldset */
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
+    border: 1px solid #E4E4E4 !important;
+    outline: none !important;
+}
+
+.css-1stqe5j.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
@@ -60,29 +68,38 @@
     outline: none !important;
 }
 
+/* Fieldset Focus */
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
+    border: none !important;
+    outline: none !important;
+}
+
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
+    border: none !important;
+    outline: none !important;
+}
+
+/* Fieldset Error */
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E30707 !important;
+    outline: none !important;
+}
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E30707 !important;
+    outline: none !important;
+}
+
+/* Input  */
 .MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
     font-family: "Cairo", sans-serif;
 }
 
+/* Input  Focus*/
 .MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input:focus-visible {
     border: 1px solid #E4E4E4 !important;
     outline: none !important;
 }
 
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
-    border: 1px solid #E4E4E4 !important;
-    outline: none !important;
-}
-
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
-}
-
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
-}
 
 
 /* Custom Styles */
