@@ -7,17 +7,22 @@
 
 /* Focus / Active */
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root fieldset:focus-visible {
-    border: 1px solid black !important;
-    outline: none !important;
-}
-
-.Mui-focused .css-1stqe5j .MuiOutlinedInput-notchedOutline {
+.Mui-focused .css-1stqe5j > .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
 
 .MuiFormControl-root>.Mui-focused .css-1stqe5j:focus-visible {
+    border: none;
+    outline: none !important;
+}
+
+.css-1stqe5j .MuiOutlinedInput-notchedOutline{
+    border: 1px solid black !important;
+    outline: none !important;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
     border: 1px solid black !important;
     outline: none !important;
 }
@@ -36,19 +41,23 @@
 /* Hover */
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
+    border: none !important;
     outline: none !important;
 }
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset:hover {
     outline: none !important;
+    border: none !important;
 }
 
 .input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover {
     outline: none !important;
+    border: none !important;
 }
 
 .Mui-focused .css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
     outline: none !important;
+    border: none !important;
 }
 
 /* Error No Action */
