@@ -1,118 +1,110 @@
-/* ______Dev________  */
+/* Textfield Styles */
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: 1px solid black !important;
-    outline: none !important;
+.core-ui-textfield-wrapper {
+    display: flex;
+    flex-direction: column;
+
 }
 
+.core-ui-textfield-label {
+    margin-bottom: 5px;
+    font-family: "Cairo" !important;
+    font-weight: bolder !important;
+}
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input {
+.core-ui-textfield {
+    height: 50px;
+    padding: 10px;
+    border: solid 1px #B4B6C4;
+    outline: none;
+    border-radius: 5px;
+}
+
+.core-ui-textfield::placeholder {
+    color: #B4B6C4;
+}
+
+.core-ui-textfield:active {
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+.core-ui-textfield:focus {
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+/* Password Input Styles */
+
+.password-input-wrapper {
+    margin-top: 20px;
+}
+
+.password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+    padding-right: 0px;
+}
+
+.password-input {
+    display: block;
     font-family: "Cairo", sans-serif;
+    width: 100%;
+    color: black;
+    padding: 10px;
+    height: 50px;
+    border: solid 1px #B4B6C4;
+    outline: none;
+    text-align: left;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 0px;
 }
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
-    border: 1px solid #E4E4E4 !important;
+.password-icon {
+    position: absolute !important;
+    right: 0;
+}
+
+.password-input-label {
+    margin-bottom: 5px;
+    font-family: "Cairo" !important;
+    font-weight: bolder !important;
+}
+
+.password-input:active {
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+.password-input::placeholder {
+    color: #B4B6C4;
+}
+
+.password-input:focus {
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+/* Input error */
+
+.error-active {
+    border: 1px solid red;
     outline: none;
 }
 
-
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
+.error-active:active {
+    border: 1px solid red;
+    outline: none;
 }
 
-
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
-}
-
-/* ______Production________  */
-
-/* Root  */
-.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: 1px solid black !important;
-    outline: none !important;
-}
-
-/* Root Focus */
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:focus-visible {
-    border: none !important;
-    outline: none !important;
-}
-
-.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j:focus-visible {
-    border: none !important;
-    outline: none !important;
-}
-
-/* Root Hover */
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover {
-    border: none !important;
-    outline: none !important;
-}
-
-/* Fieldset */
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
-    border: 1px solid #E4E4E4 !important;
-    outline: none !important;
-}
-
-.css-1stqe5j.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: 1px solid black !important;
-    outline: none !important;
-}
-
-.css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E4E4E4 !important;
-    outline: none !important;
-}
-
-/* Fieldset Focus */
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
-    border: none !important;
-    outline: none !important;
-}
-
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
-    border: none !important;
-    outline: none !important;
-}
-
-/* Fieldset Error */
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
-}
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E30707 !important;
-    outline: none !important;
-}
-
-/* Input  */
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
-    font-family: "Cairo", sans-serif;
-}
-
-/* Input  Focus*/
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input:focus-visible {
-    border: 1px solid #E4E4E4 !important;
-    outline: none !important;
-}
-
-
-
-/* Custom Styles */
-
-.error-border {
-    border: 1px solid #E30707 !important;
-    border-radius: 6px;
-}
-
-#outlined-error {
-    font-family: "Cairo", sans-serif;
-}
-
-.label-input {
-    font-weight: 500;
+.error-active:focus {
+    border: 1px solid red;
+    outline: none;
 }

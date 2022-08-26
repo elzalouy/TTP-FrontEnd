@@ -1,7 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-import { UseFormSetValue } from "react-hook-form";
-import { IFailed } from "../views/Auth";
-
 export interface InputProps {
   name: string;
   control: any;
@@ -37,7 +33,8 @@ export interface PasswordInputProps {
   visible: boolean;
   setVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
   minLength: boolean;
-  error?:boolean
+  error?:boolean;
+  wrapper?:boolean;
 }
 
 export interface IFormInputs {

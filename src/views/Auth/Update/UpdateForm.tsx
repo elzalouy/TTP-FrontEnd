@@ -52,6 +52,7 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
                 variant={"h2"}
                 fontWeight={"900"}
                 paddingTop={4}
+                paddingBottom={4}
                 fontFamily={"Cairo"}
             >
                 Enter your new password
@@ -79,13 +80,14 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
             )}
             <PasswordInput
                 name="confirmNewPassword"
-                label="New Password"
+                label="Confirm New Password"
                 control={control}
                 register={register}
                 setVisiblity={setHideConfirmPassword}
                 visible={hideConfirmPassword}
                 minLength
                 error={!!errors.confirmNewPassword}
+                wrapper
             />
             {errors.confirmNewPassword?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>

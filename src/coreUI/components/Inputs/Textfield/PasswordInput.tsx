@@ -6,20 +6,15 @@ import { PasswordInputProps } from 'src/types/components/Inputs';
 import "./Input.css"
 
 
-const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength,error}) => {
+const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength, error, wrapper }) => {
 
     return (
-        <>
-            <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-                className='label-input'
+        <div className={wrapper ? 'password-input-wrapper' : ''}>
+            <label
+                className='password-input-label'
             >
                 {label}
-            </Typography>
+            </label>
             <Controller
                 name={name}
                 control={control}
@@ -29,7 +24,7 @@ const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register,
                             {...register(name, { required: true, minLength: minLength && 8 })}
                             type={visible ? "text" : "password"}
                             autoComplete="new-password"
-                            className={error ? "password-input error-border" : "password-input"}
+                            className={error ? "password-input error-active" : "password-input"}
                             onChange={onChange}
                             placeholder="Password"
                         />
@@ -46,7 +41,7 @@ const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register,
                     </div>
                 )}
             />
-        </>
+        </div>
     )
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "../Create/Create/newProject";
 import IMAGES from "../../../assets/img/Images";
-import SearchBar from "../../../coreUI/components/Inputs/SearchBox";
+import SearchBar from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Box from "@mui/material/Box";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../../models/hooks";

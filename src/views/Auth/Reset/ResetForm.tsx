@@ -56,6 +56,7 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
                 variant={"h2"}
                 fontWeight={"900"}
                 paddingTop={4}
+                paddingBottom={4}
                 fontFamily={"Cairo"}
             >
                 Reset Password
@@ -86,13 +87,14 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
             )}
             <PasswordInput
                 name="confirmNewPassword"
-                label="New Password"
+                label="Confirm New Password"
                 control={control}
                 register={register}
                 setVisiblity={setHideConfirmPassword}
                 visible={hideConfirmPassword}
                 minLength
                 error={!!errors.confirmNewPassword}
+                wrapper
             />
             {errors.confirmNewPassword?.type === "required" && (
                 <p className="error-text">

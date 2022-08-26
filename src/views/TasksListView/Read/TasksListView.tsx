@@ -5,7 +5,7 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../../assets/img/Images";
-import SearchBox from "../../../coreUI/components/Inputs/SearchBox";
+import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
