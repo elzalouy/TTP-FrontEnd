@@ -6,7 +6,7 @@ import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { createDepartment } from "../../../models/Departments";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ import {
 import "../../popups-style.css";
 import _ from "lodash";
 import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
@@ -144,38 +145,40 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           )}
         />
         {/* <label className="popup-label-nt">Teams</label> */}
-        <Box sx={{ display: "inline-flex", width: "100%", paddingTop: 1 }}>
-          <Box width={"75%"}>
+        <Grid
+          container
+          alignItems="center"
+          pt={2}
+        >
+          <Grid item xs={9} lg={9}>
             <Controller
               name="team"
               control={control}
-              render={(props) => (
+              render={() => (
                 <Input
                   dataTestId="create-dep-teamName"
                   name="team"
                   control={control}
                   register={register}
                   label={"Teams"}
+                  placeholder="Team name"
                   state={state}
                   id="editDepartmentTeams"
                 />
               )}
             />
-          </Box>
-          <Box height={"60%"} paddingTop={2}>
-            <button
-              data-test-id="create-dep-add-team"
-              className="gray-btn"
+          </Grid>
+          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "24px" }}>
+            <Button
+              type="add"
+              size="small"
+              label="add"
+              dataTestId="create-dep-add-team"
+              disabled={(watch().team.length <= 2)}
               onClick={() => onChangeTeams()}
-              disabled={watch().team.length <= 2}
-              style={{
-                background: watch().team.length > 2 ? "#ffc500" : "#b4b6c4",
-              }}
-            >
-              Add
-            </button>
-          </Box>
-        </Box>
+            />
+          </Grid>
+        </Grid>
         <div className="names-container">
           {state.teams.map((el, index) => {
             return (
@@ -189,17 +192,14 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         </div>
         <br />
         <div className="controllers">
-          <button
-            data-test-id="create-dep-submit"
-            className="controllers-done"
-            onClick={onSubmit}
-          >
-            {state.loading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
-            ) : (
-              "Done"
-            )}
-          </button>
+          <Button
+              type="main"
+              size="large"
+              label="done"
+              dataTestId="create-dep-submit"
+              onClick={onSubmit}
+              loading={state.loading}
+            />
         </div>
       </PopUp>
     </>
