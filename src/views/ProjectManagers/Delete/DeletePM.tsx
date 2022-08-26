@@ -1,35 +1,22 @@
-import React from "react";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
-// import "../../popups-style.css";
 import { useAppSelector } from "../../../models/hooks";
 import { selectDeletePMPopup } from "../../../models/Ui/UI.selectors";
 import { select_Id } from "../../../models/PM/pm.selectors";
 import { useDispatch } from "react-redux";
 import { toggleDeleteProjectManagerPopup } from "../../../models/Ui";
-import { deletePM } from "../../../models/PM";
+import { deletePM, selectLoading } from "../../../models/PM";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import Button from "src/coreUI/components/Buttons/Button";
 
-type Props = {
-  hideButton: boolean;
-};
+const DeletePM = () => {
 
-const DeletePM = (props: Props) => {
   const toggler = useAppSelector(selectDeletePMPopup);
   const _id = useAppSelector(select_Id);
+  const loading = useAppSelector(selectLoading);
   const dispatch = useDispatch();
 
   return (
     <>
-      {!props.hideButton && (
-        <button
-          className="black-btn"
-          onClick={() => {
-            dispatch(toggleDeleteProjectManagerPopup("flex"));
-          }}
-        >
-          Delete PM
-        </button>
-      )}
       <SmallPopUp show={toggler}>
         <div className="imageAlert">
           <img src={deleteIcon} />
@@ -39,24 +26,22 @@ const DeletePM = (props: Props) => {
         </p>
         <div className="margin-cover">
           <div className="controllers-small-popup">
-            <button
-              className="controllers-cancel"
-              onClick={() => {
-                dispatch(toggleDeleteProjectManagerPopup("none"));
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              className="controllers-delete"
+            <Button
+              type="cancel"
+              size="medium"
+              label="cancel"
+              onClick={() => dispatch(toggleDeleteProjectManagerPopup("none"))}
+            />
+            <Button
+              type="delete"
+              size="medium"
+              label="delete"
               onClick={() => {
                 dispatch(deletePM(_id));
                 dispatch(toggleDeleteProjectManagerPopup("none"));
               }}
-              data-test-id="delete-pm-button"
-            >
-              Delete
-            </button>
+              loading={loading}
+            />
           </div>
         </div>
       </SmallPopUp>

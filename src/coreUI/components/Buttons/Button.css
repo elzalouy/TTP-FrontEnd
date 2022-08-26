@@ -14,6 +14,7 @@ button {
     outline: none;
     font-family: "Cairo Bold", sans-serif;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 /* Styles added based on the size */
@@ -34,6 +35,7 @@ button {
     font-size: 14px;
     width: 154px;
     height: 48px;
+    border-radius: 10px;
 }
 
 /* Styles added based on the color and UI */
@@ -45,6 +47,7 @@ button.main {
 
 button.delete {
     background-color: #FE1A1A;
+    color: #FFFFFF;
     width: 210px !important;
 }
 

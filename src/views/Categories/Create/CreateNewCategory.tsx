@@ -1,15 +1,11 @@
-import React from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import "../../popups-style.css";
-import { useState, useEffect } from "react";
-import { CircularProgress, Grid, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { Grid, Typography } from "@mui/material";
 import { selectCatLoading } from "../../../models/Categories/categories.selectores";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
-import { selectAllCategories } from "../../../models/Categories";
 import { createCategory } from "../../../models/Categories";
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../../../models/hooks";
@@ -30,29 +26,6 @@ const addNewCategoryContainerStyles = {
   borderRadius: 3,
 };
 
-const AddNewCategoryCircularProgressStyles = {
-  color: "white",
-  height: "25px !important",
-  width: "25px !important",
-};
-
-const addNewCategoryMainCategoryStyles = {
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const addNewCategorySubCatStyles = {
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
 
 const CreateNewCategory = () => {
   const dispatch = useDispatch();

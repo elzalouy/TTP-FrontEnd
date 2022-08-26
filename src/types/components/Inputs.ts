@@ -25,8 +25,9 @@ export interface IButton {
   size: 'large' | 'medium' | 'small';
   type: 'main' | 'delete' | 'add' | 'cancel';
   onClick: (e:any) => any;
-  loading: boolean | null;
+  loading?: boolean | null;
   disabled?: boolean;
+  dataTestId?:string
 }
 
 export interface IIDateInputProps {

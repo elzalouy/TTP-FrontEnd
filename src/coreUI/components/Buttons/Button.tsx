@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { IButton } from 'src/types/components/Inputs'
 import "./Button.css"
 
-const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label }) => {
+const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label ,dataTestId}) => {
 
     let className = "button-" + size + " " + type;
     let disabledClassName = "button-" + size + " " + type + " " + "disabled";
@@ -11,6 +11,7 @@ const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label }) 
     return (
         <button
             onClick={onClick}
+            data-test-id={dataTestId}
             className={disabled ? disabledClassName : className}
         >
             {

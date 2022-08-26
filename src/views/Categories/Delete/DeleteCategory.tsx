@@ -9,6 +9,7 @@ import {
   deleteCategory,
   selectSelectedCategory,
 } from "../../../models/Categories";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   showDelete: string;
@@ -49,17 +50,18 @@ const DeleteCategory: React.FC<Props> = ({
       </Typography>
       <div className="margin-cover">
         <div className="controllers-small-popup">
-          <button
-            className="controllers-cancel"
-            onClick={() => {
-              handleSetShowDelete("none");
-            }}
-          >
-            Cancel
-          </button>
-          <button className="controllers-delete" onClick={handleSubmit}>
-            Delete
-          </button>
+          <Button
+            type="cancel"
+            size="medium"
+            label="cancel"
+            onClick={() => handleSetShowDelete("none")}
+          />
+          <Button
+            type="delete"
+            size="medium"
+            label="delete"
+            onClick={handleSubmit}
+          />
         </div>
       </div>
     </SmallPopUp>
