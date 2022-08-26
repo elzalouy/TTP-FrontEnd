@@ -14,7 +14,7 @@
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root fieldset:focus-visible {
     border: 1px solid black !important;
-    outline: none;
+    outline: none !important;
 }
 
 .input-wrapper>.MuiFormControl-root>.css-1stqe5j:focus-visible {
@@ -30,17 +30,20 @@
 /* Hover */
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
-    border: solid 1px #E4E4E4 !important;
-    outline: none;
+    outline: none !important;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset:hover {
+    outline: none !important;
 }
 
 .input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover {
-    outline: none;
+    outline: none !important;
 }
 
 .css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E4E4E4 !important;
-    outline: none;
+    outline: none !important;
 }
 
 /* Error No Action */
