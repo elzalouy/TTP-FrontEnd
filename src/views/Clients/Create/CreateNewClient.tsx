@@ -12,6 +12,8 @@ import {
 import { useAppSelector } from "../../../models/hooks";
 import { toast } from "react-toastify";
 import { generateID } from "../../../helpers/IdGenerator";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 
 type Props = {};
 interface client {
@@ -19,7 +21,7 @@ interface client {
   clientName: string;
 }
 
-interface headers {}
+interface headers { }
 const CreateNewClient: React.FC<Props> = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -131,35 +133,28 @@ const CreateNewClient: React.FC<Props> = () => {
                 alt=""
               />
             </Box>
-
-            <label className="label-client">Client Name</label>
-            <input
-              className="input-client"
-              type="text"
-              placeholder="Ex: Ahmad Ali"
-              name="clientName"
-              value={Data.clientName}
-              onChange={onChange}
+            <Input
+              label="Client Name"
+              placeholder="Ex : Ahmed Ali"
+              dataTestId="client-name"
+              inputName="clientName"
+              custom={{
+                value: Data.clientName,
+                onChangeEvent: (e: any) => {
+                  onChange(e);
+                }
+              }}
               required
-              data-test-id="client-name"
+              wrapper
             />
-            <br />
-
             <Box className="controllers">
-              <button className="blackBtn-client" data-test-id="client-submit-button">
-                {loadingClient ? (
-                  <CircularProgress
-                    sx={{
-                      color: "white",
-                      padding: "0px",
-                      height: "25px !important",
-                      width: "25px !important",
-                    }}
-                  />
-                ) : (
-                  "Done"
-                )}
-              </button>
+              <Button
+                type="main"
+                size="large"
+                label="done"
+                loading={loadingClient}
+                dataTestId="client-submit-button"
+              />
             </Box>
           </form>
         </Box>

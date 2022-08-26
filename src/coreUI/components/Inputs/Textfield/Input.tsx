@@ -14,6 +14,7 @@ const Input: React.FC<IInputProps> = ({
   required,
   error,
   wrapper,
+  inputName,
   custom
 }) => {
 
@@ -30,6 +31,7 @@ const Input: React.FC<IInputProps> = ({
           className={error ? INPUT.error : INPUT.input}
           placeholder={placeholder}
           onChange={custom.onChangeEvent}
+          name={inputName}
         />
       </div>
     );
@@ -51,6 +53,7 @@ const Input: React.FC<IInputProps> = ({
             className={error ? INPUT.error : INPUT.input}
             placeholder={placeholder}
             onChange={onChange}
+            name={inputName}
           />
         }}
       />

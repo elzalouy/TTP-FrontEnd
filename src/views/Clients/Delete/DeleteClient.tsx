@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { deleteClient, selectEditClient } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   show: string;
@@ -18,15 +19,20 @@ type Props = {
 const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const editClient = useAppSelector(selectEditClient);
+
   const handleDelete = async () => {
     try {
       dispatch(deleteClient({ id: editClient._id }));
       setShow("none");
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   const handleClose = () => {
     setShow("none");
   };
+
   return (
     <>
       <SmallPopUp show={show}>
@@ -38,18 +44,20 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
         </p>
         <div className="margin-cover">
           <div className="controllers-small-popup">
-            <button className="controllers-cancel" onClick={handleClose}>
-              Cancel
-            </button>
-            <button
-              className="controllers-delete"
+            <Button
+              type="cancel"
+              size="medium"
+              label="cancel"
+              onClick={handleClose}
+            />
+            <Button
+              type="delete"
+              size="medium"
+              label="delete"
               onClick={() => {
                 handleDelete();
               }}
-              data-test-id="delete-client-button-confirm"
-            >
-              Delete
-            </button>
+            />
           </div>
         </div>
       </SmallPopUp>
