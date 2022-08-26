@@ -17,7 +17,7 @@
     outline: none !important;
 }
 
-.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+.Mui-focused .css-1stqe5j .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
@@ -47,7 +47,7 @@
     outline: none !important;
 }
 
-.css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
+.Mui-focused .css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
