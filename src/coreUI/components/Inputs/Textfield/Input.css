@@ -11,32 +11,42 @@
 }
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
-    border: solid 1px #E4E4E4 !important;
+    border: 1px solid #E4E4E4 !important;
     outline: none;
 }
 
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
+    border: 1px solid #E30707 !important;
     outline: none !important;
 }
 
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
+    border: 1px solid #E30707 !important;
     outline: none !important;
 }
 
 
 /* Production  */
 
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
+    border: none !important;
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover {
+    border: none !important;
+    outline: none !important;
+}
+
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:focus-visible {
+    border: none !important;
+    outline: none !important;
+}
+
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j fieldset:focus-visible {
+    border: none !important;
     outline: none !important;
 }
 
@@ -45,19 +55,40 @@
     outline: none !important;
 }
 
+.css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E4E4E4 !important;
+    outline: none !important;
+}
+
 .MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
     font-family: "Cairo", sans-serif;
 }
 
-.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
-    border: solid 1px #E4E4E4 !important;
-    outline: none;
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input:focus-visible {
+    border: 1px solid #E4E4E4 !important;
+    outline: none !important;
 }
+
+.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
+    border: 1px solid #E4E4E4 !important;
+    outline: none !important;
+}
+
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E30707 !important;
+    outline: none !important;
+}
+
+.input-wrapper>.MuiFormControl-root>.MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E30707 !important;
+    outline: none !important;
+}
+
 
 /* Custom Styles */
 
 .error-border {
-    border: solid 1px #E30707 !important;
+    border: 1px solid #E30707 !important;
     border-radius: 6px;
 }
 
