@@ -1,87 +1,70 @@
-/* No Action */
+/* Dev */
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline .css-vcm2jj {
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid black !important;
     outline: none !important;
 }
 
-/* Focus / Active */
 
-.Mui-focused .css-1stqe5j > .MuiOutlinedInput-notchedOutline {
-    border: 1px solid black !important;
-    outline: none !important;
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input {
+    font-family: "Cairo", sans-serif;
 }
 
-.MuiFormControl-root>.Mui-focused .css-1stqe5j:focus-visible {
-    border: none;
-    outline: none !important;
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
+    border: solid 1px #E4E4E4 !important;
+    outline: none;
 }
 
-/* .css-1stqe5j .MuiOutlinedInput-notchedOutline{
-    border: 1px solid black !important;
-    outline: none !important;
-} */
-
-/* .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
-    border: 1px solid black !important;
-    outline: none !important;
-} */
-
-
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j:focus-visible {
-    border: solid 1px #E30707 !important;
-    outline: none !important;
-}
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
 
-/* Hover */
-
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset:hover {
-    border: solid 1px #E4E4E4 !important;
-    border: none !important;
-}
-
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j .MuiOutlinedInput-notchedOutline fieldset:hover{
-    border: solid 1px #E30707 !important;
-    outline: none !important;
-}
-
-/* Error No Action */
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+
+/* Production  */
+
+.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
 
+.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: 1px solid black !important;
+    outline: none !important;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j input {
+    font-family: "Cairo", sans-serif;
+}
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.css-1stqe5j:hover fieldset {
+    border: solid 1px #E4E4E4 !important;
+    outline: none;
+}
+
+/* Custom Styles */
 
 .error-border {
     border: solid 1px #E30707 !important;
     border-radius: 6px;
 }
 
-/* Label */
+#outlined-error {
+    font-family: "Cairo", sans-serif;
+}
 
 .label-input {
     font-weight: 500;
-}
-
-/* placeholder font */
-
-#outlined-error::placeholder{
-    font-family: "Cairo";
-}
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input{
-    font-family: "Cairo", sans-serif;
-}
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input::placeholder{
-    font-family: "Cairo", sans-serif;
 }
