@@ -8,7 +8,7 @@ import { clientsDataSelector } from "../../../models/Clients/clients.selectors";
 import { useAppSelector } from "../../../models/hooks";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
-import { clientsActions, getAllClients } from "../../../models/Clients";
+import { clientsActions } from "../../../models/Clients";
 import { selectRole } from "../../../models/Auth";
 
 type Props = {
@@ -84,6 +84,7 @@ export const Clients: React.FC<Props> = () => {
             placeholder="Search"
             value={search}
             onChange={handleSearchChange}
+            size={"medium"}
           />
         </Grid>
       </Grid>

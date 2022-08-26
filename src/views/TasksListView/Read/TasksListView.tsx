@@ -305,6 +305,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                     }}
                     value={props.field.value}
                     placeholder="Search"
+                    size={"medium"}
                   />
                 )}
               />

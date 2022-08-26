@@ -12,7 +12,7 @@ export interface IInputProps {
   required?: boolean
   bold?: boolean;
   type?: boolean;
-  inputName?:string;
+  inputName?: string;
   error?: boolean;
   wrapper?: boolean;
   custom?: {
@@ -21,14 +21,21 @@ export interface IInputProps {
   };
 }
 
+export interface ISearch {
+  value: string;
+  onChange: (e: any) => void;
+  placeholder?: string;
+  size: 'medium' | 'small';
+}
+
 export interface IButton {
   label: string;
   size: 'large' | 'medium' | 'small';
   type: 'main' | 'delete' | 'add' | 'cancel';
-  onClick?: (e:any) => any;
+  onClick?: (e: any) => any;
   loading?: boolean | null;
   disabled?: boolean;
-  dataTestId?:string
+  dataTestId?: string
 }
 
 export interface IIDateInputProps {
