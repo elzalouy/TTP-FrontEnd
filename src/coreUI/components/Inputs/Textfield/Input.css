@@ -17,11 +17,6 @@
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
-    outline: none !important;
-}
-
 .input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover {
     border: solid 1px #E4E4E4 !important;
     outline: none;
@@ -32,7 +27,22 @@
     outline: none;
 }
 
+.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
+}
+
+.input-wrapper>.MuiFormControl-root>.css-1stqe5j .MuiOutlinedInput-notchedOutline {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
+}
+
 .input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
+}
+
+.input-wrapper>.MuiFormControl-root>.css-1stqe5j:focus-visible{
     border: solid 1px #E30707 !important;
     outline: none !important;
 }
