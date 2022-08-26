@@ -1,4 +1,6 @@
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+/* No Action */
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline .css-vcm2jj {
     border: 1px solid black !important;
     outline: none !important;
 }
@@ -7,9 +9,17 @@
     font-family: "Cairo", sans-serif;
 }
 
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
-    border: solid 1px #E4E4E4 !important;
+
+/* Focus / Active */
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root fieldset:focus-visible {
+    border: 1px solid black !important;
     outline: none;
+}
+
+.input-wrapper>.MuiFormControl-root>.css-1stqe5j:focus-visible {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
 }
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
@@ -17,8 +27,14 @@
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover {
+/* Hover */
+
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
     border: solid 1px #E4E4E4 !important;
+    outline: none;
+}
+
+.input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover {
     outline: none;
 }
 
@@ -26,6 +42,8 @@
     border: solid 1px #E4E4E4 !important;
     outline: none;
 }
+
+/* Error No Action */
 
 .input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
     border: solid 1px #E30707 !important;
@@ -37,20 +55,13 @@
     outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j:hover .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
-    outline: none !important;
-}
-
-.input-wrapper>.MuiFormControl-root>.css-1stqe5j:focus-visible{
-    border: solid 1px #E30707 !important;
-    outline: none !important;
-}
 
 .error-border {
     border: solid 1px #E30707 !important;
     border-radius: 6px;
 }
+
+/* Label */
 
 .label-input {
     font-weight: 500;
