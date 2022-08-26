@@ -2,26 +2,10 @@ import _ from "lodash";
 import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
+import { IFilterProps } from "src/types/components/Inputs";
 import "./styles.css";
 
-type elementType = "filter" | "select";
-
-export interface FilterProps {
-  elementType: elementType;
-  name: string;
-  onSelect: any;
-  selected: string;
-  options: {
-    id: string;
-    value: string;
-    text: string;
-  }[];
-  label?: string;
-  textTruncate?: number;
-  error?: string;
-}
-
-const Select = (props: FilterProps) => {
+const Select = (props: IFilterProps) => {
   const fieldRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
 

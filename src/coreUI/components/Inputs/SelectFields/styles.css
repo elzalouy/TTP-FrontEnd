@@ -10,6 +10,7 @@ fieldset[id*="filter-"] {
   border: 0px;
   margin-bottom: 5px;
 }
+
 fieldset[id*="filter-"]:focus {
   border-color: transparent;
   outline-color: transparent;
@@ -19,12 +20,14 @@ fieldset[id*="filter-"] select {
   appearance: none;
   display: none;
 }
+
 fieldset[id*="filter-"] .leftIcon {
   background-color: white;
   padding-inline: 10px;
   border-radius: 0px 10px 10px 0px;
   margin-left: 1px;
 }
+
 fieldset[id*="filter-"] .labelValue {
   font-size: 14px;
   background-color: white;
@@ -35,11 +38,13 @@ fieldset[id*="filter-"] .labelValue {
   padding-block: 10px;
   width: 100%;
 }
+
 fieldset[id*="filter-"] .label {
   padding-right: 5px;
   color: #696974;
   display: inline-block;
 }
+
 fieldset[id*="filter-"] .value {
   font-weight: bold;
 }
@@ -56,6 +61,10 @@ fieldset[id*="filter-"] .options {
   box-shadow: 0px 5px 15px #44444f1a;
   background: #ffffff 0% 0% no-repeat padding-box;
   padding: 7.5px !important;
+  z-index: 10;
+  text-transform: capitalize;
+  height: 200px;
+  overflow-y: scroll;
 }
 
 fieldset[id*="filter-"] .options .option {
@@ -67,9 +76,11 @@ fieldset[id*="filter-"] .options .option {
   padding-block: 9px;
   padding-left: 10px;
 }
+
 fieldset[id*="filter-"] .options .option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
+
 fieldset[id*="filter-"] select datalist::after {
   display: initial;
   appearance: none !important;
@@ -89,10 +100,12 @@ fieldset[id*="select"] {
   margin-top: 0px;
   border: 0.5px solid #b4b6c4;
 }
+
 fieldset[id*="select"]:focus {
   border-color: transparent;
   outline-color: transparent;
 }
+
 fieldset[id*="select"][data-error="true"] {
   border-color: red;
 }
@@ -103,6 +116,7 @@ fieldset[id*="select"] .leftIcon {
   padding-inline: 10px;
   border-radius: 0px 10px 10px 0px;
 }
+
 fieldset[id*="select"] .labelValue {
   font-size: 14px;
   background-color: white;
@@ -131,21 +145,28 @@ fieldset[id*="select"] .options {
   box-shadow: 0px 5px 15px #44444f1a;
   background: #ffffff 0% 0% no-repeat padding-box;
   padding: 7.5px !important;
+  z-index: 10;
+  text-transform: capitalize;
+  height: 200px;
+  overflow-y: scroll;
 }
 
 fieldset[id*="select"] .options .option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
-  text-transform: capitalize;
+
   opacity: 1;
   width: 100%;
   padding-block: 9px;
   padding-left: 10px;
+
 }
+
 fieldset[id*="select"] .options .option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
+
 fieldset[id*="select"] select datalist::after {
   display: initial;
   appearance: none !important;

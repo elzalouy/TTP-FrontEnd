@@ -66,3 +66,18 @@ export interface IIFormInputs {
   newPassword?: string;
   confirmNewPassword?: string
 }
+ 
+export interface IFilterProps {
+  elementType: "filter" | "select";
+  name: string;
+  onSelect: any;
+  selected: string;
+  options: {
+    id: string;
+    value: string;
+    text: string;
+  }[];
+  label?: string;
+  textTruncate?: number;
+  error?: string;
+}

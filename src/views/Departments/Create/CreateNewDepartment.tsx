@@ -185,7 +185,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               )}
             />
           </Grid>
-          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "24px" }}>
+          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "20px" }}>
             <Button
               type="add"
               size="small"

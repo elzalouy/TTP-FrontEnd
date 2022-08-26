@@ -7,7 +7,6 @@ import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import IMAGES from "../../../assets/img/Images";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
@@ -185,7 +184,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               id="editDepartmentTeams"
             />
           </Grid>
-          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "24px" }}>
+          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "20px" }}>
             <Button
               type="add"
               size="small"

@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import * as React from "react";
@@ -21,6 +21,7 @@ import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 import Loading from "../../../coreUI/usable-elements/Loading";
 import { ProjectsInterface } from "../../../types/models/Projects";
+import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 interface Props {
   projectId?: string;
 }
@@ -51,6 +52,13 @@ export const TasksListView: React.FC<Props> = (props: any) => {
     e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
+  };
+
+  const onChange = (e: any, props: any) => {
+    e.preventDefault();
+    console.log(e);
+    props.field.onChange(e.target.id);
+    onHandleChange(e);
   };
 
   const onHandleSort = (e: any) => {
@@ -154,21 +162,17 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                 control={control}
                 name="deadline"
                 render={(props) => (
-                  <SelectInput
+                  <Filter
+                    elementType="filter"
+                    name={"tasks-" + props.field.name}
+                    selected={props.field.value}
                     label="Due Date: "
-                    {...props}
+                    onSelect={(e: any) => onChange(e, props)}
+                    textTruncate={4}
                     options={[
-                      { id: "All", text: "All", value: "" },
                       { id: "asc", text: "Ascending", value: "asc" },
                       { id: "desc", text: "Descending", value: "desc" },
                     ]}
-                    handleChange={(e) => {
-                      e.preventDefault();
-                      props.field.onChange(e);
-                      onHandleSort(e);
-                    }}
-                    selectValue={props.field.value}
-                    selectText={props.field.value}
                   />
                 )}
               />
@@ -180,12 +184,12 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                   name="status"
                   control={control}
                   render={(props) => (
-                    <SelectInput
+                    <Filter
+                      elementType="filter"
+                      name={"projects-" + props.field.name}
+                      selected={props.field.value}
                       label="Status: "
-                      placeholder="All"
-                      {...props}
                       options={[
-                        { id: "All", value: "", text: "All" },
                         {
                           id: "Tasks Board",
                           value: "Tasks Board",
@@ -210,13 +214,8 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                         },
                         { id: "canceled", value: "Cancled", text: "Cancled" },
                       ]}
-                      handleChange={(e) => {
-                        e.preventDefault();
-                        props.field.onChange(e);
-                        onHandleChange(e);
-                      }}
-                      selectValue={props.field.value}
-                      selectText={props.field.value}
+                      onSelect={(e: any) => onChange(e, props)}
+                      textTruncate={5}
                     />
                   )}
                 />
@@ -230,11 +229,12 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                   name="projectId"
                   control={control}
                   render={(props) => (
-                    <SelectInput
-                      label={"Project: "}
-                      {...props}
+                    <Filter
+                      elementType="filter"
+                      name={"projects-" + props.field.name}
+                      selected={props.field.value}
+                      label="Project: "
                       options={[
-                        { id: "All", value: "", text: "All" },
                         ...projects.projects?.map((item) => {
                           return {
                             id: item._id,
@@ -243,17 +243,8 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                           };
                         }),
                       ]}
-                      handleChange={(e) => {
-                        e.preventDefault();
-                        props.field.onChange(e);
-                        onHandleChange(e);
-                      }}
-                      selectValue={props.field.value}
-                      selectText={
-                        projects?.projects?.find(
-                          (val) => val._id === props.field.value
-                        )?.name
-                      }
+                      onSelect={(e: any) => onChange(e, props)}
+                      textTruncate={10}
                     />
                   )}
                 />
