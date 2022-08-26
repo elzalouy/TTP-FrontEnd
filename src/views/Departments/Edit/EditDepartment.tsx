@@ -1,30 +1,30 @@
+import { Grid } from "@mui/material";
 import _ from "lodash";
-import React from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
-import { selectUi } from "../../../models/Ui/UI.selectors";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import IMAGES from "../../../assets/img/Images";
+import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
+import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
-import { useAppSelector } from "../../../models/hooks";
-import { toggleEditDepartment } from "../../../models/Ui";
-import { editDepartmentSchema } from "../../../services/validations/department.schema";
-import { useForm, Controller } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { Box, CircularProgress, Grid } from "@mui/material";
 import {
   selectEditDepartment,
-  updateDepartment,
+  updateDepartment
 } from "../../../models/Departments";
+import { useAppSelector } from "../../../models/hooks";
+import { toggleEditDepartment } from "../../../models/Ui";
+import { selectUi } from "../../../models/Ui/UI.selectors";
+import { editDepartmentSchema } from "../../../services/validations/department.schema";
 import {
   editDepartmentInitState,
   IEditDepartmentProps,
-  IEditDepartmentState,
+  IEditDepartmentState
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
-import Button from "src/coreUI/components/Buttons/Button";
-import Badge from "src/coreUI/components/Badge/Badge";
 
 const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
   const dispatch = useDispatch();
@@ -149,12 +149,12 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           name="color"
           control={control}
           render={(props) => (
-            <SelectInput2
-              label="Colors list"
-              handleChange={props.field.onChange}
-              selectText={props.field.value}
-              selectValue={props.field.value}
-              {...register("color")}
+            <Select
+              elementType="select"
+              name="color"
+              label="Select"
+              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+              selected={props.field.value}
               options={
                 state.colors
                   ? state.colors.map((color) => {
@@ -180,6 +180,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               control={control}
               register={register}
               label={"Teams"}
+              placeholder={"Team Name"}
               state={state}
               id="editDepartmentTeams"
             />
@@ -225,7 +226,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         <div className="controllers">
           <Button
             type="main"
-            size="large"
+            size="medium"
             label="done"
             onClick={handleSubmit}
             loading={state.loading}

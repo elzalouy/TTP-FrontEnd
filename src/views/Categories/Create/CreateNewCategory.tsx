@@ -1,19 +1,18 @@
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import "../../popups-style.css";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
-import { Grid, Typography } from "@mui/material";
-import { selectCatLoading } from "../../../models/Categories/categories.selectores";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { createCategory } from "../../../models/Categories";
-import { v4 as uuidv4 } from "uuid";
-import { useAppSelector } from "../../../models/hooks";
-import { generateID } from "../../../helpers/IdGenerator";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { v4 as uuidv4 } from "uuid";
+import IMAGES from "../../../assets/img/Images";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { generateID } from "../../../helpers/IdGenerator";
+import { createCategory } from "../../../models/Categories";
+import { selectCatLoading } from "../../../models/Categories/categories.selectores";
+import { useAppSelector } from "../../../models/hooks";
+import "../../popups-style.css";
 
 //SX Style objects
 
@@ -198,7 +197,7 @@ const CreateNewCategory = () => {
           <div className="controllers">
             <Button
               type="main"
-              size="large"
+              size="medium"
               label="done"
               onClick={handleSubmit}
               loading={loadingCat}

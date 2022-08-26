@@ -1,26 +1,20 @@
-import React, { useEffect } from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import { useState } from "react";
-import "../../popups-style.css";
-import { useAppSelector } from "../../../models/hooks";
-import {
-  selectSelectedCategory,
-  selectCatLoading,
-} from "../../../models/Categories/categories.selectores";
+import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateCategory } from "../../../models/Categories";
-import { v4 as uuidv4 } from "uuid";
-import { CircularProgress, useMediaQuery, useTheme } from "@mui/material";
-import { Grid } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Typography } from "@mui/material";
-import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
-import { generateID } from "../../../helpers/IdGenerator";
+import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import Badge from "src/coreUI/components/Badge/Badge";
+import { v4 as uuidv4 } from "uuid";
+import IMAGES from "../../../assets/img/Images";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { generateID } from "../../../helpers/IdGenerator";
+import { updateCategory } from "../../../models/Categories";
+import {
+  selectCatLoading, selectSelectedCategory
+} from "../../../models/Categories/categories.selectores";
+import { useAppSelector } from "../../../models/hooks";
+import "../../popups-style.css";
 
 type Props = {
   display: string;
@@ -222,7 +216,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         <div className="controllers">
           <Button
             type="main"
-            size="large"
+            size="medium"
             label="done"
             onClick={handleSubmit}
             loading={loadingCat}

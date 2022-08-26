@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
-import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";
+import { selectLoading, selectPMs, select_Id, updatePM } from "../../../models/PM";
 import { toggleEditProjectManagerPopup } from "../../../models/Ui";
-import { selectPMs, select_Id, updatePM,selectLoading } from "../../../models/PM";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import Button from "src/coreUI/components/Buttons/Button";
+import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";
 
 const EditPM: React.FC = () => {
   const toggler = useAppSelector(selectEditPMPopup);
@@ -118,7 +117,7 @@ const EditPM: React.FC = () => {
         <div className="controllers">
           <Button
             type="main"
-            size="large"
+            size="medium"
             label="done"
             onClick={updateUser}
             loading={loading}

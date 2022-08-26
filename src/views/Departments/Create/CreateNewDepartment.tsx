@@ -1,31 +1,30 @@
-import React from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
-import { Box } from "@mui/system";
-import { useState } from "react";
-import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
-import { CircularProgress, Grid } from "@mui/material";
-import { createDepartment } from "../../../models/Departments";
+import { Grid } from "@mui/material";
+import _ from "lodash";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import IMAGES from "../../../assets/img/Images";
+import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
+import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
+import { createDepartment } from "../../../models/Departments";
 import { CreateDepartmantJoiSchema } from "../../../services/validations/department.schema";
 import {
   IcreateDepartmentInit,
   ICreateDepartmentProps,
-  ICreateDepartmentState,
+  ICreateDepartmentState
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
-import _ from "lodash";
-import Badge from "src/coreUI/components/Badge/Badge";
-import Button from "src/coreUI/components/Buttons/Button";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
     IcreateDepartmentInit
   );
-  const { register, control, watch, reset, resetField } = useForm({
+  const { register, control, watch, reset, resetField, setValue } = useForm({
     defaultValues: state.formData,
   });
   const onInitState = () => {
@@ -124,12 +123,12 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           name="color"
           control={control}
           render={(props) => (
-            <SelectInput2
-              handleChange={props.field.onChange}
-              label="Colors"
-              {...register("color")}
-              selectText={props.field.value}
-              selectValue={props.field.value}
+            <Select
+              elementType="select"
+              name="color"
+              label="Select"
+              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+              selected={props.field.value}
               options={
                 state.colors
                   ? state.colors.map((color) => {
@@ -142,6 +141,24 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
                   : []
               }
             />
+            /*  <SelectInput2
+               handleChange={props.field.onChange}
+               label="Colors"
+               {...register("color")}
+               selectText={props.field.value}
+               selectValue={props.field.value}
+               options={
+                 state.colors
+                   ? state.colors.map((color) => {
+                     return {
+                       id: color,
+                       value: color,
+                       text: color,
+                     };
+                   })
+                   : []
+               }
+             /> */
           )}
         />
         {/* <label className="popup-label-nt">Teams</label> */}
@@ -193,13 +210,13 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         <br />
         <div className="controllers">
           <Button
-              type="main"
-              size="large"
-              label="done"
-              dataTestId="create-dep-submit"
-              onClick={onSubmit}
-              loading={state.loading}
-            />
+            type="main"
+            size="medium"
+            label="done"
+            dataTestId="create-dep-submit"
+            onClick={onSubmit}
+            loading={state.loading}
+          />
         </div>
       </PopUp>
     </>

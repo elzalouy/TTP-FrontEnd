@@ -86,7 +86,7 @@ fieldset[id*="select"] {
   justify-content: space-between;
   position: relative;
   margin-bottom: 5px;
-  margin-top: 9px;
+  margin-top: 0px;
   border: 0.5px solid #b4b6c4;
 }
 fieldset[id*="select"]:focus {
@@ -137,6 +137,7 @@ fieldset[id*="select"] .options .option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
+  text-transform: capitalize;
   opacity: 1;
   width: 100%;
   padding-block: 9px;

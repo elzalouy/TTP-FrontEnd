@@ -68,3 +68,15 @@ button.disabled {
     color: #A4A4AE;
     background-color: #F1F1F5;
 }
+
+/* Mobile screens */
+
+@media screen and (max-width:700px) {
+    .button-large {
+        font-size: 14px;
+    }
+    
+    .button-medium {
+        font-size: 14px;
+    }
+}

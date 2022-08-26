@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 // import "../../popups-style.css";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import {
   selectEditClient,
   selectLoadingClient,
-  updateClient,
+  updateClient
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
 
 interface Props {
   show: string;
@@ -133,7 +133,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
           <Box className="controllers">
             <Button
               type="main"
-              size="large"
+              size="medium"
               label="done"
               onClick={handleSubmit}
               loading={loadingClient}

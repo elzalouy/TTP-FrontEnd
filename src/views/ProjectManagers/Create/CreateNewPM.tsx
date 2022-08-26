@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import IMAGES from "../../../assets/img/Images";
 import { useDispatch } from "react-redux";
-import { createPM, selectLoading } from "../../../models/PM";
+import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { useAppSelector } from "src/models/hooks";
-import Button from "src/coreUI/components/Buttons/Button";
+import IMAGES from "../../../assets/img/Images";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { createPM, selectLoading } from "../../../models/PM";
 
 type Props = {};
 
@@ -118,7 +118,7 @@ const CreateNewPM: React.FC<Props> = () => {
         <div className="controllers">
           <Button
             type="main"
-            size="large"
+            size="medium"
             label="done"
             onClick={createNewUser}
             loading={loading}
