@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from "../../../models/hooks";
 import { generateID } from "../../../helpers/IdGenerator";
 import { toast } from "react-toastify";
+import Badge from "src/coreUI/components/Badge/Badge";
 
 //SX Style objects
 
@@ -228,18 +229,12 @@ const CreateNewCategory = () => {
           </Grid>
           <div className="subcategories">
             {subCategories &&
-              subCategories.map(({ _id, subCategory }: any) => (
-                <div className="subcategory" key={_id}>
-                  {subCategory}
-                  <span
-                    className="remove-category"
-                    onClick={() => {
-                      removeSubCategory(_id);
-                    }}
-                  >
-                    <CloseIcon style={{ width: "16px", height: "16px" }} />
-                  </span>
-                </div>
+              subCategories.map(({ index, subCategory }: any) => (
+                <Badge
+                  name={subCategory}
+                  index={index}
+                  onChange={() => removeSubCategory(index)}
+                />
               ))}
             <br />
           </div>

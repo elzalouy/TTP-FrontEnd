@@ -23,7 +23,6 @@
 
 .subcategories {
   display: flex;
-  max-width: 90%;
   width: 100%;
   flex-flow: row wrap;
   margin-top: 10px;
@@ -35,30 +34,6 @@
 .css-108j1xz-MuiFormControl-root-MuiTextField-root{
   width: 100%;
   min-width: 150px;
-}
-.subcategory {
-  position: relative;
-  display: inline-block;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-  margin-top: 0.3em;
-  width: fit-content;
-  font: normal normal normal 13px/24px Cairo;
-  font-weight: 550;
-  background-color: #F1F1F5;
-  padding-right: 45px;
-  padding-left: 10px;
-  border-radius: 4px;
-  opacity: 1;
-}
-.remove-category {
-  content: "x";
-  color: #92929D;
-  cursor: pointer;
-  font-size: 20px;
-  position: absolute;
-  right: 6px;
-  top: 1px;
 }
 .MuiTypography-root {
   font-family: "Cairo";

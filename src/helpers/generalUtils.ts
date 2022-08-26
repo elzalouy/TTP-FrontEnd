@@ -158,7 +158,7 @@ export const getTasksByClientIdAndStatus = (__status__: Status, projects: Projec
 };
 
 export const checkValueAndShowOptions = (value: string) => {
-  if (["Done","late","deliver on time","deliver before deadline"].includes(value)) {
+  if (["Done", "late", "deliver on time", "deliver before deadline"].includes(value)) {
     return [
       { value: "inProgress", text: "In Progress" },
     ]
@@ -167,5 +167,14 @@ export const checkValueAndShowOptions = (value: string) => {
       { value: "inProgress", text: "In Progress" },
       { value: "Done", text: "Done" },
     ]
+  }
+}
+
+export const showDotsOverLimit = (value: string, limit: number) => {
+  if (value.length > limit) {
+    let newValue = value.substring(0, limit) + "...";
+    return newValue;
+  } else {
+    return value;
   }
 }

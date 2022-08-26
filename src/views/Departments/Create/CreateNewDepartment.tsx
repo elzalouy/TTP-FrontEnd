@@ -18,6 +18,7 @@ import {
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
 import _ from "lodash";
+import Badge from "src/coreUI/components/Badge/Badge";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
@@ -131,12 +132,12 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               options={
                 state.colors
                   ? state.colors.map((color) => {
-                      return {
-                        id: color,
-                        value: color,
-                        text: color,
-                      };
-                    })
+                    return {
+                      id: color,
+                      value: color,
+                      text: color,
+                    };
+                  })
                   : []
               }
             />
@@ -178,20 +179,11 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         <div className="names-container">
           {state.teams.map((el, index) => {
             return (
-              <div
-                key={index}
-                className="team-name-badge"
-                onClick={(e) => onChangeTeams(index)}
-              >
-                <p className="name-of-badge">{el?.name}</p>
-                <img
-                  src={IMAGES.closeicon}
-                  alt="close"
-                  width="9px"
-                  height="9px"
-                  className="close-badge"
-                />
-              </div>
+              <Badge
+                name={el.name}
+                index={index}
+                onChange={() => onChangeTeams(index)}
+              />
             );
           })}
         </div>
