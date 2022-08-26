@@ -2,6 +2,7 @@ import { Grid, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { forgotPassword, selectLoading } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
 import { IFormInputs } from "src/types/components/Inputs";
@@ -9,7 +10,7 @@ import { IForgetFormWrapper } from "src/types/views/Auth";
 import Ttp from "../../../assets/img/ttp_logo.png";
 import ForgetForm from "./ForgetForm";
 
-const ForgetFormWrapper: FC<IForgetFormWrapper> = ({ history, visible }) => {
+const ForgetFormWrapper: FC<IForgetFormWrapper> = ({ history, visible, failed }) => {
 
     const {
         register,
@@ -23,11 +24,27 @@ const ForgetFormWrapper: FC<IForgetFormWrapper> = ({ history, visible }) => {
     const dispatch = useDispatch();
 
     const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-        dispatch(
-            forgotPassword({
-                email: data.email,
-            })
-        );
+        let pattern =
+            /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        let condition = pattern.test(data.email);
+        if (condition) {
+            dispatch(
+                forgotPassword({
+                    email: data.email,
+                })
+            );
+        } else {
+            toast.warn("Please enter a valid email format", {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                toastId: "mail",
+            });
+        }
     };
 
     return (
@@ -57,6 +74,7 @@ const ForgetFormWrapper: FC<IForgetFormWrapper> = ({ history, visible }) => {
                     loading={loading}
                     history={history}
                     errors={errors}
+                    failed={failed}
                 />
             )}
             <Link

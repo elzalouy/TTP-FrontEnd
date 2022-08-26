@@ -10,7 +10,7 @@ import { selectPayload } from "../../../models/PM";
 import { selectIsAuth } from "../../../models/Auth";
 import { IFailed, Props } from "src/types/views/Auth";
 import ResetForm from "./ResetForm";
-import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
+import AuthContainer from "../AuthComponents/AuthContainer";
 
 
 export const ResetPassword: React.FC<Props> = ({ history }) => {

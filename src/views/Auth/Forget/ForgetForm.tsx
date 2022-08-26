@@ -1,11 +1,11 @@
-import { Button, CircularProgress, Link, Typography } from '@mui/material'
+import { Button, CircularProgress, Typography } from '@mui/material'
 import { FC } from 'react'
 import Input from 'src/coreUI/components/Inputs/Textfield/Input'
 import { IForgetForm } from 'src/types/views/Auth'
 
 
 
-const ForgetForm: FC<IForgetForm> = ({ control, register, errors, handleSubmit, onSubmit, loading }) => {
+const ForgetForm: FC<IForgetForm> = ({ control, register, errors, handleSubmit, onSubmit, loading, failed }) => {
     return (
         <>
             <Typography
@@ -18,6 +18,11 @@ const ForgetForm: FC<IForgetForm> = ({ control, register, errors, handleSubmit, 
             >
                 Forget Password
             </Typography>
+            {failed.status && (
+                <p className="error-text">
+                    Sending email was unsuccessful : {failed.message}
+                </p>
+            )}
             <Input
                 name="email"
                 label="Email Address"
@@ -25,6 +30,7 @@ const ForgetForm: FC<IForgetForm> = ({ control, register, errors, handleSubmit, 
                 control={control}
                 register={register}
                 required
+                error={!!errors.email}
             />
             {errors.email?.type === "required" && (
                 <p className="error-text">Please enter your email</p>
@@ -48,9 +54,9 @@ const ForgetForm: FC<IForgetForm> = ({ control, register, errors, handleSubmit, 
                     "Send"
                 )}
             </Button>
-    
+
         </>
     )
 }
 
-export default ForgetForm
+export default ForgetForm;

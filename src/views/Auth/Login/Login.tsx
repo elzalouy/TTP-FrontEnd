@@ -12,7 +12,7 @@ import { useAppSelector } from "../../../models/hooks";
 import { toast } from "react-toastify";
 import "../auth.css";
 import { IFailed, Props } from "src/types/views/Auth";
-import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
+import AuthContainer from "../AuthComponents/AuthContainer";
 import LoginForm from "./LoginForm";
 
 const Login: React.FC<Props> = ({ history }) => {

@@ -73,6 +73,7 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
                 control={control}
                 register={register}
                 required
+                error={!!errors.email}
             />
             {errors.email?.type === "required" && (
                 <p className="error-text">Please enter your email address</p>
@@ -85,6 +86,7 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
                 name="password"
                 label="Password"
                 minLength={false}
+                error={!!errors.password}
             />
             {errors.password?.type === "required" && (
                 <p className="error-text">Please enter your password</p>

@@ -111,7 +111,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     return pm?.name;
   };
 
-  console.log(moment(new Date()).format("YYYY-MM-DD"));
 
   const checkProjectStatus = (status: string | undefined) => {
     if (

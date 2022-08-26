@@ -69,12 +69,13 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
                 setVisiblity={setHidePassword}
                 visible={hidePassword}
                 minLength
+                error={!!errors.password}
             />
             {errors.password?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
             )}
-            {errors.password?.message && (
-                <p className="error-text">{errors.password?.message}</p>
+            {errors.password?.type === "minLength" && (
+                <p className="error-text">Your password has less than 8 characters</p>
             )}
             <PasswordInput
                 name="confirmNewPassword"
@@ -84,12 +85,13 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
                 setVisiblity={setHideConfirmPassword}
                 visible={hideConfirmPassword}
                 minLength
+                error={!!errors.confirmNewPassword}
             />
             {errors.confirmNewPassword?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
             )}
-            {errors.confirmNewPassword?.message && (
-                <p className="error-text">{errors.confirmNewPassword?.message}</p>
+            {errors.confirmNewPassword?.type === "minLength" && (
+                <p className="error-text">Your password has less than 8 characters</p>
             )}
             {passwordError && (
                 <p className="error-text">

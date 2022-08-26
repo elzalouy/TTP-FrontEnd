@@ -17,14 +17,15 @@ const Input: React.FC<InputProps> = ({
   id,
   dataTestId,
   required,
-  type,
+  error
 }) => {
 
   const style = inputStyle()();
   let labelClassName = 'label-input';
+  let inputClassName = multiline ? style.multilineInput : style.input;
 
   return (
-    <div id={id}>
+    <div id={id} className={error ? "input-wrapper" : ""}>
       <Typography className={labelClassName}>{label}</Typography>
       <Controller
         name={name}
@@ -35,8 +36,8 @@ const Input: React.FC<InputProps> = ({
             {...register(name, { required: required })}
             value={value}
             error={state?.error?.error?.details[0].path.includes(name)}
-            id="outlined-error"
-            className={multiline ? style.multilineInput : style.input}
+            id={"outlined-error"}
+            className={inputClassName}
             multiline={multiline ? multiline : undefined}
             rows={rows ? rows : undefined}
             placeholder={placeholder}

@@ -48,7 +48,6 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
                 setPasswordError(true);
             }
         }
-
     };
 
     return (
@@ -74,12 +73,13 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
                 setVisiblity={setHidePassword}
                 visible={hidePassword}
                 minLength
+                error={!!errors.newPassword}
             />
             {errors.newPassword?.type === "required" && (
                 <p className="error-text">Please enter your new password</p>
             )}
-            {errors.newPassword?.message && (
-                <p className="error-text">{errors.confirmNewPassword?.message}</p>
+            {errors.newPassword?.type === "minLength" && (
+                <p className="error-text">Your password has less than 8 characters</p>
             )}
             {errors.newPassword?.message && (
                 <p className="error-text">{errors.newPassword?.message}</p>
@@ -92,14 +92,15 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
                 setVisiblity={setHideConfirmPassword}
                 visible={hideConfirmPassword}
                 minLength
+                error={!!errors.confirmNewPassword}
             />
             {errors.confirmNewPassword?.type === "required" && (
                 <p className="error-text">
                     Please enter your new password again
                 </p>
             )}
-            {errors.confirmNewPassword?.message && (
-                <p className="error-text">{errors.confirmNewPassword?.message}</p>
+            {errors.confirmNewPassword?.type === "minLength" && (
+                <p className="error-text">Your password has less than 8 characters</p>
             )}
             {passwordError && (
                 <p className="error-text">

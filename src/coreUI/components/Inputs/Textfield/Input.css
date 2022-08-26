@@ -4,11 +4,22 @@
 }
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input {
-   font-family: "Cairo" , sans-serif;
+    font-family: "Cairo", sans-serif;
 }
+
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
     border: solid 1px #E4E4E4 !important;
     outline: none;
+}
+
+.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border: solid 1px #E30707 !important;
+    outline: none !important;
+}
+
+.error-border {
+    border: solid 1px #E30707 !important;
+    border-radius: 6px;
 }
 
 .label-input {

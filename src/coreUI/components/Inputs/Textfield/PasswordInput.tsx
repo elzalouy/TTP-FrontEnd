@@ -6,10 +6,7 @@ import { PasswordInputProps } from 'src/types/components/Inputs';
 import "./Input.css"
 
 
-const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength }) => {
-
-    console.log(setVisiblity);
-
+const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength,error}) => {
 
     return (
         <>
@@ -32,7 +29,7 @@ const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register,
                             {...register(name, { required: true, minLength: minLength && 8 })}
                             type={visible ? "text" : "password"}
                             autoComplete="new-password"
-                            className="password-input"
+                            className={error ? "password-input error-border" : "password-input"}
                             onChange={onChange}
                             placeholder="Password"
                         />

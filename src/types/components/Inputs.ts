@@ -16,6 +16,7 @@ export interface InputProps {
   required?: boolean
   bold?: boolean;
   type?: boolean;
+  error?:boolean;
 }
 
 export interface DateInputProps {
@@ -36,6 +37,7 @@ export interface PasswordInputProps {
   visible: boolean;
   setVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
   minLength: boolean;
+  error?:boolean
 }
 
 export interface IFormInputs {

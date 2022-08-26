@@ -14,7 +14,7 @@ import {
   selectResponse,
 } from "../../../models/Auth";
 import { useAppSelector } from "../../../models/hooks";
-import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
+import AuthContainer from "../AuthComponents/AuthContainer";
 import UpdateForm from "./UpdateForm";
 import { IFailed, Props } from "src/types/views/Auth";
 
@@ -27,8 +27,6 @@ export const UpdatePassword: React.FC<Props> = ({
     status: false,
     message: "",
   });
-
-
   const auth = useAppSelector(selectAuth);
   const isAuth = useAppSelector(selectIsAuth);
   const res = useAppSelector(selectResponse);

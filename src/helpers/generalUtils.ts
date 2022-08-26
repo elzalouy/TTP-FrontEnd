@@ -1,5 +1,4 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
-import moment from "moment";
 import { Status } from "src/types/views/BoardView";
 import { ProjectsInterface, Task } from "../types/models/Projects";
 
@@ -159,7 +158,6 @@ export const getTasksByClientIdAndStatus = (__status__: Status, projects: Projec
 };
 
 export const checkValueAndShowOptions = (value: string) => {
-  console.log(value);
   if (["Done","late","deliver on time","deliver before deadline"].includes(value)) {
     return [
       { value: "inProgress", text: "In Progress" },

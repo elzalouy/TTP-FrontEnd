@@ -1,34 +1,20 @@
 import {
-  Button,
-  CircularProgress,
   Grid,
-  Link,
-  Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
-import Ttp from "../../../assets/img/ttp_logo.png";
 import "../auth.css";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { Redirect } from "react-router";
 import IMAGES from "../../../assets/img/Images";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import {
-  forgotPassword,
   selectAuth,
   selectIsAuth,
   selectResponse,
 } from "../../../models/Auth";
 import { useAppSelector } from "../../../models/hooks";
 import { toast } from "react-toastify";
-import { selectLoading } from "../../../models/Auth";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { IFormInputs } from "src/types/components/Inputs";
 import { IFailed } from "src/types/views/Auth";
 import { Props } from "src/types/views/Auth";
-import ForgetForm from "./ForgetForm";
-import AuthContainer from "../../../coreUI/components/Containers/AuthContainer";
+import AuthContainer from "../AuthComponents/AuthContainer";
 import ForgetFormWrapper from "./ForgetFormWrapper";
 
 export const Forget: React.FC<Props> = ({ history }) => {
@@ -68,6 +54,7 @@ export const Forget: React.FC<Props> = ({ history }) => {
       <ForgetFormWrapper
         visible={visible}
         history={history}
+        failed={failed}
       />
       <Grid
         item

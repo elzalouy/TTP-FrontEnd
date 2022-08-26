@@ -10,6 +10,7 @@ export interface IFailed {
 export interface IForgetFormWrapper {
   history: RouteComponentProps["history"];
   visible: boolean;
+  failed:IFailed
 }
 
 export interface IForgetForm {
@@ -20,6 +21,7 @@ export interface IForgetForm {
   onSubmit: any
   handleSubmit: UseFormHandleSubmit<IFormInputs>;
   loading: boolean | null;
+  failed:IFailed
 }
 export interface ILoginForm {
   failed: IFailed;
