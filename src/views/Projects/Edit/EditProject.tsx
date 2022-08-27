@@ -12,12 +12,9 @@ import {
 } from "../../../models/Projects";
 import { useDispatch } from "react-redux";
 import { DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
-import { fireUpdateProjectHook } from "../../../models/Ui";
 import { TextField, TextFieldProps } from "@mui/material";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import moment from "moment";
-import { date } from "joi";
 import {
   calculateStatusBasedOnDeadline,
   checkValueAndShowOptions,
@@ -27,6 +24,9 @@ import {
 } from "../../../helpers/generalUtils";
 import "../../popups-style.css";
 import { validateDate } from "src/services/validations/project.schema";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import SelectInput2 from "src/coreUI/components/Inputs/SelectInput2";
+import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
 
 type Props = {
   show: string;
@@ -52,25 +52,22 @@ const editProjectStartDateStyles = {
   cursor: "pointer",
   paddingTop: 1,
   "& .MuiOutlinedInput-input": {
+    color: "#303030",
+    fontSize: "14px",
     height: "13px !important",
     borderRadius: "6px",
     background: "white !important",
+    border: "0.5px solid #b4b6c4 !important",
+    ":focus": {
+      border: "1px solid #303030 !important",
+    },
   },
   "& .MuiOutlinedInput-notchedOutline": {
     borderRadius: "6px",
-  },
-};
-
-const editProjectDeadlineStyles = {
-  cursor: "pointer",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
+    border: "0px !important",
+    ":focus": {
+      border: "0px !important",
+    },
   },
 };
 
@@ -81,6 +78,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     watch,
     setValue,
     formState: { isDirty },
+    register,
   } = useForm();
   const data = watch();
   const clients = useAppSelector(selectClientsNames);
@@ -110,7 +108,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let pm = PMs.find((pm) => pm._id === id);
     return pm?.name;
   };
-
 
   const checkProjectStatus = (status: string | undefined) => {
     if (
@@ -256,37 +253,33 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         <div>
           <div className="inputs-grid">
             <div>
-              <label className="popup-label">Project title</label>
               <Controller
                 name="name"
                 control={control}
                 render={(props) => (
-                  <TextField
-                    id="outlined-error"
+                  <Input
+                    type={"text"}
                     value={props.field.value}
-                    sx={editProjectTitleStyles}
+                    label="Project title"
                     placeholder="Project name"
                     onChange={props.field.onChange}
+                    elementType={"labeled"}
                   />
                 )}
               />
             </div>
-
             <div>
               <label className="popup-label">Client name</label>
               <Controller
                 name="clientId"
                 control={control}
                 render={(props) => (
-                  <SelectInput2
-                    label="Clients list"
-                    handleChange={props.field.onChange}
-                    selectText={
-                      clients.find(
-                        (item) => item.clientId === props.field.value
-                      )?.clientName
+                  <Select
+                    name="editProjectClientId"
+                    elementType="select"
+                    onSelect={(e: any) =>
+                      setValue(props.field.name, e.target.id)
                     }
-                    selectValue={props.field.value}
                     options={
                       clients
                         ? clients?.map((item) => {
@@ -298,6 +291,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           })
                         : []
                     }
+                    selected={props.field.value}
                   />
                 )}
               />
@@ -308,13 +302,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name={"startDate"}
                 control={control}
                 render={(props) => (
-                  <DesktopDatePicker
+                  <MobileDatePicker
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
-                    // cancelText={""}
-                    // okText={""}
-                    // disableCloseOnSelect={false}
-                    onChange={(e) => {
+                    onChange={(e: any) => {
                       validateDate(
                         moment(e).toDate(),
                         "Start date has passed today's date",
@@ -404,7 +395,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Deadline"
                           onChange={params.onChange}
-                          sx={editProjectDeadlineStyles}
+                          sx={editProjectStartDateStyles}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
                           notNullorFalsy(watch().deadline) && (
@@ -437,18 +428,23 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="status"
                 control={control}
                 render={(props) => (
-                  <SelectInput2
-                    label="Project status list"
-                    handleChange={props.field.onChange}
-                    selectText={getStatus(props.field.value)}
-                    selectValue={props.field.value}
-                    options={checkValueAndShowOptions(props.field.value).map((item, i) => {
-                      return {
-                        id: item.value,
-                        value: item.value,
-                        text: item.text,
-                      };
-                    })}
+                  <Select
+                    label={"Project status list"}
+                    name="editProjectStatus"
+                    elementType="select"
+                    onSelect={(e: any) =>
+                      setValue(props.field.name, e.target.id)
+                    }
+                    options={checkValueAndShowOptions(props.field.value).map(
+                      (item, i) => {
+                        return {
+                          id: item.value,
+                          value: item.value,
+                          text: item.text,
+                        };
+                      }
+                    )}
+                    selected={props.field.value}
                   />
                 )}
               />
@@ -459,11 +455,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="projectManager"
                 control={control}
                 render={(props) => (
-                  <SelectInput2
-                    label="Project managers list"
-                    handleChange={props.field.onChange}
-                    selectText={getPM(props.field.value)}
-                    selectValue={props.field.value}
+                  <Select
                     options={
                       PMs?.length > 0
                         ? PMs.map((item) => {
@@ -475,6 +467,13 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           })
                         : []
                     }
+                    label="Project managers list"
+                    onSelect={(e: any) =>
+                      setValue(props.field.name, e.target.id)
+                    }
+                    elementType="select"
+                    name="editProjectManager"
+                    selected={props.field.value}
                   />
                 )}
               />

@@ -1,32 +1,68 @@
-.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: 1px solid black !important;
-    outline: none !important;
+.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border: 1px solid black !important;
+  outline: none !important;
 }
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root input {
-    font-family: "Cairo", sans-serif;
+  font-family: "Cairo", sans-serif;
 }
 
 .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root:hover fieldset {
-    border: solid 1px #E4E4E4 !important;
-    outline: none;
+  border: solid 1px #e4e4e4 !important;
+  outline: none;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
-    outline: none !important;
+.input-wrapper
+  > .MuiFormControl-root
+  > .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border: solid 1px #e30707 !important;
+  outline: none !important;
 }
 
-.input-wrapper>.MuiFormControl-root>.css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border: solid 1px #E30707 !important;
-    outline: none !important;
+.input-wrapper
+  > .MuiFormControl-root
+  > .css-17bz7z2-MuiInputBase-root-MuiOutlinedInput-root
+  .MuiOutlinedInput-notchedOutline {
+  border: solid 1px #e30707 !important;
+  outline: none !important;
 }
 
 .error-border {
-    border: solid 1px #E30707 !important;
-    border-radius: 6px;
+  border: solid 1px #e30707 !important;
+  border-radius: 6px;
 }
 
 .label-input {
-    font-weight: 500;
+  font-weight: 500;
 }
+fieldset#usable-input {
+  border: transparent;
+  outline: transparent;
+}
+/* new input styles */
+fieldset#usable-input .input-label {
+  display: block;
+  font-weight: bold !important;
+  margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
+}
+fieldset#usable-input input.input {
+  height: 40px;
+  font-size: 16px;
+  color: #303030;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 0.5px solid #b4b6c4;
+  border-radius: 6px;
+}
+fieldset#usable-input input.input::placeholder {
+  color: #b4b6c4;
+}
+fieldset#usable-input input.input:focus {
+  border: 0.5px solid #303030;
+}
+fieldset#usable-input input.input[data-error="error"] {
+  border: 0.5px solid #e30707;
+}
+/* fieldset#usable-input input.input[data-type="formInput"]{} */

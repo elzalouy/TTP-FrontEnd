@@ -106,7 +106,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                 const { _id, status, name, projectId, start, deadline } = item;
                 return (
                   <>
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                       <TableCell
                         align="left"
                         className={
