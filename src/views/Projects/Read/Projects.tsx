@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CreateNewProject from "../Create/Create/newProject";
 import IMAGES from "../../../assets/img/Images";
-import SearchBar from "../../../coreUI/components/Inputs/SearchBox";
+import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Box from "@mui/material/Box";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../../models/hooks";
@@ -143,13 +143,14 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             name="name"
             control={control}
             render={(props) => (
-              <SearchBar
+              <SearchBox
                 value={props.field.value}
                 placeholder="Search"
                 onChange={(e: any) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
+                size={"medium"}
               />
             )}
           />
@@ -321,13 +322,14 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             name="name"
             control={control}
             render={(props) => (
-              <SearchBar
+              <SearchBox
                 value={props.field.value}
+                placeholder="Search"
                 onChange={(e: any) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
-                placeholder="Search"
+                size={"medium"}
               />
             )}
           />

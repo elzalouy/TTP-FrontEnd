@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import IMAGES from "../../../assets/img/Images";
-// import "../../popups-style.css";
 import { useDispatch } from "react-redux";
-import { createPM } from "../../../models/PM";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { useAppSelector } from "src/models/hooks";
+import IMAGES from "../../../assets/img/Images";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { createPM, selectLoading } from "../../../models/PM";
 
 type Props = {};
 
@@ -12,6 +14,7 @@ const CreateNewPM: React.FC<Props> = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [emailFormat, setEmailFormat] = useState(false);
+  const loading = useAppSelector(selectLoading);
   const [error, setError] = useState<boolean>(false);
   const dispatch = useDispatch();
   const pattern =
@@ -47,15 +50,14 @@ const CreateNewPM: React.FC<Props> = () => {
 
   return (
     <>
-      <button
-        className="black-btn"
-        onClick={() => {
-          setShow("flex");
-        }}
-        data-test-id="create-pm-button"
-      >
-        Create new PM
-      </button>
+      <Button
+        type="main"
+        size="small"
+        label="create new PM"
+        dataTestId="create-pm-button"
+        onClick={() => setShow("flex")}
+        loading={loading}
+      />
       <PopUp show={show} minWidthSize="30vw">
         <div>
           <img
@@ -82,36 +84,45 @@ const CreateNewPM: React.FC<Props> = () => {
           {emailFormat && (
             <p className="popup-error">Please enter a valid email format</p>
           )}
-          <label className="popup-label">Project manager name</label>
-          <input
-            className="popup-input"
-            type="text"
-            value={username}
-            data-test-id="pm-name"
-            placeholder="PM name"
-            onChange={(e) => {
-              setUsername(e.target.value);
-              setError(false);
+          <Input
+            label="Full Name"
+            placeholder="Full Name"
+            dataTestId="pm-name"
+            custom={{
+              value: username,
+              onChangeEvent: (e: any) => {
+                setUsername(e.target.value);
+                setError(false);
+              }
             }}
+            required
+            wrapper
           />
-          <label className="popup-label">Email</label>
-          <input
-            className="popup-input"
-            type="email"
-            data-test-id="pm-email"
-            value={email}
-            placeholder="user@example.com"
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError(false);
-              setEmailFormat(false);
+          <Input
+            label="email"
+            placeholder="email address"
+            dataTestId="pm-name"
+            custom={{
+              value: email,
+              onChangeEvent: (e: any) => {
+                setEmail(e.target.value);
+                setError(false);
+                setEmailFormat(false);
+              }
             }}
+            required
+            wrapper
+            error={emailFormat}
           />
         </div>
         <div className="controllers">
-          <button className="controllers-done" data-test-id="submit-pm" onClick={createNewUser}>
-            Done
-          </button>
+          <Button
+            type="main"
+            size="large"
+            label="done"
+            onClick={createNewUser}
+            loading={loading}
+          />
         </div>
       </PopUp>
     </>

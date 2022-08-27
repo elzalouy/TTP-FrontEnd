@@ -9,8 +9,8 @@ body {
 }
 
 .bold {
-  font-family: "Cairo-Bold" !important;
-  font-weight: bolder !important;
+  font-family: "Cairo" !important;
+  font-weight: 0 !important;
 }
 
 .content {
@@ -48,37 +48,6 @@ body {
 
 .login-btns {
   margin-top: 1.5em;
-}
-
-.password-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  position: relative;
-  margin-top: 5px;
-  border: none;
-  outline: none;
-  padding-right: 0px;
-}
-
-.password-input {
-  display: block;
-  font-family: "Cairo", sans-serif;
-  width: 100%;
-  color: black;
-  padding: 11px;
-  border: solid 1px #E4E4E4;
-  outline: none;
-  text-align: left;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-right: 0px;
-}
-
-.password-icon {
-  position: absolute !important;
-  right: 0;
 }
 
 .f-inputs {
@@ -135,20 +104,6 @@ body {
 }
 
 .f-inputs:focus {
-  border: 0.5px solid black;
-  border-radius: 5px;
-}
-
-.password-input:active {
-  border: 0.5px solid black;
-  border-radius: 5px;
-}
-
-.password-input::placeholder {
-  color: #B1B1B5
-}
-
-.password-input:focus {
   border: 0.5px solid black;
   border-radius: 5px;
 }

@@ -82,8 +82,8 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   };
   return (
     <>
-      <EditPM hideButton />
-      <DeletePM hideButton />
+      <EditPM  />
+      <DeletePM  />
       <TableContainer
         style={{ paddingTop: "10px" }}
         className="customScrollBar"

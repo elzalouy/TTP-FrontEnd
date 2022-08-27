@@ -2,31 +2,23 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { selectClientsNames } from "../../../../models/Clients/clients.selectors";
 import { useAppSelector } from "../../../../models/hooks";
-import { getPMs, selectPMs } from "../../../../models/PM";
+import { selectPMs } from "../../../../models/PM";
 import {
   createProject,
-  ProjectsActions,
   selectLoading,
 } from "../../../../models/Projects";
 import { useDispatch } from "react-redux";
-import { getAllClients } from "../../../../models/Clients";
 import {
-  Alert,
   Button,
-  ButtonBase,
   CircularProgress,
   Grid,
-  Input,
-  InputAdornment,
   TextField,
   TextFieldProps,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import SelectInput2 from "../../../../coreUI/components/Inputs/SelectInput2";
-
 import Joi from "joi";
 import { selectUi } from "../../../../models/Ui/UI.selectors";
-import { generateID } from "../../../../helpers/IdGenerator";
 import IMAGES from "../../../../assets/img/Images";
 import {
   validateCreateProject,
@@ -34,7 +26,6 @@ import {
 } from "../../../../services/validations/project.schema";
 import {
   ToastError,
-  ToastWarning,
 } from "../../../../coreUI/components/Typos/Alert";
 import {
   getYesterdaysDate,
@@ -152,12 +143,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   clients
                     ? clients?.map((item) => {
-                        return {
-                          id: item.clientId,
-                          value: item.clientId,
-                          text: item.clientName,
-                        };
-                      })
+                      return {
+                        id: item.clientId,
+                        value: item.clientId,
+                        text: item.clientName,
+                      };
+                    })
                     : []
                 }
                 error={
@@ -327,12 +318,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   PMs
                     ? PMs?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      })
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    })
                     : []
                 }
               />

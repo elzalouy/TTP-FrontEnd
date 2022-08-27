@@ -1,13 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 // import "../../popups-style.css";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import {
   selectEditClient,
   selectLoadingClient,
-  updateClient,
+  updateClient
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 
@@ -49,7 +51,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
       });
       setImageView(null);
       setShow("none");
-    } catch (error: any) {}
+    } catch (error: any) { }
   };
 
   const fileUpload = () => {
@@ -70,6 +72,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const handleClose = () => {
     setShow("none");
   };
+
   return (
     <>
       <PopUp show={show} widthSize="30vw">
@@ -106,8 +109,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 Data?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? Data?.image
-                  : ImageView
+                    ? Data?.image
+                    : ImageView
               }
               style={{
                 width: "9em",
@@ -116,26 +119,26 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               alt="Avatar"
             />
           </Box>
-          <input
+          <Input
+            label="Client Name"
+            placeholder="Ex : Ahmed Ali"
+            inputName="clientName"
+            custom={{
+              value: Data?.clientName ? Data.clientName : "",
+              onChangeEvent: (e: any) => onChange(e)
+            }}
             required
-            className="input-client"
-            type="text"
-            name="clientName"
-            value={Data?.clientName ? Data.clientName : ""}
-            onChange={onChange}
+            wrapper
           />
-          <br />
           <Box className="controllers">
-            {/* <button className="cancelBtn-client" onClick={handleClose}>
-              Cancel
-            </button> */}
-            <button className="blackBtn-client" onClick={handleSubmit}>
-              {loadingClient ? (
-                <CircularProgress sx={editClientLoadingStyles} />
-              ) : (
-                "Done"
-              )}
-            </button>
+            <Button
+              type="main"
+              size="large"
+              label="done"
+              onClick={handleSubmit}
+              loading={loadingClient}
+              dataTestId="client-submit-button"
+            />
           </Box>
         </Box>
       </PopUp>

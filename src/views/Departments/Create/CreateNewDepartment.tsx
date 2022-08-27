@@ -1,29 +1,29 @@
-import React from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
-import { Box } from "@mui/system";
-import { useState } from "react";
-import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
-import { CircularProgress } from "@mui/material";
-import { createDepartment } from "../../../models/Departments";
+import { Grid } from "@mui/material";
+import _ from "lodash";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import IMAGES from "../../../assets/img/Images";
+import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
+import { createDepartment } from "../../../models/Departments";
 import { CreateDepartmantJoiSchema } from "../../../services/validations/department.schema";
 import {
   IcreateDepartmentInit,
   ICreateDepartmentProps,
-  ICreateDepartmentState,
+  ICreateDepartmentState
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
-import _ from "lodash";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
     IcreateDepartmentInit
   );
-  const { register, control, watch, reset, resetField } = useForm({
+  const { register, control, watch, reset, resetField, setValue } = useForm({
     defaultValues: state.formData,
   });
   const onInitState = () => {
@@ -122,92 +122,82 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           name="color"
           control={control}
           render={(props) => (
-            <SelectInput2
-              handleChange={props.field.onChange}
-              label="Colors"
-              {...register("color")}
-              selectText={props.field.value}
-              selectValue={props.field.value}
+            <Select
+              elementType="select"
+              name="color"
+              label="Select"
+              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+              selected={props.field.value}
               options={
                 state.colors
                   ? state.colors.map((color) => {
-                      return {
-                        id: color,
-                        value: color,
-                        text: color,
-                      };
-                    })
+                    return {
+                      id: color,
+                      value: color,
+                      text: color,
+                    };
+                  })
                   : []
               }
             />
+  
           )}
         />
-        {/* <label className="popup-label-nt">Teams</label> */}
-        <Box sx={{ display: "inline-flex", width: "100%", paddingTop: 1 }}>
-          <Box width={"75%"}>
+        <Grid
+          container
+          alignItems="center"
+          pt={2}
+        >
+          <Grid item xs={9} lg={9}>
             <Controller
               name="team"
               control={control}
-              render={(props) => (
+              render={() => (
                 <Input
                   dataTestId="create-dep-teamName"
                   name="team"
                   control={control}
                   register={register}
                   label={"Teams"}
+                  placeholder="Team name"
                   state={state}
                   id="editDepartmentTeams"
                 />
               )}
             />
-          </Box>
-          <Box height={"60%"} paddingTop={2}>
-            <button
-              data-test-id="create-dep-add-team"
-              className="gray-btn"
+          </Grid>
+          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "20px" }}>
+            <Button
+              type="add"
+              size="small"
+              label="add"
+              dataTestId="create-dep-add-team"
+              disabled={(watch().team.length <= 2)}
               onClick={() => onChangeTeams()}
-              disabled={watch().team.length <= 2}
-              style={{
-                background: watch().team.length > 2 ? "#ffc500" : "#b4b6c4",
-              }}
-            >
-              Add
-            </button>
-          </Box>
-        </Box>
+            />
+          </Grid>
+        </Grid>
         <div className="names-container">
           {state.teams.map((el, index) => {
             return (
-              <div
-                key={index}
-                className="team-name-badge"
-                onClick={(e) => onChangeTeams(index)}
-              >
-                <p className="name-of-badge">{el?.name}</p>
-                <img
-                  src={IMAGES.closeicon}
-                  alt="close"
-                  width="9px"
-                  height="9px"
-                  className="close-badge"
-                />
-              </div>
+              <Badge
+                name={el.name}
+                index={index}
+                onChange={() => onChangeTeams(index)}
+              />
             );
           })}
         </div>
         <br />
         <div className="controllers">
-          <button
-            data-test-id="create-dep-submit"
-            className="controllers-done"
+          <Button
+            type="main"
+            size="large"
+            label="done"
+            dataTestId="create-dep-submit"
             onClick={onSubmit}
-          >
-            {state.loading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
-            ) : (
-              "Done"
-            )}
-          </button>
+            loading={state.loading}
+          />
         </div>
       </PopUp>
     </>
@@ -215,15 +205,3 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
 };
 
 export default CreateNewDepartment;
-const submitBtn = {
-  width: "100%",
-  textAlign: "center",
-  justifyContent: "center",
-  alignItems: "center",
-};
-const createNewDepLoadingStyles = {
-  color: "white",
-  padding: "0px",
-  height: "25px !important",
-  width: "25px !important",
-};

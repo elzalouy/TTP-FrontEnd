@@ -1,17 +1,19 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
-import React, { useState, useRef } from "react";
+import { Box, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import "./CreateNewClient.css";
-import { useDispatch } from "react-redux";
+import { generateID } from "../../../helpers/IdGenerator";
 import {
   clientsDataSelector,
   creatClient,
-  selectLoadingClient,
+  selectLoadingClient
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { toast } from "react-toastify";
-import { generateID } from "../../../helpers/IdGenerator";
+import "./CreateNewClient.css";
 
 type Props = {};
 interface client {
@@ -19,7 +21,7 @@ interface client {
   clientName: string;
 }
 
-interface headers {}
+interface headers { }
 const CreateNewClient: React.FC<Props> = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -131,35 +133,28 @@ const CreateNewClient: React.FC<Props> = () => {
                 alt=""
               />
             </Box>
-
-            <label className="label-client">Client Name</label>
-            <input
-              className="input-client"
-              type="text"
-              placeholder="Ex: Ahmad Ali"
-              name="clientName"
-              value={Data.clientName}
-              onChange={onChange}
+            <Input
+              label="Client Name"
+              placeholder="Ex : Ahmed Ali"
+              dataTestId="client-name"
+              inputName="clientName"
+              custom={{
+                value: Data.clientName,
+                onChangeEvent: (e: any) => {
+                  onChange(e);
+                }
+              }}
               required
-              data-test-id="client-name"
+              wrapper
             />
-            <br />
-
             <Box className="controllers">
-              <button className="blackBtn-client" data-test-id="client-submit-button">
-                {loadingClient ? (
-                  <CircularProgress
-                    sx={{
-                      color: "white",
-                      padding: "0px",
-                      height: "25px !important",
-                      width: "25px !important",
-                    }}
-                  />
-                ) : (
-                  "Done"
-                )}
-              </button>
+              <Button
+                type="main"
+                size="large"
+                label="done"
+                loading={loadingClient}
+                dataTestId="client-submit-button"
+              />
             </Box>
           </form>
         </Box>
