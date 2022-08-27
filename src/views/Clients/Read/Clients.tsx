@@ -10,48 +10,16 @@ import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
 import { clientsActions } from "../../../models/Clients";
 import { selectRole } from "../../../models/Auth";
+import { IClient } from "src/types/views/Client";
 
-type Props = {
-  id: string;
-};
-
-export interface Client {
-  _id: string;
-  clientName: string;
-  doneProject: string[];
-  inProgressProject: string[] | number;
-  inProgressTask: string[];
-  createdAt: string;
-  image: any;
-}
-
-const options: { id: string; value: string; text: string }[] = [
-  {
-    id: "1",
-    value: "asc",
-    text: "Ascending",
-  },
-  {
-    id: "2",
-    value: "des",
-    text: "Descending",
-  },
-];
-
-export const Clients: React.FC<Props> = () => {
+export const Clients: React.FC<IClient> = () => {
   const dispatch = useDispatch();
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<IClient[]>([]);
+  const [search, setSearch] = useState<string>("");
   const role = useAppSelector(selectRole);
   const clientData = useAppSelector(clientsDataSelector);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const [filter, setFilter] = useState<{
-    sortDate: string;
-  }>({
-    sortDate: "",
-  });
-  const [search, setSearch] = useState<string>("");
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -95,7 +63,7 @@ export const Clients: React.FC<Props> = () => {
       >
         <Box className="all-clients">
           {clients &&
-            clients?.map((clientInfo: Client) => (
+            clients?.map((clientInfo: IClient) => (
               <>
                 <ClientCard key={clientInfo._id} client={clientInfo} />
               </>

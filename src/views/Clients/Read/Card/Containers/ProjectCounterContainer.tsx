@@ -1,18 +1,12 @@
 import { FC } from "react";
 import "../../clients.css";
-import { Client as IClient } from "../../Clients";
 import { Grid } from "@mui/material";
 import { useAppSelector } from "src/models/hooks";
 import { selectNotStartedProjects } from "src/models/Projects";
 import ProjectNumber from "../Data/ProjectNumber";
+import { IProjectCounterContainer } from "src/types/views/Client";
 
-type Props = {
-  done: string[];
-  client: IClient;
-  inProgressProject: number | string[];
-};
-
-const ProjectCounterContainer: FC<Props> = ({
+const ProjectCounterContainer: FC<IProjectCounterContainer> = ({
   done,
   client,
   inProgressProject,

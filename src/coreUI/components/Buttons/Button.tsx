@@ -18,7 +18,8 @@ const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label ,da
         >
             {
                 loading ?
-                    <CircularProgress />
+                    <CircularProgress 
+                    className='button-loading'/>
                     :
                     label
             }

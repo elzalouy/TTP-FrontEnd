@@ -1,16 +1,13 @@
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { Client as IClient } from "./Clients";
 import TaskCounterContainer from "../Read/Card/Containers/TaskCounterContainer";
 import ProjectCounterContainer from "../Read/Card/Containers/ProjectCounterContainer";
 import Header from "./Card/Header";
+import { IClientCard } from "src/types/views/Client";
 
-interface IProps {
-  client: IClient;
-}
 
-const ClientCard: React.FC<IProps> = ({ client }) => {
+const ClientCard: React.FC<IClientCard> = ({ client }) => {
   const { _id, doneProject, inProgressProject, image } = client;
   const [preview, setPreview] = useState("");
 

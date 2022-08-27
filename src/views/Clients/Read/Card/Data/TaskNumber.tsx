@@ -5,14 +5,9 @@ import { Status } from "../../../../../types/views/BoardView";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects, selectTasks } from "src/models/Projects";
 import { getTasksByClientIdAndStatus } from "src/helpers/generalUtils";
+import { ITaskNumber } from "src/types/views/Client";
 
-type Props = {
-  title: string;
-  param: Status;
-  _id: string
-};
-
-const ClientTaskNumberCard: FC<Props> = ({
+const ClientTaskNumberCard: FC<ITaskNumber> = ({
   title,
   param,
   _id
