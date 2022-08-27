@@ -7,7 +7,6 @@ import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import IMAGES from "../../../assets/img/Images";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
@@ -141,27 +140,9 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
                   : []
               }
             />
-            /*  <SelectInput2
-               handleChange={props.field.onChange}
-               label="Colors"
-               {...register("color")}
-               selectText={props.field.value}
-               selectValue={props.field.value}
-               options={
-                 state.colors
-                   ? state.colors.map((color) => {
-                     return {
-                       id: color,
-                       value: color,
-                       text: color,
-                     };
-                   })
-                   : []
-               }
-             /> */
+  
           )}
         />
-        {/* <label className="popup-label-nt">Teams</label> */}
         <Grid
           container
           alignItems="center"
@@ -211,7 +192,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         <div className="controllers">
           <Button
             type="main"
-            size="medium"
+            size="large"
             label="done"
             dataTestId="create-dep-submit"
             onClick={onSubmit}

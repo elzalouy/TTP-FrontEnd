@@ -150,7 +150,7 @@ const CreateNewClient: React.FC<Props> = () => {
             <Box className="controllers">
               <Button
                 type="main"
-                size="medium"
+                size="large"
                 label="done"
                 loading={loadingClient}
                 dataTestId="client-submit-button"

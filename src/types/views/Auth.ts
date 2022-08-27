@@ -1,6 +1,6 @@
 import { UseFormHandleSubmit } from "react-hook-form";
 import { RouteComponentProps } from "react-router";
-import { IIFormInputs } from "../components/Inputs";
+import { IFormInputs } from "../components/Inputs";
 
 export interface IFailed {
   status: number | string | boolean;
@@ -19,7 +19,7 @@ export interface IForgetForm {
   errors: any;
   history: RouteComponentProps["history"];
   onSubmit: any
-  handleSubmit: UseFormHandleSubmit<IIFormInputs>;
+  handleSubmit: UseFormHandleSubmit<IFormInputs>;
   loading: boolean | null;
   failed:IFailed
 }

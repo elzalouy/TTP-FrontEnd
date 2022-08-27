@@ -225,7 +225,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         <div className="controllers">
           <Button
             type="main"
-            size="medium"
+            size="large"
             label="done"
             onClick={handleSubmit}
             loading={state.loading}

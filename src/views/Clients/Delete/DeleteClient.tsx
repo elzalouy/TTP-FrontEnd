@@ -1,15 +1,11 @@
 import React from "react";
-import IMAGES from "../../../assets/img/Images";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
-import { useState } from "react";
 // import "../../popups-style.css";
-import axios, { AxiosResponse } from "axios";
-import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 import { deleteClient, selectEditClient } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import deleteIcon from "../../../assets/img/deleteAlert.png";
-import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   show: string;
@@ -46,13 +42,13 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
           <div className="controllers-small-popup">
             <Button
               type="cancel"
-              size="medium"
+              size="large"
               label="cancel"
               onClick={handleClose}
             />
             <Button
               type="delete"
-              size="medium"
+              size="large"
               label="delete"
               onClick={() => {
                 handleDelete();

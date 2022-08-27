@@ -83,8 +83,8 @@ const EditPM: React.FC = () => {
         )}
         <div>
           <Input
-            label="username"
-            placeholder="username"
+            label="Full name"
+            placeholder="full name"
             dataTestId="pm-name"
             custom={{
               value: username,
@@ -117,7 +117,7 @@ const EditPM: React.FC = () => {
         <div className="controllers">
           <Button
             type="main"
-            size="medium"
+            size="large"
             label="done"
             onClick={updateUser}
             loading={loading}

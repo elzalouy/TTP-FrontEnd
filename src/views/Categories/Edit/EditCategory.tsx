@@ -70,6 +70,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
     selectedSubCategory: [],
     subCategoriesId: [],
   });
+  
 
   useEffect(() => {
     setSelectedData(selectedCategory);
@@ -197,6 +198,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 size="small"
                 label="add"
                 onClick={addSubCategory}
+                disabled={subCategory.length === 0}
                 loading={loadingCat}
               />
             </Grid>
@@ -216,7 +218,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         <div className="controllers">
           <Button
             type="main"
-            size="medium"
+            size="large"
             label="done"
             onClick={handleSubmit}
             loading={loadingCat}

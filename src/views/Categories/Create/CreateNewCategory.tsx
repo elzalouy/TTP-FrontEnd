@@ -178,6 +178,7 @@ const CreateNewCategory = () => {
                 type="add"
                 size="small"
                 label="add"
+                disabled={subCategory.length === 0}
                 onClick={addSubCategory}
                 loading={loadingCat}
               />
@@ -197,7 +198,7 @@ const CreateNewCategory = () => {
           <div className="controllers">
             <Button
               type="main"
-              size="medium"
+              size="large"
               label="done"
               onClick={handleSubmit}
               loading={loadingCat}

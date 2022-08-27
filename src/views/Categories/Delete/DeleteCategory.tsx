@@ -1,15 +1,15 @@
-import React from "react";
-import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
-import "../../popups-style.css";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../../models/hooks";
 import { Typography } from "@mui/material";
+import React from "react";
+import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import {
   deleteCategory,
-  selectSelectedCategory,
+  selectSelectedCategory
 } from "../../../models/Categories";
-import Button from "src/coreUI/components/Buttons/Button";
+import { useAppSelector } from "../../../models/hooks";
+import "../../popups-style.css";
 
 type Props = {
   showDelete: string;
@@ -52,13 +52,13 @@ const DeleteCategory: React.FC<Props> = ({
         <div className="controllers-small-popup">
           <Button
             type="cancel"
-            size="medium"
+            size="large"
             label="cancel"
             onClick={() => handleSetShowDelete("none")}
           />
           <Button
             type="delete"
-            size="medium"
+            size="large"
             label="delete"
             onClick={handleSubmit}
           />

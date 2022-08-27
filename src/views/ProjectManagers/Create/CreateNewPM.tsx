@@ -85,8 +85,8 @@ const CreateNewPM: React.FC<Props> = () => {
             <p className="popup-error">Please enter a valid email format</p>
           )}
           <Input
-            label="username"
-            placeholder="username"
+            label="Full Name"
+            placeholder="Full Name"
             dataTestId="pm-name"
             custom={{
               value: username,
@@ -118,7 +118,7 @@ const CreateNewPM: React.FC<Props> = () => {
         <div className="controllers">
           <Button
             type="main"
-            size="medium"
+            size="large"
             label="done"
             onClick={createNewUser}
             loading={loading}

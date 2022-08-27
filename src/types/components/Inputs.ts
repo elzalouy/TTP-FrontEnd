@@ -35,6 +35,10 @@ export interface IButton {
   onClick?: (e: any) => any;
   loading?: boolean | null;
   disabled?: boolean;
+  form?:{
+    type:'button'|'submit' | 'reset';
+    name:string;
+  };
   dataTestId?: string
 }
 
@@ -60,7 +64,7 @@ export interface IIPasswordInputProps {
   wrapper?: boolean;
 }
 
-export interface IIFormInputs {
+export interface IFormInputs {
   email: string;
   password?: string;
   newPassword?: string;

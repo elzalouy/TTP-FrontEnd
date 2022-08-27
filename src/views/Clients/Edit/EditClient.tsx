@@ -133,7 +133,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
           <Box className="controllers">
             <Button
               type="main"
-              size="medium"
+              size="large"
               label="done"
               onClick={handleSubmit}
               loading={loadingClient}

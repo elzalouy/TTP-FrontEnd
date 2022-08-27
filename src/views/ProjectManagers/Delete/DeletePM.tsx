@@ -1,12 +1,12 @@
+import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import deleteIcon from "../../../assets/img/deleteAlert.png";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "../../../models/hooks";
-import { selectDeletePMPopup } from "../../../models/Ui/UI.selectors";
-import { select_Id } from "../../../models/PM/pm.selectors";
-import { useDispatch } from "react-redux";
-import { toggleDeleteProjectManagerPopup } from "../../../models/Ui";
 import { deletePM, selectLoading } from "../../../models/PM";
-import deleteIcon from "../../../assets/img/deleteAlert.png";
-import Button from "src/coreUI/components/Buttons/Button";
+import { select_Id } from "../../../models/PM/pm.selectors";
+import { toggleDeleteProjectManagerPopup } from "../../../models/Ui";
+import { selectDeletePMPopup } from "../../../models/Ui/UI.selectors";
 
 const DeletePM = () => {
 
@@ -28,13 +28,13 @@ const DeletePM = () => {
           <div className="controllers-small-popup">
             <Button
               type="cancel"
-              size="medium"
+              size="large"
               label="cancel"
               onClick={() => dispatch(toggleDeleteProjectManagerPopup("none"))}
             />
             <Button
               type="delete"
-              size="medium"
+              size="large"
               label="delete"
               onClick={() => {
                 dispatch(deletePM(_id));

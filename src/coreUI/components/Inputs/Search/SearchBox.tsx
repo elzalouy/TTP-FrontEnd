@@ -5,7 +5,7 @@ import "./Search.css"
 
 const Search: React.FC<ISearch> = ({ onChange, placeholder, value , size }) => {
   return (
-    <>
+    <div className="core-ui-search-wrapper">
       <img src={IMAGES.search} className="core-ui-search-icon"/>
       <input
         className={"core-ui-search" + " " + size}
@@ -14,7 +14,7 @@ const Search: React.FC<ISearch> = ({ onChange, placeholder, value , size }) => {
         value={value}
         placeholder={placeholder}
       />
-    </>
+    </div>
   );
 };
 
