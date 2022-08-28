@@ -1,49 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-// import "../../popups-style.css";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-// import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import {
-  selectEditClient,
-  selectLoadingClient,
-  updateClient,
-} from "../../../models/Clients";
+import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import { IClient } from "src/types/views/Client";
 import { useAppSelector } from "../../../models/hooks";
+import { selectEditClient, selectLoadingClient, updateClient, UpdateClientInterface } from "src/models/Clients";
 
 interface Props {
   show: string;
   setShow: (val: string) => void;
 }
 
-//SX Styles Objects
-
-const editClientLoadingStyles = {
-  color: "white",
-  padding: "0px",
-  height: "25px !important",
-  width: "25px !important",
-};
 
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
-  const client = useAppSelector(selectEditClient);
+  const client:UpdateClientInterface = useAppSelector(selectEditClient);
   const loadingClient = useAppSelector(selectLoadingClient);
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
-  const [Data, setData] = useState<any>();
+  const [clientData, setClientData] = useState<IClient>({
+    image: null,
+    clientName: "",
+  });
   const [ImageView, setImageView] = useState<string | null>(null);
 
   useEffect(() => {
-    setData(client);
+    setClientData(client);
   }, [dispatch, client]);
 
   const handleSubmit = async (e: any) => {
     try {
       e.preventDefault();
-      dispatch(updateClient(Data));
-      setData({
+      dispatch(updateClient(clientData));
+      setClientData({
         _id: "",
         clientName: "",
         createdAt: "",
@@ -59,7 +50,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var data = { ...Data };
+    var data = { ...clientData };
     if (e.target.name === "image") {
       let file: any = e.target.files;
       data.image = file[0];
@@ -67,7 +58,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     } else {
       data[e.target.name] = e.target.value;
     }
-    setData(data);
+    setClientData(data);
   };
   const handleClose = () => {
     setShow("none");
@@ -106,10 +97,10 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
             />
             <img
               src={
-                Data?.image === "null"
+                clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? Data?.image
+                  ? clientData?.image
                   : ImageView
               }
               style={{
@@ -119,13 +110,24 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               alt="Avatar"
             />
           </Box>
+          <Input
+              label="Client Name"
+              placeholder="Ex : Ahmed Ali"
+              inputName="clientName"
+              dataTestId="client-name"
+              value={clientData.clientName}
+              type="text"
+              onChange={(e: any) => {
+                onChange(e);
+              }}
+            />
           {/* TODO rebuild the element */}
           {/* <Input
             label="Client Name"
             placeholder="Ex : Ahmed Ali"
             inputName="clientName"
             custom={{
-              value: Data?.clientName ? Data.clientName : "",
+              value: clientData?.clientName ? clientData.clientName : "",
               onChangeEvent: (e: any) => onChange(e)
             }}
             required

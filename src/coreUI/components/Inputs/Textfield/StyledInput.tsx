@@ -12,6 +12,7 @@ const Input: FC<IStyledInput> = ({
   error,
   elementType,
   dataTestId,
+  inputName,
   ...props
 }) => {
 
@@ -26,6 +27,7 @@ const Input: FC<IStyledInput> = ({
       <p className="core-ui-input-label">{label}</p>
       <input
         className="core-ui-input"
+        name={inputName}
         type={state.type}
         onChange={onChange}
         value={value}

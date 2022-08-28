@@ -8,9 +8,7 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { createPM, selectLoading } from "../../../models/PM";
 
-type Props = {};
-
-const CreateNewPM: React.FC<Props> = () => {
+const CreateNewPM: React.FC = () => {
   const [show, setShow] = useState("none");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

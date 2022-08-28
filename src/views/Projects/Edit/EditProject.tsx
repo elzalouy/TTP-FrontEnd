@@ -35,19 +35,6 @@ type Props = {
 
 //SX Styles Object
 
-const editProjectTitleStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
 const editProjectStartDateStyles = {
   cursor: "pointer",
   paddingTop: 1,

@@ -19,6 +19,8 @@ import {
   ICreateDepartmentState,
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
+
+
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState<ICreateDepartmentState>(
