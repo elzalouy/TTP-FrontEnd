@@ -1,20 +1,18 @@
-import React from "react";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+// import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import "../../popups-style.css";
-import { useState, useEffect } from "react";
-import { CircularProgress, Grid, TextField, Typography } from "@mui/material";
-import { selectCatLoading } from "../../../models/Categories/categories.selectores";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
-import { selectAllCategories } from "../../../models/Categories";
-import { createCategory } from "../../../models/Categories";
-import { v4 as uuidv4 } from "uuid";
-import { useAppSelector } from "../../../models/hooks";
 import { generateID } from "../../../helpers/IdGenerator";
-import { toast } from "react-toastify";
+import { createCategory } from "../../../models/Categories";
+import { selectCatLoading } from "../../../models/Categories/categories.selectores";
+import { useAppSelector } from "../../../models/hooks";
+import "../../popups-style.css";
 
 //SX Style objects
 
@@ -27,30 +25,6 @@ const addNewCategoryContainerStyles = {
   borderRadius: 3,
 };
 
-const AddNewCategoryCircularProgressStyles = {
-  color: "white",
-  height: "25px !important",
-  width: "25px !important",
-};
-
-const addNewCategoryMainCategoryStyles = {
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const addNewCategorySubCatStyles = {
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
 const CreateNewCategory = () => {
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
@@ -58,9 +32,7 @@ const CreateNewCategory = () => {
   const [errors, setErrors] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const loadingCat = useAppSelector(selectCatLoading);
-  const allCategories = useAppSelector(selectAllCategories);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [subCategories, setsubCategories] = useState<
     { _id: string; subCategory: string }[]
@@ -87,6 +59,7 @@ const CreateNewCategory = () => {
   const removeSubCategory = (id: any) => {
     setsubCategories(subCategories.filter((element) => element._id !== id));
   };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const body = {
@@ -175,82 +148,65 @@ const CreateNewCategory = () => {
           </p>
         </div>
         <Grid container>
-          <Grid item xs={12}>
-            <Typography
-              fontWeight={"700"}
-              fontSize={14}
-              paddingTop={4}
-              paddingBottom={1}
-            >
-              Main category
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-              <TextField
-                type="text"
-                className="text-input"
-                name="mainCategory"
-                placeholder="Ex: Al-shaqran"
-                value={mainCategory}
-                onChange={onMainChange}
+          {/* TODO rebuild the ui element */}
+          {/* <Input
+            label="Main category"
+            placeholder="Ex : Al-Shaqran"
+            custom={{
+              value: mainCategory,
+              onChangeEvent: onMainChange,
+            }}
+            required
+            wrapper
+          /> */}
+          <Grid container alignItems="center">
+            <Grid item xs={9} lg={9}>
+              {/* <Input
+                label="Sub Category"
+                placeholder="Sub Category"
+                custom={{
+                  value: subCategory,
+                  onChangeEvent: onSubChange,
+                }}
+                wrapper
                 required
-                sx={addNewCategoryMainCategoryStyles}
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              fontWeight={"700"}
-              fontSize={14}
-              paddingTop={1}
-              paddingBottom={1}
-              color="black"
+              /> */}
+            </Grid>
+            <Grid
+              item
+              xs={3}
+              lg={3}
+              sx={{ paddingLeft: "10px", marginTop: "42px" }}
             >
-              Sub-category
-            </Typography>
-          </Grid>
-          <Grid item xs={9} style={{ marginTop: "10px", paddingRight: "20px" }}>
-            <TextField
-              type="text"
-              name="subCategory"
-              value={subCategory}
-              className="text-input"
-              onChange={onSubChange}
-              placeholder="Sub category"
-              sx={addNewCategorySubCatStyles}
-            />
-          </Grid>
-          <Grid item xs={3} style={{ marginTop: "10px" }}>
-            <div className="add-subcategory-cnc" onClick={addSubCategory}>
-              Add
-            </div>
+              <Button
+                type="add"
+                size="small"
+                label="add"
+                disabled={subCategory.length === 0}
+                onClick={addSubCategory}
+                loading={loadingCat}
+              />
+            </Grid>
           </Grid>
           <div className="subcategories">
             {subCategories &&
               subCategories.map(({ _id, subCategory }: any) => (
-                <div className="subcategory" key={_id}>
-                  {subCategory}
-                  <span
-                    className="remove-category"
-                    onClick={() => {
-                      removeSubCategory(_id);
-                    }}
-                  >
-                    <CloseIcon style={{ width: "16px", height: "16px" }} />
-                  </span>
-                </div>
+                <Badge
+                  name={subCategory}
+                  index={_id}
+                  onChange={() => removeSubCategory(_id)}
+                />
               ))}
             <br />
           </div>
           <div className="controllers">
-            <button className="controllers-done" onClick={handleSubmit}>
-              {loadingCat ? (
-                <CircularProgress sx={AddNewCategoryCircularProgressStyles} />
-              ) : (
-                "Done"
-              )}
-            </button>
+            <Button
+              type="main"
+              size="large"
+              label="done"
+              onClick={handleSubmit}
+              loading={loadingCat}
+            />
           </div>
         </Grid>
       </PopUp>

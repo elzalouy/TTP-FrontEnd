@@ -78,7 +78,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     watch,
     setValue,
     formState: { isDirty },
-    register,
   } = useForm();
   const data = watch();
   const clients = useAppSelector(selectClientsNames);
@@ -263,7 +262,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     label="Project title"
                     placeholder="Project name"
                     onChange={props.field.onChange}
-                    elementType={"labeled"}
                   />
                 )}
               />

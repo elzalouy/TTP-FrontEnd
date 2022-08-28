@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
-import { NONE } from "apisauce";
+
 export const dateInputStyle = () => {
   return makeStyles((theme) => ({
     textField: {
@@ -16,6 +16,7 @@ export const dateInputStyle = () => {
     },
   }));
 };
+
 export const inputStyle = () => {
   return makeStyles((theme) => ({
     input: {

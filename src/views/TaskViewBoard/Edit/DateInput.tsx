@@ -3,13 +3,13 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import * as React from "react";
 import { Controller } from "react-hook-form";
+import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
+import { IDateInputProps } from "src/types/components/Inputs";
 import IMAGES from "../../../assets/img/Images";
-import { DateInputProps } from "src/types/components/Inputs";
 import { validateDate } from "../../../services/validations/project.schema";
 import { dateInputStyle } from "./styles";
-import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 
-const DateInput: React.FC<DateInputProps> = ({
+const DateInput: React.FC<IDateInputProps> = ({
   control,
   register,
   state,

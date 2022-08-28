@@ -1,22 +1,23 @@
+import { Grid } from "@mui/material";
 import _ from "lodash";
-import React from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
-import { selectUi } from "../../../models/Ui/UI.selectors";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import IMAGES from "../../../assets/img/Images";
+// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
-import { useAppSelector } from "../../../models/hooks";
-import { toggleEditDepartment } from "../../../models/Ui";
-import { editDepartmentSchema } from "../../../services/validations/department.schema";
-import { useForm, Controller } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { Box, CircularProgress } from "@mui/material";
 import {
   selectEditDepartment,
   updateDepartment,
 } from "../../../models/Departments";
+import { useAppSelector } from "../../../models/hooks";
+import { toggleEditDepartment } from "../../../models/Ui";
+import { selectUi } from "../../../models/Ui/UI.selectors";
+import { editDepartmentSchema } from "../../../services/validations/department.schema";
 import {
   editDepartmentInitState,
   IEditDepartmentProps,
@@ -133,7 +134,8 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           />
         </div>
         <p className="popup-title">Edit department</p>
-        <Input
+        {/* TODO rebuild the element */}
+        {/* <Input
           name="name"
           control={control}
           register={register}
@@ -141,18 +143,18 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           placeholder={"department name"}
           state={state}
           id="editDepartmentName"
-        />
+        /> */}
         <label className="popup-label-nt">Color</label>
         <Controller
           name="color"
           control={control}
           render={(props) => (
-            <SelectInput2
-              label="Colors list"
-              handleChange={props.field.onChange}
-              selectText={props.field.value}
-              selectValue={props.field.value}
-              {...register("color")}
+            <Select
+              elementType="select"
+              name="color"
+              label="Select"
+              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+              selected={props.field.value}
               options={
                 state.colors
                   ? state.colors.map((color) => {
@@ -167,85 +169,70 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             />
           )}
         />
-
-        <Box sx={{ display: "inline-flex", width: "100%", paddingTop: 1 }}>
-          <Box width={"75%"}>
-            <Input
+        <Grid container alignItems="center" pt={2}>
+          <Grid item xs={9} lg={9}>
+            {/* <Input
               name="team"
               control={control}
               register={register}
               label={"Teams"}
+              placeholder={"Team Name"}
               state={state}
               id="editDepartmentTeams"
-            />
-          </Box>
-          <Box height={"60%"} paddingTop={2}>
-            <button
-              className="orange-btn"
+            /> */}
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            lg={3}
+            sx={{ paddingLeft: "10px", marginTop: "20px" }}
+          >
+            <Button
+              type="add"
+              size="small"
+              label="add"
+              dataTestId="create-dep-add-team"
+              disabled={watch().team.length <= 2}
               onClick={() => onChangeNewTeams()}
-              disabled={watch().team.length <= 3}
-              style={{
-                background: watch().team.length > 2 ? "#ffc500" : "#b4b6c4",
-              }}
-            >
-              Add
-            </button>
-          </Box>
-        </Box>
+            />
+          </Grid>
+        </Grid>
         <div className="names-container">
           {selectedDepartment &&
             state.teams &&
             state?.teams.map((el, index) => {
               if (el)
                 return (
-                  <div
-                    className="team-name-badge"
-                    key={index}
-                    onClick={(e) =>
+                  <Badge
+                    name={el.name}
+                    index={index}
+                    onChange={() =>
                       onRemoveOldTeam(el?._id ? el._id : "", index)
                     }
-                  >
-                    <p className="name-of-badge">{el.name}</p>
-                    <img
-                      src={IMAGES.closeicon}
-                      alt="close"
-                      width="9px"
-                      height="9px"
-                      className="pointer"
-                    />
-                  </div>
+                  />
                 );
             })}
           {state.addTeams &&
             state?.addTeams.map((el, index) => {
               if (el)
                 return (
-                  <div
-                    className="team-name-badge"
-                    key={index}
-                    onClick={(e) => onChangeNewTeams(index)}
-                  >
-                    <p className="name-of-badge">{el}</p>
-                    <img
-                      src={IMAGES.closeicon}
-                      alt="close"
-                      width="9px"
-                      height="9px"
-                      className="pointer"
-                    />
-                  </div>
+                  <Badge
+                    name={el}
+                    index={index}
+                    onChange={() => onChangeNewTeams(index)}
+                  />
                 );
             })}
         </div>
         <br />
         <div className="controllers">
-          <button className="controllers-done" onClick={() => handleSubmit()}>
-            {state.loading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
-            ) : (
-              "Done"
-            )}
-          </button>
+          <Button
+            type="main"
+            size="large"
+            label="done"
+            onClick={handleSubmit}
+            loading={state.loading}
+          />
         </div>
       </PopUp>
     </>

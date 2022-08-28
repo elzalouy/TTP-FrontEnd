@@ -1,53 +1,54 @@
-import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { IconButton, Typography } from '@mui/material';
-import { FC } from 'react'
-import { Controller } from 'react-hook-form';
-import { PasswordInputProps } from 'src/types/components/Inputs';
-import "./Input.css"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { FC } from "react";
+import { Controller } from "react-hook-form";
+import { IPasswordInputProps } from "src/types/components/Inputs";
+import "./Input.css";
 
-
-const PasswordInput: FC<PasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength,error}) => {
-
-    return (
-        <>
-            <Typography
-                variant={"h5"}
-                fontWeight={"700"}
-                paddingTop={3.5}
-                fontFamily={"Cairo"}
-                color="#000000"
-                className='label-input'
-            >
-                {label}
-            </Typography>
-            <Controller
-                name={name}
-                control={control}
-                render={({ field: { onChange } }) => (
-                    <div className="password-container ">
-                        <input
-                            {...register(name, { required: true, minLength: minLength && 8 })}
-                            type={visible ? "text" : "password"}
-                            autoComplete="new-password"
-                            className={error ? "password-input error-border" : "password-input"}
-                            onChange={onChange}
-                            placeholder="Password"
-                        />
-                        <IconButton
-                            className="password-icon"
-                            onClick={() => setVisiblity((state) => !state)}
-                        >
-                            {!visible ? (
-                                <VisibilityOff style={{ color: "#b4b6c4" }} />
-                            ) : (
-                                <Visibility style={{ color: "#b4b6c4" }} />
-                            )}
-                        </IconButton>
-                    </div>
-                )}
+const PasswordInput: FC<IPasswordInputProps> = ({
+  name,
+  label,
+  control,
+  register,
+  visible,
+  setVisiblity,
+  minLength,
+  error,
+  wrapper,
+}) => {
+  return (
+    <div className={wrapper ? "password-input-wrapper" : ""}>
+      <label className="password-input-label">{label}</label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { onChange } }) => (
+          <div className="password-container ">
+            <input
+              {...register(name, { required: true, minLength: minLength && 8 })}
+              type={visible ? "text" : "password"}
+              autoComplete="new-password"
+              className={
+                error ? "password-input error-active" : "password-input"
+              }
+              onChange={onChange}
+              placeholder="Password"
             />
-        </>
-    )
-}
+            <IconButton
+              className="password-icon"
+              onClick={() => setVisiblity((state) => !state)}
+            >
+              {!visible ? (
+                <VisibilityOff style={{ color: "#b4b6c4" }} />
+              ) : (
+                <Visibility style={{ color: "#b4b6c4" }} />
+              )}
+            </IconButton>
+          </div>
+        )}
+      />
+    </div>
+  );
+};
 
-export default PasswordInput
+export default PasswordInput;

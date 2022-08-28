@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { logout } from "../../../models/Auth";
 import logoutIcon from "../../../assets/img/logoutAlert.png";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface LogoutProps {
   show: string;
@@ -25,15 +26,18 @@ export const Logout: React.FC<LogoutProps> = ({ show, setShow }) => {
       <p className="warning-text">Are you sure you want to Logout?</p>
       <div className="margin-cover">
         <div className="controllers-small-popup">
-          <button
-            className="controllers-cancel"
+           <Button
+            size="small"
+            type="delete"
+            label="logout"
+            onClick={handleLogout}
+          />
+          <Button
+            size="small"
+            type="cancel"
+            label="cancel"
             onClick={() => setShow("none")}
-          >
-            Cancel
-          </button>
-          <button className="controllers-delete" onClick={() => handleLogout()}>
-            Logout
-          </button>
+          />
         </div>
       </div>
     </SmallPopUp>

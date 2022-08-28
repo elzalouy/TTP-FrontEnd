@@ -1,11 +1,11 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../../assets/img/Images";
-import SearchBox from "../../../coreUI/components/Inputs/SearchBox";
+import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -21,6 +21,7 @@ import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 import Loading from "../../../coreUI/usable-elements/Loading";
 import { ProjectsInterface } from "../../../types/models/Projects";
+import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 interface Props {
   projectId?: string;
 }
@@ -53,6 +54,13 @@ export const TasksListView: React.FC<Props> = (props: any) => {
     dispatch(filterTasks(filter));
   };
 
+  const onChange = (e: any, props: any) => {
+    e.preventDefault();
+    console.log(e);
+    props.field.onChange(e.target.id);
+    onHandleChange(e);
+  };
+
   const onHandleSort = (e: any) => {
     let filter = watch();
     dispatch(ProjectsActions.onSortTasks(filter.deadline));
@@ -83,30 +91,44 @@ export const TasksListView: React.FC<Props> = (props: any) => {
       marginTop={MD ? 6 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
-      <Grid display="flex" justifyContent={"space-between"} width="100%">
-        <Grid direction="row" justifyContent="flex-start" alignItems="center">
-          <Typography
-            variant="h2"
-            marginBottom={2}
-            marginTop={SM ? 5 : MD ? 2 : 0}
-          >
-            Tasks
-            {props.projectId && (
-              <>
-                <img
-                  style={{ margin: "0 20px" }}
-                  src={IMAGES.arrowHeader}
-                  alt="more"
-                />
-                {
-                  projects?.projects?.find(
-                    (item) => item._id === props.projectId
-                  )?.name
-                }
-              </>
-            )}
-          </Typography>
-        </Grid>
+      <Grid
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        sm={12}
+        md={12}
+        lg={12}
+        xs={12}
+      >
+        <Typography
+          variant="h2"
+          marginBottom={2}
+          marginTop={SM ? 5 : MD ? 2 : 0}
+        >
+          Tasks
+          {props.projectId && (
+            <>
+              <img
+                style={{ margin: "0 20px" }}
+                src={IMAGES.arrowHeader}
+                alt="more"
+              />
+              {
+                projects?.projects?.find(
+                  (item) => item._id === props.projectId
+                )?.name
+              }
+            </>
+          )}
+        </Typography>
+      </Grid>
+      <Grid
+        container
+        sm={12}
+        md={12}
+        lg={12}
+        xs={12}
+      >
         <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
           {!LG && (
             <>
@@ -129,186 +151,159 @@ export const TasksListView: React.FC<Props> = (props: any) => {
             </>
           )}
         </Grid>
-      </Grid>
-      <Grid
-        marginBottom={2}
-        container
-        direction={"row"}
-        alignItems={"center"}
-        width={"100%"}
-        wrap={MD ? "wrap" : "nowrap"}
-      >
-        {filter && (
-          <>
-            <Grid
-              marginX={0.5}
-              item
-              xs={6}
-              sm={3}
-              md={3}
-              lg={4}
-              marginY={1}
-              flex={1}
-            >
-              <Controller
-                control={control}
-                name="deadline"
-                render={(props) => (
-                  <SelectInput
-                    label="Due Date: "
-                    {...props}
-                    options={[
-                      { id: "All", text: "All", value: "" },
-                      { id: "asc", text: "Ascending", value: "asc" },
-                      { id: "desc", text: "Descending", value: "desc" },
-                    ]}
-                    handleChange={(e) => {
-                      e.preventDefault();
-                      props.field.onChange(e);
-                      onHandleSort(e);
-                    }}
-                    selectValue={props.field.value}
-                    selectText={props.field.value}
-                  />
-                )}
-              />
-            </Grid>
-            <div style={{ width: "20px" }}></div>
-            <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={4} marginY={1}>
-              <Box className="tasks-option">
-                <Controller
-                  name="status"
-                  control={control}
-                  render={(props) => (
-                    <SelectInput
-                      label="Status: "
-                      placeholder="All"
-                      {...props}
-                      options={[
-                        { id: "All", value: "", text: "All" },
-                        {
-                          id: "Tasks Board",
-                          value: "Tasks Board",
-                          text: "Tasks Board",
-                        },
-                        {
-                          id: "not clear",
-                          value: "Not Clear",
-                          text: "Not Clear",
-                        },
-                        {
-                          id: "inProgress",
-                          value: "inProgress",
-                          text: "In Progress",
-                        },
-                        { id: "review", value: "Review", text: "Review" },
-                        { id: "shared", value: "Shared", text: "Shared" },
-                        {
-                          id: "done",
-                          value: "Done",
-                          text: "Done",
-                        },
-                        { id: "canceled", value: "Cancled", text: "Cancled" },
-                      ]}
-                      handleChange={(e) => {
-                        e.preventDefault();
-                        props.field.onChange(e);
-                        onHandleChange(e);
-                      }}
-                      selectValue={props.field.value}
-                      selectText={props.field.value}
-                    />
-                  )}
-                />
-              </Box>
-            </Grid>
-            <div style={{ width: "20px" }}></div>
-
-            <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
-              <Box className="tasks-option">
-                <Controller
-                  name="projectId"
-                  control={control}
-                  render={(props) => (
-                    <SelectInput
-                      label={"Project: "}
-                      {...props}
-                      options={[
-                        { id: "All", value: "", text: "All" },
-                        ...projects.projects?.map((item) => {
-                          return {
-                            id: item._id,
-                            value: item._id,
-                            text: item.name,
-                          };
-                        }),
-                      ]}
-                      handleChange={(e) => {
-                        e.preventDefault();
-                        props.field.onChange(e);
-                        onHandleChange(e);
-                      }}
-                      selectValue={props.field.value}
-                      selectText={
-                        projects?.projects?.find(
-                          (val) => val._id === props.field.value
-                        )?.name
-                      }
-                    />
-                  )}
-                />
-              </Box>
-            </Grid>
-            <div style={{ width: "20px" }}></div>
-          </>
-        )}
-        <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
-          <DeleteTask
-            task={selects}
-            Show={Show}
-            setShow={setShow}
-            onDelete={onDeleteTasks}
-          />
-        </Grid>
-        <div style={{ width: "20px" }}></div>
         <Grid
-          width="100%"
-          display="flex"
-          justifyContent={"flex-end"}
-          alignItems="center"
-        >
-          <Grid marginX={0.5} item xs={6} sm={6} md={6} lg={6} marginY={1}>
-            <Box
-              style={
-                SM
-                  ? {
-                    backgroundColor: "#fafafa",
-                    width: "100%",
-                    marginLeft: "5px",
-                  }
-                  : {
-                    backgroundColor: "#fafafa",
-                    width: "100%",
-                    marginLeft: "0px",
-                  }
-              }
-            >
-              <Controller
-                name="name"
-                control={control}
-                render={(props) => (
-                  <SearchBox
-                    onChange={(e) => {
-                      console.log(e);
-                      props.field.onChange(e);
-                      onHandleChange(e);
-                    }}
-                    value={props.field.value}
-                    placeholder="Search"
+          container
+          alignItems={"center"}>
+          <Grid
+            item
+            lg={7}
+            md={7}
+            sm={7}
+            xs={7}
+            gap="2%"
+            display="flex"
+            direction={"row"}
+            alignItems={"center"}
+            width={"100%"}
+            wrap={MD ? "wrap" : "nowrap"}
+          >
+            {filter && (
+              <>
+                <Grid
+                  marginX={0.5}
+                  item
+                  xs={6}
+                  sm={3}
+                  md={3}
+                  lg={4}
+                  marginY={1}
+                  flex={1}
+                >
+                  <Controller
+                    control={control}
+                    name="deadline"
+                    render={(props) => (
+                      <Filter
+                        elementType="filter"
+                        name={"tasks-" + props.field.name}
+                        selected={props.field.value}
+                        label="Due Date: "
+                        onSelect={(e: any) => onChange(e, props)}
+                        textTruncate={4}
+                        options={[
+                          { id: "asc", text: "Ascending", value: "asc" },
+                          { id: "desc", text: "Descending", value: "desc" },
+                        ]}
+                      />
+                    )}
                   />
-                )}
+                </Grid>
+                <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={4} marginY={1}>
+                  <Box className="tasks-option">
+                    <Controller
+                      name="status"
+                      control={control}
+                      render={(props) => (
+                        <Filter
+                          elementType="filter"
+                          name={"projects-" + props.field.name}
+                          selected={props.field.value}
+                          label="Status: "
+                          options={[
+                            {
+                              id: "Tasks Board",
+                              value: "Tasks Board",
+                              text: "Tasks Board",
+                            },
+                            {
+                              id: "not clear",
+                              value: "Not Clear",
+                              text: "Not Clear",
+                            },
+                            {
+                              id: "inProgress",
+                              value: "inProgress",
+                              text: "In Progress",
+                            },
+                            { id: "review", value: "Review", text: "Review" },
+                            { id: "shared", value: "Shared", text: "Shared" },
+                            {
+                              id: "done",
+                              value: "Done",
+                              text: "Done",
+                            },
+                            { id: "canceled", value: "Cancled", text: "Cancled" },
+                          ]}
+                          onSelect={(e: any) => onChange(e, props)}
+                          textTruncate={5}
+                        />
+                      )}
+                    />
+                  </Box>
+                </Grid>
+                <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
+                  <Box className="tasks-option">
+                    <Controller
+                      name="projectId"
+                      control={control}
+                      render={(props) => (
+                        <Filter
+                          elementType="filter"
+                          name={"projects-" + props.field.name}
+                          selected={props.field.value}
+                          label="Project: "
+                          options={[
+                            ...projects.projects?.map((item) => {
+                              return {
+                                id: item._id,
+                                value: item._id,
+                                text: item.name,
+                              };
+                            }),
+                          ]}
+                          onSelect={(e: any) => onChange(e, props)}
+                          textTruncate={10}
+                        />
+                      )}
+                    />
+                  </Box>
+                </Grid>
+              </>
+            )}
+            <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
+              <DeleteTask
+                task={selects}
+                Show={Show}
+                setShow={setShow}
+                onDelete={onDeleteTasks}
               />
-            </Box>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            display="flex"
+            justifyContent={"flex-end"}
+            xs={5}
+            sm={5}
+            md={5}
+            lg={5}
+          >
+            <Controller
+              name="name"
+              control={control}
+              render={(props) => (
+                <SearchBox
+                  onChange={(e) => {
+                    console.log(e);
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  value={props.field.value}
+                  placeholder="Search"
+                  size={"medium"}
+                />
+              )}
+            />
           </Grid>
         </Grid>
       </Grid>

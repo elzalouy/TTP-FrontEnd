@@ -1,23 +1,21 @@
-import React, { useEffect } from "react";
+import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import Badge from "src/coreUI/components/Badge/Badge";
+import Button from "src/coreUI/components/Buttons/Button";
+// import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import { useState } from "react";
-import "../../popups-style.css";
-import { useAppSelector } from "../../../models/hooks";
-import {
-  selectSelectedCategory,
-  selectCatLoading,
-} from "../../../models/Categories/categories.selectores";
-import { useDispatch } from "react-redux";
-import { updateCategory } from "../../../models/Categories";
-import { v4 as uuidv4 } from "uuid";
-import { CircularProgress, useMediaQuery, useTheme } from "@mui/material";
-import { Grid } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Typography } from "@mui/material";
-import { TextField } from "@mui/material";
-import { toast } from "react-toastify";
 import { generateID } from "../../../helpers/IdGenerator";
+import { updateCategory } from "../../../models/Categories";
+import {
+  selectCatLoading,
+  selectSelectedCategory,
+} from "../../../models/Categories/categories.selectores";
+import { useAppSelector } from "../../../models/hooks";
+import "../../popups-style.css";
 
 type Props = {
   display: string;
@@ -150,7 +148,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}
       >
-        <Grid padding={1} paddingX={2}>
+        <Grid>
           <Grid justifyContent={"space-between"} direction={"row"}>
             <div>
               <img
@@ -167,68 +165,70 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             <Typography fontWeight={"500"} fontSize={18} color="#00ACBA">
               Manage Category
             </Typography>
+            {/* TODO rebuild the ui element */}
           </Grid>
-          <div>
-            <label className="popup-label">Main Category</label>
-            <Grid item xs={12}>
-              <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                <TextField
-                  type="text"
-                  className="text-input"
-                  name="mainCategory"
-                  placeholder="Ex: Al-shaqran"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                  }}
-                  required
-                  sx={createSubCatMainCatStyle}
-                />
-              </div>
+          {/* <Input
+            label="Main Category"
+            placeholder="Ex : Al-Shaqran"
+            custom={{
+              value: title !== undefined ? title : "",
+              onChangeEvent: (e: any) => {
+                setTitle(e.target.value);
+              }
+            }}
+            wrapper
+            required
+          /> */}
+          <Grid container alignItems={"center"}>
+            <Grid item xs={9} lg={9}>
+              {/* <Input
+                label="Sub Category"
+                placeholder="Sub Category"
+                custom={{
+                  value: subCategory,
+                  onChangeEvent: onSubChange,
+                }}
+                wrapper
+                required
+              /> */}
             </Grid>
-            <label className="popup-label">Sub-Category</label>
-            <Grid direction="row" justifyContent="space-between" display="flex">
-              <TextField
-                type="text"
-                name="subCategory"
-                className="text-input"
-                value={subCategory}
-                onChange={onSubChange}
-                placeholder="Sub category"
-                sx={createNewSubCatInputStyle}
+            <Grid
+              item
+              xs={3}
+              lg={3}
+              sx={{ paddingLeft: "10px", marginTop: "42px" }}
+            >
+              <Button
+                type="add"
+                size="small"
+                label="add"
+                onClick={addSubCategory}
+                disabled={subCategory.length === 0}
+                loading={loadingCat}
               />
-              <div className="add-subcategory" onClick={addSubCategory}>
-                Add
-              </div>
             </Grid>
-            <div className="subcategories">
-              {subCategories &&
-                subCategories.map(({ _id, subCategory }: any) => (
-                  <div className="subcategory" key={_id}>
-                    {subCategory}
-                    <span
-                      className="remove-category"
-                      onClick={() => {
-                        removeSubCategory(_id);
-                      }}
-                    >
-                      <CloseIcon style={{ width: "16px", height: "16px" }} />
-                    </span>
-                  </div>
-                ))}
-            </div>
-          </div>
-          <br />
-          <div className="controllers">
-            <button className="controllers-done" onClick={handleSubmit}>
-              {loadingCat ? (
-                <CircularProgress sx={createNewSubCatLoading} />
-              ) : (
-                "Done"
-              )}
-            </button>
-          </div>
+          </Grid>
         </Grid>
+        <div className="subcategories">
+          {subCategories &&
+            subCategories.map(({ _id, subCategory }: any) => (
+              <Badge
+                name={subCategory}
+                index={_id}
+                onChange={() => removeSubCategory(_id)}
+              />
+            ))}
+        </div>
+        <br />
+        <div className="controllers">
+          <Button
+            type="main"
+            size="large"
+            label="done"
+            onClick={handleSubmit}
+            loading={loadingCat}
+          />
+        </div>
       </PopUp>
     </>
   );

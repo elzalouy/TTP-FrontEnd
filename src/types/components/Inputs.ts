@@ -1,11 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
-import { UseFormSetValue } from "react-hook-form";
-import { IFailed } from "../views/Auth";
-
-export interface InputProps {
-  name: string;
-  control: any;
-  register: any;
+export interface IInputProps {
+  name?: string;
+  control?: any;
+  register?: any;
   label: string;
   state?: any;
   placeholder?: string;
@@ -16,10 +12,37 @@ export interface InputProps {
   required?: boolean
   bold?: boolean;
   type?: boolean;
-  error?:boolean;
+  inputName?: string;
+  error?: boolean;
+  wrapper?: boolean;
+  custom?: {
+    value: string;
+    onChangeEvent: (e: any) => void;
+  };
 }
 
-export interface DateInputProps {
+export interface ISearch {
+  value: string;
+  onChange: (e: any) => void;
+  placeholder?: string;
+  size: 'medium' | 'small';
+}
+
+export interface IButton {
+  label: string;
+  size: 'large' | 'medium' | 'small';
+  type: 'main' | 'delete' | 'add' | 'cancel';
+  onClick?: (e: any) => any;
+  loading?: boolean | null;
+  disabled?: boolean;
+  form?:{
+    type:'button'|'submit' | 'reset';
+    name:string;
+  };
+  dataTestId?: string
+}
+
+export interface IIDateInputProps {
   name: string;
   control: any;
   register: any;
@@ -29,7 +52,7 @@ export interface DateInputProps {
   label: string;
 }
 
-export interface PasswordInputProps {
+export interface IIPasswordInputProps {
   name: string;
   label: string
   control: any;
@@ -37,7 +60,8 @@ export interface PasswordInputProps {
   visible: boolean;
   setVisiblity: React.Dispatch<React.SetStateAction<boolean>>;
   minLength: boolean;
-  error?:boolean
+  error?: boolean;
+  wrapper?: boolean;
 }
 
 export interface IFormInputs {
@@ -45,4 +69,19 @@ export interface IFormInputs {
   password?: string;
   newPassword?: string;
   confirmNewPassword?: string
+}
+ 
+export interface IFilterProps {
+  elementType: "filter" | "select";
+  name: string;
+  onSelect: any;
+  selected: string;
+  options: {
+    id: string;
+    value: string;
+    text: string;
+  }[];
+  label?: string;
+  textTruncate?: number;
+  error?: string;
 }

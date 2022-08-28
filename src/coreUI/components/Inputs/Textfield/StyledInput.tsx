@@ -1,6 +1,5 @@
-import * as React from "react";
 import "./Input.css";
-type elementType = "labeled" | "input";
+type elementType = "input";
 type InputProps = {
   type: string;
   placeholder: string;
@@ -23,8 +22,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <fieldset id="usable-input">
-      <legend></legend>
-      {elementType === "labeled" && <p className="input-label">{label}</p>}
+      <p className="input-label">{label}</p>
       <input
         className="input"
         type={type}

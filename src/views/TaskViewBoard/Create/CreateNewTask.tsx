@@ -1,7 +1,7 @@
 import * as React from "react";
 import _ from "lodash";
 import EditTaskTitle from "../Edit/Title";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import Select from "../Edit/Select";
 import DateInput from "../Edit/DateInput";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";
@@ -180,7 +180,8 @@ const CreateNewTask = ({ show, setShow }: Props) => {
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
-            <Input
+              {/* TODO rebuild it again */}
+              {/* <Input
                 name="name"
                 label="Task name"
                 placeholder="Task name"
@@ -188,7 +189,7 @@ const CreateNewTask = ({ show, setShow }: Props) => {
                 dataTestId="task-name"
                 register={register}
                 state={state}
-              />
+              /> */}
               <Select
                 state={state}
                 control={control}
@@ -249,7 +250,8 @@ const CreateNewTask = ({ show, setShow }: Props) => {
                     : []
                 }
               />
-              <Input
+              {/* TODO rebuild it again */}
+              {/* <Input
                 name="description"
                 control={control}
                 register={register}
@@ -258,7 +260,7 @@ const CreateNewTask = ({ show, setShow }: Props) => {
                 rows={5}
                 placeholder={"Write about your task"}
                 state={state}
-              />
+              /> */}
               <div>
                 <Select
                   name="subCategoryId"
