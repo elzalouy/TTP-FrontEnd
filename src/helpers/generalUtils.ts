@@ -183,9 +183,9 @@ export const getDepartmentOptions = (data: any[]) => {
   if (data) {
     return data.map((item) => {
       return {
-        id: item._id,
-        value: item._id,
-        text: item.name,
+        id: item,
+        value: item,
+        text: item,
       }
     })
   } else return []
