@@ -1,5 +1,6 @@
+import { useState } from "react";
 import "./Input.css";
-type elementType = "input";
+type elementType = "input-style" | "login-style";
 type InputProps = {
   type: string;
   placeholder: string;
@@ -19,12 +20,17 @@ const Input = ({
   elementType,
   ...props
 }: InputProps) => {
+  const [state, setState] = useState({ type: type });
+  const onChangeType = () => {
+    setState({ type: state.type === "text" ? "password" : "text" });
+  };
   return (
     <fieldset id="usable-input">
       <p className="input-label">{label}</p>
       <input
         className="input"
-        type={type}
+        security=""
+        type={state.type}
         onChange={onChange}
         value={value}
         placeholder={placeholder}
@@ -32,6 +38,8 @@ const Input = ({
         data-type={elementType}
         {...props}
       />
+      {/* TODO will add an eye icon using fontAwesome icons */}
+      {/* {type && <i className="fa-solid fa-eye" onClick={onChangeType}></i>} */}
     </fieldset>
   );
 };

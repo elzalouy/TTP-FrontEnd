@@ -29,8 +29,83 @@ fieldset#usable-input input.input:focus {
   border: 0.5px solid #303030;
 }
 
-fieldset#usable-input input.input[data-error="error"] {
+input[data-error="error"] {
   border: 0.5px solid #e30707;
 }
-
+input[data-type="login-style"] {
+  height: 50px !important;
+}
 /* fieldset#usable-input input.input[data-type="formInput"]{} */
+/* Password Input Styles */
+
+.password-input-wrapper {
+  margin-top: 20px;
+}
+
+.password-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  position: relative;
+  margin-top: 5px;
+  border: none;
+  outline: none;
+  padding-right: 0px;
+}
+
+.password-input {
+  display: block;
+  font-family: "Cairo", sans-serif;
+  width: 100%;
+  color: black;
+  padding: 10px;
+  height: 50px;
+  border: solid 1px #b4b6c4;
+  outline: none;
+  text-align: left;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-right: 0px;
+}
+
+.password-icon {
+  position: absolute !important;
+  right: 0;
+}
+
+.password-input-label {
+  margin-bottom: 5px;
+  font-family: "Cairo" !important;
+  font-weight: bolder !important;
+  text-transform: capitalize;
+}
+
+.password-input:active {
+  border: 2px solid #303030;
+}
+
+.password-input::placeholder {
+  color: #b4b6c4;
+}
+
+.password-input:focus {
+  border: 2px solid #303030;
+}
+
+/* Input error */
+
+.error-active {
+  border: 1px solid #fe1a1a;
+  outline: none;
+}
+
+.error-active:active {
+  border: 1px solid #fe1a1a;
+  outline: none;
+}
+
+.error-active:focus {
+  border: 1px solid #fe1a1a;
+  outline: none;
+}

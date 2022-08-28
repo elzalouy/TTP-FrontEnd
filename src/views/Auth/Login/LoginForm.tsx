@@ -79,6 +79,7 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
               label="Email Address"
               placeholder="Email Address"
               error={errors.email && "true"}
+              elementType={"login-style"}
             />
           )}
         />
