@@ -11,6 +11,7 @@ const Input: FC<IStyledInput> = ({
   placeholder,
   error,
   elementType,
+  dataTestId,
   ...props
 }) => {
 
@@ -30,6 +31,7 @@ const Input: FC<IStyledInput> = ({
         value={value}
         placeholder={placeholder}
         data-error={error}
+        data-test-id={dataTestId}
         data-type={elementType}
         {...props}
       />

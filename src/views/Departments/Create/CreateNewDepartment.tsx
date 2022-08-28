@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
+import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
@@ -101,23 +102,13 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           />
         </div>
         <p className="popup-title">Create new department</p>
-
-        <Controller
+        <ControlledInput
           name="name"
+          label={"Department name"}
+          placeholder={"Department name"}
+          type="text"
           control={control}
-          render={(props) => (
-            // <Input
-            //   dataTestId="create-dep-Name"
-            //   name="name"
-            //   control={control}
-            //   register={register}
-            //   label={"Department name"}
-            //   placeholder={"Department name"}
-            //   state={state}
-            //   id="editDepartmentName"
-            // />
-            <></>
-          )}
+          dataTestId="create-dep-Name"
         />
         <label className="popup-label-nt">Color</label>
         <Controller
@@ -133,12 +124,12 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               options={
                 state.colors
                   ? state.colors.map((color) => {
-                      return {
-                        id: color,
-                        value: color,
-                        text: color,
-                      };
-                    })
+                    return {
+                      id: color,
+                      value: color,
+                      text: color,
+                    };
+                  })
                   : []
               }
             />
@@ -146,29 +137,20 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         />
         <Grid container alignItems="center" pt={2}>
           <Grid item xs={9} lg={9}>
-            <Controller
+            <ControlledInput
               name="team"
+              label={"Teams"}
+              placeholder="Team name"
+              type="text"
               control={control}
-              render={() => (
-                //   <Input
-                //     dataTestId="create-dep-teamName"
-                //     name="team"
-                //     control={control}
-                //     register={register}
-                //     label={"Teams"}
-                //     placeholder="Team name"
-                //     state={state}
-                //     id="editDepartmentTeams"
-                //   />
-                <></>
-              )}
+              dataTestId="create-dep-teamName"
             />
           </Grid>
           <Grid
             item
             xs={3}
             lg={3}
-            sx={{ paddingLeft: "10px", marginTop: "20px" }}
+            sx={{ paddingLeft: "10px", marginTop: "32px" }}
           >
             <Button
               type="add"

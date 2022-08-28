@@ -29,7 +29,7 @@ export interface IStyledInput {
   value?: string;
   error?: string;
   label?: string;
-
+  dataTestId?:string;
 }
 
 export interface ISearch {

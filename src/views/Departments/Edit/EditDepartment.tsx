@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
+import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
 import IMAGES from "../../../assets/img/Images";
@@ -134,19 +135,12 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             onClick={onClose}
           />
         </div>
-        <p className="popup-title">Edit department</p>
-        <Controller
+        <ControlledInput
           name="name"
+          label={"Department name"}
+          placeholder={"Department name"}
+          type="text"
           control={control}
-          render={(props) => (
-            <Input
-              label="Department name"
-              type="text"
-              value={props.field.value}
-              onChange={props.field.onChange}
-              placeholder={"department name"}
-            />
-          )}
         />
         <label className="popup-label-nt">Color</label>
         <Controller
@@ -162,34 +156,32 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               options={
                 state.colors
                   ? state.colors.map((color) => {
-                      return {
-                        id: color,
-                        value: color,
-                        text: color,
-                      };
-                    })
+                    return {
+                      id: color,
+                      value: color,
+                      text: color,
+                    };
+                  })
                   : []
               }
             />
           )}
         />
         <Grid container justifyContent={"space-between"} pt={2}>
-          <Grid item xs={8} lg={8}>
-            <Controller
+          <Grid item xs={9} lg={9}>
+            <ControlledInput
               name="team"
+              label={"Teams"}
+              placeholder="Team name"
+              type="text"
               control={control}
-              render={(props) => (
-                <Input
-                  label="Teams"
-                  type="text"
-                  value={props.field.value}
-                  onChange={props.field.onChange}
-                  placeholder={"Team Name"}
-                />
-              )}
             />
           </Grid>
-          <Grid item xs={4} lg={4} paddingLeft={2.8} marginTop={4.2}>
+          <Grid
+            item
+            xs={3}
+            lg={3}
+            sx={{ paddingLeft: "10px", marginTop: "32px" }}>
             <Button
               type="add"
               size="small"

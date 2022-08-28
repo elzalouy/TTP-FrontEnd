@@ -17,4 +17,5 @@ export interface IControlledContainer {
   required?: boolean;
   elementType?: "input-style" | "login-style";
   error?:string;
+  dataTestId?:string
 }
