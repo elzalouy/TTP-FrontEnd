@@ -21,6 +21,14 @@ fieldset.core-ui-input-wrapper input.core-ui-input {
   padding-left: 10px;
 }
 
+/* Adds spacing margin on top to all the inputs except the one at the top*/
+
+fieldset.core-ui-input-wrapper:not(:first-child) {
+  margin-top: 10px;
+}
+
+/* Input actions */
+
 fieldset.core-ui-input-wrapper input.core-ui-input::placeholder {
   color: #b4b6c4;
   font-size: 14px;

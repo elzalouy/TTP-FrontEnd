@@ -7,8 +7,8 @@ beforeEach(() => {
 describe('Check Project count of PM', () => {
     it('It should create a new PM', () => {
         cy.get('[data-test-id="create-pm-button"]').click();
-        cy.get('[data-test-id="pm-name"]').type("Automated PM");
-        cy.get('[data-test-id="pm-email"]').type("pm@gmail.com");
+        cy.get('[data-test-id="create-pm-name"]').type("Automated PM");
+        cy.get('[data-test-id="create-pm-email"]').type("pm@gmail.com");
         cy.get('[data-test-id="submit-pm"]').click().wait(1000);
     })
 
