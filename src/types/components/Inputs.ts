@@ -21,6 +21,17 @@ export interface IInputProps {
   };
 }
 
+export interface IStyledInput {
+  type: string;
+  placeholder: string;
+  onChange: any;
+  elementType?: "input-style" | "login-style";
+  value?: string;
+  error?: string;
+  label?: string;
+
+}
+
 export interface ISearch {
   value: string;
   onChange: (e: any) => void;

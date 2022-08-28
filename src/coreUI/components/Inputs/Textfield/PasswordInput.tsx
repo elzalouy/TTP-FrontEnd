@@ -43,16 +43,6 @@ const PasswordInput: FC<IPasswordInputProps> = ({ name, label, control, register
                     </div>
                 )}
             />
-            <IconButton
-                className="password-icon"
-                onClick={() => setVisiblity((state: any) => !state)}
-            >
-                {!visible ? (
-                    <VisibilityOff style={{ color: "#b4b6c4" }} />
-                ) : (
-                    <Visibility style={{ color: "#b4b6c4" }} />
-                )}
-            </IconButton>
         </div>
     );
 };

@@ -1,16 +1,16 @@
-fieldset#usable-input {
+fieldset.core-ui-input-wrapper {
   border: transparent;
   outline: transparent;
 }
 
-fieldset#usable-input .input-label {
+fieldset.core-ui-input-wrapper .core-ui-input-label {
   display: block;
   font-weight: bold !important;
   margin: 10px 0 5px 0 !important;
   text-transform: capitalize;
 }
 
-fieldset#usable-input input.input {
+fieldset.core-ui-input-wrapper input.core-ui-input {
   width: 100%;
   height: 50px;
   font-size: 16px;
@@ -21,21 +21,31 @@ fieldset#usable-input input.input {
   padding-left: 10px;
 }
 
-fieldset#usable-input input.input::placeholder {
+fieldset.core-ui-input-wrapper input.core-ui-input::placeholder {
   color: #b4b6c4;
+  font-size: 14px;
+  text-transform: capitalize;
 }
 
-fieldset#usable-input input.input:focus {
+fieldset.core-ui-input-wrapper input.core-ui-input:focus {
   border: 0.5px solid #303030;
 }
 
-input[data-error="error"] {
-  border: 0.5px solid #e30707;
+/* Input error */
+
+input.core-ui-input[data-error="true"] {
+  border: 0.5px solid #e30707 !important;
 }
-input[data-type="login-style"] {
+
+input.core-ui-input[data-error="true"]:active, input[data-error="true"]:focus {
+  border: 0.5px solid #e30707 !important;
+}
+
+input.core-ui-input[data-type="login-style"] {
   height: 50px !important;
 }
-/* fieldset#usable-input input.input[data-type="formInput"]{} */
+
+
 /* Password Input Styles */
 
 .password-input-wrapper {
@@ -87,6 +97,7 @@ input[data-type="login-style"] {
 
 .password-input::placeholder {
   color: #b4b6c4;
+  text-transform: capitalize;
 }
 
 .password-input:focus {

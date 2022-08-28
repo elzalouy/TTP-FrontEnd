@@ -24,32 +24,9 @@ const Button: FC<IButton> = ({
       data-test-id={dataTestId}
       className={disabled ? disabledClassName : className}
     >
-      {loading ? <CircularProgress sx={{ color: "white" }} /> : label}
+      {loading ? <CircularProgress className="button-loading"/> : label}
     </button>
   );
 };
 
-<<<<<<< HEAD
-    return (
-        <button
-            onClick={onClick}
-            type={form?.type ? form.type : "button"}
-            form={form?.name ? form.name : ""}
-            data-test-id={dataTestId}
-            className={disabled ? disabledClassName : className}
-        >
-            {
-                loading ?
-                    <CircularProgress 
-                    className='button-loading'/>
-                    :
-                    label
-            }
-        </button>
-    )
-}
-
-export default Button
-=======
 export default Button;
->>>>>>> 5aac2287e1709c287fd05fb6424071e3ea6b7fae

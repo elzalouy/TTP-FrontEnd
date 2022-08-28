@@ -135,7 +135,6 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           />
         </div>
         <p className="popup-title">Edit department</p>
-        {/* TODO rebuild the element */}
         <Controller
           name="name"
           control={control}

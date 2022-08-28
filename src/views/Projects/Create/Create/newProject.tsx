@@ -14,7 +14,7 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../../../models/Ui";
 import Loading from "../../../../coreUI/usable-elements/Loading";
-import TableBox from "../../../../coreUI/components/Containers/TableContainer";
+import TableBox from "../../../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../../../coreUI/components/Tables/ProjectsTable";
 import { selectPMs } from "../../../../models/PM";
 import { RouteComponentProps } from "react-router";

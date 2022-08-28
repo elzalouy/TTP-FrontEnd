@@ -1,16 +1,9 @@
-import { useState } from "react";
+import { FC, useState } from "react";
+import { IStyledInput } from "src/types/components/Inputs";
 import "./Input.css";
-type elementType = "input-style" | "login-style";
-type InputProps = {
-  type: string;
-  placeholder: string;
-  onChange: any;
-  elementType?: elementType;
-  value?: string;
-  error?: string;
-  label?: string;
-};
-const Input = ({
+
+
+const Input: FC<IStyledInput> = ({
   label,
   type,
   value,
@@ -19,16 +12,19 @@ const Input = ({
   error,
   elementType,
   ...props
-}: InputProps) => {
+}) => {
+
   const [state, setState] = useState({ type: type });
+
   const onChangeType = () => {
     setState({ type: state.type === "text" ? "password" : "text" });
   };
+
   return (
-    <fieldset id="usable-input">
-      <p className="input-label">{label}</p>
+    <fieldset className="core-ui-input-wrapper">
+      <p className="core-ui-input-label">{label}</p>
       <input
-        className="input"
+        className="core-ui-input"
         type={state.type}
         onChange={onChange}
         value={value}
