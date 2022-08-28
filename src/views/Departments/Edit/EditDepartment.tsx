@@ -6,7 +6,9 @@ import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/components/Containers/Select/ControlledSelect";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -141,30 +143,14 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           type="text"
           control={control}
         />
-        <label className="popup-label-nt">Color</label>
-        <Controller
+        <ControlledSelect
           name="color"
           control={control}
-          render={(props) => (
-            <Select
-              elementType="select"
-              name="color"
-              label="Select"
-              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
-              selected={props.field.value}
-              options={
-                state.colors
-                  ? state.colors.map((color) => {
-                    return {
-                      id: color,
-                      value: color,
-                      text: color,
-                    };
-                  })
-                  : []
-              }
-            />
-          )}
+          label="Select"
+          formLabel="color"
+          elementType="select"
+          setValue={setValue}
+          options={getDepartmentOptions(state.colors)}
         />
         <Grid container justifyContent={"space-between"} pt={2}>
           <Grid item xs={9} lg={9}>

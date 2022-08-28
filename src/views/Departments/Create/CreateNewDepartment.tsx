@@ -8,6 +8,7 @@ import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/components/Containers/Select/ControlledSelect";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -122,17 +123,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           formLabel="label"
           elementType="select"
           setValue={setValue}
-          options={
-            state.colors
-              ? state.colors.map((color) => {
-                return {
-                  id: color,
-                  value: color,
-                  text: color,
-                };
-              })
-              : []
-          }
+          options={getDepartmentOptions(state.colors)}
         />
         <Grid container alignItems="center" pt={2}>
           <Grid item xs={9} lg={9}>
