@@ -1,13 +1,12 @@
 import { Grid } from "@mui/material";
 import _ from "lodash";
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/components/Containers/Select/ControlledSelect";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
