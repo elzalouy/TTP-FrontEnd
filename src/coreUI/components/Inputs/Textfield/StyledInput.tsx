@@ -29,7 +29,6 @@ const Input = ({
       <p className="input-label">{label}</p>
       <input
         className="input"
-        security=""
         type={state.type}
         onChange={onChange}
         value={value}

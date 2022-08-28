@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -135,15 +136,19 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         </div>
         <p className="popup-title">Edit department</p>
         {/* TODO rebuild the element */}
-        {/* <Input
+        <Controller
           name="name"
           control={control}
-          register={register}
-          label={"Department name"}
-          placeholder={"department name"}
-          state={state}
-          id="editDepartmentName"
-        /> */}
+          render={(props) => (
+            <Input
+              label="Department name"
+              type="text"
+              value={props.field.value}
+              onChange={props.field.onChange}
+              placeholder={"department name"}
+            />
+          )}
+        />
         <label className="popup-label-nt">Color</label>
         <Controller
           name="color"
@@ -169,24 +174,23 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             />
           )}
         />
-        <Grid container alignItems="center" pt={2}>
-          <Grid item xs={9} lg={9}>
-            {/* <Input
+        <Grid container justifyContent={"space-between"} pt={2}>
+          <Grid item xs={8} lg={8}>
+            <Controller
               name="team"
               control={control}
-              register={register}
-              label={"Teams"}
-              placeholder={"Team Name"}
-              state={state}
-              id="editDepartmentTeams"
-            /> */}
+              render={(props) => (
+                <Input
+                  label="Teams"
+                  type="text"
+                  value={props.field.value}
+                  onChange={props.field.onChange}
+                  placeholder={"Team Name"}
+                />
+              )}
+            />
           </Grid>
-          <Grid
-            item
-            xs={3}
-            lg={3}
-            sx={{ paddingLeft: "10px", marginTop: "20px" }}
-          >
+          <Grid item xs={4} lg={4} paddingLeft={2.8} marginTop={4.2}>
             <Button
               type="add"
               size="small"
