@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { IClientState } from "src/types/views/Client";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";

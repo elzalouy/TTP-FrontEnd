@@ -4,7 +4,7 @@ import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { IClient } from "src/types/views/Client";
 import { useAppSelector } from "../../../models/hooks";
 import { selectEditClient, selectLoadingClient, updateClient, UpdateClientInterface } from "src/models/Clients";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -10,7 +10,7 @@ import {
   selectLoading,
   selectPMs,
   select_Id,
-  updatePM,
+  updatePM
 } from "../../../models/PM";
 import { toggleEditProjectManagerPopup } from "../../../models/Ui";
 import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";

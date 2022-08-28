@@ -6,7 +6,6 @@ import { IForgetForm } from "src/types/views/Auth";
 
 const ForgetForm: FC<IForgetForm> = ({
   control,
-  register,
   errors,
   handleSubmit,
   onSubmit,

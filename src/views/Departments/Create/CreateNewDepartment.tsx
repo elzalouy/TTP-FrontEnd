@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/components/Containers/Select/ControlledSelect";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
@@ -16,7 +17,7 @@ import { CreateDepartmantJoiSchema } from "../../../services/validations/departm
 import {
   IcreateDepartmentInit,
   ICreateDepartmentProps,
-  ICreateDepartmentState,
+  ICreateDepartmentState
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
 
@@ -26,9 +27,10 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const [state, setState] = useState<ICreateDepartmentState>(
     IcreateDepartmentInit
   );
-  const { register, control, watch, reset, resetField, setValue } = useForm({
+  const { control, watch, reset, resetField, setValue } = useForm({
     defaultValues: state.formData,
   });
+
   const onInitState = () => {
     setState(IcreateDepartmentInit);
     reset();
@@ -76,6 +78,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
       );
     }
   };
+
   return (
     <>
       <div
@@ -112,30 +115,24 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           control={control}
           dataTestId="create-dep-Name"
         />
-        <label className="popup-label-nt">Color</label>
-        <Controller
+        <ControlledSelect
           name="color"
           control={control}
-          render={(props) => (
-            <Select
-              elementType="select"
-              name="color"
-              label="Select"
-              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
-              selected={props.field.value}
-              options={
-                state.colors
-                  ? state.colors.map((color) => {
-                    return {
-                      id: color,
-                      value: color,
-                      text: color,
-                    };
-                  })
-                  : []
-              }
-            />
-          )}
+          label="Select"
+          formLabel="label"
+          elementType="select"
+          setValue={setValue}
+          options={
+            state.colors
+              ? state.colors.map((color) => {
+                return {
+                  id: color,
+                  value: color,
+                  text: color,
+                };
+              })
+              : []
+          }
         />
         <Grid container alignItems="center" pt={2}>
           <Grid item xs={9} lg={9}>

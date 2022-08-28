@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";

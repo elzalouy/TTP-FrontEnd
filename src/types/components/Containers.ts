@@ -1,4 +1,5 @@
-import { Control } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
+import { IFilterProps, IInputProps } from "./Inputs";
 
 export interface ITableContainerProps {
   title: string;
@@ -8,14 +9,15 @@ export interface ITableContainerProps {
   bgColor: string;
 };
 
-export interface IControlledContainer {
+export interface IControlledInput extends IInputProps {
   name: string;
-  placeholder: string;
-  label: string;
-  type: string
-  control: Control<any,any>;
+  control: Control<any, any>;
   required?: boolean;
-  elementType?: "input-style" | "login-style";
-  error?:string;
-  dataTestId?:string
+}
+
+export interface IControlledSelect extends IFilterProps {
+  name: string;
+  control: Control<any, any>;
+  setValue: UseFormSetValue<any>
+  formLabel: string;
 }

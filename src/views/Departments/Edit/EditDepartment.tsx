@@ -7,14 +7,13 @@ import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
 import {
   selectEditDepartment,
-  updateDepartment,
+  updateDepartment
 } from "../../../models/Departments";
 import { useAppSelector } from "../../../models/hooks";
 import { toggleEditDepartment } from "../../../models/Ui";
@@ -23,7 +22,7 @@ import { editDepartmentSchema } from "../../../services/validations/department.s
 import {
   editDepartmentInitState,
   IEditDepartmentProps,
-  IEditDepartmentState,
+  IEditDepartmentState
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
 

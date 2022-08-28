@@ -1,77 +1,46 @@
-import * as React from "react";
-import { Controller } from "react-hook-form";
-import { IInputProps } from "src/types/components/Inputs"; 
-import "./Input.css"
+import { FC, useState } from "react";
+import { IStyledInput } from "src/types/components/Inputs";
+import "./Input.css";
 
-const Input: React.FC<IInputProps> = ({
-  name,
-  control,
-  register,
-  placeholder,
+
+const Input: FC<IStyledInput> = ({
   label,
-  id,
-  dataTestId,
-  required,
+  type,
+  value,
+  onChange,
+  placeholder,
   error,
-  wrapper,
+  elementType,
+  dataTestId,
   inputName,
-  custom
+  ...props
 }) => {
 
-  /* CUSTOM INPUT FOR UNCONTROLLED FORMS */
-  /* We need to have both cases here as we are not concentrating on refactoring yet */
+  const [state, setState] = useState({ type: type });
 
-  if (custom) {
-    return (
-      <div id={id} className={wrapper ? INPUT.wrapper_margin : INPUT.wrapper}>
-        <label className={INPUT.label}>{label}</label>
-        <input
-          data-test-id={dataTestId}
-          value={custom.value}
-          className={error ? INPUT.error : INPUT.input}
-          placeholder={placeholder}
-          onChange={custom.onChangeEvent}
-          name={inputName}
-        />
-      </div>
-    );
-  }
+  const onChangeType = () => {
+    setState({ type: state.type === "text" ? "password" : "text" });
+  };
 
-  /* INPUT FOR CONTROLLED FORMS USING REACT HOOK */
-
-  if (name) return (
-    <div id={id} className={wrapper ? INPUT.wrapper_margin : INPUT.wrapper}>
-      <label className={INPUT.label}>{label}</label>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { value, onChange } }) => {
-          return <input
-            data-test-id={dataTestId}
-            {...register(name, { required: required })}
-            value={value}
-            className={error ? INPUT.error : INPUT.input}
-            placeholder={placeholder}
-            onChange={onChange}
-            name={inputName}
-          />
-        }}
+  return (
+    <fieldset className="core-ui-input-wrapper">
+      <p className="core-ui-input-label">{label}</p>
+      <input
+        className="core-ui-input"
+        name={inputName}
+        type={state.type}
+        onChange={onChange}
+        value={value}
+        placeholder={placeholder}
+        data-error={error}
+        data-test-id={dataTestId}
+        data-type={elementType}
+        {...props}
       />
-    </div>
+      {/* TODO will add an eye icon using fontAwesome icons */}
+      {/* {type && <i className="fa-solid fa-eye" onClick={onChangeType}></i>} */}
+    </fieldset>
   );
-
-  /* SKIP RETURN ERRORS */
-  return null;
 };
 
 export default Input;
-
-
-/* Classname configuration for readability */
-const INPUT = {
-  wrapper: "core-ui-textfield-wrapper",
-  wrapper_margin: "core-ui-textfield-wrapper core-ui-textfield-wrapper-margin",
-  label: "core-ui-textfield-label",
-  input: "core-ui-textfield",
-  error: "core-ui-textfield error-active"
-}

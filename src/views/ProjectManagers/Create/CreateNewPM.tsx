@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { useAppSelector } from "src/models/hooks";
 import IMAGES from "../../../assets/img/Images";

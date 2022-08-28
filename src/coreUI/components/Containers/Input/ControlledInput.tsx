@@ -1,16 +1,16 @@
 import { FC } from 'react'
 import { Controller } from "react-hook-form";
-import { IControlledContainer } from 'src/types/components/Containers';
-import Input from '../../Inputs/Textfield/StyledInput';
+import { IControlledInput } from 'src/types/components/Containers';
+import Input from '../../Inputs/Textfield/Input';
 
-const ControlledInput: FC<IControlledContainer> = ({ name, control, label, type, placeholder,required,elementType,error}) => {
+const ControlledInput: FC<IControlledInput> = ({ name, control, label, type, placeholder, required, elementType, error }) => {
 
     return (
         <Controller
             name={name}
             control={control}
             rules={{
-                required:required
+                required: required
             }}
             render={(props) => (
                 <Input

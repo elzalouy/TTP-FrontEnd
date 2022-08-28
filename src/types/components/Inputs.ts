@@ -1,36 +1,28 @@
 export interface IInputProps {
-  name?: string;
-  control?: any;
-  register?: any;
-  label: string;
-  state?: any;
-  placeholder?: string;
-  multiline?: boolean;
-  rows?: number;
-  id?: string;
-  dataTestId?: string;
-  required?: boolean;
-  bold?: boolean;
-  type?: boolean;
-  inputName?: string;
-  error?: boolean;
-  wrapper?: boolean;
-  custom?: {
-    value: string;
-    onChangeEvent: (e: any) => void;
-  };
-}
-
-export interface IStyledInput {
   type: string;
   placeholder: string;
-  onChange: any;
+  onChange?: any;
   elementType?: "input-style" | "login-style";
   value?: string;
   error?: string;
   label?: string;
-  dataTestId?:string;
-  inputName?:string;
+  dataTestId?: string;
+  inputName?: string;
+}
+
+export interface IFilterProps {
+  elementType: "filter" | "select";
+  name: string;
+  onSelect?: any;
+  selected?: string;
+  options: {
+    id: string;
+    value: string;
+    text: string;
+  }[];
+  label?: string;
+  textTruncate?: number;
+  error?: string;
 }
 
 export interface ISearch {
@@ -83,17 +75,4 @@ export interface IFormInputs {
   confirmNewPassword?: string;
 }
 
-export interface IFilterProps {
-  elementType: "filter" | "select";
-  name: string;
-  onSelect: any;
-  selected: string;
-  options: {
-    id: string;
-    value: string;
-    text: string;
-  }[];
-  label?: string;
-  textTruncate?: number;
-  error?: string;
-}
+

@@ -26,7 +26,7 @@ import "../../popups-style.css";
 import { validateDate } from "src/services/validations/project.schema";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import SelectInput2 from "src/coreUI/components/Inputs/SelectInput2";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 
 type Props = {
   show: string;
