@@ -158,7 +158,7 @@ const CreateNewCategory = () => {
               onChange={onMainChange}
             />
           </Grid>
-          <Grid container alignItems="center" mt={1}git ad>
+          <Grid container alignItems="center" mt={1}>
             <Grid item xs={9} lg={9}>
               <Input
                 label="Sub Category"
