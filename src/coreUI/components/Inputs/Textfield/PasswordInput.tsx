@@ -8,6 +8,8 @@ import "./Input.css";
 
 const PasswordInput: FC<IPasswordInputProps> = ({ name, label, control, register, visible, setVisiblity, minLength, error, wrapper }) => {
 
+    /* CUSTOM CONTROLLED PASSWORD INPUT */
+
     return (
         <div className={wrapper ? 'password-input-wrapper' : ''}>
             <label
@@ -30,7 +32,7 @@ const PasswordInput: FC<IPasswordInputProps> = ({ name, label, control, register
                         />
                         <IconButton
                             className="password-icon"
-                            onClick={() => setVisiblity((state) => !state)}
+                            onClick={() => setVisiblity((state:any) => !state)}
                         >
                             {!visible ? (
                                 <VisibilityOff style={{ color: "#b4b6c4" }} />

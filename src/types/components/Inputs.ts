@@ -52,7 +52,7 @@ export interface IIDateInputProps {
   label: string;
 }
 
-export interface IIPasswordInputProps {
+export interface IPasswordInputProps {
   name: string;
   label: string
   control: any;
