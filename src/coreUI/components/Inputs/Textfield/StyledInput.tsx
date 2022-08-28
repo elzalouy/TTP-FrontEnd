@@ -8,7 +8,6 @@ type InputProps = {
   value?: string;
   error?: string;
   label?: string;
-  props?: any;
 };
 const Input = ({
   label,
@@ -18,7 +17,7 @@ const Input = ({
   placeholder,
   error,
   elementType,
-  props,
+  ...props
 }: InputProps) => {
   return (
     <fieldset id="usable-input">
