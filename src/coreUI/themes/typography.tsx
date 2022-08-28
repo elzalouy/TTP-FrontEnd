@@ -1,4 +1,4 @@
-export default function themeTypography(theme: any) {
+export default function themeTypography(theme: any): any {
   return {
     allVariants: {
       textTransform: "none",

@@ -1,13 +1,35 @@
-import { CircularProgress } from '@mui/material'
-import { FC } from 'react'
-import { IButton } from 'src/types/components/Inputs'
-import "./Button.css"
+import { CircularProgress } from "@mui/material";
+import { FC } from "react";
+import { IButton } from "src/types/components/Inputs";
+import "./Button.css";
 
-const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label ,dataTestId,form}) => {
+const Button: FC<IButton> = ({
+  size,
+  type,
+  loading,
+  disabled,
+  onClick,
+  label,
+  dataTestId,
+  form,
+}) => {
+  let className = "button-" + size + " " + type;
+  let disabledClassName = "button-" + size + " " + type + " " + "disabled";
 
-    let className = "button-" + size + " " + type;
-    let disabledClassName = "button-" + size + " " + type + " " + "disabled";
+  return (
+    <button
+      onClick={onClick}
+      type={form?.type ? form.type : "button"}
+      form={form?.name ? form.name : ""}
+      data-test-id={dataTestId}
+      className={disabled ? disabledClassName : className}
+    >
+      {loading ? <CircularProgress sx={{ color: "white" }} /> : label}
+    </button>
+  );
+};
 
+<<<<<<< HEAD
     return (
         <button
             onClick={onClick}
@@ -28,3 +50,6 @@ const Button: FC<IButton> = ({ size, type, loading, disabled, onClick, label ,da
 }
 
 export default Button
+=======
+export default Button;
+>>>>>>> 5aac2287e1709c287fd05fb6424071e3ea6b7fae

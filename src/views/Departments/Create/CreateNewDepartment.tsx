@@ -7,7 +7,7 @@ import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import IMAGES from "../../../assets/img/Images";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
 import { createDepartment } from "../../../models/Departments";
@@ -15,7 +15,7 @@ import { CreateDepartmantJoiSchema } from "../../../services/validations/departm
 import {
   IcreateDepartmentInit,
   ICreateDepartmentProps,
-  ICreateDepartmentState
+  ICreateDepartmentState,
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
@@ -101,20 +101,22 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           />
         </div>
         <p className="popup-title">Create new department</p>
+
         <Controller
           name="name"
           control={control}
           render={(props) => (
-            <Input
-              dataTestId="create-dep-Name"
-              name="name"
-              control={control}
-              register={register}
-              label={"Department name"}
-              placeholder={"Department name"}
-              state={state}
-              id="editDepartmentName"
-            />
+            // <Input
+            //   dataTestId="create-dep-Name"
+            //   name="name"
+            //   control={control}
+            //   register={register}
+            //   label={"Department name"}
+            //   placeholder={"Department name"}
+            //   state={state}
+            //   id="editDepartmentName"
+            // />
+            <></>
           )}
         />
         <label className="popup-label-nt">Color</label>
@@ -131,48 +133,49 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               options={
                 state.colors
                   ? state.colors.map((color) => {
-                    return {
-                      id: color,
-                      value: color,
-                      text: color,
-                    };
-                  })
+                      return {
+                        id: color,
+                        value: color,
+                        text: color,
+                      };
+                    })
                   : []
               }
             />
-  
           )}
         />
-        <Grid
-          container
-          alignItems="center"
-          pt={2}
-        >
+        <Grid container alignItems="center" pt={2}>
           <Grid item xs={9} lg={9}>
             <Controller
               name="team"
               control={control}
               render={() => (
-                <Input
-                  dataTestId="create-dep-teamName"
-                  name="team"
-                  control={control}
-                  register={register}
-                  label={"Teams"}
-                  placeholder="Team name"
-                  state={state}
-                  id="editDepartmentTeams"
-                />
+                //   <Input
+                //     dataTestId="create-dep-teamName"
+                //     name="team"
+                //     control={control}
+                //     register={register}
+                //     label={"Teams"}
+                //     placeholder="Team name"
+                //     state={state}
+                //     id="editDepartmentTeams"
+                //   />
+                <></>
               )}
             />
           </Grid>
-          <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "20px" }}>
+          <Grid
+            item
+            xs={3}
+            lg={3}
+            sx={{ paddingLeft: "10px", marginTop: "20px" }}
+          >
             <Button
               type="add"
               size="small"
               label="add"
               dataTestId="create-dep-add-team"
-              disabled={(watch().team.length <= 2)}
+              disabled={watch().team.length <= 2}
               onClick={() => onChangeTeams()}
             />
           </Grid>

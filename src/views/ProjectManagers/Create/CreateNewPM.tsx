@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
+// import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { useAppSelector } from "src/models/hooks";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -84,6 +84,8 @@ const CreateNewPM: React.FC<Props> = () => {
           {emailFormat && (
             <p className="popup-error">Please enter a valid email format</p>
           )}
+          {/* TODO rebuild it again */}
+          {/* 
           <Input
             label="Full Name"
             placeholder="Full Name"
@@ -93,7 +95,7 @@ const CreateNewPM: React.FC<Props> = () => {
               onChangeEvent: (e: any) => {
                 setUsername(e.target.value);
                 setError(false);
-              }
+              },
             }}
             required
             wrapper
@@ -108,12 +110,12 @@ const CreateNewPM: React.FC<Props> = () => {
                 setEmail(e.target.value);
                 setError(false);
                 setEmailFormat(false);
-              }
+              },
             }}
             required
             wrapper
             error={emailFormat}
-          />
+          /> */}
         </div>
         <div className="controllers">
           <Button

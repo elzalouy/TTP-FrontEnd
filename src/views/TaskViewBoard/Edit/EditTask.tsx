@@ -1,19 +1,15 @@
-import * as React from "react";
 import _ from "lodash";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import * as React from "react";
 import moment from "moment";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";
 import DateInput from "./DateInput";
-import Input from "../../../coreUI/components/Inputs/Textfield/Input";
+import Input from "../../../coreUI/components/Inputs/Textfield/StyledInput";
 import Select from "./Select";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  Category,
-  selectAllCategories,
-  SubCategory,
-} from "../../../models/Categories";
+import { selectAllCategories, SubCategory } from "../../../models/Categories";
 import { selectUi } from "../../../models/Ui/UI.selectors";
 import { selectRole } from "../../../models/Auth";
 import { validateEditTask } from "../../../services/validations/task.schema";

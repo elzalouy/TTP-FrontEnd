@@ -1,5 +1,5 @@
 export interface IBadge {
-    name: string;
-    index:number;
-    onChange:()=>void;
+  name: string;
+  index: number;
+  onChange: () => void;
 }

@@ -37,6 +37,7 @@ fieldset[id*="filter-"] .labelValue {
   cursor: pointer;
   padding-block: 10px;
   width: 100%;
+  height: 38px !important;
 }
 
 fieldset[id*="filter-"] .label {
@@ -88,12 +89,13 @@ fieldset[id*="filter-"] select datalist::after {
 
 fieldset[id*="select"] {
   cursor: pointer;
-  /* border-color: transparent !important; */
+  height: 50px;
   width: 100%;
   display: inline-flex;
   border-radius: 6px;
   justify-content: space-between;
   position: relative;
+  align-items: center;
   margin-bottom: 5px;
   margin-top: 0px;
   border: 0.5px solid #b4b6c4;
@@ -109,6 +111,7 @@ fieldset[id*="select"][data-error="true"] {
 }
 
 fieldset[id*="select"] .leftIcon {
+  height: 20px;
   background-color: white;
   color: #92929d;
   padding-inline: 10px;
@@ -158,7 +161,6 @@ fieldset[id*="select"] .options .option {
   width: 100%;
   padding-block: 9px;
   padding-left: 10px;
-
 }
 
 fieldset[id*="select"] .options .option:hover {
