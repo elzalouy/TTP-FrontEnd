@@ -13,7 +13,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
             setValue(props.field.name, e.target.id);
         } else if (filter) {
             filter.onChangeFilter(e, props);
-            filter.onHandleChangeFilter(e)
+            filter.onHandleChangeFilter(e);
         }
     }
 

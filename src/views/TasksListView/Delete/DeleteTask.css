@@ -2,12 +2,15 @@
   font-weight: normal;
   margin-bottom: 30px;
 }
-.container-popup > .popup {
+
+.container-popup>.popup {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 10px;
 }
+
 .task-delete-container {
   margin-top: 20px;
   height: 100%;
@@ -16,15 +19,19 @@
   justify-content: center;
   align-items: center;
 }
+
 .controllers-dt {
   display: flex;
+  gap: 5%;
   justify-content: space-between;
 }
+
 .hr-dt {
   color: #ebeff2;
   text-align: center;
   width: 100%;
 }
+
 .cancelBtn-dt {
   cursor: pointer;
   width: 130px;

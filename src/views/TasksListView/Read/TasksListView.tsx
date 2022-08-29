@@ -12,7 +12,7 @@ import { UseFormProps } from "src/types/components/Containers";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
-import Loading from "../../../coreUI/usable-elements/Loading";
+import Loading from "../../../coreUI/components/Loading/Loading";
 import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTasks, filterTasks,
@@ -214,7 +214,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       label="Project: "
                       elementType="filter"
                       setValue={setValue}
-                      textTruncate={10}
+                      textTruncate={4}
                       filter={{
                         page: "projects-",
                         onChangeFilter: onChangeFilter,

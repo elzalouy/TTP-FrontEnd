@@ -13,7 +13,7 @@ import IMAGES from "../../../../assets/img/Images";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { CircularProgress, Grid } from "@mui/material";
 import { toggleCreateProjectPopup } from "../../../../models/Ui";
-import Loading from "../../../../coreUI/usable-elements/Loading";
+import Loading from "../../../../coreUI/components/Loading/Loading";
 import TableBox from "../../../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../../../coreUI/components/Tables/ProjectsTable";
 import { selectPMs } from "../../../../models/PM";
