@@ -1,7 +1,6 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
-import { IButton } from "src/types/components/Inputs";
 import { Status } from "src/types/views/BoardView";
-import { ProjectsInterface, Task } from "../types/models/Projects";
+import { Project, ProjectsInterface, Task } from "../types/models/Projects";
 
 interface options {
   id?: string;
@@ -178,4 +177,29 @@ export const showDotsOverLimit = (value: string, limit: number) => {
   } else {
     return value;
   }
+}
+
+export const getDepartmentOptions = (data: any[]) => {
+  if (data) {
+    return data.map((item) => {
+      return {
+        id: item,
+        value: item,
+        text: item,
+      }
+    })
+  } else return []
+}
+
+export const getTaskListViewOptions = (data: Project[]) => {
+  if (data) {
+    let options = data.map((item) => {
+      return {
+        id: item._id,
+        value: item._id,
+        text: item.name,
+      }
+    })
+    return options
+  } else return []
 }

@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import TableContainer from "src/coreUI/components/Containers/TableContainer";
+import TableContainer from "src/coreUI/components/Containers/Table/TableContainer";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 
 type UIComponentsProps = {};

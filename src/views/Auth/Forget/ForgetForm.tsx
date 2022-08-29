@@ -1,11 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import Button from "src/coreUI/components/Buttons/Button";
+import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import { IForgetForm } from "src/types/views/Auth";
 
 const ForgetForm: FC<IForgetForm> = ({
   control,
-  register,
   errors,
   handleSubmit,
   onSubmit,
@@ -30,17 +30,15 @@ const ForgetForm: FC<IForgetForm> = ({
             Sending email was unsuccessful : {failed.message}
           </p>
         )}
-        {/* TODO rebuild the ui element */}
-
-        {/* <Input
+        <ControlledInput
           name="email"
-          label="Email Address"
-          placeholder="Email Address"
+          label="email address"
+          placeholder="email address"
+          required={true}
+          type="text"
           control={control}
-          register={register}
-          required
-          error={!!errors.email}
-        /> */}
+          error={errors.email && "true"}
+        />
         {errors.email?.type === "required" && (
           <p className="error-text">Please enter your email</p>
         )}

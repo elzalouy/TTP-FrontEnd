@@ -26,7 +26,7 @@ import "../../popups-style.css";
 import { validateDate } from "src/services/validations/project.schema";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import SelectInput2 from "src/coreUI/components/Inputs/SelectInput2";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 
 type Props = {
   show: string;
@@ -34,19 +34,6 @@ type Props = {
 };
 
 //SX Styles Object
-
-const editProjectTitleStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
 
 const editProjectStartDateStyles = {
   cursor: "pointer",

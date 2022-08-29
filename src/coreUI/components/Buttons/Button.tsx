@@ -25,7 +25,7 @@ const Button: FC<IButton> = ({
       data-test-id={dataTestId}
       className={disabled ? disabledClassName : className}
     >
-      {loading ? <CircularProgress sx={{ color: "white" }} /> : label}
+      {loading ? <CircularProgress className="button-loading"/> : label}
     </button>
   );
 };

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
@@ -147,36 +148,31 @@ const CreateNewCategory = () => {
             Add new category
           </p>
         </div>
-        <Grid container>
-          {/* TODO rebuild the ui element */}
-          {/* <Input
-            label="Main category"
-            placeholder="Ex : Al-Shaqran"
-            custom={{
-              value: mainCategory,
-              onChangeEvent: onMainChange,
-            }}
-            required
-            wrapper
-          /> */}
-          <Grid container alignItems="center">
+        <Grid container pt={2}>
+          <Grid item xs={12} lg={12}>
+            <Input
+              label="Main category"
+              placeholder="Ex : Al-Shaqran"
+              value={mainCategory}
+              type="text"
+              onChange={onMainChange}
+            />
+          </Grid>
+          <Grid container alignItems="center" mt={1}>
             <Grid item xs={9} lg={9}>
-              {/* <Input
+              <Input
                 label="Sub Category"
                 placeholder="Sub Category"
-                custom={{
-                  value: subCategory,
-                  onChangeEvent: onSubChange,
-                }}
-                wrapper
-                required
-              /> */}
+                value={subCategory}
+                type="text"
+                onChange={onSubChange}
+              />
             </Grid>
             <Grid
               item
               xs={3}
               lg={3}
-              sx={{ paddingLeft: "10px", marginTop: "42px" }}
+              sx={{ paddingLeft: "10px", marginTop: "32px" }}
             >
               <Button
                 type="add"

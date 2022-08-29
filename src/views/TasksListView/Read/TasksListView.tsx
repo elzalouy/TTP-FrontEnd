@@ -1,27 +1,26 @@
 import { Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import ControlledSelect from "src/coreUI/components/Containers/Select/ControlledSelect";
+import { getTaskListViewOptions } from "src/helpers/generalUtils";
+import { UseFormProps } from "src/types/components/Containers";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
-import SelectInput from "../../../coreUI/components/Inputs/SelectInput";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useAppSelector } from "../../../models/hooks";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
+import Loading from "../../../coreUI/usable-elements/Loading";
+import { useAppSelector } from "../../../models/hooks";
 import {
-  filterTasks,
-  selectAllProjects,
-  ProjectsActions,
-  deleteTasks,
+  deleteTasks, filterTasks,
+  selectAllProjects
 } from "../../../models/Projects";
+import { ProjectsInterface } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
-import Loading from "../../../coreUI/usable-elements/Loading";
-import { ProjectsInterface } from "../../../types/models/Projects";
-import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 interface Props {
   projectId?: string;
 }
@@ -48,22 +47,17 @@ export const TasksListView: React.FC<Props> = (props: any) => {
     }
   }, []);
 
-  const onHandleChange = (e: any) => {
+  const onHandleChangeFilter = (e: any) => {
     e.preventDefault();
     let filter = watch();
     dispatch(filterTasks(filter));
   };
 
-  const onChange = (e: any, props: any) => {
+  const onChangeFilter = (e: any, props: UseFormProps) => {
     e.preventDefault();
     console.log(e);
     props.field.onChange(e.target.id);
-    onHandleChange(e);
-  };
-
-  const onHandleSort = (e: any) => {
-    let filter = watch();
-    dispatch(ProjectsActions.onSortTasks(filter.deadline));
+    onHandleChangeFilter(e);
   };
 
   const onDeleteTasks = async () => {
@@ -179,92 +173,54 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                   marginY={1}
                   flex={1}
                 >
-                  <Controller
+                  <ControlledSelect
+                    name="tasks-"
                     control={control}
-                    name="deadline"
-                    render={(props) => (
-                      <Filter
-                        elementType="filter"
-                        name={"tasks-" + props.field.name}
-                        selected={props.field.value}
-                        label="Due Date: "
-                        onSelect={(e: any) => onChange(e, props)}
-                        textTruncate={4}
-                        options={[
-                          { id: "asc", text: "Ascending", value: "asc" },
-                          { id: "desc", text: "Descending", value: "desc" },
-                        ]}
-                      />
-                    )}
+                    label="Due Date: "
+                    elementType="filter"
+                    setValue={setValue}
+                    textTruncate={4}
+                    filter={{
+                      page: "projects-",
+                      onChangeFilter: onChangeFilter,
+                      onHandleChangeFilter: onHandleChangeFilter
+                    }}
+                    options={options[0]}
                   />
                 </Grid>
                 <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={4} marginY={1}>
                   <Box className="tasks-option">
-                    <Controller
+                    <ControlledSelect
                       name="status"
                       control={control}
-                      render={(props) => (
-                        <Filter
-                          elementType="filter"
-                          name={"projects-" + props.field.name}
-                          selected={props.field.value}
-                          label="Status: "
-                          options={[
-                            {
-                              id: "Tasks Board",
-                              value: "Tasks Board",
-                              text: "Tasks Board",
-                            },
-                            {
-                              id: "not clear",
-                              value: "Not Clear",
-                              text: "Not Clear",
-                            },
-                            {
-                              id: "inProgress",
-                              value: "inProgress",
-                              text: "In Progress",
-                            },
-                            { id: "review", value: "Review", text: "Review" },
-                            { id: "shared", value: "Shared", text: "Shared" },
-                            {
-                              id: "done",
-                              value: "Done",
-                              text: "Done",
-                            },
-                            { id: "canceled", value: "Cancled", text: "Cancled" },
-                          ]}
-                          onSelect={(e: any) => onChange(e, props)}
-                          textTruncate={5}
-                        />
-                      )}
+                      label="Status: "
+                      elementType="filter"
+                      setValue={setValue}
+                      textTruncate={4}
+                      filter={{
+                        page: "tasks-",
+                        onChangeFilter: onChangeFilter,
+                        onHandleChangeFilter: onHandleChangeFilter
+                      }}
+                      options={options[1]}
                     />
                   </Box>
                 </Grid>
                 <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={4} marginY={1}>
                   <Box className="tasks-option">
-                    <Controller
+                    <ControlledSelect
                       name="projectId"
                       control={control}
-                      render={(props) => (
-                        <Filter
-                          elementType="filter"
-                          name={"projects-" + props.field.name}
-                          selected={props.field.value}
-                          label="Project: "
-                          options={[
-                            ...projects.projects?.map((item) => {
-                              return {
-                                id: item._id,
-                                value: item._id,
-                                text: item.name,
-                              };
-                            }),
-                          ]}
-                          onSelect={(e: any) => onChange(e, props)}
-                          textTruncate={10}
-                        />
-                      )}
+                      label="Project: "
+                      elementType="filter"
+                      setValue={setValue}
+                      textTruncate={10}
+                      filter={{
+                        page: "projects-",
+                        onChangeFilter: onChangeFilter,
+                        onHandleChangeFilter: onHandleChangeFilter
+                      }}
+                      options={getTaskListViewOptions(projects.projects)}
                     />
                   </Box>
                 </Grid>
@@ -296,7 +252,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                   onChange={(e) => {
                     console.log(e);
                     props.field.onChange(e);
-                    onHandleChange(e);
+                    onHandleChangeFilter(e);
                   }}
                   value={props.field.value}
                   placeholder="Search"
@@ -339,3 +295,34 @@ export const TasksListView: React.FC<Props> = (props: any) => {
     </Grid>
   );
 };
+
+
+const options = [
+  [
+    { id: "asc", text: "Ascending", value: "asc" },
+    { id: "desc", text: "Descending", value: "desc" }
+  ]
+  ,
+  [{
+    id: "Tasks Board",
+    value: "Tasks Board",
+    text: "Tasks Board",
+  },
+  {
+    id: "not clear",
+    value: "Not Clear",
+    text: "Not Clear",
+  },
+  {
+    id: "inProgress",
+    value: "inProgress",
+    text: "In Progress",
+  },
+  { id: "review", value: "Review", text: "Review" },
+  { id: "shared", value: "Shared", text: "Shared" },
+  {
+    id: "done",
+    value: "Done",
+    text: "Done",
+  },
+  { id: "canceled", value: "Cancled", text: "Cancled" },]]

@@ -1,14 +1,18 @@
 import { Status } from "./BoardView";
 
 export interface IClient {
-    _id: string;
-    clientName: string;
-    doneProject: string[];
-    inProgressProject: string[] | number;
-    inProgressTask: string[];
-    createdAt: string;
-    image: any;
+    _id?: string;
+    clientName?: string;
+    doneProject?: string[];
+    inProgressProject?: string[] | number;
+    inProgressTask?: string[];
+    createdAt?: string;
+    image?: any;
 }
+export interface IClientState {
+    image: File | null | any;
+    clientName: string;
+  }
 export interface IClientCard {
     client: IClient;
 }

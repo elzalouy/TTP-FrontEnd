@@ -33,8 +33,18 @@ button {
 .button-small {
   font-size: 14px;
   width: 154px;
-  border: 10px;
+  height: 50px;
 }
+
+
+/* Styles added based on the color and UI */
+
+button.main {
+  background-color: #000000;
+  color: #FFFFFF;
+  border-radius: 10px;
+}
+
 /* Styles added based on the color and UI */
 
 button.main {
@@ -73,8 +83,8 @@ button.disabled {
 /* Button loading */
 
 .button-loading {
-    color: white;
-    padding: 5px;
+  color: white;
+  padding: 5px;
 }
 
 /* Mobile screens */

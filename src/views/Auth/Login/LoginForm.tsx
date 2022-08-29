@@ -1,10 +1,10 @@
 import { Grid, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { FC, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import ControlledInput from "src/coreUI/components/Containers/Input/ControlledInput";
 import PasswordInput from "src/coreUI/components/Inputs/Textfield/PasswordInput";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
 import { selectLoading, signIn } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
 import { IFormInputs } from "src/types/components/Inputs";
@@ -69,19 +69,14 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
             Invalid Email Address or Password
           </p>
         )}
-        <Controller
+        <ControlledInput
           name="email"
+          label="email address"
+          placeholder="email address"
+          required={true}
+          type="text"
           control={control}
-          render={(props) => (
-            <Input
-              type="text"
-              onChange={props.field.onChange}
-              label="Email Address"
-              placeholder="Email Address"
-              error={errors.email && "true"}
-              elementType={"login-style"}
-            />
-          )}
+          error={errors.email && "true"}
         />
         {errors.email?.type === "required" && (
           <p className="error-text">Please enter your email address</p>

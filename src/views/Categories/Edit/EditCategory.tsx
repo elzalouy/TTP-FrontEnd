@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
@@ -23,40 +24,10 @@ type Props = {
   subCategories?: string[];
 };
 
-//SX Style Objects
-
-const createSubCatMainCatStyle = {
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const createNewSubCatLoading = {
-  color: "white",
-  height: "25px !important",
-  width: "25px !important",
-};
-
-const createNewSubCatInputStyle = {
-  paddingRight: "20px",
-  flex: 1,
-  height: 50,
-  width: "100%",
-  borderRadius: "6px",
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
 
 const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const dispatch = useDispatch();
-  const [Show, setShow] = useState("none");
-  const [errors, setErrors] = useState("");
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const loadingCat = useAppSelector(selectCatLoading);
   const [title, setTitle] = useState<string | undefined>("");
   const MD = useMediaQuery(theme.breakpoints.down("md"));
@@ -137,7 +108,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         });
       }
     } catch (error: any) {
-      setErrors(error.message);
+      console.log(error.message);
     }
   };
 
@@ -165,38 +136,33 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             <Typography fontWeight={"500"} fontSize={18} color="#00ACBA">
               Manage Category
             </Typography>
-            {/* TODO rebuild the ui element */}
           </Grid>
-          {/* <Input
-            label="Main Category"
-            placeholder="Ex : Al-Shaqran"
-            custom={{
-              value: title !== undefined ? title : "",
-              onChangeEvent: (e: any) => {
+          <Grid item xs={12} lg={12}>
+            <Input
+              label="Main category"
+              placeholder="Ex : Al-Shaqran"
+              value={title !== undefined ? title : ""}
+              type="text"
+              onChange={(e: any) => {
                 setTitle(e.target.value);
-              }
-            }}
-            wrapper
-            required
-          /> */}
-          <Grid container alignItems={"center"}>
+              }}
+            />
+          </Grid>
+          <Grid container alignItems={"center"} mt={1}>
             <Grid item xs={9} lg={9}>
-              {/* <Input
+              <Input
                 label="Sub Category"
                 placeholder="Sub Category"
-                custom={{
-                  value: subCategory,
-                  onChangeEvent: onSubChange,
-                }}
-                wrapper
-                required
-              /> */}
+                value={subCategory}
+                type="text"
+                onChange={onSubChange}
+              />
             </Grid>
             <Grid
               item
               xs={3}
               lg={3}
-              sx={{ paddingLeft: "10px", marginTop: "42px" }}
+              sx={{ paddingLeft: "10px", marginTop: "32px" }}
             >
               <Button
                 type="add"

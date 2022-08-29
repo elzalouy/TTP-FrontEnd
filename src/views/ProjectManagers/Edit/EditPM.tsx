@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -9,7 +10,7 @@ import {
   selectLoading,
   selectPMs,
   select_Id,
-  updatePM,
+  updatePM
 } from "../../../models/PM";
 import { toggleEditProjectManagerPopup } from "../../../models/Ui";
 import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";
@@ -87,36 +88,30 @@ const EditPM: React.FC = () => {
           <p className="popup-error">Please enter a valid email format</p>
         )}
         <div>
-          {/* <Input
-            label="Full name"
+          <Input
+            label="full name"
             placeholder="full name"
-            dataTestId="pm-name"
-            custom={{
-              value: username,
-              onChangeEvent: (e: any) => {
-                setUsername(e.target.value);
-                setError(false);
-              }
+            dataTestId="edit-pm-name"
+            value={username}
+            type="text"
+            onChange={(e: any) => {
+              setUsername(e.target.value);
+              setError(false);
             }}
-            required
-            wrapper
           />
           <Input
             label="email"
             placeholder="email address"
-            dataTestId="pm-name"
-            custom={{
-              value: email,
-              onChangeEvent: (e: any) => {
-                setEmail(e.target.value);
-                setError(false);
-                setEmailFormat(false);
-              }
+            dataTestId="edit-pm-email"
+            value={email}
+            type="text"
+            onChange={(e: any) => {
+              setEmail(e.target.value);
+              setError(false);
+              setEmailFormat(false);
             }}
-            required
-            wrapper
-            error={emailFormat}
-          /> */}
+            error={emailFormat ? "true" : ""}
+          />
         </div>
         <br />
         <div className="controllers">
