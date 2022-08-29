@@ -4,14 +4,15 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
+// import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { generateID } from "../../../helpers/IdGenerator";
 import { updateCategory } from "../../../models/Categories";
 import {
-  selectCatLoading, selectSelectedCategory
+  selectCatLoading,
+  selectSelectedCategory,
 } from "../../../models/Categories/categories.selectores";
 import { useAppSelector } from "../../../models/hooks";
 import "../../popups-style.css";
@@ -70,7 +71,6 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
     selectedSubCategory: [],
     subCategoriesId: [],
   });
-  
 
   useEffect(() => {
     setSelectedData(selectedCategory);
@@ -165,8 +165,9 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             <Typography fontWeight={"500"} fontSize={18} color="#00ACBA">
               Manage Category
             </Typography>
+            {/* TODO rebuild the ui element */}
           </Grid>
-          <Input
+          {/* <Input
             label="Main Category"
             placeholder="Ex : Al-Shaqran"
             custom={{
@@ -177,22 +178,26 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             }}
             wrapper
             required
-          />
-          <Grid
-            container
-            alignItems={"center"}>
+          /> */}
+          <Grid container alignItems={"center"}>
             <Grid item xs={9} lg={9}>
-              <Input
+              {/* <Input
                 label="Sub Category"
                 placeholder="Sub Category"
                 custom={{
-                  value: subCategory, onChangeEvent: onSubChange
+                  value: subCategory,
+                  onChangeEvent: onSubChange,
                 }}
                 wrapper
                 required
-              />
+              /> */}
             </Grid>
-            <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "42px" }}>
+            <Grid
+              item
+              xs={3}
+              lg={3}
+              sx={{ paddingLeft: "10px", marginTop: "42px" }}
+            >
               <Button
                 type="add"
                 size="small"
@@ -224,7 +229,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             loading={loadingCat}
           />
         </div>
-      </PopUp >
+      </PopUp>
     </>
   );
 };

@@ -9,7 +9,7 @@ export interface IInputProps {
   rows?: number;
   id?: string;
   dataTestId?: string;
-  required?: boolean
+  required?: boolean;
   bold?: boolean;
   type?: boolean;
   inputName?: string;
@@ -25,21 +25,21 @@ export interface ISearch {
   value: string;
   onChange: (e: any) => void;
   placeholder?: string;
-  size: 'medium' | 'small';
+  size: "medium" | "small";
 }
 
 export interface IButton {
   label: string;
-  size: 'large' | 'medium' | 'small';
-  type: 'main' | 'delete' | 'add' | 'cancel';
+  size: "large" | "medium" | "small";
+  type: "main" | "delete" | "add" | "cancel";
   onClick?: (e: any) => any;
   loading?: boolean | null;
   disabled?: boolean;
-  form?:{
-    type:'button'|'submit' | 'reset';
-    name:string;
+  form?: {
+    type: "button" | "submit" | "reset";
+    name: string;
   };
-  dataTestId?: string
+  dataTestId?: string;
 }
 
 export interface IIDateInputProps {
@@ -54,7 +54,7 @@ export interface IIDateInputProps {
 
 export interface IPasswordInputProps {
   name: string;
-  label: string
+  label: string;
   control: any;
   register: any;
   visible: boolean;
@@ -68,9 +68,9 @@ export interface IFormInputs {
   email: string;
   password?: string;
   newPassword?: string;
-  confirmNewPassword?: string
+  confirmNewPassword?: string;
 }
- 
+
 export interface IFilterProps {
   elementType: "filter" | "select";
   name: string;

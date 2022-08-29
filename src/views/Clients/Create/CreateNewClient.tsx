@@ -3,14 +3,13 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { generateID } from "../../../helpers/IdGenerator";
 import {
   clientsDataSelector,
   creatClient,
-  selectLoadingClient
+  selectLoadingClient,
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import "./CreateNewClient.css";
@@ -21,7 +20,7 @@ interface client {
   clientName: string;
 }
 
-interface headers { }
+interface headers {}
 const CreateNewClient: React.FC<Props> = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -133,7 +132,8 @@ const CreateNewClient: React.FC<Props> = () => {
                 alt=""
               />
             </Box>
-            <Input
+            {/* TODO rebuild the ui element */}
+            {/* <Input
               label="Client Name"
               placeholder="Ex : Ahmed Ali"
               dataTestId="client-name"
@@ -142,11 +142,11 @@ const CreateNewClient: React.FC<Props> = () => {
                 value: Data.clientName,
                 onChangeEvent: (e: any) => {
                   onChange(e);
-                }
+                },
               }}
               required
               wrapper
-            />
+            /> */}
             <Box className="controllers">
               <Button
                 type="main"

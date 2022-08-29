@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
+// import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -24,7 +24,6 @@ const addNewCategoryContainerStyles = {
   maxHeight: 350,
   borderRadius: 3,
 };
-
 
 const CreateNewCategory = () => {
   const dispatch = useDispatch();
@@ -149,31 +148,36 @@ const CreateNewCategory = () => {
           </p>
         </div>
         <Grid container>
-          <Input
+          {/* TODO rebuild the ui element */}
+          {/* <Input
             label="Main category"
             placeholder="Ex : Al-Shaqran"
             custom={{
-              value: mainCategory, onChangeEvent: onMainChange
+              value: mainCategory,
+              onChangeEvent: onMainChange,
             }}
             required
             wrapper
-          />
-          <Grid
-            container
-            alignItems="center"
-          >
+          /> */}
+          <Grid container alignItems="center">
             <Grid item xs={9} lg={9}>
-              <Input
+              {/* <Input
                 label="Sub Category"
                 placeholder="Sub Category"
                 custom={{
-                  value: subCategory, onChangeEvent: onSubChange
+                  value: subCategory,
+                  onChangeEvent: onSubChange,
                 }}
                 wrapper
                 required
-              />
+              /> */}
             </Grid>
-            <Grid item xs={3} lg={3} sx={{ paddingLeft: "10px", marginTop: "42px" }}>
+            <Grid
+              item
+              xs={3}
+              lg={3}
+              sx={{ paddingLeft: "10px", marginTop: "42px" }}
+            >
               <Button
                 type="add"
                 size="small"

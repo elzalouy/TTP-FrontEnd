@@ -1,77 +1,73 @@
 /* Base styles based on size */
 @font-face {
-    font-family: "Cairo, Bold";
-    src: url(../../../assets/fonts/Cairo-Bold.ttf);
+  font-family: "Cairo, Bold";
+  src: url(../../../assets/fonts/Cairo-Bold.ttf);
 }
 
 button {
-    text-transform: uppercase;
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    outline: none;
-    font-family: "Cairo Bold", sans-serif;
-    font-weight: bolder;
-    cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  outline: none;
+  font-family: "Cairo Bold", sans-serif;
+  font-weight: bolder;
+  cursor: pointer;
+  height: 50px;
 }
 
 /* Styles added based on the size */
 
 .button-large {
-    font-size: 16px;
-    width: 456px;
-    height: 50px;
+  font-size: 16px;
+  width: 456px;
 }
 
 .button-medium {
-    font-size: 16px;
-    width: 210px;
-    height: 50px;
+  font-size: 16px;
+  width: 210px;
 }
 
 .button-small {
-    font-size: 14px;
-    width: 154px;
-    height: 50px;
+  font-size: 14px;
+  width: 154px;
+  border: 10px;
 }
-
-
 /* Styles added based on the color and UI */
 
 button.main {
-    background-color: #000000;
-    color: #FFFFFF;
-    border-radius: 10px;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 
 button.delete {
-    background-color: #FE1A1A;
-    color: #FFFFFF;
-    width: 210px !important;
-    border: 6px !important;
+  background-color: #fe1a1a;
+  color: #ffffff;
+  width: 210px !important;
+  border: 6px !important;
 }
 
 button.add {
-    background-color: #FFC500;
-    width: 100px !important;
-    border-radius: 6px !important;
+  background-color: #ffc500;
+  width: 100% !important;
+  border-radius: 6px !important;
 }
 
 button.cancel {
-    background-color: #F4F4F4;
-    color: #000000;
-    width: 210px !important;
-    border: 6px !important;
+  background-color: #f4f4f4;
+  color: #000000;
+  width: 210px !important;
+  border: 6px !important;
 }
 
 /* Styles added based on the action */
 
 button.disabled {
-    color: #A4A4AE;
-    background-color: #F1F1F5;
+  color: #a4a4ae;
+  background-color: #f1f1f5;
 }
 
 /* Button loading */
@@ -83,12 +79,12 @@ button.disabled {
 
 /* Mobile screens */
 
-@media screen and (max-width:700px) {
-    .button-large {
-        font-size: 14px;
-    }
+@media screen and (max-width: 700px) {
+  .button-large {
+    font-size: 14px;
+  }
 
-    .button-medium {
-        font-size: 14px;
-    }
+  .button-medium {
+    font-size: 14px;
+  }
 }

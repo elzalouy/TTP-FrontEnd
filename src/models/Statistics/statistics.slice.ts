@@ -30,9 +30,9 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
               item.projectDeadline &&
               isCloseToDeadline(item.projectDeadline, item.startDate, 35)
           );
-        }
+        } else state.OM.projectsCloseToDeadlines = [];
 
-        if (tasks && tasks.length > 0) {
+        if (tasks) {
           let inprogress = tasks.filter((item) => item.status === "inProgress");
           let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
           let review = tasks.filter((item) => item.status === "Review");
@@ -61,14 +61,13 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
       let user: User = action.payload.user;
-
       if (user && user?.role?.length > 0) {
         let userProjects =
           projects &&
           projects?.filter((item) => item.projectManager?._id === user._id);
         state.PM.projects = userProjects;
 
-        if (tasks && tasks.length > 0) {
+        if (tasks) {
           let ids = userProjects.flatMap((item: Project) => item._id);
           let review = tasks.filter(
             (item) => ids.includes(item.projectId) && item.status === "Review"

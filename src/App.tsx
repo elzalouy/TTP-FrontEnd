@@ -56,7 +56,6 @@ const App: React.FC = () => {
   useEffect(() => {
     let id = localStorage.getItem("id");
     if (checkAuthToken() && id) {
-      console.log("user id", id);
       dispatch(
         getUserInfo({
           id: id,
