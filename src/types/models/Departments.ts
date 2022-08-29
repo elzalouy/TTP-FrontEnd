@@ -1,5 +1,5 @@
 export interface ITeam {
-  _id?: string;
+  _id: string;
   name: string;
   listId: string;
   isDeleted: boolean;
@@ -15,7 +15,7 @@ export interface IDepartmentState {
   name: string;
   lists?: IList[];
   color?: string;
-  teams?: ITeam[];
+  teams: ITeam[];
   boardURL?: string;
   boardId: string;
 }

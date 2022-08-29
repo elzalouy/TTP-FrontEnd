@@ -25,7 +25,7 @@ export interface IControlledInput extends IInputProps {
 export interface IControlledSelect extends IFilterProps {
   name: string;
   control: Control<any, any>;
-  setValue: UseFormSetValue<any>;
+  setValue?: UseFormSetValue<any>;
   formLabel?: string;
   filter?: {
     onHandleChangeFilter: (e: any) => void;

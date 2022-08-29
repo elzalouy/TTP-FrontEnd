@@ -11,38 +11,42 @@ const ControlledSelect: FC<IControlledSelect> = ({
   control,
   options,
   formLabel,
-  setValue,
   elementType,
   filter,
   textTruncate,
   label,
+  onSelect,
 }) => {
-  const handleOnSelect = (e: any, props: UseFormProps) => {
-    if (elementType === "select") {
-      setValue(props.field.name, e.target.id);
-    } else if (filter) {
-      filter.onChangeFilter(e, props);
-      filter.onHandleChangeFilter(e);
-    }
-  };
+  // const handleOnSelect = (e: any, props: UseFormProps) => {
+  //   if (elementType === "select") {
+  //     setValue(props.field.name, e.target.id);
+  //   } else if (filter) {
+  //     filter.onChangeFilter(e, props);
+  //     filter.onHandleChangeFilter(e);
+  //   }
+  // };
 
   return (
     <>
-      {formLabel && <label className="popup-label-nt">{formLabel}</label>}
+      {formLabel && <label className="popup-label">{formLabel}</label>}
       <Controller
         name={name}
         control={control}
-        render={(props) => (
-          <Select
-            elementType={elementType}
-            name={filter ? `${filter.page}` + props.field.name : name}
-            label={label}
-            onSelect={(e: any) => handleOnSelect(e, props)}
-            selected={props.field.value}
-            options={options}
-            textTruncate={textTruncate}
-          />
-        )}
+        render={(props) => {
+          if (props.field.name === "subCategoryId")
+            console.log({ subCategoryId: props.field.value });
+          return (
+            <Select
+              elementType={elementType}
+              name={filter ? `${filter.page}` + props.field.name : name}
+              label={label}
+              onSelect={onSelect}
+              selected={props.field.value}
+              options={options}
+              textTruncate={textTruncate}
+            />
+          );
+        }}
       />
     </>
   );

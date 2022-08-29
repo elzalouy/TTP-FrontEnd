@@ -90,7 +90,11 @@ const Modals: React.FC = (props) => {
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
-      <CreateNewTask setShow={showCreateTaskPopup} show={createTaskPopup} />
+      <CreateNewTask
+        setShow={showCreateTaskPopup}
+        show={createTaskPopup}
+        edit={true}
+      />
       <Logout setShow={showLoggoutPopup} show={logoutPopup} />
       <EditTask show={editTaskPopup} setShow={showEditTaskPopup} />
       <DeleteTask show={deleteTaskPopup} setShow={showDeleteTaskPopup} />

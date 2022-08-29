@@ -1,83 +1,64 @@
 import * as React from "react";
-import { Box, ButtonBase, Typography } from "@mui/material";
-import { Close as CloseIcon } from "@mui/icons-material";
-import IMAGES from "../../../assets/img/Images";
-import { attachedFilesStyle } from "./styles";
+import { Box } from "@mui/material";
 import { AttachetFilesProps } from "../../../types/views/BoardView";
-import { formatFileName } from "../../../helpers/equations";
+import Upload from "../Typos/UploadLabel";
+import UploadLabel from "../Typos/FileLabel";
 
 const AttachetFiles: React.FC<AttachetFilesProps> = ({
   register,
-  files,
+  newFiles,
+  oldFiles,
+  filesRef,
   onSetFiles,
   onChangeFiles,
-  state,
   onRemoveFile,
 }) => {
-  const styles = attachedFilesStyle()();
   return (
     <>
       <input
         {...register("file")}
         onChange={onSetFiles}
-        data-test-id="task-file"
-        ref={files}
+        ref={filesRef}
         type="file"
+        data-test-id="project-task-file"
         style={{ display: "none" }}
         multiple
       />
-      <Box className={styles.attachedFilesBox}>
-        <ButtonBase onClick={onChangeFiles} className={styles.newfiles}>
-          <img src={IMAGES.fileicon} alt="Upload" />
-          <span className={styles.newfilesIcon}>
-            {state.task?.attachedFiles
-              ? state.newFiles?.length + state.task?.attachedFiles?.length
-              : state.newFiles.length}
-          </span>
-        </ButtonBase>
-        <>
-          {state?.newFiles &&
-            state.newFiles.length > 0 &&
-            state.newFiles?.map((item: any, index: number) => (
-              <Typography
+      <Box
+        paddingLeft={"5px"}
+        paddingTop={"10px"}
+        display={"inline-flex"}
+        width={"auto"}
+      >
+        <Upload length={newFiles.length} onClick={onChangeFiles} />
+        <Box
+          sx={{
+            maxWidth: "60vw",
+            display: "inline-flex",
+            alignItems: "center",
+            overflowX: "scroll",
+            marginBottom: "10px",
+          }}
+        >
+          {newFiles &&
+            newFiles?.length > 0 &&
+            newFiles?.map((item, index) => (
+              <UploadLabel
                 key={index}
-                marginX={0.5}
-                bgcolor={"#F1F1F5"}
-                padding={0.5}
-                borderRadius={1}
-                color="#92929D"
-                className={styles.attachedfiles}
-                onClick={() => onRemoveFile(item)}
-              >
-                {formatFileName(item?.name)}
-                <CloseIcon
-                  sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                  htmlColor="#92929D"
-                />
-              </Typography>
+                onRemove={() => onRemoveFile(item)}
+                fileName={item?.name ? item.name : ""}
+              />
             ))}
-        </>
-        <>
-          {state?.task?.attachedFiles &&
-            state.task?.attachedFiles.length > 0 &&
-            state.task.attachedFiles?.map((item: any, index: number) => (
-              <Typography
+          {oldFiles &&
+            oldFiles?.length > 0 &&
+            oldFiles?.map((item, index) => (
+              <UploadLabel
                 key={index}
-                marginX={0.5}
-                bgcolor={"#F1F1F5"}
-                padding={0.5}
-                borderRadius={1}
-                className={styles.attachedfiles}
-                onClick={() => onRemoveFile(item)}
-              >
-                {item?.name}
-                <CloseIcon
-                  sx={{ fontSize: "14px", marginLeft: 0.5 }}
-                  htmlColor="#92929D"
-                />
-              </Typography>
+                onRemove={() => onRemoveFile(item)}
+                fileName={item?.name ? item.name : ""}
+              />
             ))}
-        </>
+        </Box>
       </Box>
     </>
   );

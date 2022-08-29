@@ -30,6 +30,7 @@ import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Upload from "src/coreUI/components/Typos/UploadLabel";
 import UploadLabel from "src/coreUI/components/Typos/FileLabel";
 import Button from "src/coreUI/components/Buttons/Button";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
@@ -50,7 +51,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   >();
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
   const { createProjectPopup } = useAppSelector(selectUi);
-  const role = useAppSelector(selectRole);
 
   const { register, handleSubmit, watch, control, reset, setValue } = useForm({
     defaultValues: {
@@ -91,16 +91,15 @@ const TaskForm: React.FC<TaskFormProps> = () => {
       deliveryDate: null,
       done: null,
       turnoverTime: null,
-      attachedFiles: null,
       listId: data?.teamId
-        ? selectedDepartment?.teams?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
+        ? data.teamId
         : selectedDepartment?.lists?.find((l: any) => (l.name = "Tasks Board"))
             ?.listId,
       boardId: selectedDepartment?.boardId,
       description: data?.description,
+      attachedFiles: Files,
     };
+    console.log({ ourTaskData: newTask });
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);
     if (error || FileError) {
@@ -393,41 +392,15 @@ const TaskForm: React.FC<TaskFormProps> = () => {
             />
           </div>
         </div>
-        <input
-          {...register("file")}
-          onChange={onSetFiles}
-          ref={files}
-          type="file"
-          data-test-id="project-task-file"
-          style={{ display: "none" }}
-          multiple
-        />
-        <Box
-          paddingLeft={"5px"}
-          paddingTop={"10px"}
-          display={"inline-flex"}
-          width={"auto"}
-        >
-          <Upload length={Files.length} onClick={onChangeFiles} />
-          <Box
-            sx={{
-              maxWidth: "60vw",
-              display: "inline-flex",
-              alignItems: "center",
-              overflowX: "scroll",
-              marginBottom: "10px",
-            }}
-          >
-            {Files &&
-              Files.length > 0 &&
-              Files?.map((item, index) => (
-                <UploadLabel
-                  key={index}
-                  onRemove={() => onRemoveFile(item)}
-                  fileName={item?.name ? item.name : ""}
-                />
-              ))}
-          </Box>
+        <Box>
+          <AttachetFiles
+            register={register}
+            onSetFiles={onSetFiles}
+            onChangeFiles={onChangeFiles}
+            onRemoveFile={onRemoveFile}
+            filesRef={files}
+            newFiles={Files}
+          />
         </Box>
         <div
           style={{

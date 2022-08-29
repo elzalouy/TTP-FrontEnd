@@ -1,12 +1,10 @@
 import IMAGES from "../../../assets/img/Images";
 import DragField from "./DragField";
 import React, { useEffect } from "react";
-import TaskIcon from "../../../assets/icons/TaskIcon";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
 import { Box } from "@mui/system";
 import { RouteComponentProps } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { Grid, Stack, Typography } from "@mui/material";
 import {
   ProjectsActions,
@@ -24,7 +22,6 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const all = useAppSelector(selectAllProjects);
-  const { control, register, reset, watch } = useForm();
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
@@ -43,7 +40,6 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
     >
       <Grid
         paddingX={4}
-        paddingY={2}
         item
         xs={12}
         sx={{ marginBottom: "20px", overflow: "hidden" }}
@@ -64,33 +60,29 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
             />
             {selectedProject?.project?.name}
           </Typography>
-        </Stack>
-        <Box className="task-broad-settings">
-          <Box className="filter-icon">
-            <img src={IMAGES.filtericon} alt="sortout" />
-          </Box>
-          <Box
-            sx={{ cursor: "pointer" }}
-            onClick={() =>
-              props.history.push("/TasksList", {
-                projectId: selectedProject.project?._id,
-              })
-            }
-            className="task-option"
-            justifyContent={"center"}
-            alignItems="center"
-          >
-            <Typography
-              fontWeight={"600"}
-              fontSize={16}
-              variant="h6"
-              paddingTop={0.5}
-              paddingLeft={1}
+          <Box className="task-broad-settings">
+            <Box
+              sx={{ cursor: "pointer" }}
+              onClick={() =>
+                props.history.push("/TasksList", {
+                  projectId: selectedProject.project?._id,
+                })
+              }
+              className="task-option"
+              justifyContent={"center"}
+              alignItems="center"
             >
-              Task view list
-            </Typography>
+              <Typography
+                fontWeight={"600"}
+                fontSize={16}
+                variant="h6"
+                paddingTop={0.5}
+              >
+                Task view list
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </Stack>
       </Grid>
       <Grid xs={12} item sx={{ overflowX: "scroll" }}>
         <DragField {...props} />

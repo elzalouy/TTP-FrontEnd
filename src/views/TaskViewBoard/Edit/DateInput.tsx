@@ -3,6 +3,7 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import * as React from "react";
 import { Controller } from "react-hook-form";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import { IDateInputProps } from "src/types/components/Inputs";
 import IMAGES from "../../../assets/img/Images";
@@ -23,7 +24,6 @@ const DateInput: React.FC<IDateInputProps> = ({
     <>
       <div>
         <label className="label-project">{label}</label>
-        <br />
         <Controller
           name={name}
           control={control}
@@ -60,7 +60,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                       error={state.error.error?.details[0].path.includes(name)}
                       onChange={params.onChange}
                       value={params.value}
-                      className={style.textField}
+                      sx={dataTimePickerInputStyle}
                     />
                     {notNullorFalsy(props.field.value) && (
                       <img

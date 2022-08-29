@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { Category } from "../../models/Categories";
 import { IDepartmentState, ITeam } from "../models/Departments";
-import { Task } from "../models/Projects";
+import { Task, TaskFile } from "../models/Projects";
 
 export type EditTaskProps = {
   show: string;
@@ -28,8 +28,9 @@ export interface CRUDTaskState {
 }
 
 export interface AttachetFilesProps {
-  state: any;
-  files: any;
+  filesRef: any;
+  newFiles: (File | null)[];
+  oldFiles?: TaskFile[];
   register: any;
   onSetFiles: any;
   onRemoveFile: any;

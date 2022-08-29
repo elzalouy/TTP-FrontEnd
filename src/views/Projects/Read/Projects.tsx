@@ -44,7 +44,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   const role = useAppSelector(selectRole);
-  const { watch, control } = useForm();
+  const { watch, control, setValue } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
@@ -76,10 +76,10 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
     dispatch(ProjectsActions.onSortProjects(data.deadline));
   };
 
-  const onChange = (e: any, props: any) => {
+  const onChange = (e: any, name: string) => {
     e.preventDefault();
     console.log(e);
-    props.field.onChange(e.target.id);
+    setValue(name, e.target.id);
     onHandleChange(e);
   };
 
@@ -173,7 +173,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Due Date: "
-                    onSelect={(e: any) => onChange(e, props)}
+                    onSelect={(e: any) => onChange(e, "deadline")}
                     textTruncate={4}
                     options={[
                       { id: "asc", text: "Ascending", value: "asc" },
@@ -211,7 +211,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                         };
                       }),
                     ]}
-                    onSelect={(e: any) => onChange(e, props)}
+                    onSelect={(e: any) => onChange(e, "projectManager")}
                     textTruncate={2}
                   />
                 )}
@@ -245,7 +245,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                         };
                       }),
                     ]}
-                    onSelect={(e: any) => onChange(e, props)}
+                    onSelect={(e: any) => onChange(e, "clientId")}
                     textTruncate={10}
                   />
                 )}
@@ -298,7 +298,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                           text: "In Progress",
                         },
                       ]}
-                      onSelect={(e: any) => onChange(e, props)}
+                      onSelect={(e: any) => onChange(e, "projectStatus")}
                       textTruncate={5}
                     />
                   </>

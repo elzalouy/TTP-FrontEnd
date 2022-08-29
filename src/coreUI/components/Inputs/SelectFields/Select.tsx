@@ -28,10 +28,16 @@ const Select = (props: IFilterProps) => {
   useSelect(fieldRef, selectRef);
 
   React.useEffect(() => {
-    setState({
-      ...state,
-      options: props.options.length > 0 ? props.options : [],
-    });
+    if (props.options)
+      setState({
+        ...state,
+        options: props.options,
+      });
+    else
+      setState({
+        ...state,
+        options: [],
+      });
   }, [props]);
 
   React.useEffect(() => {
@@ -45,6 +51,7 @@ const Select = (props: IFilterProps) => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
   };
+  console.log({ options: props.options });
   return (
     <>
       <fieldset
@@ -69,7 +76,7 @@ const Select = (props: IFilterProps) => {
               )
             ) : (
               <>
-                {props.selected && props.selected !== ""
+                {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
                       length: props.textTruncate,
                       omission: ".",

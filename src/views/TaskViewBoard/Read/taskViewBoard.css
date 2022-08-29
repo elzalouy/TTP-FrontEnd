@@ -136,7 +136,7 @@
 .task-broad-settings {
   display: flex;
   align-items: center;
-  margin-top: 15px;
+  margin-left: 20px;
 }
 .select-task-board {
   width: 180px;

@@ -46,7 +46,7 @@ export interface IButton {
   dataTestId?: string;
 }
 
-export interface IIDateInputProps {
+export interface IDateInputProps {
   name: string;
   control: any;
   register: any;

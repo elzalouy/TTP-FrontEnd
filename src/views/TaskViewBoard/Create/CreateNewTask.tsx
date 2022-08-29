@@ -1,21 +1,18 @@
 import * as React from "react";
 import _ from "lodash";
 import EditTaskTitle from "../Edit/Title";
-// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
-import Select from "../Edit/Select";
 import DateInput from "../Edit/DateInput";
 import AttachetFiles from "../../../coreUI/components/Lists/AttachFiles";
 import moment from "moment";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { selectAllCategories } from "../../../models/Categories";
 import { selectAllDepartments } from "../../../models/Departments";
 import { useAppSelector } from "../../../models/hooks";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { selectUi } from "../../../models/Ui/UI.selectors";
-import { selectRole } from "../../../models/Auth";
 import { valdiateCreateTask } from "../../../services/validations/task.schema";
 import {
   createTaskFromBoard,
@@ -26,13 +23,19 @@ import {
   initialHookFormTaskState,
   initialState,
 } from "../../../types/views/BoardView";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface Props {
   show: string;
   setShow: (val: string) => void;
+  edit: boolean;
 }
 
-const CreateNewTask = ({ show, setShow }: Props) => {
+const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
@@ -41,7 +44,6 @@ const CreateNewTask = ({ show, setShow }: Props) => {
   const { register, handleSubmit, control, reset, setValue, watch } = useForm({
     defaultValues: initialHookFormTaskState,
   });
-  const role = useAppSelector(selectRole);
   const files = React.useRef<HTMLInputElement>(null);
   const [state, setState] = React.useState<CRUDTaskState>(initialState);
 
@@ -93,12 +95,11 @@ const CreateNewTask = ({ show, setShow }: Props) => {
 
   const onChangeDepartment = (e: any) => {
     let State = { ...state };
-    setValue("selectedDepartmentId", e.target.value);
+    setValue("selectedDepartmentId", e.target.id);
     setValue("teamId", "");
-    let dep = departments.find((item) => item._id === e.target.value);
+    let dep = departments.find((item) => item._id === e.target.id);
     if (dep && dep.teams) {
       State.selectedDepartment = dep;
-      console.log(State.selectedDepartment);
       State.selectedDepatmentTeams = dep.teams.filter(
         (item) => item.isDeleted === false
       );
@@ -108,10 +109,10 @@ const CreateNewTask = ({ show, setShow }: Props) => {
 
   const onChangeCategory = (e: any) => {
     let State = { ...state };
-    setValue("categoryId", e.target.value);
+    setValue("categoryId", e.target.id);
     setValue("subCategoryId", "");
     State.selectedCategory = categories.find(
-      (item) => item._id === e.target.value
+      (item) => item._id === e.target.id
     );
     setState(State);
   };
@@ -161,14 +162,14 @@ const CreateNewTask = ({ show, setShow }: Props) => {
       task.attachedFiles = files;
       State.task = task;
     } else if (item?.name && item?.size) {
-      let file: File = item;
       let newfiles = [...State.newFiles];
       newfiles = newfiles.filter((file) => file !== item);
       State.newFiles = newfiles;
     }
     setState(State);
   };
-
+  const onGetError = (value: string) =>
+    state.error?.error?.details[0].path.includes(value) ? "true" : "";
   return (
     <>
       <PopUp show={show} minWidthSize="50vw">
@@ -180,164 +181,167 @@ const CreateNewTask = ({ show, setShow }: Props) => {
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
-              {/* TODO rebuild it again */}
-              {/* <Input
-                name="name"
-                label="Task name"
-                placeholder="Task name"
-                control={control}
-                dataTestId="task-name"
-                register={register}
-                state={state}
-              /> */}
-              <Select
-                state={state}
-                control={control}
-                dataTestId="department-new-task"
-                register={register}
-                name="selectedDepartmentId"
-                label={"Department name"}
-                handleChange={onChangeDepartment}
-                selectValue={watch().selectedDepartmentId}
-                selectText={
-                  departments.find(
-                    (item) => item._id === watch().selectedDepartmentId
-                  )?.name
-                }
-                options={
-                  departments
-                    ? departments?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      })
-                    : []
-                }
-              />
-              <DateInput
-                label={"Deadline date"}
-                name="deadline"
-                state={state}
-                control={control}
-                placeholder="Deadline"
-                register={register}
-                setValue={setValue}
-              />
-              <Select
-                label="Category"
-                name="categoryId"
-                dataTestId="category-new-task"
-                control={control}
-                register={register}
-                state={state}
-                selectText={
-                  categories?.find((item) => item._id === watch().categoryId)
-                    ?.category
-                }
-                selectValue={watch().categoryId}
-                handleChange={onChangeCategory}
-                options={
-                  categories
-                    ? categories?.map((item) => {
-                        return {
-                          id: item._id ? item._id : "",
-                          value: item._id ? item._id : "",
-                          text: item.category,
-                        };
-                      })
-                    : []
-                }
-              />
-              {/* TODO rebuild it again */}
-              {/* <Input
-                name="description"
-                control={control}
-                register={register}
-                label={"Description"}
-                multiline={true}
-                rows={5}
-                placeholder={"Write about your task"}
-                state={state}
-              /> */}
               <div>
-                <Select
-                  name="subCategoryId"
-                  label="Sub category"
+                <ControlledInput
+                  type="input"
+                  name="name"
+                  label="Task name"
+                  placeholder="Task name"
+                  dataTestId="task-name"
                   control={control}
-                  state={state}
-                  register={register}
-                  selectText={
-                    state.selectedCategory?.subCategoriesId?.find(
-                      (item) => item._id === watch().subCategoryId
-                    )?.subCategory
-                  }
-                  selectValue={watch().subCategoryId}
-                  options={
-                    state.selectedCategory?.subCategoriesId
-                      ? state.selectedCategory?.subCategoriesId?.map((item) => {
-                          return {
-                            id: item._id ? item._id : "",
-                            value: item._id ? item._id : "",
-                            text: item.subCategory,
-                          };
-                        })
-                      : []
-                  }
+                  required={true}
+                  error={onGetError("name")}
                 />
-                <Box paddingTop={2}>
-                  <Select
-                    name="teamId"
-                    label={"Assign to team"}
-                    control={control}
-                    state={state}
-                    register={register}
-                    selectValue={watch().teamId}
-                    selectText={
-                      state.selectedDepatmentTeams?.find(
-                        (item) => item._id === watch().teamId
-                      )?.name
-                    }
-                    options={state.selectedDepatmentTeams?.map((item) => {
+              </div>
+              <div>
+                <ControlledSelect
+                  formLabel="Department name"
+                  name="selectedDepartmentId"
+                  control={control}
+                  elementType={"select"}
+                  label={"Select"}
+                  onSelect={onChangeDepartment}
+                  options={[
+                    ...departments?.map((item) => {
                       return {
                         id: item._id,
                         value: item._id,
                         text: item.name,
                       };
-                    })}
+                    }),
+                  ]}
+                  error={onGetError("selectedDepartmentId")}
+                />
+              </div>
+              <div>
+                <DateInput
+                  label={"Deadline date"}
+                  name="deadline"
+                  state={state}
+                  control={control}
+                  placeholder="Deadline"
+                  register={register}
+                  setValue={setValue}
+                />
+              </div>
+              <div>
+                <ControlledSelect
+                  label="Select"
+                  elementType="select"
+                  formLabel="Category"
+                  name="categoryId"
+                  control={control}
+                  onSelect={onChangeCategory}
+                  options={[
+                    ...categories?.map((item) => {
+                      return {
+                        id: item._id ? item._id : "",
+                        value: item._id ? item._id : "",
+                        text: item.category,
+                      };
+                    }),
+                  ]}
+                />
+              </div>
+              <div>
+                <Controller
+                  name="description"
+                  control={control}
+                  render={(props) => (
+                    <>
+                      <TextArea
+                        label="Description"
+                        name="create-task-from-board"
+                        cols={5}
+                        onChange={props.field.onChange}
+                        placeholder={"Write about your task"}
+                        rows={4}
+                        error={
+                          state.error?.error?.details[0].path.includes(
+                            "description"
+                          )
+                            ? "true"
+                            : ""
+                        }
+                      />
+                    </>
+                  )}
+                />
+              </div>
+              <div>
+                <div>
+                  <ControlledSelect
+                    label="Select"
+                    elementType="select"
+                    formLabel="Sub Category"
+                    name="subCategoryId"
+                    control={control}
+                    onSelect={(e: any) =>
+                      setValue("subCategoryId", e.target.id)
+                    }
+                    options={
+                      state.selectedCategory?.subCategoriesId
+                        ? state.selectedCategory?.subCategoriesId?.map(
+                            (item) => {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.subCategory,
+                              };
+                            }
+                          )
+                        : []
+                    }
+                  />
+                </div>
+                <Box paddingTop={0.5}>
+                  <ControlledSelect
+                    elementType="select"
+                    label="Select"
+                    formLabel="Assign to team"
+                    name="teamId"
+                    control={control}
+                    onSelect={(e: any) => setValue("teamId", e.target.id)}
+                    options={
+                      state?.selectedDepatmentTeams &&
+                      state?.selectedDepatmentTeams?.length > 0
+                        ? state.selectedDepatmentTeams?.map((item) => {
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                          })
+                        : []
+                    }
                   />
                 </Box>
               </div>
             </div>
-            <Box paddingTop={2} paddingX={1}>
+            <Box>
               <AttachetFiles
                 register={register}
                 onSetFiles={onSetFiles}
                 onChangeFiles={onChangeFiles}
-                state={state}
                 onRemoveFile={onRemoveFile}
-                files={files}
+                filesRef={files}
+                newFiles={state.newFiles}
               />
             </Box>
-            <div>
-              <button
-                style={{ marginBottom: "20px" }}
-                type="submit"
-                className="addTaskBtn fontSize"
-              >
-                {selectedProject.loading ? (
-                  <CircularProgress
-                    sx={{
-                      color: "white",
-                      width: "25px !important",
-                      height: "25px !important",
-                    }}
-                  />
-                ) : (
-                  "Add task"
-                )}
-              </button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                size="large"
+                type="main"
+                label="Done"
+                loading={selectedProject.loading}
+                onClick={onSubmit}
+              />
             </div>
           </form>
         </div>
