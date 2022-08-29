@@ -15,7 +15,7 @@ import {
   ProjectsActions,
   selectNotStartedProjects,
 } from "../../../models/Projects";
-import Loading from "../../../coreUI/usable-elements/Loading";
+import Loading from "../../../coreUI/components/Loading/Loading";
 import { getPMs, selectPMs } from "../../../models/PM";
 import { clientsDataSelector } from "../../../models/Clients";
 import { Controller, useForm } from "react-hook-form";

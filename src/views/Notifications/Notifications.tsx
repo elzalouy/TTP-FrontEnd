@@ -13,6 +13,7 @@ import {
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {};
 
@@ -54,36 +55,14 @@ export const Notifications = (props: Props) => {
         </Grid>
       ) : null}
       {pagination.pages !== pagination.current && (
-        <Grid item xs={12} lg={6} textAlign="center" mb="1em">
-          <button
-            style={{
-              textTransform: "capitalize",
-              maxHeight: "40px",
-              background: "black",
-              height: "35px",
-              width: "80px",
-              color: "white",
-              borderRadius: "10px",
-              border: "none",
-              outline: "none",
-            }}
+        <Grid container xs={6} justifyContent={"center"} textAlign="center" marginBottom={4}>
+          <Button
+            type="main"
+            size="small"
+            label="load more"
             onClick={handleLoadMore}
-          >
-            {loading ? (
-              <CircularProgress
-                disableShrink
-                sx={{
-                  color: "white",
-                  padding: "0px",
-                  height: "20px !important",
-                  width: "20px !important",
-                  marginTop: "5px",
-                }}
-              />
-            ) : (
-              "Load More"
-            )}
-          </button>
+            loading={loading}
+          />
         </Grid>
       )}
     </Grid>

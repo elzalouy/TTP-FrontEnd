@@ -33,7 +33,7 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({ show, setShow }) => {
           >
             Cancel
           </button>
-          <button onClick={onDeleteTask} className="controllers-delete"     data-test-id="delete-task-button-confirm">
+          <button onClick={onDeleteTask} className="controllers-delete" data-test-id="delete-task-button-confirm">
             Delete
           </button>
         </div>
