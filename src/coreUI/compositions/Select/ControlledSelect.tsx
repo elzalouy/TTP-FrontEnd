@@ -32,21 +32,17 @@ const ControlledSelect: FC<IControlledSelect> = ({
       <Controller
         name={name}
         control={control}
-        render={(props) => {
-          if (props.field.name === "subCategoryId")
-            console.log({ subCategoryId: props.field.value });
-          return (
-            <Select
-              elementType={elementType}
-              name={filter ? `${filter.page}` + props.field.name : name}
-              label={label}
-              onSelect={onSelect}
-              selected={props.field.value}
-              options={options}
-              textTruncate={textTruncate}
-            />
-          );
-        }}
+        render={(props) => (
+          <Select
+            elementType={elementType}
+            name={filter ? `${filter.page}` + props.field.name : name}
+            label={label}
+            onSelect={onSelect}
+            selected={props.field.value}
+            options={options}
+            textTruncate={textTruncate}
+          />
+        )}
       />
     </>
   );
