@@ -13,7 +13,6 @@ import {
   selectLoading,
   selectNewProject,
 } from "src/models/Projects";
-import { Close as CloseIcon } from "@mui/icons-material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import IMAGES from "src/assets/img/Images";
 import Joi from "joi";
@@ -25,7 +24,7 @@ import { validateDate } from "src/services/validations/project.schema";
 import { getYesterdaysDate } from "src/helpers/generalUtils";
 import { IDepartmentState } from "src/types/models/Departments";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Upload from "src/coreUI/components/Typos/UploadLabel";

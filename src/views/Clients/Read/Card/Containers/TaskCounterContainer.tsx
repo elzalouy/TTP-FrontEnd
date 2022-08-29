@@ -1,12 +1,9 @@
 import { FC } from "react";
 import ClientTaskNumberCard from "../Data/TaskNumber";
 import "../../clients.css";
+import { ITaskCounterContainer } from "src/types/views/Client";
 
-type Props = {
-  id: string;
-};
-
-const TaskCounterContainer: FC<Props> = ({ id }) => {
+const TaskCounterContainer: FC<ITaskCounterContainer> = ({ id }) => {
   return (
     <div className="counter-container-tasks bounce clientScrollbar">
       <div className="counter-container-scroll-wrapper">

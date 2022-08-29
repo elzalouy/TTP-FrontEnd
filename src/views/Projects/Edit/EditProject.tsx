@@ -20,11 +20,11 @@ import {
   checkValueAndShowOptions,
   getYesterdaysDate,
   notNullorFalsy,
-} from "../../../helpers/generalUtils";
+} from "src/helpers/generalUtils";
 import "../../popups-style.css";
 import { validateDate } from "src/services/validations/project.schema";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 
 type Props = {

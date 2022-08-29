@@ -19,7 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Grid, Typography } from "@mui/material";
-import TableBox from "../../../coreUI/components/Containers/TableContainer";
+import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { selectRole } from "../../../models/Auth";
 import { useTheme } from "@mui/material/styles";

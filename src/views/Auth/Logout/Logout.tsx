@@ -26,17 +26,17 @@ export const Logout: React.FC<LogoutProps> = ({ show, setShow }) => {
       <p className="warning-text">Are you sure you want to Logout?</p>
       <div className="margin-cover">
         <div className="controllers-small-popup">
-           <Button
-            size="small"
-            type="delete"
-            label="logout"
-            onClick={handleLogout}
-          />
           <Button
             size="small"
             type="cancel"
             label="cancel"
             onClick={() => setShow("none")}
+          />
+           <Button
+            size="small"
+            type="delete"
+            label="logout"
+            onClick={handleLogout}
           />
         </div>
       </div>

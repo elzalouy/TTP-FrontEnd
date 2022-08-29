@@ -24,7 +24,7 @@ import { ToastError } from "src/coreUI/components/Typos/Alert";
 import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import moment from "moment";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 
 interface ProjectFormProps {

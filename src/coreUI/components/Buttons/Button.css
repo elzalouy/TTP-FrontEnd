@@ -33,14 +33,25 @@ button {
 .button-small {
   font-size: 14px;
   width: 154px;
-  border: 10px;
+  height: 50px;
 }
+
+
+/* Styles added based on the color and UI */
+
+button.main {
+  background-color: #000000;
+  color: #FFFFFF;
+  border-radius: 10px;
+}
+
 /* Styles added based on the color and UI */
 
 button.main {
   background-color: #000000;
   color: #ffffff;
 }
+
 
 button.delete {
   background-color: #fe1a1a;
@@ -67,6 +78,13 @@ button.cancel {
 button.disabled {
   color: #a4a4ae;
   background-color: #f1f1f5;
+}
+
+/* Button loading */
+
+.button-loading {
+  color: white;
+  padding: 5px;
 }
 
 /* Mobile screens */

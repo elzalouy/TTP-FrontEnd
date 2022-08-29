@@ -1,7 +1,6 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
-import { IButton } from "src/types/components/Inputs";
 import { Status } from "src/types/views/BoardView";
-import { ProjectsInterface, Task } from "../types/models/Projects";
+import { Project, ProjectsInterface, Task } from "../types/models/Projects";
 
 interface options {
   id?: string;
@@ -142,7 +141,12 @@ export const notNullorFalsy = (date: string | null | undefined) => {
   }
 };
 
-export const getTasksByClientIdAndStatus = (__status__: Status, projects: ProjectsInterface, tasks: Task[], _id: string) => {
+export const getTasksByClientIdAndStatus = (
+  __status__: Status,
+  projects: ProjectsInterface,
+  tasks: Task[],
+  _id: string
+) => {
   let clientProjects = projects.projects.filter(
     (item) => item.clientId === _id
   );
@@ -159,17 +163,19 @@ export const getTasksByClientIdAndStatus = (__status__: Status, projects: Projec
 };
 
 export const checkValueAndShowOptions = (value: string) => {
-  if (["Done", "late", "deliver on time", "deliver before deadline"].includes(value)) {
-    return [
-      { value: "inProgress", text: "In Progress" },
-    ]
+  if (
+    ["Done", "late", "deliver on time", "deliver before deadline"].includes(
+      value
+    )
+  ) {
+    return [{ value: "inProgress", text: "In Progress" }];
   } else {
     return [
       { value: "inProgress", text: "In Progress" },
       { value: "Done", text: "Done" },
-    ]
+    ];
   }
-}
+};
 
 export const showDotsOverLimit = (value: string, limit: number) => {
   if (value.length > limit) {
@@ -178,4 +184,29 @@ export const showDotsOverLimit = (value: string, limit: number) => {
   } else {
     return value;
   }
-}
+};
+
+export const getDepartmentOptions = (data: any[]) => {
+  if (data) {
+    return data.map((item) => {
+      return {
+        id: item,
+        value: item,
+        text: item,
+      };
+    });
+  } else return [];
+};
+
+export const getTaskListViewOptions = (data: Project[]) => {
+  if (data) {
+    let options = data.map((item) => {
+      return {
+        id: item._id,
+        value: item._id,
+        text: item.name,
+      };
+    });
+    return options;
+  } else return [];
+};

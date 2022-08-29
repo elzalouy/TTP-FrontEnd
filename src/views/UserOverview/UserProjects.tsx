@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import { useAppSelector } from "../../models/hooks";
 import { selectPMs } from "../../models/PM";
-import TableBox from "../../coreUI/components/Containers/TableContainer";
+import TableBox from "../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../coreUI/components/Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
 import { Project } from "../../types/models/Projects";

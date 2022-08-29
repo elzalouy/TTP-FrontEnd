@@ -2,18 +2,13 @@ import { Box, Grid, Stack, Typography } from '@mui/material'
 import moment from 'moment'
 import IMAGES from 'src/assets/img/Images'
 import ClientsPopover from './ClientsPopover'
-import { Client as IClient } from "../Clients";
 import { FC } from 'react';
 import "../clients.css"
 import { useAppSelector } from 'src/models/hooks';
 import { selectRole } from 'src/models/Auth';
+import { IClientHeader } from 'src/types/views/Client';
 
-interface Props {
-    client: IClient;
-    preview:string;
-  }
-
-const Header:FC<Props> = ({client,preview}) => {
+const Header:FC<IClientHeader> = ({client,preview}) => {
 
     const {clientName,createdAt} = client;
     const role = useAppSelector(selectRole);

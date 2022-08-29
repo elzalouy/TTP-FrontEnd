@@ -1,39 +1,15 @@
 import * as React from "react";
 import Popover from "@mui/material/Popover";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { popOverStyle } from "../../../../coreUI/themes/Styles";
 import IMAGES from "../../../../assets/img/Images";
 import { useDispatch } from "react-redux";
 import { openEditClientPopup, openDeleteClientPopup } from "../../../../models/Ui";
-import { Client, clientsActions } from "../../../../models/Clients";
+import { clientsActions } from "../../../../models/Clients";
 import MoreIcon from "../../../../assets/icons/moreIcon";
-interface Props {
-  client: Client;
-}
+import { IClientPopover } from "src/types/views/Client";
 
-//SX Styles Objects
-
-const clientPopoverButtonStyles = {
-  width: 120,
-  justifyContent: "flex-start",
-  textTransform: "none",
-  fontFamily: "Cairo",
-  color: "#696974",
-  fontWeight: "700",
-  fontSize: 13,
-};
-
-const clientPopoverEditButtonStyles = {
-  width: 120,
-  justifyContent: "flex-start",
-  color: "#FF0000",
-  textTransform: "none",
-  fontFamily: "Cairo",
-  fontWeight: "700",
-  fontSize: 13,
-};
-
-const ClientsPopover: React.FC<Props> = ({ client }) => {
+const ClientsPopover: React.FC<IClientPopover> = ({ client }) => {
   const dispatch = useDispatch();
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(

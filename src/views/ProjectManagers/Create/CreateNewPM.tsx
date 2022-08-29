@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { useAppSelector } from "src/models/hooks";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { createPM, selectLoading } from "../../../models/PM";
 
-type Props = {};
-
-const CreateNewPM: React.FC<Props> = () => {
+const CreateNewPM: React.FC = () => {
   const [show, setShow] = useState("none");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -84,38 +83,30 @@ const CreateNewPM: React.FC<Props> = () => {
           {emailFormat && (
             <p className="popup-error">Please enter a valid email format</p>
           )}
-          {/* TODO rebuild it again */}
-          {/* 
           <Input
-            label="Full Name"
-            placeholder="Full Name"
-            dataTestId="pm-name"
-            custom={{
-              value: username,
-              onChangeEvent: (e: any) => {
-                setUsername(e.target.value);
-                setError(false);
-              },
+            label="full name"
+            placeholder="full name"
+            dataTestId="create-pm-name"
+            value={username}
+            type="text"
+            onChange={(e:any)=>{
+              setUsername(e.target.value);
+              setError(false);
             }}
-            required
-            wrapper
           />
           <Input
             label="email"
             placeholder="email address"
-            dataTestId="pm-name"
-            custom={{
-              value: email,
-              onChangeEvent: (e: any) => {
-                setEmail(e.target.value);
+            dataTestId="create-pm-email"
+            value={email}
+            type="text"
+            onChange={(e:any)=>{
+              setEmail(e.target.value);
                 setError(false);
                 setEmailFormat(false);
-              },
             }}
-            required
-            wrapper
-            error={emailFormat}
-          /> */}
+            error={emailFormat ? "true" : ""}
+          />
         </div>
         <div className="controllers">
           <Button

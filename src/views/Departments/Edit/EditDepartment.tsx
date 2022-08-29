@@ -1,12 +1,13 @@
 import { Grid } from "@mui/material";
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Badge from "src/coreUI/components/Badge/Badge";
 import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
 // import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -134,63 +135,38 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             onClick={onClose}
           />
         </div>
-        <p className="popup-title">Edit department</p>
-        {/* TODO rebuild the element */}
-        <Controller
+        <ControlledInput
           name="name"
+          label={"Department name"}
+          placeholder={"Department name"}
+          type="text"
           control={control}
-          render={(props) => (
-            <Input
-              label="Department name"
-              type="text"
-              value={props.field.value}
-              onChange={props.field.onChange}
-              placeholder={"department name"}
-            />
-          )}
         />
-        <label className="popup-label-nt">Color</label>
-        <Controller
+        <ControlledSelect
           name="color"
           control={control}
-          render={(props) => (
-            <Select
-              elementType="select"
-              name="color"
-              label="Select"
-              onSelect={(e: any) => setValue(props.field.name, e.target.id)}
-              selected={props.field.value}
-              options={
-                state.colors
-                  ? state.colors.map((color) => {
-                      return {
-                        id: color,
-                        value: color,
-                        text: color,
-                      };
-                    })
-                  : []
-              }
-            />
-          )}
+          label="Select"
+          formLabel="color"
+          elementType="select"
+          setValue={setValue}
+          options={getDepartmentOptions(state.colors)}
         />
         <Grid container justifyContent={"space-between"} pt={2}>
-          <Grid item xs={8} lg={8}>
-            <Controller
+          <Grid item xs={9} lg={9}>
+            <ControlledInput
               name="team"
+              label={"Teams"}
+              placeholder="Team name"
+              type="text"
               control={control}
-              render={(props) => (
-                <Input
-                  label="Teams"
-                  type="text"
-                  value={props.field.value}
-                  onChange={props.field.onChange}
-                  placeholder={"Team Name"}
-                />
-              )}
             />
           </Grid>
-          <Grid item xs={4} lg={4} paddingLeft={2.8} marginTop={4.2}>
+          <Grid
+            item
+            xs={3}
+            lg={3}
+            sx={{ paddingLeft: "10px", marginTop: "32px" }}
+          >
             <Button
               type="add"
               size="small"

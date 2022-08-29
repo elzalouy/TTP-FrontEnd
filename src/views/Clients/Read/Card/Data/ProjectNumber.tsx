@@ -1,14 +1,9 @@
 import { FC } from "react";
 import "../../clients.css";
 import { Grid, Typography } from "@mui/material";
+import { IProjectNumber } from "src/types/views/Client";
 
-type Props = {
-  title: string;
-  number: number | string[];
-  dataTestId?: string;
-};
-
-const ProjectNumber: FC<Props> = ({ title, dataTestId, number }) => {
+const ProjectNumber: FC<IProjectNumber> = ({ title, dataTestId, number }) => {
   return (
     <Grid item xs={5} style={{ textAlign: "center" }}>
       <Typography

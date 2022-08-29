@@ -1,36 +1,38 @@
-import { useState } from "react";
+import { FC, useState } from "react";
+import { IInputProps } from "src/types/components/Inputs";
 import "./Input.css";
-type InputProps = {
-  type: string;
-  placeholder: string;
-  onChange: any;
-  value?: string;
-  error?: string;
-  label?: string;
-};
-const Input = ({
+
+const Input: FC<IInputProps> = ({
   label,
   type,
   value,
   onChange,
   placeholder,
   error,
+  elementType,
+  dataTestId,
+  inputName,
   ...props
-}: InputProps) => {
+}) => {
   const [state, setState] = useState({ type: type });
+
   const onChangeType = () => {
     setState({ type: state.type === "text" ? "password" : "text" });
   };
+
   return (
-    <fieldset id="usable-input">
-      <p className="input-label">{label}</p>
+    <fieldset className="core-ui-input-wrapper">
+      <p className="core-ui-input-label">{label}</p>
       <input
-        className="input"
+        className="core-ui-input"
+        name={inputName}
         type={state.type}
         onChange={onChange}
         value={value}
         placeholder={placeholder}
         data-error={error}
+        data-test-id={dataTestId}
+        data-type={elementType}
         {...props}
       />
       {/* TODO will add an eye icon using fontAwesome icons */}

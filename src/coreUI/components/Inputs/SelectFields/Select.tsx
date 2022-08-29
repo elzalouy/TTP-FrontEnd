@@ -3,7 +3,7 @@ import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import { IFilterProps } from "src/types/components/Inputs";
-import "./styles.css";
+import "./Select.css";
 
 const Select = (props: IFilterProps) => {
   const fieldRef: React.MutableRefObject<HTMLFieldSetElement | null> =
