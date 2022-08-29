@@ -23,9 +23,12 @@
   display: inline-flex;
   align-items: center;
   margin-left: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 .file-label img {
   width: 10px;
   height: 10px;
-  margin-left: 5px;
+  margin-left: 20px;
+  margin-right: 5px;
 }
