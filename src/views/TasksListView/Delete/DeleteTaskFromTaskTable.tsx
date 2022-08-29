@@ -6,6 +6,7 @@ import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { generateID } from "../../../helpers/IdGenerator";
 import "./DeleteTask.css";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   onDelete?: () => void;
@@ -44,7 +45,7 @@ const DeleteTask: React.FC<Props> = (props) => {
         </IconButton>
       </Box>
 
-      <PopUp show={props.Show} widthSize="25vw">
+      <PopUp show={props.Show} widthSize="30vw">
         <div className="task-delete-container">
           <div className="imageAlert">
             <img src={deleteIcon} />
@@ -53,17 +54,18 @@ const DeleteTask: React.FC<Props> = (props) => {
             Are you sure you want to delete the selected tasks?
           </p>
           <div className="controllers-dt">
-            <button
-              className="cancelBtn-dt"
-              onClick={() => {
-                props.setShow("none");
-              }}
-            >
-              Cancel
-            </button>
-            <button className="redBtn" onClick={props.onDelete}>
-              Delete
-            </button>
+            <Button
+              type="cancel"
+              size="large"
+              label="cancel"
+              onClick={() => props.setShow("none")}
+            />
+            <Button
+              type="delete"
+              size="large"
+              label="delete"
+              onClick={props.onDelete}
+            />
           </div>
         </div>
       </PopUp>

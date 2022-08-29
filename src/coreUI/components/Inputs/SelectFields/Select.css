@@ -124,13 +124,13 @@ fieldset[id*="select"] .labelValue {
   background-color: white;
   border-radius: 10px 0px 0px 10px;
   display: inline-flex;
-  padding-left: 15px;
+  padding-left: 10px;
   cursor: pointer;
   padding-block: 10px;
   width: 100%;
 }
 fieldset[id*="select"] .value {
-  color: #303030;
+  color: #111;
   font-size: 14px;
   text-transform: capitalize;
 }

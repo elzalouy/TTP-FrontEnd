@@ -20,6 +20,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const department = useAppSelector(selectDeleteDepartment);
   const loading = useAppSelector(selectDepartmentLoading);
+  
   const handleSubmit = () => {
     dispatch(deleteDepartment({ id: department?._id, dispatch, setShow }));
   };

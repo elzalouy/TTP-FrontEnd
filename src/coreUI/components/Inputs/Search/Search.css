@@ -21,10 +21,6 @@
     box-shadow: 0px 2px 30px #0000000D;
 }
 
-.core-ui-search:active::placeholder, .core-ui-search:focus::placeholder {
-    color: #000000;
-}
-
 .core-ui-search.medium {
     width: 329px;
     height: 38px;

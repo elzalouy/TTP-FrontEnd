@@ -79,7 +79,7 @@ const Select = (props: IFilterProps) => {
                 {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
                       length: props.textTruncate,
-                      omission: ".",
+                      omission: "..",
                     })
                   : "All"}
               </>

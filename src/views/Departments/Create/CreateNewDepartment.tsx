@@ -106,14 +106,16 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           />
         </div>
         <p className="popup-title">Create new department</p>
-        <ControlledInput
-          name="name"
-          label={"Department name"}
-          placeholder={"Department name"}
-          type="text"
-          control={control}
-          dataTestId="create-dep-Name"
-        />
+        <Grid item lg={12} sm={12} xs={12} md={12}>
+          <ControlledInput
+            name="name"
+            label={"Department name"}
+            placeholder={"Department name"}
+            type="text"
+            control={control}
+            dataTestId="create-dep-Name"
+          />
+        </Grid>
         <ControlledSelect
           name="color"
           control={control}

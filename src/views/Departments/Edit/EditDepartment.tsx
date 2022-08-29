@@ -135,13 +135,16 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             onClick={onClose}
           />
         </div>
-        <ControlledInput
-          name="name"
-          label={"Department name"}
-          placeholder={"Department name"}
-          type="text"
-          control={control}
-        />
+        <p className="popup-title">Edit department</p>
+        <Grid item lg={12} sm={12} xs={12} md={12}>
+          <ControlledInput
+            name="name"
+            label={"Department name"}
+            placeholder={"Department name"}
+            type="text"
+            control={control}
+          />
+        </Grid>
         <ControlledSelect
           name="color"
           control={control}
