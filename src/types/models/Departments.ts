@@ -11,8 +11,8 @@ export interface IList {
 }
 
 export interface IDepartmentState {
-  _id?: string;
-  name?: string;
+  _id: string;
+  name: string;
   lists?: IList[];
   color?: string;
   teams?: ITeam[];

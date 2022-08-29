@@ -1,11 +1,9 @@
 import { useState } from "react";
 import "./Input.css";
-type elementType = "input-style" | "login-style";
 type InputProps = {
   type: string;
   placeholder: string;
   onChange: any;
-  elementType?: elementType;
   value?: string;
   error?: string;
   label?: string;
@@ -17,7 +15,6 @@ const Input = ({
   onChange,
   placeholder,
   error,
-  elementType,
   ...props
 }: InputProps) => {
   const [state, setState] = useState({ type: type });
@@ -34,7 +31,6 @@ const Input = ({
         value={value}
         placeholder={placeholder}
         data-error={error}
-        data-type={elementType}
         {...props}
       />
       {/* TODO will add an eye icon using fontAwesome icons */}

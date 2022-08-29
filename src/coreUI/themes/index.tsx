@@ -49,3 +49,4 @@ export const theme = () => {
 };
 
 export default theme;
+export * from "./Styles";

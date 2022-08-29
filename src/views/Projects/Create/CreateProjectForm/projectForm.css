@@ -1,0 +1,101 @@
+.select {
+  width: 100%;
+}
+
+.closeIconProject {
+  position: absolute;
+  right: 0;
+  top: -5px;
+}
+
+.date {
+  width: 100%;
+}
+
+.closeIconProject {
+  cursor: pointer;
+}
+
+.textfield {
+  width: 100%;
+}
+
+.projectFormContainer {
+  width: 800px;
+}
+
+.projectFormHeader {
+  width: 800px;
+}
+
+.stepper {
+  width: 400px;
+}
+
+@media (max-width: 900px) {
+  .css-vdfuy8-MuiGrid-root {
+    z-index: 999999;
+  }
+  .css-m9sp2k-MuiStepConnector-root .MuiStepConnector-line {
+    border-width: 1.5px;
+  }
+  .projectFormContainer {
+    width: 100%;
+  }
+
+  .textfield {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .projectFormHeader {
+    width: 100%;
+  }
+  .css-162qw7v-MuiGrid-root {
+    padding-left: 0px;
+  }
+  .stepper {
+    width: 700px;
+  }
+}
+
+@media (max-width: 800px) {
+  .stepper {
+    width: 400px;
+  }
+}
+
+@media (max-width: 700px) {
+}
+
+@media (max-width: 600px) {
+  .stepper {
+    width: 400px;
+  }
+  .cancelBtn {
+    width: 170px;
+  }
+}
+
+@media (max-width: 500px) {
+  .stepper {
+    width: 300px;
+  }
+  .blackBtn {
+    width: 120px;
+  }
+  .cancelBtn {
+    width: 120px;
+  }
+}
+@media (max-width: 400px) {
+  .stepper {
+    width: 220px;
+  }
+  .blackBtn {
+    width: 100px;
+  }
+  .cancelBtn {
+    width: 100px;
+  }
+}

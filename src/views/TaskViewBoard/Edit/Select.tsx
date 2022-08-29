@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Controller } from "react-hook-form";
-import SelectInput2 from "../../../coreUI/components/Inputs/SelectInput2";
 {
   /* Select > label, name, control, register, state, handleChange, selectText,selectValue,options */
 }
@@ -36,16 +35,18 @@ const Select: React.FC<SelectProps> = ({
         name={name}
         control={control}
         render={(props) => (
-          <SelectInput2
-            {...register(name)}
-            label={label}
-            id={dataTestId}
-            error={state.error.error?.details[0].path.includes("listId")}
-            handleChange={handleChange ? handleChange : props.field.onChange}
-            selectText={selectText}
-            selectValue={props.field.value}
-            options={options}
-          />
+          // TODO rebuild ui elemnts
+          <></>
+          // <SelectInput2
+          //   {...register(name)}
+          //   label={label}
+          //   id={dataTestId}
+          //   error={state.error.error?.details[0].path.includes("listId")}
+          //   handleChange={handleChange ? handleChange : props.field.onChange}
+          //   selectText={selectText}
+          //   selectValue={props.field.value}
+          //   options={options}
+          // />
         )}
       />
     </div>

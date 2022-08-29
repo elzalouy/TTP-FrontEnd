@@ -2,8 +2,6 @@ import { makeStyles } from "@material-ui/styles";
 export const attachedFilesStyle = () => {
   return makeStyles((theme) => ({
     attachedFilesBox: {
-      marginX: 3,
-      marginY: 3,
       maxWidth: "50vw",
       width: "50vw",
       overflowX: "scroll",

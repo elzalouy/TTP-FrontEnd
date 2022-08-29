@@ -12,15 +12,16 @@ import {
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import IMAGES from "../../../../assets/img/Images";
-import { generateID } from "../../../../helpers/IdGenerator";
-import { Task } from "../../../../types/models/Projects";
-import { selectAllCategories } from "../../../../models/Categories";
-import { selectAllDepartments } from "../../../../models/Departments";
-import { useAppSelector } from "../../../../models/hooks";
-import { selectNewProject } from "../../../../models/Projects";
-import { UiActions } from "../../../../models/Ui";
-import ConfirmDeleteTask from "../../../../views/TaskViewBoard/Delete/ConfirmDeleteTask";
+import IMAGES from "src/assets/img/Images";
+import { generateID } from "src/helpers/IdGenerator";
+import { Task } from "src/types/models/Projects";
+import { selectAllCategories } from "src/models/Categories";
+import { selectAllDepartments } from "src/models/Departments";
+import { useAppSelector } from "src/models/hooks";
+import { selectNewProject } from "src/models/Projects";
+import { UiActions } from "src/models/Ui";
+import ConfirmDeleteTask from "../../../TaskViewBoard/Delete/ConfirmDeleteTask";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface TasksProps {
   setCurrentStep: any;
@@ -184,9 +185,16 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
       </Grid>
       <Grid item xs={12}>
         <div className="controllers">
-          <button className="blackBtn" onClick={() => onSaveProject()}>
+          {/* <button className="blackBtn" onClick={() => onSaveProject()}>
             Done
-          </button>
+          </button> */}
+
+          <Button
+            size="medium"
+            type="main"
+            label="Done"
+            onClick={() => onSaveProject()}
+          />
         </div>
       </Grid>
     </Grid>

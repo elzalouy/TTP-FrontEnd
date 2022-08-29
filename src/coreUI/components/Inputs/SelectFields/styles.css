@@ -128,9 +128,8 @@ fieldset[id*="select"] .labelValue {
   padding-block: 10px;
   width: 100%;
 }
-
 fieldset[id*="select"] .value {
-  color: #707683;
+  color: #303030;
   font-size: 14px;
 }
 
@@ -156,7 +155,6 @@ fieldset[id*="select"] .options .option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
-
   opacity: 1;
   width: 100%;
   padding-block: 9px;

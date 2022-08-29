@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import CreateNewProject from "../Create/Create/newProject";
+import CreateNewProject from "./NotStartedProjects";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Box from "@mui/material/Box";
-import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { useAppSelector } from "../../../models/hooks";
 import {
   selectDoneProjects,
@@ -11,9 +10,7 @@ import {
   selectLoading,
   filterProjects,
   getAllProjects,
-  selectDeleteProjectId,
   ProjectsActions,
-  selectNotStartedProjects,
 } from "../../../models/Projects";
 import Loading from "../../../coreUI/usable-elements/Loading";
 import { getPMs, selectPMs } from "../../../models/PM";

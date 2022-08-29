@@ -1,18 +1,18 @@
 import * as React from "react";
-import NewProjectPopUp from "../../views/Projects/Create/Create/ProjectPopUp";
-import CreateNewTask from "../../views/TaskViewBoard/Create/CreateNewTask";
-import DeleteClient from "../../views/Clients/Delete/DeleteClient";
-import DeleteProject from "../../views/Projects/Delete/DeleteProject";
-import EditClient from "../../views/Clients/Edit/EditClient";
-import EditProject from "../../views/Projects/Edit/EditProject";
-import EditTask from "../../views/TaskViewBoard/Edit/EditTask";
-import { Logout } from "../../views/Auth";
-import DeleteTask from "../../views/TaskViewBoard/Delete/DeleteTask";
+import NewProjectPopUp from "src/views/Projects/Create/CreateProjectForm/CreatePopUp";
+import CreateNewTask from "src/views/TaskViewBoard/Create/CreateNewTask";
+import DeleteClient from "src/views/Clients/Delete/DeleteClient";
+import DeleteProject from "src/views/Projects/Delete/DeleteProject";
+import EditClient from "src/views/Clients/Edit/EditClient";
+import EditProject from "src/views/Projects/Edit/EditProject";
+import EditTask from "src/views/TaskViewBoard/Edit/EditTask";
+import { Logout } from "src/views/Auth";
+import DeleteTask from "src/views/TaskViewBoard/Delete/DeleteTask";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../models/hooks";
-import { selectUi } from "../../models/Ui/UI.selectors";
+import { useAppSelector } from "src/models/hooks";
+import { selectUi } from "src/models/Ui/UI.selectors";
 import { Grid } from "@mui/material";
-import { TaskInfoPopUp } from "../../views";
+import { TaskInfoPopUp } from "src/views";
 import {
   openDeleteProjectPopup,
   openEditProjectPopup,
@@ -26,9 +26,9 @@ import {
   toggleViewTaskPopup,
   toggleEditDepartment,
   toggleDeleteDepartment,
-} from "../../models/Ui";
-import EditDepartment from "../../views/Departments/Edit/EditDepartment";
-import DeleteDepartment from "../../views/Departments/Delete/DeleteDepartment";
+} from "src/models/Ui";
+import EditDepartment from "src/views/Departments/Edit/EditDepartment";
+import DeleteDepartment from "src/views/Departments/Delete/DeleteDepartment";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();

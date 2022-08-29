@@ -1,12 +1,9 @@
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { selectClientsNames } from "../../../../models/Clients/clients.selectors";
-import { useAppSelector } from "../../../../models/hooks";
-import { selectPMs } from "../../../../models/PM";
-import {
-  createProject,
-  selectLoading,
-} from "../../../../models/Projects";
+import { selectClientsNames } from "src/models/Clients/clients.selectors";
+import { useAppSelector } from "src/models/hooks";
+import { selectPMs } from "src/models/PM";
+import { createProject, selectLoading } from "src/models/Projects";
 import { useDispatch } from "react-redux";
 import {
   Button,
@@ -16,23 +13,19 @@ import {
   TextFieldProps,
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import SelectInput2 from "../../../../coreUI/components/Inputs/SelectInput2";
 import Joi from "joi";
-import { selectUi } from "../../../../models/Ui/UI.selectors";
-import IMAGES from "../../../../assets/img/Images";
+import { selectUi } from "src/models/Ui/UI.selectors";
+import IMAGES from "src/assets/img/Images";
 import {
   validateCreateProject,
   validateDate,
-} from "../../../../services/validations/project.schema";
-import {
-  ToastError,
-} from "../../../../coreUI/components/Typos/Alert";
-import {
-  getYesterdaysDate,
-  notNullorFalsy,
-} from "../../../../helpers/generalUtils";
+} from "src/services/validations/project.schema";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
+import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import moment from "moment";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -48,13 +41,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
       clientId: "",
     },
   });
-  // const showPop = useSelector(createProjectPopup)
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
   const { createProjectPopup } = useAppSelector(selectUi);
-
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
@@ -105,31 +96,30 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
     <>
       <Grid
         className="projectFormContainer"
+        alignItems={"flex-start"}
         container
-        justifyContent={"space-between"}
       >
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-          <label className="label-project">Project title</label>
-          <br />
           <Controller
             control={control}
             name="name"
             render={(props) => (
-              <TextField
-                className="textfield"
-                error={validateError.error?.details[0]?.path?.includes("name")}
-                id="outlined-error project-name"
-                {...register("name")}
-                sx={projectFormNameStyles}
+              <Input
+                label="Project title"
+                type="text"
                 placeholder="Project name"
                 onChange={props.field.onChange}
+                error={
+                  validateError.error?.details[0]?.path?.includes("name")
+                    ? "true"
+                    : "false"
+                }
               />
             )}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
           <label className="label-project">Client name</label>
-          <br />
           <Controller
             name="clientId"
             control={control}
@@ -143,12 +133,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   clients
                     ? clients?.map((item) => {
-                      return {
-                        id: item.clientId,
-                        value: item.clientId,
-                        text: item.clientName,
-                      };
-                    })
+                        return {
+                          id: item.clientId,
+                          value: item.clientId,
+                          text: item.clientName,
+                        };
+                      })
                     : []
                 }
                 error={
@@ -160,9 +150,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8} paddingY={3.5}>
+        <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
           <label className="label-project">Start Date</label>
-          <br />
           <Controller
             name="startDate"
             control={control}
@@ -192,7 +181,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                     }}
                   >
                     <TextField
-                      className="date"
+                      sx={dataTimePickerInputStyle}
+                      className={"date"}
                       {...params}
                       error={validateError.error?.details[0].path.includes(
                         "startDate"
@@ -200,7 +190,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       {...register("startDate")}
                       placeholder="Start Date"
                       onChange={params.onChange}
-                      sx={projectFormStartDateStyles}
                       InputProps={{
                         readOnly: true,
                       }}
@@ -214,7 +203,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                           height: "10px",
                           position: "absolute",
                           right: "13px",
-                          bottom: "17px",
+                          bottom: "19px",
                         }}
                         alt="closeIcon"
                         onClick={() => {
@@ -228,9 +217,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8} paddingY={3.5}>
+        <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
           <label className="label-project">Deadline date</label>
-          <br />
           <Controller
             name="deadline"
             control={control}
@@ -271,7 +259,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                       )}
                       {...register("deadline")}
                       placeholder="Deadline"
-                      sx={projectFormDeadlineStyles}
+                      sx={dataTimePickerInputStyle}
                     />
                     {notNullorFalsy(watch().deadline) && (
                       <img
@@ -296,35 +284,35 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8} paddingY={3.5}>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
           <label className="label-project">Project manager</label>
-          <br />
           <Controller
             name="projectManager"
             control={control}
             render={(props) => (
-              <SelectInput2
-                label="Project managers list"
-                error={validateError.error?.details[0].path.includes(
-                  "projectManager"
-                )}
-                handleChange={props.field.onChange}
-                id="pm-new-project"
-                selectText={
-                  PMs.find((item) => item._id === props.field.value)?.name
-                }
-                {...register("projectManager")}
-                selectValue={props.field.value}
+              <Select
+                elementType="select"
+                name="createProject-projectManager"
+                label="Select"
+                onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+                selected={props.field.value}
                 options={
                   PMs
                     ? PMs?.map((item) => {
-                      return {
-                        id: item._id,
-                        value: item._id,
-                        text: item.name,
-                      };
-                    })
+                        return {
+                          id: item._id,
+                          value: item._id,
+                          text: item.name,
+                        };
+                      })
                     : []
+                }
+                error={
+                  validateError.error?.details[0]?.path?.includes(
+                    "projectManager"
+                  )
+                    ? "true"
+                    : "false"
                 }
               />
             )}
@@ -373,41 +361,3 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
 };
 
 export default ProjectForm;
-
-//SX Styles Objects
-const projectFormNameStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const projectFormStartDateStyles = {
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const projectFormDeadlineStyles = {
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};

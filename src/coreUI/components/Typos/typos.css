@@ -1,0 +1,31 @@
+.upload-label {
+  width: 46px;
+  max-height: 32px;
+  background: #00acba 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  display: inline-flex;
+  justify-content: space-between;
+  padding-inline: 10px;
+  padding-block: 6px;
+  cursor: pointer;
+}
+.upload-label img {
+  width: 45%;
+}
+.file-label {
+  background: #f1f1f5 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  height: 32px;
+  padding-inline: 5px;
+  color: #92929d;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5px;
+}
+.file-label img {
+  width: 10px;
+  height: 10px;
+  margin-left: 5px;
+}

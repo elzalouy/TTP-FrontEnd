@@ -28,11 +28,13 @@ const Select = (props: IFilterProps) => {
   useSelect(fieldRef, selectRef);
 
   React.useEffect(() => {
-    setState({ ...state, options: props.options });
+    setState({
+      ...state,
+      options: props.options.length > 0 ? props.options : [],
+    });
   }, [props]);
 
   React.useEffect(() => {
-    console.log("changed, ", props.selected);
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
@@ -43,7 +45,6 @@ const Select = (props: IFilterProps) => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
   };
-
   return (
     <>
       <fieldset
@@ -96,17 +97,18 @@ const Select = (props: IFilterProps) => {
               All
             </li>
           )}
-          {state.options?.map((item) => (
-            <li
-              className="option"
-              value={item.id}
-              key={item.id}
-              id={item.id}
-              onClick={props.onSelect}
-            >
-              {item.text}
-            </li>
-          ))}
+          {state.options &&
+            state.options?.map((item) => (
+              <li
+                className="option"
+                value={item.id}
+                key={item.id}
+                id={item.id}
+                onClick={props.onSelect}
+              >
+                {item.text}
+              </li>
+            ))}
         </ul>
       </fieldset>
     </>

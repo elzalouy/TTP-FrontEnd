@@ -1,22 +1,17 @@
 // TODO it should be under the project folder in pages as a new folder called CreateProject
 import React, { useState } from "react";
-import "./createNewProject.css";
+import "../Create/createNewProject.css";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../../../../models/hooks";
-import {
-  selectNotStartedProjects,
-  selectLoading,
-} from "../../../../models/Projects";
-import { selectNewProject } from "../../../../models/Projects/projects.selectors";
+import { useAppSelector } from "src/models/hooks";
+import { selectNotStartedProjects, selectLoading } from "src/models/Projects";
+import { selectNewProject } from "src/models/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
-import IMAGES from "../../../../assets/img/Images";
-import RotateRightIcon from "@mui/icons-material/RotateRight";
-import { CircularProgress, Grid } from "@mui/material";
-import { toggleCreateProjectPopup } from "../../../../models/Ui";
-import Loading from "../../../../coreUI/usable-elements/Loading";
-import TableBox from "../../../../coreUI/components/Containers/TableContainer";
-import ProjectsTable from "../../../../coreUI/components/Tables/ProjectsTable";
-import { selectPMs } from "../../../../models/PM";
+import IMAGES from "../../../assets/img/Images";
+import { toggleCreateProjectPopup } from "src/models/Ui";
+import Loading from "src/coreUI/usable-elements/Loading";
+import TableBox from "src/coreUI/components/Containers/TableContainer";
+import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
+import { selectPMs } from "src/models/PM";
 import { RouteComponentProps } from "react-router";
 
 type Props = {

@@ -206,15 +206,14 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
-              <Input
-                name="name"
+              {/* <Input
                 label="Task name"
                 placeholder="Task name"
                 control={control}
                 register={register}
                 state={state}
                 dataTestId="edit-task-name"
-              />
+              /> */}
               <Select
                 state={state}
                 control={control}
@@ -273,8 +272,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     : []
                 }
               />
-              <Input
-                name="description"
+              {/* <Input
                 control={control}
                 register={register}
                 label={"Description"}
@@ -283,7 +281,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 placeholder={"Write about your task"}
                 state={state}
                 id="editDescription"
-              />
+              /> */}
               <div>
                 <Select
                   name="subCategoryId"

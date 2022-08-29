@@ -7,23 +7,21 @@ import {
   stepConnectorClasses,
   StepIconProps,
   Typography,
-  stepIconClasses,
 } from "@mui/material";
 import "./projectForm.css";
 import { FC, useState } from "react";
-import PopUp from "../../../../coreUI/components/Popovers/Popup/PopUp";
-import { useAppSelector } from "../../../../models/hooks";
-import { ProjectsActions, selectNewProject } from "../../../../models/Projects";
-import IMAGES from "../../../../assets/img/Images";
-import TaskForm from "./TaskForm";
-import Tasks from "./TasksTable";
+import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
+import { useAppSelector } from "src/models/hooks";
+import { selectNewProject } from "src/models/Projects";
+import IMAGES from "src/assets/img/Images";
+import TaskForm from "../CreateTasksForm/TaskForm";
+import Tasks from "../CreateTasksForm/TasksTable";
 import ProjectForm from "./ProjectForm";
 import { styled } from "@mui/material/styles";
 import { Check } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { UiActions } from "../../../../models/Ui";
-import { selectUi } from "../../../../models/Ui/UI.selectors";
-import { immerable } from "immer";
+import { UiActions } from "src/models/Ui";
+import { selectUi } from "src/models/Ui/UI.selectors";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;

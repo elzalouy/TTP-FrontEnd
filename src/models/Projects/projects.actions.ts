@@ -65,6 +65,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
         ToastSuccess("Task have been saved to the Database");
         return result.data;
       }
+      ToastError(result?.data[0]?.message);
       return rejectWithValue(result.data);
     } catch (error: any) {
       return rejectWithValue(error);

@@ -29,13 +29,10 @@ fieldset#usable-input input.input:focus {
   border: 0.5px solid #303030;
 }
 
-input[data-error="error"] {
-  border: 0.5px solid #e30707;
+fieldset#usable-input input.input[data-error="true"] {
+  border: 0.5px solid #e30707 !important;
 }
-input[data-type="login-style"] {
-  height: 50px !important;
-}
-/* fieldset#usable-input input.input[data-type="formInput"]{} */
+
 /* Password Input Styles */
 
 .password-input-wrapper {
@@ -108,4 +105,33 @@ input[data-type="login-style"] {
 .error-active:focus {
   border: 1px solid #fe1a1a;
   outline: none;
+}
+
+/* Text Area */
+textarea[id*="core-textarea-"].core-textarea {
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  color: #303030;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 0.5px solid #b4b6c4;
+  border-radius: 6px;
+  padding: 10px;
+  resize: none;
+}
+textarea[id*="core-textarea-"].core-textarea::placeholder {
+  color: #b4b6c4;
+}
+
+textarea[id*="core-textarea-"].core-textarea:focus {
+  border: 0.5px solid #303030;
+}
+textarea[id*="core-textarea-"].core-textarea[data-error="true"] {
+  border: 0.5px solid #e30707 !important;
+}
+.core-textarea-label {
+  display: block;
+  font-weight: bold !important;
+  margin: 10px 0 5px 0 !important;
+  text-transform: capitalize;
 }

@@ -18,57 +18,18 @@ import moment from "moment";
 import {
   calculateStatusBasedOnDeadline,
   checkValueAndShowOptions,
-  getStatus,
   getYesterdaysDate,
   notNullorFalsy,
 } from "../../../helpers/generalUtils";
 import "../../popups-style.css";
 import { validateDate } from "src/services/validations/project.schema";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import SelectInput2 from "src/coreUI/components/Inputs/SelectInput2";
 import Input from "src/coreUI/components/Inputs/Textfield/StyledInput";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
 
 type Props = {
   show: string;
   setShow: any;
-};
-
-//SX Styles Object
-
-const editProjectTitleStyles = {
-  width: "100%",
-  marginTop: 1,
-  "& .MuiOutlinedInput-input": {
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-  },
-};
-
-const editProjectStartDateStyles = {
-  cursor: "pointer",
-  paddingTop: 1,
-  "& .MuiOutlinedInput-input": {
-    color: "#303030",
-    fontSize: "14px",
-    height: "13px !important",
-    borderRadius: "6px",
-    background: "white !important",
-    border: "0.5px solid #b4b6c4 !important",
-    ":focus": {
-      border: "1px solid #303030 !important",
-    },
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderRadius: "6px",
-    border: "0px !important",
-    ":focus": {
-      border: "0px !important",
-    },
-  },
 };
 
 const EditProject: React.FC<Props> = ({ show, setShow }) => {
@@ -331,7 +292,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           InputProps={{
                             readOnly: true,
                           }}
-                          sx={editProjectStartDateStyles}
+                          sx={dataTimePickerInputStyle}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
                           notNullorFalsy(watch().startDate) && (
@@ -343,7 +304,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                                 height: "10px",
                                 position: "absolute",
                                 right: "13px",
-                                bottom: "17px",
+                                bottom: "19px",
                               }}
                               alt="closeIcon"
                               onClick={() => {
@@ -393,7 +354,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                           {...params}
                           placeholder="Deadline"
                           onChange={params.onChange}
-                          sx={editProjectStartDateStyles}
+                          sx={dataTimePickerInputStyle}
                         />
                         {checkProjectStatus(project?.projectStatus) &&
                           notNullorFalsy(watch().deadline) && (
@@ -405,7 +366,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                                 height: "10px",
                                 position: "absolute",
                                 right: "13px",
-                                bottom: "17px",
+                                bottom: "19px",
                               }}
                               alt="closeIcon"
                               onClick={() => {

@@ -242,4 +242,31 @@ export const SelectInputStyle = makeStyles({
     },
   },
 });
-export default { projectsTableStyle, popOverStyle, SelectInputStyle };
+export const dataTimePickerInputStyle = {
+  cursor: "pointer",
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    height: "16px !important",
+    color: "#303030",
+    fontSize: "14px",
+    borderRadius: "6px",
+    background: "white !important",
+    border: "0.5px solid #b4b6c4 !important",
+    ":focus": {
+      border: "2px solid #303030 !important",
+    },
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderRadius: "6px",
+    border: "0px !important",
+    ":focus": {
+      border: "0px !important",
+    },
+  },
+};
+export default {
+  projectsTableStyle,
+  popOverStyle,
+  SelectInputStyle,
+  dataTimePickerInputStyle,
+};

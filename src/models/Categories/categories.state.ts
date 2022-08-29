@@ -3,12 +3,12 @@ export interface SubCategory {
   subCategory: string;
 }
 export interface Category {
-  _id?: string;
+  _id: string;
   category: string;
   subCategories?: string[];
   subCategoriesId?: SubCategory[];
   selectedSubCategory: SubCategory[];
-  isDeleted?:boolean
+  isDeleted?: boolean;
 }
 
 export interface CategoriesInterface {

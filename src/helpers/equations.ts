@@ -95,6 +95,6 @@ export const setTasksBoardToArrays = (tasks: Task[]) => {
 };
 export const formatFileName = (name: string) => {
   let val = _.split(name, ".");
-  let zeroval = _.truncate(val[0], { length: 10 });
+  let zeroval = _.truncate(val[0], { length: 10, omission: "..." });
   return `${zeroval}.${val[val.length - 1]}`;
 };
