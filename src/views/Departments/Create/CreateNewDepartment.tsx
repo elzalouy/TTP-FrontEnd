@@ -125,7 +125,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
-        <Grid container alignItems="center" pt={2}>
+        <Grid container alignItems="center">
           <Grid item xs={9} lg={9}>
             <ControlledInput
               name="team"

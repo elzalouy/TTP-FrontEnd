@@ -30,7 +30,6 @@ const ProjectCounterContainer: FC<IProjectCounterContainer> = ({
 
   return (
     <Grid
-      container
       className="counter-container"
       justifyContent={"space-between"}
       alignItems="center"

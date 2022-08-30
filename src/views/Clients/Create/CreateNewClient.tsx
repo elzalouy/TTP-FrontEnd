@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -75,7 +75,15 @@ const CreateNewClient: React.FC = () => {
   };
 
   return (
-    <>
+    <Grid
+      item
+      mt={2}
+      xl={3.90}
+      lg={3.90}
+      md={5.90}
+      sm={12}
+      xs={12}
+    >
       <Box
         className="add-new-cli"
         onClick={() => {
@@ -153,7 +161,7 @@ const CreateNewClient: React.FC = () => {
           </form>
         </Box>
       </PopUp>
-    </>
+    </Grid>
   );
 };
 

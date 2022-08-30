@@ -153,7 +153,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
-        <Grid container justifyContent={"space-between"} pt={2}>
+        <Grid container justifyContent={"space-between"}>
           <Grid item xs={9} lg={9}>
             <ControlledInput
               name="team"

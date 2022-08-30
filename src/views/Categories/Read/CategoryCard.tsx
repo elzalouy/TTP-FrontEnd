@@ -134,6 +134,7 @@ const CategoryCard: React.FC<IProps> = ({
                   letterSpacing: "0.1px",
                   fontSize: "14px",
                   height: "fit-content",
+                  cursor:"default"
                 }}
               >
                 {subCategory}
