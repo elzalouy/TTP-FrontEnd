@@ -122,7 +122,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           label="Select"
           formLabel="label"
           elementType="select"
-          setValue={setValue}
+          onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
         <Grid container alignItems="center">
@@ -147,7 +147,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               size="small"
               label="add"
               dataTestId="create-dep-add-team"
-              disabled={watch().team.length <= 1}
+              disabled={watch().team.length < 1}
               onClick={() => onChangeTeams()}
             />
           </Grid>

@@ -51,7 +51,6 @@ const Select = (props: IFilterProps) => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
   };
-  console.log({ options: props.options });
   return (
     <>
       <fieldset

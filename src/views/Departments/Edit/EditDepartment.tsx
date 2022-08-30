@@ -9,7 +9,6 @@ import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
-// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
 import {
@@ -151,7 +150,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           label="Select"
           formLabel="color"
           elementType="select"
-          setValue={setValue}
+          onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
         <Grid container justifyContent={"space-between"}>
@@ -175,7 +174,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               size="small"
               label="add"
               dataTestId="create-dep-add-team"
-              disabled={watch().team.length <= 2}
+              disabled={watch().team.length < 1}
               onClick={() => onChangeNewTeams()}
             />
           </Grid>

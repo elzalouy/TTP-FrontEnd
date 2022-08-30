@@ -1,5 +1,5 @@
 export interface ITeam {
-  _id: string;
+  _id?: string;
   name: string;
   listId: string;
   isDeleted: boolean;
