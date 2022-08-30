@@ -157,9 +157,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             control={control}
             render={(props) => (
               <MobileDatePicker
+                closeOnSelect
+                leftArrowButtonText="arrow"
                 inputFormat="YYYY-MM-DD"
                 value={props.field.value}
-                closeOnSelect
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -168,7 +169,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                   );
                   props.field.onChange(moment(e).toDate());
                 }}
-                leftArrowButtonText="arrow"
                 renderInput={(
                   params: JSX.IntrinsicAttributes & TextFieldProps
                 ) => (

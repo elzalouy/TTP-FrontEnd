@@ -262,6 +262,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <MobileDatePicker
+                    closeOnSelect
+                    leftArrowButtonText="arrow"
                     inputFormat="YYYY-MM-DD"
                     value={props.field.value}
                     onChange={(e: any) => {
@@ -272,7 +274,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                       );
                       props.field.onChange(moment(e).toDate());
                     }}
-                    leftArrowButtonText="arrow"
                     renderInput={(
                       params: JSX.IntrinsicAttributes & TextFieldProps
                     ) => (
