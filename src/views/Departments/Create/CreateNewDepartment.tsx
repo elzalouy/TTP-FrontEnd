@@ -122,7 +122,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           label="Select"
           formLabel="label"
           elementType="select"
-          setValue={setValue}
+          onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
         <Grid container alignItems="center" pt={2}>
