@@ -81,7 +81,7 @@ const CreateNewClient: React.FC = () => {
       xl={3.90}
       lg={3.90}
       md={5.90}
-      sm={12}
+      sm={5.90}
       xs={12}
     >
       <Box
@@ -104,6 +104,12 @@ const CreateNewClient: React.FC = () => {
               src={IMAGES.closeicon}
               alt="closeIcon"
               onClick={() => {
+                setShow("none");
+                setImageView(null);
+                setClientData({
+                  image: null,
+                  clientName: "",
+                });
                 setShow("none");
               }}
             />

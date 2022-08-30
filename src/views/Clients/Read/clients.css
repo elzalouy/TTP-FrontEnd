@@ -99,7 +99,7 @@
 .counter-container-tasks {
   margin-top: 15px;
   user-select: none;
-  cursor:grab;
+  cursor: grab;
 }
 
 .counter-container-scroll-wrapper {
@@ -108,9 +108,12 @@
   justify-content: flex-start;
 }
 
-.project-counter-wrapper:not(:last-child) {
-  border-right: 1px solid grey;
+.project-counter-wrapper:not(:last-child)::after {
+/*   display: block;
+  content: '';
+  background: gray; */
 }
+
 
 .task-number-card {
   display: flex;

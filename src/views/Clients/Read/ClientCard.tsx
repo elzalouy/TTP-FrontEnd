@@ -25,7 +25,7 @@ const ClientCard: React.FC<IClientCard> = ({ client }) => {
       xl={3.90}
       lg={3.90}
       md={5.90}
-      sm={12}
+      sm={5.90}
       xs={12}
       className="client-card"
       data-test-id="client-card"

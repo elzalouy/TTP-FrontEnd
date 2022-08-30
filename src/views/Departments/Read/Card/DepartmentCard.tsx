@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import DepartmentPopover from "./DepartmentPopover";
-import { selectRole } from "../../../models/Auth";
+import DepartmentPopover from "../DepartmentPopover";
+import { selectRole } from "../../../../models/Auth";
 import { useDispatch } from "react-redux";
-import { selectTasks } from "../../../models/Projects";
-import { useAppSelector } from "../../../models/hooks";
+import { selectTasks } from "../../../../models/Projects";
+import { useAppSelector } from "../../../../models/hooks";
 import {
     toggleDeleteDepartment,
     toggleEditDepartment,
-} from "../../../models/Ui";
+} from "../../../../models/Ui";
 import {
     cardColorsValues,
     IDepartmentsComponentProps,
     IDepartmentsComponentState,
-} from "../../../types/views/Departments";
-import { changeState } from "../../../models/Departments";
+} from "../../../../types/views/Departments";
+import { changeState } from "../../../../models/Departments";
 import { Typography } from "@mui/material";
 
 const DepartmentCard = ({
