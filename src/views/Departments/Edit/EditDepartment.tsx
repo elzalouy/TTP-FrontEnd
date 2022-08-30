@@ -174,7 +174,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               size="small"
               label="add"
               dataTestId="create-dep-add-team"
-              disabled={watch().team.length <= 2}
+              disabled={watch().team.length < 1}
               onClick={() => onChangeNewTeams()}
             />
           </Grid>
