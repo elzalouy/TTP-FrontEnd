@@ -53,7 +53,8 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
     }
   }, [createTaskPopup]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
+    let data = watch();
     let State = { ...state };
     let newTask = {
       name: data.name,
