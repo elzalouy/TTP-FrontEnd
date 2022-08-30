@@ -1,4 +1,4 @@
-import DepartmentCard from "./Card";
+import DepartmentCard from "./DepartmentCard";
 import CreateNewDepartment from "../Create/CreateNewDepartment";
 import { selectRole } from "../../../models/Auth";
 import { useAppSelector } from "../../../models/hooks";

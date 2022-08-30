@@ -19,6 +19,7 @@ fieldset.core-ui-input-wrapper input.core-ui-input {
   border: 0.5px solid #b4b6c4;
   border-radius: 6px;
   padding-left: 10px;
+  outline:none;
 }
 
 /* Adds spacing margin on top to all the inputs except the one at the top*/

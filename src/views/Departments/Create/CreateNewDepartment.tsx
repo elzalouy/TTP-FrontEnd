@@ -125,7 +125,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           setValue={setValue}
           options={getDepartmentOptions(state.colors)}
         />
-        <Grid container alignItems="center" pt={2}>
+        <Grid container alignItems="center">
           <Grid item xs={9} lg={9}>
             <ControlledInput
               name="team"
@@ -147,7 +147,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               size="small"
               label="add"
               dataTestId="create-dep-add-team"
-              disabled={watch().team.length <= 2}
+              disabled={watch().team.length <= 1}
               onClick={() => onChangeTeams()}
             />
           </Grid>
