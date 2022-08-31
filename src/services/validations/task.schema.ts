@@ -151,8 +151,8 @@ export const validateEditTask = (data: any) => {
     }
     task.append("deleteFiles", JSON.stringify(data.deleteFiles));
 
-    if (data.teamId !== null) task.append("teamId", data.teamId);
-    if (data.deadline) task.append("id", data.id);
+    task.append("id", data.id);
+    task.append("teamId", data.teamId);
     task.append("name", data.name);
     task.append("categoryId", data.categoryId);
     task.append("subCategoryId", data.subCategoryId);
@@ -161,6 +161,8 @@ export const validateEditTask = (data: any) => {
     task.append("boardId", data.boardId);
     task.append("listId", data.listId);
     task.append("description", data.description);
+    task.append("deadline", data.deadline);
+
     return { FormDatatask: task };
   }
 };
@@ -182,10 +184,10 @@ const valdiateCreateTask = (data: any) => {
         task.append("attachedFiles", newfiles[i]);
       }
     }
-    if (data.teamId !== null) task.append("teamId", data.teamId);
-    if (data.deadine) task.append("deadline", data.deadline);
-    if (data.categoryId) task.append("categoryId", data.categoryId);
-    if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);
+    task.append("teamId", data.teamId);
+    task.append("deadline", data.deadline);
+    task.append("categoryId", data.categoryId);
+    task.append("subCategoryId", data.subCategoryId);
     task.append("name", data.name);
     task.append("status", data.status);
     task.append("boardId", data.boardId);

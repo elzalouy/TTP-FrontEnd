@@ -65,9 +65,8 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       projectId: selectedProject?.project?._id,
       status: data?.teamId ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
-      deadline: data?.deadline
-        ? moment(data?.deadline).toDate().toString()
-        : "",
+      deadline:
+        data?.deadline !== "" ? moment(data?.deadline).toDate().toString() : "",
       attachedFiles: state?.newFiles,
       listId: data?.teamId
         ? state.selectedDepartment?.teams?.find(
@@ -78,6 +77,8 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       boardId: state.selectedDepartment?.boardId,
       description: data?.description,
     };
+    console.log({ state: state, watch: watch() });
+
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);
     if (error || FileError) {

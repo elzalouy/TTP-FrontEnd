@@ -70,7 +70,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     }
     setState(State);
   }, [id]);
-  console.log({ state: state, watch: watch() });
   React.useEffect(() => {
     if (editTaskPopup === "none") {
       reset();
@@ -123,7 +122,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       description: data?.description,
       cardId: state.task?.cardId,
     };
-    console.log({ editTask: newTask });
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {
