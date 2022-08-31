@@ -17,6 +17,7 @@ import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTasks,
   filterTasks,
+  ProjectsActions,
   selectAllProjects,
 } from "../../../models/Projects";
 import { ProjectsInterface } from "../../../types/models/Projects";
@@ -56,14 +57,13 @@ export const TasksListView: React.FC<Props> = (props: any) => {
 
   const onChangeFilter = (e: any, name: string) => {
     e.preventDefault();
-    console.log(e);
     setValue(name, e.target.id);
     onHandleChangeFilter(e);
   };
   const onSortTasks = (e: any, name: string) => {
-    console.log(e.target.id);
-    // TODO change sort contoller function with this one
-    // TODO your sort code for the tasks using e.target.id
+    e.preventDefault();
+    setValue(name, e.target.id);
+    dispatch(ProjectsActions.onSortTasks(e.target.id));
   };
   const onDeleteTasks = async () => {
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
@@ -176,11 +176,6 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                     elementType="filter"
                     textTruncate={3}
                     onSelect={(e: any) => onSortTasks(e, "sort")}
-                    // filter={{
-                    //   page: "projects-",
-                    //   onChangeFilter: onChangeFilter,
-                    //   onHandleChangeFilter: onHandleChangeFilter,
-                    // }}
                     options={options[0]}
                   />
                 </Grid>
@@ -201,11 +196,6 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       elementType="filter"
                       textTruncate={4}
                       onSelect={(e: any) => onChangeFilter(e, "status")}
-                      // filter={{
-                      //   page: "tasks-",
-                      //   onChangeFilter: onChangeFilter,
-                      //   onHandleChangeFilter: onHandleChangeFilter,
-                      // }}
                       options={options[1]}
                     />
                   </Box>
@@ -230,12 +220,6 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       onSelect={(e: any) => {
                         onChangeFilter(e, "projectId");
                       }}
-                      // filter={{
-                      //   page: "projects-",
-                      //   onChangeFilter: onChangeFilter,
-                      //   onHandleChangeFilter: onHandleChangeFilter,
-                      // }}
-                      // TODO (Zedan Job) that should be a redux function, move to Redux/projects/projects.selecters.ts
                       options={getTaskListViewOptions(projects.projects)}
                     />
                   </Box>

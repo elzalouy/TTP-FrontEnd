@@ -1,37 +1,33 @@
+import { Box } from "@mui/material";
 import _ from "lodash";
-import * as React from "react";
 import moment from "moment";
-import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
-import DateInput from "./DateInput";
+import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { selectAllCategories } from "src/models/Categories";
-import { selectUi } from "src/models/Ui/UI.selectors";
-import { selectRole } from "src/models/Auth";
-import { validateEditTask } from "src/services/validations/task.schema";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
-import { Box } from "@mui/material";
-import {
-  EditTaskProps,
-  CRUDTaskState,
-  initialState,
-  initialHookFormTaskState,
-} from "../../../types/views/BoardView";
+import { selectUi } from "src/models/Ui/UI.selectors";
+import { validateEditTask } from "src/services/validations/task.schema";
 import {
   editTaskFromBoard,
   editTaskLoading,
   selectAllProjects,
-  selectSelectedProject,
+  selectSelectedProject
 } from "../../../models/Projects";
+import {
+  CRUDTaskState, EditTaskProps, initialHookFormTaskState, initialState
+} from "../../../types/views/BoardView";
+import DateInput from "./DateInput";
 import EditTaskTitle from "./Title";
-import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
-import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
-import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();
@@ -305,7 +301,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   render={(props) => (
                     <Select
                       name="createProject-task-selectSubCategory"
-                      label="Sub Ctegories list"
+                      label="Sub Categories list"
                       selected={props.field.value}
                       elementType="select"
                       onSelect={(e: any) =>

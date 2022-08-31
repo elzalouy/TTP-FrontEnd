@@ -17,14 +17,6 @@ const ControlledSelect: FC<IControlledSelect> = ({
   label,
   onSelect,
 }) => {
-  // const handleOnSelect = (e: any, props: UseFormProps) => {
-  //   if (elementType === "select") {
-  //     setValue(props.field.name, e.target.id);
-  //   } else if (filter) {
-  //     filter.onChangeFilter(e, props);
-  //     filter.onHandleChangeFilter(e);
-  //   }
-  // };
 
   return (
     <>

@@ -1,36 +1,33 @@
 import { Box, TextField, TextFieldProps } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { Dispatch } from "@reduxjs/toolkit";
+import Joi from "joi";
+import moment from "moment";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import "../CreateProjectForm/projectForm.css";
+import IMAGES from "src/assets/img/Images";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import { getYesterdaysDate } from "src/helpers/generalUtils";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
 import {
   createProjectTask,
   selectLoading,
-  selectNewProject,
+  selectNewProject
 } from "src/models/Projects";
-import { MobileDatePicker } from "@mui/x-date-pickers";
-import IMAGES from "src/assets/img/Images";
-import Joi from "joi";
-import moment from "moment";
 import { selectUi } from "src/models/Ui/UI.selectors";
-import { selectRole } from "src/models/Auth";
-import { valdiateCreateTask } from "src/services/validations/task.schema";
 import { validateDate } from "src/services/validations/project.schema";
-import { getYesterdaysDate } from "src/helpers/generalUtils";
+import { valdiateCreateTask } from "src/services/validations/task.schema";
 import { IDepartmentState } from "src/types/models/Departments";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
-import Upload from "src/coreUI/components/Typos/UploadLabel";
-import UploadLabel from "src/coreUI/components/Typos/FileLabel";
-import Button from "src/coreUI/components/Buttons/Button";
-import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import "../CreateProjectForm/projectForm.css";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
@@ -331,7 +328,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
               render={(props) => (
                 <Select
                   name="createProject-task-selectSubCategory"
-                  label="Sub Ctegories list"
+                  label="Sub Categories list"
                   selected={props.field.value}
                   elementType="select"
                   onSelect={(e: any) => setValue("subCategoryId", e.target.id)}
