@@ -85,17 +85,6 @@ const DepartmentCard = ({
                         })
                         }
                     </div>
-                    <div className="counter-container">
-                        <div className="InProgress">
-                            <p className="counter-title">Active tasks</p>
-                            <p>{state?.notDoneTasks}</p>
-                        </div>
-                        <div className="hrVertical"></div>
-                        <div className="Done">
-                            <p className="counter-title">Done tasks</p>
-                            <p>{state?.doneTasks}</p>
-                        </div>
-                    </div>
                 </div>
             )}
         </>
