@@ -389,7 +389,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <Select
-                    label={"Project status list"}
+                    label={project?.projectStatus}
                     name="editProjectStatus"
                     elementType="select"
                     onSelect={(e: any) =>
