@@ -395,8 +395,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onSelect={(e: any) =>
                       setValue(props.field.name, e.target.id)
                     }
-                    options={checkValueAndShowOptions(props.field.value).map(
-                      (item, i) => {
+                    options={checkValueAndShowOptions(project?.projectStatus).map(
+                      (item) => {
                         return {
                           id: item.value,
                           value: item.value,
