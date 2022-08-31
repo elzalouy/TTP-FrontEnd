@@ -1,4 +1,5 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
+import { ProjectManager } from "src/models/PM";
 import { Status } from "src/types/views/BoardView";
 import { Project, ProjectsInterface, Task } from "../types/models/Projects";
 
@@ -210,3 +211,48 @@ export const getTaskListViewOptions = (data: Project[]) => {
     return options;
   } else return [];
 };
+
+export const getProjectPMOptions = (data: ProjectManager[]) => {
+  if (data.length > 0) {
+    let options = data.map((item) => {
+      return {
+        id: item._id,
+        value: item._id,
+        text: item.name,
+      };
+    });
+    return options;
+  } else {
+    return [];
+  }
+}
+
+export const getProjectStatusOptions = (data: {
+  value: string;
+  text: string;
+}[]) => {
+  return data.map((item) => {
+    return {
+      id: item.value,
+      value: item.value,
+      text: item.text,
+    };
+  })
+}
+
+export const getProjectClientOptions = (data: {
+  clientId: string;
+  clientName: string;
+}[]) => {
+  if (data) {
+    return data?.map((item) => {
+      return {
+        id: item.clientId,
+        value: item.clientId,
+        text: item.clientName,
+      }
+    })
+  } else {
+    return []
+  }
+}

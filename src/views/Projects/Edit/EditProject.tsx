@@ -2,31 +2,34 @@ import React, { useEffect, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 // import "../../popups-style.css";
-import { Controller, useForm } from "react-hook-form";
-import { useAppSelector } from "../../../models/hooks";
-import { selectClientsNames } from "../../../models/Clients";
-import { selectPMs } from "../../../models/PM";
-import {
-  selectEditProject,
-  editProject as editProjectAction,
-} from "../../../models/Projects";
-import { useDispatch } from "react-redux";
-import { MobileDatePicker } from "@mui/x-date-pickers";
 import { TextField, TextFieldProps } from "@mui/material";
-import DoneProjectConfirm from "./DoneProjectPopup";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
-import {
-  calculateStatusBasedOnDeadline,
-  checkValueAndShowOptions,
-  getYesterdaysDate,
-  notNullorFalsy,
-} from "src/helpers/generalUtils";
-import "../../popups-style.css";
-import { validateDate } from "src/services/validations/project.schema";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import Button from "src/coreUI/components/Buttons/Button";
+import {
+  calculateStatusBasedOnDeadline,
+  checkValueAndShowOptions,
+  getProjectClientOptions,
+  getProjectPMOptions,
+  getProjectStatusOptions,
+  getStatus,
+  getYesterdaysDate,
+  notNullorFalsy
+} from "src/helpers/generalUtils";
+import { validateDate } from "src/services/validations/project.schema";
+import { selectClientsNames } from "../../../models/Clients";
+import { useAppSelector } from "../../../models/hooks";
+import { selectPMs } from "../../../models/PM";
+import {
+  editProject as editProjectAction, selectEditProject
+} from "../../../models/Projects";
+import "../../popups-style.css";
+import DoneProjectConfirm from "./DoneProjectPopup";
 
 type Props = {
   show: string;
@@ -74,11 +77,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       executeEditProject(data);
     }
   }, [trigger]);
-
-  /*   const getPM = (id: string) => {
-      let pm = PMs.find((pm) => pm._id === id);
-      return pm?.name;
-    }; */
 
   const checkProjectStatus = (status: string | undefined) => {
     if (
@@ -197,7 +195,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       reset();
     } else {
       setShow("none");
-      reset();
     }
   };
 
@@ -220,6 +217,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             alt="closeIcon"
             onClick={() => {
               setShow("none");
+              reset();
               setValue("clientId", project?.clientId);
               setValue("projectManager", project?.projectManager?._id);
               setValue("deadline", project?.projectDeadline);
@@ -228,7 +226,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 shouldDirty: false,
               });
               setValue("startDate", project?.startDate);
-              reset();
             }}
           />
         </div>
@@ -262,17 +259,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onSelect={(e: any) =>
                       setValue(props.field.name, e.target.id)
                     }
-                    options={
-                      clients
-                        ? clients?.map((item) => {
-                            return {
-                              id: item.clientId,
-                              value: item.clientId,
-                              text: item.clientName,
-                            };
-                          })
-                        : []
-                    }
+                    options={getProjectClientOptions(clients)}
                     selected={props.field.value}
                   />
                 )}
@@ -410,28 +397,17 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               <Controller
                 name="status"
                 control={control}
-                render={(props) => (
-                  <Select
-                    label={data.status ? data.status : "Project Status"}
+                render={(props) => {
+                  const options = checkValueAndShowOptions(project?.projectStatus);
+                  return <Select
+                    label={data.status ? checkProjectStatus(data.status) ? data.status : "Done" : "Project Status"}
                     name="editProjectStatus"
                     elementType="select"
-                    onSelect={(e: any) =>
-                      setValue(props.field.name, e.target.id, {
-                        shouldDirty: true,
-                      })
-                    }
-                    options={checkValueAndShowOptions(
-                      project?.projectStatus
-                    ).map((item) => {
-                      return {
-                        id: item.value,
-                        value: item.value,
-                        text: item.text,
-                      };
-                    })}
+                    onSelect={(e: any) => setValue(props.field.name, e.target.id, { shouldDirty: true, })}
+                    options={getProjectStatusOptions(options)}
                     selected={props.field.value}
                   />
-                )}
+                }}
               />
             </div>
             <div>
@@ -441,17 +417,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <Select
-                    options={
-                      PMs?.length > 0
-                        ? PMs.map((item) => {
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.name,
-                            };
-                          })
-                        : []
-                    }
+                    options={getProjectPMOptions(PMs)}
                     label="Project managers list"
                     onSelect={(e: any) =>
                       setValue(props.field.name, e.target.id)
@@ -465,22 +431,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             </div>
           </div>
           <div className="controllers">
-            {/* <button
-              className="controllers-done"
-              onClick={() => {
-                if (isDirty || updateDate) {
-                  onSubmitEdit();
-                } else {
-                  setShow("none");
-                }
-              }}
-            >
-              Done
-            </button> */}
             <Button
-              size="medium"
+              size="large"
               type="main"
-              label="Next"
+              label="Done"
               onClick={onSubmitEdit}
             />
           </div>
