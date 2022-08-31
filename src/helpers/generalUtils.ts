@@ -162,18 +162,18 @@ export const getTasksByClientIdAndStatus = (
   return tasksBasedStatus.length;
 };
 
-export const checkValueAndShowOptions = (value: string) => {
-  if (
-    ["Done", "late", "deliver on time", "deliver before deadline"].includes(
-      value
-    )
-  ) {
-    return [{ value: "inProgress", text: "In Progress" }];
+export const checkValueAndShowOptions = (value: string | undefined) => {
+  if (value) {
+    if (["Done", "late", "deliver on time", "deliver before deadline"].includes(value)) {
+      return [{ value: "inProgress", text: "In Progress" }];
+    } else {
+      return [
+        { value: "inProgress", text: "In Progress" },
+        { value: "Done", text: "Done" },
+      ];
+    }
   } else {
-    return [
-      { value: "inProgress", text: "In Progress" },
-      { value: "Done", text: "Done" },
-    ];
+    return [{ value: "", text: "" }]
   }
 };
 

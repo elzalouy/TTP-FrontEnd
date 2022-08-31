@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
@@ -37,17 +37,21 @@ const DeleteCategory: React.FC<Props> = ({
   };
 
   return (
-    <SmallPopUp show={showDelete}>
+    <SmallPopUp show={showDelete} widthSize="25vw">
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>
       <p className="warning-text">
         Are you sure you want to delete this category?
       </p>
-      <Typography variant="h5" fontWeight={600} padding={1}>
-        If you delete this Category, all the Sub-categories in this department
-        will also be deleted.
-      </Typography>
+      <Grid lg={12} md={12} container justifyContent={"center"} alignItems="center">
+        <Grid item lg={12} md={12}>
+          <Typography textAlign={"center"} variant="h5" fontWeight={600} padding={1}>
+            If you delete this Category, all the Sub-categories in this department
+            will also be deleted.
+          </Typography>
+        </Grid>
+      </Grid>
       <div className="margin-cover">
         <div className="controllers-small-popup">
           <Button

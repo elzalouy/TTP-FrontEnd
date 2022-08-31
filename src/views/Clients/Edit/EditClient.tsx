@@ -121,18 +121,6 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 onChange(e);
               }}
             />
-          {/* TODO rebuild the element */}
-          {/* <Input
-            label="Client Name"
-            placeholder="Ex : Ahmed Ali"
-            inputName="clientName"
-            custom={{
-              value: clientData?.clientName ? clientData.clientName : "",
-              onChangeEvent: (e: any) => onChange(e)
-            }}
-            required
-            wrapper
-          /> */}
           <Box className="controllers">
             <Button
               type="main"

@@ -1,10 +1,20 @@
 import { Box, TextField, TextFieldProps } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { Dispatch } from "@reduxjs/toolkit";
+import Joi from "joi";
+import moment from "moment";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import "../CreateProjectForm/projectForm.css";
+import IMAGES from "src/assets/img/Images";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import { getYesterdaysDate } from "src/helpers/generalUtils";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
@@ -13,30 +23,20 @@ import {
   selectLoading,
   selectNewProject,
 } from "src/models/Projects";
-import { MobileDatePicker } from "@mui/x-date-pickers";
-import IMAGES from "src/assets/img/Images";
-import Joi from "joi";
-import moment from "moment";
 import { selectUi } from "src/models/Ui/UI.selectors";
 import { validateDate } from "src/services/validations/project.schema";
-import { getYesterdaysDate } from "src/helpers/generalUtils";
+import { valdiateCreateTask } from "src/services/validations/task.schema";
 import {
   IDepartmentState,
   IList,
   initDepartmentState,
   ITeam,
 } from "src/types/models/Departments";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
-import Button from "src/coreUI/components/Buttons/Button";
-import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
-import { valdiateCreateTask } from "src/services/validations/task.schema";
 import {
   IJoiValidation,
   initJoiValidationError,
 } from "src/types/servicesValidation";
+import "../CreateProjectForm/projectForm.css";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {

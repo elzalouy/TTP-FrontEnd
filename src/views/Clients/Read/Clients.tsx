@@ -56,20 +56,14 @@ export const Clients: React.FC<IClient> = () => {
           />
         </Grid>
       </Grid>
-      <Grid
-        xs={12}
-        item
-        sx={{ height: "-webkit-fill-available", maxHeight: "100vh" }}
-      >
-        <Box className="all-clients">
-          {clients &&
-            clients?.map((clientInfo: IClient) => (
-              <>
-                <ClientCard key={clientInfo._id} client={clientInfo} />
-              </>
-            ))}
-          {role !== "PM" && <CreateNewClient />}
-        </Box>
+      <Grid container className="all-clients" gap={"1%"}>
+        {clients &&
+          clients?.map((clientInfo: IClient) => (
+            <>
+              <ClientCard key={clientInfo._id} client={clientInfo} />
+            </>
+          ))}
+        {role !== "PM" && <CreateNewClient />}
       </Grid>
     </Grid>
   );

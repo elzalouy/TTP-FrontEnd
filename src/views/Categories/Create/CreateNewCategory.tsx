@@ -2,7 +2,7 @@ import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import Badge from "src/coreUI/components/Badge/Badge";
+import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
@@ -70,10 +70,6 @@ const CreateNewCategory = () => {
       selectedSubCategory: subCategories,
     };
     try {
-      /*  const checkNames = allCategories.find(
-        (cat) => cat.category === body.category
-      );
-      if (!checkNames) { */
       if (mainCategory.length !== 0) {
         await dispatch(createCategory({ data: body, dispatch }));
         setShow("none");
@@ -92,19 +88,6 @@ const CreateNewCategory = () => {
           toastId: generateID(),
         });
       }
-
-      /*   } else {
-        toast.error("Category name already exist", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        });
-      } */
     } catch (error: any) {
       setErrors(error.message);
     }

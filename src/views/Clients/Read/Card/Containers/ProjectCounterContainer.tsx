@@ -30,7 +30,6 @@ const ProjectCounterContainer: FC<IProjectCounterContainer> = ({
 
   return (
     <Grid
-      container
       className="counter-container"
       justifyContent={"space-between"}
       alignItems="center"
@@ -40,7 +39,14 @@ const ProjectCounterContainer: FC<IProjectCounterContainer> = ({
         dataTestId="active-projects-clients"
         number={projectNumber}
       />
-      <ProjectNumber title="Done Projects" number={done} />
+      <hr
+        color="#88888885"
+        style={{ width: "1px !important" }}
+        className="hrVertical"
+      />
+      <ProjectNumber
+        title="Done Projects"
+        number={done} />
     </Grid>
   );
 };

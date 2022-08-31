@@ -320,6 +320,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           lg={12}
           md={12}
           paddingX={1.8}
+          display={"flex"}
           justifyContent="center"
           alignItems={"center"}
           textAlign={"center"}
