@@ -2,7 +2,7 @@ import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import Badge from "src/coreUI/components/Badge/Badge";
+import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";

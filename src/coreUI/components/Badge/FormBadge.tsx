@@ -1,10 +1,10 @@
 import { FC } from "react";
 import IMAGES from "src/assets/img/Images";
 import { showDotsOverLimit } from "src/helpers/generalUtils";
-import { IBadge } from "src/types/components/Badge";
+import { IFormBadge } from "src/types/components/Badge";
 import "./Badge.css";
 
-const Badge: FC<IBadge> = ({ name, index, onChange }) => {
+const Badge: FC<IFormBadge> = ({ name, index, onChange }) => {
   let label = showDotsOverLimit(name, 10);
 
   return (

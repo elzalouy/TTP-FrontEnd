@@ -15,6 +15,7 @@ import {
 } from "../../../../types/views/Departments";
 import { changeState } from "../../../../models/Departments";
 import { Typography } from "@mui/material";
+import CardBadge from "src/coreUI/components/Badge/CardBadge";
 
 const DepartmentCard = ({
     department,
@@ -78,28 +79,7 @@ const DepartmentCard = ({
                         {department?.teams?.map((team, _id) => {
                             if (!team.isDeleted) {
                                 return (
-                                    <Typography
-                                        key={_id}
-                                        sx={{
-                                            textTransform: "capitalize",
-                                            textAlign: "left",
-                                            mb: 1,
-                                            border: 1,
-                                            px: 1,
-                                            mr: 1.5,
-                                            py: 0.5,
-                                            borderRadius: "4px",
-                                            borderColor: department.color && cardColors[department.color][1],
-                                            color: "#5C5C5C",
-                                            fontFamily: "font: normal normal normal 14px/26px Cairo",
-                                            letterSpacing: "0.1px",
-                                            fontSize: "14px",
-                                            height: "fit-content",
-                                            cursor:"default"
-                                        }}
-                                    >
-                                        {team.name}
-                                    </Typography>
+                                    <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
                                 )
                             }
                         })

@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import Badge from "src/coreUI/components/Badge/Badge";
+import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
