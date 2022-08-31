@@ -6,7 +6,6 @@ import { selectPMs } from "src/models/PM";
 import { createProject, selectLoading } from "src/models/Projects";
 import { useDispatch } from "react-redux";
 import {
-  Button,
   CircularProgress,
   Grid,
   TextField,
@@ -26,6 +25,7 @@ import moment from "moment";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -56,7 +56,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
     warning: Joi.ValidationError | undefined;
   }>({ error: undefined, value: undefined, warning: undefined });
 
-  const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let data = watch();
     let project = {
       name: data?.name,
@@ -133,12 +133,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   clients
                     ? clients?.map((item) => {
-                        return {
-                          id: item.clientId,
-                          value: item.clientId,
-                          text: item.clientName,
-                        };
-                      })
+                      return {
+                        id: item.clientId,
+                        value: item.clientId,
+                        text: item.clientName,
+                      };
+                    })
                     : []
                 }
                 error={
@@ -299,12 +299,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 options={
                   PMs
                     ? PMs?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      })
+                      return {
+                        id: item._id,
+                        value: item._id,
+                        text: item.name,
+                      };
+                    })
                     : []
                 }
                 error={
@@ -325,6 +325,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           lg={12}
           md={12}
           paddingX={1.8}
+          display={"flex"}
           justifyContent="center"
           alignItems={"center"}
           textAlign={"center"}
@@ -332,28 +333,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           paddingY={2}
         >
           <Button
-            type="button"
-            variant="contained"
-            className="blackBtn"
-            onClick={onsubmit}
-            sx={{
-              "@ .MuiButtonBase-root": {
-                width: "100%",
-              },
-            }}
-          >
-            {loading ? (
-              <CircularProgress
-                sx={{
-                  color: "white",
-                  width: "25px !important",
-                  height: "25px !important",
-                }}
-              />
-            ) : (
-              "Next"
-            )}
-          </Button>
+            type="main"
+            size="large"
+            label="next"
+            dataTestId="create-dep-submit"
+            onClick={onSubmit}
+            loading={loading}
+          />
         </Grid>
       </Grid>
     </>
