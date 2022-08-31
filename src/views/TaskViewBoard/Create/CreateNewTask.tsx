@@ -44,6 +44,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const { register, handleSubmit, control, reset, setValue, watch } = useForm({
     defaultValues: initialHookFormTaskState,
   });
+
   const files = React.useRef<HTMLInputElement>(null);
   const [state, setState] = React.useState<CRUDTaskState>(initialState);
 
@@ -254,6 +255,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                         label="Description"
                         name="create-task-from-board"
                         cols={5}
+                        value={props.field.value}
                         onChange={props.field.onChange}
                         placeholder={"Write about your task"}
                         rows={4}
@@ -304,15 +306,17 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                     control={control}
                     onSelect={(e: any) => setValue("teamId", e.target.id)}
                     options={
-                      state?.selectedDepatmentTeams &&
-                      state?.selectedDepatmentTeams?.length > 0
-                        ? state.selectedDepatmentTeams?.map((item) => {
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.name,
-                            };
-                          })
+                      state.selectedDepatmentTeams
+                        ? [
+                            ...state.selectedDepatmentTeams.map((item) => {
+                              if (item && item._id)
+                                return {
+                                  id: item._id,
+                                  value: item._id,
+                                  text: item.name,
+                                };
+                            }),
+                          ]
                         : []
                     }
                   />

@@ -1,11 +1,11 @@
 import { Box, Grid, Typography } from "@mui/material";
 import * as React from "react";
-import { useAppSelector } from "../../models/hooks";
-import { selectPMs } from "../../models/PM";
-import TableBox from "../../coreUI/components/Containers/Table/TableContainer";
-import ProjectsTable from "../../coreUI/components/Tables/ProjectsTable";
+import { useAppSelector } from "src/models/hooks";
+import { selectPMs } from "src/models/PM";
+import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
+import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
-import { Project } from "../../types/models/Projects";
+import { Project } from "src/types/models/Projects";
 import IMAGES from "src/assets/img/Images";
 interface Props {
   history: RouteComponentProps["history"];

@@ -26,3 +26,12 @@ export interface IDepartmentsSlice {
   edit?: IDepartmentState;
   delete?: IDepartmentState;
 }
+export const initDepartmentState: IDepartmentState = {
+  id: "",
+  name: "",
+  lists: [],
+  color: "",
+  teams: [],
+  boardURL: "",
+  boardId: "",
+};

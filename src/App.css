@@ -83,7 +83,6 @@ body {
 }
 
 @media (max-width: 900px) {
-
   /* width */
   .customScrollBar::-webkit-scrollbar {
     display: block !important;

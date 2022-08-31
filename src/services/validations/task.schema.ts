@@ -152,12 +152,11 @@ export const validateEditTask = (data: any) => {
     task.append("deleteFiles", JSON.stringify(data.deleteFiles));
 
     if (data.teamId !== null) task.append("teamId", data.teamId);
-    task.append("id", data.id);
+    if (data.deadline) task.append("id", data.id);
     task.append("name", data.name);
     task.append("categoryId", data.categoryId);
     task.append("subCategoryId", data.subCategoryId);
     task.append("status", data.status);
-    task.append("deadline", data.deadline);
     task.append("cardId", data.cardId);
     task.append("boardId", data.boardId);
     task.append("listId", data.listId);
@@ -184,11 +183,11 @@ const valdiateCreateTask = (data: any) => {
       }
     }
     if (data.teamId !== null) task.append("teamId", data.teamId);
+    if (data.deadine) task.append("deadline", data.deadline);
+    if (data.categoryId) task.append("categoryId", data.categoryId);
+    if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);
     task.append("name", data.name);
-    task.append("categoryId", data.categoryId);
-    task.append("subCategoryId", data.subCategoryId);
     task.append("status", data.status);
-    task.append("deadline", data.deadline);
     task.append("boardId", data.boardId);
     task.append("listId", data.listId);
     task.append("description", data.description);

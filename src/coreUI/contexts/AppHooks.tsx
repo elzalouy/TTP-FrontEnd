@@ -34,13 +34,13 @@ const AppHooks: React.FC = (props) => {
     createTeamHook,
     updateDepartmentHook,
     createDepartmentHook,
-    moveTaskHook,
     deleteDepartmentHook,
     deleteTeamHook,
     createProjectHook,
     deleteCategoryHook,
     createCategoryHook,
   } = useAppSelector(selectUi);
+
   React.useEffect(() => {
     if (createProjectHook !== undefined) {
       console.log("create project hook fired");

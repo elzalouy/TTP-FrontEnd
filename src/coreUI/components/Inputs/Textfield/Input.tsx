@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import { IInputProps } from "src/types/components/Inputs";
 import "./Input.css";
 
@@ -14,19 +14,13 @@ const Input: FC<IInputProps> = ({
   inputName,
   ...props
 }) => {
-  const [state, setState] = useState({ type: type });
-
-  const onChangeType = () => {
-    setState({ type: state.type === "text" ? "password" : "text" });
-  };
-
   return (
     <fieldset className="core-ui-input-wrapper">
       <p className="core-ui-input-label">{label}</p>
       <input
         className="core-ui-input"
         name={inputName}
-        type={state.type}
+        type={type}
         onChange={onChange}
         value={value}
         placeholder={placeholder}

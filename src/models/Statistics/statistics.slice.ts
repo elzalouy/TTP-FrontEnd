@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
-import StatisticsState, { StatisticsInterface } from "./statistics.state";
+import StatisticsState, {
+  initialStatisticsState,
+  StatisticsInterface,
+} from "./statistics.state";
 import {
   isCloseToDeadline,
   setTasksBoardToArrays,
@@ -17,6 +20,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       state = StatisticsState,
       action: PayloadAction<any>
     ) => {
+      state.loading = true;
       // get projects, tasks and the user
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
@@ -57,6 +61,8 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       state = StatisticsState,
       action: PayloadAction<any>
     ) => {
+      state.loading = true;
+
       // get projects, tasks, and users
       let projects: Project[] = action.payload.projects;
       let tasks: Task[] = action.payload.tasks;
@@ -99,11 +105,30 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       }
       state.loading = false;
     },
-    setStatisticsEmpty: (
-      state = StatisticsState,
-      action: PayloadAction<any>
-    ) => {
+    setStatisticsEmpty: (state = StatisticsState) => {
       state.loading = false;
+      state.OM = {
+        taskboard: null,
+        taskBoardLength: 0,
+        inProgress: null,
+        review: null,
+        reviewLength: 0,
+        shared: null,
+        sharedLength: 0,
+        projectsCloseToDeadlines: null,
+        tasksCloseToDeadline: null,
+        inProgressLength: 0,
+      };
+      state.PM = {
+        projects: null,
+        inProgress: null,
+        sharedLength: 0,
+        shared: null,
+        review: null,
+        reviewLength: 0,
+        tasksCloseToDeadline: null,
+        projectsCloseToDeadlines: null,
+      };
     },
   },
 });

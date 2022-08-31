@@ -311,11 +311,21 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.deleteProjectTasks = [];
     });
     builder.addCase(deleteProject.fulfilled, (state, action) => {
-      state.loading = false;
-      state.projects = [...state.projects].filter(
-        (item) => item._id !== state.deleteProject
-      );
-      state.deleteProject = "";
+      if (action.payload.isDeleted) {
+        console.log({ deleteProjectPayload: action.payload });
+        state.loading = false;
+        state.projects = [...state.projects].filter(
+          (item) => item._id !== action.payload.id
+        );
+        state.deleteProject = "";
+        let tasks = [
+          ...state.allTasks.filter((i) => i.projectId !== action.payload.id),
+        ];
+        state.allTasks = tasks;
+        state.selectedProject.tasks = tasks.filter(
+          (item) => item.projectId !== action.payload.id
+        );
+      }
     });
     builder.addCase(deleteProject.pending, (state, action) => {
       // state.loading = true;

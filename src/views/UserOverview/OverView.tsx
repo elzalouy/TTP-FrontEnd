@@ -1,10 +1,10 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
-import UserName from "./Name";
-import UserProjects from "./UserProjects";
-import UserStatus from "./StatusCard";
-import UserTasks from "./UserTasks";
+import { FC, useEffect, useState } from "react";
+import UserName from "./UserName/Name";
+import UserProjects from "./UserProjects/UserProjects";
+import UserStatus from "./Status/StatusCard";
+import UserTasks from "./UserTasks/UserTasks";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications/Notifications";
 import { RouteComponentProps } from "react-router";
@@ -52,7 +52,6 @@ export const OverView: FC<Props> = (props) => {
       >
         <Grid
           item
-          // direction="row"
           justifyContent="flex-start"
           alignItems="flex-start"
           paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
@@ -65,7 +64,7 @@ export const OverView: FC<Props> = (props) => {
             }}
           >
             <UserName
-              loading={false}
+              loading={statistics.loading}
               name={
                 userName?.user?.name === undefined
                   ? userName?.name

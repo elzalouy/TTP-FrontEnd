@@ -31,7 +31,6 @@ import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();
@@ -54,15 +53,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (task) {
       State.task = task;
       let dep = departments.find((item) => item.boardId === task?.boardId);
-      setValue("name", task.name);
-      setValue("attachedFiles", task.attachedFiles);
-      setValue("categoryId", task.categoryId);
-      setValue("deadline", task.deadline === null ? "" : task.deadline);
-      setValue("description", task.description);
-      setValue("file", task.file);
-      setValue("teamId", task.teamId);
-      setValue("selectedDepartmentId", dep ? dep._id : "");
-      setValue("subCategoryId", task.subCategoryId);
       State.selectedCategory = categories.find(
         (item) => item._id === task?.categoryId
       );
@@ -70,10 +60,18 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       State.selectedDepatmentTeams = dep?.teams?.filter(
         (item) => item.isDeleted === false
       );
+      if (dep) setValue("selectedDepartmentId", dep._id);
+      setValue("name", task.name);
+      setValue("deadline", task.deadline);
+      setValue("description", task.description);
+      setValue("teamId", task.teamId);
+      setValue("categoryId", task.categoryId);
+      setValue("subCategoryId", task.subCategoryId);
+      setValue("attachedFiles", task.attachedFiles);
     }
     setState(State);
   }, [id]);
-
+  console.log({ state: state, watch: watch() });
   React.useEffect(() => {
     if (editTaskPopup === "none") {
       reset();
@@ -112,22 +110,21 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       subCategoryId: data?.subCategoryId,
       teamId: data?.teamId ? data?.teamId : null,
       status: State.task.status,
-      deadline: data?.deadline
-        ? moment(data?.deadline).toDate().toString()
-        : "",
+      deadline:
+        data.deadline !== "" ? moment(data?.deadline).toDate().toString() : "",
       attachedFiles: state?.newFiles,
       deleteFiles: state.deleteFiles,
+      boardId: state.selectedDepartment?.boardId,
       listId: data?.teamId
         ? state.selectedDepartment?.teams?.find(
             (item: any) => item._id === data.teamId
           )?.listId
         : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
             ?.listId,
-      boardId: state.selectedDepartment?.boardId,
       description: data?.description,
       cardId: state.task?.cardId,
     };
-
+    console.log({ editTask: newTask });
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {
@@ -218,6 +215,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   placeholder="Task name"
                   dataTestId="task-name"
                   control={control}
+                  value={watch().name}
                   required={true}
                   error={onGetError("name")}
                 />
@@ -230,6 +228,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   elementType={"select"}
                   label={"Select"}
                   onSelect={onChangeDepartment}
+                  selected={watch().selectedDepartmentId}
                   options={[
                     ...departments?.map((item) => {
                       return {
@@ -260,6 +259,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   formLabel="Category"
                   name="categoryId"
                   control={control}
+                  selected={watch().categoryId}
                   onSelect={onChangeCategory}
                   options={[
                     ...categories?.map((item) => {
@@ -282,6 +282,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                         label="Description"
                         name="create-task-from-board"
                         cols={5}
+                        value={watch().description}
                         onChange={props.field.onChange}
                         placeholder={"Write about your task"}
                         rows={4}
@@ -298,78 +299,58 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 />
               </div>
               <div>
-                <label className="label-project">Sub category</label>
-                <Controller
-                  name="subCategoryId"
-                  control={control}
-                  render={(props) => (
-                    <Select
-                      name="createProject-task-selectSubCategory"
-                      label="Sub Ctegories list"
-                      selected={props.field.value}
-                      elementType="select"
-                      onSelect={(e: any) =>
-                        setValue("subCategoryId", e.target.id)
-                      }
-                      options={
-                        state.selectedCategory?.subCategoriesId &&
-                        state.selectedCategory?.subCategoriesId?.length > 0
-                          ? state.selectedCategory?.subCategoriesId.map(
-                              (item) => {
+                <div>
+                  <ControlledSelect
+                    label="Select"
+                    elementType="select"
+                    formLabel="Sub Category"
+                    name="subCategoryId"
+                    control={control}
+                    selected={watch().subCategoryId}
+                    onSelect={(e: any) => {
+                      console.log(e.target.id);
+                      setValue("subCategoryId", e.target.id);
+                    }}
+                    options={
+                      state.selectedCategory?.subCategoriesId
+                        ? state.selectedCategory?.subCategoriesId?.map(
+                            (item) => {
+                              return {
+                                id: item._id ? item._id : "",
+                                value: item._id ? item._id : "",
+                                text: item.subCategory,
+                              };
+                            }
+                          )
+                        : []
+                    }
+                  />
+                </div>
+                <Box paddingTop={0.5}>
+                  <ControlledSelect
+                    elementType="select"
+                    label="Select"
+                    formLabel="Assign to team"
+                    name="teamId"
+                    control={control}
+                    selected={watch().teamId}
+                    onSelect={(e: any) => setValue("teamId", e.target.id)}
+                    options={
+                      state.selectedDepatmentTeams
+                        ? [
+                            ...state.selectedDepatmentTeams.map((item) => {
+                              if (item && item._id)
                                 return {
-                                  id: item._id ? item._id : "",
-                                  value: item._id ? item._id : "",
-                                  text: item.subCategory,
+                                  id: item._id,
+                                  value: item._id,
+                                  text: item.name,
                                 };
-                              }
-                            )
-                          : []
-                      }
-                      error={
-                        state.error?.error?.details[0].path.includes(
-                          "subCategoryId"
-                        )
-                          ? "true"
-                          : ""
-                      }
-                    />
-                  )}
-                />
-                <br />
-                <label className="label-project">Assign to Team</label>
-                <Controller
-                  name="teamId"
-                  control={control}
-                  render={(props) => (
-                    <Select
-                      name="createProject-task-selectTeam"
-                      label="Teams list"
-                      selected={props.field.value}
-                      elementType="select"
-                      onSelect={(e: any) => setValue("teamId", e.target.id)}
-                      options={
-                        state.selectedDepartment
-                          ? state?.selectedDepartment?.teams
-                              ?.filter((el: any) => el.isDeleted === false)
-                              ?.map((item: any) => {
-                                if (!item.isDeleted) {
-                                  return {
-                                    id: item._id,
-                                    value: item._id,
-                                    text: item.name,
-                                  };
-                                }
-                              })
-                          : []
-                      }
-                      error={
-                        state.error?.error?.details[0].path.includes("teamId")
-                          ? "true"
-                          : ""
-                      }
-                    />
-                  )}
-                />
+                            }),
+                          ]
+                        : []
+                    }
+                  />
+                </Box>
               </div>
             </div>
             <Box>

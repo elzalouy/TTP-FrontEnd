@@ -5,13 +5,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectPMs } from "src/models/PM";
 import { createProject, selectLoading } from "src/models/Projects";
 import { useDispatch } from "react-redux";
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import { Grid, TextField, TextFieldProps } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import Joi from "joi";
 import { selectUi } from "src/models/Ui/UI.selectors";
@@ -26,6 +20,7 @@ import moment from "moment";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -56,7 +51,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
     warning: Joi.ValidationError | undefined;
   }>({ error: undefined, value: undefined, warning: undefined });
 
-  const onsubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let data = watch();
     let project = {
       name: data?.name,
@@ -129,7 +124,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 name="client"
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
-                selected={props.field.value}
+                selected={watch().clientId}
                 options={
                   clients
                     ? clients?.map((item) => {
@@ -160,7 +155,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 closeOnSelect
                 leftArrowButtonText="arrow"
                 inputFormat="YYYY-MM-DD"
-                value={props.field.value}
+                value={watch().startDate}
                 onChange={(e) => {
                   validateDate(
                     moment(e).toDate(),
@@ -225,7 +220,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             render={(props) => (
               <MobileDatePicker
                 inputFormat="YYYY-MM-DD"
-                value={props.field.value}
+                value={watch().deadline}
                 closeOnSelect
                 onChange={(e) => {
                   validateDate(
@@ -295,7 +290,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 name="createProject-projectManager"
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
-                selected={props.field.value}
+                selected={watch().projectManager}
                 options={
                   PMs
                     ? PMs?.map((item) => {
@@ -331,29 +326,21 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           marginBottom={1}
           paddingY={2}
         >
-          <Button
-            type="button"
-            variant="contained"
-            className="blackBtn"
-            onClick={onsubmit}
-            sx={{
-              "@ .MuiButtonBase-root": {
-                width: "100%",
-              },
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            {loading ? (
-              <CircularProgress
-                sx={{
-                  color: "white",
-                  width: "25px !important",
-                  height: "25px !important",
-                }}
-              />
-            ) : (
-              "Next"
-            )}
-          </Button>
+            <Button
+              size="medium"
+              type="main"
+              label="Next"
+              loading={loading}
+              onClick={onSubmit}
+            />
+          </div>
         </Grid>
       </Grid>
     </>

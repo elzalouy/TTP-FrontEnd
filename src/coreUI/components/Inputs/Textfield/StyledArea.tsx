@@ -28,6 +28,7 @@ const TextArea = (props: TextAreaProps) => {
         className="core-textarea"
         onChange={props.onChange}
         data-error={props.error}
+        value={props.value}
       >
         {props.value}
       </textarea>

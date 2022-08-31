@@ -18,37 +18,41 @@ import IMAGES from "src/assets/img/Images";
 import Joi from "joi";
 import moment from "moment";
 import { selectUi } from "src/models/Ui/UI.selectors";
-import { selectRole } from "src/models/Auth";
-import { valdiateCreateTask } from "src/services/validations/task.schema";
 import { validateDate } from "src/services/validations/project.schema";
 import { getYesterdaysDate } from "src/helpers/generalUtils";
-import { IDepartmentState } from "src/types/models/Departments";
+import {
+  IDepartmentState,
+  IList,
+  initDepartmentState,
+  ITeam,
+} from "src/types/models/Departments";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
-import Upload from "src/coreUI/components/Typos/UploadLabel";
-import UploadLabel from "src/coreUI/components/Typos/FileLabel";
 import Button from "src/coreUI/components/Buttons/Button";
 import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import { valdiateCreateTask } from "src/services/validations/task.schema";
+import {
+  IJoiValidation,
+  initJoiValidationError,
+} from "src/types/servicesValidation";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>([]);
-  const [error, setError] = React.useState<{
-    error: Joi.ValidationError | undefined;
-    value: any;
-    warning: Joi.ValidationError | undefined;
-  }>({ error: undefined, value: undefined, warning: undefined });
+  const [error, setError] = React.useState<IJoiValidation>(
+    initJoiValidationError
+  );
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
     IDepartmentState | any
-  >();
+  >(initDepartmentState);
   const [selectedCategory, setSelectCategory] = React.useState<Category>();
   const { createProjectPopup } = useAppSelector(selectUi);
 
@@ -73,33 +77,34 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   React.useEffect(() => {
     reset();
     setFiles([]);
-    setSelectedDepartment(undefined);
+    setSelectedDepartment(initDepartmentState);
     setSelectCategory(undefined);
   }, [newProject.tasks]);
 
   const onSubmit = async () => {
     let data = watch();
-    let newTask = {
+    console.log({ dataFromHook: data });
+    let newTask: any = {
       name: data.name,
-      categoryId: data?.categoryId,
-      subCategoryId: data?.subCategoryId,
-      teamId: data?.teamId ? data?.teamId : null,
       projectId: newProject?.project?._id,
-      status: data?.teamId ? "inProgress" : "Tasks Board",
+      status: data.teamId !== "" ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
-      deadline: data?.deadline ? moment(data?.deadline).toDate() : null,
-      deliveryDate: null,
-      done: null,
-      turnoverTime: null,
-      listId: data?.teamId
-        ? data.teamId
-        : selectedDepartment?.lists?.find((l: any) => (l.name = "Tasks Board"))
-            ?.listId,
+      listId:
+        data?.teamId !== ""
+          ? selectedDepartment.teams.find(
+              (team: ITeam) => data.teamId === team._id
+            ).listId
+          : selectedDepartment.lists.find(
+              (l: IList) => l.name === "Tasks Board"
+            )?.listId,
       boardId: selectedDepartment?.boardId,
-      description: data?.description,
+      description: data.description,
       attachedFiles: Files,
+      teamId: data.teamId !== "" ? data.teamId : null,
     };
-    console.log({ ourTaskData: newTask });
+    if (data.deadline) newTask.deadline = moment(data?.deadline).toDate();
+    if (data.categoryId !== "") newTask.categoryId = data.categoryId;
+    if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);
     if (error || FileError) {
@@ -143,14 +148,18 @@ const TaskForm: React.FC<TaskFormProps> = () => {
     if (e.target.id) {
       setValue("selectedDepartmentId", e.target.id);
       let dep = departments.find((item) => item._id === e.target.id);
-      setSelectedDepartment(dep);
+      if (dep) setSelectedDepartment(dep);
+      setError(initJoiValidationError);
     }
   };
   const onChangeCategory = (e: any) => {
     setValue("categoryId", e.target.id);
     const cat = categories.find((item) => item._id === e.target.id);
     setSelectCategory(cat);
+    setError(initJoiValidationError);
   };
+  const onGetError = (val: string) =>
+    error.error?.details[0]?.path?.includes(val) ? "true" : "false";
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -163,8 +172,13 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 <Input
                   label="Task name"
                   type="text"
-                  onChange={props.field.onChange}
+                  value={watch().name}
+                  onChange={(e: any) => {
+                    props.field.onChange(e);
+                    setError(initJoiValidationError);
+                  }}
                   placeholder="Task name"
+                  error={onGetError(props.field.name)}
                 />
               )}
             />
@@ -179,11 +193,13 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                   <Select
                     name="createProject-task-selectedDepartment"
                     label="Select department"
-                    selected={props.field.value}
+                    selected={watch().selectedDepartmentId}
                     elementType="select"
                     onSelect={(e: any) => {
                       onChangeDepartment(e);
+                      setError(initJoiValidationError);
                     }}
+                    error={onGetError(props.field.name)}
                     options={[
                       ...departments.map((item) => {
                         return {
@@ -193,11 +209,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         };
                       }),
                     ]}
-                    error={
-                      error?.error?.details[0].path.includes("listId")
-                        ? "true"
-                        : ""
-                    }
                   />
                 </>
               )}
@@ -276,8 +287,9 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                   <Select
                     name="createProject-task-selectCategory"
                     label="Categories list"
-                    selected={props.field.value}
+                    selected={watch().categoryId}
                     elementType="select"
+                    error={onGetError(props.field.name)}
                     onSelect={(e: any) => onChangeCategory(e)}
                     options={
                       categories.length > 0
@@ -289,11 +301,6 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                             };
                           })
                         : []
-                    }
-                    error={
-                      error?.error?.details[0].path.includes("categoryId")
-                        ? "true"
-                        : ""
                     }
                   />
                 </>
@@ -311,13 +318,10 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                     name="create-task-with-project"
                     cols={5}
                     onChange={props.field.onChange}
+                    value={watch().description}
                     placeholder={"Write about your task"}
                     rows={4}
-                    error={
-                      error?.error?.details[0].path.includes("description")
-                        ? "true"
-                        : ""
-                    }
+                    error={onGetError(props.field.name)}
                   />
                 </>
               )}
@@ -332,7 +336,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 <Select
                   name="createProject-task-selectSubCategory"
                   label="Sub Ctegories list"
-                  selected={props.field.value}
+                  selected={watch().subCategoryId}
                   elementType="select"
                   onSelect={(e: any) => setValue("subCategoryId", e.target.id)}
                   options={
@@ -347,11 +351,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         })
                       : []
                   }
-                  error={
-                    error?.error?.details[0].path.includes("subCategoryId")
-                      ? "true"
-                      : ""
-                  }
+                  error={onGetError(props.field.name)}
                 />
               )}
             />
@@ -364,7 +364,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                 <Select
                   name="createProject-task-selectTeam"
                   label="Teams list"
-                  selected={props.field.value}
+                  selected={watch().teamId}
                   elementType="select"
                   onSelect={(e: any) => setValue("teamId", e.target.id)}
                   options={
@@ -374,19 +374,15 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                           ?.map((item: any) => {
                             if (!item.isDeleted) {
                               return {
-                                id: item.listId,
-                                value: item.listId,
+                                id: item._id,
+                                value: item._id,
                                 text: item.name,
                               };
                             }
                           })
                       : []
                   }
-                  error={
-                    error?.error?.details[0].path.includes("teamId")
-                      ? "true"
-                      : ""
-                  }
+                  error={onGetError(props.field.name)}
                 />
               )}
             />

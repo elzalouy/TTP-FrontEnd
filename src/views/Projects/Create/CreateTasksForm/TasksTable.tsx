@@ -56,21 +56,11 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     file: "",
     description: "",
   });
-  // const [taskTrigger, setTaskTrigger] = React.useState(false);
   const dispatch = useDispatch();
 
   const onDeleteTask = (task: Task) => {
     setCurrentTask(task);
     setShowToggle("flex");
-  };
-
-  const onCancel = () => {
-    /*   dispatch(
-      deleteProjectTasks({ data: { id: newProject.project._id }, dispatch })
-    );
-    dispatch(deleteProject({ data: { id: newProject.project._id }, dispatch })); */
-    setShow("none");
-    setCurrentStep(0);
   };
 
   const onSaveProject = () => {

@@ -1,7 +1,6 @@
 import * as React from "react";
 import _ from "lodash";
 import {
-  Checkbox,
   Paper,
   Table,
   TableBody,
@@ -9,22 +8,17 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Box,
-  Typography,
 } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
-
 import { useHistory } from "react-router";
 import moment from "moment";
-import { useMediaQuery, useTheme } from "@mui/material";
-import Status from "../Typos/Status";
+import Status from "src/coreUI/components/Typos/Status";
 import { Project, Task } from "../../../types/models/Projects";
+import EmptyCaption from "./Empty";
 import "../../../views/TasksListView/Read/TasksListView.css";
 interface OverviewTasksTableProps {
   tasks?: Task[] | null;
   projects: Project[];
-  selects: any[];
-  setAllSelected: (value: any) => any;
   img?: any;
   caption?: string;
 }
@@ -39,57 +33,23 @@ const cssHeadTableCell: any = {
 const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
   tasks,
   projects,
-  selects,
-  setAllSelected,
   img,
   caption,
 }) => {
   const history = useHistory();
-  const theme = useTheme();
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const [select, setSelected] = React.useState(false);
-
-  const setSingleSelect = (val: string, checked: boolean) => {
-    if (checked === true) {
-      let selected = [...selects];
-      selected.push(val);
-      selected = _.uniq(selected);
-      setAllSelected(selected);
-    } else {
-      let selected = [...selects];
-      _.remove(selected, (item) => item === val);
-      setAllSelected(selected);
-    }
-  };
   const css = Style();
   return (
     <Paper className={css.Paper}>
       <TableContainer
+        className={`${css.tableContainer} overviewTasksTable`}
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
-        className={css.tableContainer + " " + "customScrollBar"}
       >
         <Table stickyHeader={true} style={{ borderRadius: 3 }}>
-          {(tasks === null || tasks?.length === 0) && (
-            <>
-              <caption>
-                <Box
-                  width={"100%"}
-                  alignItems="center"
-                  textAlign={"center"}
-                  flexDirection="column"
-                >
-                  <img src={img} width="215px" height="215px" alt="" />
-                  <Typography
-                    color={"#505050"}
-                    fontWeight={"bold"}
-                    fontSize="16px"
-                  >
-                    {caption}
-                  </Typography>
-                </Box>
-              </caption>
-            </>
-          )}
+          <EmptyCaption
+            length={tasks?.length ? tasks.length : 0}
+            caption={caption}
+            img={img}
+          />
           <TableHead style={{ position: "relative", top: 0, zIndex: 0 }}>
             <TableRow
               sx={{ borderBottom: "2px solid #FAFAFB;", paddingTop: 2 }}

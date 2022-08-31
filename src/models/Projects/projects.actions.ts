@@ -214,7 +214,7 @@ export const deleteProject = createAsyncThunk<any, any, any>(
       if (deleteResult?.ok) {
         args.dispatch(fireDeleteProjectHook(""));
         ToastSuccess("Project Deleted Sucessfully");
-        return true;
+        return { isDeleted: true, id: args.data.id };
       }
       throw deleteResult.problem;
     } catch (error: any) {

@@ -12,6 +12,7 @@ import {
   selectSelectedProject,
 } from "../../../models/Projects";
 import "./taskViewBoard.css";
+import { ToastSuccess } from "src/coreUI/components/Typos/Alert";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -25,7 +26,11 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
-
+  // React.useEffect(() => {
+  //   document.addEventListener("visibilitychange", () => {
+  //     if (document.visibilityState === "visible")
+  //   });
+  // }, []);
   return (
     <Grid
       container

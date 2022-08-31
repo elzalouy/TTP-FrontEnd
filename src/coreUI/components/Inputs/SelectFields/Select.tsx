@@ -45,6 +45,7 @@ const Select = (props: IFilterProps) => {
       (item) => item.id === props.selected
     )?.text;
     if (selected) setState({ ...state, selected: selected });
+    else setState({ ...state, selected: "" });
   }, [props.selected]);
 
   const setShow = () => {

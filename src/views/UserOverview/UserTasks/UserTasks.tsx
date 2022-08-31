@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
-import { useAppSelector } from "../../models/hooks";
-import { selectAllProjects } from "../../models/Projects";
-import TasksTable from "../../coreUI/components/Tables/OverviewTasksTable";
-import { Task } from "../../types/models/Projects";
+import { useAppSelector } from "../../../models/hooks";
+import { selectAllProjects } from "../../../models/Projects";
+import TasksTable from "./OverviewTasksTable";
+import { Task } from "../../../types/models/Projects";
 interface UserTasksProps {
   title: string;
   tasks?: Task[] | null;
@@ -13,7 +13,6 @@ interface UserTasksProps {
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
   const projects = useAppSelector(selectAllProjects);
-  const [selects, setAllSelected] = React.useState<string[]>([]);
   return (
     <>
       <Typography
@@ -27,8 +26,6 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         {props.title}
       </Typography>
       <TasksTable
-        selects={selects}
-        setAllSelected={setAllSelected}
         projects={projects.projects}
         tasks={props?.tasks}
         img={props?.img}

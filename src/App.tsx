@@ -77,9 +77,7 @@ const App: React.FC = () => {
       setMounted(true);
     }
   }, [dispatch, mounted, isAuthed]);
-  useEffect(() => {
-    setMounted(false);
-  }, [isAuthed]);
+
   useEffect(() => {
     if (projects.projects.length > 0) {
       if (user?.role === "OM") {

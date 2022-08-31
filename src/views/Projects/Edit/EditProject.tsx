@@ -26,6 +26,7 @@ import { validateDate } from "src/services/validations/project.schema";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   show: string;
@@ -440,7 +441,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             </div>
           </div>
           <div className="controllers">
-            <button
+            {/* <button
               className="controllers-done"
               onClick={() => {
                 if (isDirty || updateDate) {
@@ -451,7 +452,13 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               }}
             >
               Done
-            </button>
+            </button> */}
+            <Button
+              size="medium"
+              type="main"
+              label="Next"
+              onClick={onSubmitEdit}
+            />
           </div>
         </div>
       </PopUp>

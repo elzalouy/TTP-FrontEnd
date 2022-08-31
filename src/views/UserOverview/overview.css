@@ -7,3 +7,17 @@
 .NotificationContainer {
   height: 200px;
 }
+.overviewTasksTable::-webkit-scrollbar {
+  display: block !important;
+  width: 3px;
+  height: 2px;
+}
+.overviewTasksTable::-webkit-scrollbar-track {
+  margin-top: 50px;
+  border-radius: 10px;
+  border-color: #ececec !important;
+}
+.overviewTasksTable::-webkit-scrollbar-thumb {
+  background: #9fa1ab;
+  border-radius: 5px;
+}

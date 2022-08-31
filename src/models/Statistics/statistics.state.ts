@@ -51,4 +51,29 @@ const StatisticsState: StatisticsInterface = {
     projectsCloseToDeadlines: null,
   },
 };
+export const initialStatisticsState: StatisticsInterface = {
+  loading: false,
+  OM: {
+    taskboard: null,
+    taskBoardLength: 0,
+    inProgress: null,
+    review: null,
+    reviewLength: 0,
+    shared: null,
+    sharedLength: 0,
+    projectsCloseToDeadlines: null,
+    tasksCloseToDeadline: null,
+    inProgressLength: 0,
+  },
+  PM: {
+    projects: null,
+    inProgress: null,
+    sharedLength: 0,
+    shared: null,
+    review: null,
+    reviewLength: 0,
+    tasksCloseToDeadline: null,
+    projectsCloseToDeadlines: null,
+  },
+};
 export default StatisticsState;

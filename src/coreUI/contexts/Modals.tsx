@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "src/models/hooks";
 import { selectUi } from "src/models/Ui/UI.selectors";
 import { Grid } from "@mui/material";
-import { TaskInfoPopUp } from "src/views";
 import {
   openDeleteProjectPopup,
   openEditProjectPopup,
@@ -86,7 +85,6 @@ const Modals: React.FC = (props) => {
         show={deleteProjectPopup}
         setShow={showDeleteProjectPopup}
       />
-      <TaskInfoPopUp show={viewTaskPopup} setShow={showViewTaskModal} />
       <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
