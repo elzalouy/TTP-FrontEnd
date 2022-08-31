@@ -8,13 +8,6 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import IMAGES from "src/assets/img/Images";
-import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
-import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import { getYesterdaysDate } from "src/helpers/generalUtils";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
@@ -26,6 +19,7 @@ import {
 import { selectUi } from "src/models/Ui/UI.selectors";
 import { validateDate } from "src/services/validations/project.schema";
 import { valdiateCreateTask } from "src/services/validations/task.schema";
+import { getYesterdaysDate } from "src/helpers/generalUtils";
 import {
   IDepartmentState,
   IList,
@@ -37,6 +31,12 @@ import {
   initJoiValidationError,
 } from "src/types/servicesValidation";
 import "../CreateProjectForm/projectForm.css";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import Button from "src/coreUI/components/Buttons/Button";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {

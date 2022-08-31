@@ -5,13 +5,8 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
-import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { selectAllCategories } from "src/models/Categories";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
@@ -31,6 +26,10 @@ import {
 } from "../../../types/views/BoardView";
 import DateInput from "./DateInput";
 import EditTaskTitle from "./Title";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
+import Button from "src/coreUI/components/Buttons/Button";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();

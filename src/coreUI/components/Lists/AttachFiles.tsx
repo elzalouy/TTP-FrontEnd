@@ -30,7 +30,14 @@ const AttachetFiles: React.FC<AttachetFilesProps> = ({
         display={"inline-flex"}
         width={"auto"}
       >
-        <Upload length={newFiles.length} onClick={onChangeFiles} />
+        <Upload
+          length={
+            oldFiles && oldFiles?.length > 0
+              ? oldFiles.length + newFiles.length
+              : newFiles.length
+          }
+          onClick={onChangeFiles}
+        />
         <Box
           sx={{
             maxWidth: "60vw",
