@@ -9,7 +9,6 @@ import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { getDepartmentOptions } from "src/helpers/generalUtils";
 import IMAGES from "../../../assets/img/Images";
-// import Input from "../../../coreUI/components/Inputs/Textfield/Input";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { ToastWarning } from "../../../coreUI/components/Typos/Alert";
 import { createDepartment } from "../../../models/Departments";

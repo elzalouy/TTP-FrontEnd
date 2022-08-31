@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-// import "../../popups-style.css";
 import { TextField, TextFieldProps } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
@@ -16,9 +15,7 @@ import {
   checkValueAndShowOptions,
   getProjectClientOptions,
   getProjectPMOptions,
-  getProjectStatusOptions,
-  getStatus,
-  getYesterdaysDate,
+  getProjectStatusOptions, getYesterdaysDate,
   notNullorFalsy
 } from "src/helpers/generalUtils";
 import { validateDate } from "src/services/validations/project.schema";
