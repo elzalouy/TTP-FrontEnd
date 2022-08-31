@@ -2,10 +2,16 @@ import { FC } from "react";
 import ClientTaskNumberCard from "../Data/TaskNumber";
 import "../../clients.css";
 import { ITaskCounterContainer } from "src/types/views/Client";
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 const TaskCounterContainer: FC<ITaskCounterContainer> = ({ id }) => {
   return (
-    <div className="counter-container-tasks bounce clientScrollbar">
+    <ScrollContainer
+      className="scroll-container counter-container-tasks"
+      horizontal
+      nativeMobileScroll
+      vertical={false}
+    >
       <div className="counter-container-scroll-wrapper">
         <ClientTaskNumberCard title="Shared Tasks" param={"Shared"} _id={id} />
         <ClientTaskNumberCard
@@ -15,7 +21,7 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({ id }) => {
         />
         <ClientTaskNumberCard title="Done Tasks" param={"Done"} _id={id} />
       </div>
-    </div>
+    </ScrollContainer>
   );
 };
 

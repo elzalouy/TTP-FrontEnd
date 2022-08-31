@@ -1,31 +1,30 @@
+import { Box } from "@mui/material";
 import _ from "lodash";
-import * as React from "react";
 import moment from "moment";
-import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
-import DateInput from "./DateInput";
+import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
+import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { selectAllCategories } from "src/models/Categories";
-import { selectUi } from "src/models/Ui/UI.selectors";
-import { selectRole } from "src/models/Auth";
-import { validateEditTask } from "src/services/validations/task.schema";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
-import { Box } from "@mui/material";
-import {
-  EditTaskProps,
-  CRUDTaskState,
-  initialState,
-  initialHookFormTaskState,
-} from "../../../types/views/BoardView";
+import { selectUi } from "src/models/Ui/UI.selectors";
+import { validateEditTask } from "src/services/validations/task.schema";
 import {
   editTaskFromBoard,
   editTaskLoading,
   selectAllProjects,
   selectSelectedProject,
 } from "../../../models/Projects";
+import {
+  CRUDTaskState,
+  EditTaskProps,
+  initialHookFormTaskState,
+  initialState,
+} from "../../../types/views/BoardView";
+import DateInput from "./DateInput";
 import EditTaskTitle from "./Title";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";

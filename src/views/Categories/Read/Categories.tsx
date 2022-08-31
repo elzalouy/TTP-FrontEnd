@@ -80,7 +80,7 @@ export const Categories = () => {
             />
           </Grid>
         ))}
-        <Grid sm={6} xs={12} md={4} lg={4} padding={1}>
+        <Grid sm={6} xs={12} md={6} lg={4} padding={2}>
           {role !== "PM" && <CreateNewCategory />}
         </Grid>
       </Grid>

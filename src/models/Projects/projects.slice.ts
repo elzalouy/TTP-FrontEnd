@@ -79,6 +79,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onSortTasks: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
       let tasks = [...state.filteredTasks];
+      if (action.payload === "") {
+        tasks = tasks;
+      }
       if (action.payload === "asc")
         tasks = tasks.sort((a, b) =>
           new Date(a.deadline) < new Date(b.deadline) ? -1 : 1
@@ -413,7 +416,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.pending, (state, action) => {
       state.editTaskLoading = true;
     });
-    builder.addCase(moveTask.rejected, (state, action) => {});
+    builder.addCase(moveTask.rejected, (state, action) => { });
     builder.addCase(moveTask.fulfilled, (state, action) => {
       let index = state.selectedProject.tasks.findIndex(
         (item) => item._id === action.payload._id

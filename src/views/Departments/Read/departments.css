@@ -20,7 +20,7 @@
 
 .department-Card {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: column;
   background-color: #e1edf6;
   border-radius: 20px;
