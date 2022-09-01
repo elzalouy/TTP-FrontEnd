@@ -79,7 +79,29 @@ const DepartmentCard = ({
                         {department?.teams?.map((team, _id) => {
                             if (!team.isDeleted) {
                                 return (
-                                    <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                    <>
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                        <CardBadge fontColor={department.color && cardColors[department.color][1]} _id={_id} text={team.name} />
+                                    </>
                                 )
                             }
                         })

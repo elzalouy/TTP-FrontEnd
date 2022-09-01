@@ -13,6 +13,7 @@
   height: 100%;
   border-radius: 10px;
 }
+
 #search-bar:focus {
   outline: none;
 }
@@ -28,20 +29,30 @@
   margin-top: 10px;
 }
 
-.css-298dy0-MuiFormControl-root-MuiTextField-root{
+.categoryCardScroll {
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.css-298dy0-MuiFormControl-root-MuiTextField-root {
   width: 100%;
   min-width: 150px;
 }
-.css-108j1xz-MuiFormControl-root-MuiTextField-root{
+
+.css-108j1xz-MuiFormControl-root-MuiTextField-root {
   width: 100%;
   min-width: 150px;
 }
+
 .MuiTypography-root {
   font-family: "Cairo";
 }
+
 .category-card {
   transition: transform 0.5s, box-shadow 0.5s;
 }
+
 .category-card:hover {
   box-shadow: 0px 6px 20px #0000001A;
 }
