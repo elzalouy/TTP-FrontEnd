@@ -15,7 +15,7 @@ import {
   validateDate,
 } from "src/services/validations/project.schema";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
-import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
+import { getProjectClientOptions, getProjectPMOptions, getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import moment from "moment";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
@@ -125,17 +125,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
                 selected={watch().clientId}
-                options={
-                  clients
-                    ? clients?.map((item) => {
-                        return {
-                          id: item.clientId,
-                          value: item.clientId,
-                          text: item.clientName,
-                        };
-                      })
-                    : []
-                }
+                options={getProjectClientOptions(clients)}
                 error={
                   validateError.error?.details[0]?.path?.includes("clientId")
                     ? "true"
@@ -291,17 +281,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
                 selected={watch().projectManager}
-                options={
-                  PMs
-                    ? PMs?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      })
-                    : []
-                }
+                options={getProjectPMOptions(PMs)}
                 error={
                   validateError.error?.details[0]?.path?.includes(
                     "projectManager"

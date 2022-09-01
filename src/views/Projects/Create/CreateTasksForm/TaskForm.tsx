@@ -335,7 +335,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
               render={(props) => (
                 <Select
                   name="createProject-task-selectSubCategory"
-                  label="Sub Ctegories list"
+                  label="Sub Categories"
                   selected={watch().subCategoryId}
                   elementType="select"
                   onSelect={(e: any) => setValue("subCategoryId", e.target.id)}

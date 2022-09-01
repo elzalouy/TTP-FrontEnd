@@ -112,13 +112,14 @@ const CategoryCard: React.FC<IProps> = ({
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            height: "5.5em",
+            height: "8.8em",
             overflow: "auto",
           }}
+          className="categoryCardScroll"
         >
           {subCategories &&
             subCategories.map(({ subCategory, _id }: any) => (
-             <CardBadge fontColor={fontColor} _id={_id} text={subCategory}/>
+              <CardBadge fontColor={fontColor} _id={_id} text={subCategory} />
             ))}
         </Box>
       </Box>
