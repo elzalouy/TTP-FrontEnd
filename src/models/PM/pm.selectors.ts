@@ -4,13 +4,15 @@ export const selectPMs = (state: RootState) =>
   state?.PMs?.PMs?.filter((item) => item?.role !== "OM");
 export const selectPMOptions = (state: RootState) => {
   if (state.PMs.PMs.length > 0) {
-    let options = state.PMs.PMs.map((item) => {
-      return {
-        id: item._id,
-        value: item._id,
-        text: item.name,
-      };
-    });
+    let options = state.PMs.PMs.filter((item) => item.role === "PM").map(
+      (item) => {
+        return {
+          id: item._id,
+          value: item._id,
+          text: item.name,
+        };
+      }
+    );
     return options;
   } else {
     return [];
