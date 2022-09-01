@@ -36,7 +36,6 @@ export const creatClient = createAsyncThunk<any, any, any>(
         inProgressProject: 0,
         inProgressTask: 0,
       };
-      console.log(result);
       ClientsApi.createClient(data);
       return result;
     } catch (error) {

@@ -5,7 +5,6 @@ import "./AppBar.css";
 import { Logo, Notification } from "../../../components/Images/Images";
 import { RouteComponentProps, useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
-import zIndex from "@mui/material/styles/zIndex";
 
 const Bar: FC = (props: any) => {
   const [open, setOpen] = useState(false);

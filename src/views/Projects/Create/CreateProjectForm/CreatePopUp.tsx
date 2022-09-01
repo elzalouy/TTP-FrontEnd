@@ -114,61 +114,63 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   };
 
   return (
-    <PopUp show={createProjectPopup}>
-      <Grid
-        container
-        position="relative"
-        direction="column"
-        className="projectFormHeader"
-      >
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          justifyContent={"center"}
-          alignItems="center"
-          marginBottom={5}
-        >
-          <Stepper
-            connector={<QontoConnector />}
-            className="stepper"
-            activeStep={currentStep}
-            alternativeLabel
+    <PopUp
+      show={createProjectPopup}
+      maxHeight={currentStep === 0 ? undefined : "600px"}
+      overFlowY={currentStep === 1 ? "scroll" : undefined}
+    >
+      <Grid container direction="column" className="projectFormHeader">
+        <div style={{ position: "relative", width: "100%" }}>
+          <Grid
+            item
+            xs={12}
+            display="flex"
+            justifyContent={"center"}
+            alignItems="center"
           >
-            {steps?.map((label, index) => (
-              <Step key={label}>
-                <StepLabel StepIconComponent={QontoStepIcon}>
-                  <Typography
-                    fontWeight={currentStep === index ? "700" : "500"}
-                    sx={{
-                      color: currentStep === index ? "#00ACBA" : "#8D8D8D",
-                    }}
-                  >
-                    {label}
-                  </Typography>
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Grid>
-        <img
-          className="closeIconProject"
-          width="9"
-          height="9"
-          src={IMAGES.closeicon}
-          alt="closeIcon"
-          onClick={onClose}
-        />
+            <Stepper
+              connector={<QontoConnector />}
+              className="stepper"
+              activeStep={currentStep}
+              alternativeLabel
+            >
+              {steps?.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel StepIconComponent={QontoStepIcon}>
+                    <Typography
+                      fontWeight={currentStep === index ? "700" : "500"}
+                      sx={{
+                        color: currentStep === index ? "#00ACBA" : "#8D8D8D",
+                      }}
+                    >
+                      {label}
+                    </Typography>
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Grid>
+          <img
+            className="closeIconProject"
+            width="9"
+            height="9"
+            src={IMAGES.closeicon}
+            alt="closeIcon"
+            onClick={onClose}
+          />
+        </div>
       </Grid>
-      {currentStep === 0 && (
-        <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
-      )}
-      {currentStep === 1 && (
-        <>
-          <TaskForm />
-          <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />
-        </>
-      )}
+      <Grid marginTop={5}>
+        {currentStep === 0 && (
+          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
+        )}
+        {currentStep === 1 && (
+          <>
+            <TaskForm />
+            <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />
+          </>
+        )}
+      </Grid>
     </PopUp>
   );
 };

@@ -19,14 +19,15 @@ import {
   getProjectStatusOptions,
   getStatus,
   getYesterdaysDate,
-  notNullorFalsy
+  notNullorFalsy,
 } from "src/helpers/generalUtils";
 import { validateDate } from "src/services/validations/project.schema";
 import { selectClientsNames } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPMs } from "../../../models/PM";
 import {
-  editProject as editProjectAction, selectEditProject
+  editProject as editProjectAction,
+  selectEditProject,
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
@@ -183,10 +184,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       }
     }
   };
-
-  console.log(data.status, data.startDate, data.deadline);
-
-  console.log({ isDirty, updateDate });
 
   const onSubmitEdit = () => {
     if (isDirty || updateDate) {
@@ -398,15 +395,29 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="status"
                 control={control}
                 render={(props) => {
-                  const options = checkValueAndShowOptions(project?.projectStatus);
-                  return <Select
-                    label={data.status ? checkProjectStatus(data.status) ? data.status : "Done" : "Project Status"}
-                    name="editProjectStatus"
-                    elementType="select"
-                    onSelect={(e: any) => setValue(props.field.name, e.target.id, { shouldDirty: true, })}
-                    options={getProjectStatusOptions(options)}
-                    selected={props.field.value}
-                  />
+                  const options = checkValueAndShowOptions(
+                    project?.projectStatus
+                  );
+                  return (
+                    <Select
+                      label={
+                        data.status
+                          ? checkProjectStatus(data.status)
+                            ? data.status
+                            : "Done"
+                          : "Project Status"
+                      }
+                      name="editProjectStatus"
+                      elementType="select"
+                      onSelect={(e: any) =>
+                        setValue(props.field.name, e.target.id, {
+                          shouldDirty: true,
+                        })
+                      }
+                      options={getProjectStatusOptions(options)}
+                      selected={props.field.value}
+                    />
+                  );
                 }}
               />
             </div>

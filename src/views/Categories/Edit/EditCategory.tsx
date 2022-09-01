@@ -24,7 +24,6 @@ type Props = {
   subCategories?: string[];
 };
 
-
 const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
   const dispatch = useDispatch();
   const theme = useTheme();

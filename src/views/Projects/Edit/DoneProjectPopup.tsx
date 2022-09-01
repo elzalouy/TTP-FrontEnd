@@ -19,7 +19,7 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
   setAlert,
 }) => {
   return (
-    <SmallPopUp show={show} zIndex={9999}>
+    <SmallPopUp show={show}>
       <p className="warning-text">
         {alert.length === 0
           ? "Are you sure you want to end this project?"

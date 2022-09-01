@@ -7,7 +7,6 @@ type Props = {
   show: string;
   widthSize?: string;
   children: object;
-  zIndex?: number;
   dataTestId?: string;
 };
 
@@ -15,7 +14,6 @@ const SmallPopUp: React.FC<Props> = ({
   show,
   children,
   widthSize,
-  zIndex,
   dataTestId,
 }) => {
   const isSideMenuOpened = useAppSelector(selectSideMenuToggle);
@@ -26,14 +24,11 @@ const SmallPopUp: React.FC<Props> = ({
       className="container-popup"
       style={
         !isSideMenuOpened
-          ? { display: show, zIndex: zIndex, left: "4%", width: "96vw" }
-          : { display: show, zIndex: zIndex }
+          ? { display: show, left: "4%", width: "96vw" }
+          : { display: show }
       }
     >
-      <div
-        className="small-pop-up"
-        style={{ width: widthSize, zIndex: zIndex }}
-      >
+      <div className="small-pop-up" style={{ width: widthSize }}>
         {children}
       </div>
     </div>

@@ -305,7 +305,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     control={control}
                     selected={watch().subCategoryId}
                     onSelect={(e: any) => {
-                      console.log(e.target.id);
                       setValue("subCategoryId", e.target.id);
                     }}
                     options={

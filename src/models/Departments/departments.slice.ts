@@ -68,7 +68,6 @@ const DepartmentsSlice: Slice<IDepartmentsSlice> = createSlice({
       state.loading = false;
       let oldData = state.departments;
       oldData = oldData.filter((dep: IDepartmentState) => dep?._id !== payload);
-      console.log({ afterDelete: oldData, payload });
       state.departments = oldData;
     });
   },

@@ -19,7 +19,7 @@ export const Logout: React.FC<LogoutProps> = ({ show, setShow }) => {
   };
 
   return (
-    <SmallPopUp show={show} zIndex={7}>
+    <SmallPopUp show={show}>
       <div className="imageAlert">
         <img src={logoutIcon} />
       </div>
@@ -32,7 +32,7 @@ export const Logout: React.FC<LogoutProps> = ({ show, setShow }) => {
             label="cancel"
             onClick={() => setShow("none")}
           />
-           <Button
+          <Button
             size="small"
             type="delete"
             label="logout"

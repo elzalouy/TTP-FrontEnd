@@ -16,11 +16,6 @@ fieldset[id*="filter-"]:focus {
   outline-color: transparent;
 }
 
-fieldset[id*="filter-"] select {
-  appearance: none;
-  display: none;
-}
-
 fieldset[id*="filter-"] .leftIcon {
   background-color: white;
   padding-inline: 10px;
@@ -51,8 +46,10 @@ fieldset[id*="filter-"] .value {
   text-transform: capitalize;
 }
 
-fieldset[id*="filter-"] .options {
-  position: absolute;
+/* Options */
+
+ul[id="core-filter-options"].options {
+  position: absolute !important;
   width: 100%;
   top: 100%;
   margin-top: 8px;
@@ -63,11 +60,11 @@ fieldset[id*="filter-"] .options {
   box-shadow: 0px 5px 15px #44444f1a;
   background: #ffffff 0% 0% no-repeat padding-box;
   padding: 7.5px !important;
-  z-index: 10;
+  z-index: 3 !important;
   text-transform: capitalize;
 }
 
-fieldset[id*="filter-"] .options .option {
+ul[id="core-filter-options"].options li.option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
@@ -77,13 +74,8 @@ fieldset[id*="filter-"] .options .option {
   padding-left: 10px;
 }
 
-fieldset[id*="filter-"] .options .option:hover {
+ul[id="core-filter-options"].options li.option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
-}
-
-fieldset[id*="filter-"] select datalist::after {
-  display: initial;
-  appearance: none !important;
 }
 
 /* Select */
@@ -135,7 +127,7 @@ fieldset[id*="select"] .value {
   text-transform: capitalize;
 }
 
-fieldset[id*="select"] .options {
+ul[id="core-select-options"].options {
   position: absolute;
   width: 100%;
   top: 100%;
@@ -147,13 +139,13 @@ fieldset[id*="select"] .options {
   box-shadow: 0px 5px 15px #44444f1a;
   background: #ffffff 0% 0% no-repeat padding-box;
   padding: 7.5px !important;
-  z-index: 10;
+  z-index: 3 !important;
   text-transform: capitalize;
   max-height: 200px;
   overflow-y: auto;
 }
 
-fieldset[id*="select"] .options .option {
+ul[id="core-select-options"].options li.option {
   width: 100%;
   border-radius: 8px;
   color: #696974;
@@ -163,39 +155,30 @@ fieldset[id*="select"] .options .option {
   padding-left: 10px;
 }
 
-fieldset[id*="select"] .options .option:hover {
+ul[id="core-select-options"].options.scroll li.option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
 
-fieldset[id*="select"] select datalist::after {
-  display: initial;
-  appearance: none !important;
-}
-
 /* Custom Scrollbar : This is for Options If they exceed a certain height */
-
-/* width */
-fieldset[id*="select-"] .options::-webkit-scrollbar {
+ul[id="core-select-options"].options.scroll,
+ul[id="core-filter-options"].options.scroll {
+  height: 200px;
+}
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar,
+ul[id="core-filter-options"].options.scroll::-webkit-scrollbar {
   display: block !important;
   width: 3px;
   border-radius: 10px;
 }
 
-/* Track */
-fieldset[id*="select-"] .options::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar-track,
+ul[id="core-filter-options"].options.scroll::-webkit-scrollbar-track {
   border-radius: 10px;
+  border-color: #ececec !important;
 }
 
-/* Handle */
-fieldset[id*="select-"] .options::-webkit-scrollbar-thumb {
-  background: rgb(36, 32, 32);
-  border-radius: 10px;
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar-thumb,
+ul[id="core-filter-options"].options.scroll::-webkit-scrollbar-thumb {
+  background: #9fa1ab;
+  border-radius: 5px;
 }
-
-/* Handle on hover */
-fieldset[id*="select-"] .options::-webkit-scrollbar-thumb:hover {
-  background: black;
-}
-
-/* ____________________________ */

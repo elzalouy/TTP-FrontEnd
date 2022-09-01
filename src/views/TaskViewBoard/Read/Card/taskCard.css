@@ -201,7 +201,7 @@ body {
   position: absolute;
   top: 63px;
   color: white;
-  z-index: 2;
+  z-index: 1;
   background: #ffffff31 0% 0% no-repeat padding-box;
   opacity: 1;
   backdrop-filter: blur(60px);
@@ -223,7 +223,7 @@ body {
   width: 20px;
   height: 20px;
   color: white;
-  z-index: 2;
+  z-index: 1;
   background: #ffffff46 0% 0% no-repeat padding-box;
   opacity: 1;
   backdrop-filter: blur(30px);
@@ -251,7 +251,7 @@ body {
   color: lightslategray;
 }
 
-.login-link:hover{
+.login-link:hover {
   text-decoration: underline;
 }
 

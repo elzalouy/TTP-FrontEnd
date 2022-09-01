@@ -3,14 +3,15 @@ import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import { IFilterProps } from "src/types/components/Inputs";
+import Options from "./Options";
 import "./Select.css";
 
 const Select = (props: IFilterProps) => {
-  const fieldRef: React.MutableRefObject<HTMLFieldSetElement | null> =
+  const selectRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
-
-  const selectRef: React.MutableRefObject<HTMLUListElement | null> =
+  const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
+  useSelect(selectRef, optionsRef);
 
   const [state, setState] = React.useState({
     label: props.label,
@@ -24,8 +25,6 @@ const Select = (props: IFilterProps) => {
       },
     ],
   });
-
-  useSelect(fieldRef, selectRef);
 
   React.useEffect(() => {
     if (props.options)
@@ -55,7 +54,7 @@ const Select = (props: IFilterProps) => {
   return (
     <>
       <fieldset
-        ref={fieldRef}
+        ref={selectRef}
         id={`${props.elementType}-${props.name}`}
         data-error={props.error ? props.error : ""}
       >
@@ -92,31 +91,14 @@ const Select = (props: IFilterProps) => {
           className="leftIcon"
           alt=""
         />
-        <ul
-          ref={selectRef}
-          style={{ display: state.isOpen }}
-          onClick={setShow}
-          id={state.label}
-          className="options"
-        >
-          {props.elementType === "filter" && (
-            <li className="option" value={""} id="" onClick={props.onSelect}>
-              All
-            </li>
-          )}
-          {state.options &&
-            state.options?.map((item) => (
-              <li
-                className="option"
-                value={item.id}
-                key={item.id}
-                id={item.id}
-                onClick={props.onSelect}
-              >
-                {item.text}
-              </li>
-            ))}
-        </ul>
+        <Options
+          setShow={setShow}
+          selectRef={selectRef}
+          display={state.isOpen}
+          onSelect={props.onSelect}
+          elementType={props.elementType}
+          options={state.options}
+        />
       </fieldset>
     </>
   );

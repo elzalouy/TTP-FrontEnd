@@ -77,7 +77,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       boardId: state.selectedDepartment?.boardId,
       description: data?.description,
     };
-    console.log({ state: state, watch: watch() });
 
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);

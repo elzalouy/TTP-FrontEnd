@@ -32,7 +32,7 @@ export const resendMail = createAsyncThunk<any, any, any>(
 
 export const getPMs = createAsyncThunk<any, any, any>(
   "PM/getPMs",
-  async (_, { rejectWithValue ,dispatch}) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       let PMs = await PMapi.getUsers();
       if (PMs?.status === 401 || PMs?.status === 403) {
@@ -52,13 +52,13 @@ export const createPM = createAsyncThunk<any, any, any>(
   async (args: any, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.createUser(args.data);
-      console.log(PMs);
       if (PMs.ok && PMs.data) {
         args.dispatch(fireCreatePMHook(""));
         return PMs.data;
       }
       toast.error(
-        "Error happened while creating the project manager, please try again",{
+        "Error happened while creating the project manager, please try again",
+        {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -77,7 +77,7 @@ export const createPM = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
       rejectWithValue(error);
     }
@@ -102,7 +102,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
         args.dispatch(fireEditPMHook(""));
         return PMs.data;
       }
-      toast.error("Could not update PM , Please try again",{
+      toast.error("Could not update PM , Please try again", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -120,7 +120,7 @@ export const updatePM = createAsyncThunk<any, any, any>(
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        toastId:generateID(),
+        toastId: generateID(),
       });
       rejectWithValue(error);
     }

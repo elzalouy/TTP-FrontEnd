@@ -6,19 +6,18 @@
   width: 84vw;
   left: 16%;
   top: 0;
-  /* height: 100vh; */
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   align-items: center;
   z-index: 2;
 }
 
 .pop-up {
+  width: auto !important;
   background-color: white;
-  min-height: 200px;
-  max-height: 95vh;
   padding: 20px;
   animation: zoomIn 0.3s;
-  overflow: auto;
+  position: relative !important;
 }
 .small-pop-up {
   min-width: 350px;

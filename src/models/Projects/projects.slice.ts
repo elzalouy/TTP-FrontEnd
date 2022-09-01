@@ -315,7 +315,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     });
     builder.addCase(deleteProject.fulfilled, (state, action) => {
       if (action.payload.isDeleted) {
-        console.log({ deleteProjectPayload: action.payload });
         state.loading = false;
         state.projects = [...state.projects].filter(
           (item) => item._id !== action.payload.id
@@ -416,7 +415,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.pending, (state, action) => {
       state.editTaskLoading = true;
     });
-    builder.addCase(moveTask.rejected, (state, action) => { });
+    builder.addCase(moveTask.rejected, (state, action) => {});
     builder.addCase(moveTask.fulfilled, (state, action) => {
       let index = state.selectedProject.tasks.findIndex(
         (item) => item._id === action.payload._id

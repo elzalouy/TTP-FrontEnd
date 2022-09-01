@@ -20,9 +20,7 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
     try {
       dispatch(deleteClient({ id: editClient._id }));
       setShow("none");
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleClose = () => {

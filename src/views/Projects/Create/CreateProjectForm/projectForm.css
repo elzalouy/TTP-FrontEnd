@@ -4,8 +4,8 @@
 
 .closeIconProject {
   position: absolute;
-  right: 0;
-  top: -5px;
+  right: 15px;
+  top: 10px;
 }
 
 .date {
@@ -34,7 +34,7 @@
 
 @media (max-width: 900px) {
   .css-vdfuy8-MuiGrid-root {
-    z-index: 999999;
+    /* z-index: 999999; */
   }
   .css-m9sp2k-MuiStepConnector-root .MuiStepConnector-line {
     border-width: 1.5px;

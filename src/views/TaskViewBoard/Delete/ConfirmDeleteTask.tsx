@@ -19,7 +19,7 @@ const ConfirmDeleteTask: React.FC<LogoutPopupProps> = ({
   const dispatch = useDispatch();
 
   return (
-    <SmallPopUp show={show} zIndex={9999}>
+    <SmallPopUp show={show}>
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>

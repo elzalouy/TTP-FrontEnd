@@ -82,8 +82,8 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   };
   return (
     <>
-      <EditPM  />
-      <DeletePM  />
+      <EditPM />
+      <DeletePM />
       <TableContainer
         style={{ paddingTop: "10px" }}
         className="customScrollBar"
@@ -231,10 +231,17 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
                     {email}
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683" data-test-id="number-inprogress-pm">{inProgress}</Typography>
+                    <Typography
+                      color="#707683"
+                      data-test-id="number-inprogress-pm"
+                    >
+                      {inProgress}
+                    </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography color="#707683" data-test-id="number-done-pm">{done}</Typography>
+                    <Typography color="#707683" data-test-id="number-done-pm">
+                      {done}
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Box display={"inline-flex"}>

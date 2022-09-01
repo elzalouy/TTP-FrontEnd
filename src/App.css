@@ -81,7 +81,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
-
+.desktopCustomScrollBar::-webkit-scrollbar {
+  display: block !important;
+  width: 3px;
+  height: 2px;
+}
+.desktopCustomScrollBar::-webkit-scrollbar-track {
+  margin-top: 50px;
+  border-radius: 10px;
+  border-color: #ececec !important;
+}
+.desktopCustomScrollBar::-webkit-scrollbar-thumb {
+  background: #9fa1ab;
+  border-radius: 5px;
+}
 @media (max-width: 900px) {
   /* width */
   .customScrollBar::-webkit-scrollbar {

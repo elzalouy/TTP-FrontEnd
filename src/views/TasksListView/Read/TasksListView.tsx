@@ -250,7 +250,6 @@ export const TasksListView: React.FC<Props> = (props: any) => {
               render={(props) => (
                 <SearchBox
                   onChange={(e) => {
-                    console.log(e);
                     props.field.onChange(e);
                     onHandleChangeFilter(e);
                   }}

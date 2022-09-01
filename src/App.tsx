@@ -46,7 +46,8 @@ import "./App.css";
 import "swiper/css/navigation";
 import "swiper/css";
 import UIComponents from "./views/UiComponents";
-const App: React.FC = () => {
+import SelectOptions from "./coreUI/components/Inputs/SelectFields/Options";
+const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);

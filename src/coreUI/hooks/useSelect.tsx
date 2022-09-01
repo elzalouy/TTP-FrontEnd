@@ -8,14 +8,14 @@ import React from "react";
  * @returns  value String
  */
 export function useSelect(
-  ref: React.MutableRefObject<HTMLFieldSetElement | null>,
-  selectRef: React.MutableRefObject<HTMLUListElement | null>
+  selectRef: React.MutableRefObject<HTMLFieldSetElement | null>,
+  optionsRed: React.MutableRefObject<HTMLUListElement | null>
 ) {
   React.useEffect(() => {
     function click(event: any) {
-      if (ref.current && selectRef.current) {
-        if (!ref.current.contains(event.target)) {
-          selectRef.current.style.display = "none";
+      if (selectRef.current && optionsRed.current) {
+        if (!selectRef.current.contains(event.target)) {
+          optionsRed.current.style.display = "none";
         }
       }
     }
@@ -23,5 +23,5 @@ export function useSelect(
     return () => {
       document.removeEventListener("click", click);
     };
-  }, [ref]);
+  }, [selectRef]);
 }

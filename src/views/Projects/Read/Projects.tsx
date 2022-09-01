@@ -78,7 +78,6 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
 
   const onChange = (e: any, name: string) => {
     e.preventDefault();
-    console.log(e);
     setValue(name, e.target.id);
     onHandleChange(e);
   };
