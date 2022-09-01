@@ -109,7 +109,7 @@ const UpdateForm: FC<IUpdateForm> = ({ history, failed }) => {
                     <Button
                         type='main'
                         size='large'
-                        label='login'
+                        label='Confirm'
                         loading={loading}
                         form={{name:'update',type:'submit'}}
                     />
