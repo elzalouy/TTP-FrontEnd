@@ -1,5 +1,7 @@
+import { checkValueAndShowOptions } from "src/helpers/generalUtils";
 import { RootState } from "../store";
 export const selectLoading = (state: RootState) => state?.projects?.loading;
+
 //projects
 export const selectNewProject = (state: RootState) =>
   state?.projects?.newProject;
@@ -13,9 +15,36 @@ export const selectInprogressProjects = (state: RootState) =>
           ? -1
           : 1
         : new Date(a.projectDeadline) < new Date(b.projectDeadline)
-        ? 1
-        : -1
+          ? 1
+          : -1
     );
+
+export const selectProjectStatusOptions = (state: RootState) => {
+  if (state.projects.editProject?.projectStatus) {
+    let data = checkValueAndShowOptions(state.projects.editProject?.projectStatus);
+    let options = data.map((item) => {
+      return {
+        id: item.value,
+        value: item.value,
+        text: item.text,
+      };
+    });
+    return options;
+  } else return [];
+}
+
+export const selectProjectOptions = (state: RootState) => {
+  if (state.projects.projects) {
+    let options = state.projects.projects.map((item) => {
+      return {
+        id: item._id,
+        value: item._id,
+        text: item.name,
+      };
+    });
+    return options;
+  } else return [];
+}
 
 export const selectDoneProjects = (state: RootState) =>
   state?.projects?.filteredProjects?.filter(

@@ -187,6 +187,8 @@ export const showDotsOverLimit = (value: string, limit: number) => {
   }
 };
 
+/* Options data : The below data cannot be set to be dynamic as they as static */
+
 export const getDepartmentOptions = (data: any[]) => {
   if (data) {
     return data.map((item) => {
@@ -199,60 +201,16 @@ export const getDepartmentOptions = (data: any[]) => {
   } else return [];
 };
 
-export const getTaskListViewOptions = (data: Project[]) => {
-  if (data) {
-    let options = data.map((item) => {
-      return {
-        id: item._id,
-        value: item._id,
-        text: item.name,
-      };
-    });
-    return options;
-  } else return [];
-};
 
-export const getProjectPMOptions = (data: ProjectManager[]) => {
-  if (data.length > 0) {
-    let options = data.map((item) => {
-      return {
-        id: item._id,
-        value: item._id,
-        text: item.name,
-      };
-    });
-    return options;
-  } else {
-    return [];
-  }
-}
-
-export const getProjectStatusOptions = (data: {
-  value: string;
-  text: string;
-}[]) => {
-  return data.map((item) => {
-    return {
-      id: item.value,
-      value: item.value,
-      text: item.text,
-    };
-  })
-}
-
-export const getProjectClientOptions = (data: {
-  clientId: string;
-  clientName: string;
-}[]) => {
-  if (data) {
-    return data?.map((item) => {
-      return {
-        id: item.clientId,
-        value: item.clientId,
-        text: item.clientName,
-      }
-    })
-  } else {
-    return []
-  }
-}
+export const filterOptions = [
+  [
+    { id: "asc", text: "Ascending", value: "asc" },
+    { id: "desc", text: "Descending", value: "desc" },
+  ], [
+    {id: "Not Started",value: "Not Started",text: "Not Started",},
+    {id: "deliver on time",value: "deliver on time",text: "Delivered on time",},
+    {id: "deliver before time",value: "deliver before deadline",text: "Delivered earlier",},
+    {id: "late",value: "late",text: "Delivered late",},
+    {id: "inProgress",value: "inProgress",text: "In Progress",},
+  ],
+]

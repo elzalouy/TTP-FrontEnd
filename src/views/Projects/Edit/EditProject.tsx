@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import IMAGES from "../../../assets/img/Images";
-import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { TextField, TextFieldProps } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
@@ -11,19 +9,17 @@ import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import {
-  calculateStatusBasedOnDeadline,
-  checkValueAndShowOptions,
-  getProjectClientOptions,
-  getProjectPMOptions,
-  getProjectStatusOptions, getYesterdaysDate,
+  calculateStatusBasedOnDeadline, getYesterdaysDate,
   notNullorFalsy
 } from "src/helpers/generalUtils";
 import { validateDate } from "src/services/validations/project.schema";
-import { selectClientsNames } from "../../../models/Clients";
+import IMAGES from "../../../assets/img/Images";
+import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
+import { selectClientOptions, selectClientsNames } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { selectPMs } from "../../../models/PM";
+import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
-  editProject as editProjectAction, selectEditProject
+  editProject as editProjectAction, selectEditProject, selectProjectStatusOptions
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
@@ -53,8 +49,10 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     },
   });
   const data = watch();
-  const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
+  const statusOptions = useAppSelector(selectProjectStatusOptions)
+  const pmOptions = useAppSelector(selectPMOptions);
+  const clientOptions = useAppSelector(selectClientOptions);
   const [confirm, setConfirm] = useState<string>("none");
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
@@ -256,7 +254,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     onSelect={(e: any) =>
                       setValue(props.field.name, e.target.id)
                     }
-                    options={getProjectClientOptions(clients)}
+                    options={clientOptions}
                     selected={props.field.value}
                   />
                 )}
@@ -395,13 +393,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 name="status"
                 control={control}
                 render={(props) => {
-                  const options = checkValueAndShowOptions(project?.projectStatus);
                   return <Select
                     label={data.status ? checkProjectStatus(data.status) ? data.status : "Done" : "Project Status"}
                     name="editProjectStatus"
                     elementType="select"
                     onSelect={(e: any) => setValue(props.field.name, e.target.id, { shouldDirty: true, })}
-                    options={getProjectStatusOptions(options)}
+                    options={statusOptions}
                     selected={props.field.value}
                   />
                 }}
@@ -414,7 +411,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 control={control}
                 render={(props) => (
                   <Select
-                    options={getProjectPMOptions(PMs)}
+                    options={pmOptions}
                     label="Project managers list"
                     onSelect={(e: any) =>
                       setValue(props.field.name, e.target.id)
