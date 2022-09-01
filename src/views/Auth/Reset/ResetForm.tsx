@@ -1,6 +1,5 @@
 import {
-  Button,
-  CircularProgress,
+  Grid,
   Typography,
   useMediaQuery,
   useTheme,
@@ -9,6 +8,7 @@ import { FC, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import Button from "src/coreUI/components/Buttons/Button";
 import PasswordInput from "src/coreUI/components/Inputs/Textfield/PasswordInput";
 import { selectLoading } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
@@ -56,78 +56,72 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
 
   return (
     <>
-      <Typography
-        variant={"h2"}
-        fontWeight={"900"}
-        paddingTop={4}
-        fontFamily={"Cairo"}
-      >
-        Reset Password
-      </Typography>
-      {failed.status && (
-        <p className="error-text">
-          Setting new password was unsuccessful : {failed.message}
-        </p>
-      )}
-      <PasswordInput
-        name="newPassword"
-        label="New Password"
-        control={control}
-        register={register}
-        setVisiblity={setHidePassword}
-        visible={hidePassword}
-        minLength
-        error={!!errors.newPassword}
-      />
-      {errors.newPassword?.type === "required" && (
-        <p className="error-text">Please enter your new password</p>
-      )}
-      {errors.newPassword?.type === "minLength" && (
-        <p className="error-text">Your password has less than 8 characters</p>
-      )}
-      {errors.newPassword?.message && (
-        <p className="error-text">{errors.newPassword?.message}</p>
-      )}
-      <PasswordInput
-        name="confirmNewPassword"
-        label="New Password"
-        control={control}
-        register={register}
-        setVisiblity={setHideConfirmPassword}
-        visible={hideConfirmPassword}
-        minLength
-        error={!!errors.confirmNewPassword}
-      />
-      {errors.confirmNewPassword?.type === "required" && (
-        <p className="error-text">Please enter your new password again</p>
-      )}
-      {errors.confirmNewPassword?.type === "minLength" && (
-        <p className="error-text">Your password has less than 8 characters</p>
-      )}
-      {passwordError && (
-        <p className="error-text">
-          Your passwords do not match , Please Re-enter your new password
-        </p>
-      )}
-      <Button
-        sx={{
-          width: "100%",
-          height: 40,
-          borderRadius: 1.5,
-          marginTop: 4,
-          textTransform: "none",
-          fontWeight: "bold",
-        }}
-        variant="contained"
-        disableElevation
-        onClick={handleSubmit(onSubmit)}
-      >
-        {loading ? (
-          <CircularProgress sx={{ color: "white", padding: "10px" }} />
-        ) : (
-          "Confirm"
+      <form id="reset" onSubmit={handleSubmit(onSubmit)}>
+        <Typography
+          variant={"h2"}
+          fontWeight={"900"}
+          paddingTop={4}
+          fontFamily={"Cairo"}
+        >
+          Reset Password
+        </Typography>
+        {failed.status && (
+          <p className="error-text">
+            Setting new password was unsuccessful : {failed.message}
+          </p>
         )}
-      </Button>
+        <PasswordInput
+          name="newPassword"
+          label="New Password"
+          control={control}
+          register={register}
+          setVisiblity={setHidePassword}
+          visible={hidePassword}
+          minLength
+          error={!!errors.newPassword}
+          wrapper
+        />
+        {errors.newPassword?.type === "required" && (
+          <p className="error-text">Please enter your new password</p>
+        )}
+        {errors.newPassword?.type === "minLength" && (
+          <p className="error-text">Your password has less than 8 characters</p>
+        )}
+        {errors.newPassword?.message && (
+          <p className="error-text">{errors.newPassword?.message}</p>
+        )}
+        <PasswordInput
+          name="confirmNewPassword"
+          label="confirm new password"
+          control={control}
+          register={register}
+          setVisiblity={setHideConfirmPassword}
+          visible={hideConfirmPassword}
+          minLength
+          error={!!errors.confirmNewPassword}
+          wrapper
+        />
+        {errors.confirmNewPassword?.type === "required" && (
+          <p className="error-text">Please enter your new password again</p>
+        )}
+        {errors.confirmNewPassword?.type === "minLength" && (
+          <p className="error-text">Your password has less than 8 characters</p>
+        )}
+        {passwordError && (
+          <p className="error-text">
+            Your passwords do not match , Please Re-enter your new password
+          </p>
+        )}
+        <Grid container alignItems={"center"} justifyContent="center">
+          <Button
+            type="main"
+            size="large"
+            label="confirm"
+            loading={loading}
+            form={{ name: "forget", type: "submit" }}
+          />
+        </Grid>
+      </form>
     </>
   );
 };

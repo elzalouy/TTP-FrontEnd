@@ -7,18 +7,17 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import { getTaskListViewOptions } from "src/helpers/generalUtils";
-import { UseFormProps } from "src/types/components/Containers";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
-import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import Loading from "../../../coreUI/components/Loading/Loading";
+import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTasks,
   filterTasks,
   ProjectsActions,
   selectAllProjects,
+  selectProjectOptions
 } from "../../../models/Projects";
 import { ProjectsInterface } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
@@ -29,6 +28,7 @@ interface Props {
 export const TasksListView: React.FC<Props> = (props: any) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const projectOptions = useAppSelector(selectProjectOptions)
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -220,7 +220,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       onSelect={(e: any) => {
                         onChangeFilter(e, "projectId");
                       }}
-                      options={getTaskListViewOptions(projects.projects)}
+                      options={projectOptions}
                     />
                   </Box>
                 </Grid>

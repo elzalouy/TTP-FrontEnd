@@ -1,31 +1,26 @@
-import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { selectClientsNames } from "src/models/Clients/clients.selectors";
-import { useAppSelector } from "src/models/hooks";
-import { selectPMs } from "src/models/PM";
-import { createProject, selectLoading } from "src/models/Projects";
-import { useDispatch } from "react-redux";
 import { Grid, TextField, TextFieldProps } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import Joi from "joi";
-import { selectUi } from "src/models/Ui/UI.selectors";
+import moment from "moment";
+import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import IMAGES from "src/assets/img/Images";
+import Button from "src/coreUI/components/Buttons/Button";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
+import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
+import { selectClientOptions } from "src/models/Clients/clients.selectors";
+import { useAppSelector } from "src/models/hooks";
+import { selectPMOptions, selectPMs } from "src/models/PM";
+import { createProject, selectLoading } from "src/models/Projects";
+import { selectUi } from "src/models/Ui/UI.selectors";
 import {
   validateCreateProject,
   validateDate,
 } from "src/services/validations/project.schema";
-import { ToastError } from "src/coreUI/components/Typos/Alert";
-import {
-  getProjectClientOptions,
-  getProjectPMOptions,
-  getYesterdaysDate,
-  notNullorFalsy,
-} from "src/helpers/generalUtils";
-import moment from "moment";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import Button from "src/coreUI/components/Buttons/Button";
 
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -43,8 +38,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
   });
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
-  const clients = useAppSelector(selectClientsNames);
   const PMs = useAppSelector(selectPMs);
+  const pmOptions = useAppSelector(selectPMOptions);
+  const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
   React.useEffect(() => {
     reset();
@@ -130,7 +126,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
                 selected={watch().clientId}
-                options={getProjectClientOptions(clients)}
+                options={clientOptions}
                 error={
                   validateError.error?.details[0]?.path?.includes("clientId")
                     ? "true"
@@ -286,7 +282,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 label="Select"
                 onSelect={(e: any) => setValue(props.field.name, e.target.id)}
                 selected={watch().projectManager}
-                options={getProjectPMOptions(PMs)}
+                options={pmOptions}
                 error={
                   validateError.error?.details[0]?.path?.includes(
                     "projectManager"

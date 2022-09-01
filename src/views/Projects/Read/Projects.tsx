@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
-import CreateNewProject from "./NotStartedProjects";
-import IMAGES from "../../../assets/img/Images";
-import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
+import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../../../models/hooks";
-import {
-  selectDoneProjects,
-  selectInprogressProjects,
-  selectLoading,
-  filterProjects,
-  getAllProjects,
-  ProjectsActions,
-} from "../../../models/Projects";
-import Loading from "../../../coreUI/components/Loading/Loading";
-import { getPMs, selectPMs } from "../../../models/PM";
-import { clientsDataSelector } from "../../../models/Clients";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Grid, Typography } from "@mui/material";
+import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
+import { filterOptions } from "src/helpers/generalUtils";
+import IMAGES from "../../../assets/img/Images";
 import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
+import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
+import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { selectRole } from "../../../models/Auth";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
+import { clientsDataSelector, selectClientOptions } from "../../../models/Clients";
+import { useAppSelector } from "../../../models/hooks";
+import { selectPMOptions, selectPMs } from "../../../models/PM";
+import {
+  filterProjects,
+  getAllProjects,
+  ProjectsActions, selectDoneProjects,
+  selectInprogressProjects,
+  selectLoading
+} from "../../../models/Projects";
+import CreateNewProject from "./NotStartedProjects";
 
 interface ProjectsProps {
   history: RouteComponentProps["history"];
@@ -39,6 +39,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
   const clients = useAppSelector(clientsDataSelector);
+  const pmOptions = useAppSelector(selectPMOptions);
+  const clientOptions = useAppSelector(selectClientOptions);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
@@ -174,10 +176,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     label="Due Date: "
                     onSelect={(e: any) => onChange(e, "deadline")}
                     textTruncate={4}
-                    options={[
-                      { id: "asc", text: "Ascending", value: "asc" },
-                      { id: "desc", text: "Descending", value: "desc" },
-                    ]}
+                    options={filterOptions[0]}
                   />
                 )}
               />
@@ -201,15 +200,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Project Manager: "
-                    options={[
-                      ...PMs.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.name,
-                        };
-                      }),
-                    ]}
+                    options={pmOptions}
                     onSelect={(e: any) => onChange(e, "projectManager")}
                     textTruncate={2}
                   />
@@ -235,15 +226,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Client: "
-                    options={[
-                      ...clients?.map((item) => {
-                        return {
-                          id: item._id,
-                          value: item._id,
-                          text: item.clientName,
-                        };
-                      }),
-                    ]}
+                    options={clientOptions}
                     onSelect={(e: any) => onChange(e, "clientId")}
                     textTruncate={10}
                   />
@@ -270,33 +253,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                       name={"projects-" + props.field.name}
                       selected={props.field.value}
                       label="Status: "
-                      options={[
-                        {
-                          id: "Not Started",
-                          value: "Not Started",
-                          text: "Not Started",
-                        },
-                        {
-                          id: "deliver on time",
-                          value: "deliver on time",
-                          text: "Delivered on time",
-                        },
-                        {
-                          id: "deliver before time",
-                          value: "deliver before deadline",
-                          text: "Delivered earlier",
-                        },
-                        {
-                          id: "late",
-                          value: "late",
-                          text: "Delivered late",
-                        },
-                        {
-                          id: "inProgress",
-                          value: "inProgress",
-                          text: "In Progress",
-                        },
-                      ]}
+                      options={filterOptions[1]}
                       onSelect={(e: any) => onChange(e, "projectStatus")}
                       textTruncate={5}
                     />
