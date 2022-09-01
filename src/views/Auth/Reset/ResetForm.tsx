@@ -92,7 +92,7 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
         )}
         <PasswordInput
           name="confirmNewPassword"
-          label="New Password"
+          label="confirm new password"
           control={control}
           register={register}
           setVisiblity={setHideConfirmPassword}
