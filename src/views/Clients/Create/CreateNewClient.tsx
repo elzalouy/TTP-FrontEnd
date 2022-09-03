@@ -23,6 +23,7 @@ const CreateNewClient: React.FC = () => {
   const [Show, setShow] = useState("none");
   const allClients = useAppSelector(clientsDataSelector);
   const loadingClient = useAppSelector(selectLoadingClient);
+  const [error, setError] = useState<boolean>(false);
   const [clientData, setClientData] = useState<IClientState>({
     image: null,
     clientName: "",
@@ -70,7 +71,12 @@ const CreateNewClient: React.FC = () => {
       setClientData({ ...clientData, image: file[0] });
       setImageView(URL.createObjectURL(file[0]));
     } else {
-      setClientData({ ...clientData, [e.target.name]: e.target.value });
+      if (e.target.value.length === 0) {
+        setError(true);
+      }else{
+        setError(false);
+        setClientData({ ...clientData, [e.target.name]: e.target.value });
+      }
     }
   };
 
@@ -141,6 +147,9 @@ const CreateNewClient: React.FC = () => {
                 alt=""
               />
             </Box>
+            {error && (
+              <p className="popup-error">Please enter a name for the client</p>
+            )}
             <Input
               label="Client Name"
               placeholder="Ex : Ahmed Ali"

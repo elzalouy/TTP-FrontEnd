@@ -23,7 +23,6 @@ import {
   initialHookFormTaskState,
   initialState,
 } from "../../../types/views/BoardView";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
@@ -57,26 +56,30 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-    let newTask = {
+    console.log({ data });
+
+    let newTask: any = {
       name: data.name,
       categoryId: data?.categoryId,
-      subCategoryId: data?.subCategoryId,
-      teamId: data?.teamId ? data?.teamId : null,
       projectId: selectedProject?.project?._id,
-      status: data?.teamId ? "inProgress" : "Tasks Board",
+      status: data?.teamId !== "" ? "inProgress" : "Tasks Board",
       start: new Date().toUTCString(),
-      deadline:
-        data?.deadline !== "" ? moment(data?.deadline).toDate().toString() : "",
-      attachedFiles: state?.newFiles,
-      listId: data?.teamId
-        ? state.selectedDepartment?.teams?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
-        : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
-            ?.listId,
+      listId:
+        data?.teamId !== ""
+          ? state.selectedDepartment?.teams?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : state.selectedDepartment?.lists?.find(
+              (l) => l.name === "Tasks Board"
+            )?.listId,
       boardId: state.selectedDepartment?.boardId,
-      description: data?.description,
     };
+    if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
+    if (data.teamId !== "") newTask.teamId = data.teamId;
+    if (data.deadline !== "")
+      newTask.deadline = moment(data?.deadline).toDate().toString();
+    if (state.newFiles) newTask.attachedFiles = state.newFiles;
+    if (data.description) newTask.description = data.description;
 
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);

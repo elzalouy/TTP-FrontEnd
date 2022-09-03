@@ -36,8 +36,20 @@ export interface AttachetFilesProps {
   onRemoveFile: any;
   onChangeFiles: any;
 }
-
-export const initialHookFormTaskState: any = {
+export interface IInitialinitialHookFormTaskState {
+  name: string;
+  projectId: string;
+  categoryId: string;
+  subCategoryId: string;
+  teamId: string;
+  status: string;
+  description: string;
+  selectedDepartmentId: string;
+  deadline: string;
+  attachedFiles: File[] | TaskFile[];
+  file: File | null;
+}
+export const initialHookFormTaskState: IInitialinitialHookFormTaskState = {
   name: "",
   projectId: "",
   categoryId: "",
@@ -46,8 +58,8 @@ export const initialHookFormTaskState: any = {
   status: "",
   description: "",
   selectedDepartmentId: "",
-  deadline: null,
-  attachedFiles: undefined,
+  deadline: "",
+  attachedFiles: [],
   file: null,
 };
 export const initialState: CRUDTaskState = {

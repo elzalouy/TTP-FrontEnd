@@ -1,11 +1,12 @@
 import Joi from "joi";
 import { ToastError } from "../../coreUI/components/Typos/Alert";
-const createTaskSchema = Joi.object({
+
+export const createTaskSchema = Joi.object({
   projectId: Joi.string().required().min(4).messages({
-    "string.base": "You should create project first",
-    "string.empty": "You should create project first",
-    "string.min": "You should create project first",
-    "any.required": "You should create project first",
+    "string.base": "Project Id is required",
+    "string.empty": "Project Id is required",
+    "string.min": "Project Id is required",
+    "any.required": "Project Id is required",
   }),
   name: Joi.string().required().min(4).max(50).messages({
     "string.base": "Task Name is required",
@@ -19,25 +20,19 @@ const createTaskSchema = Joi.object({
     "string.empty": "Category should be selected",
     "any.required": "Category is required",
   }),
-  subCategoryId: Joi.string().optional().allow("").messages({
-    "string.base": "Sub Category is required",
-    "string.empty": "Sub Category should be selected",
-    "any.required": "Sub Category is required",
+  listId: Joi.string().required().messages({
+    "string.base": "You should select a department to get its default list",
+    "string.empty": "You should select a department to get its default list",
+    "any.required": "You should select a department to get its default list",
   }),
-  listId: Joi.string().min(4).optional().allow("").messages({
-    "string.base": "Team is required",
-    "string.empty": "Team should be string with min 4 chars",
-    "string.min": "Team length should be Min 4 chars",
-    "string.max": "Team length should be Max 20 chars",
-    "any.required": "Team is required",
+  boardId: Joi.string().required().min(4).messages({
+    "string.base": "You should select a department",
+    "string.empty": "You should select a department",
+    "string.min": "You should select a department",
+    "string.max": "You should select a department",
+    "any.required": "You should select a department",
   }),
-  teamId: Joi.string().optional().allow(null).messages({
-    "string.base": "Team is required",
-    "string.empty": "Team should be selected",
-    "string.min": "Team should be selected",
-    "any.required": "Team is required",
-  }),
-  status: Joi.string().allow("inProgress", "Tasks Board").required().messages({
+  status: Joi.string().valid("Tasks Board", "inProgress").required().messages({
     "string.base": "Status is required",
     "string.empty": "Status should be string with min 4 chars",
     "string.min": "Status length should be Min 4 chars",
@@ -47,26 +42,16 @@ const createTaskSchema = Joi.object({
   start: Joi.date().required().messages({
     "any.required": "Task start date is required",
   }),
-  deadline: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Task Deadline is required",
-  }),
-  boardId: Joi.string().required().min(4).messages({
-    "string.base": "Department is required",
-    "string.empty": "Department should be string with min 4 chars",
-    "string.min": "Department length should be Min 4 chars",
-    "string.max": "Department length should be Max 20 chars",
-    "any.required": "Department is required",
-  }),
-  description: Joi.string().optional().allow("", null).messages({
-    "string.base": "Description is required",
-    "string.empty": "Description is required",
-    "any.required": "Description is required",
-  }),
+  subCategoryId: Joi.string().optional().allow(null),
+  teamId: Joi.string().optional().allow(null),
+  deadline: Joi.date().optional().allow(null),
+  description: Joi.string().optional().allow("", null),
   deliveryDate: Joi.any().allow(null),
   done: Joi.any().allow(null),
   turnoverTime: Joi.allow(null),
   attachedFiles: Joi.array().optional().allow(null),
 });
+
 export const editTaskSchema = Joi.object({
   id: Joi.string()
     .required()
@@ -77,28 +62,16 @@ export const editTaskSchema = Joi.object({
     "string.min": "Task name length should be Min 4 chars",
     "string.max": "Task name length should be Max 50 chars",
   }),
-  categoryId: Joi.string().optional().messages({
-    "string.base": "Category is required",
-    "string.empty": "Category should be selected",
+  categoryId: Joi.string().required().messages({
+    "string.base": "You should select a category",
+    "string.empty": "You should select a category",
   }),
   cardId: Joi.string()
     .required()
     .messages({ "any.required": "Card id is required" }),
-  subCategoryId: Joi.string().optional().allow(null, "").messages({
-    "string.base": "Sub Category is required",
-    "string.empty": "Sub Category should be selected",
-  }),
-  listId: Joi.string().optional().allow("").messages({
-    "string.base": "Department is required",
-    "string.empty": "Department should be string with min 4 chars",
-    "string.min": "Department length should be Min 4 chars",
-    "string.max": "Department length should be Max 20 chars",
-  }),
-  teamId: Joi.string().optional().allow(null).messages({
-    "string.base": "Team is required",
-    "string.empty": "Team should be selected",
-    "string.min": "Team should be selected",
-  }),
+  subCategoryId: Joi.string().optional().allow(null, ""),
+  listId: Joi.string().optional().allow(""),
+  teamId: Joi.string().optional().allow(null),
   status: Joi.string()
     .valid(
       "Tasks Board",
@@ -110,22 +83,11 @@ export const editTaskSchema = Joi.object({
       "Shared",
       "Not Clear"
     )
-    .optional()
-    .messages({
-      "string.base": "Status is required",
-      "string.empty": "Status should be string with min 4 chars",
-      "string.min": "Status length should be Min 4 chars",
-      "string.max": "Status length should be Max 20 chars",
-    }),
-  deadline: Joi.date().optional().allow(null, "").messages({
-    "any.required": "Task Deadline is required",
-  }),
-  boardId: Joi.string().optional().min(4).messages({
-    "string.base": "Department is required",
-    "string.empty": "Department should be string with min 4 chars",
-    "string.min": "Department length should be Min 4 chars",
-    "string.max": "Department length should be Max 20 chars",
-    "any.required": "Department is required",
+    .optional(),
+  deadline: Joi.date().optional().allow(null, ""),
+  boardId: Joi.string().required().messages({
+    "string.base": "You should select a department",
+    "any.required": "You should select a department",
   }),
   attachedFiles: Joi.array().optional().allow(null),
   deleteFiles: Joi.array().optional().allow(null),
@@ -149,19 +111,21 @@ export const validateEditTask = (data: any) => {
         task.append("attachedFiles", newfiles[i]);
       }
     }
-    task.append("deleteFiles", JSON.stringify(data.deleteFiles));
 
     task.append("id", data.id);
-    task.append("teamId", data.teamId);
+    task.append("cardId", data.cardId);
     task.append("name", data.name);
     task.append("categoryId", data.categoryId);
-    task.append("subCategoryId", data.subCategoryId);
     task.append("status", data.status);
-    task.append("cardId", data.cardId);
     task.append("boardId", data.boardId);
     task.append("listId", data.listId);
-    task.append("description", data.description);
-    task.append("deadline", data.deadline);
+
+    if (data.deadline) task.append("deadline", data.deadline);
+    if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);
+    if (data.teamId) task.append("teamId", data.teamId);
+    if (data.description) task.append("description", data.description);
+    if (data.deleteFiles)
+      task.append("deleteFiles", JSON.stringify(data.deleteFiles));
 
     return { FormDatatask: task };
   }
@@ -184,17 +148,17 @@ const valdiateCreateTask = (data: any) => {
         task.append("attachedFiles", newfiles[i]);
       }
     }
-    task.append("teamId", data.teamId);
-    task.append("deadline", data.deadline);
     task.append("categoryId", data.categoryId);
-    task.append("subCategoryId", data.subCategoryId);
     task.append("name", data.name);
     task.append("status", data.status);
     task.append("boardId", data.boardId);
-    task.append("listId", data.listId);
-    task.append("description", data.description);
     task.append("projectId", data.projectId);
     task.append("start", data.start);
+    if (data.deadline) task.append("deadline", data.deadline);
+    if (data.teamId) task.append("teamId", data.teamId);
+    if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);
+    if (data.listId) task.append("listId", data.listId);
+    if (data.description) task.append("description", data.description);
 
     return { FormDatatask: task };
   }

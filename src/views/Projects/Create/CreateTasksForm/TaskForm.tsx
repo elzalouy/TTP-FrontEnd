@@ -37,6 +37,7 @@ import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
 import Button from "src/coreUI/components/Buttons/Button";
+import { initialHookFormTaskState } from "src/types/views/BoardView";
 interface TaskFormProps {}
 
 const TaskForm: React.FC<TaskFormProps> = () => {
@@ -57,17 +58,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
   const { createProjectPopup } = useAppSelector(selectUi);
 
   const { register, handleSubmit, watch, control, reset, setValue } = useForm({
-    defaultValues: {
-      name: "",
-      categoryId: "",
-      subCategoryId: "",
-      teamId: "",
-      deadline: null,
-      attachedFiles: "",
-      selectedDepartmentId: "",
-      description: "",
-      file: "",
-    },
+    defaultValues: initialHookFormTaskState,
   });
 
   React.useEffect(() => {
@@ -97,14 +88,17 @@ const TaskForm: React.FC<TaskFormProps> = () => {
           : selectedDepartment.lists.find(
               (l: IList) => l.name === "Tasks Board"
             )?.listId,
-      boardId: selectedDepartment?.boardId,
+      boardId: selectedDepartment.boardId,
       description: data.description,
-      attachedFiles: Files,
-      teamId: data.teamId !== "" ? data.teamId : null,
+      categoryId: data.categoryId,
     };
-    if (data.deadline) newTask.deadline = moment(data?.deadline).toDate();
-    if (data.categoryId !== "") newTask.categoryId = data.categoryId;
+    if (Files) newTask.attachedFiles = Files;
+    if (data.teamId !== "") newTask.teamId = data.teamId;
+    if (data.description) newTask.description = data.description;
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
+    if (data.deadline !== "")
+      newTask.deadline = moment(data?.deadline).toDate().toString();
+
     let { error, warning, value, FileError, FormDatatask } =
       valdiateCreateTask(newTask);
     if (error || FileError) {
@@ -254,7 +248,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                         placeholder="Deadline"
                         sx={dataTimePickerInputStyle}
                       />
-                      {watch().deadline !== null && (
+                      {watch().deadline !== "" && (
                         <img
                           className="closeIcon"
                           src={IMAGES.closeicon}
@@ -267,7 +261,7 @@ const TaskForm: React.FC<TaskFormProps> = () => {
                           }}
                           alt="closeIcon"
                           onClick={() => {
-                            setValue("deadline", null);
+                            setValue("deadline", "");
                           }}
                         />
                       )}

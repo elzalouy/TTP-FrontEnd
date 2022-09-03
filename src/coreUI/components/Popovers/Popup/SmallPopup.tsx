@@ -21,7 +21,7 @@ const SmallPopUp: React.FC<Props> = ({
   return (
     <div
       data-test-id={dataTestId}
-      className="container-popup"
+      className="container-popup small-popup-container"
       style={
         !isSideMenuOpened
           ? { display: show, left: "4%", width: "96vw" }

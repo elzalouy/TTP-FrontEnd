@@ -11,7 +11,9 @@
   align-items: center;
   z-index: 2;
 }
-
+.small-popup-container {
+  z-index: 3 !important;
+}
 .pop-up {
   width: auto !important;
   background-color: white;

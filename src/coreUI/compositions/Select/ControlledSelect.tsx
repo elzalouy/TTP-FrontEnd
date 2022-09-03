@@ -17,7 +17,6 @@ const ControlledSelect: FC<IControlledSelect> = ({
   label,
   onSelect,
 }) => {
-
   return (
     <>
       {formLabel && <label className="popup-label">{formLabel}</label>}

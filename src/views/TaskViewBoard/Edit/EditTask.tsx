@@ -30,26 +30,25 @@ import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
+import { Task } from "src/types/models/Projects";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();
-  const departments = useAppSelector(selectAllDepartments);
-  const categories = useAppSelector(selectAllCategories);
-  const loadingTask = useAppSelector(editTaskLoading);
-  const selectedProject = useAppSelector(selectSelectedProject);
-  const { editTask: id } = useAppSelector(selectAllProjects);
   const { editTaskPopup } = useAppSelector(selectUi);
+  const files = React.useRef<HTMLInputElement>(null);
+  const loadingTask = useAppSelector(editTaskLoading);
+  const categories = useAppSelector(selectAllCategories);
+  const departments = useAppSelector(selectAllDepartments);
+  const { editTask: id } = useAppSelector(selectAllProjects);
+  const selectedProject = useAppSelector(selectSelectedProject);
+  const [state, setState] = React.useState<CRUDTaskState>(initialState);
   const { register, handleSubmit, control, reset, setValue, watch } = useForm({
     defaultValues: initialHookFormTaskState,
   });
-  const files = React.useRef<HTMLInputElement>(null);
-  const [state, setState] = React.useState<CRUDTaskState>(initialState);
 
-  React.useEffect(() => {
-    // TODO add useEffect with condition
-    let State = { ...state };
-    let task = selectedProject.tasks.find((item) => item._id === id);
+  const onGetTaskData = async (task: Task | undefined) => {
     if (task) {
+      let State = { ...state };
       State.task = task;
       let dep = departments.find((item) => item.boardId === task?.boardId);
       State.selectedCategory = categories.find(
@@ -59,17 +58,39 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       State.selectedDepatmentTeams = dep?.teams?.filter(
         (item) => item.isDeleted === false
       );
-      if (dep) setValue("selectedDepartmentId", dep._id);
+      setState({ ...State });
+    }
+  };
+
+  /**
+   * Get Task data and also selected department, list, team, category, and sub category
+   */
+  React.useEffect(() => {
+    let task = selectedProject.tasks.find((item) => item._id === id);
+    const effect = async () => await onGetTaskData(task);
+    effect();
+  }, [id]);
+
+  /**
+   * Set task data to the hook-form, after getting the task data from the previous useEffect hook
+   */
+  React.useEffect(() => {
+    let State = { ...state };
+    let task = selectedProject.tasks.find((item) => item._id === id);
+    if (task) {
+      if (state.selectedDepartment)
+        setValue("selectedDepartmentId", state.selectedDepartment._id);
       setValue("name", task.name);
-      setValue("deadline", task.deadline);
-      setValue("description", task.description);
-      setValue("teamId", task.teamId);
+      setValue("deadline", task.deadline ? task.deadline : "");
+      setValue("description", task.description ? task.description : "");
+      setValue("teamId", task.teamId ? task.teamId : "");
       setValue("categoryId", task.categoryId);
-      setValue("subCategoryId", task.subCategoryId);
+      setValue("subCategoryId", task.subCategoryId ? task.subCategoryId : "");
       setValue("attachedFiles", task.attachedFiles);
     }
     setState(State);
-  }, [id]);
+  }, [state.task]);
+
   React.useEffect(() => {
     if (editTaskPopup === "none") {
       reset();
@@ -99,19 +120,18 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   };
 
   const onSubmit = async () => {
+    // get data from hook form
     let data = watch();
     let State = { ...state };
-    let newTask = {
+
+    // build the new edited task
+    let newTask: any = {
       id: State.task._id,
+      cardId: State.task.cardId,
       name: data.name,
       categoryId: data?.categoryId,
-      subCategoryId: data?.subCategoryId,
-      teamId: data?.teamId ? data?.teamId : null,
       status: State.task.status,
-      deadline:
-        data.deadline !== "" ? moment(data?.deadline).toDate().toString() : "",
       attachedFiles: state?.newFiles,
-      deleteFiles: state.deleteFiles,
       boardId: state.selectedDepartment?.boardId,
       listId: data?.teamId
         ? state.selectedDepartment?.teams?.find(
@@ -119,9 +139,16 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
           )?.listId
         : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
             ?.listId,
-      description: data?.description,
-      cardId: state.task?.cardId,
     };
+    if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
+    if (data.teamId !== "") newTask.teamId = data.teamId;
+    if (data.deadline !== "")
+      newTask.deadline = moment(data?.deadline).toDate().toString();
+    if (state.newFiles) newTask.attachedFiles = state.newFiles;
+    if (data.description) newTask.description = data.description;
+    if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
+
+    // make a validated form Data,  if it's valdated, and submit
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {
@@ -225,7 +252,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   elementType={"select"}
                   label={"Select"}
                   onSelect={onChangeDepartment}
-                  selected={watch().selectedDepartmentId}
                   options={[
                     ...departments?.map((item) => {
                       return {
@@ -256,7 +282,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   formLabel="Category"
                   name="categoryId"
                   control={control}
-                  selected={watch().categoryId}
                   onSelect={onChangeCategory}
                   options={[
                     ...categories?.map((item) => {
@@ -303,7 +328,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     formLabel="Sub Category"
                     name="subCategoryId"
                     control={control}
-                    selected={watch().subCategoryId}
                     onSelect={(e: any) => {
                       setValue("subCategoryId", e.target.id);
                     }}
@@ -329,7 +353,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     formLabel="Assign to team"
                     name="teamId"
                     control={control}
-                    selected={watch().teamId}
                     onSelect={(e: any) => setValue("teamId", e.target.id)}
                     options={
                       state.selectedDepatmentTeams

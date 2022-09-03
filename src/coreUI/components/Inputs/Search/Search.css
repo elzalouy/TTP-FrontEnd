@@ -10,6 +10,7 @@
   padding-left: 40px;
   border-radius: 10px;
   transition: transform 0.5s, box-shadow 0.5s;
+  z-index: 0;
 }
 
 .core-ui-search::placeholder {

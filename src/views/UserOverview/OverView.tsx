@@ -40,7 +40,7 @@ export const OverView: FC<Props> = (props) => {
       );
     } else props.history.push("/login");
   }, [dispatch, props.history]);
-  
+
   return (
     <>
       <Grid
@@ -224,6 +224,8 @@ export const OverView: FC<Props> = (props) => {
               <UserTasks
                 tasks={statistics.PM.tasksCloseToDeadline}
                 title={"Tasks Close to Deadline"}
+                img={IMAGES.OverviewCloseToDeadlineEmpty}
+                caption="Working on agencies are easy !"
               />
             )}
           </Grid>
