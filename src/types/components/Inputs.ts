@@ -43,6 +43,7 @@ export interface IButton {
     type: "button" | "submit" | "reset";
     name: string;
   };
+  style?: React.CSSProperties;
   dataTestId?: string;
 }
 

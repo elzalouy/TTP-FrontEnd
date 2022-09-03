@@ -12,6 +12,7 @@ const Button: FC<IButton> = ({
   label,
   dataTestId,
   form,
+  style
 }) => {
 
   let className = "button-" + size + " " + type;
@@ -24,6 +25,7 @@ const Button: FC<IButton> = ({
       form={form?.name ? form.name : ""}
       data-test-id={dataTestId}
       className={disabled ? disabledClassName : className}
+      style={style}
     >
       {loading ? <CircularProgress className="button-loading"/> : label}
     </button>
