@@ -9,6 +9,7 @@
   outline: none;
   padding-left: 40px;
   border-radius: 10px;
+  z-index: 0;
 }
 
 .core-ui-search::placeholder {

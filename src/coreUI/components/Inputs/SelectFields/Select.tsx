@@ -43,6 +43,7 @@ const Select = (props: IFilterProps) => {
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
+    console.log({ selected: selected, options: state.options });
     if (selected) setState({ ...state, selected: selected });
     else setState({ ...state, selected: "" });
   }, [props.selected]);
