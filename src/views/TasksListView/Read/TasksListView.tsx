@@ -216,7 +216,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       label="Project: "
                       elementType="filter"
                       setValue={setValue}
-                      textTruncate={4}
+                      textTruncate={10}
                       onSelect={(e: any) => {
                         onChangeFilter(e, "projectId");
                       }}
