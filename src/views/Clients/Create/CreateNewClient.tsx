@@ -40,13 +40,18 @@ const CreateNewClient: React.FC = () => {
       (client) => client.clientName === clientData.clientName
     );
     if (!checkName) {
-      dispatch(creatClient(formData));
-      setImageView(null);
-      setClientData({
-        image: null,
-        clientName: "",
-      });
-      setShow("none");
+      //Initial guard for name duplication
+      if (clientData.clientName.length !== 0) {
+        dispatch(creatClient(formData));
+        setImageView(null);
+        setClientData({
+          image: null,
+          clientName: "",
+        });
+        setShow("none");
+      } else {
+        setError(true);
+      }
     } else {
       toast.error("Client name already exist", {
         position: "top-right",
@@ -71,11 +76,11 @@ const CreateNewClient: React.FC = () => {
       setClientData({ ...clientData, image: file[0] });
       setImageView(URL.createObjectURL(file[0]));
     } else {
-      if (e.target.value.length === 0) {
-        setError(true);
-      }else{
+      setClientData({ ...clientData, [e.target.name]: e.target.value });
+      if (e.target.value.length > 0) {
         setError(false);
-        setClientData({ ...clientData, [e.target.name]: e.target.value });
+      } else {
+        setError(true);
       }
     }
   };
@@ -147,9 +152,6 @@ const CreateNewClient: React.FC = () => {
                 alt=""
               />
             </Box>
-            {error && (
-              <p className="popup-error">Please enter a name for the client</p>
-            )}
             <Input
               label="Client Name"
               placeholder="Ex : Ahmed Ali"
@@ -160,7 +162,11 @@ const CreateNewClient: React.FC = () => {
               onChange={(e: any) => {
                 onChange(e);
               }}
+              error={error ? "true" : undefined}
             />
+            {error && (
+              <p className="popup-error">Please enter a name for the client</p>
+            )}
             <Box className="controllers">
               <Button
                 type="main"
