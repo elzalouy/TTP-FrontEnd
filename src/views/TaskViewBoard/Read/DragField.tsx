@@ -225,7 +225,11 @@ const DragField: React.FC = (props: any) => {
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
     >
       <Box
-        sx={{ minWidth: 1200, overflowX: "scroll", height: "auto" }}
+        sx={{
+          minWidth: 1200,
+          overflowX: "scroll",
+          height: "auto",
+        }}
         display="inline-flex"
       >
         {Object.entries(columns).map(([columnId, column], index) => {

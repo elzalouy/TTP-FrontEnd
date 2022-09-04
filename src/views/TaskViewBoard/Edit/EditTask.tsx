@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import _ from "lodash";
 import moment from "moment";
 import * as React from "react";
@@ -15,6 +15,7 @@ import { validateEditTask } from "src/services/validations/task.schema";
 import {
   editTaskFromBoard,
   editTaskLoading,
+  ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
 } from "../../../models/Projects";
@@ -31,6 +32,7 @@ import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
 import { Task } from "src/types/models/Projects";
+import IMAGES from "src/assets/img/Images";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();
@@ -147,7 +149,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
-
+    console.log({ newTask });
     // make a validated form Data,  if it's valdated, and submit
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
@@ -158,16 +160,47 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       dispatch(
         editTaskFromBoard({
           data: FormDatatask,
-          dispatch,
           resetState,
+          dispatch,
           setShow: props.setShow,
         })
       );
+      resetState();
     }
   };
 
   const resetState = () => {
-    setState(initialState);
+    setState({
+      newFiles: [],
+      deleteFiles: [],
+      task: {
+        _id: "",
+        name: "",
+        projectId: "",
+        categoryId: "",
+        subCategoryId: "",
+        teamId: "",
+        status: "",
+        start: "",
+        deliveryDate: "",
+        done: "",
+        turnoverTime: "",
+        attachedFiles: [],
+        attachedCard: "",
+        description: "",
+        cardId: "",
+        listId: "",
+        boardId: "",
+      },
+      error: {
+        error: undefined,
+        value: null,
+        warning: undefined,
+      },
+      selectedDepartment: undefined,
+      selectedCategory: null,
+      selectedDepatmentTeams: [],
+    });
     reset();
   };
 
@@ -195,7 +228,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       }
       items = _.uniq(items);
       State.newFiles = items;
-      setState(State);
+      setState({ ...State });
     }
     if (files?.current?.value) files.current.value = "";
   };
@@ -220,14 +253,33 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   };
   const onGetError = (value: string) =>
     state.error?.error?.details[0].path.includes(value) ? "true" : "";
+
+  const onCloseModel = () => {
+    reset();
+    dispatch(ProjectsActions.onEditTask(""));
+    props.setShow("none");
+  };
   return (
     <>
       <PopUp show={props.show} minWidthSize="50vw">
-        <EditTaskTitle
-          setShow={props.setShow}
-          reset={resetState}
-          title="Edit task"
-        />
+        <Grid
+          direction={"row"}
+          justifyContent="space-between"
+          marginX={1}
+          marginTop={2}
+          marginBottom={3.5}
+        >
+          <img
+            className="closeIcon"
+            src={IMAGES.closeicon}
+            alt="closeIcon"
+            onClick={onCloseModel}
+            style={{ cursor: "pointer" }}
+          />
+          <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
+            Edit Task
+          </Typography>
+        </Grid>
         <div className="step2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="inputs-grid">
