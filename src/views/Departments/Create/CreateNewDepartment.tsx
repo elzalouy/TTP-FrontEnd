@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import _ from "lodash";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,15 @@ import {
   ICreateDepartmentState,
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
+
+const addNewDepartmentContainerStyles = {
+  py: 1,
+  px: 1,
+  width: "100%",
+  height: 210,
+  maxHeight: 350,
+  borderRadius: 3,
+};
 
 const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
   const dispatch = useDispatch();
@@ -79,14 +88,16 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
 
   return (
     <>
-      <div
-        data-test-id="createDepartmentBtn"
-        className="add-new-dep"
+      <Box
+        sx={addNewDepartmentContainerStyles}
+        className="add-new-cat"
         onClick={onOpenModal}
       >
-        <img src={IMAGES.plus} alt="add" />
-        <p>Create new department</p>
-      </div>
+        <img src={IMAGES.plus} alt="add" width={30} height={30} />
+        <Typography fontSize={18} color={"#272727"}>
+          Create new department
+        </Typography>
+      </Box>
       <PopUp
         show={state.show}
         minWidthSize="30vw"
@@ -148,7 +159,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
                 size="small"
                 label="add"
                 dataTestId="create-dep-add-team"
-                disabled={watch().team.length < 1}
+                disabled={watch().team.length < 2}
                 onClick={() => onChangeTeams()}
               />
             </Grid>

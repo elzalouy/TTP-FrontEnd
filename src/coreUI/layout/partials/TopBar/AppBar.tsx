@@ -23,7 +23,7 @@ const Bar: FC = (props: any) => {
         bgcolor: "white",
         margin: "0px",
         boxShadow: "none",
-        zIndex: 1,
+        zIndex: 2,
       }}
     >
       <Toolbar

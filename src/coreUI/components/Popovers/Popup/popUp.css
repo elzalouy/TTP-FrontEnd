@@ -21,6 +21,7 @@
   animation: zoomIn 0.3s;
   position: relative !important;
 }
+
 .small-pop-up {
   min-width: 350px;
   max-width: 95vw;
@@ -30,6 +31,7 @@
   max-height: 95vh;
   animation: zoomIn 0.3s;
   overflow: auto;
+
 }
 
 @keyframes zoomIn {

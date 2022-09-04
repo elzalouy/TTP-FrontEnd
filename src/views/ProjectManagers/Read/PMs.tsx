@@ -33,16 +33,17 @@ export const ProjectManagers: React.FC<Props> = () => {
     <Box
       sx={
         SM
-          ? { paddingTop: "20px", backgroundColor: "#FAFAFB", width: "100%" }
+          ? { backgroundColor: "#FAFAFB", width: "100%" }
           : { backgroundColor: "#FAFAFB", width: "100%" }
       }
+      p={"2%"}
     >
       <Box
         width={"100%"}
-        paddingLeft={MD ? 4 : 7.5}
-        paddingRight={MD ? 4 : 12.5}
-        paddingTop={MD ? 8 : 6}
-        paddingBottom={MD ? 4 : 12}
+        paddingLeft={MD ? 4 : 0}
+        paddingRight={MD ? 4 : 13.5}
+        paddingTop={MD ? 8 : 0}
+        paddingBottom={MD ? 4 : 0}
         flexDirection="row"
         display="inline-flex"
         justifyContent="space-between"

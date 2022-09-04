@@ -121,6 +121,7 @@ fieldset[id*="select"] .labelValue {
   padding-block: 10px;
   width: 100%;
 }
+
 fieldset[id*="select"] .value {
   color: #111;
   font-size: 14px;
@@ -159,26 +160,24 @@ ul[id="core-select-options"].options.scroll li.option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
 
-/* Custom Scrollbar : This is for Options If they exceed a certain height */
-ul[id="core-select-options"].options.scroll,
-ul[id="core-filter-options"].options.scroll {
+/* Custom Scrollbar : This is for SELECT options If they exceed a certain height and overflow inside a popup */
+
+ul[id="core-select-options"].options.scroll {
   height: 200px;
 }
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar,
-ul[id="core-filter-options"].options.scroll::-webkit-scrollbar {
+
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar {
   display: block !important;
   width: 3px;
   border-radius: 10px;
 }
 
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar-track,
-ul[id="core-filter-options"].options.scroll::-webkit-scrollbar-track {
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar-track {
   border-radius: 10px;
   border-color: #ececec !important;
 }
 
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar-thumb,
-ul[id="core-filter-options"].options.scroll::-webkit-scrollbar-thumb {
+ul[id="core-select-options"].options.scroll::-webkit-scrollbar-thumb {
   background: #9fa1ab;
   border-radius: 5px;
 }

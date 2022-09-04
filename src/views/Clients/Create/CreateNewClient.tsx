@@ -23,6 +23,7 @@ const CreateNewClient: React.FC = () => {
   const [Show, setShow] = useState("none");
   const allClients = useAppSelector(clientsDataSelector);
   const loadingClient = useAppSelector(selectLoadingClient);
+  const [error, setError] = useState<boolean>(false);
   const [clientData, setClientData] = useState<IClientState>({
     image: null,
     clientName: "",
@@ -39,13 +40,18 @@ const CreateNewClient: React.FC = () => {
       (client) => client.clientName === clientData.clientName
     );
     if (!checkName) {
-      dispatch(creatClient(formData));
-      setImageView(null);
-      setClientData({
-        image: null,
-        clientName: "",
-      });
-      setShow("none");
+      //Initial guard for name duplication
+      if (clientData.clientName.length !== 0) {
+        dispatch(creatClient(formData));
+        setImageView(null);
+        setClientData({
+          image: null,
+          clientName: "",
+        });
+        setShow("none");
+      } else {
+        setError(true);
+      }
     } else {
       toast.error("Client name already exist", {
         position: "top-right",
@@ -71,6 +77,11 @@ const CreateNewClient: React.FC = () => {
       setImageView(URL.createObjectURL(file[0]));
     } else {
       setClientData({ ...clientData, [e.target.name]: e.target.value });
+      if (e.target.value.length > 0) {
+        setError(false);
+      } else {
+        setError(true);
+      }
     }
   };
 
@@ -151,7 +162,11 @@ const CreateNewClient: React.FC = () => {
               onChange={(e: any) => {
                 onChange(e);
               }}
+              error={error ? "true" : undefined}
             />
+            {error && (
+              <p className="popup-error">Please enter a name for the client</p>
+            )}
             <Box className="controllers">
               <Button
                 type="main"

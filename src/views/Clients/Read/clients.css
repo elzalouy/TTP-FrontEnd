@@ -11,8 +11,9 @@
   padding: 15px;
   /*  grid-template-columns: repeat(auto-fill, 380px);
   grid-gap: 20px; */
-  border: 2px solid #e2e2ea;
-  border-radius: 20px;
+  border: 1px solid;
+  border-radius: 16px;
+  border-color: #e2e2ea;
   overflow: hidden;
 }
 
@@ -109,7 +110,7 @@
 }
 
 .project-counter-wrapper:not(:last-child)::after {
-/*   display: block;
+  /*   display: block;
   content: '';
   background: gray; */
 }
