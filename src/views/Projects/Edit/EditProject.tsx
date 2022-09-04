@@ -1,20 +1,15 @@
-import { TextField, TextFieldProps } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers";
 import Joi from "joi";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import {
-  calculateStatusBasedOnDeadline,
-  getYesterdaysDate,
-  notNullorFalsy,
+  calculateStatusBasedOnDeadline
 } from "src/helpers/generalUtils";
-import { validateDate, validateEditProject } from "src/services/validations/project.schema";
+import { validateEditProject } from "src/services/validations/project.schema";
+import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { selectClientOptions } from "../../../models/Clients";
@@ -23,7 +18,7 @@ import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
   editProject as editProjectAction,
   selectEditProject,
-  selectProjectStatusOptions,
+  selectProjectStatusOptions
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
@@ -38,6 +33,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const project = useAppSelector(selectEditProject);
   const {
     control,
+    register,
     watch,
     setValue,
     formState: { isDirty },
@@ -235,220 +231,79 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         <div>
           <div className="inputs-grid">
             <div>
-              <Controller
+              <ControlledInput
                 name="name"
+                label="Project title"
+                placeholder={"Project name"}
+                type="text"
                 control={control}
-                render={(props) => (
-                  <Input
-                    type={"text"}
-                    value={props.field.value}
-                    label="Project title"
-                    placeholder="Project name"
-                    error={nameErr.error ? "true" : undefined}
-                    onChange={(e: any) => {
-                      props.field.onChange(e);
-                      let { error } = validateEditProject({ name: e.target.value });
-                      if (error) {
-                        setNameErr({ error: error });
-                      } else {
-                        setNameErr({ error: undefined });
-                      }
-                    }}
-                  />
-                )}
-              />
-            </div>
-            <div>
-              <label className="popup-label">Client name</label>
-              <Controller
-                name="clientId"
-                control={control}
-                render={(props) => (
-                  <Select
-                    name="editProjectClientId"
-                    elementType="select"
-                    onSelect={(e: any) => {
-                      setValue(props.field.name, e.target.id);
-                    }}
-                    options={clientOptions}
-                    selected={props.field.value}
-                  />
-                )}
-              />
-            </div>
-            <div>
-              <label className="popup-label">Start date</label>
-              <Controller
-                name={"startDate"}
-                control={control}
-                render={(props) => (
-                  <MobileDatePicker
-                    closeOnSelect
-                    leftArrowButtonText="arrow"
-                    inputFormat="YYYY-MM-DD"
-                    value={props.field.value}
-                    onChange={(e: any) => {
-                      validateDate(
-                        moment(e).toDate(),
-                        "Start date has passed today's date",
-                        getYesterdaysDate()
-                      );
-                      props.field.onChange(moment(e).toDate());
-                    }}
-                    renderInput={(
-                      params: JSX.IntrinsicAttributes & TextFieldProps
-                    ) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          position: "relative",
-                        }}
-                      >
-                        <TextField
-                          className="date"
-                          {...params}
-                          placeholder="Start Date"
-                          onChange={params.onChange}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                          sx={dataTimePickerInputStyle}
-                        />
-                        {checkProjectStatus(project?.projectStatus) &&
-                          notNullorFalsy(watch().startDate) && (
-                            <img
-                              className="closeIcon"
-                              src={IMAGES.closeicon}
-                              style={{
-                                width: "10px",
-                                height: "10px",
-                                position: "absolute",
-                                right: "13px",
-                                bottom: "19px",
-                              }}
-                              alt="closeIcon"
-                              onClick={() => {
-                                setValue("startDate", null);
-                                setUpdateDate(true);
-                              }}
-                            />
-                          )}
-                      </div>
-                    )}
-                  />
-                )}
-              />
-            </div>
-            <div>
-              <label className="popup-label">Deadline date</label>
-              <Controller
-                name={"deadline"}
-                control={control}
-                render={(props) => (
-                  <MobileDatePicker
-                    inputFormat="YYYY-MM-DD"
-                    value={props.field.value}
-                    closeOnSelect
-                    onChange={(e) => {
-                      validateDate(
-                        moment(e).toDate(),
-                        "Deadline has passed today's date",
-                        getYesterdaysDate()
-                      );
-                      props.field.onChange(moment(e).toDate());
-                    }}
-                    leftArrowButtonText="arrow"
-                    renderInput={(
-                      params: JSX.IntrinsicAttributes & TextFieldProps
-                    ) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          position: "relative",
-                        }}
-                      >
-                        <TextField
-                          className="date"
-                          {...params}
-                          placeholder="Deadline"
-                          onChange={params.onChange}
-                          sx={dataTimePickerInputStyle}
-                        />
-                        {checkProjectStatus(project?.projectStatus) &&
-                          notNullorFalsy(watch().deadline) && (
-                            <img
-                              className="closeIcon"
-                              src={IMAGES.closeicon}
-                              style={{
-                                width: "10px",
-                                height: "10px",
-                                position: "absolute",
-                                right: "13px",
-                                bottom: "19px",
-                              }}
-                              alt="closeIcon"
-                              onClick={() => {
-                                setValue("deadline", null);
-                                setUpdateDate(true);
-                              }}
-                            />
-                          )}
-                      </div>
-                    )}
-                  />
-                )}
-              />
-            </div>
-            <div>
-              <label className="popup-label">Project Status</label>
-              <Controller
-                name="status"
-                control={control}
-                render={(props) => {
-                  return (
-                    <Select
-                      label={
-                        data.status
-                          ? checkProjectStatus(data.status)
-                            ? data.status
-                            : "Done"
-                          : "Project Status"
-                      }
-                      name="editProjectStatus"
-                      elementType="select"
-                      onSelect={(e: any) =>
-                        setValue(props.field.name, e.target.id, {
-                          shouldDirty: true,
-                        })
-                      }
-                      options={statusOptions}
-                      selected={props.field.value}
-                    />
-                  );
+                error={nameErr.error ? "true" : undefined}
+                onChange={(e: any) => {
+                  let { error } = validateEditProject({ name: e.target.value });
+                  if (error) {
+                    setNameErr({ error: error });
+                  } else {
+                    setNameErr({ error: undefined });
+                  }
                 }}
               />
             </div>
             <div>
-              <label className="popup-label">Project manager</label>
-              <Controller
+              <ControlledSelect
+                name="clientId"
+                control={control}
+                label="Select"
+                formLabel="client"
+                elementType="select"
+                options={clientOptions}
+                setValue={setValue}
+              />
+            </div>
+            <div>
+              <DateInput
+                label={"Start date"}
+                name="startDate"
+                control={control}
+                placeholder="Start date"
+                register={register}
+                setValue={setValue}
+              />
+            </div>
+            <div>
+              <DateInput
+                label={"Deadline"}
+                name="deadline"
+                control={control}
+                placeholder="Deadline"
+                register={register}
+                setValue={setValue}
+              />
+            </div>
+            <div>
+              <ControlledSelect
+                name="status"
+                control={control}
+                label={
+                  data.status
+                    ? checkProjectStatus(data.status)
+                      ? data.status
+                      : "Done"
+                    : "Project Status"
+                }
+                formLabel="Project Status"
+                elementType="select"
+                options={statusOptions}
+              />
+            </div>
+            <div>
+              <ControlledSelect
                 name="projectManager"
                 control={control}
-                render={(props) => (
-                  <Select
-                    options={pmOptions}
-                    label="Project managers list"
-                    onSelect={(e: any) =>
-                      setValue(props.field.name, e.target.id)
-                    }
-                    elementType="select"
-                    name="editProjectManager"
-                    selected={props.field.value}
-                  />
-                )}
+                label="Select"
+                formLabel="Project manager"
+                elementType="select"
+                options={pmOptions}
+                setValue={setValue}
               />
             </div>
           </div>

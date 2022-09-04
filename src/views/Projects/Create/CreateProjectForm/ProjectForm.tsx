@@ -1,27 +1,20 @@
-import { Grid, TextField, TextFieldProps } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers";
+import { Grid } from "@mui/material";
 import Joi from "joi";
 import moment from "moment";
 import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import IMAGES from "src/assets/img/Images";
 import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
 import { selectPMOptions, selectPMs } from "src/models/PM";
 import { createProject, selectLoading } from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
 import {
-  validateCreateProject,
-  validateDate,
+  validateCreateProject
 } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 // create
@@ -102,10 +95,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           <ControlledInput
             name="name"
             label="Project title"
-            placeholder={"Department name"}
+            placeholder={"Project name"}
             type="text"
             control={control}
-            dataTestId="create-dep-Name"
             error={validateError.error?.details[0]?.path?.includes("name") ? "true" : "false"}
             onChange={(e: any) => {
               setError({ error: undefined, value: undefined, warning: undefined });
@@ -129,7 +121,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-          <DateInput
+        <DateInput
             label={"Start date"}
             name="startDate"
             control={control}
