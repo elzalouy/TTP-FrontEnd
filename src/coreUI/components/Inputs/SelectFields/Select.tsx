@@ -43,7 +43,6 @@ const Select = (props: IFilterProps) => {
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
-    console.log({ selected: selected, options: state.options });
     if (selected) setState({ ...state, selected: selected });
     else setState({ ...state, selected: "" });
   }, [props.selected]);
@@ -78,9 +77,9 @@ const Select = (props: IFilterProps) => {
               <>
                 {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
-                      length: props.textTruncate,
-                      omission: "..",
-                    })
+                    length: props.textTruncate,
+                    omission: "..",
+                  })
                   : "All"}
               </>
             )}

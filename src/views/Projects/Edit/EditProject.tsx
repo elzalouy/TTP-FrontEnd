@@ -1,5 +1,6 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
+import Joi from "joi";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -13,7 +14,7 @@ import {
   getYesterdaysDate,
   notNullorFalsy,
 } from "src/helpers/generalUtils";
-import { validateDate } from "src/services/validations/project.schema";
+import { validateDate, validateEditProject } from "src/services/validations/project.schema";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { selectClientOptions } from "../../../models/Clients";
@@ -60,6 +61,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
+  const [nameErr, setNameErr] = useState<{ error: Joi.ValidationError | undefined | boolean }>({ error: undefined });
 
   useEffect(() => {
     setValue("clientId", project?.clientId);
@@ -184,11 +186,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const onSubmitEdit = () => {
     if (isDirty || updateDate) {
-      const result = showAlertBasedOnDate();
-      executeEditProject(result);
-      reset();
+      if (nameErr.error === undefined) {
+        const result = showAlertBasedOnDate();
+        executeEditProject(result);
+        reset();
+      }
     } else {
       setShow("none");
+      setNameErr({ error: undefined });
     }
   };
 
@@ -224,6 +229,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           />
         </div>
         <p className="popup-title">Edit project</p>
+        {nameErr.error && (
+          <p className="popup-error">Please fill a valid project name</p>
+        )}
         <div>
           <div className="inputs-grid">
             <div>
@@ -236,7 +244,16 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     value={props.field.value}
                     label="Project title"
                     placeholder="Project name"
-                    onChange={props.field.onChange}
+                    error={nameErr.error ? "true" : undefined}
+                    onChange={(e: any) => {
+                      props.field.onChange(e);
+                      let { error } = validateEditProject({ name: e.target.value });
+                      if (error) {
+                        setNameErr({ error: error });
+                      } else {
+                        setNameErr({ error: undefined });
+                      }
+                    }}
                   />
                 )}
               />
@@ -250,9 +267,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                   <Select
                     name="editProjectClientId"
                     elementType="select"
-                    onSelect={(e: any) =>
-                      setValue(props.field.name, e.target.id)
-                    }
+                    onSelect={(e: any) => {
+                      setValue(props.field.name, e.target.id);
+                    }}
                     options={clientOptions}
                     selected={props.field.value}
                   />
