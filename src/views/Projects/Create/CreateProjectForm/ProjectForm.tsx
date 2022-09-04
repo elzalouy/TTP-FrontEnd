@@ -51,9 +51,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
     value: any;
     warning: Joi.ValidationError | undefined;
   }>({ error: undefined, value: undefined, warning: undefined });
+  let data = watch();
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    let data = watch();
     let project = {
       name: data?.name,
       projectManager: data?.projectManager,
@@ -104,7 +104,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 label="Project title"
                 type="text"
                 placeholder="Project name"
-                onChange={props.field.onChange}
+                onChange={(e: any) => {
+                  props.field.onChange(e);
+                  setError({ error: undefined, value: undefined, warning: undefined });
+                }}
                 error={
                   validateError.error?.details[0]?.path?.includes("name")
                     ? "true"
@@ -124,7 +127,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 elementType="select"
                 name="client"
                 label="Select"
-                onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+                onSelect={(e: any) => {
+                  setValue(props.field.name, e.target.id);
+                  setError({ error: undefined, value: undefined, warning: undefined });
+                }}
                 selected={watch().clientId}
                 options={clientOptions}
                 error={
@@ -280,7 +286,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
                 elementType="select"
                 name="createProject-projectManager"
                 label="Select"
-                onSelect={(e: any) => setValue(props.field.name, e.target.id)}
+                onSelect={(e: any) => {
+                  setValue(props.field.name, e.target.id);
+                  setError({ error: undefined, value: undefined, warning: undefined });
+                }}
                 selected={watch().projectManager}
                 options={pmOptions}
                 error={
