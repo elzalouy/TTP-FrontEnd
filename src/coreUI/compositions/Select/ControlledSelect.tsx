@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   IControlledSelect,
   UseFormProps,
@@ -16,7 +16,9 @@ const ControlledSelect: FC<IControlledSelect> = ({
   textTruncate,
   label,
   onSelect,
+  setValue
 }) => {
+
   return (
     <>
       {formLabel && <label className="popup-label">{formLabel}</label>}
@@ -28,7 +30,12 @@ const ControlledSelect: FC<IControlledSelect> = ({
             elementType={elementType}
             name={filter ? `${filter.page}` + props.field.name : name}
             label={label}
-            onSelect={onSelect}
+            onSelect={(e: any) => {
+              if (setValue) {
+                setValue(props.field.name, e.target.id);
+              }
+              onSelect(e);
+            }}
             selected={props.field.value}
             options={options}
             textTruncate={textTruncate}

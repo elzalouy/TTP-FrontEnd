@@ -10,6 +10,8 @@ import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
+import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
+import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
 import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
@@ -21,6 +23,7 @@ import {
   validateCreateProject,
   validateDate,
 } from "src/services/validations/project.schema";
+import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 // create
 interface ProjectFormProps {
   setcurrentStep: any;
@@ -96,211 +99,73 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
         container
       >
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-          <Controller
-            control={control}
+          <ControlledInput
             name="name"
-            render={(props) => (
-              <Input
-                label="Project title"
-                type="text"
-                placeholder="Project name"
-                onChange={(e: any) => {
-                  props.field.onChange(e);
-                  setError({ error: undefined, value: undefined, warning: undefined });
-                }}
-                error={
-                  validateError.error?.details[0]?.path?.includes("name")
-                    ? "true"
-                    : "false"
-                }
-              />
-            )}
+            label="Project title"
+            placeholder={"Department name"}
+            type="text"
+            control={control}
+            dataTestId="create-dep-Name"
+            error={validateError.error?.details[0]?.path?.includes("name") ? "true" : "false"}
+            onChange={(e: any) => {
+              setError({ error: undefined, value: undefined, warning: undefined });
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-          <label className="label-project">Client name</label>
-          <Controller
+          <ControlledSelect
             name="clientId"
             control={control}
-            render={(props) => (
-              <Select
-                elementType="select"
-                name="client"
-                label="Select"
-                onSelect={(e: any) => {
-                  setValue(props.field.name, e.target.id);
-                  setError({ error: undefined, value: undefined, warning: undefined });
-                }}
-                selected={watch().clientId}
-                options={clientOptions}
-                error={
-                  validateError.error?.details[0]?.path?.includes("clientId")
-                    ? "true"
-                    : "false"
-                }
-              />
-            )}
+            label="Select"
+            formLabel="client"
+            elementType="select"
+            onSelect={(e: any) => {
+              setError({ error: undefined, value: undefined, warning: undefined });
+            }}
+            error={
+              validateError.error?.details[0]?.path?.includes("clientId") ? "true" : "false"}
+            options={clientOptions}
+            setValue={setValue}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-          <label className="label-project">Start Date</label>
-          <Controller
+          <DateInput
+            label={"Start date"}
             name="startDate"
             control={control}
-            render={(props) => (
-              <MobileDatePicker
-                closeOnSelect
-                leftArrowButtonText="arrow"
-                inputFormat="YYYY-MM-DD"
-                value={watch().startDate}
-                onChange={(e) => {
-                  validateDate(
-                    moment(e).toDate(),
-                    "Start date has passed today's date",
-                    getYesterdaysDate()
-                  );
-                  props.field.onChange(moment(e).toDate());
-                }}
-                renderInput={(
-                  params: JSX.IntrinsicAttributes & TextFieldProps
-                ) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      position: "relative",
-                    }}
-                  >
-                    <TextField
-                      sx={dataTimePickerInputStyle}
-                      className={"date"}
-                      {...params}
-                      error={validateError.error?.details[0].path.includes(
-                        "startDate"
-                      )}
-                      {...register("startDate")}
-                      placeholder="Start Date"
-                      onChange={params.onChange}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
-                    {notNullorFalsy(watch().startDate) && (
-                      <img
-                        className="closeIcon"
-                        src={IMAGES.closeicon}
-                        style={{
-                          width: "10px",
-                          height: "10px",
-                          position: "absolute",
-                          right: "13px",
-                          bottom: "19px",
-                        }}
-                        alt="closeIcon"
-                        onClick={() => {
-                          setValue("startDate", null);
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
-              />
-            )}
+            placeholder="Start date"
+            register={register}
+            setValue={setValue}
+            tempError={validateError.error?.details[0].path.includes(
+              "startDate")}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-          <label className="label-project">Deadline date</label>
-          <Controller
+        <DateInput
+            label={"Deadline"}
             name="deadline"
             control={control}
-            render={(props) => (
-              <MobileDatePicker
-                inputFormat="YYYY-MM-DD"
-                value={watch().deadline}
-                closeOnSelect
-                onChange={(e) => {
-                  validateDate(
-                    moment(e).toDate(),
-                    "Deadline has passed today's date",
-                    getYesterdaysDate()
-                  );
-                  props.field.onChange(moment(e).toDate());
-                }}
-                leftArrowButtonText="arrow"
-                renderInput={({
-                  className,
-                  classes,
-                  sx,
-                  style,
-                  ...params
-                }: any) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      position: "relative",
-                    }}
-                  >
-                    <TextField
-                      {...params}
-                      className="date"
-                      error={validateError.error?.details[0].path.includes(
-                        "deadline"
-                      )}
-                      {...register("deadline")}
-                      placeholder="Deadline"
-                      sx={dataTimePickerInputStyle}
-                    />
-                    {notNullorFalsy(watch().deadline) && (
-                      <img
-                        className="closeIcon"
-                        src={IMAGES.closeicon}
-                        style={{
-                          width: "10px",
-                          height: "10px",
-                          position: "absolute",
-                          right: "13px",
-                          bottom: "17px",
-                        }}
-                        alt="closeIcon"
-                        onClick={() => {
-                          setValue("deadline", null);
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
-              />
-            )}
+            placeholder="Deadline"
+            register={register}
+            setValue={setValue}
+            tempError={validateError.error?.details[0].path.includes(
+              "deadline")}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
-          <label className="label-project">Project manager</label>
-          <Controller
+          <ControlledSelect
             name="projectManager"
             control={control}
-            render={(props) => (
-              <Select
-                elementType="select"
-                name="createProject-projectManager"
-                label="Select"
-                onSelect={(e: any) => {
-                  setValue(props.field.name, e.target.id);
-                  setError({ error: undefined, value: undefined, warning: undefined });
-                }}
-                selected={watch().projectManager}
-                options={pmOptions}
-                error={
-                  validateError.error?.details[0]?.path?.includes(
-                    "projectManager"
-                  )
-                    ? "true"
-                    : "false"
-                }
-              />
-            )}
+            label="Select"
+            formLabel="Project manager"
+            elementType="select"
+            onSelect={(e: any) => {
+              setError({ error: undefined, value: undefined, warning: undefined });
+            }}
+            error={
+              validateError.error?.details[0]?.path?.includes("projectManager") ? "true" : "false"}
+            options={pmOptions}
+            setValue={setValue}
           />
         </Grid>
         <Grid

@@ -51,10 +51,11 @@ export interface IDateInputProps {
   name: string;
   control: any;
   register: any;
-  state: any;
   setValue: any;
   placeholder: string;
   label: string;
+  state?: any;
+  tempError?: boolean;
 }
 
 export interface IPasswordInputProps {

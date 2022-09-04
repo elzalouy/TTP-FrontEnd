@@ -18,8 +18,13 @@ const DateInput: React.FC<IDateInputProps> = ({
   placeholder,
   name,
   label,
+  tempError
 }) => {
+
   const style = dateInputStyle()();
+
+  let error = state ? state.error.error?.details[0].path.includes(name) : tempError;
+
   return (
     <>
       <div>
@@ -57,7 +62,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                     <TextField
                       {...params}
                       placeholder={placeholder}
-                      error={state.error.error?.details[0].path.includes(name)}
+                      error={error}
                       onChange={params.onChange}
                       value={params.value}
                       sx={dataTimePickerInputStyle}
