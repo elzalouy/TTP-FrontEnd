@@ -38,6 +38,8 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
     defaultValues: state.formData,
   });
 
+
+
   const onInitState = () => {
     setState(IcreateDepartmentInit);
     reset();
@@ -126,6 +128,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               type="text"
               control={control}
               dataTestId="create-dep-Name"
+              error={state.error.error?.message ? "true" : undefined}
             />
           </Grid>
           <ControlledSelect

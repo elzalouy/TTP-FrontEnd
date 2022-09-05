@@ -12,6 +12,7 @@ const ControlledInput: FC<IControlledInput> = ({
   required,
   elementType,
   error,
+  onChange
 }) => {
   return (
     <Controller
@@ -25,7 +26,10 @@ const ControlledInput: FC<IControlledInput> = ({
           label={label}
           type={type}
           value={props.field.value}
-          onChange={props.field.onChange}
+          onChange={(e:any)=>{
+            props.field.onChange(e);
+            onChange(e);
+          }}
           placeholder={placeholder}
           elementType={elementType}
           error={error}

@@ -174,7 +174,10 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Due Date: "
-                    onSelect={(e: any) => onChange(e, "deadline")}
+                    onSelect={(e: any) => {
+                      onChange(e, "deadline");
+                      onHandleSort(props.field.value);
+                    }}
                     textTruncate={4}
                     options={filterOptions[0]}
                   />

@@ -118,7 +118,7 @@ const ResetForm: FC<IResetForm> = ({ failed, history }) => {
             size="large"
             label="confirm"
             loading={loading}
-            form={{ name: "forget", type: "submit" }}
+            form={{ name: "reset", type: "submit" }}
           />
         </Grid>
       </form>

@@ -18,8 +18,15 @@ const DateInput: React.FC<IDateInputProps> = ({
   placeholder,
   name,
   label,
+  tempError
 }) => {
+
   const style = dateInputStyle()();
+
+  let error = state ? state.error.error?.details[0].path.includes(name) : tempError;
+
+  /* TODO : The error here will be removed , and replaced with props boolean error  */
+
   return (
     <>
       <div>
@@ -57,7 +64,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                     <TextField
                       {...params}
                       placeholder={placeholder}
-                      error={state.error.error?.details[0].path.includes(name)}
+                      error={error}
                       onChange={params.onChange}
                       value={params.value}
                       sx={dataTimePickerInputStyle}
@@ -75,7 +82,8 @@ const DateInput: React.FC<IDateInputProps> = ({
                         }}
                         alt="closeIcon"
                         onClick={() => {
-                          setValue("deadline", null);
+                          setValue(name, null);
+                          /* I have replaced the "deadline" with name to make this function dynamic for all use case */
                         }}
                       />
                     )}

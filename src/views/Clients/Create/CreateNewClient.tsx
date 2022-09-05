@@ -105,7 +105,7 @@ const CreateNewClient: React.FC = () => {
         <img src={IMAGES.plus} alt="add" />
         <Typography>Create new client</Typography>
       </Box>
-      <PopUp show={Show} widthSize="491px">
+      <PopUp show={Show} maxWidthSize="491px">
         <Box>
           <Box>
             <img

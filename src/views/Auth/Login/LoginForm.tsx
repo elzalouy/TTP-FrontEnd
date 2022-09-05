@@ -25,10 +25,13 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+
+    let caseInsensivtiveEmail = data.email.toLowerCase();
+    
     dispatch(
       signIn({
         data: {
-          email: data.email,
+          email: caseInsensivtiveEmail,
           password: data.password,
         },
         history,

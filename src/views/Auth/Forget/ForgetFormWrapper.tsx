@@ -30,10 +30,13 @@ const ForgetFormWrapper: FC<IForgetFormWrapper> = ({
     let pattern =
       /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
     let condition = pattern.test(data.email);
+    
+    let caseInsensivtiveEmail = data.email.toLowerCase();
+
     if (condition) {
       dispatch(
         forgotPassword({
-          email: data.email,
+          email: caseInsensivtiveEmail,
         })
       );
     } else {

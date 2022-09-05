@@ -141,6 +141,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             label={"Department name"}
             placeholder={"Department name"}
             type="text"
+            error={state.error.error?.message ? "true" : undefined}
             control={control}
           />
         </Grid>
