@@ -162,7 +162,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               item
               xs={5}
               sm={4}
-              md={2}
+              md={4}
               lg={2}
             >
               <Controller
@@ -191,7 +191,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               item
               xs={5}
               sm={4.5}
-              md={2.2}
+              md={4.5}
               lg={2.2}
             >
               <Controller
@@ -217,7 +217,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               item
               xs={5}
               sm={4}
-              md={2}
+              md={4}
               lg={2}
             >
               <Controller
@@ -243,7 +243,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               item
               xs={5}
               sm={4}
-              md={2}
+              md={4}
               lg={2}
             >
               <Controller
