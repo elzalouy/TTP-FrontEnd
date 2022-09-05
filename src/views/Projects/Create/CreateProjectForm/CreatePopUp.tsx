@@ -1,27 +1,22 @@
+import { Check } from "@mui/icons-material";
 import {
-  Step,
-  StepLabel,
-  Stepper,
-  Grid,
-  StepConnector,
+  Grid, Step, StepConnector,
   stepConnectorClasses,
-  StepIconProps,
-  Typography,
+  StepIconProps, StepLabel,
+  Stepper, Typography
 } from "@mui/material";
-import "./projectForm.css";
+import { styled } from "@mui/material/styles";
 import { FC, useState } from "react";
+import { useDispatch } from "react-redux";
+import IMAGES from "src/assets/img/Images";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { useAppSelector } from "src/models/hooks";
-import { selectNewProject } from "src/models/Projects";
-import IMAGES from "src/assets/img/Images";
+import { UiActions } from "src/models/Ui";
+import { selectUi } from "src/models/Ui/UI.selectors";
 import TaskForm from "../CreateTasksForm/TaskForm";
 import Tasks from "../CreateTasksForm/TasksTable";
 import ProjectForm from "./ProjectForm";
-import { styled } from "@mui/material/styles";
-import { Check } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
-import { UiActions } from "src/models/Ui";
-import { selectUi } from "src/models/Ui/UI.selectors";
+import "./projectForm.css";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;
@@ -30,9 +25,10 @@ interface NewProjectPopUpProps {
 const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const steps = ["Project", "Tasks"];
   const dispatch = useDispatch();
-  const newProject = useAppSelector(selectNewProject);
+  // const newProject = useAppSelector(selectNewProject);
   const { createProjectPopup } = useAppSelector(selectUi);
   const [currentStep, setcurrentStep] = useState(0);
+  const [clearErr, setClearErr] = useState<boolean>(false);
 
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -108,9 +104,11 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const onClose = () => {
     if (currentStep === 1) {
       dispatch(UiActions.fireNewProjectHook(""));
+      setClearErr(false);
     }
     setcurrentStep(0);
     setShow("none");
+    setClearErr(true);
   };
 
   return (
@@ -162,7 +160,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </Grid>
       <Grid marginTop={5}>
         {currentStep === 0 && (
-          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
+          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} clearErr={clearErr} />
         )}
         {currentStep === 1 && (
           <>
