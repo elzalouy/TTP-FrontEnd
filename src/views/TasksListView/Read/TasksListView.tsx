@@ -44,11 +44,9 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     let state: any = props.location.state;
-    if (state.projectId) {
-      if (state.projectId) {
-        setValue("projectId", state.projectId);
-        dispatch(filterTasks({ projectId: state.projectId }));
-      }
+    if (props.location.state && state.projectId) {
+      setValue("projectId", state.projectId);
+      dispatch(filterTasks({ projectId: state.projectId }));
     }
   }, []);
 
