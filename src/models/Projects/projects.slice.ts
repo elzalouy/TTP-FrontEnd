@@ -394,20 +394,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.fulfilled, (state, action) => {
       state.editTask = undefined;
       state.editTaskLoading = false;
-      let tasks = [...state.allTasks];
-      let index = tasks.findIndex((item) => item._id === action.payload?._id);
-      if (index >= 0) {
-        tasks[index] = action.payload;
-        state.allTasks = [...tasks];
-      }
-      let selectedProject = { ...state.selectedProject };
-      let i = selectedProject.tasks.findIndex(
-        (item) => item._id === action.payload?._id
-      );
-      if (i >= 0) {
-        selectedProject.tasks[i] = action.payload;
-        state.selectedProject = selectedProject;
-      }
     });
     builder.addCase(editTaskFromBoard.rejected, (state, action) => {
       state.editTaskLoading = false;

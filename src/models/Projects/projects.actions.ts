@@ -302,7 +302,6 @@ export const editTaskFromBoard = createAsyncThunk<any, any, any>(
     try {
       let response: ApiResponse<any> = await api.editTask(args.data);
       if (response.ok && response.data) {
-        args.resetState();
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
         return response.data;

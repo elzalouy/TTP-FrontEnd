@@ -17,13 +17,15 @@ const Select = (props: IFilterProps) => {
     label: props.label,
     isOpen: "none",
     selected: "",
-    options: [
-      {
-        id: "",
-        value: "",
-        text: "",
-      },
-    ],
+    options: props.options
+      ? props.options
+      : [
+          {
+            id: "",
+            value: "",
+            text: "",
+          },
+        ],
   });
 
   React.useEffect(() => {
@@ -43,10 +45,17 @@ const Select = (props: IFilterProps) => {
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
-    console.log({ selected: selected, options: state.options });
     if (selected) setState({ ...state, selected: selected });
     else setState({ ...state, selected: "" });
   }, [props.selected]);
+
+  React.useEffect(() => {
+    console.log({ options: props.options, selected: props.selected });
+    let selected = state.options.find(
+      (item) => item.id === props.selected
+    )?.text;
+    if (selected) setState({ ...state, selected: selected });
+  }, [props.selected, props.options]);
 
   const setShow = () => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
@@ -79,7 +88,7 @@ const Select = (props: IFilterProps) => {
                 {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
                       length: props.textTruncate,
-                      omission: "..",
+                      omission: ".",
                     })
                   : "All"}
               </>

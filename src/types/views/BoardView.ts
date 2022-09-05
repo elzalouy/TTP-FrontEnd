@@ -9,6 +9,7 @@ export type EditTaskProps = {
 };
 
 export interface CRUDTaskState {
+  updated?: boolean;
   newFiles: (File | null)[];
   deleteFiles: {
     name: string;
@@ -62,7 +63,7 @@ export const initialHookFormTaskState: IInitialinitialHookFormTaskState = {
   attachedFiles: [],
   file: null,
 };
-export const initialState: CRUDTaskState = {
+export const initialEditState: CRUDTaskState = {
   newFiles: [],
   deleteFiles: [],
   task: {
@@ -93,7 +94,37 @@ export const initialState: CRUDTaskState = {
   selectedCategory: null,
   selectedDepatmentTeams: [],
 };
-
+export const initialCreateState: CRUDTaskState = {
+  newFiles: [],
+  deleteFiles: [],
+  task: {
+    _id: "",
+    name: "",
+    projectId: "",
+    categoryId: "",
+    subCategoryId: "",
+    teamId: "",
+    status: "",
+    start: "",
+    deliveryDate: "",
+    done: "",
+    turnoverTime: "",
+    attachedFiles: [],
+    attachedCard: "",
+    description: "",
+    cardId: "",
+    listId: "",
+    boardId: "",
+  },
+  error: {
+    error: undefined,
+    value: null,
+    warning: undefined,
+  },
+  selectedDepartment: undefined,
+  selectedCategory: null,
+  selectedDepatmentTeams: [],
+};
 //Constants
 export type Status =
   | "Tasks Board"

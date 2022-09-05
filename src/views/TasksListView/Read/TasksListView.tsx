@@ -6,6 +6,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
@@ -17,18 +18,21 @@ import {
   filterTasks,
   ProjectsActions,
   selectAllProjects,
-  selectProjectOptions
+  selectProjectOptions,
 } from "../../../models/Projects";
 import { ProjectsInterface } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import "./TasksListView.css";
 interface Props {
   projectId?: string;
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
 }
-export const TasksListView: React.FC<Props> = (props: any) => {
+export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const projectOptions = useAppSelector(selectProjectOptions)
+  const projectOptions = useAppSelector(selectProjectOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,26 +43,23 @@ export const TasksListView: React.FC<Props> = (props: any) => {
   const { watch, control, setValue } = useForm();
 
   React.useEffect(() => {
-    //To clear all filters on each page change
-    dispatch(filterTasks({}));
-
-    if (props?.location?.state?.projectId) {
-      setValue("projectId", props?.location?.state?.projectId);
-      let filter = watch();
-      dispatch(filterTasks(filter));
+    let state: any = props.location.state;
+    if (state.projectId) {
+      if (state.projectId) {
+        setValue("projectId", state.projectId);
+        dispatch(filterTasks({ projectId: state.projectId }));
+      }
     }
   }, []);
 
-  const onHandleChangeFilter = (e: any) => {
-    e.preventDefault();
+  const onHandleChangeFilter = () => {
     let filter = watch();
     dispatch(filterTasks(filter));
   };
 
   const onChangeFilter = (e: any, name: string) => {
-    e.preventDefault();
     setValue(name, e.target.id);
-    onHandleChangeFilter(e);
+    onHandleChangeFilter();
   };
   const onSortTasks = (e: any, name: string) => {
     e.preventDefault();
@@ -105,7 +106,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
           marginTop={SM ? 5 : MD ? 2 : 0}
         >
           Tasks
-          {props.projectId && (
+          {props.projectId && props.projectId && (
             <>
               <img
                 style={{ margin: "0 20px" }}
@@ -174,7 +175,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                     control={control}
                     label="Due Date: "
                     elementType="filter"
-                    textTruncate={3}
+                    textTruncate={2}
                     onSelect={(e: any) => onSortTasks(e, "sort")}
                     options={options[0]}
                   />
@@ -194,7 +195,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       control={control}
                       label="Status: "
                       elementType="filter"
-                      textTruncate={4}
+                      textTruncate={3}
                       onSelect={(e: any) => onChangeFilter(e, "status")}
                       options={options[1]}
                     />
@@ -215,8 +216,7 @@ export const TasksListView: React.FC<Props> = (props: any) => {
                       control={control}
                       label="Project: "
                       elementType="filter"
-                      setValue={setValue}
-                      textTruncate={10}
+                      textTruncate={4}
                       onSelect={(e: any) => {
                         onChangeFilter(e, "projectId");
                       }}

@@ -20,8 +20,9 @@ import {
 } from "../../../models/Projects";
 import {
   CRUDTaskState,
+  IInitialinitialHookFormTaskState,
+  initialCreateState,
   initialHookFormTaskState,
-  initialState,
 } from "../../../types/views/BoardView";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
@@ -40,12 +41,15 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
   const { createTaskPopup } = useAppSelector(selectUi);
-  const { register, handleSubmit, control, reset, setValue, watch } = useForm({
-    defaultValues: initialHookFormTaskState,
-  });
+  const { register, handleSubmit, control, reset, setValue, watch } =
+    useForm<IInitialinitialHookFormTaskState>({
+      defaultValues: { ...initialHookFormTaskState },
+    });
 
   const files = React.useRef<HTMLInputElement>(null);
-  const [state, setState] = React.useState<CRUDTaskState>(initialState);
+  const [state, setState] = React.useState<CRUDTaskState>({
+    ...initialCreateState,
+  });
 
   React.useEffect(() => {
     if (createTaskPopup === "none") {
@@ -123,7 +127,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   };
 
   const resetState = () => {
-    setState(initialState);
+    setState({ ...initialCreateState });
     reset();
   };
 
@@ -158,15 +162,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
 
   const onRemoveFile = (item: any) => {
     let State = { ...state };
-    if (item?._id) {
-      let task = { ...State.task };
-      State.deleteFiles.push(item);
-      State.deleteFiles = _.uniq([...State.deleteFiles]);
-      let files = [...State?.task?.attachedFiles];
-      files = files.filter((file) => file._id !== item._id);
-      task.attachedFiles = files;
-      State.task = task;
-    } else if (item?.name && item?.size) {
+    if (item?.name && item?.size) {
       let newfiles = [...State.newFiles];
       newfiles = newfiles.filter((file) => file !== item);
       State.newFiles = newfiles;

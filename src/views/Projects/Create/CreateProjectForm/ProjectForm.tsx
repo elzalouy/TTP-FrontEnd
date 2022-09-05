@@ -87,7 +87,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
     }
   };
-
   return (
     <>
       <Grid

@@ -83,7 +83,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
                 variant="h6"
                 paddingTop={0.5}
               >
-                Task view list
+                List View
               </Typography>
             </Box>
           </Box>

@@ -22,8 +22,9 @@ import {
 import {
   CRUDTaskState,
   EditTaskProps,
+  IInitialinitialHookFormTaskState,
+  initialEditState,
   initialHookFormTaskState,
-  initialState,
 } from "../../../types/views/BoardView";
 import DateInput from "./DateInput";
 import EditTaskTitle from "./Title";
@@ -43,10 +44,13 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const departments = useAppSelector(selectAllDepartments);
   const { editTask: id } = useAppSelector(selectAllProjects);
   const selectedProject = useAppSelector(selectSelectedProject);
-  const [state, setState] = React.useState<CRUDTaskState>(initialState);
-  const { register, handleSubmit, control, reset, setValue, watch } = useForm({
-    defaultValues: initialHookFormTaskState,
+  const [state, setState] = React.useState<CRUDTaskState>({
+    ...initialEditState,
   });
+  const { register, handleSubmit, control, reset, setValue, watch } =
+    useForm<IInitialinitialHookFormTaskState>({
+      defaultValues: initialHookFormTaskState,
+    });
 
   const onGetTaskData = async (task: Task | undefined) => {
     if (task) {
@@ -60,7 +64,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       State.selectedDepatmentTeams = dep?.teams?.filter(
         (item) => item.isDeleted === false
       );
-      setState({ ...State });
+      setState({ ...State, updated: state.updated === true ? false : true });
     }
   };
 
@@ -68,9 +72,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
    * Get Task data and also selected department, list, team, category, and sub category
    */
   React.useEffect(() => {
-    let task = selectedProject.tasks.find((item) => item._id === id);
-    const effect = async () => await onGetTaskData(task);
-    effect();
+    if (id) {
+      let task = selectedProject.tasks.find((item) => item._id === id);
+      const effect = async () => await onGetTaskData(task);
+      effect();
+    }
   }, [id]);
 
   /**
@@ -91,11 +97,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       setValue("attachedFiles", task.attachedFiles);
     }
     setState(State);
-  }, [state.task]);
+  }, [state.updated]);
 
   React.useEffect(() => {
     if (editTaskPopup === "none") {
-      reset();
+      resetState();
     }
   }, [editTaskPopup]);
 
@@ -135,12 +141,12 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       status: State.task.status,
       attachedFiles: state?.newFiles,
       boardId: state.selectedDepartment?.boardId,
-      listId: data?.teamId
-        ? state.selectedDepartment?.teams?.find(
-            (item: any) => item._id === data.teamId
-          )?.listId
-        : state.selectedDepartment?.lists?.find((l) => l.name === "Tasks Board")
-            ?.listId,
+      listId:
+        data?.teamId !== ""
+          ? state.selectedDepartment?.teams?.find(
+              (item: any) => item._id === data.teamId
+            )?.listId
+          : state.task.listId,
     };
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     if (data.teamId !== "") newTask.teamId = data.teamId;
@@ -149,7 +155,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
-    console.log({ newTask });
     // make a validated form Data,  if it's valdated, and submit
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
@@ -157,51 +162,19 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       State.error = { error, warning, value };
       setState(State);
     } else {
-      dispatch(
+      await dispatch(
         editTaskFromBoard({
           data: FormDatatask,
-          resetState,
           dispatch,
           setShow: props.setShow,
         })
       );
-      resetState();
+      // resetState();
     }
   };
-
   const resetState = () => {
-    setState({
-      newFiles: [],
-      deleteFiles: [],
-      task: {
-        _id: "",
-        name: "",
-        projectId: "",
-        categoryId: "",
-        subCategoryId: "",
-        teamId: "",
-        status: "",
-        start: "",
-        deliveryDate: "",
-        done: "",
-        turnoverTime: "",
-        attachedFiles: [],
-        attachedCard: "",
-        description: "",
-        cardId: "",
-        listId: "",
-        boardId: "",
-      },
-      error: {
-        error: undefined,
-        value: null,
-        warning: undefined,
-      },
-      selectedDepartment: undefined,
-      selectedCategory: null,
-      selectedDepatmentTeams: [],
-    });
     reset();
+    setState({ ...initialEditState });
   };
 
   const onChangeFiles = () => {
@@ -252,11 +225,13 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     setState(State);
   };
   const onGetError = (value: string) =>
-    state.error?.error?.details[0].path.includes(value) ? "true" : "";
+    state.error?.error?.details.find((item) => item.path.includes(value))
+      ? "true"
+      : "false";
 
   const onCloseModel = () => {
     reset();
-    dispatch(ProjectsActions.onEditTask(""));
+    dispatch(ProjectsActions.onEditTask(undefined));
     props.setShow("none");
   };
   return (
@@ -335,6 +310,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   name="categoryId"
                   control={control}
                   onSelect={onChangeCategory}
+                  error={onGetError("categoryId")}
                   options={[
                     ...categories?.map((item) => {
                       return {
@@ -360,13 +336,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                         onChange={props.field.onChange}
                         placeholder={"Write about your task"}
                         rows={4}
-                        error={
-                          state.error?.error?.details[0].path.includes(
-                            "description"
-                          )
-                            ? "true"
-                            : ""
-                        }
+                        error={onGetError("description")}
                       />
                     </>
                   )}
@@ -379,6 +349,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     elementType="select"
                     formLabel="Sub Category"
                     name="subCategoryId"
+                    error={onGetError("subCategoryId")}
                     control={control}
                     onSelect={(e: any) => {
                       setValue("subCategoryId", e.target.id);
@@ -420,6 +391,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                           ]
                         : []
                     }
+                    error={onGetError("teamId")}
                   />
                 </Box>
               </div>
