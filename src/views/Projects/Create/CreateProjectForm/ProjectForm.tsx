@@ -103,9 +103,17 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
             placeholder={"Project name"}
             type="text"
             control={control}
-            error={validateError.error?.details[0]?.path?.includes("name") ? "true" : "false"}
+            error={
+              validateError.error?.details[0]?.path?.includes("name")
+                ? "true"
+                : "false"
+            }
             onChange={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
           />
         </Grid>
@@ -117,10 +125,17 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
             formLabel="client"
             elementType="select"
             onSelect={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
             error={
-              validateError.error?.details[0]?.path?.includes("clientId") ? "true" : "false"}
+              validateError.error?.details[0]?.path?.includes("clientId")
+                ? "true"
+                : "false"
+            }
             options={clientOptions}
             setValue={setValue}
           />
@@ -134,7 +149,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
             register={register}
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
-              "startDate")}
+              "startDate"
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
@@ -146,7 +162,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
             register={register}
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
-              "deadline")}
+              "deadline"
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
@@ -157,10 +174,17 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
             formLabel="Project manager"
             elementType="select"
             onSelect={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
             error={
-              validateError.error?.details[0]?.path?.includes("projectManager") ? "true" : "false"}
+              validateError.error?.details[0]?.path?.includes("projectManager")
+                ? "true"
+                : "false"
+            }
             options={pmOptions}
             setValue={setValue}
           />
