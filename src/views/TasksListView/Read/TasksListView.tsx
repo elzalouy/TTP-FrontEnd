@@ -251,7 +251,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 <SearchBox
                   onChange={(e) => {
                     props.field.onChange(e);
-                    onHandleChangeFilter(e);
+                    onHandleChangeFilter();
                   }}
                   value={props.field.value}
                   placeholder="Search"

@@ -183,6 +183,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       shouldDirty: false,
     });
     setValue("startDate", project?.startDate);
+    setNameErr({ error: undefined });
   }
 
   const onSubmitEdit = () => {

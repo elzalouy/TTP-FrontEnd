@@ -16,13 +16,12 @@ import { selectUi } from "src/models/Ui/UI.selectors";
 import {
   validateCreateProject
 } from "src/services/validations/project.schema";
+import { IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
+
+
 // create
-interface ProjectFormProps {
-  setcurrentStep: any;
-  setShow: any;
-}
-const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -41,6 +40,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
+
+  React.useEffect(() => {
+    if(clearErr){
+      setError({ error: undefined, value: undefined, warning: undefined });
+    }
+  }, [clearErr])
 
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;
@@ -83,6 +88,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
     }
   };
+
   return (
     <>
       <Grid
@@ -120,7 +126,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-        <DateInput
+          <DateInput
             label={"Start date"}
             name="startDate"
             control={control}
@@ -132,7 +138,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-        <DateInput
+          <DateInput
             label={"Deadline"}
             name="deadline"
             control={control}

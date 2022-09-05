@@ -38,9 +38,8 @@ import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
 import Button from "src/coreUI/components/Buttons/Button";
 import { initialHookFormTaskState } from "src/types/views/BoardView";
-interface TaskFormProps {}
 
-const TaskForm: React.FC<TaskFormProps> = () => {
+const TaskForm: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const files = React.useRef<HTMLInputElement>(null);
   const [Files, setFiles] = React.useState<(File | null)[]>([]);
