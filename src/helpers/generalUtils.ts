@@ -61,6 +61,8 @@ export const checkProjectStatusName = (status: string | undefined) => {
     status === "late"
   ) {
     return "Done";
+  } else {
+    return status;
   }
 };
 
@@ -207,10 +209,22 @@ export const filterOptions = [
     { id: "asc", text: "Ascending", value: "asc" },
     { id: "desc", text: "Descending", value: "desc" },
   ], [
-    {id: "Not Started",value: "Not Started",text: "Not Started",},
-    {id: "deliver on time",value: "deliver on time",text: "Delivered on time",},
-    {id: "deliver before time",value: "deliver before deadline",text: "Delivered earlier",},
-    {id: "late",value: "late",text: "Delivered late",},
-    {id: "inProgress",value: "inProgress",text: "In Progress",},
+    { id: "Not Started", value: "Not Started", text: "Not Started", },
+    { id: "deliver on time", value: "deliver on time", text: "Delivered on time", },
+    { id: "deliver before time", value: "deliver before deadline", text: "Delivered earlier", },
+    { id: "late", value: "late", text: "Delivered late", },
+    { id: "inProgress", value: "inProgress", text: "In Progress", },
   ],
 ]
+
+export const checkProjectStatus = (status: string | undefined) => {
+  if (
+    status === "deliver before deadline" ||
+    status === "deliver on time" ||
+    status === "late"
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};

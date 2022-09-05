@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import {
-  IControlledSelect,
-  UseFormProps,
+  IControlledSelect
 } from "src/types/components/Containers";
 import Select from "../../components/Inputs/SelectFields/Select";
 
@@ -16,8 +15,10 @@ const ControlledSelect: FC<IControlledSelect> = ({
   textTruncate,
   label,
   onSelect,
-  setValue
+  setValue,
 }) => {
+
+
 
   return (
     <>
@@ -32,7 +33,8 @@ const ControlledSelect: FC<IControlledSelect> = ({
             label={label}
             onSelect={(e: any) => {
               if (setValue) {
-                setValue(props.field.name, e.target.id);
+                //Should dirty prop makes the field dirty on change used to handle change in status
+                setValue(props.field.name, e.target.id, { shouldDirty: true });
               }
               onSelect(e);
             }}
