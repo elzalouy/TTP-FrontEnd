@@ -13,9 +13,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectPMOptions, selectPMs } from "src/models/PM";
 import { createProject, selectLoading } from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
-import {
-  validateCreateProject
-} from "src/services/validations/project.schema";
+import { validateCreateProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 // create
 interface ProjectFormProps {
@@ -97,9 +95,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             placeholder={"Project name"}
             type="text"
             control={control}
-            error={validateError.error?.details[0]?.path?.includes("name") ? "true" : "false"}
+            error={
+              validateError.error?.details[0]?.path?.includes("name")
+                ? "true"
+                : "false"
+            }
             onChange={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
           />
         </Grid>
@@ -111,16 +117,23 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             formLabel="client"
             elementType="select"
             onSelect={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
             error={
-              validateError.error?.details[0]?.path?.includes("clientId") ? "true" : "false"}
+              validateError.error?.details[0]?.path?.includes("clientId")
+                ? "true"
+                : "false"
+            }
             options={clientOptions}
             setValue={setValue}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-        <DateInput
+          <DateInput
             label={"Start date"}
             name="startDate"
             control={control}
@@ -128,11 +141,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             register={register}
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
-              "startDate")}
+              "startDate"
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
-        <DateInput
+          <DateInput
             label={"Deadline"}
             name="deadline"
             control={control}
@@ -140,7 +154,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             register={register}
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
-              "deadline")}
+              "deadline"
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
@@ -151,10 +166,17 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ setcurrentStep }) => {
             formLabel="Project manager"
             elementType="select"
             onSelect={(e: any) => {
-              setError({ error: undefined, value: undefined, warning: undefined });
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
             }}
             error={
-              validateError.error?.details[0]?.path?.includes("projectManager") ? "true" : "false"}
+              validateError.error?.details[0]?.path?.includes("projectManager")
+                ? "true"
+                : "false"
+            }
             options={pmOptions}
             setValue={setValue}
           />

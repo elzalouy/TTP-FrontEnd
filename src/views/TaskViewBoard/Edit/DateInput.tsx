@@ -19,12 +19,13 @@ const DateInput: React.FC<IDateInputProps> = ({
   name,
   label,
   tempError,
-  setUpdateDate
+  setUpdateDate,
 }) => {
-
   // const style = dateInputStyle()();
 
-  let error = state ? state.error.error?.details[0].path.includes(name) : tempError;
+  let error = state
+    ? state.error.error?.details[0].path.includes(name)
+    : tempError;
 
   /* TODO : The error here will be removed , and replaced with props boolean error  */
 
