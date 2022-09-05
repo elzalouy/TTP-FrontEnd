@@ -141,6 +141,9 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
             label={"Department name"}
             placeholder={"Department name"}
             type="text"
+            onChange={(e: any) => {
+              setState({ ...state, error: { error: undefined } });
+            }}
             error={state.error.error?.message ? "true" : undefined}
             control={control}
           />

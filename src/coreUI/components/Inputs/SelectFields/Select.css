@@ -100,7 +100,7 @@ fieldset[id*="select"]:focus {
 }
 
 fieldset[id*="select"][data-error="true"] {
-  border-color: red;
+  border: 1px solid red;
 }
 
 fieldset[id*="select"] .leftIcon {
