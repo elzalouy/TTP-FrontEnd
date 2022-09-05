@@ -6,7 +6,7 @@ import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import {
-  calculateStatusBasedOnDeadline
+  calculateStatusBasedOnDeadline, checkProjectStatus, checkProjectStatusName
 } from "src/helpers/generalUtils";
 import { validateEditProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
@@ -74,18 +74,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     }
   }, [trigger]);
 
-  const checkProjectStatus = (status: string | undefined) => {
-    if (
-      status === "deliver before deadline" ||
-      status === "deliver on time" ||
-      status === "late"
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   const executeEditProject = (formData: any) => {
     let editProject = { ...project };
 
@@ -115,6 +103,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setShow("none");
     setUpdateDate(false);
     setTrigger(false);
+    setAlert("");
   };
 
   const showAlertBasedOnDate = () => {
@@ -122,12 +111,15 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let onlyDeadlineIsNull = data.deadline === null && data.startDate !== null;
     let bothDatesAreNull = data.deadline === null && data.startDate === null;
     let bothDatesAreNotNull = data.deadline !== null && data.startDate !== null;
-    let done = data.status === "Done";
-    let inProgress = data.status === "inProgress";
+    let currentStatus = data.status;
+    let done = checkProjectStatusName(currentStatus) === "Done";
+    let inProgress = currentStatus === "inProgress";
 
     if (updateDate) {
       if (inProgress || done) {
+        console.log("Running the status check", inProgress, done);
         if (onlyDeadlineIsNull || onlyStartDateIsNull || bothDatesAreNull) {
+          console.log("Running the date check", onlyDeadlineIsNull, onlyStartDateIsNull, bothDatesAreNull);
           //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started
           data.status = "Not Started";
         }
@@ -180,9 +172,23 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     }
   };
 
+  const closeIconOnClick = () => {
+    setShow("none");
+    reset();
+    setValue("clientId", project?.clientId);
+    setValue("projectManager", project?.projectManager?._id);
+    setValue("deadline", project?.projectDeadline);
+    setValue("name", project?.name);
+    setValue("status", project?.projectStatus, {
+      shouldDirty: false,
+    });
+    setValue("startDate", project?.startDate);
+  }
+
   const onSubmitEdit = () => {
     if (isDirty || updateDate) {
       if (nameErr.error === undefined) {
+        console.log("Will run the dirty block");
         const result = showAlertBasedOnDate();
         executeEditProject(result);
         reset();
@@ -210,18 +216,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             height="9"
             src={IMAGES.closeicon}
             alt="closeIcon"
-            onClick={() => {
-              setShow("none");
-              reset();
-              setValue("clientId", project?.clientId);
-              setValue("projectManager", project?.projectManager?._id);
-              setValue("deadline", project?.projectDeadline);
-              setValue("name", project?.name);
-              setValue("status", project?.projectStatus, {
-                shouldDirty: false,
-              });
-              setValue("startDate", project?.startDate);
-            }}
+            onClick={closeIconOnClick}
           />
         </div>
         <p className="popup-title">Edit project</p>
@@ -267,6 +262,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 placeholder="Start date"
                 register={register}
                 setValue={setValue}
+                setUpdateDate={setUpdateDate}
               />
             </div>
             <div>
@@ -277,22 +273,18 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 placeholder="Deadline"
                 register={register}
                 setValue={setValue}
+                setUpdateDate={setUpdateDate}
               />
             </div>
             <div>
               <ControlledSelect
                 name="status"
                 control={control}
-                label={
-                  data.status
-                    ? checkProjectStatus(data.status)
-                      ? data.status
-                      : "Done"
-                    : "Project Status"
-                }
+                label={data.status ? (checkProjectStatus(data.status) ? data.status : "Done") : "Project Status"}
                 formLabel="Project Status"
                 elementType="select"
                 options={statusOptions}
+                setValue={setValue}
               />
             </div>
             <div>
