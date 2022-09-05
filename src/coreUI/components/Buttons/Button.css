@@ -16,6 +16,7 @@ button {
   font-weight: bolder;
   cursor: pointer;
   height: 50px;
+  color: black;
 }
 
 /* Styles added based on the size */
@@ -64,6 +65,7 @@ button.add {
   background-color: #ffc500;
   width: 100% !important;
   border-radius: 6px !important;
+  color: black;
 }
 
 button.cancel {

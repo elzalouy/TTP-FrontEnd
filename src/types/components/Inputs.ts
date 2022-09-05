@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface IInputProps {
   type: string;
   placeholder: string;
@@ -56,6 +58,7 @@ export interface IDateInputProps {
   label: string;
   state?: any;
   tempError?: boolean;
+  setUpdateDate?:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IPasswordInputProps {

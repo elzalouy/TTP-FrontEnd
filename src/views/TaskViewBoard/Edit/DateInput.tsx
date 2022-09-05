@@ -18,10 +18,11 @@ const DateInput: React.FC<IDateInputProps> = ({
   placeholder,
   name,
   label,
-  tempError
+  tempError,
+  setUpdateDate
 }) => {
 
-  const style = dateInputStyle()();
+  // const style = dateInputStyle()();
 
   let error = state ? state.error.error?.details[0].path.includes(name) : tempError;
 
@@ -82,6 +83,11 @@ const DateInput: React.FC<IDateInputProps> = ({
                         }}
                         alt="closeIcon"
                         onClick={() => {
+                          if (setUpdateDate) {
+                            /* This trigger is used inside edit project to make the form state dirty on submit */
+                            setUpdateDate(true);
+                          }
+
                           setValue(name, null);
                           /* I have replaced the "deadline" with name to make this function dynamic for all use case */
                         }}
