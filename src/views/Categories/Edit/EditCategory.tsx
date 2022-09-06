@@ -169,7 +169,6 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
                 label="add"
                 onClick={addSubCategory}
                 disabled={subCategory.length === 0}
-                loading={loadingCat}
               />
             </Grid>
           </Grid>
