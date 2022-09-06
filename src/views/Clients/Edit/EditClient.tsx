@@ -102,8 +102,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   console.log({ editClient });
   return (
     <>
-      <PopUp show={show} widthSize="30vw">
-        <Box sx={{ paddingLeft: "15px" }}>
+      <PopUp show={show} maxWidthSize="30vw">
+        <Box>
           <Box>
             <img
               className="closeIcon"

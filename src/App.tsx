@@ -49,7 +49,6 @@ import UIComponents from "./views/UiComponents";
 import SelectOptions from "./coreUI/components/Inputs/SelectFields/Options";
 import { initAppUiState } from "./models/Ui";
 const App: React.FC = (props) => {
-  console.log({ appProps: props });
   const dispatch = useDispatch();
 
   const projects = useAppSelector(selectAllProjects);

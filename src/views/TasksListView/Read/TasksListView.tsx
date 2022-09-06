@@ -173,7 +173,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                     control={control}
                     label="Due Date: "
                     elementType="filter"
-                    textTruncate={2}
+                    textTruncate={6}
                     onSelect={(e: any) => onSortTasks(e, "sort")}
                     options={options[0]}
                   />
@@ -193,7 +193,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                       control={control}
                       label="Status: "
                       elementType="filter"
-                      textTruncate={3}
+                      textTruncate={10}
                       onSelect={(e: any) => onChangeFilter(e, "status")}
                       options={options[1]}
                     />
@@ -214,7 +214,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                       control={control}
                       label="Project: "
                       elementType="filter"
-                      textTruncate={4}
+                      textTruncate={10}
                       onSelect={(e: any) => {
                         onChangeFilter(e, "projectId");
                       }}

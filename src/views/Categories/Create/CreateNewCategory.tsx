@@ -163,7 +163,6 @@ const CreateNewCategory = () => {
                 label="add"
                 disabled={subCategory.length === 0}
                 onClick={addSubCategory}
-                loading={loadingCat}
               />
             </Grid>
           </Grid>
