@@ -4,9 +4,10 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
 import { Box } from "@mui/system";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
 import { Grid, Stack, Typography } from "@mui/material";
 import {
+  getAllTasks,
   ProjectsActions,
   selectAllProjects,
   selectSelectedProject,
@@ -22,16 +23,23 @@ interface TasksViewBoard {
 }
 export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const selectedProject = useAppSelector(selectSelectedProject);
   const all = useAppSelector(selectAllProjects);
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
-  // React.useEffect(() => {
-  //   document.addEventListener("visibilitychange", () => {
-  //     if (document.visibilityState === "visible")
-  //   });
-  // }, []);
+  React.useEffect(() => {
+    document.addEventListener("visibilitychange", () => {
+      console.log("visible", location.pathname);
+      if (
+        document.visibilityState === "visible" &&
+        location.pathname.includes("/TasksBoard/")
+      ) {
+        dispatch(getAllTasks(null));
+      }
+    });
+  }, []);
   return (
     <Grid
       container
@@ -71,27 +79,6 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
             {selectedProject?.project?.name}
           </Typography>
           <Box className="task-broad-settings">
-            {/* <Box
-              sx={{ cursor: "pointer" }}
-              onClick={() =>
-                props.history.push("/TasksList", {
-                  projectId: selectedProject.project?._id,
-                })
-              }
-              className="task-option"
-              justifyContent={"center"}
-              alignItems="center"
-            >
-              <Typography
-                fontWeight={"600"}
-                fontSize={16}
-                variant="h6"
-                paddingTop={0.5}
-              >
-                List View
-              </Typography>
-            </Box> */}
-
             <Button
               type="main"
               size="x-small"

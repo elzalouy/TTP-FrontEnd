@@ -6,7 +6,11 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import { ProjectsActions } from "../../../../models/Projects";
+import {
+  getAllTasks,
+  ProjectsActions,
+  selectTasks,
+} from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -48,6 +52,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const navigationNextRef = React.useRef(null);
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
+  const allTasks = useAppSelector(selectTasks);
   const { _id, name, deadline, status, boardId, teamId } = item;
   const [data, setData] = useState<
     | {
@@ -81,6 +86,20 @@ const TaskCard: React.FC<TaskCartProps> = ({
       setTaskFiles(others);
     }
   }, [item]);
+
+  useEffect(() => {
+    let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
+    if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
+      let images = item.attachedFiles.filter((item) =>
+        mimeTypes.includes(item.mimeType)
+      );
+      setTaskImages(images);
+      let others = item?.attachedFiles.filter(
+        (item) => !mimeTypes.includes(item.mimeType)
+      );
+      setTaskFiles(others);
+    }
+  }, [allTasks]);
 
   useEffect(() => {
     if (status !== "Not Started") {
