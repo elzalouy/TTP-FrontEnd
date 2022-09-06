@@ -80,7 +80,7 @@ const Select = (props: IFilterProps) => {
             style={{
               color:
                 props.elementType === "select" && state.selected === ""
-                  ? "#707683"
+                  ? "#B4B6C4"
                   : "#303030",
             }}
           >

@@ -13,6 +13,7 @@ import {
 } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import { ToastSuccess } from "src/coreUI/components/Typos/Alert";
+import Button from "src/coreUI/components/Buttons/Button";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -49,7 +50,11 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
         xs={12}
         sx={{ marginBottom: "20px", overflow: "hidden" }}
       >
-        <Stack direction="row" justifyContent="flex-start" alignItems="center">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography
             sx={{ cursor: "pointer" }}
             variant="h2"
@@ -66,7 +71,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
             {selectedProject?.project?.name}
           </Typography>
           <Box className="task-broad-settings">
-            <Box
+            {/* <Box
               sx={{ cursor: "pointer" }}
               onClick={() =>
                 props.history.push("/TasksList", {
@@ -85,7 +90,19 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
               >
                 List View
               </Typography>
-            </Box>
+            </Box> */}
+
+            <Button
+              type="main"
+              size="x-small"
+              label="List View"
+              onClick={() =>
+                props.history.push("/TasksList", {
+                  projectId: selectedProject.project?._id,
+                })
+              }
+              style={{ marginTop: "0px" }}
+            />
           </Box>
         </Stack>
       </Grid>

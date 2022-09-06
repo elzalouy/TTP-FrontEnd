@@ -11,7 +11,7 @@ export interface UpdateClientInterface {
   _id: string;
   clientName: string;
   createdAt: string;
-  image: string;
+  image: any;
 }
 export interface ClientsInterface {
   loading: boolean | null;

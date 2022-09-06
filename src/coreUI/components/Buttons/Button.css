@@ -37,12 +37,17 @@ button {
   height: 50px;
 }
 
+.button-x-small {
+  font-size: 12px;
+  width: 100px;
+  height: 40px;
+}
 
 /* Styles added based on the color and UI */
 
 button.main {
   background-color: #000000;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 10px;
 }
 
@@ -52,7 +57,6 @@ button.main {
   background-color: #000000;
   color: #ffffff;
 }
-
 
 button.delete {
   background-color: #fe1a1a;

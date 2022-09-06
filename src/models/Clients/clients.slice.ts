@@ -53,16 +53,20 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       }
     },
     createClient: (state = clientState, action: PayloadAction<any>) => {
+      console.log("web socket is wokring", action.payload);
       let index = state.clientsData.findIndex(
         (item) => item.clientName === action.payload.clientName
       );
-      if (index >= 0) state.clientsData[index] = action.payload;
-      else state.clientsData = [...state.clientsData, action.payload];
-      index = state.selectedClient.findIndex(
-        (item) => item.clientName === action.payload.clientName
-      );
-      if (index >= 0) state.selectedClient[index] = action.payload;
-      else state.selectedClient = [...state.clientsData, action.payload];
+      if (index >= 0) {
+        let client = { ...state.clientsData[index] };
+        console.log({ client });
+        client._id = action.payload._id;
+        client.clientName = action.payload.clientName;
+        client.doneProject = action.payload.doneProject;
+        client.inProgressProject = action.payload.inProgressProject;
+        client.inProgressTask = action.payload.inProgressTask;
+        state.clientsData[index] = client;
+      }
     },
   },
   extraReducers: (builder) => {

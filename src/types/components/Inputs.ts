@@ -36,7 +36,7 @@ export interface ISearch {
 
 export interface IButton {
   label: string;
-  size: "large" | "medium" | "small";
+  size: "x-small" | "large" | "medium" | "small";
   type: "main" | "delete" | "add" | "cancel";
   onClick?: (e: any) => any;
   loading?: boolean | null;

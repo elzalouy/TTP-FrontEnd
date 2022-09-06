@@ -7,7 +7,13 @@ import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { IClient } from "src/types/views/Client";
 import { useAppSelector } from "../../../models/hooks";
-import { clientsDataSelector, selectEditClient, selectLoadingClient, updateClient, UpdateClientInterface } from "src/models/Clients";
+import {
+  clientsDataSelector,
+  selectEditClient,
+  selectLoadingClient,
+  updateClient,
+  UpdateClientInterface,
+} from "src/models/Clients";
 import { toast } from "react-toastify";
 import { generateID } from "src/helpers/IdGenerator";
 
@@ -15,7 +21,6 @@ interface Props {
   show: string;
   setShow: (val: string) => void;
 }
-
 
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const editClient: UpdateClientInterface = useAppSelector(selectEditClient);
@@ -28,16 +33,17 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     image: null,
     clientName: "",
   });
-  let checkName = allClients.find(
-    (client) => {
-      if (editClient.clientName === clientData.clientName) return;
-      return client.clientName === clientData.clientName;
-    }
-  );
+  let checkName = allClients.find((client) => {
+    if (editClient.clientName === clientData.clientName) return;
+    return client.clientName === clientData.clientName;
+  });
   const [ImageView, setImageView] = useState<string | null>(null);
 
   useEffect(() => {
-    setClientData(editClient);
+    if (editClient.image.name && editClient.image.size) {
+      let image = setImageView(URL.createObjectURL(editClient.image));
+      setClientData({ ...editClient, image: image });
+    } else setClientData(editClient);
   }, [dispatch, editClient]);
 
   const handleSubmit = async (e: any) => {
@@ -93,7 +99,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const handleClose = () => {
     setShow("none");
   };
-
+  console.log({ editClient });
   return (
     <>
       <PopUp show={show} widthSize="30vw">
@@ -130,8 +136,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                    ? clientData?.image
-                    : ImageView
+                  ? clientData?.image
+                  : ImageView
               }
               style={{
                 width: "9em",
