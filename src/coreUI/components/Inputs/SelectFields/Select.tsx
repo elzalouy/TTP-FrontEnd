@@ -60,6 +60,7 @@ const Select = (props: IFilterProps) => {
     if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
   };
+  
   return (
     <>
       <fieldset
@@ -89,7 +90,7 @@ const Select = (props: IFilterProps) => {
                 {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
                       length: props.textTruncate,
-                      omission: ".",
+                      omission: "...",
                     })
                   : "All"}
               </>

@@ -60,7 +60,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-    console.log({ data });
 
     let newTask: any = {
       name: data.name,

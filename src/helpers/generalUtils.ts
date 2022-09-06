@@ -211,7 +211,7 @@ export const filterOptions = [
   ], [
     { id: "Not Started", value: "Not Started", text: "Not Started", },
     { id: "deliver on time", value: "deliver on time", text: "Delivered on time", },
-    { id: "deliver before time", value: "deliver before deadline", text: "Delivered earlier", },
+    { id: "deliver before deadline", value: "deliver before deadline", text: "Delivered earlier", },
     { id: "late", value: "late", text: "Delivered late", },
     { id: "inProgress", value: "inProgress", text: "In Progress", },
   ],
