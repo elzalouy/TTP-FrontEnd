@@ -127,6 +127,9 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               placeholder={"Department name"}
               type="text"
               control={control}
+              onChange={(e: any) => {
+                setState({ ...state, error: { error: undefined } });
+              }}
               dataTestId="create-dep-Name"
               error={state.error.error?.message ? "true" : undefined}
             />

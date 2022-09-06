@@ -102,8 +102,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       marginTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
     >
       <Grid container xs={12} direction={"row"}>
-        <Grid item xs={4} sm={4} md={12} lg={12} marginBottom={4}>
-          <Typography variant="h3" paddingTop={1.1} fontFamily={"Cairo"}>
+        <Grid item xs={4} sm={4} md={12} lg={12} my={4}>
+          <Typography variant="h2" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
