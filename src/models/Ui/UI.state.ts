@@ -78,5 +78,45 @@ const UiState: UiInterface = {
   deleteCategoryHook: undefined,
   deleteTeamHook: undefined,
 };
+export const initState = {
+  deleteProjectPopup: "none",
+  deleteTaskPopup: "none",
+  editProjectPopup: "none",
+  editDepartmentPopup: "none",
+  deleteDepartmentPopup: "none",
+  editTaskPopup: "none",
+  editClientPopup: "none",
+  deleteClientPopup: "none",
+  viewTaskPopup: "none",
+  createTaskPopup: "none",
+  editProjectManagerPopup: "none",
+  deleteProjectManagerPopup: "none",
+  logoutPopup: "none",
+  isSideMenuOpened: true,
+  createProjectPopup: "none",
+  moveTaskOnTrelloHook: undefined,
+  openTask: "none",
+  /*
+  this hooks shouldn't be used except for updating
+  the state of the project while a certain exndpoint or function called 
+  and the state must be changed after.
+  */
+  newProjectHook: undefined,
+  updateProjectHook: undefined,
+  deleteTasksHook: undefined,
+  deleteProjectHook: undefined,
+  createTeamHook: undefined,
+  createCategoryHook: undefined,
+  createProjectHook: undefined,
+  editTaskHook: undefined,
+  createPMHook: undefined,
+  editPMHook: undefined,
+  moveTaskHook: undefined,
+  updateDepartmentHook: undefined,
+  deleteDepartmentHook: undefined,
+  createDepartmentHook: undefined,
+  deleteCategoryHook: undefined,
+  deleteTeamHook: undefined,
+};
 
 export default UiState;

@@ -190,7 +190,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(createProject.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(createProject.fulfilled, (state, action) => {
       state.loading = false;

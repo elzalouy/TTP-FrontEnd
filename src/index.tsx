@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import store from "./models/store";
 import themes from "./coreUI/themes";
-import { Provider } from "react-redux";
+import { Provider as StoreProvider } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter } from "react-router-dom";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
@@ -17,7 +17,7 @@ import "./assets/fonts/Cairo-Regular.ttf";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <StoreProvider store={store}>
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={themes()}>
@@ -28,7 +28,7 @@ ReactDOM.render(
           </ThemeProvider>
         </StyledEngineProvider>
       </LocalizationProvider>
-    </Provider>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

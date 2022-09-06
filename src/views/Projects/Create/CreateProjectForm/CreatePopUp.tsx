@@ -1,9 +1,13 @@
 import { Check } from "@mui/icons-material";
 import {
-  Grid, Step, StepConnector,
+  Grid,
+  Step,
+  StepConnector,
   stepConnectorClasses,
-  StepIconProps, StepLabel,
-  Stepper, Typography
+  StepIconProps,
+  StepLabel,
+  Stepper,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FC, useState } from "react";
@@ -114,7 +118,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   return (
     <PopUp
       show={createProjectPopup}
-      maxHeight={currentStep === 0 ? undefined : "600px"}
+      maxHeight={currentStep === 0 ? undefined : "calc(100% - 20px)"}
       overFlowY={currentStep === 1 ? "scroll" : undefined}
     >
       <Grid container direction="column" className="projectFormHeader">
@@ -160,7 +164,11 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </Grid>
       <Grid marginTop={5}>
         {currentStep === 0 && (
-          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} clearErr={clearErr} />
+          <ProjectForm
+            setcurrentStep={setcurrentStep}
+            setShow={setShow}
+            clearErr={clearErr}
+          />
         )}
         {currentStep === 1 && (
           <>

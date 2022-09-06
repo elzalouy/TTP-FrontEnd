@@ -22,7 +22,7 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
         <Stack
           sx={{
             position: "absolute",
-            zIndex: 2,
+            zIndex: 3,
             backgroundColor: "white",
             borderRadius: "10px",
             width: "inherit",

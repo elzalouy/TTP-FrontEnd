@@ -50,7 +50,6 @@ const Select = (props: IFilterProps) => {
   }, [props.selected]);
 
   React.useEffect(() => {
-    console.log({ options: props.options, selected: props.selected });
     let selected = state.options.find(
       (item) => item.id === props.selected
     )?.text;
@@ -76,14 +75,16 @@ const Select = (props: IFilterProps) => {
           {props.elementType === "filter" && (
             <p className="label">{props.label}</p>
           )}
-          <p className="value">
-            {props.elementType === "select" ? (
-              state.selected === "" ? (
-                props.label
-              ) : (
-                state.selected
-              )
-            ) : (
+          <p
+            className={"value"}
+            style={{
+              color:
+                props.elementType === "select" && state.selected === ""
+                  ? "#707683"
+                  : "#303030",
+            }}
+          >
+            {props.elementType === "filter" ? (
               <>
                 {state.selected && state.selected !== ""
                   ? _.truncate(state.selected, {
@@ -92,6 +93,8 @@ const Select = (props: IFilterProps) => {
                     })
                   : "All"}
               </>
+            ) : (
+              <>{state.selected === "" ? props.label : state.selected}</>
             )}
           </p>
         </label>

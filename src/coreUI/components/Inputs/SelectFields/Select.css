@@ -44,6 +44,7 @@ fieldset[id*="filter-"] .label {
 fieldset[id*="filter-"] .value {
   font-weight: bold;
   text-transform: capitalize;
+  font-weight: 14px;
 }
 
 /* Options */
@@ -120,10 +121,10 @@ fieldset[id*="select"] .labelValue {
   cursor: pointer;
   padding-block: 10px;
   width: 100%;
+  color: #707683 !important;
 }
 
 fieldset[id*="select"] .value {
-  color: #111;
   font-size: 14px;
   text-transform: capitalize;
 }

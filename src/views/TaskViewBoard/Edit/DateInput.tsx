@@ -80,7 +80,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                           height: "10px",
                           position: "absolute",
                           right: "13px",
-                          bottom: "17px",
+                          bottom: "20px",
                         }}
                         alt="closeIcon"
                         onClick={() => {

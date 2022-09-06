@@ -1,10 +1,28 @@
 import { PayloadAction, createSlice, Slice } from "@reduxjs/toolkit";
-import UiState, { UiInterface } from "./UI.state";
+import UiState, { initState, UiInterface } from "./UI.state";
 
 const UISlice: Slice<UiInterface> = createSlice({
   name: "ui",
   initialState: UiState,
   reducers: {
+    initAppUiState: (state = UiState, action: PayloadAction<any>) => {
+      state.deleteProjectPopup = "none";
+      state.deleteTaskPopup = "none";
+      state.editProjectPopup = "none";
+      state.editDepartmentPopup = "none";
+      state.deleteDepartmentPopup = "none";
+      state.editTaskPopup = "none";
+      state.editClientPopup = "none";
+      state.deleteClientPopup = "none";
+      state.viewTaskPopup = "none";
+      state.createTaskPopup = "none";
+      state.editProjectManagerPopup = "none";
+      state.deleteProjectManagerPopup = "none";
+      state.logoutPopup = "none";
+      state.createProjectPopup = "none";
+      state.openTask = "none";
+      state.createProjectPopup = "none";
+    },
     openDeleteTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.deleteTaskPopup = action.payload;
     },
@@ -148,5 +166,6 @@ export const {
   fireMoveTaskOnTrello,
   toggleDeleteDepartment,
   toggleTask,
+  initAppUiState,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

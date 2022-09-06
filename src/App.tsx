@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
   Login,
@@ -47,8 +47,11 @@ import "swiper/css/navigation";
 import "swiper/css";
 import UIComponents from "./views/UiComponents";
 import SelectOptions from "./coreUI/components/Inputs/SelectFields/Options";
+import { initAppUiState } from "./models/Ui";
 const App: React.FC = (props) => {
+  console.log({ appProps: props });
   const dispatch = useDispatch();
+
   const projects = useAppSelector(selectAllProjects);
   const isAuthed = useAppSelector(selectIsAuth);
   const [mounted, setMounted] = useState(false);

@@ -5,6 +5,8 @@ import AuthRedirection from "../../views/Auth/AuthRedirection/AuthRedirection";
 import { checkAuthToken } from "../../services/api";
 import { Route, Redirect, useLocation } from "react-router-dom";
 import "./Layout.css";
+import { useDispatch } from "react-redux";
+import { initAppUiState } from "src/models/Ui";
 
 interface Props {
   component: React.ReactNode;
@@ -17,12 +19,9 @@ const LoggedInContainer: React.FC<Props> = ({
   notfound,
   ...rest
 }: any) => {
-  const { pathname } = useLocation();
-
   if (!checkAuthToken()) {
     return <AuthRedirection />;
   }
-
   return (
     <div className="main">
       <Route

@@ -38,7 +38,7 @@ const Options = ({
         {options &&
           options?.map((item) => (
             <li
-              className="option"
+              className="option unselectable"
               value={item.id}
               key={item.id}
               id={item.id}

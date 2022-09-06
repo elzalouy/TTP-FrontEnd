@@ -25,12 +25,15 @@ import {
   toggleViewTaskPopup,
   toggleEditDepartment,
   toggleDeleteDepartment,
+  initAppUiState,
 } from "src/models/Ui";
 import EditDepartment from "src/views/Departments/Edit/EditDepartment";
 import DeleteDepartment from "src/views/Departments/Delete/DeleteDepartment";
+import { useLocation } from "react-router";
 
 const Modals: React.FC = (props) => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const {
     deleteProjectPopup,
     editProjectPopup,
@@ -44,6 +47,10 @@ const Modals: React.FC = (props) => {
     editDepartmentPopup,
     deleteDepartmentPopup,
   } = useAppSelector(selectUi);
+
+  React.useEffect(() => {
+    dispatch(initAppUiState(null));
+  }, [pathname]);
 
   const showDeleteProjectPopup = (val: string) =>
     dispatch(openDeleteProjectPopup(val));
