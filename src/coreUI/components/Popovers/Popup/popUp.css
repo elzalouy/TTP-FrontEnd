@@ -9,7 +9,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   align-items: center;
-  z-index: 2;
+  z-index: 3;
 }
 
 @media (max-width:1200px) {
@@ -20,7 +20,7 @@
 }
 
 .small-popup-container {
-  z-index: 3 !important;
+  z-index: 5 !important;
 }
 
 .pop-up {
@@ -40,7 +40,6 @@
   max-height: 95vh;
   animation: zoomIn 0.3s;
   overflow: auto;
-
 }
 
 @keyframes zoomIn {

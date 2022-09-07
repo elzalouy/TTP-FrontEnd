@@ -20,7 +20,6 @@
 .task-card-header-not-clear {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
 }
 
 .task-card-header-canceled {
@@ -31,7 +30,6 @@
 
 .task-card-footer-done {
   background-color: #b4e5e9;
-  font-weight: bold;
   border-radius: 5px;
   padding: 5px 8px;
   margin: 0 10px 0 0px;
@@ -46,8 +44,7 @@
 }
 
 .task-card-footer-shared {
-  background-color: #f0ddc3;
-  font-weight: bold;
+  background-color: #ecdad7;
   border-radius: 5px;
   padding: 5px 8px;
   margin: 0 10px 0 0px;
@@ -55,7 +52,6 @@
 
 .task-card-footer-canceled {
   background-color: #f1cbcc;
-  font-weight: bold;
   border-radius: 5px;
   padding: 5px 8px;
   margin: 0 10px 0 0px;
@@ -196,7 +192,20 @@ body {
   height: 100%;
   object-fit: cover;
 }
+.swiper-button-disabled {
+  pointer-events: none;
+}
 
+.swiper-button-disabled .prev,
+.swiper-button-disabled .next {
+  /* !IMPORTANT Keep in mind that this property is not supported by Opera Mini and IE 10 and below (inclusive).
+  \ Another solution is needed for these browsers. */
+  pointer-events: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  color: black;
+  opacity: 0.5;
+}
 .prev {
   position: absolute;
   top: 63px;

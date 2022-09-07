@@ -123,7 +123,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       margin={"30px"}
       containerClassName="projectForm"
     >
-      <Grid container direction="column" className="projectFormHeader">
+      <Grid container direction="column" className="projectFormHeader" sx={{}}>
         <div style={{ position: "relative", width: "100%" }}>
           <Grid
             item
@@ -166,11 +166,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </Grid>
       <Grid marginTop={5}>
         {currentStep === 0 && (
-          <ProjectForm
-            setcurrentStep={setcurrentStep}
-            setShow={setShow}
-            clearErr={clearErr}
-          />
+          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
         )}
         {currentStep === 1 && (
           <>

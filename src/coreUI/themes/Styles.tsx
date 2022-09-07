@@ -253,7 +253,7 @@ export const dataTimePickerInputStyle = {
     background: "white !important",
     border: "0.5px solid #b4b6c4 !important",
     ":focus": {
-      border: "0.5px solid #303030 !important",
+      border: "2px solid #303030 !important",
     },
   },
   "& .MuiOutlinedInput-notchedOutline": {

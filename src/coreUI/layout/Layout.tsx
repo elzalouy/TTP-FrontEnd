@@ -22,6 +22,7 @@ const LoggedInContainer: React.FC<Props> = ({
   if (!checkAuthToken()) {
     return <AuthRedirection />;
   }
+
   return (
     <div className="main">
       <Route

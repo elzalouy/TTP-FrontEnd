@@ -13,15 +13,12 @@ import { useAppSelector } from "src/models/hooks";
 import { selectPMOptions, selectPMs } from "src/models/PM";
 import { createProject, selectLoading } from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
-import {
-  validateCreateProject
-} from "src/services/validations/project.schema";
+import { validateCreateProject } from "src/services/validations/project.schema";
 import { IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 
-
 // create
-const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr }) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep }) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -42,13 +39,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr }) 
 
   React.useEffect(() => {
     reset();
+    setError({ error: undefined, value: undefined, warning: undefined });
   }, [createProjectPopup]);
-
-  React.useEffect(() => {
-    if (clearErr) {
-      setError({ error: undefined, value: undefined, warning: undefined });
-    }
-  }, [clearErr])
 
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;

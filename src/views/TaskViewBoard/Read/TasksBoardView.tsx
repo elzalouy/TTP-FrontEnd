@@ -29,17 +29,17 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
   }, [props.match.params.id, all.projects]);
-  React.useEffect(() => {
-    document.addEventListener("visibilitychange", () => {
-      console.log("visible", location.pathname);
-      if (
-        document.visibilityState === "visible" &&
-        location.pathname.includes("/TasksBoard/")
-      ) {
-        dispatch(getAllTasks(null));
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   document.addEventListener("visibilitychange", () => {
+  //     console.log("visible", location.pathname);
+  //     if (
+  //       document.visibilityState === "visible" &&
+  //       location.pathname.includes("/TasksBoard/")
+  //     ) {
+  //       dispatch(getAllTasks(null));
+  //     }
+  //   });
+  // }, []);
   return (
     <Grid
       container

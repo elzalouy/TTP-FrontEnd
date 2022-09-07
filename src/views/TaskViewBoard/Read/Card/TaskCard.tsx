@@ -29,7 +29,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
-import { videoTypes } from "../../../../types/views/BoardView";
 
 interface TaskCartProps {
   index: number;
@@ -50,6 +49,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
 
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
+  console.log({ navigationNextRef });
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
   const allTasks = useAppSelector(selectTasks);
@@ -197,9 +197,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
               >
                 {name}
               </Typography>
-              {item.status !== "Not Clear" && item.status !== "Cancled" && (
-                <TasksPopover item={item} />
-              )}
+              {/* {item.status !== "Not Clear" && item.status !== "Cancled" && ( */}
+              <TasksPopover item={item} />
+              {/* )} */}
             </Stack>
             <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
               <Typography color={"#696974"}>
@@ -228,11 +228,25 @@ const TaskCard: React.FC<TaskCartProps> = ({
                               navigationPrevRef.current;
                             swiper.params.navigation.nextEl =
                               navigationNextRef.current;
-                          });
+                          }, 500);
                         }}
                         onBeforeInit={(swiper: any) => {
                           swiper.params.navigation.prevEl = navigationPrevRef;
                           swiper.params.navigation.nextEl = navigationNextRef;
+                        }}
+                        onInit={(swiper) => {
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          // eslint-disable-next-line no-param-reassign
+                          swiper.params.navigation.prevEl =
+                            navigationPrevRef.current;
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          // eslint-disable-next-line no-param-reassign
+                          swiper.params.navigation.nextEl =
+                            navigationNextRef.current;
+                          swiper.navigation.init();
+                          swiper.navigation.update();
                         }}
                         modules={[Autoplay, Navigation]}
                         className="swiper"
@@ -252,7 +266,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                               </div>
                             );
                           return (
-                            <SwiperSlide key={index} className="swiper-slide">
+                            <SwiperSlide key={index} className={`swiper-slide`}>
                               <img
                                 style={{
                                   width: "100%",
@@ -269,19 +283,15 @@ const TaskCard: React.FC<TaskCartProps> = ({
                             </SwiperSlide>
                           );
                         })}
-                        {taskImages.length > 1 && (
-                          <>
-                            <div ref={navigationPrevRef}>
-                              <ArrowBackIosNewIcon
-                                className="prev"
-                                htmlColor="black"
-                              />
-                            </div>
-                            <div ref={navigationNextRef}>
-                              <ArrowForwardIosIcon className="next" />
-                            </div>
-                          </>
-                        )}
+                        <div ref={navigationPrevRef}>
+                          <ArrowBackIosNewIcon
+                            className="prev"
+                            htmlColor="black"
+                          />
+                        </div>
+                        <div ref={navigationNextRef}>
+                          <ArrowForwardIosIcon className="next" />
+                        </div>
                       </Swiper>
                     </>
                   )}

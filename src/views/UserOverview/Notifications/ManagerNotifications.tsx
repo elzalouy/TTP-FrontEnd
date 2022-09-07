@@ -4,8 +4,11 @@ import ScrollOver from "../../../coreUI/components/Popovers/Popup/ScrollOver";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router";
 import { useAppSelector } from "../../../models/hooks";
-import { selectSatistics } from "../../../models/Statistics";
-import { setWidth } from "../../../helpers/generalUtils";
+import {
+  selectSatistics,
+  selectStatisticsLoading,
+} from "../../../models/Statistics";
+import { cssTabContent, setWidth } from "../../../helpers/generalUtils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Box,
@@ -19,11 +22,14 @@ import {
 } from "@mui/material";
 import { Task } from "../../../types/models/Projects";
 import IMAGES from "src/assets/img/Images";
+import { selectLoading } from "src/models/Projects";
+import Empty from "./Empy";
 interface Props {
   history: RouteComponentProps["history"];
 }
 const ManagerNotifications: React.FC<Props> = (props) => {
   const statistics = useAppSelector(selectSatistics);
+
   const tabs = ["0", "1", "2"];
   const [tab, setTab] = React.useState("0");
   const [open, setOpen] = React.useState(false);
@@ -44,33 +50,6 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       paddingBottom: 1.2,
     };
   };
-  const cssTabContent = (tabItem: string) => {
-    let tasks =
-      tabItem === "0"
-        ? statistics.OM.taskboard
-        : tabItem === "1"
-        ? statistics.OM.review
-        : statistics.OM.shared;
-    let flat = _.flattenDeep(tasks);
-    return {
-      position: "relative",
-      height: open ? `500px` : `200px`,
-      overflowY: "scroll",
-      "&::-webkit-scrollbar": {
-        display: open ? "block !important" : "none",
-        width: "3px !important",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        backgroundColor: "#ECECEC",
-        borderRadius: 5,
-      },
-      "&::-webkit-scrollbar-button": {
-        color: "#9FA1AB",
-        width: "3px !important",
-        borderRadius: 5,
-      },
-    };
-  };
 
   return (
     <Box
@@ -80,6 +59,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       }}
       overflow="hidden"
     >
+      {/* some changes */}
       <ScrollOver setPopover={setOpen} popover={open} notification={MD}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
@@ -120,7 +100,14 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                 hidden={tab == tabItem ? false : true}
                 id={tabItem}
                 tabIndex={index}
-                sx={cssTabContent(tabItem)}
+                sx={cssTabContent(
+                  open,
+                  tabItem === "0"
+                    ? statistics.OM.taskboard
+                    : tabItem === "1"
+                    ? statistics.OM.review
+                    : statistics.OM.shared
+                )}
               >
                 {tasks &&
                   tasks?.map((TArray: Task[], index: number) => {
@@ -136,7 +123,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                     ) {
                       let date = new Date(TArray[0].lastMoveDate);
                       day = date?.getDate().toString();
-                      month = date?.getMonth().toString();
+                      month = (date?.getMonth() + 1).toString();
                       year = date?.getFullYear().toString();
                     }
                     if (
@@ -146,7 +133,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                     ) {
                       let date = new Date(TArray[0].createdAt);
                       day = date?.getDate().toString();
-                      month = date?.getMonth().toString();
+                      month = (date?.getMonth() + 1).toString();
                       year = date?.getFullYear().toString();
                       currentDay = [
                         "Sunday",
@@ -168,7 +155,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                           <Typography sx={cssDay}>{currentDay}</Typography>
                           <Typography
                             sx={cssDate}
-                          >{`${day},  ${month}  ${year}`}</Typography>
+                          >{`${day}/  ${month}/  ${year}`}</Typography>
                         </Box>
                         {TArray?.length > 0 &&
                           (open === true ? TArray : TArray.slice(0, 2)).map(
@@ -215,17 +202,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                     </Button>
                   ) : (
                     <>
-                      <Box textAlign={"center"} width="100%">
-                        <img
-                          src={IMAGES.OverviewNotificationsEmpty}
-                          width="170px"
-                          height={"170px"}
-                          alt=""
-                        />
-                        <Typography fontSize={"16px"} color="#505050">
-                          Nothing have been moved !!
-                        </Typography>
-                      </Box>
+                      <Empty />
                     </>
                   )}
                 </>
@@ -294,7 +271,7 @@ const cssMoreBtn = {
   position: "absolute",
   bottom: "0px",
   left: "0px",
-  paddingTop: 1,
+  paddingTop: 2,
   ":hover": {
     backgroundColor: "transparent",
   },
