@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.0209a007.css",
-    "main.js": "/static/js/main.f07d3833.js",
+    "main.css": "/static/css/main.2eb2266e.css",
+    "main.js": "/static/js/main.acf2700f.js",
     "static/media/picTask.svg": "/static/media/picTask.dff3f45f90a7316d11fc54176eb402c9.svg",
     "static/media/avatar.svg": "/static/media/avatar.ae5088bd8f8611a2fd5b4b22c9d15d68.svg",
     "static/media/Cairo-Black.ttf": "/static/media/Cairo-Black.9851b4d11fb6b245a054.ttf",
@@ -42,12 +42,12 @@
     "static/media/OverViewDone.svg": "/static/media/OverViewDone.3a19ecd1bbe186a1c2e81118c92bf9ab.svg",
     "static/media/notification.svg": "/static/media/notification.6efdf45401ae860bff538cca538f36f4.svg",
     "static/media/Overviewicon.svg": "/static/media/Overviewicon.a75cbddc8776e48fc332c60ad2b7b214.svg",
+    "index.html": "/index.html",
     "static/media/OverviewTasksIcon.svg": "/static/media/OverviewTasksIcon.bd54a158824129500cec8ecfd0500acc.svg",
     "static/media/tasks.svg": "/static/media/tasks.d697675615ea34108a00c7736b3e7832.svg",
     "static/media/logouticon.svg": "/static/media/logouticon.76180bd3ca1eee6be51e83d66f09994b.svg",
     "static/media/Iconly-Light-outline-Search.svg": "/static/media/Iconly-Light-outline-Search.a24acbf77fb0e5930d8ac00fcad6bf9c.svg",
     "static/media/serachicon.SVG": "/static/media/serachicon.fa2af809bf65455d8a50.SVG",
-    "index.html": "/index.html",
     "static/media/fileicon.svg": "/static/media/fileicon.0780e7741fa20ca4c1e723a487977edf.svg",
     "static/media/OverviewProjectsIcon.svg": "/static/media/OverviewProjectsIcon.17b4a8c522d09077ab3d75e800b7fa3e.svg",
     "static/media/projectsicon.svg": "/static/media/projectsicon.7df229cccccb1e53e31c62021d635969.svg",
@@ -74,11 +74,11 @@
     "static/media/moreGrey.svg": "/static/media/moreGrey.ddc5c341f307950130a6aa8296f48b13.svg",
     "static/media/dropdownIcon.svg": "/static/media/dropdownIcon.a414677dfa22a0682382711a6ee83e1f.svg",
     "static/media/burgerIcon.svg": "/static/media/burgerIcon.86db76e87fe958e25d86ebf4fa4c7f79.svg",
-    "main.0209a007.css.map": "/static/css/main.0209a007.css.map",
-    "main.f07d3833.js.map": "/static/js/main.f07d3833.js.map"
+    "main.2eb2266e.css.map": "/static/css/main.2eb2266e.css.map",
+    "main.acf2700f.js.map": "/static/js/main.acf2700f.js.map"
   },
   "entrypoints": [
-    "static/css/main.0209a007.css",
-    "static/js/main.f07d3833.js"
+    "static/css/main.2eb2266e.css",
+    "static/js/main.acf2700f.js"
   ]
 }
