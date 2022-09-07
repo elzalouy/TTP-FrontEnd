@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Joi from "joi";
 import moment from "moment";
 import * as React from "react";
@@ -21,7 +21,7 @@ import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 
 
 // create
-const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr }) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -37,12 +37,15 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, clearErr}) =
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
+
   React.useEffect(() => {
     reset();
   }, [createProjectPopup]);
 
   React.useEffect(() => {
-    if(clearErr){
+    if (clearErr) {
       setError({ error: undefined, value: undefined, warning: undefined });
     }
   }, [clearErr])

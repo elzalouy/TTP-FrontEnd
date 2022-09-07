@@ -39,3 +39,15 @@ export type UseFormProps = {
   fieldState: ControllerFieldState;
   formState: UseFormStateReturn<FieldValues>;
 };
+
+type overFlow = "visible" | "hidden" | "clip" | "scroll" | "auto";
+export interface IPopup {
+  show: string;
+  children: object;
+  color?: string;
+  minWidthSize?: string;
+  maxWidthSize?: string;
+  maxHeight?: string;
+  overFlowY?: overFlow;
+  margin?:string;
+};

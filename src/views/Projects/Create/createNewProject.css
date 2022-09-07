@@ -232,7 +232,7 @@ table.allTask-table td.deleteTd {
   text-transform: capitalize;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .blackBtn {
     cursor: pointer;
     width: 150px;

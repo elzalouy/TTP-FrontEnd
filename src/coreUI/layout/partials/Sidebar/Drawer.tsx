@@ -1,6 +1,6 @@
+import { Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
 import {
-  AppBar,
-  Box,
+  AppBarProps, Box,
   Divider,
   Drawer,
   IconButton,
@@ -9,49 +9,47 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  AppBarProps,
+  useMediaQuery
 } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
-import "./slider.css";
 import Avatar from "react-avatar";
-import { styled } from "@mui/material/styles";
-import { Logo } from "../../../components/Images/Images";
-import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
-import DrawerItem from "./DrawerItem";
 import { useDispatch } from "react-redux";
-import {
-  logout,
-  selectImage,
-  selectIsLogout,
-  selectRole,
-  selectUser,
-} from "../../../../models/Auth";
-import { Redirect, useHistory } from "react-router";
-import IMAGES from "../../../../assets/img/Images";
-import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
-import Overviewicon from "../../../../assets/icons/Overview";
-import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
-import PersonIcon from "../../../../assets/icons/Person";
-import ClientIcon from "../../../../assets/icons/ClientIcon";
-import TaskIcon from "../../../../assets/icons/TaskIcon";
+import { useHistory } from "react-router";
 import CategoryIcon from "../../../../assets/icons/CategoryIcon";
+import ClientIcon from "../../../../assets/icons/ClientIcon";
+import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
 import NotificationIcon from "../../../../assets/icons/Notification";
+import Overviewicon from "../../../../assets/icons/Overview";
+import PersonIcon from "../../../../assets/icons/Person";
+import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
+import TaskIcon from "../../../../assets/icons/TaskIcon";
+import IMAGES from "../../../../assets/img/Images";
+import {
+  selectRole,
+  selectUser
+} from "../../../../models/Auth";
 import { useAppSelector } from "../../../../models/hooks";
+import { selectUnNotifiedNum } from "../../../../models/Notifications";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../../models/Ui";
 import { selectSideMenuToggle } from "../../../../models/Ui/UI.selectors";
-import { selectUnNotifiedNum } from "../../../../models/Notifications";
-import { getPMs } from "../../../../models/PM";
+import { Logo } from "../../../components/Images/Images";
+import DrawerItem from "./DrawerItem";
+import "./slider.css";
 
-interface BarProps extends AppBarProps {}
+interface BarProps extends AppBarProps { }
 
 const AppDrawer: React.FC = (props: any) => {
   const open = useAppSelector(selectSideMenuToggle);
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
-  const userImage = useAppSelector(selectImage);
+  // const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
   const userNotificationsNo = useAppSelector(selectUnNotifiedNum);
   const history = useHistory();
+  const theme = useTheme();
+  const LG = useMediaQuery(theme.breakpoints.down("lg"));
+
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -59,6 +57,8 @@ const AppDrawer: React.FC = (props: any) => {
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   }));
+
+  
 
   const handleLogout = () => {
     dispatch(toggleLogOutPopup("flex"));
@@ -74,12 +74,12 @@ const AppDrawer: React.FC = (props: any) => {
           overflow: "hidden",
           position: "inherit",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
-          width: open ? "16%" : `calc(2% + 1px)`,
+          width: open ? (LG ? "20%" : "16%") : `calc(2% + 1px)`,
           flexShrink: 0,
           transition: " all 0.5s ease !important",
           marginRight: open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: open ? "16%" : "4%",
+            width: open ? (LG ? "20%" : "16%") : "4%",
             transition: "all 0.5s ease !important",
           },
         }}
@@ -276,13 +276,13 @@ const AppDrawer: React.FC = (props: any) => {
                         ? user?.role === "OM"
                           ? "Admin"
                           : user?.role === "PM"
-                          ? "Project Manager"
-                          : ""
+                            ? "Project Manager"
+                            : ""
                         : user?.user?.role === "OM"
-                        ? "Admin"
-                        : user?.user?.role === "PM"
-                        ? "Project Manager"
-                        : ""}
+                          ? "Admin"
+                          : user?.user?.role === "PM"
+                            ? "Project Manager"
+                            : ""}
                     </Typography>
                   </Box>
                   <Box sx={{ cursor: "pointer" }}>
