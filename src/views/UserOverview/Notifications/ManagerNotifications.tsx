@@ -59,6 +59,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       }}
       overflow="hidden"
     >
+      {/* some changes */}
       <ScrollOver setPopover={setOpen} popover={open} notification={MD}>
         <Stack sx={cssStack}>
           <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
