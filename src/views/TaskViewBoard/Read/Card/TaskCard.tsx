@@ -278,7 +278,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   setImageError(index);
                                 }}
                                 src={image?.url}
-                                crossOrigin="use-credentials"
+                                crossOrigin="anonymous"
                                 alt="more"
                               />
                             </SwiperSlide>
