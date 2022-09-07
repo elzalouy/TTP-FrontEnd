@@ -1,4 +1,5 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
+import _ from "lodash";
 import { ProjectManager } from "src/models/PM";
 import { Status } from "src/types/views/BoardView";
 import { Project, ProjectsInterface, Task } from "../types/models/Projects";
@@ -167,7 +168,11 @@ export const getTasksByClientIdAndStatus = (
 
 export const checkValueAndShowOptions = (value: string | undefined) => {
   if (value) {
-    if (["Done", "late", "deliver on time", "deliver before deadline"].includes(value)) {
+    if (
+      ["Done", "late", "deliver on time", "deliver before deadline"].includes(
+        value
+      )
+    ) {
       return [{ value: "inProgress", text: "In Progress" }];
     } else {
       return [
@@ -176,7 +181,7 @@ export const checkValueAndShowOptions = (value: string | undefined) => {
       ];
     }
   } else {
-    return [{ value: "", text: "" }]
+    return [{ value: "", text: "" }];
   }
 };
 
@@ -203,19 +208,27 @@ export const getDepartmentOptions = (data: any[]) => {
   } else return [];
 };
 
-
 export const filterOptions = [
   [
     { id: "asc", text: "Ascending", value: "asc" },
     { id: "desc", text: "Descending", value: "desc" },
-  ], [
-    { id: "Not Started", value: "Not Started", text: "Not Started", },
-    { id: "deliver on time", value: "deliver on time", text: "Delivered on time", },
-    { id: "deliver before deadline", value: "deliver before deadline", text: "Delivered earlier", },
-    { id: "late", value: "late", text: "Delivered late", },
-    { id: "inProgress", value: "inProgress", text: "In Progress", },
   ],
-]
+  [
+    { id: "Not Started", value: "Not Started", text: "Not Started" },
+    {
+      id: "deliver on time",
+      value: "deliver on time",
+      text: "Delivered on time",
+    },
+    {
+      id: "deliver before deadline",
+      value: "deliver before deadline",
+      text: "Delivered earlier",
+    },
+    { id: "late", value: "late", text: "Delivered late" },
+    { id: "inProgress", value: "inProgress", text: "In Progress" },
+  ],
+];
 
 export const checkProjectStatus = (status: string | undefined) => {
   if (
@@ -227,4 +240,29 @@ export const checkProjectStatus = (status: string | undefined) => {
   } else {
     return true;
   }
+};
+
+export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
+  let flat = _.flattenDeep(NestedTasks);
+  let more = false;
+  more =
+    NestedTasks && NestedTasks[0] && NestedTasks[0].length > 2 ? true : false;
+  return {
+    position: "relative",
+    height: open && more ? `500px` : `200px`,
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: open ? "block !important" : "none",
+      width: "3px !important",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ECECEC",
+      borderRadius: 5,
+    },
+    "&::-webkit-scrollbar-button": {
+      color: "#9FA1AB",
+      width: "3px !important",
+      borderRadius: 5,
+    },
+  };
 };

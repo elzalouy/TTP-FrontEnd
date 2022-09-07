@@ -31,6 +31,12 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         if (projects && projects.length > 0) {
           state.OM.projectsCloseToDeadlines = projects.filter(
             (item) =>
+              item.projectStatus &&
+              ![
+                "deliver on time",
+                "deliver before deadline",
+                "delivered after deadline",
+              ].includes(item?.projectStatus) &&
               item.projectDeadline &&
               isCloseToDeadline(item.projectDeadline, item.startDate, 35)
           );
@@ -70,7 +76,16 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       if (user && user?.role?.length > 0) {
         let userProjects =
           projects &&
-          projects?.filter((item) => item.projectManager?._id === user._id);
+          projects?.filter(
+            (item) =>
+              item.projectStatus &&
+              item.projectManager?._id === user._id &&
+              ![
+                "deliver on time",
+                "deliver before deadline",
+                "delivered after deadline",
+              ].includes(item?.projectStatus)
+          );
         state.PM.projects = userProjects;
 
         if (tasks) {

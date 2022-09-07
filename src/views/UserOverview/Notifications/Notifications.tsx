@@ -8,6 +8,8 @@ import { selectSatistics } from "../../../models/Statistics";
 import Status from "../../../coreUI/components/Typos/Status";
 import _ from "lodash";
 import { Task } from "../../../types/models/Projects";
+import { cssTabContent } from "src/helpers/generalUtils";
+import Empty from "./Empy";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -40,33 +42,6 @@ const Notifications: React.FC<Props> = (props) => {
     };
   };
 
-  const cssTabContent = (tabItem: string) => {
-    let tasks =
-      tabItem === "0" ? statistics.PM.inProgress : statistics.PM.review;
-    let flat = _.flattenDeep(tasks);
-    return {
-      height: open
-        ? flat && flat?.length <= 4
-          ? `${flat?.length * 60 + 76}px`
-          : "400px"
-        : "auto",
-      overflowY: "scroll",
-      "&::-webkit-scrollbar": {
-        display: open ? "block !important" : "none",
-        width: "3px !important",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        backgroundColor: "#ECECEC",
-        borderRadius: 5,
-      },
-      "&::-webkit-scrollbar-button": {
-        color: "#9FA1AB",
-        width: "3px !important",
-        borderRadius: 5,
-      },
-    };
-  };
-
   return (
     <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
       <PopoverComponent setPopover={setOpen} popover={open}>
@@ -87,13 +62,18 @@ const Notifications: React.FC<Props> = (props) => {
                 hidden={tab == tabItem ? false : true}
                 id={tabItem}
                 tabIndex={index}
-                sx={cssTabContent(tabItem)}
+                sx={cssTabContent(
+                  open,
+                  tabItem === "0"
+                    ? statistics.PM.inProgress
+                    : statistics.PM.review
+                )}
               >
                 {tasks &&
                   tasks?.map((TArray: Task[], index: number) => {
                     let day = "",
                       year = "",
-                      month = "",
+                      month = 0,
                       currentDay = "";
                     if (
                       TArray?.length > 0 &&
@@ -103,7 +83,7 @@ const Notifications: React.FC<Props> = (props) => {
                     ) {
                       let date = new Date(TArray[0].lastMoveDate);
                       day = date?.getDate().toString();
-                      month = date?.getMonth().toString();
+                      month = date?.getMonth();
                       year = date?.getFullYear().toString();
                     }
                     if (
@@ -113,7 +93,7 @@ const Notifications: React.FC<Props> = (props) => {
                     ) {
                       let date = new Date(TArray[0].createdAt);
                       day = date?.getDate().toString();
-                      month = date?.getMonth().toString();
+                      month = date?.getMonth();
                       year = date?.getFullYear().toString();
                       currentDay = [
                         "Sunday",
@@ -133,9 +113,9 @@ const Notifications: React.FC<Props> = (props) => {
                           marginTop={2}
                         >
                           <Typography sx={cssDay}>{currentDay}</Typography>
-                          <Typography
-                            sx={cssDate}
-                          >{`${day},  ${month}  ${year}`}</Typography>
+                          <Typography sx={cssDate}>{`${day}/  ${
+                            month + 1
+                          }/  ${year}`}</Typography>
                         </Box>
                         {TArray?.length > 0 &&
                           (open === true ? TArray : TArray.slice(0, 1)).map(
@@ -158,22 +138,28 @@ const Notifications: React.FC<Props> = (props) => {
                       </>
                     );
                   })}
-                <Button
-                  variant="text"
-                  sx={cssMoreBtn}
-                  fullWidth={false}
-                  onClick={() => setOpen(!open)}
-                  disableRipple={true}
-                >
-                  {open ? (
-                    <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                  ) : (
-                    <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                  )}
-                  <Typography sx={cssMoreText}>
-                    {open ? "See Less" : "See More"}
-                  </Typography>
-                </Button>
+                {tasks && tasks.length > 0 ? (
+                  <Button
+                    variant="text"
+                    sx={cssMoreBtn}
+                    fullWidth={false}
+                    onClick={() => setOpen(!open)}
+                    disableRipple={true}
+                  >
+                    {open ? (
+                      <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                    ) : (
+                      <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+                    )}
+                    <Typography sx={cssMoreText}>
+                      {open ? "See Less" : "See More"}
+                    </Typography>
+                  </Button>
+                ) : (
+                  <>
+                    <Empty />
+                  </>
+                )}
               </Box>
             );
           })}
@@ -237,7 +223,7 @@ const cssNotiSubTitle = {
 const cssMoreBtn = {
   width: "100%",
   justifyContent: "center",
-  paddingTop: 1,
+  paddingTop: 2,
   ":hover": {
     backgroundColor: "transparent",
   },
