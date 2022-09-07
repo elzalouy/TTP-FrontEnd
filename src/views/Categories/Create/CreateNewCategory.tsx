@@ -166,7 +166,7 @@ const CreateNewCategory = () => {
               />
             </Grid>
           </Grid>
-          <div className="subcategories">
+          <div className="subcategories categoryCardScroll">
             {subCategories &&
               subCategories.map(({ _id, subCategory }: any) => (
                 <Badge

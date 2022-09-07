@@ -24,7 +24,7 @@
 .controllers {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 0px;
   width: 100%;
 }
 
@@ -369,6 +369,32 @@
   width: 100%;
   box-sizing: border-box;
   margin-top: 10px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+/* width */
+.names-container::-webkit-scrollbar {
+  display: block !important;
+  width: 3px;
+  height: 2px;
+}
+
+/* Track */
+.names-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(128, 128, 128, 0.135);
+  border-radius: 10px;
+}
+
+/* Handle */
+.names-container::-webkit-scrollbar-thumb {
+  background: rgba(36, 32, 32, 0.415);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.names-container::-webkit-scrollbar-thumb:hover {
+  background: black;
 }
 
 .pointer {
@@ -613,7 +639,7 @@ table.allTeam-table td.deleteTd {
   }
 
   .controllers {
-    margin-top: 20px;
+    margin-top: 0px;
   }
 
   .controllers-done {
@@ -632,7 +658,7 @@ table.allTeam-table td.deleteTd {
   }
 
   .controllers {
-    margin-top: 20px;
+    margin-top: 0px;
   }
 
   .controllers-done {
