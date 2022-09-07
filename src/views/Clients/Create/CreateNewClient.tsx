@@ -122,6 +122,7 @@ const CreateNewClient: React.FC = () => {
                   clientName: "",
                 });
                 setShow("none");
+                setError(false);
               }}
             />
           </Box>

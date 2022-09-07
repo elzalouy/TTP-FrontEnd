@@ -43,7 +43,9 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     if (editClient.image.name && editClient.image.size) {
       let image = setImageView(URL.createObjectURL(editClient.image));
       setClientData({ ...editClient, image: image });
-    } else setClientData(editClient);
+    } else {
+      setClientData(editClient)
+    };
   }, [dispatch, editClient]);
 
   const handleSubmit = async (e: any) => {
@@ -96,9 +98,14 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     }
     setClientData(data);
   };
+
   const handleClose = () => {
+    setImageView(null);
+    setClientData(editClient);
     setShow("none");
+    setError(false);
   };
+
   console.log({ editClient });
   return (
     <>
@@ -136,8 +143,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? clientData?.image
-                  : ImageView
+                    ? clientData?.image
+                    : ImageView
               }
               style={{
                 width: "9em",

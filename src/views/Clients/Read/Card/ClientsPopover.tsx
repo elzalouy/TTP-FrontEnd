@@ -22,16 +22,19 @@ const ClientsPopover: React.FC<IClientPopover> = ({ client }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
   const showEditClientPopup = () => {
     dispatch(openEditClientPopup("flex"));
     dispatch(clientsActions.setEditClient(client));
     handleClose();
   };
+
   const showDeleteClientPopup = () => {
     dispatch(openDeleteClientPopup("flex"));
     dispatch(clientsActions.setEditClient(client));
     handleClose();
   };
+
   return (
     <div>
       <Box onClick={handleOpen} marginBottom={2} sx={{ cursor: "pointer" }} data-test-id="client-actions">
