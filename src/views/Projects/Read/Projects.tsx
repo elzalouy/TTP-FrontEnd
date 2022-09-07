@@ -107,7 +107,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             Projects
           </Typography>
         </Grid>
-        <Grid container xs={12} sm={12} md={12} lg={12}>
+        <Grid container xs={12} sm={12} md={12} lg={12} justifyContent="space-between">
           <Grid item xs={1} sm={1} md={7} lg={7} margin={1} marginLeft={0}>
             {!LG && (
               <>
@@ -136,7 +136,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={10} sm={10} md={4} lg={4}
             alignItems="center"
-            justifyContent={"center"}
+            justifyContent={!LG ? "flex-endp" : "center"}
             display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
           >
             <Controller

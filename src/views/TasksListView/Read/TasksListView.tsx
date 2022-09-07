@@ -36,6 +36,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const XS = useMediaQuery(theme.breakpoints.down("xs"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("lg"));
   const [Show, setShow] = React.useState("none");
@@ -90,6 +91,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       sx={{ backgroundColor: "#FAFAFB" }}
     >
       <Grid
+        container
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
@@ -121,7 +123,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Typography>
       </Grid>
       <Grid container sm={12} md={12} lg={12} xs={12}>
-        <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
+        <Grid display="flex" justifyContent={"flex-end"} alignItems="center" >
           {MD && (
             <>
               <Box
@@ -158,7 +160,7 @@ export const TasksListView: React.FC<Props> = (props) => {
             wrap={MD ? "wrap" : "nowrap"}
           >
             {filter && (
-              <>
+              <Grid container xs={12} sm={12}>
                 <Grid
                   marginX={0.5}
                   item
@@ -223,16 +225,16 @@ export const TasksListView: React.FC<Props> = (props) => {
                     />
                   </Box>
                 </Grid>
-              </>
+                <Grid marginX={0.5} my={{ sm: 1, xs: 1, md: 0, lg: 0 }} item xs={2} sm={2} md={2} lg={2}>
+                  <DeleteTask
+                    task={selects}
+                    Show={Show}
+                    setShow={setShow}
+                    onDelete={onDeleteTasks}
+                  />
+                </Grid>
+              </Grid>
             )}
-            <Grid marginX={0.5} my={{ sm: 3, xs: 3, md: 0, lg: 0 }} item xs={12} sm={12} md={2} lg={2}>
-              <DeleteTask
-                task={selects}
-                Show={Show}
-                setShow={setShow}
-                onDelete={onDeleteTasks}
-              />
-            </Grid>
           </Grid>
           <Grid
             item
@@ -242,6 +244,7 @@ export const TasksListView: React.FC<Props> = (props) => {
             sm={12}
             md={3}
             lg={5}
+            mt="10px"
           >
             <Controller
               name="name"
@@ -254,7 +257,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   }}
                   value={props.field.value}
                   placeholder="Search"
-                  size={LG ? "medium" : "small"}
+                  size={LG ? "medium" : SM ? "medium" : "small"}
                 />
               )}
             />
