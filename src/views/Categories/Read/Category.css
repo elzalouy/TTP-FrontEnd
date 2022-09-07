@@ -27,7 +27,7 @@
   width: 100%;
   flex-flow: row wrap;
   margin-top: 10px;
-  max-height: 140px;
+  max-height: 115px;
   overflow-y: auto;
 }
 
