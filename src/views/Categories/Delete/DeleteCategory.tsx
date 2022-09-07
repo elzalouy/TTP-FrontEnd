@@ -37,7 +37,7 @@ const DeleteCategory: React.FC<Props> = ({
   };
 
   return (
-    <SmallPopUp show={showDelete} widthSize="25vw">
+    <SmallPopUp show={showDelete} widthSize="400px">
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>

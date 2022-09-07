@@ -26,7 +26,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
   };
 
   return (
-    <SmallPopUp dataTestId="delete-department-popup" widthSize="25vw" show={show}>
+    <SmallPopUp dataTestId="delete-department-popup" widthSize="400px" show={show}>
       <div className="imageAlert">
         <img src={deleteIcon} />
       </div>

@@ -45,6 +45,7 @@ export const Departments = () => {
           borderRadius: "16px",
           borderColor: "#e2e2ea",
           marginTop: 4,
+          marginBottom:4,
         }}>
         {/* <div className="all-departments"> */}
         {departments?.map((dep: IDepartmentState) => (
