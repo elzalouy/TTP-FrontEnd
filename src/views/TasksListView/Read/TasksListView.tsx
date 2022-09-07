@@ -148,8 +148,8 @@ export const TasksListView: React.FC<Props> = (props) => {
         <Grid container alignItems={"center"}>
           <Grid
             item
-            lg={7}
-            md={9}
+            lg={9}
+            md={10}
             sm={12}
             xs={12}
             gap="2%"
@@ -167,7 +167,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   xs={6}
                   sm={3}
                   md={3}
-                  lg={4}
+                  lg={3}
                   marginY={1}
                   flex={1}
                 >
@@ -187,7 +187,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   xs={6}
                   sm={3}
                   md={3}
-                  lg={4}
+                  lg={3}
                   marginY={1}
                 >
                   <Box className="tasks-option">
@@ -208,7 +208,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   xs={4}
                   sm={3}
                   md={3}
-                  lg={4}
+                  lg={3}
                   marginY={1}
                 >
                   <Box className="tasks-option">
@@ -225,7 +225,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                     />
                   </Box>
                 </Grid>
-                <Grid marginX={0.5} my={{ sm: 1, xs: 1, md: 0, lg: 0 }} item xs={2} sm={2} md={2} lg={2}>
+                <Grid marginX={0.5} my={{ sm: 1, xs: 1, md: 1, lg: 1 }} item xs={2} sm={2} md={2} lg={2}>
                   <DeleteTask
                     task={selects}
                     Show={Show}
@@ -239,12 +239,12 @@ export const TasksListView: React.FC<Props> = (props) => {
           <Grid
             item
             display="flex"
-            justifyContent={"flex-end"}
+            justifyContent={SM ? "center" : "flex-end"}
             xs={12}
             sm={12}
-            md={3}
-            lg={5}
-            mt="10px"
+            md={2}
+            lg={3}
+            mt={SM ? "10px" : "0px"}
           >
             <Controller
               name="name"
