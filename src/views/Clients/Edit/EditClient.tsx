@@ -97,6 +97,9 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     setClientData(data);
   };
   const handleClose = () => {
+    setImageView(null);
+    setClientData(editClient);
+    setError(false);
     setShow("none");
   };
   console.log({ editClient });
@@ -136,8 +139,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? clientData?.image
-                  : ImageView
+                    ? clientData?.image
+                    : ImageView
               }
               style={{
                 width: "9em",
