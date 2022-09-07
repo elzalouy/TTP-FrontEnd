@@ -37,7 +37,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const LG = useMediaQuery(theme.breakpoints.up("md"));
+  const LG = useMediaQuery(theme.breakpoints.up("lg"));
   const [Show, setShow] = React.useState("none");
   const [filter, setFilter] = React.useState(true);
   const { watch, control, setValue } = useForm();
@@ -97,6 +97,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         md={12}
         lg={12}
         xs={12}
+        mb={SM ? 3 : 0}
       >
         <Typography
           variant="h2"
@@ -121,7 +122,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       </Grid>
       <Grid container sm={12} md={12} lg={12} xs={12}>
         <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
-          {!LG && (
+          {!MD && (
             <>
               <Box
                 onClick={() => setFilter(!filter)}
@@ -146,9 +147,9 @@ export const TasksListView: React.FC<Props> = (props) => {
           <Grid
             item
             lg={7}
-            md={7}
-            sm={7}
-            xs={7}
+            md={9}
+            sm={12}
+            xs={12}
             gap="2%"
             display="flex"
             direction={"row"}
@@ -237,9 +238,9 @@ export const TasksListView: React.FC<Props> = (props) => {
             item
             display="flex"
             justifyContent={"flex-end"}
-            xs={5}
-            sm={5}
-            md={5}
+            xs={12}
+            sm={12}
+            md={3}
             lg={5}
           >
             <Controller
@@ -253,7 +254,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   }}
                   value={props.field.value}
                   placeholder="Search"
-                  size={"medium"}
+                  size={LG ? "medium" : "small"}
                 />
               )}
             />
@@ -278,7 +279,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         </>
       ) : (
         <>
-          <Paper className="tsk-container">
+          <Paper className="task-container">
             <TasksTable
               selects={selects}
               setAllSelected={setAllSelected}
