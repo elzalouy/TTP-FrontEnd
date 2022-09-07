@@ -11,10 +11,11 @@ const PopUp: React.FC<IPopup> = ({
   maxHeight,
   overFlowY,
   margin,
+  containerClassName,
 }) => {
   return (
     <div
-      className="container-popup"
+      className={"container-popup" + " " + containerClassName}
       style={{ display: show, backgroundColor: color }}
     >
       <div

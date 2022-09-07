@@ -1,9 +1,7 @@
-import "./slider.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppDrawer from "./Drawer";
-import { useAppSelector } from "../../../../models/hooks";
-import { toggleSideMenu } from "../../../../models/Ui";
-import { selectSideMenuToggle } from "../../../../models/Ui/UI.selectors";
+import "./slider.css";
+
 const Sidebar = (props: any) => {
   const [select, setSelected] = useState("");
   useEffect(() => {

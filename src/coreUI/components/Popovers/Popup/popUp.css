@@ -71,6 +71,10 @@
     left: 0;
   }
 
+  .container-popup.projectForm{
+    padding-top: 10%;
+  }
+
   .pop-up {
     width: 90vw !important;
     background-color: white;

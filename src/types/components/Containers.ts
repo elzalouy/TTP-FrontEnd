@@ -50,4 +50,5 @@ export interface IPopup {
   maxHeight?: string;
   overFlowY?: overFlow;
   margin?:string;
+  containerClassName?:string;
 };
