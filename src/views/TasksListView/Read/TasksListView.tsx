@@ -122,7 +122,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       </Grid>
       <Grid container sm={12} md={12} lg={12} xs={12}>
         <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
-          {!MD && (
+          {MD && (
             <>
               <Box
                 onClick={() => setFilter(!filter)}
@@ -225,7 +225,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 </Grid>
               </>
             )}
-            <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
+            <Grid marginX={0.5} my={{ sm: 3, xs: 3, md: 0, lg: 0 }} item xs={12} sm={12} md={2} lg={2}>
               <DeleteTask
                 task={selects}
                 Show={Show}
