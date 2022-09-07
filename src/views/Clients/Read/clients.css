@@ -18,6 +18,12 @@
   padding-bottom: 50px;
 }
 
+@media (max-width:600px) {
+  .all-clients{
+    padding-bottom: 110px;
+  }
+}
+
 .client-card {
   background-color: #efebf2;
   border-radius: 20px;

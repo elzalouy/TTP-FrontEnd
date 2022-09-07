@@ -40,16 +40,16 @@ export const ProjectManagers: React.FC<Props> = () => {
     >
       <Box
         width={"100%"}
-        paddingLeft={MD ? 4 : 0}
-        paddingRight={MD ? 4 : 13.5}
-        paddingTop={MD ? 8 : 0}
+        paddingLeft={MD ? 1 : 0}
+        paddingRight={MD ? 1 : 13.5}
+        paddingTop={MD ? 10 : 0}
         paddingBottom={MD ? 4 : 0}
         flexDirection="row"
         display="inline-flex"
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography variant={SM ? "h4" : "h2"}>Project Managers</Typography>
+        <Typography variant={SM ? "h3" : "h2"}>Project Managers</Typography>
         <CreateNewPM />
       </Box>
       <Paper className="pm-container">

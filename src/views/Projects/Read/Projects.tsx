@@ -108,7 +108,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
           </Typography>
         </Grid>
         <Grid container xs={12} sm={12} md={12} lg={12}>
-          <Grid item xs={7} sm={7} md={7} lg={7} margin={1} marginLeft={0}>
+          <Grid item xs={1} sm={1} md={7} lg={7} margin={1} marginLeft={0}>
             {!LG && (
               <>
                 <Box
@@ -134,8 +134,9 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             data-test-id="filter-projects"
             marginX={0.5}
             item
-            xs={4} sm={4} md={4} lg={4}
+            xs={10} sm={10} md={4} lg={4}
             alignItems="center"
+            justifyContent={"center"}
             display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
           >
             <Controller
