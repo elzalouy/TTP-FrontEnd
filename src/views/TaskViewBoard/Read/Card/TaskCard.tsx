@@ -29,6 +29,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
+import { isSafari } from "src/helpers/browserType";
 
 interface TaskCartProps {
   index: number;
@@ -278,7 +279,10 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   setImageError(index);
                                 }}
                                 src={image?.url}
-                                crossOrigin="anonymous"
+                                crossOrigin={
+                                  isSafari ? "use-credentials" : undefined
+                                }
+                                decoding="async"
                                 alt="more"
                               />
                             </SwiperSlide>
