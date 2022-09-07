@@ -245,8 +245,10 @@ export const checkProjectStatus = (status: string | undefined) => {
 export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
   let flat = _.flattenDeep(NestedTasks);
   let more = false;
-  more =
-    NestedTasks && NestedTasks[0] && NestedTasks[0].length > 2 ? true : false;
+  if (NestedTasks && NestedTasks?.length > 1) more = true;
+  else
+    more =
+      NestedTasks && NestedTasks[0] && NestedTasks[0].length > 2 ? true : false;
   return {
     position: "relative",
     height: open && more ? `500px` : `200px`,
