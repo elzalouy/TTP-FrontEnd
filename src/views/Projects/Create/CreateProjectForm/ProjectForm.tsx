@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import Joi from "joi";
 import moment from "moment";
 import * as React from "react";
@@ -18,10 +18,7 @@ import { IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 
 // create
-const ProjectForm: React.FC<IProjectFormProps> = ({
-  setcurrentStep,
-  clearErr,
-}) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep }) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -37,15 +34,13 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
-  React.useEffect(() => {
-    reset();
-  }, [createProjectPopup]);
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
-    if (clearErr) {
-      setError({ error: undefined, value: undefined, warning: undefined });
-    }
-  }, [clearErr]);
+    reset();
+    setError({ error: undefined, value: undefined, warning: undefined });
+  }, [createProjectPopup]);
 
   const [validateError, setError] = React.useState<{
     error: Joi.ValidationError | undefined;

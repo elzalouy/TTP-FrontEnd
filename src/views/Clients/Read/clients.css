@@ -15,6 +15,13 @@
   border-radius: 16px;
   border-color: #e2e2ea;
   overflow: hidden;
+  padding-bottom: 50px;
+}
+
+@media (max-width:600px) {
+  .all-clients{
+    padding-bottom: 110px;
+  }
 }
 
 .client-card {

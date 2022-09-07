@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material";
 const AuthContainer: FC = ({ children }) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Grid
@@ -22,17 +23,17 @@ const AuthContainer: FC = ({ children }) => {
         md={8}
         lg={8}
         height={600}
-        maxWidth={"50% !important"}
         bgcolor={"white"}
         justifyContent={SM ? "flex-start" : "center"}
         container
+        className="auth-container"
         direction="row"
         sx={
           SM
             ? { boxShadow: "none" }
             : {
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-              }
+              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }
         }
       >
         {children}

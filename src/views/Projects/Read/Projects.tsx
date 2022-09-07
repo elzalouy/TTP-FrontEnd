@@ -102,56 +102,59 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       marginTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
     >
       <Grid container xs={12} direction={"row"}>
-        <Grid item xs={4} sm={4} md={12} lg={12} my={4}>
+        <Grid item xs={12} sm={12} md={12} lg={12} my={4}>
           <Typography variant="h2" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
-        <Grid item margin={1} marginLeft={0}>
-          {!LG && (
-            <>
-              <Box
-                onClick={() => setFilter(!filter)}
-                textAlign={"center"}
-                sx={
-                  !filter
-                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
-                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
-                }
-                width={38}
-                height={38}
-              >
-                <img
-                  src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
-                  alt="FILTER"
-                />
-              </Box>
-            </>
-          )}
-        </Grid>
-        <Grid
-          data-test-id="filter-projects"
-          marginX={0.5}
-          item
-          xs={5}
-          sm={5}
-          display={{ md: "none", lg: "none", sm: "block", xs: "block" }}
-        >
-          <Controller
-            name="name"
-            control={control}
-            render={(props) => (
-              <SearchBox
-                value={props.field.value}
-                placeholder="Search"
-                onChange={(e: any) => {
-                  props.field.onChange(e);
-                  onHandleChange(e);
-                }}
-                size={"medium"}
-              />
+        <Grid container xs={12} sm={12} md={12} lg={12} justifyContent="space-between">
+          <Grid item xs={1} sm={1} md={7} lg={7} margin={1} marginLeft={0}>
+            {!LG && (
+              <>
+                <Box
+                  onClick={() => setFilter(!filter)}
+                  textAlign={"center"}
+                  sx={
+                    !filter
+                      ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
+                      : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+                  }
+                  width={38}
+                  height={38}
+                >
+                  <img
+                    src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+                    alt="FILTER"
+                  />
+                </Box>
+              </>
             )}
-          />
+          </Grid>
+          <Grid
+            data-test-id="filter-projects"
+            marginX={0.5}
+            item
+            xs={10} sm={10} md={4} lg={4}
+            alignItems="center"
+            justifyContent={!LG ? "flex-endp" : "center"}
+            display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
+          >
+            <Controller
+              name="name"
+              control={control}
+              render={(props) => (
+                <SearchBox
+                  value={props.field.value}
+                  placeholder="Search"
+                  onChange={(e: any) => {
+                    props.field.onChange(e);
+                    onHandleChange(e);
+                  }}
+                  size={"medium"}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
         {filter && (
           <>

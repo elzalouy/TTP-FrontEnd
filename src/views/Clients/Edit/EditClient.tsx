@@ -102,7 +102,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   console.log({ editClient });
   return (
     <>
-      <PopUp show={show} maxWidthSize="30vw">
+      <PopUp show={show}>
         <Box>
           <Box>
             <img

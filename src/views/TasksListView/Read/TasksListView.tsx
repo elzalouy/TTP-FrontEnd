@@ -36,8 +36,9 @@ export const TasksListView: React.FC<Props> = (props) => {
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const XS = useMediaQuery(theme.breakpoints.down("xs"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const LG = useMediaQuery(theme.breakpoints.up("md"));
+  const LG = useMediaQuery(theme.breakpoints.up("lg"));
   const [Show, setShow] = React.useState("none");
   const [filter, setFilter] = React.useState(true);
   const { watch, control, setValue } = useForm();
@@ -90,6 +91,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       sx={{ backgroundColor: "#FAFAFB" }}
     >
       <Grid
+        container
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
@@ -97,6 +99,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         md={12}
         lg={12}
         xs={12}
+        mb={SM ? 3 : 0}
       >
         <Typography
           variant="h2"
@@ -120,8 +123,8 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Typography>
       </Grid>
       <Grid container sm={12} md={12} lg={12} xs={12}>
-        <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
-          {!LG && (
+        <Grid display="flex" justifyContent={"flex-end"} alignItems="center" >
+          {MD && (
             <>
               <Box
                 onClick={() => setFilter(!filter)}
@@ -146,9 +149,9 @@ export const TasksListView: React.FC<Props> = (props) => {
           <Grid
             item
             lg={7}
-            md={7}
-            sm={7}
-            xs={7}
+            md={9}
+            sm={12}
+            xs={12}
             gap="2%"
             display="flex"
             direction={"row"}
@@ -157,7 +160,7 @@ export const TasksListView: React.FC<Props> = (props) => {
             wrap={MD ? "wrap" : "nowrap"}
           >
             {filter && (
-              <>
+              <Grid container xs={12} sm={12}>
                 <Grid
                   marginX={0.5}
                   item
@@ -222,25 +225,26 @@ export const TasksListView: React.FC<Props> = (props) => {
                     />
                   </Box>
                 </Grid>
-              </>
+                <Grid marginX={0.5} my={{ sm: 1, xs: 1, md: 0, lg: 0 }} item xs={2} sm={2} md={2} lg={2}>
+                  <DeleteTask
+                    task={selects}
+                    Show={Show}
+                    setShow={setShow}
+                    onDelete={onDeleteTasks}
+                  />
+                </Grid>
+              </Grid>
             )}
-            <Grid marginX={0.5} item xs={1} sm={12} md={2} lg={2}>
-              <DeleteTask
-                task={selects}
-                Show={Show}
-                setShow={setShow}
-                onDelete={onDeleteTasks}
-              />
-            </Grid>
           </Grid>
           <Grid
             item
             display="flex"
             justifyContent={"flex-end"}
-            xs={5}
-            sm={5}
-            md={5}
+            xs={12}
+            sm={12}
+            md={3}
             lg={5}
+            mt="10px"
           >
             <Controller
               name="name"
@@ -253,7 +257,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   }}
                   value={props.field.value}
                   placeholder="Search"
-                  size={"medium"}
+                  size={LG ? "medium" : SM ? "medium" : "small"}
                 />
               )}
             />
@@ -278,7 +282,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         </>
       ) : (
         <>
-          <Paper className="tsk-container">
+          <Paper className="task-container">
             <TasksTable
               selects={selects}
               setAllSelected={setAllSelected}

@@ -120,6 +120,8 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       show={createProjectPopup}
       maxHeight={currentStep === 0 ? undefined : "calc(100% - 20px)"}
       overFlowY={currentStep === 1 ? "scroll" : undefined}
+      margin={"30px"}
+      containerClassName="projectForm"
     >
       <Grid container direction="column" className="projectFormHeader" sx={{}}>
         <div style={{ position: "relative", width: "100%" }}>
@@ -164,11 +166,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </Grid>
       <Grid marginTop={5}>
         {currentStep === 0 && (
-          <ProjectForm
-            setcurrentStep={setcurrentStep}
-            setShow={setShow}
-            clearErr={clearErr}
-          />
+          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
         )}
         {currentStep === 1 && (
           <>

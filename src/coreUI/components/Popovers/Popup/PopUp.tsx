@@ -1,18 +1,8 @@
-import { Box } from "@mui/material";
 import React from "react";
+import { IPopup } from "src/types/components/Containers";
 import "./popUp.css";
-type overFlow = "visible" | "hidden" | "clip" | "scroll" | "auto";
-type Props = {
-  show: string;
-  children: object;
-  color?: string;
-  minWidthSize?: string;
-  maxWidthSize?: string;
-  maxHeight?: string;
-  overFlowY?: overFlow;
-};
 
-const PopUp: React.FC<Props> = ({
+const PopUp: React.FC<IPopup> = ({
   show,
   children,
   minWidthSize,
@@ -20,10 +10,12 @@ const PopUp: React.FC<Props> = ({
   maxWidthSize,
   maxHeight,
   overFlowY,
+  margin,
+  containerClassName,
 }) => {
   return (
     <div
-      className="container-popup"
+      className={"container-popup" + " " + containerClassName}
       style={{ display: show, backgroundColor: color }}
     >
       <div
@@ -33,6 +25,7 @@ const PopUp: React.FC<Props> = ({
           maxWidth: maxWidthSize,
           maxHeight: maxHeight,
           overflowY: overFlowY ? overFlowY : "unset",
+          margin:margin,
         }}
       >
         {children}
