@@ -10,6 +10,7 @@ import {
   selectDepartmentLoading,
 } from "../../../models/Departments/departments.selectors";
 import "../../popups-style.css";
+import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {
   show: string;
@@ -43,26 +44,19 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
       </Grid>
       <div className="margin-cover">
         <div className="controllers-small-popup">
-          <button
-            data-test-id="delete-department-cancel"
-            className="controllers-cancel"
-            onClick={() => {
-              setShow("none");
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            data-test-id="delete-department-submit"
-            className="controllers-delete"
+          <Button
+            type="cancel"
+            size="large"
+            label="cancel"
+            onClick={() => setShow("none")}
+          />
+          <Button
+            type="delete"
+            size="large"
+            label="delete"
             onClick={handleSubmit}
-          >
-            {loading ? (
-              <CircularProgress sx={{ color: "white", padding: "10px" }} />
-            ) : (
-              "Delete"
-            )}
-          </button>
+            loading={loading}
+          />
         </div>
       </div>
     </SmallPopUp>
