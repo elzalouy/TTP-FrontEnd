@@ -1,4 +1,13 @@
-import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import * as React from "react";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { RouteComponentProps } from "react-router";
@@ -8,7 +17,7 @@ import { selectSatistics } from "../../../models/Statistics";
 import Status from "../../../coreUI/components/Typos/Status";
 import _ from "lodash";
 import { Task } from "../../../types/models/Projects";
-import { cssTabContent } from "src/helpers/generalUtils";
+import { cssTabContent, setWidth } from "src/helpers/generalUtils";
 import Empty from "./Empy";
 import { getTaskNotificationsDate } from "src/helpers/equations";
 interface Props {
@@ -18,6 +27,9 @@ const Notifications: React.FC<Props> = (props) => {
   const statistics = useAppSelector(selectSatistics);
   const tabs = ["0", "1"];
   const [tab, setTab] = React.useState("0");
+  const theme = useTheme();
+  const MD = useMediaQuery(theme.breakpoints.down("md"));
+
   const [open, setOpen] = React.useState(false);
   const cssTab = (tabIndex: string) => {
     return {
@@ -44,17 +56,41 @@ const Notifications: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box width={open ? "29.5%" : "inherit"} overflow="hidden">
+    <Box
+      width={setWidth(MD, open)}
+      overflow="hidden"
+      sx={{
+        boxShadow: "0px 10px 20px #00000005;",
+      }}
+    >
       <PopoverComponent setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
-          <Tabs value={tab} onChange={(e, value) => setTab(value)} sx={cssTabs}>
-            <Tab value={"0"} label="In Progress Tasks" sx={cssTab("0")} />
-            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
+          <Tabs
+            value={tab}
+            onChange={(e, value) => setTab(value)}
+            sx={cssTabs}
+            TabIndicatorProps={{
+              sx: {
+                height: "1px !important",
+              },
+            }}
+          >
+            <Tab
+              value={"0"}
+              label="In Progress Tasks"
+              sx={cssTab("0")}
+              disableRipple={true}
+            />
+            <Tab
+              value={"1"}
+              label="Review Tasks"
+              sx={cssTab("1")}
+              disableRipple={true}
+            />
           </Tabs>
           {tabs?.map((tabItem, index) => {
             let tasks: Task[][] | null =
               tabItem === "0" ? statistics.PM.inProgress : statistics.PM.review;
-            let flattenTasks: Task[] = _.flattenDeep(tasks);
             return (
               <Box
                 key={index}
@@ -142,7 +178,7 @@ export default Notifications;
 
 const cssTabs = {
   color: "#303030",
-  borderBottom: 1,
+  borderBottom: 0.5,
   borderColor: "#0000000A",
   marginBottom: 1,
   padding: 0,
@@ -191,7 +227,9 @@ const cssNotiSubTitle = {
 };
 const cssMoreBtn = {
   width: "100%",
-  justifyContent: "center",
+  position: "absolute",
+  bottom: "0px",
+  left: "0px",
   paddingTop: 2,
   ":hover": {
     backgroundColor: "transparent",

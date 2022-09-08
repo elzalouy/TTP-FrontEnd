@@ -23,15 +23,11 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
   return (
     <Grid
       xs={12}
-      sm={2.5}
-      md={2.5}
-      lg={2.5}
-      flexBasis={"50%"}
-      height={"250px"}
-      paddingRight={"3%"}
-      // marginTop={SM ? "10px" : "0px"}
-      // paddingRight={LG ? "0" : "3%"}
-      // paddingLeft={SM ? "2%" : "0%"}
+      sm={3.6}
+      md={3.6}
+      lg={2.2}
+      height={{ lg: "250px", md: "250px", sm: "250px", xs: "280px" }}
+      marginBottom={{ sm: 0, lg: 0, md: 0, xs: 1 }}
       item
     >
       <Card
@@ -47,18 +43,11 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
         }}
       >
         <CardContent
-          sx={
-            props.pb && LG
-              ? {
-                  paddingX: "12%",
-                  paddingY: "12%",
-                  paddingBottom: "42px !important",
-                }
-              : {
-                  paddingX: "12%",
-                  paddingY: "12%",
-                }
-          }
+          sx={{
+            paddingX: "12%",
+            paddingY: "12%",
+            paddingBottom: "42px !important",
+          }}
         >
           <Box
             width={50}

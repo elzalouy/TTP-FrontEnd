@@ -4,7 +4,6 @@ import * as React from "react";
 interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
-  notification?: boolean;
 }
 
 const popoverStyles = {};

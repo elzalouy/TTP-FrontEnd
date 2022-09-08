@@ -19,28 +19,36 @@ interface Props {
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectPMs);
   return (
-    <TableBox
-      title={"Projects Close To Deadline"}
-      outTitled={true}
-      expanded={true}
-      bgColor={""}
+    <Grid
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      paddingTop={2.5}
+      overflow="scroll"
+      xs={12}
     >
-      {props.projects === null || props.projects?.length === 0 ? (
-        <>
-          <Empty />
-        </>
-      ) : (
-        <ProjectsTable
-          progress={true}
-          align={"left"}
-          textSize="small"
-          status={"In progress"}
-          expanded={true}
-          projectManagers={PMs}
-          {...props}
-        />
-      )}
-    </TableBox>
+      <TableBox
+        title={"Projects Close To Deadline"}
+        outTitled={true}
+        expanded={true}
+        bgColor={""}
+      >
+        {props.projects === null || props.projects?.length === 0 ? (
+          <>
+            <Empty />
+          </>
+        ) : (
+          <ProjectsTable
+            progress={true}
+            align={"left"}
+            textSize="small"
+            status={"In progress"}
+            expanded={true}
+            projectManagers={PMs}
+            {...props}
+          />
+        )}
+      </TableBox>
+    </Grid>
   );
 };
 export default UserProjects;

@@ -48,7 +48,8 @@ export const OverView: FC<Props> = (props) => {
         justifyContent={"space-between"}
         alignItems={"normal"}
         direction={"row"}
-        marginX={SM ? 2 : 5}
+        // marginX={{ sm: 2, lg: 5, md: 5, xs: 0 }}
+        paddingX={{ xs: 2, lg: 5, md: 5, sm: 2 }}
         bgcolor={"#FAFAFB"}
       >
         <Grid
@@ -91,7 +92,7 @@ export const OverView: FC<Props> = (props) => {
         >
           <Grid
             direction="row"
-            justifyContent={"space-between"}
+            justifyContent="space-between"
             alignItems="flex-start"
             paddingTop={4}
             container
@@ -167,76 +168,48 @@ export const OverView: FC<Props> = (props) => {
             <Grid
               item
               lg={4.5}
-              md={4.5}
+              md={12}
               sm={12}
               xs={12}
               justifyContent="center"
               alignItems="center"
-              marginY={MD ? 2 : 0}
+              marginY={{ md: 2, sm: 2, xs: 2, lg: 1 }}
             >
               {role === "OM" ? (
                 <ManagerNotifications {...props} />
               ) : (
-                <UserNotifications {...props} />
+                role === "PM" && <UserNotifications {...props} />
               )}
             </Grid>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            lg={6}
-            paddingRight={2}
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            marginBottom={5}
-          >
-            <UserTasks
-              tasks={
-                role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
-              }
-              title={role === "OM" ? "Tasks In Progress" : "Shared Tasks"}
-              img={IMAGES.OverviewInProgressTasksEmpty}
-              caption="Working on agencies are easy !"
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={12}
-            lg={6}
-            paddingLeft={SM ? 0 : 2}
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            marginBottom={5}
-          >
-            <UserTasks
-              tasks={
-                role === "OM"
-                  ? statistics.OM.tasksCloseToDeadline
-                  : statistics.PM.tasksCloseToDeadline
-              }
-              title={"Tasks Close to Deadline"}
-              img={IMAGES.OverviewCloseToDeadlineEmpty}
-              caption={"Nothing to be worried about !"}
-            />
-          </Grid>
-          <Grid
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            paddingTop={2.5}
-            overflow="scroll"
-            xs={12}
-          >
-            <UserProjects
-              projects={
-                role === "OM"
-                  ? statistics.OM.projectsCloseToDeadlines
-                  : statistics.PM.projectsCloseToDeadlines
-              }
-              {...props}
-            />
-          </Grid>
+
+          <UserTasks
+            tasks={
+              role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
+            }
+            title={role === "OM" ? "Tasks In Progress" : "Shared Tasks"}
+            img={IMAGES.OverviewInProgressTasksEmpty}
+            caption="Working on agencies are easy !"
+          />
+          <UserTasks
+            tasks={
+              role === "OM"
+                ? statistics.OM.tasksCloseToDeadline
+                : statistics.PM.tasksCloseToDeadline
+            }
+            title={"Tasks Close to Deadline"}
+            img={IMAGES.OverviewCloseToDeadlineEmpty}
+            caption={"Nothing to be worried about !"}
+          />
+
+          <UserProjects
+            projects={
+              role === "OM"
+                ? statistics.OM.projectsCloseToDeadlines
+                : statistics.PM.projectsCloseToDeadlines
+            }
+            {...props}
+          />
         </Grid>
       </Grid>
     </>
