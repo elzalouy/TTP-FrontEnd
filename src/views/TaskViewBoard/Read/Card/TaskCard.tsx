@@ -278,9 +278,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   setImageError(index);
                                 }}
                                 src={image?.url}
-                                crossOrigin={
-                                  isSafari ? "use-credentials" : undefined
-                                }
+                                crossOrigin={isSafari ? "anonymous" : undefined}
                                 decoding="async"
                                 alt="more"
                               />
