@@ -13,20 +13,19 @@ const Empty = () => {
     <>
       {
         <>
-          {loading === false ||
-            (projectsLoading === false && (
-              <Box textAlign={"center"} width="100%">
-                <img
-                  src={IMAGES.OverviewNotificationsEmpty}
-                  width="170px"
-                  height={"170px"}
-                  alt=""
-                />
-                <Typography fontSize={"16px"} color="#505050">
-                  Nothing have been moved !!
-                </Typography>
-              </Box>
-            ))}
+          {projectsLoading === false && (
+            <Box textAlign={"center"} width="100%" marginX={1}>
+              <img
+                src={IMAGES.OverviewNotificationsEmpty}
+                width="170px"
+                height={"160px"}
+                alt=""
+              />
+              <Typography fontSize={"16px"} color="#505050">
+                Nothing have been moved !!
+              </Typography>
+            </Box>
+          )}
         </>
       }
     </>
