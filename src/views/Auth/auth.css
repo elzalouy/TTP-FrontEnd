@@ -89,7 +89,7 @@ body {
   padding: 11px;
   margin-bottom: 3%;
   border-radius: 5px;
-  border: solid 0.5px;
+  border: solid 1px;
   border-color: #b4b6c4;
   color: #b4b6c4;
 }
@@ -107,7 +107,7 @@ body {
   color: black;
   padding: 11px;
   outline: none;
-  border: solid 0.5px #b4b6c4;
+  border: solid 1px #b4b6c4;
   text-align: left;
   text-decoration: none;
   margin-top: 10px;
@@ -115,12 +115,12 @@ body {
 }
 
 .f-inputs:active {
-  border: 0.5px solid black;
+  border: 1px solid black;
   border-radius: 5px;
 }
 
 .f-inputs:focus {
-  border: 0.5px solid black;
+  border: 1px solid black;
   border-radius: 5px;
 }
 

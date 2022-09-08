@@ -19,7 +19,7 @@ fieldset.core-ui-input-wrapper input.core-ui-input {
   font-size: 14px;
   color: #303030;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 0.5px solid #b4b6c4;
+  border: 1px solid #b4b6c4;
   border-radius: 6px;
   padding-left: 10px;
   outline: none;
@@ -87,7 +87,7 @@ input.core-ui-input[data-type="login-style"] {
   color: black;
   padding: 10px;
   height: 50px;
-  border: solid 0.5px #b4b6c4;
+  border: 1px solid #b4b6c4;
   outline: none;
   text-align: left;
   text-decoration: none;
@@ -148,7 +148,7 @@ textarea[id*="core-textarea-"].core-textarea {
   font-size: 16px;
   color: #303030;
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 0.5px solid #b4b6c4;
+  border: 1px solid #b4b6c4;
   border-radius: 6px;
   padding: 10px;
   resize: none;
