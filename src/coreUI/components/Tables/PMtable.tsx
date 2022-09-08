@@ -14,9 +14,8 @@ import "../../../coreUI/themes/style.css";
 import "../../../App.css";
 import MailLockIcon from "@mui/icons-material/MailLock";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
-import { FC, useState } from "react";
+import { FC } from "react";
 import IMAGES from "../../../assets/img/Images";
-import _ from "lodash";
 import { PMsActions, ProjectManager, resendMail } from "../../../models/PM";
 import EditPM from "../../../views/ProjectManagers/Edit/EditPM";
 import DeletePM from "../../../views/ProjectManagers/Delete/DeletePM";
@@ -28,7 +27,7 @@ import {
 import { toast } from "react-toastify";
 import moment from "moment";
 import { useAppSelector } from "../../../models/hooks";
-import { selectAllProjects, selectTasks } from "../../../models/Projects";
+import { selectAllProjects } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 interface ProjectManagersProps {

@@ -26,8 +26,6 @@ export const OverView: FC<Props> = (props) => {
   const role = useAppSelector(selectRole);
   const userName = useAppSelector(selectUser);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const statistics = useAppSelector(selectSatistics);
 
   useEffect(() => {

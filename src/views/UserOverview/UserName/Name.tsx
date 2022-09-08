@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Typography, Skeleton } from "@mui/material";
-import { isSafari } from "src/helpers/browserType";
 
 interface UserNameProps {
   loading: boolean | null;
@@ -36,7 +35,7 @@ const UserName: React.FC<UserNameProps> = (props) => {
             textTransform={"capitalize"}
             fontSize={"24px"}
           >
-            {props.name}, {isSafari && isSafari.toString()}
+            {props.name}
           </Typography>
         </>
       )}

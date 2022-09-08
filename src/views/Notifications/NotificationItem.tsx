@@ -14,9 +14,7 @@ type Props = {
 
 const NotificationItem = ({ notifiData }: Props) => {
   const theme = useTheme();
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const XS = useMediaQuery(theme.breakpoints.down("xs"));
   const user = useAppSelector(selectUser);
 
   const AvatarBasedOnColor = (index: number) => {
@@ -72,7 +70,12 @@ const NotificationItem = ({ notifiData }: Props) => {
                 borderRadius: "1em",
               }}
             >
-              <Grid marginX={{ xs: 0, sm: 0, md: 1, lg: 1 }} mr={{ xs: 4, sm: 4, md: 1, lg: 0 }} item xs={1}>
+              <Grid
+                marginX={{ xs: 0, sm: 0, md: 1, lg: 1 }}
+                mr={{ xs: 4, sm: 4, md: 1, lg: 0 }}
+                item
+                xs={1}
+              >
                 <Badge
                   overlap="circular"
                   badgeContent={
@@ -119,20 +122,22 @@ const NotificationItem = ({ notifiData }: Props) => {
                     {moment(item?.createdAt).fromNow(true)}
                   </Typography>
                 </Grid>
-                {item?.adminUserID?.name && (<Grid item container xs={12} spacing={2}>
-                  <Grid item xs={"auto"}>
-                    <Typography
-                      variant="caption"
-                      gutterBottom
-                      component="div"
-                      sx={{
-                        color: "#acabab",
-                      }}
-                    >
-                      {item?.adminUserID?.name}
-                    </Typography>
+                {item?.adminUserID?.name && (
+                  <Grid item container xs={12} spacing={2}>
+                    <Grid item xs={"auto"}>
+                      <Typography
+                        variant="caption"
+                        gutterBottom
+                        component="div"
+                        sx={{
+                          color: "#acabab",
+                        }}
+                      >
+                        {item?.adminUserID?.name}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>)}
+                )}
                 <Grid
                   item
                   xs={12}

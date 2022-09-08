@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
-// import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { useAppSelector } from "src/models/hooks";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
@@ -55,7 +54,7 @@ const CreateNewPM: React.FC = () => {
         label="create new PM"
         dataTestId="create-pm-button"
         onClick={() => setShow("flex")}
-        style={{marginTop:"0px"}}
+        style={{ marginTop: "0px" }}
       />
       <PopUp show={show} minWidthSize="30vw">
         <div>
@@ -89,7 +88,7 @@ const CreateNewPM: React.FC = () => {
             dataTestId="create-pm-name"
             value={username}
             type="text"
-            onChange={(e:any)=>{
+            onChange={(e: any) => {
               setUsername(e.target.value);
               setError(false);
             }}
@@ -100,10 +99,10 @@ const CreateNewPM: React.FC = () => {
             dataTestId="create-pm-email"
             value={email}
             type="text"
-            onChange={(e:any)=>{
+            onChange={(e: any) => {
               setEmail(e.target.value);
-                setError(false);
-                setEmailFormat(false);
+              setError(false);
+              setEmailFormat(false);
             }}
             error={emailFormat ? "true" : ""}
           />

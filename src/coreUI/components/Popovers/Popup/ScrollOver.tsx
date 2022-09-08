@@ -1,18 +1,10 @@
-import { Box, Popover, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import * as React from "react";
 
 interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
 }
-
-const popoverStyles = {};
-
-const popoverStylesNotification = {
-  backgroundColor: "white",
-  borderRadius: "4px",
-  width: "100%",
-};
 
 const ScrollOver: React.FC<ScrollOverProps> = (props) => {
   return (

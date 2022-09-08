@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { useAppSelector } from "src/models/hooks";
 import { selectPMs } from "src/models/PM";
@@ -6,10 +6,7 @@ import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
 import { Project } from "src/types/models/Projects";
-import IMAGES from "src/assets/img/Images";
 import Empty from "./Empty";
-import { selectLoading } from "src/models/Projects";
-import { selectStatisticsLoading } from "src/models/Statistics";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];

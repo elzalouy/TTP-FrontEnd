@@ -2,15 +2,13 @@ import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import { selectUser } from "../../models/Auth";
 import { useAppSelector } from "../../models/hooks";
 import {
   getNotifications,
   selectNotificationPagination,
   selectNotifications,
   selectNotificationsLoading,
-  selectUnNotifiedNum,
-  updateNotified
+  updateNotified,
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
@@ -33,7 +31,7 @@ export const Notifications = (props: Props) => {
       dispatch(updateNotified(null));
       setMounted(true);
     }
-  }, [mounted]);
+  }, [mounted, dispatch, pagination]);
   const handleLoadMore = async () => {
     dispatch(getNotifications(`/${++pagination.current}/${pagination.limit}`));
   };
@@ -55,7 +53,14 @@ export const Notifications = (props: Props) => {
         </Grid>
       ) : null}
       {pagination.pages !== pagination.current && (
-        <Grid container xs={12} md={6} justifyContent={"center"} textAlign="center" marginBottom={4}>
+        <Grid
+          container
+          xs={12}
+          md={6}
+          justifyContent={"center"}
+          textAlign="center"
+          marginBottom={4}
+        >
           <Button
             type="main"
             size="small"
