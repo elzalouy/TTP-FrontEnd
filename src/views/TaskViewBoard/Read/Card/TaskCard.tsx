@@ -1,21 +1,16 @@
 import { Grid, Stack, Typography } from "@mui/material";
-import { Box, style } from "@mui/system";
+import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import {
-  getAllTasks,
-  ProjectsActions,
-  selectTasks,
-} from "../../../../models/Projects";
+import { ProjectsActions, selectTasks } from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
 } from "../../../../helpers/generalUtils";
-import { selectAllMembers } from "../../../../models/TechMember";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper";
 import {
@@ -50,10 +45,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
 
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
-  const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
   const allTasks = useAppSelector(selectTasks);
-  const { _id, name, deadline, status, boardId, teamId } = item;
+  const { _id, name, deadline, status, boardId } = item;
   const [data, setData] = useState<
     | {
         department?: string | undefined;
@@ -64,28 +58,24 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const [error, setError] = useState({
-    flag: false,
-    url: "",
-    trelloId: "",
-  });
+
   const [taskImages, setTaskImages] = useState<any[]>([]);
   const [taskFiles, setTaskFiles] = useState<any[]>([]);
 
-  /// set files
-  useEffect(() => {
-    let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
-    if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
-      let images = item.attachedFiles.filter((item) =>
-        mimeTypes.includes(item.mimeType)
-      );
-      setTaskImages(images);
-      let others = item?.attachedFiles.filter(
-        (item) => !mimeTypes.includes(item.mimeType)
-      );
-      setTaskFiles(others);
-    }
-  }, [item]);
+  // /// set files
+  // useEffect(() => {
+  //   let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
+  //   if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
+  //     let images = item.attachedFiles.filter((item) =>
+  //       mimeTypes.includes(item.mimeType)
+  //     );
+  //     setTaskImages(images);
+  //     let others = item?.attachedFiles.filter(
+  //       (item) => !mimeTypes.includes(item.mimeType)
+  //     );
+  //     setTaskFiles(others);
+  //   }
+  // }, [item]);
 
   useEffect(() => {
     let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
@@ -99,7 +89,16 @@ const TaskCard: React.FC<TaskCartProps> = ({
       );
       setTaskFiles(others);
     }
-  }, [allTasks]);
+  }, [
+    allTasks,
+    item.attachedFiles,
+    boardId.includes,
+    data,
+    deadline,
+    departments,
+    item.teamId,
+    status,
+  ]);
 
   useEffect(() => {
     if (status !== "Not Started") {

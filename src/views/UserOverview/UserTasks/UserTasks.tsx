@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useAppSelector } from "../../../models/hooks";
 import { selectAllProjects } from "../../../models/Projects";
 import TasksTable from "./OverviewTasksTable";

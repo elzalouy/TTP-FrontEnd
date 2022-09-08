@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
-import { Toolbar, AppBar, Drawer, IconButton } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { Toolbar, AppBar, IconButton } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import "./AppBar.css";
 import { Logo, Notification } from "../../../components/Images/Images";
-import { RouteComponentProps, useHistory, useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
 
 const Bar: FC = (props: any) => {
@@ -14,7 +14,7 @@ const Bar: FC = (props: any) => {
 
   useEffect(() => {
     setSelected(location?.pathname);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <AppBar
