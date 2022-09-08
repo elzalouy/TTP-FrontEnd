@@ -122,7 +122,7 @@ const PMSlice: Slice<ProjectManagersInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(resendMail.pending, (state) => {
-      state.loading = true;
+      state.loading = false;
     });
     builder.addCase(resendMail.fulfilled, (state, { payload }) => {
       state.loading = false;

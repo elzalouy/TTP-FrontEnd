@@ -55,7 +55,6 @@ const CreateNewPM: React.FC = () => {
         label="create new PM"
         dataTestId="create-pm-button"
         onClick={() => setShow("flex")}
-        loading={loading}
         style={{marginTop:"0px"}}
       />
       <PopUp show={show} minWidthSize="30vw">

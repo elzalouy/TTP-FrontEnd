@@ -1,13 +1,10 @@
+import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import { useMediaQuery, useTheme } from "@mui/material";
+import Badge from "@mui/material/Badge";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import React from "react";
-import Badge from "@mui/material/Badge";
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
-import Avatar from "react-avatar";
-import profileImg from "./avatar.png";
-import Button from "@mui/material/Button";
 import moment from "moment";
-import { useMediaQuery, useTheme } from "@mui/material";
+import Avatar from "react-avatar";
 import { selectUser } from "../../models/Auth";
 import { useAppSelector } from "../../models/hooks";
 
@@ -18,6 +15,8 @@ type Props = {
 const NotificationItem = ({ notifiData }: Props) => {
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
+  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const XS = useMediaQuery(theme.breakpoints.down("xs"));
   const user = useAppSelector(selectUser);
 
   const AvatarBasedOnColor = (index: number) => {
@@ -54,16 +53,6 @@ const NotificationItem = ({ notifiData }: Props) => {
 
   return (
     <Grid container spacing={3}>
-      {/* <Grid item xs={12}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          component="div"
-          fontFamily={"Poppins"}
-        >
-          Recent Notification
-        </Typography>
-      </Grid> */}
       {notifiData.map((item: any, index) => {
         return (
           <Grid item container xs={12} key={item._id}>
@@ -76,13 +65,14 @@ const NotificationItem = ({ notifiData }: Props) => {
               sm={12}
               md={6}
               lg={6}
-              justifyContent={MD ? "space-between" : "flex-start"}
+              flexDirection={"column"}
+              justifyContent={SM ? "space-between" : "flex-start"}
               sx={{
                 background: "#fff",
                 borderRadius: "1em",
               }}
             >
-              <Grid marginX={1} item xs={1}>
+              <Grid marginX={{ xs: 0, sm: 0, md: 1, lg: 1 }} mr={{ xs: 4, sm: 4, md: 1, lg: 0 }} item xs={1}>
                 <Badge
                   overlap="circular"
                   badgeContent={
@@ -99,8 +89,14 @@ const NotificationItem = ({ notifiData }: Props) => {
                   {AvatarBasedOnColor(index)}
                 </Badge>
               </Grid>
-              <Grid item container xs={10}>
-                <Grid item xs={10}>
+              <Grid
+                container
+                xs={10}
+                justifyContent="flex-start"
+                alignItems={"flex-start"}
+                alignContent="flex-start"
+              >
+                <Grid item xs={8}>
                   <Typography
                     variant="subtitle2"
                     gutterBottom
@@ -110,7 +106,7 @@ const NotificationItem = ({ notifiData }: Props) => {
                     {item?.title}
                   </Typography>
                 </Grid>
-                <Grid item xs={2} textAlign="right">
+                <Grid item xs={4} textAlign="right">
                   <Typography
                     variant="caption"
                     gutterBottom
@@ -122,7 +118,7 @@ const NotificationItem = ({ notifiData }: Props) => {
                     {moment(item?.createdAt).fromNow(true)}
                   </Typography>
                 </Grid>
-                <Grid item container xs={12} spacing={2}>
+                {item?.adminUserID?.name && (<Grid item container xs={12} spacing={2}>
                   <Grid item xs={"auto"}>
                     <Typography
                       variant="caption"
@@ -135,7 +131,7 @@ const NotificationItem = ({ notifiData }: Props) => {
                       {item?.adminUserID?.name}
                     </Typography>
                   </Grid>
-                </Grid>
+                </Grid>)}
                 <Grid
                   item
                   xs={12}

@@ -32,11 +32,14 @@ const Bar: FC = (props: any) => {
         }}
         className="AppBar"
       >
-        <MenuIcon
-          sx={{ cursor: "pointer" }}
-          htmlColor="#000000"
-          onClick={() => setOpen((state) => !state)}
-        />
+        <IconButton
+          style={{ padding: "0px" }}
+          onClick={() => {
+            history.push("/notifications");
+          }}
+        >
+          <Notification />
+        </IconButton>
         <ResponsiveDrawer
           {...props}
           select={select}
@@ -51,14 +54,11 @@ const Bar: FC = (props: any) => {
         >
           <Logo />
         </IconButton>
-        <IconButton
-          style={{ padding: "0px" }}
-          onClick={() => {
-            history.push("/notifications");
-          }}
-        >
-          <Notification />
-        </IconButton>
+        <MenuIcon
+          sx={{ cursor: "pointer" }}
+          htmlColor="#000000"
+          onClick={() => setOpen((state) => !state)}
+        />
       </Toolbar>
     </AppBar>
   );
