@@ -36,6 +36,13 @@ export const setTasksToArrays = (tasks: Task[]) => {
         date.getMonth(),
         date.getDate()
       ).toDateString();
+    } else if (item?.createdAt) {
+      let date = new Date(item?.createdAt);
+      return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      ).toDateString();
     }
   });
   dates = _.uniq(dates);
@@ -48,6 +55,14 @@ export const setTasksToArrays = (tasks: Task[]) => {
       return tasks.filter((item) => {
         if (item?.lastMoveDate) {
           let date = new Date(item?.lastMoveDate);
+          return (
+            date.getDate() === day &&
+            date.getMonth() == month &&
+            date.getFullYear() === year &&
+            item
+          );
+        } else if (item?.createdAt) {
+          let date = new Date(item?.createdAt);
           return (
             date.getDate() === day &&
             date.getMonth() == month &&
@@ -97,4 +112,37 @@ export const formatFileName = (name: string) => {
   let val = _.split(name, ".");
   let zeroval = _.truncate(val[0], { length: 10, omission: "..." });
   return `${zeroval}.${val[val.length - 1]}`;
+};
+
+export const getTaskNotificationsDate = (tasks: Task[]) => {
+  let day = "",
+    year = "",
+    month = 0,
+    currentDay = "";
+  if (
+    tasks &&
+    tasks?.length > 0 &&
+    tasks[0]?.lastMoveDate &&
+    tasks[0]?.lastMoveDate !== null
+  ) {
+    let date = new Date(tasks[0].lastMoveDate);
+    day = date?.getDate().toString();
+    month = date?.getMonth();
+    year = date?.getFullYear().toString();
+  } else if (tasks?.length > 0 && tasks[0]?.createdAt) {
+    let date = new Date(tasks[0].createdAt);
+    day = date?.getDate().toString();
+    month = date?.getMonth();
+    year = date?.getFullYear().toString();
+    currentDay = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ][date?.getDay()];
+  }
+  return { day, month, year, currentDay };
 };

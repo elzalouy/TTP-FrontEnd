@@ -14,10 +14,9 @@ type EmptyCaptionProps = {
 const EmptyCaption = (props: EmptyCaptionProps) => {
   const loading = useAppSelector(selectStatisticsLoading);
   const projectsLoading = useAppSelector(selectLoading);
-
   return (
     <>
-      {(projectsLoading === false || loading === false) && (
+      {projectsLoading === false && loading === false && (
         <>
           {props.length === 0 && (
             <>

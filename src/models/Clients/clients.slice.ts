@@ -53,13 +53,11 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       }
     },
     createClient: (state = clientState, action: PayloadAction<any>) => {
-      console.log("web socket is wokring", action.payload);
       let index = state.clientsData.findIndex(
         (item) => item.clientName === action.payload.clientName
       );
       if (index >= 0) {
         let client = { ...state.clientsData[index] };
-        console.log({ client });
         client._id = action.payload._id;
         client.clientName = action.payload.clientName;
         client.doneProject = action.payload.doneProject;

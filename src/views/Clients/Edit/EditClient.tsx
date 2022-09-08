@@ -44,8 +44,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
       let image = setImageView(URL.createObjectURL(editClient.image));
       setClientData({ ...editClient, image: image });
     } else {
-      setClientData(editClient)
-    };
+      setClientData(editClient);
+    }
   }, [dispatch, editClient]);
 
   const handleSubmit = async (e: any) => {
@@ -106,7 +106,6 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     setError(false);
   };
 
-  console.log({ editClient });
   return (
     <>
       <PopUp show={show}>
@@ -143,8 +142,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                    ? clientData?.image
-                    : ImageView
+                  ? clientData?.image
+                  : ImageView
               }
               style={{
                 width: "9em",

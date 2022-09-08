@@ -10,6 +10,7 @@ import _ from "lodash";
 import { Task } from "../../../types/models/Projects";
 import { cssTabContent } from "src/helpers/generalUtils";
 import Empty from "./Empy";
+import { getTaskNotificationsDate } from "src/helpers/equations";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -71,44 +72,12 @@ const Notifications: React.FC<Props> = (props) => {
               >
                 {tasks &&
                   tasks?.map((TArray: Task[], index: number) => {
-                    let day = "",
-                      year = "",
-                      month = 0,
-                      currentDay = "";
-                    if (
-                      TArray?.length > 0 &&
-                      TArray[0].status !== "Tasks Board" &&
-                      TArray &&
-                      TArray[0]?.lastMoveDate
-                    ) {
-                      let date = new Date(TArray[0].lastMoveDate);
-                      day = date?.getDate().toString();
-                      month = date?.getMonth();
-                      year = date?.getFullYear().toString();
-                    }
-                    if (
-                      TArray?.length > 0 &&
-                      TArray[0].status === "Tasks Board" &&
-                      TArray[0]?.createdAt
-                    ) {
-                      let date = new Date(TArray[0].createdAt);
-                      day = date?.getDate().toString();
-                      month = date?.getMonth();
-                      year = date?.getFullYear().toString();
-                      currentDay = [
-                        "Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday",
-                      ][date?.getDay()];
-                    }
+                    let { day, month, year, currentDay } =
+                      getTaskNotificationsDate(TArray);
                     return (
                       <>
                         <Box
-                          key={index}
+                          key={index + day + month + year + currentDay}
                           sx={{ display: "inline-flex" }}
                           marginTop={2}
                         >

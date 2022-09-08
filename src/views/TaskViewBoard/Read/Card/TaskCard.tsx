@@ -50,7 +50,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
 
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
-  console.log({ navigationNextRef });
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
   const allTasks = useAppSelector(selectTasks);

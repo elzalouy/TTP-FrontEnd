@@ -73,7 +73,6 @@ const TaskForm: React.FC = () => {
 
   const onSubmit = async () => {
     let data = watch();
-    console.log({ dataFromHook: data });
     let newTask: any = {
       name: data.name,
       projectId: newProject?.project?._id,
