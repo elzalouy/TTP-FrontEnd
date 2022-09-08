@@ -28,9 +28,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
       lg={2.5}
       flexBasis={"50%"}
       height={"250px"}
-      marginTop={SM ? "10px" : "0px"}
-      paddingRight={LG ? "0" : "3%"}
-      paddingLeft={SM ? "2%" : "0%"}
+      paddingRight={"3%"}
+      // marginTop={SM ? "10px" : "0px"}
+      // paddingRight={LG ? "0" : "3%"}
+      // paddingLeft={SM ? "2%" : "0%"}
       item
     >
       <Card
@@ -39,10 +40,10 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
           width: "100%",
           borderRadius: 2.5,
           height: "100%",
-          userSelect:"none",
-          "&:hover" : {
+          userSelect: "none",
+          "&:hover": {
             boxShadow: "0px 2px 10px #0000001A",
-          }
+          },
         }}
       >
         <CardContent

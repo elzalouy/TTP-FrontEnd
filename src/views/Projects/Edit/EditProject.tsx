@@ -6,7 +6,9 @@ import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import {
-  calculateStatusBasedOnDeadline, checkProjectStatus, checkProjectStatusName
+  calculateStatusBasedOnDeadline,
+  checkProjectStatus,
+  checkProjectStatusName,
 } from "src/helpers/generalUtils";
 import { validateEditProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
@@ -18,7 +20,7 @@ import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
   editProject as editProjectAction,
   selectEditProject,
-  selectProjectStatusOptions
+  selectProjectStatusOptions,
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
@@ -57,7 +59,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
-  const [nameErr, setNameErr] = useState<{ error: Joi.ValidationError | undefined | boolean }>({ error: undefined });
+  const [nameErr, setNameErr] = useState<{
+    error: Joi.ValidationError | undefined | boolean;
+  }>({ error: undefined });
 
   useEffect(() => {
     setValue("clientId", project?.clientId);
@@ -117,9 +121,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
     if (updateDate) {
       if (inProgress || done) {
-        console.log("Running the status check", inProgress, done);
         if (onlyDeadlineIsNull || onlyStartDateIsNull || bothDatesAreNull) {
-          console.log("Running the date check", onlyDeadlineIsNull, onlyStartDateIsNull, bothDatesAreNull);
           //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started
           data.status = "Not Started";
         }
@@ -184,7 +186,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     });
     setValue("startDate", project?.startDate);
     setNameErr({ error: undefined });
-  }
+  };
 
   const onSubmitEdit = () => {
     if (isDirty || updateDate) {
@@ -281,7 +283,13 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               <ControlledSelect
                 name="status"
                 control={control}
-                label={data.status ? (checkProjectStatus(data.status) ? data.status : "Done") : "Project Status"}
+                label={
+                  data.status
+                    ? checkProjectStatus(data.status)
+                      ? data.status
+                      : "Done"
+                    : "Project Status"
+                }
                 formLabel="Project Status"
                 elementType="select"
                 options={statusOptions}

@@ -29,6 +29,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
+import { isSafari } from "src/helpers/browserType";
 
 interface TaskCartProps {
   index: number;
@@ -49,7 +50,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
 
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
-  console.log({ navigationNextRef });
   const techMembers = useAppSelector(selectAllMembers);
   const departments = useAppSelector(selectAllDepartments);
   const allTasks = useAppSelector(selectTasks);
@@ -278,7 +278,10 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   setImageError(index);
                                 }}
                                 src={image?.url}
-                                crossOrigin="use-credentials"
+                                crossOrigin={
+                                  isSafari ? "use-credentials" : undefined
+                                }
+                                decoding="async"
                                 alt="more"
                               />
                             </SwiperSlide>

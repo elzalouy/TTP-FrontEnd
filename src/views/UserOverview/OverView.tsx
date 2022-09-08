@@ -1,6 +1,6 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import UserName from "./UserName/Name";
 import UserProjects from "./UserProjects/UserProjects";
 import UserStatus from "./Status/StatusCard";
@@ -91,7 +91,7 @@ export const OverView: FC<Props> = (props) => {
         >
           <Grid
             direction="row"
-            justifyContent={MD ? "space-between" : "flex-start"}
+            justifyContent={"space-between"}
             alignItems="flex-start"
             paddingTop={4}
             container
@@ -191,16 +191,14 @@ export const OverView: FC<Props> = (props) => {
             alignItems="flex-start"
             marginBottom={5}
           >
-            {role === "OM" ? (
-              <UserTasks
-                tasks={statistics.OM.inProgress}
-                title={"Tasks In Progress"}
-                img={IMAGES.OverviewInProgressTasksEmpty}
-                caption="Working on agencies are easy !"
-              />
-            ) : (
-              <UserTasks tasks={statistics.PM.shared} title={"Shared Tasks"} />
-            )}
+            <UserTasks
+              tasks={
+                role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
+              }
+              title={role === "OM" ? "Tasks In Progress" : "Shared Tasks"}
+              img={IMAGES.OverviewInProgressTasksEmpty}
+              caption="Working on agencies are easy !"
+            />
           </Grid>
           <Grid
             item
@@ -212,22 +210,16 @@ export const OverView: FC<Props> = (props) => {
             alignItems="flex-start"
             marginBottom={5}
           >
-            {role === "OM" && (
-              <UserTasks
-                tasks={statistics.OM.tasksCloseToDeadline}
-                title={"Tasks Close to Deadline"}
-                img={IMAGES.OverviewCloseToDeadlineEmpty}
-                caption={"Nothing to be worried about !"}
-              />
-            )}
-            {role == "PM" && (
-              <UserTasks
-                tasks={statistics.PM.tasksCloseToDeadline}
-                title={"Tasks Close to Deadline"}
-                img={IMAGES.OverviewCloseToDeadlineEmpty}
-                caption="Working on agencies are easy !"
-              />
-            )}
+            <UserTasks
+              tasks={
+                role === "OM"
+                  ? statistics.OM.tasksCloseToDeadline
+                  : statistics.PM.tasksCloseToDeadline
+              }
+              title={"Tasks Close to Deadline"}
+              img={IMAGES.OverviewCloseToDeadlineEmpty}
+              caption={"Nothing to be worried about !"}
+            />
           </Grid>
           <Grid
             justifyContent="flex-start"
