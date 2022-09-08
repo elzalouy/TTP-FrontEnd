@@ -173,7 +173,7 @@ export const OverView: FC<Props> = (props) => {
               xs={12}
               justifyContent="center"
               alignItems="center"
-              marginY={{ md: 2, sm: 2, xs: 2, lg: 1 }}
+              marginY={{ md: 2, sm: 2, xs: 2, lg: 0 }}
             >
               {role === "OM" ? (
                 <ManagerNotifications {...props} />
@@ -184,6 +184,7 @@ export const OverView: FC<Props> = (props) => {
           </Grid>
 
           <UserTasks
+            pr={1}
             tasks={
               role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
             }
@@ -201,7 +202,6 @@ export const OverView: FC<Props> = (props) => {
             img={IMAGES.OverviewCloseToDeadlineEmpty}
             caption={"Nothing to be worried about !"}
           />
-
           <UserProjects
             projects={
               role === "OM"

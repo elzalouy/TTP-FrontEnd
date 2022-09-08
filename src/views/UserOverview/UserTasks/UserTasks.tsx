@@ -9,6 +9,7 @@ interface UserTasksProps {
   tasks?: Task[] | null;
   img?: any;
   caption?: string;
+  pr?: any;
 }
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
@@ -23,6 +24,7 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
         justifyContent="flex-start"
         alignItems="flex-start"
         marginBottom={5}
+        paddingRight={props.pr}
       >
         <Typography
           id="project-header"
