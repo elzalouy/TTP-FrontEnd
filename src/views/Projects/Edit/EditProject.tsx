@@ -110,6 +110,15 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setAlert("");
   };
 
+  const handleNameChange = (e: any) => {
+    let { error } = validateEditProject({ name: e.target.value });
+    if (error) {
+      setNameErr({ error: error });
+    } else {
+      setNameErr({ error: undefined });
+    }
+  }
+
   const showAlertBasedOnDate = () => {
     let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
     let onlyDeadlineIsNull = data.deadline === null && data.startDate !== null;
@@ -236,14 +245,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 type="text"
                 control={control}
                 error={nameErr.error ? "true" : undefined}
-                onChange={(e: any) => {
-                  let { error } = validateEditProject({ name: e.target.value });
-                  if (error) {
-                    setNameErr({ error: error });
-                  } else {
-                    setNameErr({ error: undefined });
-                  }
-                }}
+                onChange={handleNameChange}
               />
             </div>
             <div>

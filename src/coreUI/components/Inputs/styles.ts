@@ -23,7 +23,7 @@ export const inputStyle = () => {
       width: "100%",
       marginTop: "6px !important",
       "& .MuiOutlinedInput-input": {
-        border: "0.5px solid #b4b6c4 !important",
+        border: "1px solid #b4b6c4 !important",
         height: "13px !important",
         borderRadius: "6px",
         background: "white !important",

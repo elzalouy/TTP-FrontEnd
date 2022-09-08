@@ -116,6 +116,7 @@ const NotificationItem = ({ notifiData }: Props) => {
                     component="div"
                     sx={{
                       color: "#acabab",
+                      marginRight:2,
                     }}
                   >
                     {moment(item?.createdAt).fromNow(true)}
