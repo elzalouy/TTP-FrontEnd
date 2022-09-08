@@ -14,7 +14,7 @@ import {
     IDepartmentsComponentState,
 } from "../../../../types/views/Departments";
 import { changeState } from "../../../../models/Departments";
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import CardBadge from "src/coreUI/components/Badge/CardBadge";
 
 const DepartmentCard = ({
@@ -62,11 +62,17 @@ const DepartmentCard = ({
                     className="department-Card"
                     style={{ backgroundColor: cardColors[department.color][0] }}
                 >
-                    <div
+                    <Grid
+                        container
                         className="dp-card-header"
                         style={{ color: cardColors[department.color][1] }}
                     >
-                        <h2>{department.name}</h2>
+                        <Typography
+                            variant="h2"
+                            color={cardColors[department.color][1]}
+                            sx={{width:"160px",overflowWrap:"break-word"}}>
+                            {department.name}
+                        </Typography>
                         {role !== "PM" && (
                             <DepartmentPopover
                                 color={cardColors[department?.color][1]}
@@ -74,7 +80,7 @@ const DepartmentCard = ({
                                 handleSetShowDelete={handleSetShowDelete}
                             />
                         )}
-                    </div>
+                    </Grid>
                     <div className="teams">
                         {department?.teams?.map((team, _id) => {
                             if (!team.isDeleted) {

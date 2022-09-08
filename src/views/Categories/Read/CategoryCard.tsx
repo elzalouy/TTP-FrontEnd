@@ -85,6 +85,8 @@ const CategoryCard: React.FC<IProps> = ({
             letterSpacing: 0.2,
             textAlign: "left",
             textTransform: "capitalize",
+            width:"160px",
+            overflowWrap:"break-word",
           }}
           style={{ color: fontColor }}
         >
