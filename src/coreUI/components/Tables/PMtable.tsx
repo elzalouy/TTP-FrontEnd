@@ -40,7 +40,7 @@ const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const [selects, setAllSelected] = useState<string[]>([]);
+
   const refreshUser = (id: string) => {
     //Checking time limit
     let timeLimit = localStorage.getItem("limit");

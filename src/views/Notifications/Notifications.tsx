@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { CircularProgress, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Button from "src/coreUI/components/Buttons/Button";
+import { selectUser } from "../../models/Auth";
 import { useAppSelector } from "../../models/hooks";
-import { selectRole, selectUser } from "../../models/Auth";
 import {
   getNotifications,
   selectNotificationPagination,
   selectNotifications,
   selectNotificationsLoading,
   selectUnNotifiedNum,
-  updateNotified,
+  updateNotified
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
-import Button from "src/coreUI/components/Buttons/Button";
 
 type Props = {};
 
 export const Notifications = (props: Props) => {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
-  const user = useAppSelector(selectUser);
+  // const user = useAppSelector(selectUser);
   const loading = useAppSelector(selectNotificationsLoading);
   const notifications = useAppSelector(selectNotifications);
   const pagination = useAppSelector(selectNotificationPagination);
-  const Unotified = useAppSelector(selectUnNotifiedNum);
+  // const Unotified = useAppSelector(selectUnNotifiedNum);
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   useEffect(() => {
@@ -55,7 +55,7 @@ export const Notifications = (props: Props) => {
         </Grid>
       ) : null}
       {pagination.pages !== pagination.current && (
-        <Grid container xs={6} justifyContent={"center"} textAlign="center" marginBottom={4}>
+        <Grid container xs={12} md={6} justifyContent={"center"} textAlign="center" marginBottom={4}>
           <Button
             type="main"
             size="small"
