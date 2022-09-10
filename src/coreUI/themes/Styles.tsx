@@ -251,7 +251,7 @@ export const dataTimePickerInputStyle = {
     fontSize: "14px",
     borderRadius: "6px",
     background: "white !important",
-    border: "0.5px solid #b4b6c4 !important",
+    border: "1px solid #b4b6c4 !important",
     ":focus": {
       border: "2px solid #303030 !important",
     },

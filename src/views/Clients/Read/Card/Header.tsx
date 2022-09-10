@@ -36,8 +36,9 @@ const Header: FC<IClientHeader> = ({ client, preview }) => {
             }}
           >
             <Typography
-              sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5 }}
+              sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5,width:"90px" }}
               data-test-id="client-name-header"
+              textOverflow={"ellipsis"}
             >
               {clientName}
             </Typography>
@@ -50,7 +51,7 @@ const Header: FC<IClientHeader> = ({ client, preview }) => {
           </Box>
         </Stack>
       </Box>
-      <Box>{role !== "PM" && <ClientsPopover client={client} />}</Box>
+      <Box ml={1}>{role !== "PM" && <ClientsPopover client={client} />}</Box>
     </Grid>
   );
 };
