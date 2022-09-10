@@ -6,7 +6,11 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import { ProjectsActions, selectTasks } from "../../../../models/Projects";
+import {
+  getAllTasks,
+  ProjectsActions,
+  selectTasks,
+} from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -25,6 +29,7 @@ import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
 import { isSafari } from "src/helpers/browserType";
+import { useLocation } from "react-router";
 
 interface TaskCartProps {
   index: number;
@@ -42,7 +47,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   footerStyle,
 }) => {
   const dispatch = useDispatch();
-
+  const location = useLocation();
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
   const departments = useAppSelector(selectAllDepartments);
@@ -58,25 +63,23 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-
   const [taskImages, setTaskImages] = useState<any[]>([]);
   const [taskFiles, setTaskFiles] = useState<any[]>([]);
 
-  // /// set files
-  // useEffect(() => {
-  //   let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
-  //   if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
-  //     let images = item.attachedFiles.filter((item) =>
-  //       mimeTypes.includes(item.mimeType)
-  //     );
-  //     setTaskImages(images);
-  //     let others = item?.attachedFiles.filter(
-  //       (item) => !mimeTypes.includes(item.mimeType)
-  //     );
-  //     setTaskFiles(others);
-  //   }
-  // }, [item]);
-
+  React.useEffect(() => {
+    let errors: [] = taskImages.find((item) => item.error === true);
+    document.addEventListener("visibilitychange", () => {
+      console.log("visible", location.pathname);
+      if (
+        errors &&
+        errors.length > 0 &&
+        document.visibilityState === "visible" &&
+        location.pathname.includes("/TasksBoard/")
+      ) {
+        dispatch(getAllTasks(null));
+      }
+    });
+  }, []);
   useEffect(() => {
     let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
     if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
