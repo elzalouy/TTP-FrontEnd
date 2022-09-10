@@ -23,13 +23,14 @@ import {
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { toggleEditTaskPopup } from "../../../../models/Ui";
-import { Project, Task } from "../../../../types/models/Projects";
+import { Project, Task, TaskFile } from "../../../../types/models/Projects";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
 import { isSafari } from "src/helpers/browserType";
 import { useLocation } from "react-router";
+import { ToastSuccess } from "src/coreUI/components/Typos/Alert";
 
 interface TaskCartProps {
   index: number;
@@ -63,23 +64,25 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-  const [taskImages, setTaskImages] = useState<any[]>([]);
+  const [taskImages, setTaskImages] = useState<TaskFile[]>([]);
   const [taskFiles, setTaskFiles] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  React.useEffect(() => {
-    let errors: [] = taskImages.find((item) => item.error === true);
-    document.addEventListener("visibilitychange", () => {
-      console.log("visible", location.pathname);
-      if (
-        errors &&
-        errors.length > 0 &&
-        document.visibilityState === "visible" &&
-        location.pathname.includes("/TasksBoard/")
-      ) {
-        dispatch(getAllTasks(null));
-      }
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   document.addEventListener("visibilitychange", () => {
+  //     console.log("visible", location.pathname);
+  //     if (
+  //       // taskImages[0].error &&
+  //       // taskImages[0].error === true &&
+  //       document.visibilityState === "visible" &&
+  //       location.pathname.includes("/TasksBoard/")
+  //     ) {
+  //       ToastSuccess("loading images again");
+  //       dispatch(getAllTasks(null));
+  //     }
+  //   });
+  // }, []);
+
   useEffect(() => {
     let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
     if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
@@ -164,9 +167,12 @@ const TaskCard: React.FC<TaskCartProps> = ({
   };
   const setImageError = (index: any) => {
     let images = [...taskImages];
-    images[index] = { ...images[index], error: true };
-    setTaskImages(images);
+    let img = { ...images[index] };
+    img.error = true;
+    images[index] = img;
+    setTaskImages([...images]);
   };
+  console.log({ taskImages });
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -199,9 +205,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
               >
                 {name}
               </Typography>
-              {/* {item.status !== "Not Clear" && item.status !== "Cancled" && ( */}
               <TasksPopover item={item} />
-              {/* )} */}
             </Stack>
             <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
               <Typography color={"#696974"}>

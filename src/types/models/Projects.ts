@@ -6,6 +6,7 @@ export interface TaskFile {
   mimeType: string;
   trelloId: string;
   url: string;
+  error?: boolean;
 }
 export interface Task {
   _id: string;
