@@ -134,6 +134,7 @@ const Notifications: React.FC<Props> = (props) => {
                           <Box
                             key={index + day + month + year + currentDay}
                             sx={{ display: "inline-flex" }}
+                            marginLeft={1.8}
                             marginTop={2}
                           >
                             <Typography sx={cssDay}>{currentDay}</Typography>

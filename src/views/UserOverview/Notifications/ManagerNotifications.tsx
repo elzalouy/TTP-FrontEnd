@@ -157,6 +157,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                             key={index}
                             sx={{ display: "inline-flex" }}
                             marginTop={2}
+                            marginLeft={1.8}
                           >
                             <Typography sx={cssDay}>{currentDay}</Typography>
                             <Typography
