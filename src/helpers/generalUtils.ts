@@ -243,16 +243,21 @@ export const checkProjectStatus = (status: string | undefined) => {
 };
 
 export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
-  let flat = _.flattenDeep(NestedTasks);
-  let more = false;
-  if (NestedTasks && NestedTasks?.length > 1) more = true;
-  else
-    more =
-      NestedTasks && NestedTasks[0] && NestedTasks[0].length > 2 ? true : false;
   return {
     position: "relative",
-    height: open && more ? `500px` : `200px`,
-    overflowY: "scroll",
+    height: {
+      lg: open && hasMoreItems(NestedTasks, 2, 3) ? `auto` : `200px`,
+      md: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
+      sm: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
+      xs: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
+    },
+    maxHeight: { lg: `500px`, md: "300px", sm: "300px", xs: "300px" },
+    overflowY: {
+      lg: open ? "scroll" : "hidden",
+      md: "scroll",
+      sm: "scroll",
+      xs: "scroll",
+    },
     "&::-webkit-scrollbar": {
       display: open ? "block !important" : "none",
       width: "3px !important",
@@ -267,4 +272,20 @@ export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
       borderRadius: 5,
     },
   };
+};
+export const hasMoreItems = (
+  NestedTasks: Task[][] | null,
+  Nested = 2,
+  Array = 3
+) => {
+  if (NestedTasks) {
+    let more = false;
+    if (NestedTasks && NestedTasks?.length >= Nested) more = true;
+    else
+      more =
+        NestedTasks && NestedTasks[0] && NestedTasks[0].length >= Array
+          ? true
+          : false;
+    return more;
+  } else return false;
 };

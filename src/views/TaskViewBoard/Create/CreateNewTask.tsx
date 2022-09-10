@@ -79,7 +79,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
     };
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     if (data.teamId !== "") newTask.teamId = data.teamId;
-    if (data.deadline !== "")
+    if (data.deadline !== "" && data.deadline !== null)
       newTask.deadline = moment(data?.deadline).toDate().toString();
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;

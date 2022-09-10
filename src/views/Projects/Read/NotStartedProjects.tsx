@@ -1,4 +1,3 @@
-// TODO it should be under the project folder in pages as a new folder called CreateProject
 import React, { useState } from "react";
 import "../Create/createNewProject.css";
 import Box from "@mui/material/Box";
@@ -13,7 +12,7 @@ import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
 import { selectPMs } from "src/models/PM";
 import { RouteComponentProps } from "react-router";
-import "./projects.css"
+import "./projects.css";
 
 type Props = {
   history: RouteComponentProps["history"];
@@ -46,31 +45,31 @@ const CreateNewProject: React.FC<Props> = (props) => {
         sx={
           notStartedProjects?.length === 0
             ? {
-              display: "flex",
-              justifyContent: "flex-end",
-              flexDirection: "column",
-              width: "100%",
-              borderRadius: "12px",
-              backgroundColor: "#F1F1F4",
-              py: 1,
-              px: 0,
-              mb: 1,
-              font: "normal normal 600 16px/30px Cairo",
-              color: "#505050",
-            }
+                display: "flex",
+                justifyContent: "flex-end",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "12px",
+                backgroundColor: "#F1F1F4",
+                py: 1,
+                px: 0,
+                mb: 1,
+                font: "normal normal 600 16px/30px Cairo",
+                color: "#505050",
+              }
             : {
-              display: "flex",
-              justifyContent: "flex-end",
-              flexDirection: "column",
-              width: "100%",
-              borderRadius: "12px",
-              backgroundColor: "#F1F1F4",
-              py: 1,
-              px: 0,
-              mb: 4,
-              font: "normal normal 600 16px/30px Cairo",
-              color: "#505050",
-            }
+                display: "flex",
+                justifyContent: "flex-end",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "12px",
+                backgroundColor: "#F1F1F4",
+                py: 1,
+                px: 0,
+                mb: 4,
+                font: "normal normal 600 16px/30px Cairo",
+                color: "#505050",
+              }
         }
       >
         {loading === false ? (

@@ -11,14 +11,19 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
     <>
       {props.popover ? (
         <Stack
+          maxWidth={"100%"}
           sx={{
-            position: "absolute",
+            position: {
+              lg: "absolute",
+              md: "relative",
+              sm: "relative",
+              xs: "relative",
+            },
             zIndex: 2,
             backgroundColor: "white",
             borderRadius: "10px",
-            width: "inherit",
             marginLeft: 0,
-            marginRight: 5,
+            marginRight: { lg: 5 },
             boxShadow: "0px 10px 20px #0000001A",
           }}
         >

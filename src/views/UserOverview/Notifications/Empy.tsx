@@ -14,7 +14,12 @@ const Empty = () => {
       {
         <>
           {(projectsLoading === false || loading === false) && (
-            <Box textAlign={"center"} width="100%" marginX={1}>
+            <Box
+              textAlign={"center"}
+              width="100%"
+              marginX={1}
+              marginTop={{ lg: 0, md: 6, sm: 6, xs: 6 }}
+            >
               <img
                 src={IMAGES.OverviewNotificationsEmpty}
                 width="170px"
