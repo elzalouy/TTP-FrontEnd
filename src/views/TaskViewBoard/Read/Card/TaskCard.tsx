@@ -276,9 +276,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                 onError={(e) => {
                                   setImageError(index);
                                 }}
-                                src={image?.url}
-                                crossOrigin={isSafari ? "anonymous" : undefined}
-                                decoding="async"
+                                src={image?.url + "/"}
                                 alt="more"
                               />
                             </SwiperSlide>
