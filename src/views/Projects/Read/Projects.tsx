@@ -38,15 +38,15 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
-  const clients = useAppSelector(clientsDataSelector);
+  // const clients = useAppSelector(clientsDataSelector);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
-  const role = useAppSelector(selectRole);
-  const { watch, control, setValue } = useForm();
+  // const role = useAppSelector(selectRole);
+  const { watch, control, setValue, formState: { isDirty } } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
@@ -62,8 +62,10 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
     }
   }, [MD]);
 
+  //Declaring the data watcher globally
+  let data = watch();
+
   const onHandleChange = (e: any) => {
-    let data = watch();
     let filter = {
       name: data.name,
       clientId: data.clientId,
@@ -80,9 +82,12 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
 
   const onChange = (e: any, name: string) => {
     e.preventDefault();
-    setValue(name, e.target.id);
+    setValue(name, e.target.id, { shouldDirty: true });
     onHandleChange(e);
   };
+
+  console.log(isDirty);
+
 
   const isOpen = () => {
     return {
@@ -92,6 +97,11 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       lg: "block",
     };
   };
+
+  let test = {
+    clientId: data.clientId,
+  }
+
   return (
     <Grid
       overflow={"hidden"}
@@ -136,7 +146,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={10} sm={10} md={4} lg={4}
             alignItems="center"
-            justifyContent={!LG ? "flex-endp" : "center"}
+            justifyContent={{ xs: "", sm: "", md: "flex-end", lg: "flex-end" }}
             display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
           >
             <Controller
@@ -208,7 +218,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     label="Project Manager: "
                     options={pmOptions}
                     onSelect={(e: any) => onChange(e, "projectManager")}
-                    textTruncate={2}
+                    textTruncate={6}
                   />
                 )}
               />
@@ -223,6 +233,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               md={4}
               lg={2}
             >
+
               <Controller
                 name="clientId"
                 control={control}
