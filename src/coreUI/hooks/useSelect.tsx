@@ -8,8 +8,8 @@ import React from "react";
  * @returns  value String
  */
 export function useSelect(
-  selectRef: React.MutableRefObject<HTMLFieldSetElement | null>,
-  optionsRed: React.MutableRefObject<HTMLUListElement | null>
+  selectRef: React.MutableRefObject<any>,
+  optionsRed: React.MutableRefObject<any>
 ) {
   React.useEffect(() => {
     function click(event: any) {

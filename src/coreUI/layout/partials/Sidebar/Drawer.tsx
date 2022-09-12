@@ -1,6 +1,11 @@
-import { Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
 import {
-  AppBarProps, Box,
+  Close,
+  Logout as LogoutIcon,
+  Menu as MenuIcon,
+} from "@mui/icons-material";
+import {
+  AppBarProps,
+  Box,
   Divider,
   Drawer,
   IconButton,
@@ -9,7 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
@@ -25,10 +30,7 @@ import PersonIcon from "../../../../assets/icons/Person";
 import ProjectsIcon from "../../../../assets/icons/ProjectsIcon";
 import TaskIcon from "../../../../assets/icons/TaskIcon";
 import IMAGES from "../../../../assets/img/Images";
-import {
-  selectRole,
-  selectUser
-} from "../../../../models/Auth";
+import { selectRole, selectUser } from "../../../../models/Auth";
 import { useAppSelector } from "../../../../models/hooks";
 import { selectUnNotifiedNum } from "../../../../models/Notifications";
 import { toggleLogOutPopup, toggleSideMenu } from "../../../../models/Ui";
@@ -37,13 +39,12 @@ import { Logo } from "../../../components/Images/Images";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 
-interface BarProps extends AppBarProps { }
+interface BarProps extends AppBarProps {}
 
 const AppDrawer: React.FC = (props: any) => {
   const open = useAppSelector(selectSideMenuToggle);
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
-  // const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
   const userNotificationsNo = useAppSelector(selectUnNotifiedNum);
   const history = useHistory();
@@ -57,8 +58,6 @@ const AppDrawer: React.FC = (props: any) => {
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   }));
-
-  
 
   const handleLogout = () => {
     dispatch(toggleLogOutPopup("flex"));
@@ -82,6 +81,7 @@ const AppDrawer: React.FC = (props: any) => {
             width: open ? (LG ? "20%" : "16%") : "4%",
             transition: "all 0.5s ease !important",
           },
+          zIndex: 3,
         }}
         open={open}
         variant="permanent"
@@ -95,11 +95,11 @@ const AppDrawer: React.FC = (props: any) => {
             }}
           >
             {open && <Logo {...props} />}
-            <IconButton onClick={() => setOpen()}>
-              {props?.open ? (
+            <IconButton sx={{ height: "40px" }} onClick={() => setOpen()}>
+              {open ? (
                 <MenuIcon htmlColor="#000000" />
               ) : (
-                <MenuIcon htmlColor="#000000" />
+                <Close htmlColor="#000000" />
               )}
             </IconButton>
           </DrawerHeader>
@@ -276,13 +276,13 @@ const AppDrawer: React.FC = (props: any) => {
                         ? user?.role === "OM"
                           ? "Admin"
                           : user?.role === "PM"
-                            ? "Project Manager"
-                            : ""
+                          ? "Project Manager"
+                          : ""
                         : user?.user?.role === "OM"
-                          ? "Admin"
-                          : user?.user?.role === "PM"
-                            ? "Project Manager"
-                            : ""}
+                        ? "Admin"
+                        : user?.user?.role === "PM"
+                        ? "Project Manager"
+                        : ""}
                     </Typography>
                   </Box>
                   <Box sx={{ cursor: "pointer" }}>

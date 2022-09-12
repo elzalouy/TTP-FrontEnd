@@ -14,11 +14,6 @@ interface UserStatusProps {
 }
 
 const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
-  const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const LG = useMediaQuery(theme.breakpoints.down("lg"));
-  const breakpoints = [SM, LG];
-
   return (
     <Grid
       xs={12}

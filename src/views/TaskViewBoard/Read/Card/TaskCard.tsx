@@ -6,11 +6,7 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import {
-  getAllTasks,
-  ProjectsActions,
-  selectTasks,
-} from "../../../../models/Projects";
+import { ProjectsActions, selectTasks } from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -28,9 +24,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
-import { isSafari } from "src/helpers/browserType";
 import { useLocation } from "react-router";
-import { ToastSuccess } from "src/coreUI/components/Typos/Alert";
 
 interface TaskCartProps {
   index: number;
@@ -283,7 +277,8 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                 onError={(e) => {
                                   setImageError(index);
                                 }}
-                                src={image?.url + "/"}
+                                src={image?.url + "/?"}
+                                crossOrigin={undefined}
                                 alt="more"
                               />
                             </SwiperSlide>
