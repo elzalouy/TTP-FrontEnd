@@ -263,8 +263,8 @@ const AppDrawer: React.FC = (props: any) => {
                       color="#11142D"
                     >
                       {user?.user?.name === undefined
-                        ? user?.name
-                        : user?.user?.name}
+                        ? user?.name.split(" ")[0]
+                        : user?.user?.name.split(" ")[0]}
                     </Typography>
                     <Typography
                       fontFamily={"Cairo"}
