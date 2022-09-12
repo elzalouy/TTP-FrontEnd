@@ -110,6 +110,9 @@ const Notifications: React.FC<Props> = (props) => {
                 tabItem === "0"
                   ? statistics.PM.inProgress
                   : statistics.PM.review;
+              if (tasks && tasks.length > 0 && LG !== false && open === false) {
+                tasks = [tasks[0]];
+              }
               return (
                 <Box
                   key={index}
@@ -143,7 +146,10 @@ const Notifications: React.FC<Props> = (props) => {
                             }/  ${year}`}</Typography>
                           </Box>
                           {TArray?.length > 0 &&
-                            (!LG || open === true
+                            (TArray?.length > 0 &&
+                            (!LG
+                              ? TArray
+                              : open === true
                               ? TArray
                               : TArray.slice(0, 2)
                             ).map((item) => {
