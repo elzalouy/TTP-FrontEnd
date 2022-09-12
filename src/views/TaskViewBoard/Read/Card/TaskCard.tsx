@@ -267,22 +267,21 @@ const TaskCard: React.FC<TaskCartProps> = ({
                             );
                           return (
                             <SwiperSlide key={index} className={`swiper-slide`}>
-                              <picture>
-                                <source srcSet={`${image.url}/?`} />
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    borderRadius: 8,
-                                    marginTop: "10px",
-                                  }}
-                                  onError={(e) => {
-                                    setImageError(index);
-                                  }}
-                                  src={image?.url + "/?"}
-                                  alt="more"
-                                />
-                              </picture>
+                              <img
+                                style={{
+                                  width: "100%",
+                                  height: 120,
+                                  borderRadius: 8,
+                                  marginTop: "10px",
+                                }}
+                                referrerPolicy="no-referrer"
+                                onError={(e) => {
+                                  setImageError(index);
+                                }}
+                                srcSet={image?.url + "/?"}
+                                src={image?.url + "/?"}
+                                alt="more"
+                              />
                             </SwiperSlide>
                           );
                         })}
