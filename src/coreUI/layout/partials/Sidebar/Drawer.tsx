@@ -50,7 +50,16 @@ const AppDrawer: React.FC = (props: any) => {
   const history = useHistory();
   const theme = useTheme();
   const LG = useMediaQuery(theme.breakpoints.down("lg"));
-
+  const [userName, setUserName] = React.useState("");
+  React.useEffect(() => {
+    if (user && user.name) {
+      let username =
+        user?.user?.name === undefined
+          ? user?.name.split(" ")[0]
+          : user?.user?.name.split(" ")[0];
+      setUserName(username);
+    }
+  }, [user?.name]);
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -262,9 +271,7 @@ const AppDrawer: React.FC = (props: any) => {
                       textTransform={"capitalize"}
                       color="#11142D"
                     >
-                      {user?.user?.name === undefined
-                        ? user?.name.split(" ")[0]
-                        : user?.user?.name.split(" ")[0]}
+                      {userName}
                     </Typography>
                     <Typography
                       fontFamily={"Cairo"}
