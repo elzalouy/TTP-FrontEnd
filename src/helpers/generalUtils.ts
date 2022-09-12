@@ -247,9 +247,9 @@ export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
     position: "relative",
     height: {
       lg: open && hasMoreItems(NestedTasks, 2, 3) ? `auto` : `200px`,
-      md: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
-      sm: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
-      xs: hasMoreItems(NestedTasks, 3, 4) ? `auto` : `300px`,
+      md: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
+      sm: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
+      xs: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
     },
     maxHeight: { lg: `500px`, md: "300px", sm: "300px", xs: "300px" },
     overflowY: {
