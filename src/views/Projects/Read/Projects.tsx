@@ -86,9 +86,6 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
     onHandleChange(e);
   };
 
-  console.log(isDirty);
-
-
   const isOpen = () => {
     return {
       xs: filter ? "block" : "none",
@@ -97,10 +94,6 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       lg: "block",
     };
   };
-
-  let test = {
-    clientId: data.clientId,
-  }
 
   return (
     <Grid
