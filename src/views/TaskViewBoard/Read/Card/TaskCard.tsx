@@ -268,6 +268,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                           return (
                             <SwiperSlide key={index} className={`swiper-slide`}>
                               <picture>
+                                <source srcSet={`${image.url}/?`} />
                                 <img
                                   style={{
                                     width: "100%",
