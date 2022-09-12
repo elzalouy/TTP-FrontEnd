@@ -36,7 +36,7 @@ export const Clients: React.FC<IClient> = () => {
   }, [clientData]);
 
   return (
-    <Grid container paddingX={4} paddingY={SM ? 8 : 4}>
+    <Grid container paddingX={2} paddingY={4} pt={SM ? 8 : 4} pb={SM ? 5 : 4}>
       <Grid container xs={12} my={1} marginX={0} px={0}>
         <Typography variant="h2">Clients</Typography>
       </Grid>
