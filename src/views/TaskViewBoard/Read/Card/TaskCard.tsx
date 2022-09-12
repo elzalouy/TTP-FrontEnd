@@ -280,7 +280,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                     setImageError(index);
                                   }}
                                   src={image?.url + "/?"}
-                                  crossOrigin={undefined}
                                   alt="more"
                                 />
                               </picture>

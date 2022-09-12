@@ -77,7 +77,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       backgroundColor: "white",
     },
   };
-
+  console.log({ LG });
   return (
     <Box
       width={"100%"}
@@ -127,7 +127,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                   : tabItem === "1"
                   ? statistics.OM.review
                   : statistics.OM.shared;
-              if (tasks && tasks.length > 0 && open === false) {
+              if (tasks && tasks.length > 0 && LG !== false && open === false) {
                 tasks = [tasks[0]];
               }
               return (
@@ -165,7 +165,9 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                             >{`${day}/  ${month}/  ${year}`}</Typography>
                           </Box>
                           {TArray?.length > 0 &&
-                            (!LG || open === true
+                            (!LG
+                              ? TArray
+                              : open === true
                               ? TArray
                               : TArray.slice(0, 2)
                             ).map((item) => {
@@ -221,6 +223,7 @@ const cssNotiBox = {
   height: 60,
   borderRadius: "12px",
   boxShadow: "0px 3px 20px #4B4B4B0D",
+
   padding: 1.2,
   display: "inline-flex",
   alignItems: "center",

@@ -97,9 +97,9 @@ const AppDrawer: React.FC = (props: any) => {
             {open && <Logo {...props} />}
             <IconButton sx={{ height: "40px" }} onClick={() => setOpen()}>
               {open ? (
-                <MenuIcon htmlColor="#000000" />
-              ) : (
                 <Close htmlColor="#000000" />
+              ) : (
+                <MenuIcon htmlColor="#000000" />
               )}
             </IconButton>
           </DrawerHeader>
@@ -294,7 +294,7 @@ const AppDrawer: React.FC = (props: any) => {
               </ListItemText>
             </ListItemButton>
           ) : (
-            <Box sx={{ cursor: "pointer", marginLeft: "15px" }}>
+            <Box sx={{ cursor: "pointer", marginLeft: open ? "15px" : 1 }}>
               <IconButton onClick={handleLogout}>
                 <LogoutIcon fontSize={"small"} />
               </IconButton>
