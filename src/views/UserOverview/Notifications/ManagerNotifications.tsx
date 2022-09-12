@@ -4,11 +4,12 @@ import ScrollOver from "../../../coreUI/components/Popovers/Popup/ScrollOver";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router";
 import { useAppSelector } from "../../../models/hooks";
+import { selectSatistics } from "../../../models/Statistics";
 import {
-  selectSatistics,
-  selectStatisticsLoading,
-} from "../../../models/Statistics";
-import { cssTabContent, setWidth } from "../../../helpers/generalUtils";
+  cssTabContent,
+  hasMoreItems,
+  setWidth,
+} from "../../../helpers/generalUtils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Box,
@@ -21,9 +22,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Task } from "../../../types/models/Projects";
-import IMAGES from "src/assets/img/Images";
-import { selectLoading } from "src/models/Projects";
 import Empty from "./Empy";
+import { getTaskNotificationsDate } from "src/helpers/equations";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -34,8 +34,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
   const [tab, setTab] = React.useState("0");
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
-
+  const LG = useMediaQuery(theme.breakpoints.up("lg"));
   const cssTab = (tabIndex: string) => {
     return {
       width: "calc(33%)",
@@ -51,15 +50,44 @@ const ManagerNotifications: React.FC<Props> = (props) => {
     };
   };
 
+  const hasMore = () =>
+    hasMoreItems(
+      tab === "0"
+        ? statistics.OM.taskboard
+        : tab === "1"
+        ? statistics.OM.review
+        : statistics.OM.shared,
+      2,
+      3
+    );
+
+  const cssMoreBtn = {
+    backgroundColor: "white",
+    width: "95%",
+    height: "30px !important",
+    display: {
+      lg: hasMore() ? "inline-flex" : "none",
+      xs: "none",
+      sm: "none",
+      md: "none",
+    },
+    position: "absolute",
+    bottom: "0px",
+    ":hover": {
+      backgroundColor: "white",
+    },
+  };
+
   return (
     <Box
-      width={setWidth(MD, open)}
+      width={"100%"}
       sx={{
         boxShadow: "0px 10px 20px #00000005;",
+        backgroundColor: "white",
+        borderRadius: 2,
       }}
       overflow="hidden"
     >
-      {/* some changes */}
       <ScrollOver setPopover={setOpen} popover={open}>
         <Stack sx={cssStack}>
           <Tabs
@@ -91,84 +119,56 @@ const ManagerNotifications: React.FC<Props> = (props) => {
               disableRipple={true}
             />
           </Tabs>
-          {tabs?.map((tabItem, index) => {
-            let tasks: Task[][] | null =
-              tabItem === "0"
-                ? statistics.OM.taskboard
-                : tabItem === "1"
-                ? statistics.OM.review
-                : statistics.OM.shared;
-            if (tasks && tasks.length > 0 && open === false) {
-              tasks = [tasks[0]];
-            }
-            return (
-              <Box
-                key={index}
-                role={"tabpanel"}
-                aria-labelledby={`tab-${tabItem}`}
-                hidden={tab == tabItem ? false : true}
-                id={tabItem}
-                tabIndex={index}
-                sx={cssTabContent(
-                  open,
-                  tabItem === "0"
-                    ? statistics.OM.taskboard
-                    : tabItem === "1"
-                    ? statistics.OM.review
-                    : statistics.OM.shared
-                )}
-              >
-                {tasks &&
-                  tasks?.map((TArray: Task[], index: number) => {
-                    let day = "",
-                      year = "",
-                      month = "",
-                      currentDay = "";
-                    if (
-                      TArray?.length > 0 &&
-                      TArray[0].status !== "Tasks Board" &&
-                      TArray &&
-                      TArray[0]?.lastMoveDate
-                    ) {
-                      let date = new Date(TArray[0].lastMoveDate);
-                      day = date?.getDate().toString();
-                      month = (date?.getMonth() + 1).toString();
-                      year = date?.getFullYear().toString();
-                    }
-                    if (
-                      TArray?.length > 0 &&
-                      TArray[0].status === "Tasks Board" &&
-                      TArray[0]?.createdAt
-                    ) {
-                      let date = new Date(TArray[0].createdAt);
-                      day = date?.getDate().toString();
-                      month = (date?.getMonth() + 1).toString();
-                      year = date?.getFullYear().toString();
-                      currentDay = [
-                        "Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday",
-                      ][date?.getDay()];
-                    }
-                    return (
-                      <>
-                        <Box
-                          key={index}
-                          sx={{ display: "inline-flex" }}
-                          marginTop={2}
-                        >
-                          <Typography sx={cssDay}>{currentDay}</Typography>
-                          <Typography
-                            sx={cssDate}
-                          >{`${day}/  ${month}/  ${year}`}</Typography>
-                        </Box>
-                        {TArray?.length > 0 &&
-                          (open === true ? TArray : TArray.slice(0, 2)).map(
-                            (item) => {
+          <Box paddingBottom={!LG || open ? "30px" : 0}>
+            {tabs?.map((tabItem, index) => {
+              let tasks: Task[][] | null =
+                tabItem === "0"
+                  ? statistics.OM.taskboard
+                  : tabItem === "1"
+                  ? statistics.OM.review
+                  : statistics.OM.shared;
+              if (tasks && tasks.length > 0 && open === false) {
+                tasks = [tasks[0]];
+              }
+              return (
+                <Box
+                  key={index}
+                  role={"tabpanel"}
+                  aria-labelledby={`tab-${tabItem}`}
+                  hidden={tab == tabItem ? false : true}
+                  id={tabItem}
+                  tabIndex={index}
+                  sx={cssTabContent(
+                    open,
+                    tabItem === "0"
+                      ? statistics.OM.taskboard
+                      : tabItem === "1"
+                      ? statistics.OM.review
+                      : statistics.OM.shared
+                  )}
+                >
+                  {tasks &&
+                    tasks?.map((TArray: Task[], index: number) => {
+                      let { day, month, year, currentDay } =
+                        getTaskNotificationsDate(TArray);
+                      return (
+                        <>
+                          <Box
+                            key={index}
+                            sx={{ display: "inline-flex" }}
+                            marginTop={2}
+                            marginLeft={1.8}
+                          >
+                            <Typography sx={cssDay}>{currentDay}</Typography>
+                            <Typography
+                              sx={cssDate}
+                            >{`${day}/  ${month}/  ${year}`}</Typography>
+                          </Box>
+                          {TArray?.length > 0 &&
+                            (!LG || open === true
+                              ? TArray
+                              : TArray.slice(0, 2)
+                            ).map((item) => {
                               return (
                                 <Box key={index} sx={cssNotiBox}>
                                   <Status status={item?.status} />
@@ -182,42 +182,31 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                                   </Box>
                                 </Box>
                               );
-                            }
-                          )}
-                      </>
-                    );
-                  })}
-
-                <>
-                  {tasks && tasks.length > 0 ? (
-                    <Button
-                      variant="text"
-                      sx={cssMoreBtn}
-                      fullWidth={false}
-                      onClick={() => setOpen(!open)}
-                      disableRipple={true}
-                    >
-                      {open ? (
-                        <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
-                      ) : (
-                        <KeyboardArrowDown
-                          htmlColor="#9FA1AB"
-                          sx={cssMoreIcon}
-                        />
-                      )}
-                      <Typography sx={cssMoreText}>
-                        {open ? "See Less" : "See More"}
-                      </Typography>
-                    </Button>
-                  ) : (
-                    <>
-                      <Empty />
-                    </>
-                  )}
-                </>
-              </Box>
-            );
-          })}
+                            })}
+                        </>
+                      );
+                    })}
+                  {(!tasks || tasks.length === 0) && <Empty />}
+                </Box>
+              );
+            })}
+          </Box>
+          <Button
+            variant="text"
+            sx={cssMoreBtn}
+            fullWidth={false}
+            onClick={() => setOpen(!open)}
+            disableRipple={true}
+          >
+            {open ? (
+              <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+            ) : (
+              <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+            )}
+            <Typography sx={cssMoreText}>
+              {open ? "See Less" : "See More"}
+            </Typography>
+          </Button>
         </Stack>
       </ScrollOver>
     </Box>
@@ -226,6 +215,17 @@ const ManagerNotifications: React.FC<Props> = (props) => {
 
 export default ManagerNotifications;
 
+const cssNotiBox = {
+  marginTop: 0.5,
+  width: "93%",
+  height: 60,
+  borderRadius: "12px",
+  boxShadow: "0px 3px 20px #4B4B4B0D",
+  padding: 1.2,
+  display: "inline-flex",
+  alignItems: "center",
+  marginLeft: 1.8,
+};
 const cssTabs = {
   color: "#303030",
   borderBottom: 1,
@@ -234,12 +234,12 @@ const cssTabs = {
   padding: 0,
   margin: 0,
   textAlign: 0,
+  paddingX: 1.8,
 };
 const cssStack = {
-  backgroundColor: "white",
   borderRadius: 2,
   width: "100%",
-  paddingX: 1.8,
+  position: "relative",
 };
 const cssDay = {
   variant: "h5",
@@ -254,16 +254,6 @@ const cssDate = {
   color: "#929292",
   paddingTop: 0.4,
 };
-const cssNotiBox = {
-  marginTop: 0.5,
-  width: "98%",
-  height: 60,
-  borderRadius: "12px",
-  boxShadow: "0px 3px 20px #4B4B4B0D",
-  padding: 1.2,
-  display: "inline-flex",
-  alignItems: "center",
-};
 const cssNotiTitle = {
   fontFamily: "Cairo",
   fontWeight: "600",
@@ -274,16 +264,6 @@ const cssNotiSubTitle = {
   color: "#99A0AA",
   fontFamily: "Cairo",
   variant: "subtitle2",
-};
-const cssMoreBtn = {
-  width: "100%",
-  position: "absolute",
-  bottom: "0px",
-  left: "0px",
-  paddingTop: 2,
-  ":hover": {
-    backgroundColor: "transparent",
-  },
 };
 const cssMoreText = {
   fontWeight: "700",

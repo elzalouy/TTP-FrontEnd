@@ -129,6 +129,15 @@ export const getTaskNotificationsDate = (tasks: Task[]) => {
     day = date?.getDate().toString();
     month = date?.getMonth();
     year = date?.getFullYear().toString();
+    currentDay = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ][date?.getDay()];
   } else if (tasks?.length > 0 && tasks[0]?.createdAt) {
     let date = new Date(tasks[0].createdAt);
     day = date?.getDate().toString();

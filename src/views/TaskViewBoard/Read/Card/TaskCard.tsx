@@ -6,7 +6,11 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import { ProjectsActions, selectTasks } from "../../../../models/Projects";
+import {
+  getAllTasks,
+  ProjectsActions,
+  selectTasks,
+} from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -19,12 +23,14 @@ import {
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { toggleEditTaskPopup } from "../../../../models/Ui";
-import { Project, Task } from "../../../../types/models/Projects";
+import { Project, Task, TaskFile } from "../../../../types/models/Projects";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
 import { isSafari } from "src/helpers/browserType";
+import { useLocation } from "react-router";
+import { ToastSuccess } from "src/coreUI/components/Typos/Alert";
 
 interface TaskCartProps {
   index: number;
@@ -42,7 +48,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   footerStyle,
 }) => {
   const dispatch = useDispatch();
-
+  const location = useLocation();
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
   const departments = useAppSelector(selectAllDepartments);
@@ -58,24 +64,24 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [remainingDays, setRemaningDays] = useState<any>(0);
   const [daysColor, setDaysColor] = useState("");
   const [daysBgColor, setDaysBgColor] = useState("");
-
-  const [taskImages, setTaskImages] = useState<any[]>([]);
+  const [taskImages, setTaskImages] = useState<TaskFile[]>([]);
   const [taskFiles, setTaskFiles] = useState<any[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  // /// set files
-  // useEffect(() => {
-  //   let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
-  //   if (item?.attachedFiles && item?.attachedFiles?.length > 0) {
-  //     let images = item.attachedFiles.filter((item) =>
-  //       mimeTypes.includes(item.mimeType)
-  //     );
-  //     setTaskImages(images);
-  //     let others = item?.attachedFiles.filter(
-  //       (item) => !mimeTypes.includes(item.mimeType)
-  //     );
-  //     setTaskFiles(others);
-  //   }
-  // }, [item]);
+  // React.useEffect(() => {
+  //   document.addEventListener("visibilitychange", () => {
+  //     console.log("visible", location.pathname);
+  //     if (
+  //       // taskImages[0].error &&
+  //       // taskImages[0].error === true &&
+  //       document.visibilityState === "visible" &&
+  //       location.pathname.includes("/TasksBoard/")
+  //     ) {
+  //       ToastSuccess("loading images again");
+  //       dispatch(getAllTasks(null));
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
@@ -161,9 +167,12 @@ const TaskCard: React.FC<TaskCartProps> = ({
   };
   const setImageError = (index: any) => {
     let images = [...taskImages];
-    images[index] = { ...images[index], error: true };
-    setTaskImages(images);
+    let img = { ...images[index] };
+    img.error = true;
+    images[index] = img;
+    setTaskImages([...images]);
   };
+  console.log({ taskImages });
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -196,9 +205,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
               >
                 {name}
               </Typography>
-              {/* {item.status !== "Not Clear" && item.status !== "Cancled" && ( */}
               <TasksPopover item={item} />
-              {/* )} */}
             </Stack>
             <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
               <Typography color={"#696974"}>
@@ -276,9 +283,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                 onError={(e) => {
                                   setImageError(index);
                                 }}
-                                src={image?.url}
-                                crossOrigin={isSafari ? "anonymous" : undefined}
-                                decoding="async"
+                                src={image?.url + "/"}
                                 alt="more"
                               />
                             </SwiperSlide>

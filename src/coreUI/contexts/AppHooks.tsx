@@ -148,7 +148,6 @@ const AppHooks: React.FC = (props) => {
 
   React.useEffect(() => {
     if (updateTaskData !== null) {
-      console.log(updateTaskData);
       dispatch(ProjectsActions.updateTaskData(updateTaskData));
       setUpdateTaskData(null);
     }
