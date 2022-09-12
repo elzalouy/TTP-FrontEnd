@@ -146,7 +146,6 @@ const Notifications: React.FC<Props> = (props) => {
                             }/  ${year}`}</Typography>
                           </Box>
                           {TArray?.length > 0 &&
-                            (TArray?.length > 0 &&
                             (!LG
                               ? TArray
                               : open === true
