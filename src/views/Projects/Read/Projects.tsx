@@ -13,8 +13,7 @@ import TableBox from "../../../coreUI/components/Containers/Table/TableContainer
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
-import { selectRole } from "../../../models/Auth";
-import { clientsDataSelector, selectClientOptions } from "../../../models/Clients";
+import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
@@ -46,7 +45,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
   // const role = useAppSelector(selectRole);
-  const { watch, control, setValue, formState: { isDirty } } = useForm();
+  const { watch, control, setValue, getValues } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
@@ -62,27 +61,24 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
     }
   }, [MD]);
 
-  //Declaring the data watcher globally
-  let data = watch();
-
   const onHandleChange = (e: any) => {
     let filter = {
-      name: data.name,
-      clientId: data.clientId,
-      projectManager: data.projectManager,
-      projectStatus: data.projectStatus,
+      name: getValues().name,
+      clientId: getValues().clientId,
+      projectManager: getValues().projectManager,
+      projectStatus: getValues().projectStatus,
     };
+    console.log(filter);
     dispatch(filterProjects(filter));
   };
 
   const onHandleSort = (e: any) => {
-    let data = watch();
-    dispatch(ProjectsActions.onSortProjects(data.deadline));
+    dispatch(ProjectsActions.onSortProjects(getValues().deadline));
   };
 
   const onChange = (e: any, name: string) => {
     e.preventDefault();
-    setValue(name, e.target.id, { shouldDirty: true });
+    setValue(name, e.target.id);
     onHandleChange(e);
   };
 

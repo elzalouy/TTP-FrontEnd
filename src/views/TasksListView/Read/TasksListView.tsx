@@ -60,6 +60,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     setValue(name, e.target.id);
     onHandleChangeFilter();
   };
+  
   const onSortTasks = (e: any, name: string) => {
     e.preventDefault();
     setValue(name, e.target.id);
