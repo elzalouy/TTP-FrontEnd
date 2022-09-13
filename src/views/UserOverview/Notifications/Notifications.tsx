@@ -17,9 +17,10 @@ import { selectSatistics } from "../../../models/Statistics";
 import Status from "../../../coreUI/components/Typos/Status";
 import _ from "lodash";
 import { Task } from "../../../types/models/Projects";
-import { cssTabContent, hasMoreItems } from "src/helpers/generalUtils";
+import { hasMoreItems } from "src/helpers/generalUtils";
 import Empty from "./Empy";
 import { getTaskNotificationsDate } from "src/helpers/equations";
+import { cssTabContent } from "src/coreUI/themes";
 interface Props {
   history: RouteComponentProps["history"];
 }

@@ -5,11 +5,7 @@ import _ from "lodash";
 import { RouteComponentProps } from "react-router";
 import { useAppSelector } from "../../../models/hooks";
 import { selectSatistics } from "../../../models/Statistics";
-import {
-  cssTabContent,
-  hasMoreItems,
-  setWidth,
-} from "../../../helpers/generalUtils";
+import { hasMoreItems, setWidth } from "../../../helpers/generalUtils";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Box,
@@ -24,6 +20,7 @@ import {
 import { Task } from "../../../types/models/Projects";
 import Empty from "./Empy";
 import { getTaskNotificationsDate } from "src/helpers/equations";
+import { cssTabContent } from "src/coreUI/themes";
 interface Props {
   history: RouteComponentProps["history"];
 }

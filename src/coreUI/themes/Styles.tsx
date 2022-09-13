@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
 import { borderRadius } from "@mui/system";
+import { hasMoreItems } from "src/helpers/generalUtils";
+import { Task } from "src/types/models/Projects";
 import { DefaultTheme } from "styled-components";
 
 export const projectsTableStyle = (status: string) => {
@@ -264,6 +266,44 @@ export const dataTimePickerInputStyle = {
     },
   },
 };
+
+export const cssTabContent = (open: Boolean, NestedTasks: Task[][] | null) => {
+  return {
+    position: "relative",
+    height: {
+      lg: open && hasMoreItems(NestedTasks, 2, 3) ? `auto` : `200px`,
+      md: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
+      sm: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
+      xs: hasMoreItems(NestedTasks, 2, 3) ? `300px` : `auto`,
+    },
+    maxHeight: {
+      lg: open && hasMoreItems(NestedTasks, 2, 3) ? `auto` : `500px`,
+      md: "300px",
+      sm: "300px",
+      xs: "300px",
+    },
+    overflowY: {
+      lg: open ? "scroll" : "hidden",
+      md: "scroll",
+      sm: "scroll",
+      xs: "scroll",
+    },
+    "&::-webkit-scrollbar": {
+      display: open ? "block !important" : "none",
+      width: "3px !important",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ECECEC",
+      borderRadius: 5,
+    },
+    "&::-webkit-scrollbar-button": {
+      color: "#9FA1AB",
+      width: "3px !important",
+      borderRadius: 5,
+    },
+  };
+};
+
 export default {
   projectsTableStyle,
   popOverStyle,
