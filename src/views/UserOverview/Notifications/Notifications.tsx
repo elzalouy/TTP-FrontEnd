@@ -167,10 +167,17 @@ const Notifications: React.FC<Props> = (props) => {
                                   <Status status={item?.status} />
                                   <Box paddingTop={0.2} paddingLeft={1}>
                                     <Typography sx={cssNotiTitle}>
-                                      {item.name}
+                                      {_.truncate(item.name, {
+                                        omission: "...",
+                                        length: 18,
+                                      })}{" "}
                                     </Typography>
                                     <Typography sx={cssNotiSubTitle}>
-                                      {item.name} moved to {item.status}
+                                      {_.truncate(item.name, {
+                                        omission: "...  ",
+                                        length: 18,
+                                      })}{" "}
+                                      moved to {item.status}
                                     </Typography>
                                   </Box>
                                 </Box>

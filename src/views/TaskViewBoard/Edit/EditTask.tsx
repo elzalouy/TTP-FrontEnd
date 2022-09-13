@@ -151,8 +151,10 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     if (data.teamId !== "") newTask.teamId = data.teamId;
     // TODO if deadline is null , we should pass null to be edited to nul
-    if (data.deadline !== "" && data.deadline !== null)
-      newTask.deadline = moment(data?.deadline).toDate().toString();
+    newTask.deadline =
+      data.deadline !== "" && data.deadline !== null
+        ? moment(data?.deadline).toDate().toString()
+        : state.task.deadline;
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
