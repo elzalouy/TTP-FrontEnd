@@ -73,6 +73,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                     <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                       <TableCell
                         align="left"
+                        style={{ padding: "20px" }}
                         className={
                           tasks.length - 1 === index
                             ? css.noBorderCell
