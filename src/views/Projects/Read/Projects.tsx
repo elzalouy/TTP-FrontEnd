@@ -13,8 +13,7 @@ import TableBox from "../../../coreUI/components/Containers/Table/TableContainer
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
-import { selectRole } from "../../../models/Auth";
-import { clientsDataSelector, selectClientOptions } from "../../../models/Clients";
+import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
@@ -38,15 +37,15 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
-  const clients = useAppSelector(clientsDataSelector);
+  // const clients = useAppSelector(clientsDataSelector);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
-  const role = useAppSelector(selectRole);
-  const { watch, control, setValue } = useForm();
+  // const role = useAppSelector(selectRole);
+  const { watch, control, setValue, getValues } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
@@ -63,19 +62,18 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   }, [MD]);
 
   const onHandleChange = (e: any) => {
-    let data = watch();
     let filter = {
-      name: data.name,
-      clientId: data.clientId,
-      projectManager: data.projectManager,
-      projectStatus: data.projectStatus,
+      name: getValues().name,
+      clientId: getValues().clientId,
+      projectManager: getValues().projectManager,
+      projectStatus: getValues().projectStatus,
     };
+    console.log(filter);
     dispatch(filterProjects(filter));
   };
 
   const onHandleSort = (e: any) => {
-    let data = watch();
-    dispatch(ProjectsActions.onSortProjects(data.deadline));
+    dispatch(ProjectsActions.onSortProjects(getValues().deadline));
   };
 
   const onChange = (e: any, name: string) => {
@@ -92,6 +90,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
       lg: "block",
     };
   };
+
   return (
     <Grid
       overflow={"hidden"}
@@ -136,7 +135,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             item
             xs={10} sm={10} md={4} lg={4}
             alignItems="center"
-            justifyContent={!LG ? "flex-endp" : "center"}
+            justifyContent={{ xs: "", sm: "", md: "flex-end", lg: "flex-end" }}
             display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
           >
             <Controller
@@ -208,7 +207,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     label="Project Manager: "
                     options={pmOptions}
                     onSelect={(e: any) => onChange(e, "projectManager")}
-                    textTruncate={2}
+                    textTruncate={6}
                   />
                 )}
               />
@@ -223,6 +222,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
               md={4}
               lg={2}
             >
+
               <Controller
                 name="clientId"
                 control={control}

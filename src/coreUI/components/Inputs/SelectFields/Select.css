@@ -39,6 +39,7 @@ fieldset[id*="filter-"] .label {
   padding-right: 5px;
   color: #696974;
   display: inline-block;
+  white-space: nowrap;
 }
 
 fieldset[id*="filter-"] .value {
