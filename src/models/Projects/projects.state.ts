@@ -1,6 +1,6 @@
 import { ProjectsInterface } from "../../types/models/Projects";
 
-const PorjectsState: ProjectsInterface = {
+const ProjectsState: ProjectsInterface = {
   loading: true,
   projects: [],
   allTasks: [],
@@ -86,4 +86,4 @@ const PorjectsState: ProjectsInterface = {
     description: "",
   },
 };
-export default PorjectsState;
+export default ProjectsState;

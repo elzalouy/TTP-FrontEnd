@@ -27,6 +27,15 @@ export interface IFilterProps {
   error?: string;
 }
 
+export interface IOptions {
+  selectRef: React.MutableRefObject<HTMLFieldSetElement | null>;
+  display: string;
+  onSelect: any;
+  elementType: string;
+  options: { id: string; value: string; text: string }[];
+  setShow: any;
+};
+
 export interface ISearch {
   value: string;
   onChange: (e: any) => void;

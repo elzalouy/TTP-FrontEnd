@@ -1,5 +1,5 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
-import _ from "lodash";
+import _, { words } from "lodash";
 import { ProjectManager } from "src/models/PM";
 import { Status } from "src/types/views/BoardView";
 import { Project, ProjectsInterface, Task } from "../types/models/Projects";
@@ -258,3 +258,12 @@ export const hasMoreItems = (
     return more;
   } else return false;
 };
+
+export const setProjectManagerId = (name: any): string => {
+  if (typeof name === "string") {
+    return name;
+  }
+  else {
+    return "";
+  }
+}
