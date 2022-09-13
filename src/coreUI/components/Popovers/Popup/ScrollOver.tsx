@@ -11,6 +11,7 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
     <>
       {props.popover ? (
         <Stack
+          className="scrollOver Mui-expanded"
           maxWidth={"100%"}
           sx={{
             position: {
@@ -24,7 +25,7 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
             borderRadius: "10px",
             marginLeft: 0,
             marginRight: { lg: 5 },
-            boxShadow: "0px 10px 20px #0000001A",
+            boxShadow: "0px 5px 10px #0000001A",
           }}
         >
           {props.children}

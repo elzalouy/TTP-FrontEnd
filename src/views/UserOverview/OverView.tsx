@@ -181,7 +181,7 @@ export const OverView: FC<Props> = (props) => {
             </Grid>
           </Grid>
           <UserTasks
-            pr={1}
+            pr={3}
             tasks={
               role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
             }
@@ -190,6 +190,7 @@ export const OverView: FC<Props> = (props) => {
             caption="Working on agencies are easy !"
           />
           <UserTasks
+            pl={3}
             tasks={
               role === "OM"
                 ? statistics.OM.tasksCloseToDeadline

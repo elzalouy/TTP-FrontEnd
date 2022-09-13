@@ -77,7 +77,7 @@ const ManagerNotifications: React.FC<Props> = (props) => {
       backgroundColor: "white",
     },
   };
-  console.log({ LG });
+
   return (
     <Box
       width={"100%"}
@@ -92,7 +92,10 @@ const ManagerNotifications: React.FC<Props> = (props) => {
         <Stack sx={cssStack}>
           <Tabs
             value={tab}
-            onChange={(e, value) => setTab(value)}
+            onChange={(e, value) => {
+              setTab(value);
+              setOpen(false);
+            }}
             sx={cssTabs}
             TabIndicatorProps={{
               sx: {
@@ -138,14 +141,17 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                   hidden={tab == tabItem ? false : true}
                   id={tabItem}
                   tabIndex={index}
-                  sx={cssTabContent(
-                    open,
-                    tabItem === "0"
-                      ? statistics.OM.taskboard
-                      : tabItem === "1"
-                      ? statistics.OM.review
-                      : statistics.OM.shared
-                  )}
+                  sx={[
+                    cssTabContent(
+                      open,
+                      tabItem === "0"
+                        ? statistics.OM.taskboard
+                        : tabItem === "1"
+                        ? statistics.OM.review
+                        : statistics.OM.shared
+                    ),
+                    { transition: "max-height 0.5s ease-in; !important" },
+                  ]}
                 >
                   {tasks &&
                     tasks?.map((TArray: Task[], index: number) => {
@@ -170,16 +176,29 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                               : open === true
                               ? TArray
                               : TArray.slice(0, 2)
-                            ).map((item) => {
+                            ).map((item, index) => {
                               return (
-                                <Box key={index} sx={cssNotiBox}>
+                                <Box
+                                  key={item._id}
+                                  sx={cssNotiBox}
+                                  marginBottom={
+                                    index === TArray.length - 1 ? 1.5 : 0.4
+                                  }
+                                >
                                   <Status status={item?.status} />
                                   <Box paddingTop={0.2} paddingLeft={1}>
                                     <Typography sx={cssNotiTitle}>
-                                      {item.name}
+                                      {_.truncate(item.name, {
+                                        omission: "...",
+                                        length: 18,
+                                      })}
                                     </Typography>
                                     <Typography sx={cssNotiSubTitle}>
-                                      {item.name} moved to {item.status}
+                                      {_.truncate(item.name, {
+                                        omission: "...  ",
+                                        length: 18,
+                                      })}{" "}
+                                      moved to {item.status}
                                     </Typography>
                                   </Box>
                                 </Box>
@@ -223,7 +242,6 @@ const cssNotiBox = {
   height: 60,
   borderRadius: "12px",
   boxShadow: "0px 3px 20px #4B4B4B0D",
-
   padding: 1.2,
   display: "inline-flex",
   alignItems: "center",

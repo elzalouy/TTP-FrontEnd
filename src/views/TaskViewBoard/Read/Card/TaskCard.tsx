@@ -274,7 +274,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                   borderRadius: 8,
                                   marginTop: "10px",
                                 }}
-                                referrerPolicy="no-referrer"
+                                referrerPolicy="origin"
                                 onError={(e) => {
                                   setImageError(index);
                                 }}

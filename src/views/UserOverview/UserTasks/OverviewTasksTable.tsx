@@ -89,7 +89,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                             : css.Cell
                         }
                       >
-                        {name}
+                        {_.truncate(name, { omission: "...", length: 13 })}
                       </TableCell>
                       <TableCell
                         className={
@@ -99,10 +99,11 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                         }
                         align="left"
                       >
-                        {
+                        {_.truncate(
                           projects.find((project) => project._id === projectId)
-                            ?.name
-                        }
+                            ?.name,
+                          { omission: "...", length: 13 }
+                        )}
                       </TableCell>
                       <TableCell
                         className={
@@ -114,7 +115,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                       >
                         {deadline === null || deadline === ""
                           ? "-"
-                          : moment(deadline).format("MMMM Do, YYYY")}
+                          : moment(deadline).format("Do, M YYYY")}
                       </TableCell>
                     </TableRow>
                   </>
@@ -136,22 +137,26 @@ const Style = makeStyles((theme: any) => ({
   Cell: {
     color: "#334D6E",
     margin: "0px",
-    padding: "20px",
+    padding: "20px !important",
     textTransform: "capitalize",
     width: "130px",
     align: "left",
     cursor: "pointer",
     borderBottom: "1px solid #EBEFF2;",
+    fontSize: "13px",
+    whiteSpace: "nowrap",
   },
   noBorderCell: {
+    whiteSpace: "nowrap",
     color: "#334D6E",
     margin: "0px",
-    padding: "20px",
+    padding: "20px !imporant",
     textTransform: "capitalize",
     width: "130px",
     align: "left",
     cursor: "pointer",
     border: 0,
+    fontSize: "13px",
   },
   tableContainer: {
     maxHeight: "350px",

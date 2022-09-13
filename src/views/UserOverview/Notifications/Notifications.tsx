@@ -83,7 +83,10 @@ const Notifications: React.FC<Props> = (props) => {
         <Stack sx={cssStack}>
           <Tabs
             value={tab}
-            onChange={(e, value) => setTab(value)}
+            onChange={(e, value) => {
+              setTab(value);
+              setOpen(false);
+            }}
             sx={cssTabs}
             TabIndicatorProps={{
               sx: {
@@ -151,9 +154,15 @@ const Notifications: React.FC<Props> = (props) => {
                               : open === true
                               ? TArray
                               : TArray.slice(0, 2)
-                            ).map((item) => {
+                            ).map((item, index) => {
                               return (
-                                <Box key={index} sx={cssNotiBox}>
+                                <Box
+                                  key={item._id}
+                                  sx={cssNotiBox}
+                                  marginBottom={
+                                    index === TArray.length - 1 ? 1.5 : 0.4
+                                  }
+                                >
                                   <Status status={item?.status} />
                                   <Box paddingTop={0.2} paddingLeft={1}>
                                     <Typography sx={cssNotiTitle}>
