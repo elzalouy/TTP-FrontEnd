@@ -34,11 +34,13 @@ type Props = {};
 const CreateNewProject: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const newProject = useAppSelector(selectNewProject);
+
   const setShow = (value: string) => {
     let project = { ...newProject };
     project.showPopUp = value;
     dispatch(ProjectsActions.onChangeNewProject(project));
   };
+  
   return (
     <div>
       <Box
