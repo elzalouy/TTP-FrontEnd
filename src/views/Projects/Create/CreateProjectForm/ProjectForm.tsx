@@ -11,13 +11,24 @@ import { setProjectManagerId } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
 import { selectPMOptions, selectPMs } from "src/models/PM";
-import { createProject, editProject, ProjectsActions, selectLoading, selectNewProject } from "src/models/Projects";
+import {
+  createProject,
+  editProject,
+  ProjectsActions,
+  selectLoading,
+  selectNewProject,
+} from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
 import { validateCreateProject } from "src/services/validations/project.schema";
 import { IJoiValidation, IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 
-const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, currentStep, backTrigger, setBackTrigger }) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({
+  setcurrentStep,
+  currentStep,
+  backTrigger,
+  setBackTrigger,
+}) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -40,12 +51,16 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, currentStep,
   React.useEffect(() => {
     if (currentStep === 0 && backTrigger) {
       setValue("name", newProject.project.name);
-      setValue("projectManager", setProjectManagerId(newProject.project.projectManager), { shouldDirty: true });
+      setValue(
+        "projectManager",
+        setProjectManagerId(newProject.project.projectManager),
+        { shouldDirty: true }
+      );
       setValue("clientId", newProject.project.clientId, { shouldDirty: true });
       setValue("deadline", newProject.project.projectDeadline);
       setValue("startDate", newProject.project.startDate);
     }
-  }, [newProject.project])
+  }, [newProject.project]);
 
   React.useEffect(() => {
     if (!backTrigger) {
@@ -54,26 +69,33 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, currentStep,
     }
   }, [createProjectPopup, backTrigger]);
 
-  const [validateError, setError] = React.useState<IJoiValidation>({ error: undefined, value: undefined, warning: undefined });
+  const [validateError, setError] = React.useState<IJoiValidation>({
+    error: undefined,
+    value: undefined,
+    warning: undefined,
+  });
 
   //Declaring the data object globally in the component
   let data = watch();
 
   const handleOnEdit = () => {
-    let newProjectData = { ...newProject.project }
+    let newProjectData = { ...newProject.project };
     newProjectData.name = data.name;
     newProjectData.clientId = data.clientId;
     newProjectData.projectManager = setProjectManagerId(data.projectManager);
     newProjectData.projectDeadline = data.deadline;
     newProjectData.startDate = data.startDate;
-    newProjectData.projectStatus = (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started";
+    newProjectData.projectStatus =
+      (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started";
 
     //Dispatches edit project and sets this data as the new project data for the form, if user tries to come back and change the values
     dispatch(ProjectsActions.onUpdateNewProject(newProjectData));
     dispatch(editProject({ data: newProjectData, dispatch }));
-  }
+  };
 
-  const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleCreateProject = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     let project = {
       name: data?.name,
       projectManager: data?.projectManager,
@@ -106,12 +128,12 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, currentStep,
     } else {
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
     }
-  }
+  };
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Back trigger decides which block to execute
     if (backTrigger) {
-      //This block triggers edit and ensures the flags are reset  
+      //This block triggers edit and ensures the flags are reset
       handleOnEdit();
       setcurrentStep(1);
       setBackTrigger(false);
