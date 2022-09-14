@@ -85,5 +85,7 @@ const PorjectsState: ProjectsInterface = {
     file: undefined,
     description: "",
   },
+  setTasksStatisticsHook: undefined,
+  setProjectsStatisticsHook: undefined,
 };
 export default PorjectsState;

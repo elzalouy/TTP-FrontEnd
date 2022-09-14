@@ -121,9 +121,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onEditTask: (state = projectsState, action: PayloadAction<any>) => {
       state.editTask = action.payload;
     },
-    /*   onViewTask: (state = projectsState, action: PayloadAction<any>) => {
-      state.viewTask = action.payload;
-    }, */
+
     onDeleteTask: (state = projectsState, action: PayloadAction<any>) => {
       state.deleteTask = action.payload;
     },
@@ -131,20 +129,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.newProject.newProjectHook =
         state.newProject.newProjectHook === true ? false : true;
     },
-    createProjectHook: (state = projectsState, action: PayloadAction<any>) => {
-      let newproject = { ...state.newProject.project };
-      if (state.projects.findIndex((item) => item._id === newproject._id) < 0) {
-        newproject.NoOfTasks = state?.newProject?.tasks?.length;
-        newproject.NoOfFinishedTasks = state.newProject?.tasks?.filter(
-          (item) => item.status === "done"
-        );
-        state.projects.push(newproject);
-        state.filteredProjects?.push(newproject);
-        let allTasks = [...state?.allTasks];
-        allTasks = [...allTasks, ...state.newProject.tasks];
-        state.allTasks = allTasks;
-      }
-    },
+
     updateTaskData: (state = projectsState, action: PayloadAction<any>) => {
       if (action.payload?._id) {
         let allTasks = [...state.allTasks];
@@ -167,8 +152,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         let selectedProject = { ...state.selectedProject };
         selectedProject.tasks = [..._.uniqBy([...projectTasks], "_id")];
         state.selectedProject = selectedProject;
+        state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       }
     },
+
     deleteTask: (state = projectsState, action: PayloadAction<any>) => {
       if (action.payload._id) {
         let allTasks = [...state.allTasks];
@@ -179,12 +166,19 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.selectedProject.tasks = selectProjectTasks.filter(
           (item) => item._id !== action.payload._id
         );
+        state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       }
     },
+
     onOpenTask: (state = projectsState, action: PayloadAction<any>) => {
       state.openTaskDetails = action.payload;
     },
+    fireSetStatisticsHook: (state: ProjectsInterface) => {
+      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(createProject.rejected, (state) => {
       state.loading = false;
@@ -201,12 +195,13 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(getAllProjects.pending, (state) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
       state.loading = false;
       state.projects = action?.payload;
       state.filteredProjects = action?.payload;
+      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
     });
     builder.addCase(createProjectTask.rejected, (state) => {
       state.loading = false;
@@ -236,6 +231,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         selectedProject.tasks = [...tasks];
         state.selectedProject = selectedProject;
       }
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;
@@ -292,6 +288,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.selectedProject.tasks = [...action.payload].filter(
         (item) => item.projectId === state.selectedProject.project?._id
       );
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
     builder.addCase(filterTasks.rejected, (state) => {
       state.loading = false;
@@ -327,6 +324,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.selectedProject.tasks = tasks.filter(
           (item) => item.projectId !== action.payload.id
         );
+        state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       }
     });
     builder.addCase(deleteProject.pending, (state, action) => {
@@ -356,6 +354,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.filteredTasks = [...state.filteredTasks].filter(
         (task) => task._id !== action.payload._id
       );
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       state.loading = false;
     });
     builder.addCase(editProject.fulfilled, (state, action) => {
@@ -384,21 +383,22 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       );
       let all = [...state.allTasks];
       all = _(all).keyBy("id").at(action.payload).filter().value();
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
-    builder.addCase(deleteTasks.rejected, (state, action) => {
+    builder.addCase(deleteTasks.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(deleteTasks.pending, (state, action) => {
+    builder.addCase(deleteTasks.pending, (state) => {
       // state.loading = true;
     });
-    builder.addCase(editTaskFromBoard.fulfilled, (state, action) => {
+    builder.addCase(editTaskFromBoard.fulfilled, (state) => {
       state.editTask = undefined;
       state.editTaskLoading = false;
     });
-    builder.addCase(editTaskFromBoard.rejected, (state, action) => {
+    builder.addCase(editTaskFromBoard.rejected, (state) => {
       state.editTaskLoading = false;
     });
-    builder.addCase(editTaskFromBoard.pending, (state, action) => {
+    builder.addCase(editTaskFromBoard.pending, (state) => {
       state.editTaskLoading = true;
     });
     builder.addCase(moveTask.rejected, (state, action) => {});
@@ -411,6 +411,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         (item) => item._id === action.payload._id
       );
       state.allTasks[index] = action.payload;
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
   },
 });

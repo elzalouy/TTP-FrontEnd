@@ -3,8 +3,6 @@ import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../../../coreUI/themes/Styles";
 import IMAGES from "../../../assets/img/Images";
-import OfflineShareIcon from "@mui/icons-material/OfflineShare";
-import { RouteComponentProps } from "react-router";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../models/Ui";
 import { ProjectsActions, selectTaskDetails } from "../../../models/Projects";
@@ -36,11 +34,6 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     dispatch(toggleEditTaskPopup("flex"));
     handleClose();
   };
-  const generateURL = () => {
-    let boardURL = departments.find((dep) => dep.boardId === item?.boardId);
-    return boardURL?.boardURL;
-  };
-  const url = generateURL();
 
   const onDeleteTask = () => {
     dispatch(ProjectsActions.onDeleteTask(item._id));
@@ -82,7 +75,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             className={styles.grayButton}
           >
             <a
-              href={url}
+              href={item?.trelloShortUrl}
               target="_blank"
               className={styles.grayButton}
               style={{

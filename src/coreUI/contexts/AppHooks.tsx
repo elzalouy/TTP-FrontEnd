@@ -12,16 +12,29 @@ import {
   getAllProjects,
   getAllTasks,
   ProjectsActions,
+  selectAllProjects,
+  selectTasks,
 } from "../../models/Projects";
 import { selectUi } from "../../models/Ui/UI.selectors";
 import { getAllCategories } from "../../models/Categories";
 import { getAllMembers } from "../../models/TechMember";
 import { getNotifications, getUnNotified } from "../../models/Notifications";
 import { ToastSuccess } from "../components/Typos/Alert";
+import {
+  setProjectsStatistics,
+  setTasksStatistics,
+} from "src/models/Statistics";
 
 const AppHooks: React.FC = (props) => {
   const dispatch = useDispatch();
   const isAuthed = useAppSelector(selectIsAuth);
+  const {
+    projects,
+    setTasksStatisticsHook,
+    setProjectsStatisticsHook,
+    loading,
+  } = useAppSelector(selectAllProjects);
+  const tasks = useAppSelector(selectTasks);
   const [updateTaskData, setUpdateTaskData] = React.useState<any>(null);
   const [deleteTaskData, setDeleteTaskData] = React.useState<any>(null);
   const [newDepartment, setNewDepartment] = React.useState<any>(null);
@@ -152,12 +165,14 @@ const AppHooks: React.FC = (props) => {
       setUpdateTaskData(null);
     }
   }, [updateTaskData]);
+
   // delete task event from backend
   React.useEffect(() => {
     if (deleteTaskData !== null) {
       dispatch(ProjectsActions.deleteTask(deleteTaskData));
     }
   }, [deleteTaskData]);
+
   // new department
   React.useEffect(() => {
     if (newDepartment?._id) {
@@ -165,6 +180,55 @@ const AppHooks: React.FC = (props) => {
       dispatch(departmentsActions.replaceDepartment(newDepartment));
     }
   }, [newDepartment]);
+
+  React.useEffect(() => {
+    if (!loading) {
+      let userProjects =
+        projects && projects.length > 0
+          ? user && user?.role === "OM"
+            ? projects
+            : projects.filter(
+                (item) =>
+                  item.projectStatus &&
+                  item.projectManager?._id === user?._id &&
+                  ![
+                    "deliver on time",
+                    "deliver before deadline",
+                    "delivered after deadline",
+                  ].includes(item?.projectStatus)
+              )
+          : [];
+      dispatch(setProjectsStatistics({ user: user, projects: userProjects }));
+    }
+  }, [setProjectsStatisticsHook]);
+
+  // set statistics hook
+  React.useEffect(() => {
+    if (!loading) {
+      let userProjects =
+        projects && projects.length > 0
+          ? user && user?.role === "OM"
+            ? projects
+            : projects.filter(
+                (item) =>
+                  item.projectStatus &&
+                  item.projectManager?._id === user?._id &&
+                  ![
+                    "deliver on time",
+                    "deliver before deadline",
+                    "delivered after deadline",
+                  ].includes(item?.projectStatus)
+              )
+          : [];
+      dispatch(
+        setTasksStatistics({
+          user,
+          projects: userProjects,
+          tasks,
+        })
+      );
+    }
+  }, [setTasksStatisticsHook]);
 
   React.useEffect(() => {
     if (user?._id) {

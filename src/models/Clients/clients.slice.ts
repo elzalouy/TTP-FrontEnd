@@ -41,17 +41,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
     setEditClient: (state = clientState, { payload }: PayloadAction<any>) => {
       state.editClient = payload;
     },
-    createProjectHook: (
-      state = clientState,
-      { payload }: PayloadAction<any>
-    ) => {
-      let index = state.clientsData.findIndex((item) => item._id === payload);
-      if (index) {
-        let client = { ...state.clientsData[index] };
-        client.inProgressProject = client.inProgressProject + 1;
-        state.clientsData[index] = client;
-      }
-    },
+
     createClient: (state = clientState, action: PayloadAction<any>) => {
       let index = state.clientsData.findIndex(
         (item) => item.clientName === action.payload.clientName

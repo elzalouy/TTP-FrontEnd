@@ -10,16 +10,9 @@ import {
   fireMoveTaskHook,
   fireUpdateProjectHook,
 } from "../Ui";
-import { removeAuthToken } from "../../services/api";
-import { generateID } from "../../helpers/IdGenerator";
 import { logout } from "../Auth";
-import moment from "moment";
 import { Project, Task } from "../../types/models/Projects";
-import {
-  ToastError,
-  ToastSuccess,
-  ToastWarning,
-} from "../../coreUI/components/Typos/Alert";
+import { ToastError, ToastSuccess } from "../../coreUI/components/Typos/Alert";
 import { IDepartmentState, IList } from "../../types/models/Departments";
 
 export const getAllProjects = createAsyncThunk<any, any, any>(
@@ -31,7 +24,9 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
         rejectWithValue("Un Authorized");
         dispatch(logout(true));
       }
-      if (projects.ok) return projects.data;
+      if (projects.ok) {
+        return projects.data;
+      }
       throw projects.problem;
     } catch (error: any) {
       return rejectWithValue(error);
@@ -98,7 +93,7 @@ export const filterProjects = createAsyncThunk<any, any, any>(
   "projects/filterProjects",
   async (args, { rejectWithValue }) => {
     try {
-      console.log("step - 3" , args);
+      console.log("step - 3", args);
       let projects: ApiResponse<any> = await api.filterProjects(args);
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
@@ -111,10 +106,12 @@ export const filterProjects = createAsyncThunk<any, any, any>(
 
 export const getTasks = createAsyncThunk<any, any, any>(
   "projects/getProjectTasks",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let tasks = await api.getTasks(args.url);
-      if (tasks?.ok) return tasks?.data;
+      if (tasks?.ok) {
+        return tasks?.data;
+      }
       throw tasks.problem;
     } catch (error: any) {
       ToastError("There was an error from the server while fetching the tasks");
@@ -147,7 +144,10 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
         rejectWithValue("Un Authorized");
         dispatch(logout(true));
       }
-      if (tasks.ok) return tasks.data;
+      if (tasks.ok) {
+        console.log({ tasksData: tasks.data });
+        return tasks.data;
+      }
       throw tasks.problem;
     } catch (error: any) {
       return rejectWithValue(error);

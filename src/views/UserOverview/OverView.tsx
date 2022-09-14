@@ -7,15 +7,18 @@ import UserStatus from "./Status/StatusCard";
 import UserTasks from "./UserTasks/UserTasks";
 import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications/Notifications";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppSelector } from "../../models/hooks";
-import { getUserInfo, selectRole, selectUser } from "../../models/Auth";
+import { getUserInfo, logout, selectRole, selectUser } from "../../models/Auth";
 import { selectSatistics } from "../../models/Statistics";
 import { checkAuthToken } from "../../services/api";
+import {
+  ProjectsActions,
+  selectAllProjects,
+  selectTasks,
+} from "src/models/Projects";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -25,8 +28,12 @@ export const OverView: FC<Props> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const userName = useAppSelector(selectUser);
-  const theme = useTheme();
   const statistics = useAppSelector(selectSatistics);
+  const { projects, loading } = useAppSelector(selectAllProjects);
+  const tasks = useAppSelector(selectTasks);
+  const user = useAppSelector(selectUser);
+  const pathName = useHistory().location.pathname;
+  console.log({ statistics });
 
   useEffect(() => {
     let id = localStorage.getItem("id");
@@ -36,9 +43,11 @@ export const OverView: FC<Props> = (props) => {
           id: id,
         })
       );
-    } else props.history.push("/login");
+    } else dispatch(logout(true));
   }, [dispatch, props.history]);
-
+  // useEffect(() => {
+  //   dispatch(ProjectsActions.fireSetStatisticsHook(null));
+  // }, [pathName]);
   return (
     <>
       <Grid

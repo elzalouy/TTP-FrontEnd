@@ -7,11 +7,10 @@ import { selectStatisticsLoading } from "src/models/Statistics";
 
 const Empty = () => {
   const loading = useAppSelector(selectStatisticsLoading);
-  const projectsLoading = useAppSelector(selectLoading);
 
   return (
     <>
-      {(loading === false && projectsLoading === false) === true && (
+      {loading === false && (
         <Grid
           container
           width="100%"

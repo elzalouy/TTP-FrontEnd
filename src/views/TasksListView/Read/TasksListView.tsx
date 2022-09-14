@@ -16,6 +16,7 @@ import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTasks,
   filterTasks,
+  getAllTasks,
   ProjectsActions,
   selectAllProjects,
   selectProjectOptions,
@@ -48,7 +49,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     if (props.location.state && state.projectId) {
       setValue("projectId", state.projectId);
       dispatch(filterTasks({ projectId: state.projectId }));
-    }
+    } else dispatch(getAllTasks(null));
   }, []);
 
   const onHandleChangeFilter = () => {
@@ -60,7 +61,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     setValue(name, e.target.id);
     onHandleChangeFilter();
   };
-  
+
   const onSortTasks = (e: any, name: string) => {
     e.preventDefault();
     setValue(name, e.target.id);
@@ -124,7 +125,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Typography>
       </Grid>
       <Grid container sm={12} md={12} lg={12} xs={12}>
-        <Grid display="flex" justifyContent={"flex-end"} alignItems="center" >
+        <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
           {MD && (
             <>
               <Box
@@ -226,7 +227,15 @@ export const TasksListView: React.FC<Props> = (props) => {
                     />
                   </Box>
                 </Grid>
-                <Grid marginX={0.5} my={{ sm: 1, xs: 1, md: 1, lg: 1 }} item xs={2} sm={2} md={2} lg={2}>
+                <Grid
+                  marginX={0.5}
+                  my={{ sm: 1, xs: 1, md: 1, lg: 1 }}
+                  item
+                  xs={2}
+                  sm={2}
+                  md={2}
+                  lg={2}
+                >
                   <DeleteTask
                     task={selects}
                     Show={Show}

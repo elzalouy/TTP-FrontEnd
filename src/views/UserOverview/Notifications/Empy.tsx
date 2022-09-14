@@ -1,19 +1,24 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useAppSelector } from "src/models/hooks";
 import { selectLoading } from "src/models/Projects";
-import { selectStatisticsLoading } from "src/models/Statistics";
-
-const Empty = () => {
+import {
+  selectSatistics,
+  selectStatisticsLoading,
+} from "src/models/Statistics";
+import { Task } from "src/types/models/Projects";
+type props = {
+  loadingFor: Task[][] | null;
+};
+const Empty = ({ loadingFor }: props) => {
   const loading = useAppSelector(selectStatisticsLoading);
-  const projectsLoading = useAppSelector(selectLoading);
 
   return (
     <>
       {
         <>
-          {(projectsLoading === false || loading === false) && (
+          {!loading && loadingFor && loadingFor?.length === 0 && (
             <Box
               textAlign={"center"}
               width="100%"

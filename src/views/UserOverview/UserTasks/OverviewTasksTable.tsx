@@ -16,6 +16,7 @@ import Status from "src/coreUI/components/Typos/Status";
 import { Project, Task } from "../../../types/models/Projects";
 import EmptyCaption from "./Empty";
 import "../../../views/TasksListView/Read/TasksListView.css";
+import Loading from "./Loading";
 interface OverviewTasksTableProps {
   tasks?: Task[] | null;
   projects: Project[];
@@ -45,11 +46,8 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
       >
         <Table stickyHeader={true} style={{ borderRadius: 3 }}>
-          <EmptyCaption
-            length={tasks?.length ? tasks.length : 0}
-            caption={caption}
-            img={img}
-          />
+          <Loading loadingFor={tasks} />
+          <EmptyCaption loadingFor={tasks} caption={caption} img={img} />
           <TableHead style={{ position: "relative", top: 0, zIndex: 0 }}>
             <TableRow
               sx={{

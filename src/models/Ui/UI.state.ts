@@ -38,6 +38,7 @@ export interface UiInterface {
   deleteCategoryHook: boolean | undefined;
   deleteTeamHook: boolean | undefined;
 }
+
 const UiState: UiInterface = {
   deleteProjectPopup: "none",
   deleteTaskPopup: "none",

@@ -128,11 +128,9 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   };
 
   const onSubmit = async () => {
-    // get data from hook form
     let data = watch();
     let State = { ...state };
 
-    // build the new edited task
     let newTask: any = {
       id: State.task._id,
       cardId: State.task.cardId,
@@ -148,9 +146,9 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
             )?.listId
           : state.task.listId,
     };
+
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     if (data.teamId !== "") newTask.teamId = data.teamId;
-    // TODO if deadline is null , we should pass null to be edited to nul
     newTask.deadline =
       data.deadline !== "" && data.deadline !== null
         ? moment(data?.deadline).toDate().toString()
@@ -158,7 +156,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
-    // make a validated form Data,  if it's valdated, and submit
+
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {

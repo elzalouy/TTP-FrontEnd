@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
-import StatisticsState, {
-  initialStatisticsState,
-  StatisticsInterface,
-} from "./statistics.state";
+import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import {
   isCloseToDeadline,
   setTasksBoardToArrays,
@@ -15,34 +12,44 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,
   reducers: {
-    // set statistics
-    setStatisticsForOm: (
-      state = StatisticsState,
+    setProjectsStatistics: (
+      state: StatisticsInterface,
       action: PayloadAction<any>
     ) => {
-      state.loading = true;
-      // get projects, tasks and the user
-      let projects: Project[] = action.payload.projects;
-      let tasks: Task[] = action.payload.tasks;
+      let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
+      if (user.role === "OM") {
+        state.OM.projectsCloseToDeadlines = userProjects.filter(
+          (item) =>
+            item.projectStatus &&
+            ![
+              "deliver on time",
+              "deliver before deadline",
+              "delivered after deadline",
+            ].includes(item?.projectStatus) &&
+            item.projectDeadline &&
+            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
+        );
+      } else {
+        state.PM.projects = userProjects;
+        state.PM.projectsCloseToDeadlines = userProjects?.filter(
+          (item) =>
+            item?.projectDeadline &&
+            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
+        );
+      }
+    },
 
-      // check the user
-      if (user && user?.role?.length > 0) {
-        if (projects && projects.length > 0) {
-          state.OM.projectsCloseToDeadlines = projects.filter(
-            (item) =>
-              item.projectStatus &&
-              ![
-                "deliver on time",
-                "deliver before deadline",
-                "delivered after deadline",
-              ].includes(item?.projectStatus) &&
-              item.projectDeadline &&
-              isCloseToDeadline(item.projectDeadline, item.startDate, 35)
-          );
-        } else state.OM.projectsCloseToDeadlines = [];
-
-        if (tasks) {
+    setTasksStatistics: (
+      state: StatisticsInterface,
+      action: PayloadAction<any>
+    ) => {
+      let userProjects: Project[] = action.payload.projects;
+      let user: User = action.payload.user;
+      let tasks: Task[] = action.payload.tasks;
+      console.log({ tasks });
+      if (tasks) {
+        if (user.role === "OM") {
           let inprogress = tasks.filter((item) => item.status === "inProgress");
           let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
           let review = tasks.filter((item) => item.status === "Review");
@@ -59,36 +66,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
               item.deadline && isCloseToDeadline(item.deadline, item.start, 25)
           );
           state.OM.inProgress = inprogress;
-        }
-      }
-      state.loading = false;
-    },
-    setStatisticsForPm: (
-      state = StatisticsState,
-      action: PayloadAction<any>
-    ) => {
-      state.loading = true;
-
-      // get projects, tasks, and users
-      let projects: Project[] = action.payload.projects;
-      let tasks: Task[] = action.payload.tasks;
-      let user: User = action.payload.user;
-      if (user && user?.role?.length > 0) {
-        let userProjects =
-          projects &&
-          projects?.filter(
-            (item) =>
-              item.projectStatus &&
-              item.projectManager?._id === user._id &&
-              ![
-                "deliver on time",
-                "deliver before deadline",
-                "delivered after deadline",
-              ].includes(item?.projectStatus)
-          );
-        state.PM.projects = userProjects;
-
-        if (tasks) {
+        } else {
           let ids = userProjects.flatMap((item: Project) => item._id);
           let review = tasks.filter(
             (item) => ids.includes(item.projectId) && item.status === "Review"
@@ -120,33 +98,47 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       }
       state.loading = false;
     },
-    setStatisticsEmpty: (state = StatisticsState) => {
+
+    setStatisticsEmpty: (
+      state: StatisticsInterface,
+      action: PayloadAction<any>
+    ) => {
       state.loading = false;
       state.OM = {
-        taskboard: null,
+        taskboard: [],
         taskBoardLength: 0,
-        inProgress: null,
-        review: null,
+        inProgress: [],
+        review: [],
         reviewLength: 0,
-        shared: null,
+        shared: [],
         sharedLength: 0,
-        projectsCloseToDeadlines: null,
-        tasksCloseToDeadline: null,
+        projectsCloseToDeadlines: [],
+        tasksCloseToDeadline: [],
         inProgressLength: 0,
       };
       state.PM = {
-        projects: null,
-        inProgress: null,
+        projects: [],
+        inProgress: [],
         sharedLength: 0,
-        shared: null,
-        review: null,
+        shared: [],
+        review: [],
         reviewLength: 0,
-        tasksCloseToDeadline: null,
-        projectsCloseToDeadlines: null,
+        tasksCloseToDeadline: [],
+        projectsCloseToDeadlines: [],
       };
+    },
+    setStatisticsLoading: (
+      state: StatisticsInterface,
+      action: PayloadAction<any>
+    ) => {
+      state.loading = action.payload;
     },
   },
 });
-export const { setStatisticsForOm, setStatisticsForPm, setStatisticsEmpty } =
-  StatisticsSlice.actions;
+export const {
+  setProjectsStatistics,
+  setTasksStatistics,
+  setStatisticsEmpty,
+  setStatisticsLoading,
+} = StatisticsSlice.actions;
 export default StatisticsSlice.reducer;

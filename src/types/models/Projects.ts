@@ -33,6 +33,7 @@ export interface Task {
   lastMove?: string;
   lastMoveDate?: string;
   createdAt?: string;
+  trelloShortUrl?: string;
 }
 export interface Project {
   _id: string;
@@ -81,4 +82,6 @@ export interface ProjectsInterface {
   sorting: string | null;
   filteredProjects: Project[] | null;
   openTaskDetails: Task;
+  setTasksStatisticsHook: boolean | undefined;
+  setProjectsStatisticsHook: boolean | undefined;
 }

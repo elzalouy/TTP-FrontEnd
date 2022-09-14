@@ -37,11 +37,7 @@ import { getUnNotified } from "./models/Notifications";
 import { useAppSelector } from "./models/hooks";
 import { checkAuthToken } from "./services/api";
 import { getUserInfo, selectIsAuth, selectUser } from "./models/Auth";
-import {
-  setStatisticsEmpty,
-  setStatisticsForOm,
-  setStatisticsForPm,
-} from "./models/Statistics";
+import { setStatisticsEmpty, setStatisticsLoading } from "./models/Statistics";
 import "./App.css";
 import "swiper/css/navigation";
 import "swiper/css";
@@ -80,29 +76,6 @@ const App: React.FC = (props) => {
       setMounted(true);
     }
   }, [dispatch, mounted, isAuthed]);
-
-  useEffect(() => {
-    if (projects.projects.length > 0) {
-      if (user?.role === "OM") {
-        dispatch(
-          setStatisticsForOm({
-            projects: projects.projects,
-            tasks: projects.allTasks,
-            user: user,
-          })
-        );
-      }
-      if (user?.role === "PM") {
-        dispatch(
-          setStatisticsForPm({
-            projects: projects.projects,
-            tasks: projects.allTasks,
-            user: user,
-          })
-        );
-      }
-    } else dispatch(setStatisticsEmpty(null));
-  }, [projects.allTasks, projects.projects]);
 
   return (
     <Box marginTop={{ sm: 5, md: 5 }}>

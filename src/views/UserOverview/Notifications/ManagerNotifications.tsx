@@ -21,6 +21,7 @@ import { Task } from "../../../types/models/Projects";
 import Empty from "./Empy";
 import { getTaskNotificationsDate } from "src/helpers/equations";
 import { cssTabContent } from "src/coreUI/themes";
+import LoadingFor from "./Loading";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -204,7 +205,24 @@ const ManagerNotifications: React.FC<Props> = (props) => {
                         </>
                       );
                     })}
-                  {(!tasks || tasks.length === 0) && <Empty />}
+                  <Empty
+                    loadingFor={
+                      tabItem === "0"
+                        ? statistics.OM.taskboard
+                        : tabItem === "1"
+                        ? statistics.OM.review
+                        : statistics.OM.shared
+                    }
+                  />
+                  <LoadingFor
+                    loadingFor={
+                      tabItem === "0"
+                        ? statistics.OM.taskboard
+                        : tabItem === "1"
+                        ? statistics.OM.review
+                        : statistics.OM.shared
+                    }
+                  />
                 </Box>
               );
             })}
