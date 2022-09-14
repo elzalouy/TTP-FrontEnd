@@ -16,6 +16,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
   label,
   onSelect,
   setValue,
+  selected,
 }) => {
 
   return (
@@ -36,7 +37,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
               }
               onSelect(e);
             }}
-            selected={props.field.value}
+            selected={selected ? selected : props.field.value }
             options={options}
             textTruncate={textTruncate}
           />

@@ -21,6 +21,7 @@ import TaskForm from "../CreateTasksForm/TaskForm";
 import Tasks from "../CreateTasksForm/TasksTable";
 import ProjectForm from "./ProjectForm";
 import "./projectForm.css";
+import { QontoStepIcon } from "./StepperIcon";
 
 interface NewProjectPopUpProps {
   setShow: (str: string) => void;
@@ -33,6 +34,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const { createProjectPopup } = useAppSelector(selectUi);
   const [currentStep, setcurrentStep] = useState(0);
   const [clearErr, setClearErr] = useState<boolean>(false);
+  const [backTrigger, setBackTrigger] = useState<boolean>(false);
 
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -59,61 +61,24 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
     },
   }));
 
-  const QontoStepIconRoot = styled("div")<{
-    ownerState: { active?: boolean; completed?: boolean };
-  }>(({ theme, ownerState }) => ({
-    color: "transparent",
-    backgroundColor: "#F6F6F6",
-    borderRadius: "100%",
-    display: "flex",
-    height: 26,
-    width: 26,
-    justifyContent: "center",
-    alignItems: "center",
-    ...(ownerState.active && {
-      color: "#00ACBA",
-    }),
-    ...(ownerState.completed && {
-      backgroundColor: "#00ACBA",
-    }),
-    "& .QontoStepIcon-completedIcon": {
-      color: "white",
-      fontSize: 18,
-      backgroundColor: "#00ACBA",
-    },
-    "& .QontoStepIcon-circle": {
-      width: 8,
-      height: 8,
-      borderRadius: "100%",
-      backgroundColor: ownerState.active ? "#00ACBA" : "",
-    },
-  }));
-
-  function QontoStepIcon(props: StepIconProps) {
-    const { active, completed, className } = props;
-    return (
-      <QontoStepIconRoot
-        ownerState={{ active, completed: completed }}
-        className={className}
-      >
-        {completed ? (
-          <Check className="QontoStepIcon-completedIcon" />
-        ) : (
-          <div className="QontoStepIcon-circle" />
-        )}
-      </QontoStepIconRoot>
-    );
-  }
-
   const onClose = () => {
     if (currentStep === 1) {
       dispatch(UiActions.fireNewProjectHook(""));
       setClearErr(false);
+      setBackTrigger(false);
     }
+    setBackTrigger(false);
     setcurrentStep(0);
     setShow("none");
     setClearErr(true);
   };
+
+  const onStepProjectForm = () => {
+    if (currentStep === 1) {
+      setBackTrigger(true);
+      setcurrentStep(0);
+    }
+  }
 
   return (
     <PopUp
@@ -140,7 +105,10 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
             >
               {steps?.map((label, index) => (
                 <Step key={label}>
-                  <StepLabel StepIconComponent={QontoStepIcon}>
+                  <StepLabel
+                    StepIconComponent={QontoStepIcon}
+                    StepIconProps={{ style: { cursor: (index === 0 && currentStep === 1) ? "pointer" : "default", } }}
+                    onClick={onStepProjectForm}>
                     <Typography
                       fontWeight={currentStep === index ? "700" : "500"}
                       sx={{
@@ -166,12 +134,20 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       </Grid>
       <Grid marginTop={5}>
         {currentStep === 0 && (
-          <ProjectForm setcurrentStep={setcurrentStep} setShow={setShow} />
+          <ProjectForm
+            setcurrentStep={setcurrentStep}
+            setShow={setShow}
+            currentStep={currentStep}
+            backTrigger={backTrigger}
+            setBackTrigger={setBackTrigger} />
         )}
         {currentStep === 1 && (
           <>
             <TaskForm />
-            <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />
+            <Tasks
+              setCurrentStep={setcurrentStep}
+              setShow={setShow}
+            />
           </>
         )}
       </Grid>

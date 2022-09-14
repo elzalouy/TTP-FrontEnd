@@ -1,5 +1,4 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import Joi from "joi";
 import moment from "moment";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -8,17 +7,17 @@ import Button from "src/coreUI/components/Buttons/Button";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import { setProjectManagerId } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
 import { selectPMOptions, selectPMs } from "src/models/PM";
-import { createProject, selectLoading } from "src/models/Projects";
+import { createProject, editProject, ProjectsActions, selectLoading, selectNewProject } from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
 import { validateCreateProject } from "src/services/validations/project.schema";
-import { IProjectFormProps } from "src/types/views/Projects";
+import { IJoiValidation, IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 
-// create
-const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep }) => {
+const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep, currentStep, backTrigger, setBackTrigger }) => {
   const { register, watch, control, reset, setValue } = useForm({
     defaultValues: {
       name: "",
@@ -34,22 +33,47 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep }) => {
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
-  const theme = useTheme();
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
+  const newProject = useAppSelector(selectNewProject);
+  // const theme = useTheme();
+  // const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
-    reset();
-    setError({ error: undefined, value: undefined, warning: undefined });
-  }, [createProjectPopup]);
+    if (currentStep === 0 && backTrigger) {
+      setValue("name", newProject.project.name);
+      setValue("projectManager", setProjectManagerId(newProject.project.projectManager), { shouldDirty: true });
+      setValue("clientId", newProject.project.clientId, { shouldDirty: true });
+      setValue("deadline", newProject.project.projectDeadline);
+      setValue("startDate", newProject.project.startDate);
+    }
+  }, [newProject.project])
 
-  const [validateError, setError] = React.useState<{
-    error: Joi.ValidationError | undefined;
-    value: any;
-    warning: Joi.ValidationError | undefined;
-  }>({ error: undefined, value: undefined, warning: undefined });
+  React.useEffect(() => {
+    if (!backTrigger) {
+      reset();
+      setError({ error: undefined, value: undefined, warning: undefined });
+    }
+  }, [createProjectPopup, backTrigger]);
+
+  const [validateError, setError] = React.useState<IJoiValidation>({ error: undefined, value: undefined, warning: undefined });
+
+  //Declaring the data object globally in the component
   let data = watch();
 
-  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleOnEdit = () => {
+    let newProjectData = { ...newProject.project }
+    newProjectData.name = data.name;
+    newProjectData.clientId = data.clientId;
+    newProjectData.projectManager = setProjectManagerId(data.projectManager);
+    newProjectData.projectDeadline = data.deadline;
+    newProjectData.startDate = data.startDate;
+    newProjectData.projectStatus = (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started";
+
+    //Dispatches edit project and sets this data as the new project data for the form, if user tries to come back and change the values
+    dispatch(ProjectsActions.onUpdateNewProject(newProjectData));
+    dispatch(editProject({ data: newProjectData, dispatch }));
+  }
+
+  const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     let project = {
       name: data?.name,
       projectManager: data?.projectManager,
@@ -81,6 +105,19 @@ const ProjectForm: React.FC<IProjectFormProps> = ({ setcurrentStep }) => {
       ToastError(isValid.error.message);
     } else {
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
+    }
+  }
+
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //Back trigger decides which block to execute
+    if (backTrigger) {
+      //This block triggers edit and ensures the flags are reset  
+      handleOnEdit();
+      setcurrentStep(1);
+      setBackTrigger(false);
+    } else if (!backTrigger) {
+      //This block handles the default create project
+      handleCreateProject(e);
     }
   };
 

@@ -1,6 +1,6 @@
 import { ProjectsInterface } from "../../types/models/Projects";
 
-const PorjectsState: ProjectsInterface = {
+const ProjectsState: ProjectsInterface = {
   loading: true,
   projects: [],
   allTasks: [],
@@ -88,4 +88,4 @@ const PorjectsState: ProjectsInterface = {
   setTasksStatisticsHook: undefined,
   setProjectsStatisticsHook: undefined,
 };
-export default PorjectsState;
+export default ProjectsState;

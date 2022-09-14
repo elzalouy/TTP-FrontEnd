@@ -1,26 +1,20 @@
 import * as React from "react";
 import { useSelect } from "src/coreUI/hooks/useSelect";
+import { IOptions } from "src/types/components/Inputs";
 import "./Select.css";
-type OptionsProps = {
-  selectRef: React.MutableRefObject<HTMLFieldSetElement | null>;
-  display: string;
-  onSelect: any;
-  elementType: string;
-  options: { id: string; value: string; text: string }[];
-  setShow: any;
-};
 
-const Options = ({
+const Options: React.FC<IOptions> = ({
   selectRef,
   display,
   onSelect,
   elementType,
   options,
   setShow,
-}: OptionsProps) => {
-  const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
-    React.useRef(null);
+}) => {
+  
+  const optionsRef: React.MutableRefObject<HTMLUListElement | null> = React.useRef(null);
   useSelect(selectRef, optionsRef);
+
   return (
     <>
       <ul

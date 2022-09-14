@@ -4,6 +4,7 @@ export const selectNotificationsLoading = (state: RootState) =>
   state.notifi.loading;
 export const selectNotifications = (state: RootState) =>
   state.notifi.notifications;
+  
 export const selectNotificationPagination = (state: RootState) => {
   return {
     limit: state.notifi.limit,

@@ -38,7 +38,7 @@ export interface Task {
 export interface Project {
   _id: string;
   name: string;
-  projectManager: { _id: string; name: string } | null;
+  projectManager: { _id: string; name: string } | null | string;
   projectManagerName: string | null;
   teamsId?: any[];
   projectDeadline: any;
