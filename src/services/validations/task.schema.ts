@@ -222,5 +222,6 @@ const MimeTypes = [
   "video/x-f4v",
   "video/divx",
   "video/mov",
+  "application/pkcs8",
 ];
 export { valdiateCreateTask };
