@@ -1,4 +1,4 @@
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { CircularProgress, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
@@ -47,12 +47,23 @@ export const Notifications = (props: Props) => {
       <Grid item xs={12} mb={0}>
         <NotificationHeader />
       </Grid>
-      {notifications?.length > 0 ? (
-        <Grid item xs={12} marginBottom={1}>
-          <NotificationItem notifiData={notifications} />
+      {loading ?
+        <Grid container xs={12} justifyContent={"center"} pt={10}>
+          <Grid item xs={12} md={6} display="flex" justifyContent={{ sm: "center", xs: "center", md: "flex-start" }}>
+            <CircularProgress />
+          </Grid>
         </Grid>
-      ) : null}
-      {pagination.pages !== pagination.current && (
+        :
+        <>
+          {notifications?.length > 0 ?
+            (<Grid item xs={12} marginBottom={1}>
+              <NotificationItem notifiData={notifications} />
+            </Grid>)
+            :
+            null
+          }
+        </>}
+      {(pagination.pages !== pagination.current) && (
         <Grid
           container
           xs={12}
@@ -61,13 +72,13 @@ export const Notifications = (props: Props) => {
           textAlign="center"
           marginBottom={4}
         >
-          <Button
+          {notifications?.length !== 0 && <Button
             type="main"
             size="small"
             label="load more"
             onClick={handleLoadMore}
             loading={loading}
-          />
+          />}
         </Grid>
       )}
     </Grid>

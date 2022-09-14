@@ -8,8 +8,6 @@ import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import { IDateInputProps } from "src/types/components/Inputs";
 import IMAGES from "../../../assets/img/Images";
 import { validateDate } from "../../../services/validations/project.schema";
-import { dateInputStyle } from "./styles";
-
 const DateInput: React.FC<IDateInputProps> = ({
   control,
   register,
@@ -21,7 +19,6 @@ const DateInput: React.FC<IDateInputProps> = ({
   tempError,
   setUpdateDate,
 }) => {
-  // const style = dateInputStyle()();
 
   let error = state
     ? state.error.error?.details[0].path.includes(name)
