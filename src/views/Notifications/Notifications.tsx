@@ -12,19 +12,17 @@ import {
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
+import NotificationItemSkeleton from "./NotificationSkeletonItem/NotificationSkeleton";
 
-type Props = {};
-
-export const Notifications = (props: Props) => {
+export const Notifications = () => {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
-  // const user = useAppSelector(selectUser);
   const loading = useAppSelector(selectNotificationsLoading);
   const notifications = useAppSelector(selectNotifications);
   const pagination = useAppSelector(selectNotificationPagination);
-  // const Unotified = useAppSelector(selectUnNotifiedNum);
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
     if (!mounted) {
       dispatch(getNotifications(`/${pagination.current}/${pagination.limit}`));
@@ -48,10 +46,8 @@ export const Notifications = (props: Props) => {
         <NotificationHeader />
       </Grid>
       {loading ?
-        <Grid container xs={12} justifyContent={"center"} pt={10}>
-          <Grid item xs={12} md={6} display="flex" justifyContent={{ sm: "center", xs: "center", md: "flex-start" }}>
-            <CircularProgress />
-          </Grid>
+        <Grid item xs={12} marginBottom={1}>
+          {[...Array(4)].map((item, key) => <NotificationItemSkeleton key={key} />)}
         </Grid>
         :
         <>
@@ -72,12 +68,11 @@ export const Notifications = (props: Props) => {
           textAlign="center"
           marginBottom={4}
         >
-          {notifications?.length !== 0 && <Button
+          {(notifications?.length !== 0 && !loading) && <Button
             type="main"
             size="small"
             label="load more"
             onClick={handleLoadMore}
-            loading={loading}
           />}
         </Grid>
       )}

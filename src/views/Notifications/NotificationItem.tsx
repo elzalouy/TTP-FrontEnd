@@ -4,15 +4,13 @@ import Badge from "@mui/material/Badge";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
+import { FC } from "react";
 import Avatar from "react-avatar";
+import { INotificationItem } from "src/types/views/Notifications";
 import { selectUser } from "../../models/Auth";
 import { useAppSelector } from "../../models/hooks";
 
-type Props = {
-  notifiData: object[];
-};
-
-const NotificationItem = ({ notifiData }: Props) => {
+const NotificationItem: FC<INotificationItem> = ({ notifiData }) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const user = useAppSelector(selectUser);
@@ -116,7 +114,7 @@ const NotificationItem = ({ notifiData }: Props) => {
                     component="div"
                     sx={{
                       color: "#acabab",
-                      marginRight:2,
+                      marginRight: 2,
                     }}
                   >
                     {moment(item?.createdAt).fromNow(true)}
