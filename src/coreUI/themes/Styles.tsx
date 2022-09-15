@@ -247,6 +247,9 @@ export const SelectInputStyle = makeStyles({
 export const dataTimePickerInputStyle = {
   cursor: "pointer",
   width: "100%",
+/*   appearance: none,
+  -moz-appearance: none,
+  -webkit-appearance: none, */
   "& .MuiOutlinedInput-input": {
     height: "16px !important",
     color: "#303030",

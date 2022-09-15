@@ -19,12 +19,10 @@ import {
   selectAllProjects,
   selectTasks,
 } from "src/models/Projects";
-interface Props {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-export const OverView: FC<Props> = (props) => {
+import { IOverview } from "src/types/views/Overview";
+
+
+export const OverView: FC<IOverview> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const userName = useAppSelector(selectUser);
@@ -45,9 +43,11 @@ export const OverView: FC<Props> = (props) => {
       );
     } else dispatch(logout(true));
   }, [dispatch, props.history]);
+
   // useEffect(() => {
   //   dispatch(ProjectsActions.fireSetStatisticsHook(null));
   // }, [pathName]);
+
   return (
     <>
       <Grid

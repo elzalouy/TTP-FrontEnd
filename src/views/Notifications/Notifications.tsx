@@ -45,7 +45,7 @@ export const Notifications = () => {
       <Grid item xs={12} mb={0}>
         <NotificationHeader />
       </Grid>
-      {loading ?
+      {!loading ?
         <Grid item xs={12} marginBottom={1}>
           {[...Array(4)].map((item, key) => <NotificationItemSkeleton key={key} />)}
         </Grid>

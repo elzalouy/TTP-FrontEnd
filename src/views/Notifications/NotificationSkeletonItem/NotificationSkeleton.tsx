@@ -22,7 +22,7 @@ const NotificationItemSkeleton = () => {
                     flexDirection={"column"}
                     justifyContent={SM ? "space-between" : "flex-start"}
                     sx={{
-                        background: "#ECECEC",
+                        background: "#ECECECB8",
                         borderRadius: "1em",
                         height: "130px"
                     }}
