@@ -3,6 +3,7 @@ import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import { IFilterProps } from "src/types/components/Inputs";
+import { ToastWarning } from "../../Typos/Alert";
 import Options from "./Options";
 import "./Select.css";
 
@@ -17,15 +18,7 @@ const Select = (props: IFilterProps) => {
     label: props.label,
     isOpen: "none",
     selected: "",
-    options: props.options
-      ? props.options
-      : [
-          {
-            id: "",
-            value: "",
-            text: "",
-          },
-        ],
+    options: props.options ? props.options : [],
   });
 
   React.useEffect(() => {
@@ -57,10 +50,14 @@ const Select = (props: IFilterProps) => {
   }, [props.selected, props.options]);
 
   const setShow = () => {
-    if (state.isOpen === "none") setState({ ...state, isOpen: "flex" });
+    console.log({ state, props });
+    if (state.isOpen === "none" && state.options.length > 0)
+      setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });
+    if (state.options.length === 0 && props.message)
+      ToastWarning(props.message);
   };
-  
+
   return (
     <>
       <fieldset

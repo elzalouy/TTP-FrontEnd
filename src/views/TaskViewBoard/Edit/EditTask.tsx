@@ -381,6 +381,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     name="teamId"
                     control={control}
                     onSelect={(e: any) => setValue("teamId", e.target.id)}
+                    message={
+                      state.selectedDepartment
+                        ? `${state.selectedDepartment?.name} department has no teams yet.`
+                        : "Please select a department firstly, to can see the teams inside"
+                    }
                     options={
                       state.selectedDepatmentTeams
                         ? [

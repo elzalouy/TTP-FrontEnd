@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { Controller } from "react-hook-form";
-import {
-  IControlledSelect
-} from "src/types/components/Containers";
+import { IControlledSelect } from "src/types/components/Containers";
 import Select from "../../components/Inputs/SelectFields/Select";
 
 const ControlledSelect: FC<IControlledSelect> = ({
@@ -17,8 +15,8 @@ const ControlledSelect: FC<IControlledSelect> = ({
   onSelect,
   setValue,
   selected,
+  message,
 }) => {
-
   return (
     <>
       {formLabel && <label className="popup-label">{formLabel}</label>}
@@ -37,9 +35,10 @@ const ControlledSelect: FC<IControlledSelect> = ({
               }
               onSelect(e);
             }}
-            selected={selected ? selected : props.field.value }
+            selected={selected ? selected : props.field.value}
             options={options}
             textTruncate={textTruncate}
+            message={message}
           />
         )}
       />
