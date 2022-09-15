@@ -1,7 +1,12 @@
 import { RootState } from "../store";
 import _ from "lodash";
+
 export const selectNotificationsLoading = (state: RootState) =>
   state.notifi.loading;
+
+export const selectNotificationsButtonLoading = (state: RootState) =>
+  state.notifi.buttonLoading;
+
 export const selectNotifications = (state: RootState) =>
   state.notifi.notifications;
   

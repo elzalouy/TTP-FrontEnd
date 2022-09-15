@@ -7,7 +7,9 @@ import {
   getNotifications,
   selectNotificationPagination,
   selectNotifications,
+  selectNotificationsButtonLoading,
   selectNotificationsLoading,
+  toggleLoadingOff,
   updateNotified,
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
@@ -18,6 +20,7 @@ export const Notifications = () => {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const loading = useAppSelector(selectNotificationsLoading);
+  const buttonLoading = useAppSelector(selectNotificationsButtonLoading);
   const notifications = useAppSelector(selectNotifications);
   const pagination = useAppSelector(selectNotificationPagination);
   const theme = useTheme();
@@ -30,9 +33,10 @@ export const Notifications = () => {
       setMounted(true);
     }
   }, [mounted, dispatch, pagination]);
-  
+
   const handleLoadMore = async () => {
     dispatch(getNotifications(`/${++pagination.current}/${pagination.limit}`));
+    dispatch(toggleLoadingOff(null))
   };
 
   return (
@@ -74,6 +78,7 @@ export const Notifications = () => {
             size="small"
             label="load more"
             onClick={handleLoadMore}
+            loading={buttonLoading}
           />}
         </Grid>
       )}
