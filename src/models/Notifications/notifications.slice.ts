@@ -11,7 +11,12 @@ import { NotificationsState } from "src/types/models/Notifications";
 const notifiSlice: Slice<NotificationsState> = createSlice({
   name: "notifications",
   initialState: NotificationState,
-  reducers: {},
+  reducers: {
+    toggleLoadingOff: (state = NotificationState) => {
+      state.buttonLoading = true;
+      state.loading = false;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(
       getNotifications.fulfilled,
@@ -30,6 +35,7 @@ const notifiSlice: Slice<NotificationsState> = createSlice({
         state.current = action.payload.current;
       }
     );
+
     builder.addCase(
       getNotifications.rejected,
       (state = NotificationState, action: PayloadAction<any>) => {
@@ -85,4 +91,6 @@ const notifiSlice: Slice<NotificationsState> = createSlice({
     );
   },
 });
+
+export const { toggleLoadingOff } = notifiSlice.actions;
 export default notifiSlice.reducer;

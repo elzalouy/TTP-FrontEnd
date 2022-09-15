@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1cabb6e0.css",
-    "main.js": "/static/js/main.10395465.js",
+    "main.css": "/static/css/main.275d46ac.css",
+    "main.js": "/static/js/main.f9a8218f.js",
     "static/media/picTask.svg": "/static/media/picTask.dff3f45f90a7316d11fc54176eb402c9.svg",
     "static/media/avatar.svg": "/static/media/avatar.038bcb9962e543364bbbb224a39721a0.svg",
     "static/media/Cairo-Black.ttf": "/static/media/Cairo-Black.9851b4d11fb6b245a054.ttf",
@@ -74,11 +74,11 @@
     "static/media/moreGrey.svg": "/static/media/moreGrey.ddc5c341f307950130a6aa8296f48b13.svg",
     "static/media/dropdownIcon.svg": "/static/media/dropdownIcon.a414677dfa22a0682382711a6ee83e1f.svg",
     "static/media/burgerIcon.svg": "/static/media/burgerIcon.86db76e87fe958e25d86ebf4fa4c7f79.svg",
-    "main.1cabb6e0.css.map": "/static/css/main.1cabb6e0.css.map",
-    "main.10395465.js.map": "/static/js/main.10395465.js.map"
+    "main.275d46ac.css.map": "/static/css/main.275d46ac.css.map",
+    "main.f9a8218f.js.map": "/static/js/main.f9a8218f.js.map"
   },
   "entrypoints": [
-    "static/css/main.1cabb6e0.css",
-    "static/js/main.10395465.js"
+    "static/css/main.275d46ac.css",
+    "static/js/main.f9a8218f.js"
   ]
 }

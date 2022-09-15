@@ -119,17 +119,18 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         maxWidthSize={MD ? "400px" : "320px"}
       >
         <Grid>
-          <Grid justifyContent={"space-between"} direction={"row"}>
-            <div>
+          <Grid justifyContent={"space-between"} direction={"row"} position="relative">
+            <div
+              className="closeIconContainer"
+              onClick={() => {
+                handleSetDisplay("none");
+              }}>
               <img
                 className="closeIcon"
                 width="9"
                 height="9"
                 src={IMAGES.closeicon}
                 alt="closeIcon"
-                onClick={() => {
-                  handleSetDisplay("none");
-                }}
               />
             </div>
             <Typography fontWeight={"500"} fontSize={18} color="#00ACBA">

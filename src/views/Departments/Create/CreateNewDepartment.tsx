@@ -108,16 +108,17 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         overFlowY="scroll"
       >
         <Grid padding={1}>
-          <div>
-            <img
-              data-test-id="create-dep-close-modal"
-              className="closeIcon"
-              width="9"
-              height="9"
-              src={IMAGES.closeicon}
-              alt="closeIcon"
-              onClick={onCloseModal}
-            />
+          <div style={{ position: "relative" }}>
+            <div className="closeIconContainer" onClick={onCloseModal}>
+              <img
+                data-test-id="create-dep-close-modal"
+                className="closeIcon"
+                width="9"
+                height="9"
+                src={IMAGES.closeicon}
+                alt="closeIcon"
+              />
+            </div>
           </div>
           <p className="popup-title">Create new department</p>
           <Grid item lg={12} sm={12} xs={12} md={12}>

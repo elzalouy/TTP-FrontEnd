@@ -112,20 +112,22 @@ const CreateNewCategory = () => {
         minWidthSize={MD ? "50vw" : "30vw"}
         maxWidthSize={MD ? "400px" : "320px"}
       >
-        <div style={{ marginTop: 10 }}>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
+        <div style={{ marginTop: 10, position: "relative" }}>
+          <div className="closeIconContainer"
             onClick={() => {
               setShow("none");
               setMainCategory("");
               setSubCategory("");
               setsubCategories([]);
-            }}
-          />
+            }}>
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+            />
+          </div>
           <p style={{ color: "red" }}>{errors}</p>
           <p className="popup-title" style={{ marginBottom: 2 }}>
             Add new category

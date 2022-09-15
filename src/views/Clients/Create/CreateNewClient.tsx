@@ -107,13 +107,8 @@ const CreateNewClient: React.FC = () => {
       </Box>
       <PopUp show={Show} maxWidthSize="491px">
         <Box>
-          <Box>
-            <img
-              className="closeIcon"
-              width="9"
-              height="9"
-              src={IMAGES.closeicon}
-              alt="closeIcon"
+          <Box position={"relative"}>
+            <div className="closeIconContainer"
               onClick={() => {
                 setShow("none");
                 setImageView(null);
@@ -123,8 +118,16 @@ const CreateNewClient: React.FC = () => {
                 });
                 setShow("none");
                 setError(false);
-              }}
-            />
+              }}>
+              <img
+                className="closeIcon"
+                width="9"
+                height="9"
+                src={IMAGES.closeicon}
+                alt="closeIcon"
+
+              />
+            </div>
           </Box>
           <form id="client" onSubmit={handleSubmit}>
             <Typography className="new-client-title">Add new client</Typography>

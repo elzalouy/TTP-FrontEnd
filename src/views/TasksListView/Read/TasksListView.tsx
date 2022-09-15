@@ -84,9 +84,9 @@ export const TasksListView: React.FC<Props> = (props) => {
     <Grid
       bgcolor={"#FAFAFB"}
       justifyContent={"flex-start"}
-      alignItems="flex-start"
       container
-      alignContent={"flex-start"}
+      alignItems="center"
+      alignContent={"center"}
       alignSelf="flex-start"
       padding={SM ? 2 : 4}
       marginTop={MD ? 6 : 0}
@@ -97,10 +97,10 @@ export const TasksListView: React.FC<Props> = (props) => {
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
-        sm={12}
-        md={12}
         lg={12}
-        xs={12}
+        md={2}
+        sm={2}
+        xs={2}
         mb={SM ? 3 : 0}
       >
         <Typography
@@ -124,8 +124,8 @@ export const TasksListView: React.FC<Props> = (props) => {
           )}
         </Typography>
       </Grid>
-      <Grid container sm={12} md={12} lg={12} xs={12}>
-        <Grid display="flex" justifyContent={"flex-end"} alignItems="center">
+      <Grid container xs={10} sm={10} md={10} lg={12} justifyContent="flex-end">
+        <Grid display="flex" justifyContent={"flex-end"} alignItems="center" mr={1}>
           {MD && (
             <>
               <Box
@@ -133,8 +133,8 @@ export const TasksListView: React.FC<Props> = (props) => {
                 textAlign={"center"}
                 sx={
                   !filter
-                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
-                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2, float: "right" }
+                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2, float: "right" }
                 }
                 width={38}
                 height={38}
@@ -147,131 +147,156 @@ export const TasksListView: React.FC<Props> = (props) => {
             </>
           )}
         </Grid>
-        <Grid container alignItems={"center"}>
-          <Grid
-            item
-            lg={9}
-            md={10}
-            sm={12}
-            xs={12}
-            gap="2%"
-            display="flex"
-            direction={"row"}
-            alignItems={"center"}
-            width={"100%"}
-            wrap={MD ? "wrap" : "nowrap"}
-          >
-            {filter && (
-              <Grid container xs={12} sm={12}>
-                <Grid
-                  marginX={0.5}
-                  item
-                  xs={6}
-                  sm={3}
-                  md={3}
-                  lg={3}
-                  marginY={1}
-                  flex={1}
-                >
-                  <ControlledSelect
-                    name="sort"
-                    control={control}
-                    label="Due Date: "
-                    elementType="filter"
-                    textTruncate={6}
-                    onSelect={(e: any) => onSortTasks(e, "sort")}
-                    options={options[0]}
-                  />
-                </Grid>
-                <Grid
-                  marginX={0.5}
-                  item
-                  xs={6}
-                  sm={3}
-                  md={3}
-                  lg={3}
-                  marginY={1}
-                >
-                  <Box className="tasks-option">
-                    <ControlledSelect
-                      name="status"
-                      control={control}
-                      label="Status: "
-                      elementType="filter"
-                      textTruncate={10}
-                      onSelect={(e: any) => onChangeFilter(e, "status")}
-                      options={options[1]}
-                    />
-                  </Box>
-                </Grid>
-                <Grid
-                  marginX={0.5}
-                  item
-                  xs={4}
-                  sm={3}
-                  md={3}
-                  lg={3}
-                  marginY={1}
-                >
-                  <Box className="tasks-option">
-                    <ControlledSelect
-                      name="projectId"
-                      control={control}
-                      label="Project: "
-                      elementType="filter"
-                      textTruncate={10}
-                      onSelect={(e: any) => {
-                        onChangeFilter(e, "projectId");
-                      }}
-                      options={projectOptions}
-                    />
-                  </Box>
-                </Grid>
-                <Grid
-                  marginX={0.5}
-                  my={{ sm: 1, xs: 1, md: 1, lg: 1 }}
-                  item
-                  xs={2}
-                  sm={2}
-                  md={2}
-                  lg={2}
-                >
-                  <DeleteTask
-                    task={selects}
-                    Show={Show}
-                    setShow={setShow}
-                    onDelete={onDeleteTasks}
-                  />
-                </Grid>
-              </Grid>
+        <Grid
+          data-test-id="filter-projects"
+          marginX={0.5}
+          item
+          xs={8} sm={5} md={8} lg={8}
+          alignItems="center"
+          justifyContent={{ xs: "", sm: "flex-end", md: "flex-end", lg: "flex-end" }}
+          display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
+        >
+          <Controller
+            name="name"
+            control={control}
+            render={(props) => (
+              <SearchBox
+                value={props.field.value}
+                placeholder="Search"
+                onChange={(e) => {
+                  props.field.onChange(e);
+                  onHandleChangeFilter();
+                }}
+                size={"custom"}
+              />
             )}
-          </Grid>
-          <Grid
-            item
-            display="flex"
-            justifyContent={SM ? "center" : "flex-end"}
-            xs={12}
-            sm={12}
-            md={2}
-            lg={3}
-            mt={SM ? "10px" : "0px"}
-          >
-            <Controller
-              name="name"
-              control={control}
-              render={(props) => (
-                <SearchBox
-                  onChange={(e) => {
-                    props.field.onChange(e);
-                    onHandleChangeFilter();
-                  }}
-                  value={props.field.value}
-                  placeholder="Search"
-                  size={LG ? "medium" : SM ? "medium" : "small"}
+          />
+        </Grid>
+      </Grid>
+      <Grid container alignItems={"center"}>
+        <Grid
+          item
+          lg={9}
+          md={10}
+          sm={12}
+          xs={12}
+          gap="2%"
+          display="flex"
+          direction={"row"}
+          alignItems={"center"}
+          width={"100%"}
+          wrap={MD ? "wrap" : "nowrap"}
+        >
+          {filter && (
+            <Grid container xs={12} sm={12}>
+              <Grid
+                marginX={0.5}
+                item
+                xs={6}
+                sm={3}
+                md={3}
+                lg={3}
+                marginY={1}
+                flex={1}
+              >
+                <ControlledSelect
+                  name="sort"
+                  control={control}
+                  label="Due Date: "
+                  elementType="filter"
+                  textTruncate={6}
+                  onSelect={(e: any) => onSortTasks(e, "sort")}
+                  options={options[0]}
                 />
-              )}
-            />
-          </Grid>
+              </Grid>
+              <Grid
+                marginX={0.5}
+                item
+                xs={6}
+                sm={3}
+                md={3}
+                lg={3}
+                marginY={1}
+              >
+                <Box className="tasks-option">
+                  <ControlledSelect
+                    name="status"
+                    control={control}
+                    label="Status: "
+                    elementType="filter"
+                    textTruncate={10}
+                    onSelect={(e: any) => onChangeFilter(e, "status")}
+                    options={options[1]}
+                  />
+                </Box>
+              </Grid>
+              <Grid
+                marginX={0.5}
+                item
+                xs={4}
+                sm={3}
+                md={3}
+                lg={3}
+                marginY={1}
+              >
+                <Box className="tasks-option">
+                  <ControlledSelect
+                    name="projectId"
+                    control={control}
+                    label="Project: "
+                    elementType="filter"
+                    textTruncate={10}
+                    onSelect={(e: any) => {
+                      onChangeFilter(e, "projectId");
+                    }}
+                    options={projectOptions}
+                  />
+                </Box>
+              </Grid>
+              <Grid
+                marginX={0.5}
+                my={{ sm: 1, xs: 1, md: 1, lg: 1 }}
+                item
+                xs={2}
+                sm={2}
+                md={2}
+                lg={2}
+              >
+                <DeleteTask
+                  task={selects}
+                  Show={Show}
+                  setShow={setShow}
+                  onDelete={onDeleteTasks}
+                />
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
+        <Grid
+          item
+          display={{ xs: "none", sm: "none", md: "flex", lg: "flex" }}
+          justifyContent={"flex-end"}
+          xs={12}
+          sm={12}
+          md={2}
+          lg={3}
+          mt={SM ? "10px" : "0px"}
+        >
+          <Controller
+            name="name"
+            control={control}
+            render={(props) => (
+              <SearchBox
+                onChange={(e) => {
+                  props.field.onChange(e);
+                  onHandleChangeFilter();
+                }}
+                value={props.field.value}
+                placeholder="Search"
+                size={"custom"}
+              />
+            )}
+          />
         </Grid>
       </Grid>
       {projects.loading === true ? (
@@ -302,8 +327,9 @@ export const TasksListView: React.FC<Props> = (props) => {
             />
           </Paper>
         </>
-      )}
-    </Grid>
+      )
+      }
+    </Grid >
   );
 };
 

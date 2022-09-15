@@ -142,8 +142,8 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       listId:
         data?.teamId !== ""
           ? state.selectedDepartment?.teams?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
+            (item: any) => item._id === data.teamId
+          )?.listId
           : state.task.listId,
     };
 
@@ -245,13 +245,16 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
           marginTop={2}
           marginBottom={3.5}
         >
-          <img
-            className="closeIcon"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
-            onClick={onCloseModel}
-            style={{ cursor: "pointer" }}
-          />
+          <div style={{ position: "relative" }}>
+            <div className="closeIconContainer" onClick={onCloseModel}>
+              <img
+                className="closeIcon"
+                src={IMAGES.closeicon}
+                alt="closeIcon"
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          </div>
           <Typography variant="h2" fontWeight={"500"} color={"#30bcc7"}>
             Edit Task
           </Typography>
@@ -358,14 +361,14 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     options={
                       state.selectedCategory?.subCategoriesId
                         ? state.selectedCategory?.subCategoriesId?.map(
-                            (item) => {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.subCategory,
-                              };
-                            }
-                          )
+                          (item) => {
+                            return {
+                              id: item._id ? item._id : "",
+                              value: item._id ? item._id : "",
+                              text: item.subCategory,
+                            };
+                          }
+                        )
                         : []
                     }
                   />
@@ -386,15 +389,15 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     options={
                       state.selectedDepatmentTeams
                         ? [
-                            ...state.selectedDepatmentTeams.map((item) => {
-                              if (item && item._id)
-                                return {
-                                  id: item._id,
-                                  value: item._id,
-                                  text: item.name,
-                                };
-                            }),
-                          ]
+                          ...state.selectedDepatmentTeams.map((item) => {
+                            if (item && item._id)
+                              return {
+                                id: item._id,
+                                value: item._id,
+                                text: item.name,
+                              };
+                          }),
+                        ]
                         : []
                     }
                     error={onGetError("teamId")}
