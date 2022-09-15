@@ -20,13 +20,14 @@ const UserTasks: React.FC<UserTasksProps> = (props) => {
       <Grid
         item
         xs={12}
+        sm={12}
         md={12}
         lg={6}
         justifyContent="flex-start"
         alignItems="flex-start"
         marginBottom={5}
-        paddingRight={props.pr}
-        paddingLeft={props.pl}
+        paddingRight={{ lg: props.pr }}
+        paddingLeft={{ lg: props.pl }}
       >
         <Typography
           id="project-header"

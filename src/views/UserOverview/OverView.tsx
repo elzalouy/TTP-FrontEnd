@@ -45,9 +45,7 @@ export const OverView: FC<Props> = (props) => {
       );
     } else dispatch(logout(true));
   }, [dispatch, props.history]);
-  // useEffect(() => {
-  //   dispatch(ProjectsActions.fireSetStatisticsHook(null));
-  // }, [pathName]);
+
   return (
     <>
       <Grid
@@ -55,7 +53,6 @@ export const OverView: FC<Props> = (props) => {
         justifyContent={"space-between"}
         alignItems={"normal"}
         direction={"row"}
-        // marginX={{ sm: 2, lg: 5, md: 5, xs: 0 }}
         paddingX={{ xs: 2, lg: 5, md: 5, sm: 2 }}
         bgcolor={"#FAFAFB"}
       >
@@ -84,6 +81,7 @@ export const OverView: FC<Props> = (props) => {
           <Typography
             color="#171725"
             paddingTop={7}
+            paddingBottom={{ xs: 3, lg: 0, md: 0, sm: 3 }}
             variant="h5"
             fontSize={"24px"}
             fontWeight={"900"}
@@ -180,7 +178,7 @@ export const OverView: FC<Props> = (props) => {
               xs={12}
               justifyContent="center"
               alignItems="center"
-              marginY={{ md: 2, sm: 2, xs: 2, lg: 0 }}
+              marginY={{ md: 4, sm: 4, xs: 4, lg: 0 }}
             >
               {role === "OM" ? (
                 <ManagerNotifications {...props} />

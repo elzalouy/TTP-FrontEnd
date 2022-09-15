@@ -1,17 +1,20 @@
 import { FC, useEffect, useState } from "react";
-import { Toolbar, AppBar, IconButton } from "@mui/material";
+import { Toolbar, AppBar, IconButton, Badge } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import "./AppBar.css";
-import { Logo, Notification } from "../../../components/Images/Images";
+import { Logo } from "../../../components/Images/Images";
 import { useHistory, useLocation } from "react-router";
 import ResponsiveDrawer from "../Sidebar/ResponsiveDrawer";
+import NotificationIcon from "src/assets/icons/Notification";
+import { useAppSelector } from "src/models/hooks";
+import { selectUnNotifiedNum } from "src/models/Notifications";
 
 const Bar: FC = (props: any) => {
   const [open, setOpen] = useState(false);
   const [select, setSelected] = useState("");
   const location = useLocation();
   const history = useHistory();
-
+  const noOfNotifications = useAppSelector(selectUnNotifiedNum);
   useEffect(() => {
     setSelected(location?.pathname);
   }, [location.pathname]);
@@ -38,7 +41,9 @@ const Bar: FC = (props: any) => {
             history.push("/notifications");
           }}
         >
-          <Notification />
+          <Badge badgeContent={noOfNotifications} color="error">
+            <NotificationIcon stroke={"#000000"} height={"25px"} />
+          </Badge>
         </IconButton>
         <ResponsiveDrawer
           {...props}

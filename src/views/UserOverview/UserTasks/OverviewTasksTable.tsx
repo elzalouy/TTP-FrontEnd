@@ -29,6 +29,7 @@ const cssHeadTableCell: any = {
   margin: "0px",
   padding: "12px 8px 12px 20px",
   fontWeight: "normal",
+  zIndex: 0,
 };
 
 const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
@@ -45,10 +46,20 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
         className={`${css.tableContainer} overviewTasksTable`}
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
       >
-        <Table stickyHeader={true} style={{ borderRadius: 3 }}>
+        <Table
+          stickyHeader={true}
+          style={{
+            borderRadius: 3,
+          }}
+        >
           <Loading loadingFor={tasks} />
           <EmptyCaption loadingFor={tasks} caption={caption} img={img} />
-          <TableHead style={{ position: "relative", top: 0, zIndex: 0 }}>
+          <TableHead
+            style={{
+              position: "relative",
+              top: 0,
+            }}
+          >
             <TableRow
               sx={{
                 borderBottom: "2px solid #FAFAFB;",

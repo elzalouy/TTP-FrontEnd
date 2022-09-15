@@ -200,7 +200,7 @@ const AppHooks: React.FC = (props) => {
           : [];
       dispatch(setProjectsStatistics({ user: user, projects: userProjects }));
     }
-  }, [setProjectsStatisticsHook]);
+  }, [setProjectsStatisticsHook, user]);
 
   // set statistics hook
   React.useEffect(() => {
@@ -228,7 +228,7 @@ const AppHooks: React.FC = (props) => {
         })
       );
     }
-  }, [setTasksStatisticsHook]);
+  }, [setTasksStatisticsHook, user]);
 
   React.useEffect(() => {
     if (user?._id) {

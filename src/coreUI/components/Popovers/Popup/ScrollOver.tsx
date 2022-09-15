@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import * as React from "react";
-
+import "./popUp.css";
 interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
@@ -11,7 +11,7 @@ const ScrollOver: React.FC<ScrollOverProps> = (props) => {
     <>
       {props.popover ? (
         <Stack
-          className="scrollOver Mui-expanded"
+          className="scrollOver"
           maxWidth={"100%"}
           sx={{
             position: {

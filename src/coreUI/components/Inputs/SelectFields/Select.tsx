@@ -50,7 +50,6 @@ const Select = (props: IFilterProps) => {
   }, [props.selected, props.options]);
 
   const setShow = () => {
-    console.log({ state, props });
     if (state.isOpen === "none" && state.options.length > 0)
       setState({ ...state, isOpen: "flex" });
     else setState({ ...state, isOpen: "none" });

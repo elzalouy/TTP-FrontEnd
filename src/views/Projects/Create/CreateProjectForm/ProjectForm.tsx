@@ -29,7 +29,14 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   backTrigger,
   setBackTrigger,
 }) => {
-  const { register, watch, control, reset, setValue, formState: { isDirty } } = useForm({
+  const {
+    register,
+    watch,
+    control,
+    reset,
+    setValue,
+    formState: { isDirty },
+  } = useForm({
     defaultValues: {
       name: "",
       projectManager: "",
@@ -128,8 +135,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       dispatch(createProject({ data: project, setcurrentStep, dispatch }));
     }
   };
-
-  console.log(isDirty);
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Back trigger decides which block to execute

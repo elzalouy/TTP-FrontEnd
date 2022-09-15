@@ -93,7 +93,6 @@ export const filterProjects = createAsyncThunk<any, any, any>(
   "projects/filterProjects",
   async (args, { rejectWithValue }) => {
     try {
-      console.log("step - 3", args);
       let projects: ApiResponse<any> = await api.filterProjects(args);
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
@@ -145,7 +144,6 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
         dispatch(logout(true));
       }
       if (tasks.ok) {
-        console.log({ tasksData: tasks.data });
         return tasks.data;
       }
       throw tasks.problem;

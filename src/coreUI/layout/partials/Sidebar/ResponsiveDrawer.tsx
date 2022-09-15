@@ -42,14 +42,15 @@ import TaskIcon from "../../../../assets/icons/TaskIcon";
 import DepartmentIcon from "../../../../assets/icons/DepartmentIcon";
 import { toggleLogOutPopup } from "../../../../models/Ui";
 import { getAllProjects } from "../../../../models/Projects";
+import { selectUnNotifiedNum } from "src/models/Notifications";
 
 const ResponsiveDrawer: React.FC = (props: any) => {
-  // const drawerWidth = "17%";
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const history = useHistory();
   const userImage = useAppSelector(selectImage);
   const role = useAppSelector(selectRole);
+  const userNotificationsNo = useAppSelector(selectUnNotifiedNum);
 
   const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -202,6 +203,7 @@ const ResponsiveDrawer: React.FC = (props: any) => {
               src={IMAGES.notification}
               Icon={() => <NotificationIcon />}
               text="Notifications"
+              padge={userNotificationsNo}
             />
           </List>
         </List>

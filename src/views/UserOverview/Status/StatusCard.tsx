@@ -21,7 +21,7 @@ const UserStatus: FC<UserStatusProps> = ({ Icon, ...props }) => {
       md={3.6}
       lg={2.2}
       height={{ lg: "250px", md: "250px", sm: "250px", xs: "280px" }}
-      marginBottom={{ sm: 0, lg: 0, md: 0, xs: 1 }}
+      marginBottom={{ sm: 0, lg: 0, md: 0, xs: 3 }}
       item
     >
       <Card
