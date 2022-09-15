@@ -25,6 +25,7 @@ export interface IFilterProps {
   label?: string;
   textTruncate?: number;
   error?: string;
+  message?: string;
 }
 
 export interface IOptions {
@@ -34,7 +35,7 @@ export interface IOptions {
   elementType: string;
   options: { id: string; value: string; text: string }[];
   setShow: any;
-};
+}
 
 export interface ISearch {
   value: string;

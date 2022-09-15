@@ -301,6 +301,11 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                     label="Select"
                     formLabel="Assign to team"
                     name="teamId"
+                    message={
+                      state.selectedDepartment
+                        ? `${state.selectedDepartment?.name} department has no teams yet.`
+                        : "Please select a department firstly, to can see the teams inside"
+                    }
                     control={control}
                     onSelect={(e: any) => setValue("teamId", e.target.id)}
                     options={

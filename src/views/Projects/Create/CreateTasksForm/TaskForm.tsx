@@ -358,6 +358,11 @@ const TaskForm: React.FC = () => {
                   label="Teams list"
                   selected={watch().teamId}
                   elementType="select"
+                  message={
+                    selectedDepartment._id
+                      ? `${selectedDepartment?.name} department has no teams yet.`
+                      : "Please select a department firstly, to can see the teams inside"
+                  }
                   onSelect={(e: any) => setValue("teamId", e.target.id)}
                   options={
                     selectedDepartment?.teams

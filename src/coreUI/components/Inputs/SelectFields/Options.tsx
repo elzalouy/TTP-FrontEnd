@@ -11,8 +11,8 @@ const Options: React.FC<IOptions> = ({
   options,
   setShow,
 }) => {
-  
-  const optionsRef: React.MutableRefObject<HTMLUListElement | null> = React.useRef(null);
+  const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
+    React.useRef(null);
   useSelect(selectRef, optionsRef);
 
   return (
