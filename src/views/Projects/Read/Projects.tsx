@@ -93,21 +93,22 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
 
   return (
     <Grid
+      container
       overflow={"hidden"}
       justifyContent={"center"}
       alignItems={"center"}
-      container
+      alignContent="center"
       marginX={{ sm: 1, xs: 1, md: 4, lg: 4 }}
       marginTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
     >
       <Grid container xs={12} direction={"row"}>
-        <Grid item xs={12} sm={12} md={12} lg={12} my={4}>
+        <Grid item xs={3} sm={3} md={3} lg={12} my={4}>
           <Typography variant="h2" paddingTop={1.1} fontFamily={"Cairo"}>
             Projects
           </Typography>
         </Grid>
-        <Grid container xs={12} sm={12} md={12} lg={12} justifyContent="space-between">
-          <Grid item xs={1} sm={1} md={7} lg={7} margin={1} marginLeft={0}>
+        <Grid container xs={9} sm={9} md={9} lg={12} justifyContent="flex-end" alignItems={"center"} alignContent="center">
+          <Grid item xs={2} sm={2} md={2} lg={7} margin={1} marginLeft={0}>
             {!LG && (
               <>
                 <Box
@@ -115,11 +116,12 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                   textAlign={"center"}
                   sx={
                     !filter
-                      ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2 }
-                      : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2 }
+                      ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2, float: "right" }
+                      : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2, float: "right" }
                   }
                   width={38}
                   height={38}
+
                 >
                   <img
                     src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
@@ -130,12 +132,10 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
             )}
           </Grid>
           <Grid
-            data-test-id="filter-projects"
-            marginX={0.5}
             item
-            xs={10} sm={10} md={4} lg={4}
+            xs={8} sm={8} md={8} lg={8}
             alignItems="center"
-            justifyContent={{ xs: "", sm: "", md: "flex-end", lg: "flex-end" }}
+            justifyContent={{ xs: "", sm: "flex-end", md: "flex-end", lg: "flex-end" }}
             display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
           >
             <Controller
@@ -149,7 +149,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                     props.field.onChange(e);
                     onHandleChange(e);
                   }}
-                  size={"medium"}
+                  size={"custom"}
                 />
               )}
             />
@@ -274,8 +274,8 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
           item
           marginX={0.5}
           display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
-          md={2.1}
-          lg={2.1}
+          md={3}
+          lg={3}
         >
           <Controller
             name="name"
@@ -288,7 +288,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                   props.field.onChange(e);
                   onHandleChange(e);
                 }}
-                size={"medium"}
+                size={"custom"}
               />
             )}
           />

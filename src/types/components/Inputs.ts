@@ -40,7 +40,7 @@ export interface ISearch {
   value: string;
   onChange: (e: any) => void;
   placeholder?: string;
-  size: "medium" | "small";
+  size:"custom" | "medium" | "small";
 }
 
 export interface IButton {
