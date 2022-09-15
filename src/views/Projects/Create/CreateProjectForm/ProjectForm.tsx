@@ -29,7 +29,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   backTrigger,
   setBackTrigger,
 }) => {
-  const { register, watch, control, reset, setValue } = useForm({
+  const { register, watch, control, reset, setValue, formState: { isDirty } } = useForm({
     defaultValues: {
       name: "",
       projectManager: "",
@@ -53,10 +53,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       setValue("name", newProject.project.name);
       setValue(
         "projectManager",
-        setProjectManagerId(newProject.project.projectManager),
-        { shouldDirty: true }
+        setProjectManagerId(newProject.project.projectManager)
       );
-      setValue("clientId", newProject.project.clientId, { shouldDirty: true });
+      setValue("clientId", newProject.project.clientId);
       setValue("deadline", newProject.project.projectDeadline);
       setValue("startDate", newProject.project.startDate);
     }
@@ -130,11 +129,14 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     }
   };
 
+  console.log(isDirty);
+
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Back trigger decides which block to execute
     if (backTrigger) {
       //This block triggers edit and ensures the flags are reset
-      handleOnEdit();
+      if (isDirty) handleOnEdit();
+      //The handle edit is only triggered if the values are changed!
       setcurrentStep(1);
       setBackTrigger(false);
     } else if (!backTrigger) {
