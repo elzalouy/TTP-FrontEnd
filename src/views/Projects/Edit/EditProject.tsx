@@ -221,15 +221,16 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setTrigger={setTrigger}
       />
       <PopUp show={show} minWidthSize="50vw">
-        <div>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
-            onClick={closeIconOnClick}
-          />
+        <div style={{ position: "relative" }}>
+          <div className="closeIconContainer" onClick={closeIconOnClick}>
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+            />
+          </div>
         </div>
         <p className="popup-title">Edit project</p>
         {nameErr.error && (

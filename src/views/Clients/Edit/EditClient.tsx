@@ -110,15 +110,17 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     <>
       <PopUp show={show}>
         <Box>
-          <Box>
-            <img
-              className="closeIcon"
-              width="9"
-              height="9"
-              src={IMAGES.closeicon}
-              alt="closeIcon"
-              onClick={handleClose}
-            />
+          <Box position={"relative"}>
+            <div className="closeIconContainer"
+              onClick={handleClose}>
+              <img
+                className="closeIcon"
+                width="9"
+                height="9"
+                src={IMAGES.closeicon}
+                alt="closeIcon"
+              />
+            </div>
           </Box>
           <Typography className="new-client-title">Edit Client</Typography>
           <Box
@@ -142,8 +144,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? clientData?.image
-                  : ImageView
+                    ? clientData?.image
+                    : ImageView
               }
               style={{
                 width: "9em",

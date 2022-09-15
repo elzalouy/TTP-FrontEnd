@@ -124,17 +124,21 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         minWidthSize="30vw"
         maxWidthSize="300px"
       >
-        <div>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
+        <div style={{position:"relative"}}>
+          <div
+            className="closeIconContainer"
             onClick={onClose}
-          />
+          >
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+            />
+          </div>
+          <p className="popup-title">Edit department</p>
         </div>
-        <p className="popup-title">Edit department</p>
         <Grid item lg={12} sm={12} xs={12} md={12}>
           <ControlledInput
             name="name"

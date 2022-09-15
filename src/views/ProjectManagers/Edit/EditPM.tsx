@@ -65,20 +65,24 @@ const EditPM: React.FC = () => {
   return (
     <>
       <PopUp show={toggler} minWidthSize="30vw">
-        <div>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
+        <div style={{position:"relative"}}>
+          <div
             onClick={() => {
               dispatch(toggleEditProjectManagerPopup("none"));
               setUsername("");
               setError(false);
               setEmail("");
             }}
-          />
+            className="closeIconContainer">
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
+
+            />
+          </div>
         </div>
         <p className="popup-title">Edit project manager</p>
         {error && (

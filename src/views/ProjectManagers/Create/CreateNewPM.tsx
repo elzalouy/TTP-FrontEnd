@@ -57,23 +57,26 @@ const CreateNewPM: React.FC = () => {
         style={{ marginTop: "0px" }}
       />
       <PopUp show={show} minWidthSize="30vw">
-        <div>
-          <img
-            className="closeIcon"
-            width="9"
-            height="9"
-            src={IMAGES.closeicon}
-            alt="closeIcon"
+        <div style={{ position: "relative" }}>
+          <div
+            className="closeIconContainer"
             onClick={() => {
               setShow("none");
               setError(false);
               setUsername("");
               setEmail("");
               setEmailFormat(false);
-            }}
-          />
-        </div>
+            }}>
+            <img
+              className="closeIcon"
+              width="9"
+              height="9"
+              src={IMAGES.closeicon}
+              alt="closeIcon"
 
+            />
+          </div>
+        </div>
         <div>
           <p className="popup-title">Add new Project Manager</p>
           {error && (
