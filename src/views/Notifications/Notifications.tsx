@@ -14,7 +14,7 @@ import {
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
-import NotificationItemSkeleton from "./NotificationSkeletonItem/NotificationSkeleton";
+import NotificationItemSkeleton from "./Loading/NotificationSkeleton";
 
 export const Notifications = () => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ export const Notifications = () => {
 
   const handleLoadMore = async () => {
     dispatch(getNotifications(`/${++pagination.current}/${pagination.limit}`));
-    dispatch(toggleLoadingOff(null))
+    dispatch(toggleLoadingOff(null));
   };
 
   return (
@@ -50,21 +50,22 @@ export const Notifications = () => {
       <Grid item xs={12} mb={0}>
         <NotificationHeader />
       </Grid>
-      {loading ?
+      {loading ? (
         <Grid item xs={12} marginBottom={1}>
-          {[...Array(4)].map((item, key) => <NotificationItemSkeleton key={key} />)}
+          {[...Array(4)].map((item, key) => (
+            <NotificationItemSkeleton key={key} />
+          ))}
         </Grid>
-        :
+      ) : (
         <>
-          {notifications?.length > 0 ?
-            (<Grid item xs={12} marginBottom={1}>
+          {notifications?.length > 0 ? (
+            <Grid item xs={12} marginBottom={1}>
               <NotificationItem notifiData={notifications} />
-            </Grid>)
-            :
-            null
-          }
-        </>}
-      {(pagination.pages !== pagination.current) && (
+            </Grid>
+          ) : null}
+        </>
+      )}
+      {pagination.pages !== pagination.current && (
         <Grid
           container
           xs={12}
@@ -73,13 +74,15 @@ export const Notifications = () => {
           textAlign="center"
           marginBottom={4}
         >
-          {(notifications?.length !== 0 && !loading) && <Button
-            type="main"
-            size="small"
-            label="load more"
-            onClick={handleLoadMore}
-            loading={buttonLoading}
-          />}
+          {notifications?.length !== 0 && !loading && (
+            <Button
+              type="main"
+              size="small"
+              label="load more"
+              onClick={handleLoadMore}
+              loading={buttonLoading}
+            />
+          )}
         </Grid>
       )}
     </Grid>
