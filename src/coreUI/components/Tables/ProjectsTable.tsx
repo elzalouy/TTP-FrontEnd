@@ -20,22 +20,9 @@ import { selectRole } from "../../../models/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
 import "../../../App.css";
 import { Project } from "../../../types/models/Projects";
+import { IProjectsTableProps } from "src/types/components/Table";
 
-interface ProjectsTableProps {
-  progress?: boolean;
-  status: string;
-  expanded: boolean;
-  condition?: number | boolean;
-  projects?: Project[] | any;
-  projectManagers: ProjectManager[];
-  textSize: string;
-  align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-
-const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
+const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const role = useAppSelector(selectRole);
   const theme = useTheme();

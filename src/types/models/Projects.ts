@@ -35,6 +35,13 @@ export interface Task {
   createdAt?: string;
   trelloShortUrl?: string;
 }
+
+export interface IProjectsPage {
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
+}
+
 export interface Project {
   _id: string;
   name: string;

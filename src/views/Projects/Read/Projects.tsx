@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 import { filterOptions } from "src/helpers/generalUtils";
+import { IProjectsPage } from "src/types/models/Projects";
 import IMAGES from "../../../assets/img/Images";
 import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
@@ -25,13 +26,7 @@ import {
 } from "../../../models/Projects";
 import CreateNewProject from "./NotStartedProjects";
 
-interface ProjectsProps {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-
-export const Projects: React.FC<ProjectsProps> = (props) => {
+export const Projects: React.FC<IProjectsPage> = (props) => {
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
@@ -53,6 +48,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   useEffect(() => {
     dispatch(getAllProjects(null));
   }, []);
+
   useEffect(() => {
     if (MD) {
       setFilter(false);

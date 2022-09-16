@@ -19,14 +19,10 @@ import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import { useDispatch } from "react-redux";
 import { toggleViewTaskPopup } from "../../../models/Ui";
 import { Project, Task } from "../../../types/models/Projects";
-interface TasksTableProps {
-  tasks: Task[];
-  projects: Project[];
-  selects: any[];
-  setAllSelected: (value: any) => any;
-}
+import { ITasksTableProps } from "src/types/components/Table";
 
-const TasksTable: React.FC<TasksTableProps> = ({
+
+const TasksTable: React.FC<ITasksTableProps> = ({
   tasks,
   projects,
   selects,
