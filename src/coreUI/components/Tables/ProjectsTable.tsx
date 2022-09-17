@@ -20,6 +20,7 @@ import { selectRole } from "../../../models/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
 import "../../../App.css";
 import { Project } from "../../../types/models/Projects";
+import { selectTasks } from "src/models/Projects";
 
 interface ProjectsTableProps {
   progress?: boolean;
@@ -40,7 +41,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
   const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const allTasks = useAppSelector(selectTasks);
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -109,8 +110,12 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
         {props.expanded === true &&
           props.projects &&
           props?.projects?.map((project: Project) => {
-            let NoOfTasks = project.NoOfTasks;
-            let NoOfFinished = project.NoOfFinishedTasks;
+            let NoOfTasks = allTasks.filter(
+              (item) => item.projectId === project._id
+            ).length;
+            let NoOfFinished = allTasks.filter(
+              (item) => item.projectId === project._id && item.status === "Done"
+            ).length;
 
             return (
               <TableRow className={classes.tbody} key={project._id}>
@@ -190,7 +195,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
                       color="#00ACBA"
                       fontSize={14}
                     >
-                      {Math.round(NoOfFinished / NoOfTasks) * 100 || 0}%
+                      {(NoOfFinished / NoOfTasks) * 100}%
                     </Typography>
                   ) : (
                     <Box sx={{ display: "inline-flex" }}>

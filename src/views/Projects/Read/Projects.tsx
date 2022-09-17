@@ -18,7 +18,6 @@ import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions, selectPMs } from "../../../models/PM";
 import {
   filterProjects,
-  getAllProjects,
   ProjectsActions,
   selectDoneProjects,
   selectInprogressProjects,
@@ -38,22 +37,17 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
   const PMs = useAppSelector(selectPMs);
-  // const clients = useAppSelector(clientsDataSelector);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
-  // const role = useAppSelector(selectRole);
   const { watch, control, setValue, getValues } = useForm();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
 
-  useEffect(() => {
-    dispatch(getAllProjects(null));
-  }, []);
   useEffect(() => {
     if (MD) {
       setFilter(false);
@@ -124,21 +118,12 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
                 <Box
                   onClick={() => setFilter(!filter)}
                   textAlign={"center"}
-                  sx={
-                    !filter
-                      ? {
-                          bgcolor: "black",
-                          borderRadius: 3,
-                          paddingTop: 1.2,
-                          float: "right",
-                        }
-                      : {
-                          bgcolor: "white",
-                          borderRadius: 3,
-                          paddingTop: 1.2,
-                          float: "right",
-                        }
-                  }
+                  sx={{
+                    bgcolor: !filter ? "black" : "right",
+                    borderRadius: 3,
+                    paddingTop: 1.2,
+                    float: "right",
+                  }}
                   width={38}
                   height={38}
                 >
@@ -329,48 +314,48 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
         }}
       >
         <CreateNewProject {...props} />
-        {/* {loading === false ? ( */}
-        <>
-          <TableBox
-            title={"In Progress"}
-            outTitled={false}
-            expanded={expanded}
-            setExpanded={setExpanded}
-            bgColor={backgroundColor[0]}
-          >
-            <Box id="project-title">
-              <ProjectsTable
-                align="center"
-                textSize="medium"
-                status={"In progress"}
-                expanded={expanded}
-                projects={inProgressProjects}
-                projectManagers={PMs}
-                {...props}
-              />
-            </Box>
-          </TableBox>
-          <TableBox
-            title={"Done"}
-            outTitled={false}
-            expanded={doneExpanded}
-            setExpanded={setDoneExpanded}
-            bgColor={backgroundColor[1]}
-          >
-            <Box id="project-title">
-              <ProjectsTable
-                align="center"
-                textSize="medium"
-                status={"Done"}
-                expanded={doneExpanded}
-                projects={doneProjects}
-                projectManagers={PMs}
-                {...props}
-              />
-            </Box>
-          </TableBox>
-        </>
-        {/* ) : (
+        {loading === false ? (
+          <>
+            <TableBox
+              title={"In Progress"}
+              outTitled={false}
+              expanded={expanded}
+              setExpanded={setExpanded}
+              bgColor={backgroundColor[0]}
+            >
+              <Box id="project-title">
+                <ProjectsTable
+                  align="center"
+                  textSize="medium"
+                  status={"In progress"}
+                  expanded={expanded}
+                  projects={inProgressProjects}
+                  projectManagers={PMs}
+                  {...props}
+                />
+              </Box>
+            </TableBox>
+            <TableBox
+              title={"Done"}
+              outTitled={false}
+              expanded={doneExpanded}
+              setExpanded={setDoneExpanded}
+              bgColor={backgroundColor[1]}
+            >
+              <Box id="project-title">
+                <ProjectsTable
+                  align="center"
+                  textSize="medium"
+                  status={"Done"}
+                  expanded={doneExpanded}
+                  projects={doneProjects}
+                  projectManagers={PMs}
+                  {...props}
+                />
+              </Box>
+            </TableBox>
+          </>
+        ) : (
           <Box
             sx={{
               display: "flex",
@@ -387,7 +372,7 @@ export const Projects: React.FC<ProjectsProps> = (props) => {
           >
             <Loading color="grey" type="spinningBubbles" /> Loading More
           </Box>
-        )} */}
+        )}
       </Box>
     </Grid>
   );
