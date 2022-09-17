@@ -28,12 +28,14 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onChangeNewProject: (state = projectsState, action: PayloadAction<any>) => {
       state.newProject = action.payload;
     },
+    
     onChangeNewProjectP: (
       state = projectsState,
       action: PayloadAction<any>
     ) => {
       state.newProject.project = action.payload;
     },
+
     onChangeNewProjectTask: (
       state = projectsState,
       action: PayloadAction<any>
@@ -41,18 +43,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.newProject.newTask = action.payload;
       state.newProject.tasks.push(action.payload);
     },
-    onUpdateNewProject: (
-      state = projectsState,
-      action: PayloadAction<any>
-    ) => {
+
+    onUpdateNewProject: (state = projectsState, action: PayloadAction<any>) => {
       state.newProject.project = action.payload;
     },
+
     onChangeSelectedDepartment: (
       state = projectsState,
       action: PayloadAction<any>
     ) => {
       state.newProject.selectedDepartment = action.payload;
     },
+
     onDeleteNewProjectTask: (
       state = projectsState,
       action: PayloadAction<any>
@@ -65,23 +67,27 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       );
       state.newProject.tasks = tasks;
     },
+
     onSetDeleteProjectId: (
       state = projectsState,
       action: PayloadAction<any>
     ) => {
       state.deleteProject = action.payload;
     },
+
     onSetEditProjectId: (state = projectsState, action: PayloadAction<any>) => {
       state.editProject = state.projects.find(
         (item) => item._id === action.payload
       );
     },
+
     onSortProjects: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
       let projects = [...state.projects];
       _.sortBy(projects, ["projectDeadline"], [action.payload]);
       state.projects = projects;
     },
+
     onSortTasks: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
       let tasks = [...state.filteredTasks];
@@ -99,6 +105,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.allTasks = tasks;
       state.filteredTasks = tasks; //The sorted data must be change
     },
+
     onSortProjectTasks: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
       let tasks = [...state.selectedProject.tasks];
@@ -112,6 +119,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         );
       state.selectedProject.tasks = tasks;
     },
+
     onSetSelectedProject: (
       state = projectsState,
       action: PayloadAction<any>
@@ -124,6 +132,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.selectedProject.tasks = tasks;
       state.selectedProject.loading = false;
     },
+
     onEditTask: (state = projectsState, action: PayloadAction<any>) => {
       state.editTask = action.payload;
     },
@@ -131,6 +140,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onDeleteTask: (state = projectsState, action: PayloadAction<any>) => {
       state.deleteTask = action.payload;
     },
+
     fireNewProjectHook: (state = projectsState) => {
       state.newProject.newProjectHook =
         state.newProject.newProjectHook === true ? false : true;
@@ -407,7 +417,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.pending, (state) => {
       state.editTaskLoading = true;
     });
-    builder.addCase(moveTask.rejected, (state, action) => { });
+    builder.addCase(moveTask.rejected, (state, action) => {});
     builder.addCase(moveTask.fulfilled, (state, action) => {
       let index = state.selectedProject.tasks.findIndex(
         (item) => item._id === action.payload._id
