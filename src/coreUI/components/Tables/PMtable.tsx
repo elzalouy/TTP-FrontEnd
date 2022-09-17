@@ -29,12 +29,10 @@ import moment from "moment";
 import { useAppSelector } from "../../../models/hooks";
 import { selectAllProjects } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { IProjectManagersProps } from "src/types/components/Table";
 
-interface ProjectManagersProps {
-  cellsData: ProjectManager[];
-}
 
-const ProjectManagersTable: FC<ProjectManagersProps> = ({ cellsData }) => {
+const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
   const project = useAppSelector(selectAllProjects);
   const dispatch = useDispatch();
   const theme = useTheme();

@@ -8,9 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import { ProjectManager } from "../../../models/PM";
 import { projectsTableStyle } from "../../../coreUI/themes/Styles";
-import { RouteComponentProps } from "react-router";
 import ProjectPopover from "../../../views/Projects/Read/ProjectPopover";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -21,22 +19,9 @@ import { getStatus } from "../../../helpers/generalUtils";
 import "../../../App.css";
 import { Project } from "../../../types/models/Projects";
 import { selectTasks } from "src/models/Projects";
+import { IProjectsTableProps } from "src/types/components/Table";
 
-interface ProjectsTableProps {
-  progress?: boolean;
-  status: string;
-  expanded: boolean;
-  condition?: number | boolean;
-  projects?: Project[] | any;
-  projectManagers: ProjectManager[];
-  textSize: string;
-  align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-
-const ProjectsTable: React.FC<ProjectsTableProps> = (props) => {
+const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const role = useAppSelector(selectRole);
   const theme = useTheme();
