@@ -8,6 +8,7 @@ import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
 import { IDateInputProps } from "src/types/components/Inputs";
 import IMAGES from "../../../assets/img/Images";
 import { validateDate } from "../../../services/validations/project.schema";
+
 const DateInput: React.FC<IDateInputProps> = ({
   control,
   register,
@@ -18,6 +19,7 @@ const DateInput: React.FC<IDateInputProps> = ({
   label,
   tempError,
   setUpdateDate,
+  dataTestId
 }) => {
 
   let error = state
@@ -64,6 +66,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                       {...params}
                       placeholder={placeholder}
                       error={error}
+                      data-test-id={dataTestId}
                       onChange={params.onChange}
                       value={params.value}
                       sx={dataTimePickerInputStyle}

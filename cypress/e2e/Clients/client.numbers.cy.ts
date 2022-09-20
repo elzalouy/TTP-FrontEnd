@@ -6,8 +6,8 @@ beforeEach(() => {
 describe("Check Inital numbers in client", () => {
     it('It should create a new client', () => {
         cy.get('[data-test-id="create-client-button"]').click().wait(1000);
-        cy.get('[data-test-id="client-name"]').type('Automated Client');
-        cy.get('[data-test-id="client-submit-button"]').click();
+        cy.get('[data-test-id="create-client-name"]').wait(500).type('Automated Client');
+        cy.get('[data-test-id="create-client-submit-button"]').click();
         cy.get('[data-test-id="client-name-header"]').within(() => {
             return cy.contains('Automated Client').should('be.visible');
         })
@@ -24,12 +24,12 @@ describe("Check Inital numbers in client", () => {
     it('It should create a new project with the same client', () => {
         cy.visit('/projects');
         cy.get('[data-test-id="create-project"]').click();
-        cy.get('input[id$=project-name]').type('Automated Project');
-        cy.get('div[id=client-new-project]').click().get('.Option').contains('Automated Client').click();
-        cy.get('div[id=pm-new-project]').click().get('.Option').first().click();
-        cy.get('input[name="startDate"]').click();
+        cy.get('[data-test-id="create-project-name"]').type('Automated Project');
+        cy.get('[data-test-id="create-project-client-select"]').click().wait(1000).get('[data-test-id="create-project-client-select-option"]').contains('Automated Client').click({ force: true });
+        cy.get('[data-test-id="create-project-pm-select"]').click().wait(1000).get('[data-test-id="create-project-pm-select-option"]').first().click({ force: true });
+        cy.get('[data-test-id="start-date"]').click();
         cy.get('[role="cell"]').contains('1').click();
-        cy.get('input[name="deadline"]').click();
+        cy.get('[data-test-id="deadline"]').click();
         cy.get('[role="cell"]').contains('20').click();
         cy.get('button').contains('Next').click();
         cy.get('.closeIconProject').click().wait(2000);
@@ -57,13 +57,13 @@ describe("Check change in numbers of client", () => {
         cy.get('[data-test-id="client-delete-button"]').click();
         cy.get('[data-test-id="delete-client-button-confirm"]').click();
         cy.get('[data-test-id="client-card"]').within(() => {
-            return cy.contains('div[data-test-id="client-card"]', 'Automated Client').should('not.have.text','Automated Client');
+            return cy.contains('div[data-test-id="client-card"]', 'Automated Client').should('not.have.text', 'Automated Client');
         })
     })
 
     it('It should delete the project', () => {
         cy.visit('/projects');
-        cy.wait(500).get('tr').contains('tr', 'Automated Project').within(() => {
+        cy.wait(2000).get('tr').contains('tr', 'Automated Project').within(() => {
             return cy.get('.project-actions > h3').click()
         });
         cy.get('button[id=delete-project-button]').click()

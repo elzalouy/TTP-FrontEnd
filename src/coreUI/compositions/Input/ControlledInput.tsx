@@ -12,7 +12,8 @@ const ControlledInput: FC<IControlledInput> = ({
   required,
   elementType,
   error,
-  onChange
+  onChange,
+  dataTestId
 }) => {
   return (
     <Controller
@@ -26,6 +27,7 @@ const ControlledInput: FC<IControlledInput> = ({
           label={label}
           type={type}
           value={props.field.value}
+          dataTestId={dataTestId}
           onChange={(e:any)=>{
             props.field.onChange(e);
             onChange(e);

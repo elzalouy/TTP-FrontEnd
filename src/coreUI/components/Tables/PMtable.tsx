@@ -160,6 +160,7 @@ const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
           </TableHead>
           <TableBody>
             {cellsData.map((cellData) => {
+              
               const { _id, name, email, password } = cellData;
               let inProgress = project?.projects?.filter(
                 (item) =>

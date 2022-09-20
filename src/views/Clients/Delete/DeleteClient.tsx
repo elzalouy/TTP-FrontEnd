@@ -48,6 +48,7 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
               type="delete"
               size="large"
               label="delete"
+              dataTestId="delete-client-button-confirm"
               onClick={() => {
                 handleDelete();
               }}

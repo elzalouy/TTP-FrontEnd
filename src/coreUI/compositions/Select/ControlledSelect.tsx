@@ -16,6 +16,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
   setValue,
   selected,
   message,
+  dataTestId,
 }) => {
   return (
     <>
@@ -39,6 +40,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
             options={options}
             textTruncate={textTruncate}
             message={message}
+            dataTestId={dataTestId}
           />
         )}
       />

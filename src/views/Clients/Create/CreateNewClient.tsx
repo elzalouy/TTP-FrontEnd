@@ -160,7 +160,7 @@ const CreateNewClient: React.FC = () => {
               label="Client Name"
               placeholder="Ex : Ahmed Ali"
               inputName="clientName"
-              dataTestId="client-name"
+              dataTestId="create-client-name"
               value={clientData.clientName}
               type="text"
               onChange={(e: any) => {
@@ -177,7 +177,7 @@ const CreateNewClient: React.FC = () => {
                 size="large"
                 label="done"
                 loading={loadingClient}
-                dataTestId="client-submit-button"
+                dataTestId="create-client-submit-button"
                 form={{
                   name: "client", type: "submit"
                 }}

@@ -158,7 +158,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
             label="Client Name"
             placeholder="Ex : Ahmed Ali"
             inputName="clientName"
-            dataTestId="client-name"
+            dataTestId="edit-client-name"
             value={clientData.clientName}
             type="text"
             onChange={(e: any) => {
@@ -176,7 +176,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
               label="done"
               onClick={handleSubmit}
               loading={loadingClient}
-              dataTestId="client-submit-button"
+              dataTestId="edit-client-submit-button"
             />
           </Box>
         </Box>

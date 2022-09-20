@@ -162,6 +162,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             name="name"
             label="Project title"
             placeholder={"Project name"}
+            dataTestId="create-project-name"
             type="text"
             control={control}
             error={
@@ -185,6 +186,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             label="Select"
             formLabel="client"
             elementType="select"
+            dataTestId="create-project-client-select"
             onSelect={(e: any) => {
               setError({
                 error: undefined,
@@ -208,6 +210,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             control={control}
             placeholder="Start date"
             register={register}
+            dataTestId="start-date"
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
               "startDate"
@@ -219,6 +222,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             label={"Deadline"}
             name="deadline"
             control={control}
+            dataTestId="deadline"
             placeholder="Deadline"
             register={register}
             setValue={setValue}
@@ -233,6 +237,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             control={control}
             label="Select"
             formLabel="Project manager"
+            dataTestId="create-project-pm-select"
             elementType="select"
             onSelect={(e: any) => {
               setError({

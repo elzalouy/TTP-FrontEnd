@@ -5,10 +5,11 @@ beforeEach(() => {
 
 describe("Create Task", () => {
   it('It should create a project and open it', () => {
+    cy.visit('/projects');
     cy.get('[data-test-id="create-project"]').click();
-    cy.get('input[id$=project-name]').type('Automated Project');
-    cy.get('div[id=client-new-project]').click().get('.Option').first().click();
-    cy.get('div[id=pm-new-project]').click().get('.Option').first().click();
+    cy.get('[data-test-id="create-project-name"]').type('Automated Project');
+    cy.get('[data-test-id="create-project-client-select"]').click().wait(1000).get('[data-test-id="create-project-client-select-option"]').contains('Automated Client').click({ force: true });
+    cy.get('[data-test-id="create-project-pm-select"]').click().wait(1000).get('[data-test-id="create-project-pm-select-option"]').first().click({ force: true });
     cy.get('button').contains('Next').click();
     cy.get('.closeIconProject').click().wait(2000);
     cy.get('tr').contains('Automated Project').click();

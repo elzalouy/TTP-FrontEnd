@@ -26,6 +26,7 @@ export interface IFilterProps {
   textTruncate?: number;
   error?: string;
   message?: string;
+  dataTestId?: string;
 }
 
 export interface IOptions {
@@ -35,13 +36,14 @@ export interface IOptions {
   elementType: string;
   options: { id: string; value: string; text: string }[];
   setShow: any;
+  dataTestId?:string;
 }
 
 export interface ISearch {
   value: string;
   onChange: (e: any) => void;
   placeholder?: string;
-  size:"custom" | "medium" | "small";
+  size: "custom" | "medium" | "small";
 }
 
 export interface IButton {
@@ -69,6 +71,7 @@ export interface IDateInputProps {
   state?: any;
   tempError?: boolean;
   setUpdateDate?: React.Dispatch<React.SetStateAction<boolean>>;
+  dataTestId?:string
 }
 
 export interface IPasswordInputProps {

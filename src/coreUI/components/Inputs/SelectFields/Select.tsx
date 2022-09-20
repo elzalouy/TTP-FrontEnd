@@ -68,6 +68,7 @@ const Select = (props: IFilterProps) => {
           onClick={setShow}
           id={props.label}
           className="labelValue unselectable"
+          data-test-id={props.dataTestId}
         >
           {props.elementType === "filter" && (
             <p className="label">{props.label}</p>
@@ -108,6 +109,7 @@ const Select = (props: IFilterProps) => {
           onSelect={props.onSelect}
           elementType={props.elementType}
           options={state.options}
+          dataTestId={props.dataTestId}
         />
       </fieldset>
     </>
