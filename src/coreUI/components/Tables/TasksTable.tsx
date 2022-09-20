@@ -21,7 +21,6 @@ import { toggleViewTaskPopup } from "../../../models/Ui";
 import { Project, Task } from "../../../types/models/Projects";
 import { ITasksTableProps } from "src/types/components/Table";
 
-
 const TasksTable: React.FC<ITasksTableProps> = ({
   tasks,
   projects,
@@ -46,7 +45,9 @@ const TasksTable: React.FC<ITasksTableProps> = ({
       setAllSelected(selected);
     }
   };
-
+  const openProject = (projectId: string | undefined) => {
+    if (projectId !== undefined) history.push(`/TasksBoard/${projectId}`);
+  };
   return (
     <TableContainer
       sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
@@ -134,27 +135,18 @@ const TasksTable: React.FC<ITasksTableProps> = ({
           {tasks &&
             tasks?.map((item, index) => {
               const { _id, status, name, projectId, start, deadline } = item;
-
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
                   <TableCell
-                    style={
-                      checkIndexForLastRow(index, tasks)
-                        ? {
-                          color: "#334D6E",
-                          width: "20px",
-                          margin: "0px",
-                          padding: "12px 8px 12px 8px",
-                          textTransform: "capitalize",
-                        }
-                        : {
-                          color: "#334D6E",
-                          width: "20px",
-                          margin: "0px",
-                          padding: "0px 8px 0px 8px",
-                          textTransform: "capitalize",
-                        }
-                    }
+                    style={{
+                      color: "#334D6E",
+                      width: "20px",
+                      margin: "0px",
+                      padding: checkIndexForLastRow(index, tasks)
+                        ? "12px 8px 12px 8px"
+                        : "0px 8px 0px 8px",
+                      textTransform: "capitalize",
+                    }}
                   >
                     <Checkbox
                       checked={
@@ -168,43 +160,34 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     />
                   </TableCell>
                   <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
+                    onClick={() => openProject(projectId)}
                     align="left"
-                    style={
-                      checkIndexForLastRow(index, tasks)
-                        ? {
-                          color: "#334D6E",
-                          margin: "0px",
-                          padding: "12px 8px 12px 0px",
-                          textTransform: "capitalize",
-                          width: "130px",
-                          cursor: "pointer",
-                        }
-                        : {
-                          color: "#334D6E",
-                          margin: "0px",
-                          padding: "0px 8px 0px 0px",
-                          textTransform: "capitalize",
-                          width: "130px",
-                          cursor: "pointer",
-                        }
-                    }
+                    style={{
+                      color: "#334D6E",
+                      margin: "0px",
+                      padding: checkIndexForLastRow(index, tasks)
+                        ? "12px 8px 12px 0px"
+                        : "0px 8px 0px 0px",
+                      textTransform: "capitalize",
+                      width: "130px",
+                      cursor: projectId !== undefined ? "pointer" : undefined,
+                    }}
                   >
                     <div
                       className={
                         status === "inProgress"
                           ? "inProgressStatus"
                           : status === "Review"
-                            ? "reviewStatus"
-                            : status === "Not Clear"
-                              ? "notClearStatus"
-                              : status === "Tasks Board"
-                                ? "notStartedStatus"
-                                : status === "Done"
-                                  ? "doneStatus"
-                                  : status === "Shared"
-                                    ? "sharedStatus"
-                                    : "endedStatus"
+                          ? "reviewStatus"
+                          : status === "Not Clear"
+                          ? "notClearStatus"
+                          : status === "Tasks Board"
+                          ? "notStartedStatus"
+                          : status === "Done"
+                          ? "doneStatus"
+                          : status === "Shared"
+                          ? "sharedStatus"
+                          : "endedStatus"
                       }
                       style={{ cursor: "pointer" }}
                     >
@@ -212,90 +195,72 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     </div>
                   </TableCell>
                   <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
+                    onClick={() => openProject(projectId)}
                     align="left"
-                    style={
-                      checkIndexForLastRow(index, tasks)
-                        ? {
-                          cursor: "pointer",
-                          color: "#323C47",
-                          width: "300px",
-                          margin: "0px",
-                          padding: "12px 0px 12px 50px",
-                          textTransform: "capitalize",
-                          fontWeight: "500",
-                        }
-                        : {
-                          cursor: "pointer",
-                          color: "#323C47",
-                          width: "300px",
-                          margin: "0px",
-                          padding: "0px 0px 0px 50px",
-                          textTransform: "capitalize",
-                          fontWeight: "500",
-                        }
-                    }
+                    style={{
+                      cursor: "pointer",
+                      color: "#323C47",
+                      width: "300px",
+                      margin: "0px",
+                      padding:
+                        tasks.length - 1 === index
+                          ? "12px 0px 12px 50px"
+                          : "0px 0px 0px 50px",
+                      textTransform: "capitalize",
+                      fontWeight: "500",
+                    }}
                   >
                     {name}
                   </TableCell>
                   <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
-                    style={
-                      checkIndexForLastRow(index, tasks)
-                        ? {
-                          color: "#707683",
-                          width: "300px",
-                          margin: "0px",
-                          padding: "12px 0px 12px 8px",
-                          textTransform: "capitalize",
-                          cursor: "pointer",
-                        }
-                        : {
-                          color: "#707683",
-                          width: "300px",
-                          margin: "0px",
-                          padding: "0px 0px 0px 8px",
-                          cursor: "pointer",
-                          textTransform: "capitalize",
-                        }
-                    }
+                    onClick={() => openProject(projectId)}
+                    style={{
+                      color: "#707683",
+                      width: "300px",
+                      margin: "0px",
+                      padding:
+                        tasks.length - 1 === index
+                          ? "12px 0px 12px 8px"
+                          : "0px 0px 0px 8px",
+                      textTransform: "capitalize",
+                      cursor: "pointer",
+                    }}
                     align="left"
                   >
-                    {
+                    {projectId !== undefined ? (
                       projects.find((project) => project._id === projectId)
                         ?.name
-                    }
+                    ) : (
+                      <div
+                        className="endedStatus"
+                        style={{ width: "fit-content" }}
+                      >
+                        Un Assigned
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
+                    onClick={() => openProject(projectId)}
                     align="left"
-                    style={{ color: "#707683" ,  cursor: "pointer",}}
+                    style={{ color: "#707683", cursor: "pointer" }}
                   >
                     {start !== null
                       ? moment(start).format("MMMM Do, YYYY")
                       : "-"}
                   </TableCell>
                   <TableCell
-                    onClick={() => history.push(`/TasksBoard/${projectId}`)}
-                    style={
-                      checkIndexForLastRow(index, tasks)
-                        ? {
-                          color: "#707683",
-                          width: "160px",
-                          margin: "0px",
-                          padding: "12px 15px 12px 8px",
-                          cursor: "pointer",
-                          textTransform: "capitalize",
-                        }
-                        : {
-                          color: "#707683",
-                          width: "160px",
-                          margin: "0px",
-                          padding: "0px 15px 0px 8px",
-                          textTransform: "capitalize",
-                          cursor: "pointer",
-                        }
-                    }
+                    onClick={() => openProject(projectId)}
+                    style={{
+                      color: "#707683",
+                      width: "160px",
+                      margin: "0px",
+                      padding:
+                        tasks.length - 1 === index
+                          ? "12px 15px 12px 8px"
+                          : "0px 15px 0px 8px",
+                      cursor: "pointer",
+                      textTransform: "capitalize",
+                    }}
                     align="left"
                   >
                     {deadline === null || deadline === ""

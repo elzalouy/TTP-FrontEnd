@@ -7,7 +7,9 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import Button from "src/coreUI/components/Buttons/Button";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import { toggleEditTasksPopup } from "src/models/Ui";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Loading from "../../../coreUI/components/Loading/Loading";
@@ -23,6 +25,7 @@ import {
 } from "../../../models/Projects";
 import { ProjectsInterface } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
+import EditTasks from "../Edit/EditTasks";
 import "./TasksListView.css";
 interface Props {
   projectId?: string;
@@ -35,6 +38,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const projectOptions = useAppSelector(selectProjectOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
+  const [showEditTasks, setShowEditTasks] = React.useState("none");
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const XS = useMediaQuery(theme.breakpoints.down("xs"));
@@ -67,6 +71,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     setValue(name, e.target.id);
     dispatch(ProjectsActions.onSortTasks(e.target.id));
   };
+
   const onDeleteTasks = async () => {
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
@@ -125,17 +130,23 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Typography>
       </Grid>
       <Grid container xs={10} sm={10} md={10} lg={12} justifyContent="flex-end">
-        <Grid display="flex" justifyContent={"flex-end"} alignItems="center" mr={1}>
+        <Grid
+          display="flex"
+          justifyContent={"flex-end"}
+          alignItems="center"
+          mr={1}
+        >
           {MD && (
             <>
               <Box
                 onClick={() => setFilter(!filter)}
                 textAlign={"center"}
-                sx={
-                  !filter
-                    ? { bgcolor: "black", borderRadius: 3, paddingTop: 1.2, float: "right" }
-                    : { bgcolor: "white", borderRadius: 3, paddingTop: 1.2, float: "right" }
-                }
+                sx={{
+                  bgcolor: !filter ? "black" : "white",
+                  borderRadius: 3,
+                  paddingTop: 1.2,
+                  float: "right",
+                }}
                 width={38}
                 height={38}
               >
@@ -151,9 +162,17 @@ export const TasksListView: React.FC<Props> = (props) => {
           data-test-id="filter-projects"
           marginX={0.5}
           item
-          xs={8} sm={5} md={8} lg={8}
+          xs={8}
+          sm={5}
+          md={8}
+          lg={8}
           alignItems="center"
-          justifyContent={{ xs: "", sm: "flex-end", md: "flex-end", lg: "flex-end" }}
+          justifyContent={{
+            xs: "",
+            sm: "flex-end",
+            md: "flex-end",
+            lg: "flex-end",
+          }}
           display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
         >
           <Controller
@@ -209,15 +228,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   options={options[0]}
                 />
               </Grid>
-              <Grid
-                marginX={0.5}
-                item
-                xs={6}
-                sm={3}
-                md={3}
-                lg={3}
-                marginY={1}
-              >
+              <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={3} marginY={1}>
                 <Box className="tasks-option">
                   <ControlledSelect
                     name="status"
@@ -230,15 +241,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid
-                marginX={0.5}
-                item
-                xs={4}
-                sm={3}
-                md={3}
-                lg={3}
-                marginY={1}
-              >
+              <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={3} marginY={1}>
                 <Box className="tasks-option">
                   <ControlledSelect
                     name="projectId"
@@ -253,20 +256,29 @@ export const TasksListView: React.FC<Props> = (props) => {
                   />
                 </Box>
               </Grid>
-              <Grid
-                marginX={0.5}
-                my={{ sm: 1, xs: 1, md: 1, lg: 1 }}
-                item
-                xs={2}
-                sm={2}
-                md={2}
-                lg={2}
-              >
+              <Grid marginX={0.5} my={1} item xs={2} sm={2} md={0.5} lg={0.5}>
                 <DeleteTask
                   task={selects}
                   Show={Show}
                   setShow={setShow}
                   onDelete={onDeleteTasks}
+                />
+              </Grid>
+              <Grid marginX={0.5} my={1} item xs={1} sm={1} md={1} lg={1}>
+                <Button
+                  onClick={() => setShowEditTasks("flex")}
+                  type="main"
+                  size="x-small"
+                  label="Edit Tasks"
+                  style={{
+                    marginTop: "0px",
+                    display: selects.length > 0 ? "block" : "none",
+                  }}
+                />
+                <EditTasks
+                  show={showEditTasks}
+                  setShow={setShowEditTasks}
+                  selects={selects}
                 />
               </Grid>
             </Grid>
@@ -327,9 +339,8 @@ export const TasksListView: React.FC<Props> = (props) => {
             />
           </Paper>
         </>
-      )
-      }
-    </Grid >
+      )}
+    </Grid>
   );
 };
 

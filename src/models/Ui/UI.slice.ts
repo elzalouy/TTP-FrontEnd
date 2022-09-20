@@ -77,6 +77,9 @@ const UISlice: Slice<UiInterface> = createSlice({
     toggleDeleteDepartment: (state = UiState, action: PayloadAction<any>) => {
       state.deleteDepartmentPopup = action.payload;
     },
+    toggleEditTasksPopup: (state: UiInterface, action: PayloadAction<any>) => {
+      state.editTasksPopup = action.payload;
+    },
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
       state.newProjectHook = !state.newProjectHook;
@@ -167,5 +170,6 @@ export const {
   toggleDeleteDepartment,
   toggleTask,
   initAppUiState,
+  toggleEditTasksPopup,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

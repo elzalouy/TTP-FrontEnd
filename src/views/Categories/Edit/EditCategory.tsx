@@ -119,12 +119,17 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         maxWidthSize={MD ? "400px" : "320px"}
       >
         <Grid>
-          <Grid justifyContent={"space-between"} direction={"row"} position="relative">
+          <Grid
+            justifyContent={"space-between"}
+            direction={"row"}
+            position="relative"
+          >
             <div
               className="closeIconContainer"
               onClick={() => {
                 handleSetDisplay("none");
-              }}>
+              }}
+            >
               <img
                 className="closeIcon"
                 width="9"
@@ -179,7 +184,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             subCategories.map(({ _id, subCategory }: any) => (
               <Badge
                 name={subCategory}
-                index={_id}
+                key={_id}
                 onChange={() => removeSubCategory(_id)}
               />
             ))}

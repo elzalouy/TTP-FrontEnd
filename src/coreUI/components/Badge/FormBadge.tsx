@@ -4,11 +4,11 @@ import { showDotsOverLimit } from "src/helpers/generalUtils";
 import { IFormBadge } from "src/types/components/Badge";
 import "./Badge.css";
 
-const Badge: FC<IFormBadge> = ({ name, index, onChange }) => {
+const Badge: FC<IFormBadge> = ({ name, onChange }) => {
   let label = showDotsOverLimit(name, 10);
 
   return (
-    <div key={index} className="badge-wrapper" onClick={onChange}>
+    <div className="badge-wrapper" onClick={onChange}>
       <p className="badge-label">{label}</p>
       <img
         src={IMAGES.closeicon}
