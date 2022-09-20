@@ -94,6 +94,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
         sx={addNewDepartmentContainerStyles}
         className="add-new-cat"
         onClick={onOpenModal}
+        data-test-id="create-dep-button"
       >
         <img src={IMAGES.plus} alt="add" width={30} height={30} />
         <Typography fontSize={18} color={"#272727"}>

@@ -9,24 +9,24 @@ describe('Check Project count of PM', () => {
         cy.get('[data-test-id="create-pm-button"]').click();
         cy.get('[data-test-id="create-pm-name"]').type("Automated PM");
         cy.get('[data-test-id="create-pm-email"]').type("pm@gmail.com");
-        cy.get('[data-test-id="submit-pm"]').click().wait(1000);
+        cy.get('[data-test-id="create-pm-submit"]').click().wait(1000);
     })
 
     it('It should show inital number of projects for the PM', () => {
         cy.wait(4000).get('tr').contains('tr', 'Automated PM').within(() => {
-            return cy.get('[data-test-id="number-inprogress-pm"]').should("have.text","0");
+            return cy.get('[data-test-id="number-inprogress-pm"]').should("have.text", "0");
         });
     })
 
     it('It should create a new project with same PM', () => {
         cy.visit('/projects');
         cy.get('[data-test-id="create-project"]').click();
-        cy.get('input[id$=project-name]').type('Automated Project');
-        cy.get('div[id=client-new-project]').click().get('.Option').first().click();
-        cy.get('div[id=pm-new-project]').click().get('.Option').contains('Automated PM').click();
-        cy.get('input[name="startDate"]').click();
+        cy.get('[data-test-id="create-project-name"]').type('Automated Project');
+        cy.get('[data-test-id="create-project-client-select"]').click().wait(1000).get('[data-test-id="create-project-client-select-option"]').first().click({ force: true });
+        cy.get('[data-test-id="create-project-pm-select"]').click().wait(1000).get('[data-test-id="create-project-pm-select-option"]').contains('Automated PM').click({ force: true });
+        cy.get('[data-test-id="start-date"]').click();
         cy.get('[role="cell"]').contains('1').click();
-        cy.get('input[name="deadline"]').click();
+        cy.get('[data-test-id="deadline"]').click();
         cy.get('[role="cell"]').contains('20').click();
         cy.get('button').contains('Next').click();
         cy.get('.closeIconProject').click().wait(2000);
@@ -38,7 +38,7 @@ describe('Check Project count of PM', () => {
 describe('Check change in Project count of PM', () => {
     it('It should show change in number of project in PM', () => {
         cy.wait(2000).get('tr').contains('tr', 'Automated PM').within(() => {
-            return cy.get('[data-test-id="number-inprogress-pm"]').should("have.text","1");
+            return cy.get('[data-test-id="number-inprogress-pm"]').should("have.text", "1");
         });
     })
 

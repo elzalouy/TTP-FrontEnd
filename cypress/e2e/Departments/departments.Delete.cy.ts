@@ -1,6 +1,6 @@
 before(function () {
   cy.login("zed.saheer5@gmail.com", "12345678");
-  cy.visit("/Departments").wait(1000);
+  cy.visit("/Departments").wait(3000);
   cy.getTasks().then((res) => cy.wrap(res.body).as("tasks"));
   cy.getDepartments()
     .then((res) => {
@@ -9,7 +9,6 @@ before(function () {
         "deleteDepartment"
       );
     })
-    .wait(1000);
   cy.get<string>("@deleteDepartment").then((deleteDepartment) => {
     cy.getBySel(deleteDepartment)
       .should("be.ok")
@@ -22,9 +21,9 @@ before(function () {
 });
 
 describe("Delete Department", function () {
-  beforeEach(function () {
-    cy.wrap(this.deleteDepartment).as("deleteDepartment");
-  });
+    beforeEach(function () {
+      cy.wrap(this.deleteDepartment).as("deleteDepartment");
+    });
 
   it("Should cancel delete department", () => {
     cy.getBySel("delete-department-popup").should("be.visible");
@@ -41,16 +40,16 @@ describe("Delete Department", function () {
         .getBySel("delete-department-btn")
         .should("be.ok");
       deleteDepartmentBtn.click().wait(500);
-      cy.getBySel("delete-department-submit").click().wait(3000);
+      cy.getBySel("delete-dep-button").click().wait(3000);
       cy.getBySel(deleteDepartment).should("not.exist");
     });
   });
 });
 
-after(() => {
+/* after(() => {
   cy.login("zed.saheer5@gmail.com", "12345678");
   cy.deleteAllDepartments().then((res) =>
     cy.wrap(res.status).should("eq", 200)
   );
   cy.visit("/");
-});
+}); */

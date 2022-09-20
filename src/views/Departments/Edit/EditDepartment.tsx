@@ -181,7 +181,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
               type="add"
               size="small"
               label="add"
-              dataTestId="create-dep-add-team"
+              dataTestId="edit-dep-add-team"
               disabled={watch().team.length < 2}
               onClick={() => onChangeNewTeams()}
             />

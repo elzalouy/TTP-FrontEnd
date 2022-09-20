@@ -49,6 +49,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
             size="large"
             label="cancel"
             onClick={() => setShow("none")}
+            dataTestId="delete-department-cancel"
           />
           <Button
             type="delete"
@@ -56,6 +57,7 @@ const DeleteDepartment: React.FC<Props> = ({ show, setShow }) => {
             label="delete"
             onClick={handleSubmit}
             loading={loading}
+            dataTestId="delete-dep-button"
           />
         </div>
       </div>

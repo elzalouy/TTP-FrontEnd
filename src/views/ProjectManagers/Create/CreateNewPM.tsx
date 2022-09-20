@@ -117,6 +117,7 @@ const CreateNewPM: React.FC = () => {
             label="done"
             onClick={createNewUser}
             loading={loading}
+            dataTestId="create-pm-submit"
           />
         </div>
       </PopUp>

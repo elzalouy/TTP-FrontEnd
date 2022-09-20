@@ -1,6 +1,7 @@
 before(function () {
   cy.login("zed.saheer5@gmail.com", "12345678");
   cy.visit("/Projects");
+  
   let projects = cy.getBySelLike("projects-row-name-");
 
   projects

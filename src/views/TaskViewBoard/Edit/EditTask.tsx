@@ -268,7 +268,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   name="name"
                   label="Task name"
                   placeholder="Task name"
-                  dataTestId="task-name"
+                  dataTestId="edit-task-name"
                   control={control}
                   value={watch().name}
                   required={true}
@@ -429,6 +429,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                 label="Done"
                 loading={loadingTask}
                 onClick={onSubmit}
+                dataTestId="edit-task-submit"
               />
             </div>
           </form>

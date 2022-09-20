@@ -1,9 +1,9 @@
-import { Project } from "../../../src../types/models/Projects";
-import { Client } from "../../../src/redux/Clients/clients.state";
+import { Project } from "../../../src/types/models/Projects";
+import { IClient } from "../../../src/types/views/Client";
 
 let projects: Cypress.Chainable<Cypress.AUTWindow>,
   projectsData: Project[] = [],
-  clients: Client[] = [],
+  clients: IClient[] = [],
   status = [
     "Not Started",
     "deliver on time",

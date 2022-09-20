@@ -187,7 +187,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                   name="name"
                   label="Task name"
                   placeholder="Task name"
-                  dataTestId="task-name"
+                  dataTestId="create-task-name"
                   control={control}
                   required={true}
                   error={onGetError("name")}
@@ -200,6 +200,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                   control={control}
                   elementType={"select"}
                   label={"Select"}
+                  dataTestId="create-task-dep-select"
                   onSelect={onChangeDepartment}
                   options={[
                     ...departments?.map((item) => {
@@ -231,6 +232,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                   formLabel="Category"
                   name="categoryId"
                   control={control}
+                  dataTestId="create-task-cat-select"
                   onSelect={onChangeCategory}
                   options={[
                     ...categories?.map((item) => {
@@ -349,6 +351,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                 label="Done"
                 loading={selectedProject.loading}
                 onClick={onSubmit}
+                dataTestId="create-task-submit"
               />
             </div>
           </form>

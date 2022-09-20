@@ -6,7 +6,7 @@ before(function () {
 describe("Create Department", () => {
   // open the Departments page and open create Department modal before all cases.
   beforeEach(function () {
-    let createDepartmentBtn = cy.getBySel("createDepartmentBtn");
+    let createDepartmentBtn = cy.getBySel("create-dep-button");
     createDepartmentBtn.click({ force: true }).wait(100);
   });
   it("should return toast message : department name is less than 2 chars", () => {
@@ -22,11 +22,7 @@ describe("Create Department", () => {
 
   it("should have a disabled addTeam btn, if chars is less than 2 chars", () => {
     cy.getBySel("create-dep-teamName").type("t").wait(500);
-    cy.getBySel("create-dep-add-team").should(
-      "have.attr",
-      "disabled",
-      "disabled"
-    );
+    cy.getBySel("create-dep-add-team").should("have.class","disabled");
     cy.getBySel("create-dep-close-modal").click({
       force: true,
     });
@@ -45,7 +41,7 @@ describe("Create Department", () => {
   });
 
   it("shouldn't have duplicated names in teams", () => {
-    cy.getBySel("create-dep-Name").type("Automated");
+    cy.getBySel("create-dep-Name").type("Automated Department");
     cy.getBySel("create-dep-teamName").type("team");
     cy.getBySel("create-dep-add-team").click().wait(200);
     cy.getBySel("create-dep-teamName").type("team");
@@ -65,20 +61,20 @@ describe("Create Department", () => {
   });
 
   it("should create deparmtent in list, and toast a message", () => {
-    cy.getBySel("create-dep-Name").type("Automated");
-    cy.getBySel("create-dep-teamName").type("team").wait(200);
+    cy.getBySel("create-dep-Name").type("Automated Department");
+    cy.getBySel("create-dep-teamName").type("Automated Team - 1").wait(200);
     cy.getBySel("create-dep-add-team").click().wait(200);
-    cy.getBySel("create-dep-teamName").type("team 2").wait(200);
+    cy.getBySel("create-dep-teamName").type("Automated Team - 2").wait(200);
     cy.getBySel("create-dep-add-team").click().wait(200);
     cy.getBySel("create-dep-submit")
       .click()
-      .wait(3000)
+      .wait(4000)
       .then(() => {
         cy.get(".Toastify")
           .contains("Department created successfully")
           .should("be.ok");
         cy.getBySelLike("departments-card-").then((items) => {
-          expect(items[items.length - 1]).to.contain.text("Automated");
+          expect(items[items.length - 1]).to.contain.text("Automated Department");
         });
       });
     cy.getBySel("create-dep-close-modal").click({

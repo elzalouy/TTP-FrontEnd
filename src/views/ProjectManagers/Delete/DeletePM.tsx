@@ -41,6 +41,7 @@ const DeletePM = () => {
                 dispatch(toggleDeleteProjectManagerPopup("none"));
               }}
               loading={loading}
+              dataTestId="delete-pm-button"
             />
           </div>
         </div>
