@@ -113,13 +113,15 @@ const CreateNewCategory = () => {
         maxWidthSize={MD ? "400px" : "320px"}
       >
         <div style={{ marginTop: 10, position: "relative" }}>
-          <div className="closeIconContainer"
+          <div
+            className="closeIconContainer"
             onClick={() => {
               setShow("none");
               setMainCategory("");
               setSubCategory("");
               setsubCategories([]);
-            }}>
+            }}
+          >
             <img
               className="closeIcon"
               width="9"
@@ -173,7 +175,7 @@ const CreateNewCategory = () => {
               subCategories.map(({ _id, subCategory }: any) => (
                 <Badge
                   name={subCategory}
-                  index={_id}
+                  key={_id}
                   onChange={() => removeSubCategory(_id)}
                 />
               ))}

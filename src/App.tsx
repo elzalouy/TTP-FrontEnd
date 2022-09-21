@@ -36,7 +36,7 @@ import { Box } from "@mui/system";
 import { getUnNotified } from "./models/Notifications";
 import { useAppSelector } from "./models/hooks";
 import { checkAuthToken } from "./services/api";
-import { getUserInfo, selectIsAuth, selectUser } from "./models/Auth";
+import { getUserInfo, logout, selectIsAuth, selectUser } from "./models/Auth";
 import { setStatisticsEmpty, setStatisticsLoading } from "./models/Statistics";
 import "./App.css";
 import "swiper/css/navigation";
@@ -60,7 +60,7 @@ const App: React.FC = (props) => {
           id: id,
         })
       );
-    }
+    } else dispatch(logout(true));
   }, [dispatch]);
 
   useEffect(() => {
@@ -69,7 +69,6 @@ const App: React.FC = (props) => {
       dispatch(getAllCategories(null));
       dispatch(getAllClients(null));
       dispatch(getPMs(null));
-      dispatch(getAllMembers(null));
       dispatch(getAllProjects(null));
       dispatch(getAllTasks(null));
       dispatch(getUnNotified(null));

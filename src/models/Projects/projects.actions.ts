@@ -33,6 +33,7 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const createProject = createAsyncThunk<any, any, any>(
   "projects/create",
   async (args, { rejectWithValue }) => {
@@ -51,6 +52,7 @@ export const createProject = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
@@ -67,6 +69,7 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
@@ -134,6 +137,7 @@ export const getProject = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const getAllTasks = createAsyncThunk<any, any, any>(
   "projects/getAllTasks",
   async (args, { rejectWithValue, dispatch }) => {
@@ -166,6 +170,7 @@ export const filterTasks = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const deleteProjectTasks = createAsyncThunk<any, any, any>(
   "projects/deleteProjectTasks",
   async (args, { rejectWithValue }) => {
@@ -188,6 +193,7 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const deleteTasks = createAsyncThunk<any, any, any>(
   "projects/deleteTasks",
   async (args, { rejectWithValue }) => {
@@ -205,6 +211,7 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const deleteProject = createAsyncThunk<any, any, any>(
   "projects/deleteProject",
   async (args, { rejectWithValue }) => {
@@ -239,6 +246,7 @@ export const deleteTask = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const editProject = createAsyncThunk<any, any, any>(
   "projects/editProject",
   async (args, { rejectWithValue }) => {
@@ -255,6 +263,7 @@ export const editProject = createAsyncThunk<any, any, any>(
     }
   }
 );
+
 export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (args, { rejectWithValue }) => {
@@ -334,6 +343,29 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
       return rejectWithValue(response.data);
     } catch (error) {
       ToastError("The attachment was deleted from the board.");
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const editTasksProjectId = createAsyncThunk<any, any, any>(
+  "tasks/editProjectId",
+  async (args, { rejectWithValue }) => {
+    try {
+      let ids: string[] = args.ids;
+      let projectId: string = args.projectId;
+      let response: ApiResponse<any> = await api.editTasksProjectId({
+        ids,
+        projectId,
+      });
+      if (response.ok) {
+        args.closeModal();
+        return { ids, projectId };
+      } else {
+        ToastError(response.data.message);
+        rejectWithValue(response.data);
+      }
+    } catch (error) {
       return rejectWithValue(error);
     }
   }

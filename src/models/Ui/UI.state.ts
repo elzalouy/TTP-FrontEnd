@@ -14,6 +14,7 @@ export interface UiInterface {
   createProjectPopup: string;
   editDepartmentPopup: string;
   deleteDepartmentPopup: string;
+  editTasksPopup: string;
   moveTaskOnTrelloHook: any;
   isSideMenuOpened: boolean;
   /*
@@ -55,6 +56,7 @@ const UiState: UiInterface = {
   logoutPopup: "none",
   isSideMenuOpened: true,
   createProjectPopup: "none",
+  editTasksPopup: "none",
   moveTaskOnTrelloHook: undefined,
   openTask: "none",
   /*

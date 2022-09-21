@@ -36,6 +36,7 @@ const AppHooks: React.FC = (props) => {
   } = useAppSelector(selectAllProjects);
   const tasks = useAppSelector(selectTasks);
   const [updateTaskData, setUpdateTaskData] = React.useState<any>(null);
+  const [createTaskData, setCreateTaskData] = React.useState<any>(null);
   const [deleteTaskData, setDeleteTaskData] = React.useState<any>(null);
   const [newDepartment, setNewDepartment] = React.useState<any>(null);
   const user = useAppSelector(selectUser);
@@ -165,6 +166,12 @@ const AppHooks: React.FC = (props) => {
       setUpdateTaskData(null);
     }
   }, [updateTaskData]);
+  React.useEffect(() => {
+    if (updateTaskData !== null) {
+      dispatch(ProjectsActions.onCreateTaskData(updateTaskData));
+      setUpdateTaskData(null);
+    }
+  }, [createTaskData]);
 
   // delete task event from backend
   React.useEffect(() => {
@@ -234,12 +241,15 @@ const AppHooks: React.FC = (props) => {
     if (user?._id) {
       let socket = openConnection(user);
       socket.on("create-task", (data: any) => {
-        setUpdateTaskData(data);
+        console.log(" create task socket fired.");
+        setCreateTaskData(data);
       });
       socket.on("update-task", (data: any) => {
+        console.log(" update task socket fired.");
         setUpdateTaskData(data);
       });
       socket.on("delete-task", (data: any) => {
+        console.log(" delete task socket fired.");
         setDeleteTaskData(data);
       });
       // it should delete the department from the store

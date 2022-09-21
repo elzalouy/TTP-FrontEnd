@@ -38,8 +38,6 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
     defaultValues: state.formData,
   });
 
-
-
   const onInitState = () => {
     setState(IcreateDepartmentInit);
     reset();
@@ -177,7 +175,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
               return (
                 <Badge
                   name={el.name}
-                  index={index}
+                  key={index}
                   onChange={() => onChangeTeams(index)}
                 />
               );

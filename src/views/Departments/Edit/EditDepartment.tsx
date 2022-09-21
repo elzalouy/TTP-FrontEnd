@@ -124,11 +124,8 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         minWidthSize="30vw"
         maxWidthSize="300px"
       >
-        <div style={{position:"relative"}}>
-          <div
-            className="closeIconContainer"
-            onClick={onClose}
-          >
+        <div style={{ position: "relative" }}>
+          <div className="closeIconContainer" onClick={onClose}>
             <img
               className="closeIcon"
               width="9"
@@ -195,7 +192,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
                 return (
                   <Badge
                     name={el.name}
-                    index={index}
+                    key={index}
                     onChange={() =>
                       onRemoveOldTeam(el?._id ? el._id : "", index)
                     }
@@ -208,7 +205,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
                 return (
                   <Badge
                     name={el}
-                    index={index}
+                    key={index}
                     onChange={() => onChangeNewTeams(index)}
                   />
                 );
