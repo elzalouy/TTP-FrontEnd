@@ -5,6 +5,7 @@ import "cypress-file-upload";
 import { mount } from "cypress/react";
 
 Cypress.Commands.add("mount", mount);
+
 Cypress.Commands.add("login", (email: string, password: string) => {
   cy.request({
     method: "POST",
@@ -19,6 +20,7 @@ Cypress.Commands.add("login", (email: string, password: string) => {
     cy.visit("/");
   });
 });
+
 Cypress.Commands.add("getTasks", () => {
   return cy.request({
     method: "GET",
@@ -28,6 +30,7 @@ Cypress.Commands.add("getTasks", () => {
     },
   });
 });
+
 Cypress.Commands.add("getDepartments", () => {
   return cy.request({
     method: "GET",
@@ -37,6 +40,7 @@ Cypress.Commands.add("getDepartments", () => {
     },
   });
 });
+
 Cypress.Commands.add("deleteAllDepartments", () =>
   cy.request({
     method: "DELETE",
@@ -46,12 +50,15 @@ Cypress.Commands.add("deleteAllDepartments", () =>
     },
   })
 );
+
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-test-id="${selector}"]`, ...args);
 });
+
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
   return cy.get(`[data-test-id*="${selector}"]`, ...args);
 });
+
 Cypress.Commands.add("getByName", (selector, ...args) => {
   return cy.get(`input[name=${selector}]`, ...args);
 });

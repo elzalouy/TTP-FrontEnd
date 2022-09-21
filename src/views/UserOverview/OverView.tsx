@@ -191,7 +191,7 @@ export const OverView: FC<IOverview> = (props) => {
             }
             title={role === "OM" ? "Tasks In Progress" : "Shared Tasks"}
             img={IMAGES.OverviewInProgressTasksEmpty}
-            caption="Working on agencies are easy !"
+            caption="Stay focused and organized"
           />
           <UserTasks
             pl={3}
@@ -202,7 +202,7 @@ export const OverView: FC<IOverview> = (props) => {
             }
             title={"Tasks Close to Deadline"}
             img={IMAGES.OverviewCloseToDeadlineEmpty}
-            caption={"Nothing to be worried about !"}
+            caption={"Don't worry , You got this!"}
           />
           <UserProjects
             projects={

@@ -43,7 +43,7 @@ const Empty = () => {
             textAlign={{ lg: "left" }}
           >
             <Typography fontSize={"22px"} fontWeight={"bold"} color="#505050">
-              We are fair away from deadlines !!!
+              How is the journey so far?
             </Typography>
           </Grid>
         </Grid>
