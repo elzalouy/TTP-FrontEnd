@@ -20,7 +20,7 @@ const PopUp: React.FC<IPopup> = ({
 
   return (
     <div
-      className={open ? "container-popup" + " " + containerClassName + " " + "open-popup" : "container-popup" + " " + containerClassName}
+      className={open ? "container-popup" + " " + containerClassName : "container-popup" + " " + containerClassName + " " + "open-popup"}
       style={{ display: show, backgroundColor: color }}
     >
       <div
@@ -30,7 +30,7 @@ const PopUp: React.FC<IPopup> = ({
           maxWidth: maxWidthSize,
           maxHeight: maxHeight,
           overflowY: overFlowY ? overFlowY : "unset",
-          margin:margin,
+          margin: margin,
         }}
       >
         {children}
