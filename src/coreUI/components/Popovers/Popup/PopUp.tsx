@@ -1,4 +1,6 @@
 import React from "react";
+import { useAppSelector } from "src/models/hooks";
+import { selectSideMenuToggle } from "src/models/Ui";
 import { IPopup } from "src/types/components/Containers";
 import "./popUp.css";
 
@@ -13,9 +15,12 @@ const PopUp: React.FC<IPopup> = ({
   margin,
   containerClassName,
 }) => {
+
+  const open = useAppSelector(selectSideMenuToggle);
+
   return (
     <div
-      className={"container-popup" + " " + containerClassName}
+      className={open ? "container-popup" + " " + containerClassName + " " + "open-popup" : "container-popup" + " " + containerClassName}
       style={{ display: show, backgroundColor: color }}
     >
       <div

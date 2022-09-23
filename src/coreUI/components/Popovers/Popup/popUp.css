@@ -12,6 +12,11 @@
   z-index: 3;
 }
 
+.open-popup{
+  width: 96vw;
+  left: 4%;
+}
+
 @media (max-width: 1200px) {
   .container-popup {
     width: 80vw;
