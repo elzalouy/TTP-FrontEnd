@@ -190,8 +190,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state: ProjectsInterface,
       action: PayloadAction<any>
     ) => {
+      console.log({ payload: action.payload });
       state.allTasks.push(action.payload);
       state.filteredTasks.push(action.payload);
+      if (state.selectedProject.project?._id === action.payload.projectId) {
+        state.selectedProject.tasks.push(action.payload);
+        state.selectedProject.loading = false;
+      }
+      if (state.newProject.project._id === action.payload.projectId) {
+        state.newProject.tasks.push(action.payload);
+        state.loading = false;
+      }
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     },
     deleteTask: (state = projectsState, action: PayloadAction<any>) => {
       if (action.payload._id) {
@@ -252,28 +262,15 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
-      state.loading = false;
-      if (action.payload) {
-        state.newProject.tasks.push(action.payload);
-      }
+      // if (action.payload) {
+      //   state.newProject.tasks.push(action.payload);
+      // }
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {
       state.selectedProject.loading = false;
     });
     builder.addCase(createTaskFromBoard.pending, (state) => {
       state.selectedProject.loading = true;
-    });
-    builder.addCase(createTaskFromBoard.fulfilled, (state, action) => {
-      state.selectedProject.loading = false;
-      if (action.payload?._id) {
-        let selectedProject = { ...state.selectedProject };
-        let tasks = [...selectedProject.tasks];
-        if (tasks.findIndex((item) => item._id === action.payload._id) < 0)
-          tasks.push(action.payload);
-        selectedProject.tasks = [...tasks];
-        state.selectedProject = selectedProject;
-      }
-      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;

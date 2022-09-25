@@ -56,6 +56,13 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       reset();
     }
   }, [createTaskPopup]);
+  React.useEffect(() => {
+    if (selectedProject.loading === false) {
+      setShow("none");
+      resetState();
+      reset();
+    }
+  }, [selectedProject.loading]);
 
   const onSubmit = async () => {
     let data = watch();
@@ -93,9 +100,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       dispatch(
         createTaskFromBoard({
           data: FormDatatask,
-          dispatch,
-          resetState,
-          setShow: setShow,
         })
       );
     }

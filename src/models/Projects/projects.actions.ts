@@ -76,10 +76,6 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
-        args.resetState();
-        args.dispatch(fireEditTaskHook(""));
-        args.setShow("none");
-        ToastSuccess("Task have been save to the Database");
         return result.data;
       } else {
         ToastError(result?.data[0]?.message);
