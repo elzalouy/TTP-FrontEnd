@@ -2,6 +2,7 @@
 ///<reference path="../global.d.ts" />
 
 import "cypress-file-upload";
+import { CypressSelector } from "cypress/global";
 import { mount } from "cypress/react";
 
 Cypress.Commands.add("mount", mount);
@@ -54,7 +55,9 @@ Cypress.Commands.add("deleteAllDepartments", () =>
 Cypress.Commands.add("getBySel", (selector, ...args) => {
   return cy.get(`[data-test-id="${selector}"]`, ...args);
 });
-
+Cypress.Commands.add("getBySelName", (selector: CypressSelector, ...args) => {
+  return cy.get(`[${selector.name}="${selector.value}"]`, ...args);
+});
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
   return cy.get(`[data-test-id*="${selector}"]`, ...args);
 });

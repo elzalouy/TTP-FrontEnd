@@ -149,21 +149,23 @@ export const getTasksByClientIdAndStatus = (
   __status__: Status,
   projects: ProjectsInterface,
   tasks: Task[],
-  _id: string
+  _id: string | undefined
 ) => {
-  let clientProjects = projects.projects.filter(
-    (item) => item.clientId === _id
-  );
-  //Filter project based on client
-  let clientTasks = tasks.filter((item) =>
-    clientProjects.some((project) => project._id === item.projectId)
-  );
-  //Filter tasks based on client's projects
-  let tasksBasedStatus = clientTasks.filter(
-    (item) => item.status === __status__
-  );
-  //Filter tasks based on status need from the client's tasks
-  return tasksBasedStatus.length;
+  if (_id) {
+    let clientProjects = projects.projects.filter(
+      (item) => item.clientId === _id
+    );
+    //Filter project based on client
+    let clientTasks = tasks.filter((item) =>
+      clientProjects.some((project) => project._id === item.projectId)
+    );
+    //Filter tasks based on client's projects
+    let tasksBasedStatus = clientTasks.filter(
+      (item) => item.status === __status__
+    );
+    //Filter tasks based on status need from the client's tasks
+    return tasksBasedStatus.length;
+  } else return 0;
 };
 
 export const checkValueAndShowOptions = (value: string | undefined) => {
@@ -262,8 +264,7 @@ export const hasMoreItems = (
 export const setProjectManagerId = (name: any): string => {
   if (typeof name === "string") {
     return name;
-  }
-  else {
+  } else {
     return "";
   }
-}
+};

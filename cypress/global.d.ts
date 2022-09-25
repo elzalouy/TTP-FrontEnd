@@ -2,6 +2,12 @@
 import { mount } from "cypress/react";
 import { IDepartmentsSlice } from "../src../types/models/Departments";
 import { Task as ProjectTask } from "../src../types/models/Projects";
+
+export type CypressSelector = {
+  name: string;
+  value: string;
+};
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -23,11 +29,23 @@ declare global {
         dataTestAttribute: string,
         args?: any
       ): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * getByMultiSel
+       *
+       *  yields elements with multi data attributes that match a specified selector.
+       */
+
+      getBySelName(
+        data: CypressSelector,
+        args?: any
+      ): Chainable<JQuery<HTMLElement>>;
       /**
        *  getBySelLike
        *
        *  yields elements with a data-test attribute that contains a specified selector.
        */
+
       getBySelLike(
         dataTestPrefixAttribute: string,
         args?: any

@@ -13,7 +13,7 @@ let projects: Cypress.Chainable<Cypress.AUTWindow>,
   ],
   date = ["asc", "desc"];
 
-describe("Create Project", () => {
+describe("Filter Projects", () => {
   // Arrange
   before(() => {
     // Act Before all

@@ -1,3 +1,4 @@
+import { RouteComponentProps } from "react-router";
 import { IDepartmentState } from "./Departments";
 
 export interface TaskFile {
@@ -45,7 +46,7 @@ export interface IProjectsPage {
 export interface Project {
   _id: string;
   name: string;
-  projectManager: { _id: string; name: string } | null | string;
+  projectManager: { _id: string; name: string } | null | string | any;
   projectManagerName: string | null;
   teamsId?: any[];
   projectDeadline: any;

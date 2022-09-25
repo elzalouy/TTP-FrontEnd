@@ -19,4 +19,6 @@
     "types": ["cypress", "node", "jest", "mocha"]
   },
   "include": ["src", "src/utils/custom.d.ts", "src"],
+  "exclude": ["**/*.cy.ts"],
+  "extends": "./tsconfig.paths.json"
 }
