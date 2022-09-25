@@ -22,7 +22,7 @@ describe("Create Department", () => {
 
   it("should have a disabled addTeam btn, if chars is less than 2 chars", () => {
     cy.getBySel("create-dep-teamName").type("t").wait(500);
-    cy.getBySel("create-dep-add-team").should("have.class","disabled");
+    cy.getBySel("create-dep-add-team").should("have.class", "disabled");
     cy.getBySel("create-dep-close-modal").click({
       force: true,
     });
@@ -74,7 +74,9 @@ describe("Create Department", () => {
           .contains("Department created successfully")
           .should("be.ok");
         cy.getBySelLike("departments-card-").then((items) => {
-          expect(items[items.length - 1]).to.contain.text("Automated Department");
+          expect(items[items.length - 1]).to.contain.text(
+            "Automated Department"
+          );
         });
       });
     cy.getBySel("create-dep-close-modal").click({

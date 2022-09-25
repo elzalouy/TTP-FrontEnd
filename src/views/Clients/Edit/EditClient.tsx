@@ -83,7 +83,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var data = { ...clientData };
+    var data: any = { ...clientData };
     if (e.target.name === "image") {
       let file: any = e.target.files;
       data.image = file[0];
@@ -111,8 +111,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
       <PopUp show={show}>
         <Box>
           <Box position={"relative"}>
-            <div className="closeIconContainer"
-              onClick={handleClose}>
+            <div className="closeIconContainer" onClick={handleClose}>
               <img
                 className="closeIcon"
                 width="9"
@@ -144,8 +143,8 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
                 clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                    ? clientData?.image
-                    : ImageView
+                  ? clientData?.image
+                  : ImageView
               }
               style={{
                 width: "9em",

@@ -27,7 +27,7 @@ export interface IDepartmentsSlice {
   delete?: IDepartmentState;
 }
 export const initDepartmentState: IDepartmentState = {
-  id: "",
+  _id: "",
   name: "",
   lists: [],
   color: "",

@@ -17,6 +17,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
   selected,
   message,
   dataTestId,
+  error,
 }) => {
   return (
     <>
@@ -40,6 +41,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
             options={options}
             textTruncate={textTruncate}
             message={message}
+            error={error} // it shouldn't be removed
             dataTestId={dataTestId}
           />
         )}

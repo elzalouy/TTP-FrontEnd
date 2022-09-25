@@ -36,7 +36,7 @@ const Select = (props: IFilterProps) => {
 
   React.useEffect(() => {
     let selected = state.options.find(
-      (item) => item.id === props.selected
+      (item: any) => item.id === props.selected
     )?.text;
     if (selected) setState({ ...state, selected: selected });
     else setState({ ...state, selected: "" });
@@ -44,7 +44,7 @@ const Select = (props: IFilterProps) => {
 
   React.useEffect(() => {
     let selected = state.options.find(
-      (item) => item.id === props.selected
+      (item: any) => item.id === props.selected
     )?.text;
     if (selected) setState({ ...state, selected: selected });
   }, [props.selected, props.options]);

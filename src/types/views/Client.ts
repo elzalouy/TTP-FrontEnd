@@ -1,43 +1,43 @@
 import { Status } from "./BoardView";
 
 export interface IClient {
-    _id?: string;
-    clientName?: string;
-    doneProject?: string[];
-    inProgressProject?: string[] | number;
-    inProgressTask?: string[];
-    createdAt?: string;
-    image?: any;
+  _id?: string;
+  clientName?: string;
+  doneProject?: string[];
+  inProgressProject?: string[] | number;
+  inProgressTask?: string[];
+  createdAt?: string;
+  image?: any;
 }
 export interface IClientState {
-    image: File | null | any;
-    clientName: string;
-  }
+  image: File | null | any;
+  clientName: string;
+}
 export interface IClientCard {
-    client: IClient;
+  client: IClient;
 }
 export interface IClientPopover {
-    client: IClient;
+  client: IClient;
 }
 export interface IClientHeader {
-    client: IClient;
-    preview: string;
+  client: IClient;
+  preview: string;
 }
 export interface ITaskCounterContainer {
-    id: string;
+  id: string | undefined;
 }
 export interface ITaskNumber {
-    title: string;
-    param: Status;
-    _id: string
+  title: string;
+  param: Status;
+  _id: string | undefined;
 }
 export interface IProjectCounterContainer {
-    done: string[];
-    client: IClient;
-    inProgressProject: number | string[];
+  done: string[];
+  client: IClient;
+  inProgressProject: number | string[] | any;
 }
 export interface IProjectNumber {
-    title: string;
-    number: number | string[];
-    dataTestId?: string;
+  title: string;
+  number: number | string[];
+  dataTestId?: string;
 }

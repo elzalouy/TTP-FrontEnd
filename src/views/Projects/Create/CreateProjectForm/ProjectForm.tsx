@@ -282,6 +282,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
               label="Next"
               loading={loading}
               onClick={onSubmit}
+              dataTestId="submit-create-project"
             />
           </div>
         </Grid>

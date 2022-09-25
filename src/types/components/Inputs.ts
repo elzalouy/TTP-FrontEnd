@@ -17,11 +17,13 @@ export interface IFilterProps {
   name: string;
   onSelect?: any;
   selected?: string;
-  options: {
-    id: string;
-    value: string;
-    text: string;
-  }[];
+  options:
+    | {
+        id: string;
+        value: string;
+        text: string;
+      }[]
+    | any;
   label?: string;
   textTruncate?: number;
   error?: string;
@@ -36,7 +38,7 @@ export interface IOptions {
   elementType: string;
   options: { id: string; value: string; text: string }[];
   setShow: any;
-  dataTestId?:string;
+  dataTestId?: string;
 }
 
 export interface ISearch {
@@ -71,7 +73,7 @@ export interface IDateInputProps {
   state?: any;
   tempError?: boolean;
   setUpdateDate?: React.Dispatch<React.SetStateAction<boolean>>;
-  dataTestId?:string
+  dataTestId?: string;
 }
 
 export interface IPasswordInputProps {

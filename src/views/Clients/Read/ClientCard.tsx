@@ -6,7 +6,6 @@ import ProjectCounterContainer from "../Read/Card/Containers/ProjectCounterConta
 import Header from "./Card/Header";
 import { IClientCard } from "src/types/views/Client";
 
-
 const ClientCard: React.FC<IClientCard> = ({ client }) => {
   const { _id, doneProject, inProgressProject, image } = client;
   const [preview, setPreview] = useState("");
@@ -22,17 +21,17 @@ const ClientCard: React.FC<IClientCard> = ({ client }) => {
     <Grid
       item
       mt={2}
-      xl={3.90}
-      lg={3.90}
-      md={5.90}
-      sm={5.90}
+      xl={3.9}
+      lg={3.9}
+      md={5.9}
+      sm={5.9}
       xs={12}
       className="client-card"
       data-test-id="client-card"
     >
       <Header client={client} preview={preview} />
       <ProjectCounterContainer
-        done={doneProject}
+        done={doneProject ? doneProject : []}
         client={client}
         inProgressProject={inProgressProject}
       />
