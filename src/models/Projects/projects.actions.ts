@@ -57,9 +57,10 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
   async (args, { rejectWithValue }) => {
     try {
-      let result: ApiResponse<any> = await api.createTask(args);
+      let result: ApiResponse<any> = await api.createTask(args.data);
       if (result.ok) {
         ToastSuccess("Task have been saved to the Database");
+        args.onInit();
         return result.data;
       }
       ToastError(result?.data[0]?.message);
@@ -74,9 +75,16 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
   async (args, { rejectWithValue }) => {
     try {
-      let result: ApiResponse<any> = await api.createTask(args.data);
+      let form: FormData = args.data;
+      let result: ApiResponse<any> = await api.createTask(form);
       if (result.ok) {
-        return result.data;
+        args.setShow("none");
+        args.resetState();
+        args.reset();
+        return {
+          result: result.data,
+          attachedFiles: form.getAll("attachedFiles").length,
+        };
       } else {
         ToastError(result?.data[0]?.message);
         return rejectWithValue(result.data);

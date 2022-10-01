@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import { toggleEditTasksPopup } from "src/models/Ui";
 import IMAGES from "../../../assets/img/Images";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Loading from "../../../coreUI/components/Loading/Loading";
@@ -23,6 +22,7 @@ import {
   selectAllProjects,
   selectProjectOptions,
 } from "../../../models/Projects";
+import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { ProjectsInterface } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import EditTasks from "../Edit/EditTasks";
@@ -37,6 +37,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const projectOptions = useAppSelector(selectProjectOptions);
+  const clientsOptions = useAppSelector(selectClientOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const [showEditTasks, setShowEditTasks] = React.useState("none");
   const theme = useTheme();
@@ -58,14 +59,31 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   const onHandleChangeFilter = () => {
     let filter = watch();
-    dispatch(filterTasks(filter));
+    dispatch(
+      filterTasks({ projectId: filter.projectId, status: filter.status })
+    );
   };
-
+  const onHandleChangeStaticFilter = async () => {
+    let filter = watch();
+    setValue("projectId", "");
+    await dispatch(
+      filterTasks({ projectId: filter.projectId, status: filter.status })
+    );
+    dispatch(
+      ProjectsActions.onChangeStaticFilters({ clientId: filter.clientId })
+    );
+  };
   const onChangeFilter = (e: any, name: string) => {
     setValue(name, e.target.id);
     onHandleChangeFilter();
   };
 
+  const onChangeStaticFilter = (e: any, name: string) => {
+    e.preventDefault();
+    console.log(name, e.target.id);
+    setValue(name, e.target.id);
+    onHandleChangeStaticFilter();
+  };
   const onSortTasks = (e: any, name: string) => {
     e.preventDefault();
     setValue(name, e.target.id);
@@ -160,7 +178,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Grid>
         <Grid
           data-test-id="filter-projects"
-          marginX={0.5}
+          paddingX={0.5}
           item
           xs={8}
           sm={5}
@@ -192,106 +210,109 @@ export const TasksListView: React.FC<Props> = (props) => {
           />
         </Grid>
       </Grid>
-      <Grid container alignItems={"center"}>
-        <Grid
-          item
-          lg={9}
-          md={10}
-          sm={12}
-          xs={12}
-          gap="2%"
-          display="flex"
-          direction={"row"}
-          alignItems={"center"}
-          width={"100%"}
-          wrap={MD ? "wrap" : "nowrap"}
-        >
-          {filter && (
-            <Grid container xs={12} sm={12}>
-              <Grid
-                marginX={0.5}
-                item
-                xs={6}
-                sm={3}
-                md={3}
-                lg={3}
-                marginY={1}
-                flex={1}
-              >
-                <ControlledSelect
-                  name="sort"
-                  control={control}
-                  label="Due Date: "
-                  elementType="filter"
-                  textTruncate={6}
-                  onSelect={(e: any) => onSortTasks(e, "sort")}
-                  options={options[0]}
-                />
-              </Grid>
-              <Grid marginX={0.5} item xs={6} sm={3} md={3} lg={3} marginY={1}>
-                <Box className="tasks-option">
-                  <ControlledSelect
-                    name="status"
-                    control={control}
-                    label="Status: "
-                    elementType="filter"
-                    textTruncate={10}
-                    onSelect={(e: any) => onChangeFilter(e, "status")}
-                    options={options[1]}
-                  />
-                </Box>
-              </Grid>
-              <Grid marginX={0.5} item xs={4} sm={3} md={3} lg={3} marginY={1}>
-                <Box className="tasks-option">
-                  <ControlledSelect
-                    name="projectId"
-                    control={control}
-                    label="Project: "
-                    elementType="filter"
-                    textTruncate={10}
-                    onSelect={(e: any) => {
-                      onChangeFilter(e, "projectId");
-                    }}
-                    options={projectOptions}
-                  />
-                </Box>
-              </Grid>
-              <Grid marginX={0.5} my={1} item xs={2} sm={2} md={0.5} lg={0.5}>
-                <DeleteTask
-                  task={selects}
-                  Show={Show}
-                  setShow={setShow}
-                  onDelete={onDeleteTasks}
-                />
-              </Grid>
-              <Grid marginX={0.5} my={1} item xs={1} sm={1} md={1} lg={1}>
-                <Button
-                  onClick={() => setShowEditTasks("flex")}
-                  type="main"
-                  size="x-small"
-                  label="Edit Tasks"
-                  style={{
-                    marginTop: "0px",
-                    display: selects.length > 0 ? "block" : "none",
-                  }}
-                />
-                <EditTasks
-                  show={showEditTasks}
-                  setShow={setShowEditTasks}
-                  selects={selects}
-                />
-              </Grid>
+      <Grid container justifyContent={"space-between"} alignItems="center">
+        {filter && (
+          <>
+            <Grid
+              paddingX={0.5}
+              item
+              xs={6}
+              sm={2}
+              md={3}
+              lg={1.9}
+              marginY={1}
+              flex={1}
+            >
+              <ControlledSelect
+                name="sort"
+                control={control}
+                label="Due Date: "
+                elementType="filter"
+                textTruncate={6}
+                onSelect={(e: any) => onSortTasks(e, "sort")}
+                options={options[0]}
+              />
             </Grid>
-          )}
-        </Grid>
+            <Grid paddingX={0.5} item xs={6} sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="status"
+                  control={control}
+                  label="Status: "
+                  elementType="filter"
+                  textTruncate={10}
+                  onSelect={(e: any) => onChangeFilter(e, "status")}
+                  options={options[1]}
+                />
+              </Box>
+            </Grid>
+            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="projectId"
+                  control={control}
+                  label="Project: "
+                  elementType="filter"
+                  textTruncate={10}
+                  onSelect={(e: any) => {
+                    onChangeFilter(e, "projectId");
+                  }}
+                  options={projectOptions}
+                />
+              </Box>
+            </Grid>
+            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="clientId"
+                  control={control}
+                  label="Client: "
+                  elementType="filter"
+                  textTruncate={10}
+                  onSelect={(e: any) => {
+                    onChangeStaticFilter(e, "clientId");
+                  }}
+                  options={clientsOptions}
+                />
+              </Box>
+            </Grid>
+            <Grid my={1} item xs={2} sm={2} md={1} lg={0.5}>
+              <DeleteTask
+                task={selects}
+                Show={Show}
+                setShow={setShow}
+                onDelete={onDeleteTasks}
+              />
+            </Grid>
+            <Grid my={1} item xs={3} sm={3} md={3} lg={1}>
+              <Button
+                onClick={() => setShowEditTasks("flex")}
+                type="main"
+                size="x-small"
+                label="Edit Tasks"
+                style={{
+                  marginTop: "0px",
+                  display: selects.length > 0 ? "block" : "none",
+                }}
+              />
+              <EditTasks
+                show={showEditTasks}
+                setShow={setShowEditTasks}
+                selects={selects}
+              />
+            </Grid>
+          </>
+        )}
+        {/* </Grid> */}
         <Grid
           item
           display={{ xs: "none", sm: "none", md: "flex", lg: "flex" }}
           justifyContent={"flex-end"}
           xs={12}
           sm={12}
-          md={2}
-          lg={3}
+          md={8}
+          lg={2}
+          paddingLeft={1}
           mt={SM ? "10px" : "0px"}
         >
           <Controller

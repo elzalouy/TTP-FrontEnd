@@ -45,6 +45,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
   return (
     <div className="project-actions-wrapper">
       <Box
+        data-test-id={`projects-row-dot-icon-${props.id}`}
         onClick={handleOpen}
         marginBottom={2}
         sx={{ cursor: "pointer" }}
@@ -83,6 +84,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
             Open Tasks
           </Button>
           <Button
+            data-test-id={`projects-edit-project-btn-${props.id}`}
             variant="text"
             onClick={showEditProjectPopup}
             className={styles.grayButton}

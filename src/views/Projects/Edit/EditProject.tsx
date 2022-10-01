@@ -117,7 +117,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     } else {
       setNameErr({ error: undefined });
     }
-  }
+  };
 
   const showAlertBasedOnDate = () => {
     let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
@@ -240,6 +240,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           <div className="inputs-grid">
             <div>
               <ControlledInput
+                dataTestId="edit-project-name-input"
                 name="name"
                 label="Project title"
                 placeholder={"Project name"}
@@ -262,6 +263,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             </div>
             <div>
               <DateInput
+                dataTestId="edit-project-date-input"
                 label={"Start date"}
                 name="startDate"
                 control={control}
@@ -317,6 +319,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               type="main"
               label="Done"
               onClick={onSubmitEdit}
+              dataTestId="edit-project-submit-btn"
             />
           </div>
         </div>

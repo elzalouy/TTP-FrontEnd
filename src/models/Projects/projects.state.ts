@@ -50,7 +50,7 @@ const ProjectsState: ProjectsInterface = {
     selectedDepartment: null,
   },
   selectedProject: {
-    loading: null,
+    loading: false,
     tasks: [],
     project: null,
   },
@@ -60,6 +60,7 @@ const ProjectsState: ProjectsInterface = {
   editProject: undefined,
   editTask: "",
   editTaskLoading: undefined,
+  uploadLoading: { id: undefined, loading: undefined },
   sorting: null,
   filteredProjects: null,
   openTaskDetails: {

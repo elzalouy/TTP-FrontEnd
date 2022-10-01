@@ -66,6 +66,10 @@ export interface TasksStatistics {
 export interface ProjectsInterface {
   loading: boolean;
   projects: Project[];
+  uploadLoading: {
+    id: string | undefined;
+    loading: boolean | undefined;
+  };
   newProject: {
     showPopUp: string;
     project: Project;

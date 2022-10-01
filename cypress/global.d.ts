@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 import { mount } from "cypress/react";
 import { IDepartmentsSlice } from "../src../types/models/Departments";
-import { Task as ProjectTask } from "../src../types/models/Projects";
-
+import { Project, Task as ProjectTask } from "../src/types/models/Projects";
+import { IDepartmentState } from "../src/types/models/Departments";
 export type CypressSelector = {
   name: string;
   value: string;
@@ -16,10 +16,11 @@ declare global {
        * @example cy.login(email:"example@mail.com",password:"12345678")
        */
       mount: typeof mount;
-      login(name: string, password: string);
+      login(name: string, password: string): { id: string; token: string };
       getTasks(): Chainable<Cypress.Response<IDepartmentsSlice[]>>;
-      getDepartments(): Chainable<Cypress.Response<ProjectTask[]>>;
+      getDepartments(): Chainable<Cypress.Response<IDepartmentState[]>>;
       deleteAllDepartments(): Chainable<Cypress.Response<string>>;
+      getAllProjects(): Chainable<Cypress.Response<Project[]>>;
       /**
        * getBySel
        *

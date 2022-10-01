@@ -161,15 +161,17 @@ const AppHooks: React.FC = (props) => {
   }, [deleteDepartmentHook]);
 
   React.useEffect(() => {
-    if (updateTaskData !== null) {
-      dispatch(ProjectsActions.updateTaskData(updateTaskData));
-      setUpdateTaskData(null);
-    }
+    (async () => {
+      if (updateTaskData !== null) {
+        await dispatch(ProjectsActions.updateTaskData(updateTaskData));
+        setUpdateTaskData(null);
+      }
+    })();
   }, [updateTaskData]);
   React.useEffect(() => {
     if (createTaskData !== null) {
       dispatch(ProjectsActions.onCreateTaskData(createTaskData));
-      setUpdateTaskData(null);
+      setCreateTaskData(null);
     }
   }, [createTaskData]);
 
@@ -241,15 +243,15 @@ const AppHooks: React.FC = (props) => {
     if (user?._id) {
       let socket = openConnection(user);
       socket.on("create-task", (data: any) => {
-        console.log(" create task socket fired.");
+        console.log(" create task socket fired.", data);
         setCreateTaskData(data);
       });
       socket.on("update-task", (data: any) => {
-        console.log(" update task socket fired.");
+        console.log(" update task socket fired.", data);
         setUpdateTaskData(data);
       });
       socket.on("delete-task", (data: any) => {
-        console.log(" delete task socket fired.");
+        console.log(" delete task socket fired.", data);
         setDeleteTaskData(data);
       });
       // it should delete the department from the store

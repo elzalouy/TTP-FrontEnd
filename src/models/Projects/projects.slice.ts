@@ -150,11 +150,15 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     },
 
     updateTaskData: (state = projectsState, action: PayloadAction<any>) => {
+      if (action.payload?.attachedFiles?.length > 0) {
+        state.uploadLoading.loading = false;
+      }
       if (action.payload?._id) {
         let allTasks = [...state.allTasks];
         let projectTasks = [...state.selectedProject.tasks];
         let filteredTasks = [...state.filteredTasks];
         let selectedProject = { ...state.selectedProject };
+
         // update all tasks
         let taskIndexInTasks = allTasks.findIndex(
           (item) => item._id === action.payload._id
@@ -174,13 +178,12 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
             projectTasks[taskIndexInSelectedPro] = action.payload;
           else projectTasks.push(action.payload);
         }
-
         if (filteredTasksIndex >= 0)
           filteredTasks[filteredTasksIndex] = action.payload;
         else filteredTasks.push(action.payload);
-        selectedProject.tasks = [..._.uniqBy([...projectTasks], "_id")];
+        selectedProject.tasks = projectTasks;
 
-        state.allTasks = _.uniqBy([...allTasks], "_id");
+        state.allTasks = [...allTasks];
         state.selectedProject = selectedProject;
         state.filteredTasks = filteredTasks;
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
@@ -190,7 +193,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state: ProjectsInterface,
       action: PayloadAction<any>
     ) => {
-      console.log({ payload: action.payload });
       state.allTasks.push(action.payload);
       state.filteredTasks.push(action.payload);
       if (state.selectedProject.project?._id === action.payload.projectId) {
@@ -224,6 +226,20 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
 
     onOpenTask: (state = projectsState, action: PayloadAction<any>) => {
       state.openTaskDetails = action.payload;
+    },
+    onChangeStaticFilters: (
+      state: ProjectsInterface,
+      action: PayloadAction<{ clientId: string }>
+    ) => {
+      let clientProjectsIds = state.projects
+        .filter((item) => item.clientId === action.payload.clientId)
+        .map((item) => item._id);
+      state.filteredTasks = [
+        ...state.allTasks.filter((item) =>
+          clientProjectsIds.includes(item.projectId)
+        ),
+      ];
+      // state.filteredTasks=
     },
     fireSetStatisticsHook: (state: ProjectsInterface) => {
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
@@ -262,9 +278,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(createProjectTask.fulfilled, (state, action) => {
-      // if (action.payload) {
-      //   state.newProject.tasks.push(action.payload);
-      // }
+      if (action.payload) {
+        state.newProject.tasks.push(action.payload);
+        state.loading = false;
+      }
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {
       state.selectedProject.loading = false;
@@ -272,6 +289,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(createTaskFromBoard.pending, (state) => {
       state.selectedProject.loading = true;
     });
+    builder.addCase(
+      createTaskFromBoard.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.selectedProject.loading = false;
+        state.allTasks.push(action.payload.result);
+        state.selectedProject.tasks.push(action.payload.result);
+        if (action.payload?.attachedFiles > 0) {
+          state.uploadLoading.id = action.payload.result._id;
+          state.uploadLoading.loading = true;
+        }
+      }
+    );
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;
     });

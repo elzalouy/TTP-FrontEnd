@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
@@ -6,7 +6,11 @@ import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
-import { ProjectsActions, selectTasks } from "../../../../models/Projects";
+import {
+  ProjectsActions,
+  selectTasks,
+  selectUploadLoading,
+} from "../../../../models/Projects";
 import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
@@ -47,6 +51,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const navigationNextRef = React.useRef(null);
   const departments = useAppSelector(selectAllDepartments);
   const allTasks = useAppSelector(selectTasks);
+  const uploadingFiles = useAppSelector(selectUploadLoading);
   const { _id, name, deadline, status, boardId } = item;
   const [data, setData] = useState<
     | {
@@ -166,7 +171,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
     images[index] = img;
     setTaskImages([...images]);
   };
-  console.log({ taskImages });
   return (
     <Draggable index={index} draggableId={`${_id}`}>
       {(provided, snapshot) => {
@@ -207,6 +211,16 @@ const TaskCard: React.FC<TaskCartProps> = ({
               </Typography>
             </Box>
             <Grid direction="row">
+              {uploadingFiles &&
+                uploadingFiles?.id === _id &&
+                uploadingFiles?.loading === true && (
+                  <Skeleton
+                    width={"100%"}
+                    height={"120px"}
+                    variant="rectangular"
+                    sx={{ borderRadius: 2 }}
+                  />
+                )}
               {item?.attachedFiles?.length > 0 && (
                 <>
                   {taskImages && taskImages.length > 0 && (
@@ -251,40 +265,46 @@ const TaskCard: React.FC<TaskCartProps> = ({
                         modules={[Autoplay, Navigation]}
                         className="swiper"
                       >
-                        {taskImages.map((image, index) => {
-                          if (image?.error === true)
+                        <>
+                          {taskImages.map((image, index) => {
+                            if (image?.error === true)
+                              return (
+                                <div className="fallback-container">
+                                  <a
+                                    href={image.url}
+                                    className="login-link"
+                                    target="_blank"
+                                  >
+                                    you are not authorized on trelloId to see
+                                    this attachment. Click here to sign in first
+                                  </a>
+                                </div>
+                              );
                             return (
-                              <div className="fallback-container">
-                                <a
-                                  href={image.url}
-                                  className="login-link"
-                                  target="_blank"
-                                >
-                                  you are not authorized on trelloId to see this
-                                  attachment. Click here to sign in first
-                                </a>
-                              </div>
+                              <SwiperSlide
+                                key={index}
+                                className={`swiper-slide`}
+                              >
+                                <img
+                                  style={{
+                                    width: "100%",
+                                    height: 120,
+                                    borderRadius: 8,
+                                    marginTop: "10px",
+                                  }}
+                                  referrerPolicy="origin"
+                                  onError={(e) => {
+                                    setImageError(index);
+                                  }}
+                                  srcSet={image?.url + "/?"}
+                                  src={image?.url + "/?"}
+                                  alt="more"
+                                />
+                              </SwiperSlide>
                             );
-                          return (
-                            <SwiperSlide key={index} className={`swiper-slide`}>
-                              <img
-                                style={{
-                                  width: "100%",
-                                  height: 120,
-                                  borderRadius: 8,
-                                  marginTop: "10px",
-                                }}
-                                referrerPolicy="origin"
-                                onError={(e) => {
-                                  setImageError(index);
-                                }}
-                                srcSet={image?.url + "/?"}
-                                src={image?.url + "/?"}
-                                alt="more"
-                              />
-                            </SwiperSlide>
-                          );
-                        })}
+                          })}
+                        </>
+
                         <div ref={navigationPrevRef}>
                           <ArrowBackIosNewIcon
                             className="prev"

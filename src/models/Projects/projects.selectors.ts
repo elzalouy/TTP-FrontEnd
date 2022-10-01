@@ -116,3 +116,5 @@ export const editTaskLoading = (state: RootState) =>
   state.projects.editTaskLoading;
 export const selectTaskDetails = (state: RootState) =>
   state.projects.openTaskDetails;
+export const selectUploadLoading = (state: RootState) =>
+  state.projects.uploadLoading;

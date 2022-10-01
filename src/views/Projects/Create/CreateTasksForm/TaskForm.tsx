@@ -65,12 +65,14 @@ const TaskForm: React.FC = () => {
   }, [createProjectPopup]);
 
   React.useEffect(() => {
+    onInit();
+  }, [newProject.tasks]);
+  const onInit = () => {
     reset();
     setFiles([]);
     setSelectedDepartment(initDepartmentState);
     setSelectCategory(undefined);
-  }, [newProject.tasks]);
-
+  };
   const onSubmit = async () => {
     let data = watch();
     let newTask: any = {
@@ -103,7 +105,7 @@ const TaskForm: React.FC = () => {
       let errorResult = { error, warning, value };
       setError(errorResult);
     } else {
-      dispatch(createProjectTask(FormDatatask));
+      dispatch(createProjectTask({ data: FormDatatask, onInit }));
     }
   };
 
@@ -154,7 +156,10 @@ const TaskForm: React.FC = () => {
     error.error?.details[0]?.path?.includes(val) ? "true" : "false";
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        data-test-id="projects-create-project-task-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="inputs-grid">
           <div>
             <Controller
