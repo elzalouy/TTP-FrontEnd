@@ -231,15 +231,16 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state: ProjectsInterface,
       action: PayloadAction<{ clientId: string }>
     ) => {
-      let clientProjectsIds = state.projects
-        .filter((item) => item.clientId === action.payload.clientId)
-        .map((item) => item._id);
-      state.filteredTasks = [
-        ...state.allTasks.filter((item) =>
-          clientProjectsIds.includes(item.projectId)
-        ),
-      ];
-      // state.filteredTasks=
+      if (action.payload.clientId.length > 0) {
+        let clientProjectsIds = state.projects
+          .filter((item) => item.clientId === action.payload.clientId)
+          .map((item) => item._id);
+        state.filteredTasks = [
+          ...state.allTasks.filter((item) =>
+            clientProjectsIds.includes(item.projectId)
+          ),
+        ];
+      }
     },
     fireSetStatisticsHook: (state: ProjectsInterface) => {
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
