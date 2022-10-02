@@ -131,7 +131,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-
+    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
     let newTask: any = {
       id: State.task._id,
       cardId: State.task.cardId,
@@ -140,16 +140,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       status: State.task.status,
       attachedFiles: state?.newFiles,
       boardId: state.selectedDepartment?.boardId,
-      listId:
-        data?.teamId !== ""
-          ? state.selectedDepartment?.teams?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
-          : state.task.listId,
+      listId: state.task.listId,
+      teamId: data.teamId === "" ? state.task.teamId : data.teamId,
     };
 
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
-    if (data.teamId !== "") newTask.teamId = data.teamId;
     newTask.deadline =
       data.deadline !== "" && data.deadline !== null
         ? moment(data?.deadline).toDate().toString()
@@ -157,7 +152,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
-
+    console.log({ task: state.task, edit: newTask });
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {

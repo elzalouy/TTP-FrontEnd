@@ -69,20 +69,15 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
     let data = watch();
     let State = { ...state };
 
+    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
     let newTask: any = {
       name: data.name,
       categoryId: data?.categoryId,
       projectId: selectedProject?.project?._id,
-      status: data?.teamId !== "" ? "inProgress" : "Tasks Board",
+      status: list,
       start: new Date().toUTCString(),
-      listId:
-        data?.teamId !== ""
-          ? state.selectedDepartment?.teams?.find(
-              (item: any) => item._id === data.teamId
-            )?.listId
-          : state.selectedDepartment?.lists?.find(
-              (l) => l.name === "Tasks Board"
-            )?.listId,
+      listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
+        ?.listId,
       boardId: state.selectedDepartment?.boardId,
     };
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;

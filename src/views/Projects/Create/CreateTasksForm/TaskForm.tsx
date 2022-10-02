@@ -75,19 +75,14 @@ const TaskForm: React.FC = () => {
   };
   const onSubmit = async () => {
     let data = watch();
+    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
     let newTask: any = {
       name: data.name,
       projectId: newProject?.project?._id,
-      status: data.teamId !== "" ? "inProgress" : "Tasks Board",
+      status: list,
       start: new Date().toUTCString(),
-      listId:
-        data?.teamId !== ""
-          ? selectedDepartment.teams.find(
-              (team: ITeam) => data.teamId === team._id
-            ).listId
-          : selectedDepartment.lists.find(
-              (l: IList) => l.name === "Tasks Board"
-            )?.listId,
+      listId: selectedDepartment.lists.find((l: IList) => l.name === list)
+        ?.listId,
       boardId: selectedDepartment.boardId,
       description: data.description,
       categoryId: data.categoryId,
