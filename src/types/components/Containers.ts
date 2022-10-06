@@ -14,6 +14,7 @@ export interface ITableContainerProps {
   expanded: boolean;
   setExpanded?: any;
   bgColor: string;
+  children: any;
 }
 
 export interface IControlledInput extends IInputProps {
@@ -43,12 +44,12 @@ export type UseFormProps = {
 type overFlow = "visible" | "hidden" | "clip" | "scroll" | "auto";
 export interface IPopup {
   show: string;
-  children: object;
+  children: any;
   color?: string;
   minWidthSize?: string;
   maxWidthSize?: string;
   maxHeight?: string;
   overFlowY?: overFlow;
-  margin?:string;
-  containerClassName?:string;
-};
+  margin?: string;
+  containerClassName?: string;
+}

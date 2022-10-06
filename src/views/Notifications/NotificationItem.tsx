@@ -19,7 +19,7 @@ const NotificationItem: FC<INotificationItem> = ({ notifiData }) => {
     if (index % 2 === 0) {
       return (
         <Avatar
-          name={user?.user?.name === undefined ? user?.name : user?.user?.name}
+          name={user?.name}
           value="86%"
           size="40"
           round
@@ -32,17 +32,19 @@ const NotificationItem: FC<INotificationItem> = ({ notifiData }) => {
       );
     } else {
       return (
-        <Avatar
-          name={user?.user?.name === undefined ? user?.name : user?.user?.name}
-          value="86%"
-          size="40"
-          round
-          fgColor="#FFC500"
-          color="black"
-          style={{
-            marginRight: "10px",
-          }}
-        />
+        <>
+          <Avatar
+            name={user?.name}
+            value="86%"
+            size="40"
+            round
+            fgColor="#FFC500"
+            color="black"
+            style={{
+              marginRight: "10px",
+            }}
+          />
+        </>
       );
     }
   };

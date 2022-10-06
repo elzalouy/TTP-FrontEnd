@@ -35,7 +35,7 @@ export const updateNotified = createAsyncThunk<any, any, any>(
     try {
       let response: ApiResponse<any> = await api.httpUpdateNotified();
       if (response.ok && response.data) return response.data;
-      ToastError(response.data);
+      // ToastError(response.data);
       return rejectWithValue(response.data);
     } catch (error) {
       rejectWithValue(error);
@@ -54,7 +54,7 @@ export const getUnNotified = createAsyncThunk<any, any, any>(
     try {
       let response: ApiResponse<any> = await api.httpGetUnNotified();
       if (response.ok && response.data) return response.data;
-      ToastError(response.data);
+      // ToastError(response.data);
       return rejectWithValue(response.data);
     } catch (error) {
       rejectWithValue(error);

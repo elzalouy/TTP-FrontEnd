@@ -1,57 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router";
-import {
-  Grid,
-} from "@mui/material";
+import React from "react";
+import { Grid } from "@mui/material";
 import IMAGES from "../../../assets/img/Images";
-import {
-  selectIsAuth,
-  selectResponse,
-} from "../../../models/Auth";
-import { useAppSelector } from "../../../models/hooks";
-import { toast } from "react-toastify";
 import "../auth.css";
-import { IFailed, Props } from "src/types/views/Auth";
+import { Props } from "src/types/views/Auth";
 import AuthContainer from "../AuthComponents/AuthContainer";
 import LoginForm from "./LoginForm";
 
-const Login: React.FC<Props> = ({ history }) => {
-
-  const [failed, setFailed] = useState<IFailed>({
-    status: false,
-    message: "",
-  });
-  // const watch = useAppSelector(selectAuth);
-  const isAuth = useAppSelector(selectIsAuth);
-  const res = useAppSelector(selectResponse);
-
-
-  useEffect(() => {
-    if (res.msg && res.status !== 200) {
-      if (res.page === "login") {
-        toast.clearWaitingQueue();
-        setFailed({
-          message: res.msg,
-          status: res.status,
-        });
-      }
-    }
-    if (isAuth === true) {
-      history.replace("/Overview");
-    }
-  }, [res]);
-
-  if (isAuth) {
-    return <Redirect to={"/Overview"} />;
-  }
-
-
+const Login: React.FC<Props> = () => {
   return (
     <AuthContainer>
-      <LoginForm
-        failed={failed}
-        setFailed={setFailed}
-        history={history} />
+      <LoginForm />
       <Grid
         item
         display={{ xs: "none", sm: "none", lg: "block", md: "block" }}

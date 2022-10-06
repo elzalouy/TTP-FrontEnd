@@ -1,60 +1,24 @@
 import { RouteComponentProps } from "react-router-dom";
-import {
-  Grid,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import IMAGES from "../../../assets/img/Images";
 import Ttp from "../../../assets/img/ttp_logo.png";
-import { Redirect } from "react-router";
-import { useEffect, useState } from "react";
-import {
-  selectAuth,
-  selectIsAuth,
-  selectResponse,
-} from "../../../models/Auth";
+import { useState } from "react";
+import { selectUserState } from "../../../models/Auth";
 import { useAppSelector } from "../../../models/hooks";
 import AuthContainer from "../AuthComponents/AuthContainer";
 import UpdateForm from "./UpdateForm";
 import { IFailed, Props } from "src/types/views/Auth";
 
-export const UpdatePassword: React.FC<Props> = ({
-  history,
-}) => {
-
-  const [visible, setVisible] = useState(false);
-  const [failed, setFailed] = useState<IFailed>({
+export const UpdatePassword: React.FC<Props> = ({ history }) => {
+  const [visible] = useState(false);
+  const [failed] = useState<IFailed>({
     status: false,
     message: "",
   });
-  const auth = useAppSelector(selectAuth);
-  const isAuth = useAppSelector(selectIsAuth);
-  const res = useAppSelector(selectResponse);
+  const auth = useAppSelector(selectUserState);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const isTokenValid = localStorage.getItem("token");
-
-
-
-  useEffect(() => {
-    if (res.msg === "" && res.status === "") {
-      setVisible(false);
-    } else if (res.msg !== "" && res.status !== 200) {
-      setVisible(false);
-      if (res.page === "newPassword") {
-        setFailed({
-          message: res.msg,
-          status: res.status,
-        });
-      }
-    } else {
-      setVisible(true);
-    }
-  }, [auth, res]);
-
-  if (isAuth && isTokenValid) {
-    return <Redirect to={"/Overview"} />;
-  }
 
   return (
     <AuthContainer>
@@ -76,9 +40,7 @@ export const UpdatePassword: React.FC<Props> = ({
             Your password has been set successfully
           </p>
         ) : (
-          <UpdateForm
-            failed={failed}
-            history={history} />
+          <UpdateForm failed={failed} history={history} />
         )}
       </Grid>
       <Grid

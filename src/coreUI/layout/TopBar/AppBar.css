@@ -1,0 +1,11 @@
+.AppBar{
+    width: 100vw;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 0px;
+    box-shadow: none;
+    z-index: 2;
+}
+

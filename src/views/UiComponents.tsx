@@ -20,7 +20,9 @@ const UIComponents = ({}: UIComponentsProps) => {
           expanded={true}
           setExpanded={() => {}}
           bgColor="#FFC5001A"
-        ></TableContainer>
+        >
+          <></>
+        </TableContainer>
         {/* Out Titled Container */}
         <Grid xs={10}>
           <TableContainer

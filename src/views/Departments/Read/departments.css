@@ -1,7 +1,7 @@
 .departments-page {
-  padding: 2%;
   background-color: #fafafb;
-  min-height: 100vh;
+  min-height: 100%;
+  min-width: 100%;
 }
 
 .departments-title {
@@ -32,7 +32,7 @@
 }
 
 .department-Card:hover {
-  box-shadow: 0px 6px 20px #0000001A;
+  box-shadow: 0px 6px 20px #0000001a;
 }
 
 .dp-card-header {
@@ -73,7 +73,7 @@
   color: #0079bf;
 }
 
-.tasks-count>img {
+.tasks-count > img {
   margin-right: 5px;
 }
 

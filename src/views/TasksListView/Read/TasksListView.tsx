@@ -111,8 +111,6 @@ export const TasksListView: React.FC<Props> = (props) => {
       alignItems="center"
       alignContent={"center"}
       alignSelf="flex-start"
-      padding={SM ? 2 : 4}
-      marginTop={MD ? 6 : 0}
       sx={{ backgroundColor: "#FAFAFB" }}
     >
       <Grid

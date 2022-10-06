@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { openConnection } from "../../services/socket.io";
-import { selectIsAuth, selectUser } from "../../models/Auth";
+import { selectUser } from "../../models/Auth";
 import { clientsActions, getAllClients } from "../../models/Clients";
 import {
   departmentsActions,
@@ -25,9 +25,12 @@ import {
   setTasksStatistics,
 } from "src/models/Statistics";
 
-const AppHooks: React.FC = (props) => {
+type Props = {
+  children: any;
+};
+
+const AppHooks: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const isAuthed = useAppSelector(selectIsAuth);
   const {
     projects,
     setTasksStatisticsHook,
@@ -260,11 +263,8 @@ const AppHooks: React.FC = (props) => {
         setNewDepartment(data);
       });
       socket.on("notification-update", (data: any) => {
-        if (isAuthed) {
-          console.log("update notifications");
-          dispatch(getUnNotified(null));
-          dispatch(getNotifications(`/0/10`));
-        }
+        dispatch(getUnNotified(null));
+        dispatch(getNotifications(`/0/10`));
       });
       socket.on("create-client", (client) => {
         console.log("create client socket event fired", client);

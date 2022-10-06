@@ -7,8 +7,7 @@ import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import "./departments.css";
 import DepartmentCard from "./Card/DepartmentCard";
 
-
-export const Departments = () => {
+export const Departments = (props: any) => {
   let departments = useAppSelector(selectAllDepartments);
   const role = useAppSelector(selectRole);
   const theme = useTheme();
@@ -16,19 +15,15 @@ export const Departments = () => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box className="departments-page" sx={{ width: "100%" }}>
-      <Box sx={MD ? { paddingTop: "50px" } : { paddingTop: "0px" }}>
+    <Box className="departments-page">
+      <Box>
         <Typography
           fontSize={24}
           variant="h2"
-          style={
-            SM
-              ? { margin: "40px 0", paddingBottom: "20px" }
-              : {
-                margin: "10px 0",
-                paddingBottom: "20px",
-              }
-          }
+          style={{
+            margin: SM ? "40px 0" : "10px 0",
+            paddingBottom: "20px",
+          }}
         >
           Departments
         </Typography>
@@ -45,9 +40,9 @@ export const Departments = () => {
           borderRadius: "16px",
           borderColor: "#e2e2ea",
           marginTop: 4,
-          marginBottom:4,
-        }}>
-        {/* <div className="all-departments"> */}
+          marginBottom: 4,
+        }}
+      >
         {departments?.map((dep: IDepartmentState) => (
           <Grid sm={6} xs={12} md={6} lg={4} padding={2}>
             <DepartmentCard department={dep} key={dep._id} />
@@ -56,7 +51,6 @@ export const Departments = () => {
         <Grid sm={6} xs={12} md={6} lg={4} padding={2}>
           {role !== "PM" && <CreateNewDepartment />}
         </Grid>
-        {/* </div> */}
       </Grid>
     </Box>
   );

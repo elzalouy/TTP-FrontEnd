@@ -11,7 +11,7 @@ import { categoriesActions } from "../../../models/Categories";
 import { selectRole } from "../../../models/Auth";
 import EditCategory from "../Edit/EditCategory";
 
-export const Categories = () => {
+export const Categories = (props: any) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState<string>("");
   const role = useAppSelector(selectRole);
@@ -36,7 +36,7 @@ export const Categories = () => {
 
   return (
     <Box className="category-page" sx={{ width: "100%" }}>
-      <Box sx={MD ? { paddingTop: "50px" } : { paddingTop: "0px" }}>
+      <Box>
         <Typography
           fontSize={24}
           variant="h2"
@@ -85,10 +85,7 @@ export const Categories = () => {
         </Grid>
       </Grid>
       {role !== "PM" && (
-        <EditCategory
-          display={display}
-          handleSetDisplay={handleSetDisplay}
-        />
+        <EditCategory display={display} handleSetDisplay={handleSetDisplay} />
       )}
     </Box>
   );

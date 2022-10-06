@@ -20,7 +20,7 @@ describe("Create Task", () => {
       .first()
       .click({ force: true });
     cy.get("button").contains("Next").click();
-    cy.get(".closeIconProject").click().wait(2000);
+    cy.getByClassName("closeIconProject").click().wait(2000);
     cy.get("tr").contains("Automated Project").click();
     cy.url().should("include", "/TasksBoard");
   });
@@ -28,7 +28,7 @@ describe("Create Task", () => {
   it("It should open a project and create a task", () => {
     cy.wait(2000).get("tr").contains("Automated Project").click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".add-new-task").click().wait(500);
+    cy.getByClassName("add-new-task").click().wait(500);
     cy.get('[data-test-id="create-task-name"]').first().type("Automated Task");
     cy.get('[data-test-id="create-task-dep-select"]')
       .click()
@@ -43,7 +43,9 @@ describe("Create Task", () => {
       .first()
       .click({ force: true });
     cy.get('[data-test-id="create-task-submit"]').first().click().wait(1000);
-    cy.get(".task-card").contains("Automated Task").should("be.visible");
+    cy.getByClassName("task-card")
+      .contains("Automated Task")
+      .should("be.visible");
   });
 });
 
@@ -55,7 +57,7 @@ describe("Edit Task", () => {
       .should("be.visible")
       .click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".task-card").contains("Automated Task").click();
+    cy.getByClassName("task-card").contains("Automated Task").click();
     cy.get('[data-test-id="edit-task-name"]')
       .clear()
       .type("Automated Task Updated");
@@ -75,7 +77,7 @@ describe("Delete Task", () => {
       .should("be.visible")
       .click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".task-card")
+    cy.getByClassName("task-card")
       .contains("Automated Task Updated")
       .siblings("div")
       .click();
@@ -92,10 +94,10 @@ describe("Delete Task", () => {
       .get("tr")
       .contains("tr", "Automated Project")
       .within(() => {
-        return cy.get(".project-actions > h3").click();
+        return cy.getByClassName("project-actions > h3").click();
       });
     cy.get("button[id=delete-project-button]").click();
-    cy.get(".controllers-delete").first().click();
+    cy.getByClassName("controllers-delete").first().click();
     cy.get("tr").should("not.have.text", "Automated Project");
   });
 });
@@ -108,7 +110,7 @@ describe("Create Task with Attachment Image", () => {
       .click()
       .wait(1000)
       .get('[data-test-id="create-project-client-select-option"]')
-      .first()
+      .first().
       .click({ force: true });
     cy.get('[data-test-id="create-project-pm-select"]')
       .click()
@@ -117,7 +119,7 @@ describe("Create Task with Attachment Image", () => {
       .first()
       .click({ force: true });
     cy.get("button").contains("Next").click();
-    cy.get(".closeIconProject").click().wait(2000);
+    cy.getByClassName("closeIconProject").click().wait(2000);
     cy.get("tr").contains("Automated Project").click();
     cy.url().should("include", "/TasksBoard");
   });
@@ -125,7 +127,7 @@ describe("Create Task with Attachment Image", () => {
   it("It should open a project and create a task with image attachment", () => {
     cy.wait(2000).get("tr").contains("Automated Project").click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".add-new-task").click().wait(500);
+    cy.getByClassName("add-new-task").click().wait(500);
     cy.get('[data-test-id="create-task-name"]')
       .first()
       .type("Automated Task With Attachment");
@@ -146,7 +148,7 @@ describe("Create Task with Attachment Image", () => {
       .attachFile("batman.png")
       .wait(1000);
     cy.get('[data-test-id="create-task-submit"]').first().click().wait(1000);
-    cy.get(".task-card")
+    cy.getByClassName("task-card")
       .contains("Automated Task With Attachment")
       .should("be.visible");
   });
@@ -160,7 +162,9 @@ describe("Edit Task with Attachment", () => {
       .should("be.visible")
       .click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".task-card").contains("Automated Task With Attachment").click();
+    cy.getByClassName("task-card")
+      .contains("Automated Task With Attachment")
+      .click();
     cy.get('[data-test-id="edit-task-name"]')
       .clear()
       .type("Automated Task With Attachment Updated");
@@ -178,7 +182,9 @@ describe("Edit Task with Attachment", () => {
       .should("be.visible")
       .click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".task-card").contains("Automated Task With Attachment").click();
+    cy.getByClassName("task-card")
+      .contains("Automated Task With Attachment")
+      .click();
     cy.get('[data-test-id="project-task-file"]')
       .first()
       .attachFile("test.pdf")
@@ -197,7 +203,7 @@ describe("Edit Task with Attachment", () => {
       .should("be.visible")
       .click();
     cy.url().should("include", "/TasksBoard");
-    cy.get(".task-card")
+    cy.getByClassName("task-card")
       .contains("Automated Task With Attachment")
       .siblings("div")
       .click();
@@ -214,10 +220,10 @@ describe("Edit Task with Attachment", () => {
       .get("tr")
       .contains("tr", "Automated Project")
       .within(() => {
-        return cy.get(".project-actions > h3").click();
+        return cy.getByClassName("project-actions > h3").click();
       });
     cy.get("button[id=delete-project-button]").click();
-    cy.get(".controllers-delete").first().click();
+    cy.getByClassName("controllers-delete").first().click();
     cy.get("tr").should("not.have.text", "Automated Project");
   });
 });

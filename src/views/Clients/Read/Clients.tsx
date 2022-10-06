@@ -12,7 +12,7 @@ import { clientsActions } from "../../../models/Clients";
 import { selectRole } from "../../../models/Auth";
 import { IClient } from "src/types/views/Client";
 
-export const Clients: React.FC<IClient> = () => {
+export const Clients = (props: any) => {
   const dispatch = useDispatch();
   const [clients, setClients] = useState<IClient[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -36,7 +36,7 @@ export const Clients: React.FC<IClient> = () => {
   }, [clientData]);
 
   return (
-    <Grid container paddingX={2} paddingY={4} pt={SM ? 8 : 4} pb={SM ? 5 : 4}>
+    <Grid container pb={SM ? 5 : 4}>
       <Grid container xs={12} my={1} marginX={0} px={0}>
         <Typography variant="h2">Clients</Typography>
       </Grid>

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import App from "./App/App";
 import store from "./models/store";
 import themes from "./coreUI/themes";
 import { Provider as StoreProvider } from "react-redux";

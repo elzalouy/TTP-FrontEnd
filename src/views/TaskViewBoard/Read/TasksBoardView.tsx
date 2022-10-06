@@ -37,16 +37,8 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
         overflowX: "hidden",
         overflowY: "hidden",
       }}
-      padding={0}
-      margin={0}
-      marginTop={{ xs: 8, sm: 8, md: 0, lg: 0 }}
     >
-      <Grid
-        paddingX={4}
-        item
-        xs={12}
-        sx={{ marginBottom: "20px", overflow: "hidden" }}
-      >
+      <Grid item xs={12} sx={{ marginBottom: "20px", overflow: "hidden" }}>
         <Stack
           direction="row"
           justifyContent="space-between"

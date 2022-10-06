@@ -16,7 +16,7 @@ import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import NotificationItemSkeleton from "./Loading/NotificationSkeleton";
 
-export const Notifications = () => {
+export const Notifications = (props: any) => {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const loading = useAppSelector(selectNotificationsLoading);

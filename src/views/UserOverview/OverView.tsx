@@ -11,37 +11,14 @@ import { RouteComponentProps, useHistory } from "react-router";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../models/hooks";
-import { getUserInfo, logout, selectRole, selectUser } from "../../models/Auth";
+import { selectRole, selectUser } from "../../models/Auth";
 import { selectSatistics } from "../../models/Statistics";
-import { checkAuthToken } from "../../services/api";
-import {
-  ProjectsActions,
-  selectAllProjects,
-  selectTasks,
-} from "src/models/Projects";
 import { IOverview } from "src/types/views/Overview";
 
 export const OverView: FC<IOverview> = (props) => {
-  const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
-  const userName = useAppSelector(selectUser);
-  const statistics = useAppSelector(selectSatistics);
-  const { projects, loading } = useAppSelector(selectAllProjects);
-  const tasks = useAppSelector(selectTasks);
   const user = useAppSelector(selectUser);
-  const pathName = useHistory().location.pathname;
-  console.log({ statistics });
-
-  useEffect(() => {
-    let id = localStorage.getItem("id");
-    if (checkAuthToken() && id) {
-      dispatch(
-        getUserInfo({
-          id: id,
-        })
-      );
-    } else dispatch(logout(true));
-  }, [dispatch, props.history]);
+  const statistics = useAppSelector(selectSatistics);
 
   return (
     <>
@@ -50,7 +27,6 @@ export const OverView: FC<IOverview> = (props) => {
         justifyContent={"space-between"}
         alignItems={"normal"}
         direction={"row"}
-        paddingX={{ xs: 2, lg: 5, md: 5, sm: 2 }}
         bgcolor={"#FAFAFB"}
       >
         <Grid
@@ -66,14 +42,7 @@ export const OverView: FC<IOverview> = (props) => {
               display: "inline-flex",
             }}
           >
-            <UserName
-              loading={statistics.loading}
-              name={
-                userName?.user?.name === undefined
-                  ? userName?.name
-                  : userName?.user?.name
-              }
-            />
+            <UserName loading={statistics.loading} name={user?.name} />
           </Box>
           <Typography
             color="#171725"

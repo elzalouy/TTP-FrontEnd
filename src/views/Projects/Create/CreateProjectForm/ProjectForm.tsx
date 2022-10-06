@@ -19,6 +19,7 @@ import {
   selectNewProject,
 } from "src/models/Projects";
 import { selectUi } from "src/models/Ui/UI.selectors";
+import { getUserTokenInfo } from "src/services/api";
 import { validateCreateProject } from "src/services/validations/project.schema";
 import { IJoiValidation, IProjectFormProps } from "src/types/views/Projects";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
@@ -102,37 +103,41 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const handleCreateProject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    let project = {
-      name: data?.name,
-      projectManager: data?.projectManager,
-      projectManagerName: PMs.find((item) => item._id === data?.projectManager)
-        ?.name,
-      projectDeadline:
-        data?.deadline !== "" && data?.deadline !== null
-          ? moment(data?.deadline).toDate()
-          : null,
-      startDate:
-        data?.startDate !== "" && data.startDate !== null
-          ? moment(data?.startDate).toDate()
-          : null,
-      clientId: data?.clientId,
-      numberOfFinishedTasks: 0,
-      numberOfTasks: 0,
-      projectStatus:
-        (data.deadline && data.startDate) !== null
-          ? "inProgress"
-          : "Not Started",
-      completedDate: null,
-      adminId: localStorage.getItem("id"),
-    };
+    let token = getUserTokenInfo();
+    if (token !== null) {
+      let project = {
+        name: data?.name,
+        projectManager: data?.projectManager,
+        projectManagerName: PMs.find(
+          (item) => item._id === data?.projectManager
+        )?.name,
+        projectDeadline:
+          data?.deadline !== "" && data?.deadline !== null
+            ? moment(data?.deadline).toDate()
+            : null,
+        startDate:
+          data?.startDate !== "" && data.startDate !== null
+            ? moment(data?.startDate).toDate()
+            : null,
+        clientId: data?.clientId,
+        numberOfFinishedTasks: 0,
+        numberOfTasks: 0,
+        projectStatus:
+          (data.deadline && data.startDate) !== null
+            ? "inProgress"
+            : "Not Started",
+        completedDate: null,
+        adminId: token?.id,
+      };
 
-    let isValid = validateCreateProject(project);
+      let isValid = validateCreateProject(project);
 
-    if (isValid.error) {
-      setError(isValid);
-      ToastError(isValid.error.message);
-    } else {
-      dispatch(createProject({ data: project, setcurrentStep, dispatch }));
+      if (isValid.error) {
+        setError(isValid);
+        ToastError(isValid.error.message);
+      } else {
+        dispatch(createProject({ data: project, setcurrentStep, dispatch }));
+      }
     }
   };
 
@@ -210,7 +215,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             control={control}
             placeholder="Start date"
             register={register}
-            dataTestId="start-date"
+            dataTestId="create-project-date-input"
             setValue={setValue}
             tempError={validateError.error?.details[0].path.includes(
               "startDate"
@@ -222,7 +227,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             label={"Deadline"}
             name="deadline"
             control={control}
-            dataTestId="deadline"
+            dataTestId="create-project-due-input"
             placeholder="Deadline"
             register={register}
             setValue={setValue}

@@ -1,44 +1,21 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import IMAGES from "../../../assets/img/Images";
 import Ttp from "../../../assets/img/ttp_logo.png";
-import { Redirect } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPayload } from "../../../models/PM";
-import { selectIsAuth } from "../../../models/Auth";
 import { IFailed, Props } from "src/types/views/Auth";
 import ResetForm from "./ResetForm";
 import AuthContainer from "../AuthComponents/AuthContainer";
 
 export const ResetPassword: React.FC<Props> = ({ history }) => {
-  const [visible, setVisible] = useState(false);
-  const [failed, setFailed] = useState<IFailed>({
+  const [visible] = useState(false);
+  const [failed] = useState<IFailed>({
     status: false,
     message: "",
   });
-  const isAuth = useAppSelector(selectIsAuth);
-  const res = useAppSelector(selectPayload);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTokenValid = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (res.msg === "" && res.status === "") {
-      setVisible(false);
-    } else if (res.msg !== "" && res.status !== 200) {
-      setVisible(false);
-      setFailed({
-        message: res.msg,
-        status: res.status,
-      });
-    } else {
-      setVisible(true);
-    }
-  }, [res, isAuth]);
-
-  if (isAuth && isTokenValid) {
-    return <Redirect to={"/Overview"} />;
-  }
 
   return (
     <AuthContainer>

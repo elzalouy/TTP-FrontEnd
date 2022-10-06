@@ -11,7 +11,7 @@ import {
   Box,
 } from "@mui/material";
 import "../../../coreUI/themes/style.css";
-import "../../../App.css";
+import "src/App/App.css";
 import MailLockIcon from "@mui/icons-material/MailLock";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { FC } from "react";
@@ -30,7 +30,6 @@ import { useAppSelector } from "../../../models/hooks";
 import { selectAllProjects } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { IProjectManagersProps } from "src/types/components/Table";
-
 
 const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
   const project = useAppSelector(selectAllProjects);
@@ -88,11 +87,7 @@ const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
         <Table
           size="small"
           aria-label="a dense table"
-          style={
-            MD
-              ? { width: "140%", borderColor: "#EBEFF2" }
-              : { width: "100%", borderColor: "#EBEFF2" }
-          }
+          style={{ width: "100%", borderColor: "#EBEFF2" }}
         >
           <TableHead>
             <TableRow>
@@ -160,7 +155,6 @@ const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
           </TableHead>
           <TableBody>
             {cellsData.map((cellData) => {
-              
               const { _id, name, email, password } = cellData;
               let inProgress = project?.projects?.filter(
                 (item) =>

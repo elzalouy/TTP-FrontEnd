@@ -9,16 +9,13 @@ import {
 } from "@mui/material";
 import "../../../views/TasksListView/Read/TasksListView.css";
 import * as React from "react";
-import "../../../App.css";
-import { ProjectsActions } from "../../../models/Projects";
+import "src/App/App.css";
 import _ from "lodash";
-import { RouteComponentProps, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import { useDispatch } from "react-redux";
-import { toggleViewTaskPopup } from "../../../models/Ui";
-import { Project, Task } from "../../../types/models/Projects";
 import { ITasksTableProps } from "src/types/components/Table";
 
 const TasksTable: React.FC<ITasksTableProps> = ({

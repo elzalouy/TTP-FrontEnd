@@ -3,6 +3,7 @@ import * as React from "react";
 
 interface StatusProps {
   status?: string | null;
+  children?: any;
 }
 
 const Status: React.FC<StatusProps> = (props) => {

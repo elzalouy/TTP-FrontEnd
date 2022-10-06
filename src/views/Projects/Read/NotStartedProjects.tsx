@@ -75,6 +75,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
         {loading === false ? (
           <div className="create-button-table-wrapper">
             <ProjectsTable
+              dataTestIdQuote="NotStarted-projects-"
               align="center"
               textSize="medium"
               status={"Not Started"}

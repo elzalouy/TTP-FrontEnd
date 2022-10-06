@@ -8,16 +8,17 @@ import PasswordInput from "src/coreUI/components/Inputs/Textfield/PasswordInput"
 import { selectLoading, signIn } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
 import { IFormInputs } from "src/types/components/Inputs";
-import { ILoginForm } from "src/types/views/Auth";
 import Ttp from "../../../assets/img/ttp_logo.png";
+import { useHistory } from "react-router";
 
-const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
+const LoginForm = ({}) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
     register,
   } = useForm<IFormInputs>();
+  const history = useHistory();
   const loading = useAppSelector(selectLoading);
   const dispatch = useDispatch();
   const [visible, setVisiblity] = useState<boolean>(false);
@@ -25,9 +26,7 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-
     let caseInsensivtiveEmail = data.email.toLowerCase();
-    
     dispatch(
       signIn({
         data: {
@@ -37,10 +36,6 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
         history,
       })
     );
-    setFailed({
-      message: "",
-      status: false,
-    });
   };
 
   return (
@@ -67,11 +62,6 @@ const LoginForm: FC<ILoginForm> = ({ failed, setFailed, history }) => {
         >
           Login to your account
         </Typography>
-        {failed.status && (
-          <p className="error-text top-margin">
-            Invalid Email Address or Password
-          </p>
-        )}
         <ControlledInput
           name="email"
           label="email address"

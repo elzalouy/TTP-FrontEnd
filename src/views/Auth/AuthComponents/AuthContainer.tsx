@@ -2,7 +2,11 @@ import { FC } from "react";
 import { Grid, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material";
 
-const AuthContainer: FC = ({ children }) => {
+type Props = {
+  children: any;
+};
+
+const AuthContainer: FC<Props> = ({ children }) => {
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
@@ -14,7 +18,6 @@ const AuthContainer: FC = ({ children }) => {
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
-      marginTop={5}
     >
       <Grid
         item
@@ -28,13 +31,9 @@ const AuthContainer: FC = ({ children }) => {
         container
         className="auth-container"
         direction="row"
-        sx={
-          SM
-            ? { boxShadow: "none" }
-            : {
-              boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-            }
-        }
+        sx={{
+          boxShadow: SM ? "none" : "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+        }}
       >
         {children}
       </Grid>

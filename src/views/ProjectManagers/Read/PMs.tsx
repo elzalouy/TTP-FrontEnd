@@ -10,9 +10,7 @@ import { ProjectManager, selectPMs } from "../../../models/PM";
 import { selectRole } from "../../../models/Auth";
 import { Redirect } from "react-router";
 
-type Props = {};
-
-export const ProjectManagers: React.FC<Props> = () => {
+export const ProjectManagers = (Props: any) => {
   const [cellsData, setCellsData] = useState<ProjectManager[]>([]);
   const productManagerData = useAppSelector(selectPMs);
   const onlyPMS = productManagerData.filter((pm) => pm.role !== "OM");
@@ -31,12 +29,11 @@ export const ProjectManagers: React.FC<Props> = () => {
 
   return (
     <Box
-      sx={
-        SM
-          ? { backgroundColor: "#FAFAFB", width: "100%" }
-          : { backgroundColor: "#FAFAFB", width: "100%" }
-      }
-      p={"2%"}
+      sx={{
+        bgcolor: "#FAFAFB !important",
+        backgroundColor: "#FAFAFB",
+        width: "100%",
+      }}
     >
       <Box
         width={"100%"}

@@ -10,18 +10,15 @@ export interface User {
   image: string;
   type?: MemberType;
   userTeams?: string[];
-  user?: User;
+}
+export interface ITokenInfo {
+  id: string;
+  email: string;
+  role: "OM" | "PM" | "SM";
 }
 
-interface Res {
-  msg: string;
-  status: number | string;
-  page?: string;
-}
 export interface UserInterface {
   loading: boolean | null;
+  authed: boolean;
   User: User | null;
-  authState: boolean;
-  logoutState: boolean;
-  Payload: Res;
 }

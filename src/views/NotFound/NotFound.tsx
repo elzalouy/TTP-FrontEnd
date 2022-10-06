@@ -3,35 +3,13 @@ import React, { FC } from "react";
 import "./notfound.css";
 import { Redirect, RouteComponentProps, useLocation } from "react-router";
 import IMAGES from "../../assets/img/Images";
-import { checkAuthToken } from "../../services/api";
+import { isAuthedUser } from "../../services/api";
 import { useAppSelector } from "../../models/hooks";
-import { selectIsAuth } from "../../models/Auth";
 interface NotFoundProps {
   history: RouteComponentProps["history"];
 }
 
 export const NotFound: FC<NotFoundProps> = (props) => {
-  const location = useLocation();
-  const isAuth = useAppSelector(selectIsAuth);
-
-  if (location.pathname === "/" && checkAuthToken()) {
-    return (
-      <div className="notfound">
-        <Grid
-          container
-          justifyContent={"center"}
-          height={"100vh"}
-          alignItems="center"
-          direction={"column"}
-        >
-          <CircularProgress sx={{ color: "black" }} />
-        </Grid>
-      </div>
-    );
-  } else if (location.pathname === "/" && (!checkAuthToken() || !isAuth)) {
-    return <Redirect to={"/login"} />;
-  }
-
   return (
     <div className="notfound">
       <Grid

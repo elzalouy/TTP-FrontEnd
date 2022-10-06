@@ -15,12 +15,14 @@ const PopUp: React.FC<IPopup> = ({
   margin,
   containerClassName,
 }) => {
-
   const open = useAppSelector(selectSideMenuToggle);
-
   return (
     <div
-      className={open ? "container-popup" + " " + containerClassName : "container-popup" + " " + containerClassName + " " + "open-popup"}
+      className={
+        open
+          ? "container-popup" + " " + containerClassName
+          : "container-popup" + " " + containerClassName + " " + "open-popup"
+      }
       style={{ display: show, backgroundColor: color }}
     >
       <div

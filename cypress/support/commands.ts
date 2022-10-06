@@ -9,6 +9,7 @@ const url =
 import "cypress-file-upload";
 import { CypressSelector } from "cypress/global";
 import { mount } from "cypress/react";
+import { Project } from "src/types/models/Projects";
 
 Cypress.Commands.add("mount", mount);
 
@@ -47,6 +48,16 @@ Cypress.Commands.add("getDepartments", () => {
   });
 });
 
+Cypress.Commands.add("getUsers", () => {
+  return cy.request({
+    method: "GET",
+    url: `${url}getUsers`,
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+});
+
 Cypress.Commands.add("deleteAllDepartments", () =>
   cy.request({
     method: "DELETE",
@@ -56,20 +67,83 @@ Cypress.Commands.add("deleteAllDepartments", () =>
     },
   })
 );
+
+Cypress.Commands.add("getClients", () => {
+  cy.request({
+    method: "GET",
+    url: `${url}getAllClients`,
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+});
+
 Cypress.Commands.add("getAllProjects", () => {
   cy.request({ method: "GET", url: `${url}getProject` });
 });
 
-Cypress.Commands.add("getBySel", (selector, ...args) => {
+Cypress.Commands.add("deleteAllProjects", () => {
+  cy.request({
+    method: "DELETE",
+    url: `${url}deleteProjects`,
+    body: {},
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+});
+
+Cypress.Commands.add("createAutomatedProject", () => {
+  let projectResult: Cypress.Response<Project>;
+  let project = cy.getUsers().then((users) => {
+    let pms = users.body.filter((item) => item.role === "PM");
+    cy.getClients().then((clients) => {
+      cy.request({
+        method: "POST",
+        url: `${url}createProject`,
+        body: {
+          name: "Automated project",
+          projectManager: pms[0]._id,
+          projectManagerName: pms[0].name,
+          clientId: clients.body[0]._id,
+          numberOfFinishedTasks: 0,
+          numberOfTasks: 0,
+          projectStatus: "Not Started",
+          completedDate: null,
+          adminId: localStorage.getItem("id"),
+        },
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }).then((result) => {
+        projectResult = result;
+      });
+    });
+    return projectResult;
+  });
+  return project;
+});
+
+Cypress.Commands.add("getByTestId", (selector, ...args) => {
   return cy.get(`[data-test-id="${selector}"]`, ...args);
 });
-Cypress.Commands.add("getBySelName", (selector: CypressSelector, ...args) => {
-  return cy.get(`[${selector.name}="${selector.value}"]`, ...args);
-});
-Cypress.Commands.add("getBySelLike", (selector, ...args) => {
+
+Cypress.Commands.add("getByTestIdLike", (selector, ...args) => {
   return cy.get(`[data-test-id*="${selector}"]`, ...args);
 });
 
-Cypress.Commands.add("getByName", (selector, ...args) => {
-  return cy.get(`input[name=${selector}]`, ...args);
+Cypress.Commands.add("getByDataAttr", (selector: CypressSelector, ...args) => {
+  return cy.get(`[${selector.name}="${selector.value}"]`, ...args);
+});
+
+Cypress.Commands.add("getByClassName", (selector, ...args) => {
+  return cy.get(`.${selector}`, ...args);
+});
+
+Cypress.Commands.add("getByAriaLabel", (selector, ...args) => {
+  return cy.get(`aria-label="${selector}"`, ...args);
+});
+
+Cypress.Commands.add("getByAriaLabelLike", (selector, ...args) => {
+  return cy.get(`aria-label*="${selector}"`);
 });

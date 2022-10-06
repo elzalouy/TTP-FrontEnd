@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
-import { toast } from "react-toastify";
-import { generateID } from "../../helpers/IdGenerator";
-import { removeAuthToken, setAuthToken } from "../../services/api";
+import { ToastError, ToastSuccess } from "src/coreUI/components/Typos/Alert";
+import { removeAuthToken } from "../../services/api";
 import api from "../../services/endpoints/auth";
 import apiPM from "../../services/endpoints/PMs";
 
@@ -12,24 +11,15 @@ export const signIn = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.signIn(args?.data);
       if (result.ok) {
-        args.history.push("/Overview");
         localStorage.setItem("token", result?.data?.token);
-        localStorage.setItem("id", result?.data?._id);
-        //This return below returns the error message and status for displaying on login UI
-        return result?.data;
+        args.history.push("/Overview");
+        ToastSuccess("Login successful");
+        return result.data;
       }
-      return result.data;
+      ToastError("Invalid Email Address or Password");
+      return rejectWithValue(result.data);
     } catch (error: any) {
-      toast.error("There was an error logging in", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "signin",
-      });
+      ToastError("There was an error logging in");
       rejectWithValue(error);
     }
   }
@@ -55,15 +45,9 @@ export const logout = createAsyncThunk<any, any, any>(
   "auth/logout",
   async (args, { rejectWithValue }) => {
     try {
-      let result = await api.signOut();
       removeAuthToken();
-      if (result.ok === true) {
-        if (args) {
-          return true;
-        } else {
-          return false;
-        }
-      } else return result.data;
+      ToastSuccess("Logout successful");
+      return true;
     } catch (error) {
       rejectWithValue(error);
     }
@@ -76,6 +60,7 @@ export const newPassword = createAsyncThunk<any, any, any>(
     try {
       let result = await api.newPasword(args);
       if (result.ok === true) {
+        ToastSuccess("New password set successfully");
         return result.data;
       } else return result.data;
     } catch (error) {
@@ -88,43 +73,17 @@ export const forgotPassword = createAsyncThunk<any, any, any>(
   "auth/forgotPassword",
   async (args: any, { rejectWithValue }) => {
     try {
-      let result = await api.forgotPassword(args);
+      let result = await api.forgotPassword(args.data);
       if (result.ok === true) {
-        toast.success("An Email has been set to reset your password", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        });
+        ToastSuccess("An Email has been set to reset your password");
+        args.history("/login");
         return result.data;
       } else {
-        toast.error("Invalid Email Address", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        });
+        ToastError("Invalid Email Address");
         return result.data;
       }
     } catch (error: any) {
-      toast.error("An error was encountered , Please try again later", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("An error was encountered , Please try again later");
       rejectWithValue(error);
     }
   }

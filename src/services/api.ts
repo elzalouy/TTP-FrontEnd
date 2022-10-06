@@ -1,5 +1,7 @@
 import { create } from "apisauce";
 import apiUrl from "./api.json";
+import decode from "jwt-decode";
+import { ITokenInfo } from "src/types/models/user";
 const api = create({
   baseURL:
     process.env.NODE_ENV === "development"
@@ -8,7 +10,7 @@ const api = create({
   headers: { "Content-Type": "application/json" },
 });
 
-export const checkAuthToken = () => {
+export const isAuthedUser = () => {
   try {
     let token = localStorage.getItem("token");
     if (token) {
@@ -18,7 +20,24 @@ export const checkAuthToken = () => {
     }
   } catch (error) {}
 };
-
+export const getUserTokenInfo = () => {
+  try {
+    let token = localStorage.getItem("token");
+    if (token) {
+      let user: ITokenInfo = decode(token);
+      return user;
+    }
+    return null;
+  } catch (error) {}
+};
+export const isPM = () => {
+  let token = getUserTokenInfo();
+  if (token) {
+    if (token.role === "PM") return true;
+    else return false;
+  }
+  return false;
+};
 export const removeAuthToken = () => {
   try {
     localStorage.removeItem("token");

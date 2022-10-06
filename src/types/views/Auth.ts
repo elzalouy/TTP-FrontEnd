@@ -10,7 +10,7 @@ export interface IFailed {
 export interface IForgetFormWrapper {
   history: RouteComponentProps["history"];
   visible: boolean;
-  failed:IFailed
+  failed: IFailed;
 }
 
 export interface IForgetForm {
@@ -18,19 +18,14 @@ export interface IForgetForm {
   register: any;
   errors: any;
   history: RouteComponentProps["history"];
-  onSubmit: any
+  onSubmit: any;
   handleSubmit: UseFormHandleSubmit<IFormInputs>;
   loading: boolean | null;
-  failed:IFailed
-}
-export interface ILoginForm {
   failed: IFailed;
-  setFailed: React.Dispatch<React.SetStateAction<IFailed>>;
-  history: RouteComponentProps["history"];
 }
 
 export interface IResetForm {
-  failed: IFailed
+  failed: IFailed;
   history: RouteComponentProps["history"];
 }
 

@@ -275,6 +275,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             </div>
             <div>
               <DateInput
+                dataTestId="edit-project-due-date-input"
                 label={"Deadline"}
                 name="deadline"
                 control={control}

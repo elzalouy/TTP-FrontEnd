@@ -33,7 +33,11 @@ import DeleteDepartment from "src/views/Departments/Delete/DeleteDepartment";
 import { useLocation } from "react-router";
 import EditTasks from "src/views/TasksListView/Edit/EditTasks";
 
-const Modals: React.FC = (props) => {
+type Props = {
+  children?: any;
+};
+
+const Modals: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const {

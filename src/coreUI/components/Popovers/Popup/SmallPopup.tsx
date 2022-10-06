@@ -6,7 +6,7 @@ import "./popUp.css";
 type Props = {
   show: string;
   widthSize?: string;
-  children: object;
+  children: any;
   dataTestId?: string;
 };
 

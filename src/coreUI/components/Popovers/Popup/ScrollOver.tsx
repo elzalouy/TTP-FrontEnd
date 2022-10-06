@@ -4,6 +4,7 @@ import "./popUp.css";
 interface ScrollOverProps {
   popover: boolean;
   setPopover: any;
+  children: any;
 }
 
 const ScrollOver: React.FC<ScrollOverProps> = (props) => {

@@ -1,19 +1,18 @@
-import "../../../../App.css";
+import "src/App/App.css";
 import * as React from "react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { ITableContainerProps } from "../../../../types/components/Containers";
 import { tableContainerStyles } from "./styles";
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 const TableContainer: React.FC<ITableContainerProps> = (props) => {
-
   const theme = useTheme();
   const styles = tableContainerStyles(props.bgColor, props.outTitled)();
   const onExpand = () => {
     props.setExpanded(props.expanded ? false : true);
   };
-  
+
   return (
     <>
       {props.outTitled && (

@@ -3,6 +3,7 @@ import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { ToastWarning } from "src/coreUI/components/Typos/Alert";
 import { forgotPassword, selectLoading } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
 import { IFormInputs } from "src/types/components/Inputs";
@@ -30,26 +31,20 @@ const ForgetFormWrapper: FC<IForgetFormWrapper> = ({
     let pattern =
       /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
     let condition = pattern.test(data.email);
-    
+
     let caseInsensivtiveEmail = data.email.toLowerCase();
 
     if (condition) {
       dispatch(
         forgotPassword({
-          email: caseInsensivtiveEmail,
+          data: {
+            email: caseInsensivtiveEmail,
+          },
+          history: (route: string) => history.push(route),
         })
       );
     } else {
-      toast.warn("Please enter a valid email format", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastWarning("Please enter a valid email format");
     }
   };
 

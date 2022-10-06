@@ -4,6 +4,7 @@ import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { logout } from "../../../models/Auth";
 import logoutIcon from "../../../assets/img/logoutAlert.png";
 import Button from "src/coreUI/components/Buttons/Button";
+import { useHistory } from "react-router";
 
 interface LogoutProps {
   show: string;
@@ -12,10 +13,11 @@ interface LogoutProps {
 
 export const Logout: React.FC<LogoutProps> = ({ show, setShow }) => {
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logout(null));
+  const history = useHistory();
+  const handleLogout = async () => {
+    await dispatch(logout(null));
     setShow("none");
+    history.push("/login");
   };
 
   return (

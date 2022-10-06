@@ -16,10 +16,10 @@ import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../models/hooks";
 import { selectRole } from "../../../models/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
-import "../../../App.css";
 import { Project } from "../../../types/models/Projects";
 import { selectTasks } from "src/models/Projects";
 import { IProjectsTableProps } from "src/types/components/Table";
+import "src/App/App.css";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
@@ -103,7 +103,11 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
             ).length;
 
             return (
-              <TableRow className={classes.tbody} key={project._id}>
+              <TableRow
+                className={classes.tbody}
+                key={project._id}
+                data-test-id={`${props.dataTestIdQuote}-${project._id}`}
+              >
                 <TableCell
                   className={classes.tcellLeft}
                   sx={{
