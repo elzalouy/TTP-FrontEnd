@@ -162,7 +162,6 @@ const AppDrawer = (props: any) => {
                 text="Clients"
               />
             )}
-
             <DrawerItem
               {...props}
               select={props.select}
