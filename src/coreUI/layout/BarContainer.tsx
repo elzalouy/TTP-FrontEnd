@@ -19,6 +19,7 @@ const MenuContainer = (props: Props) => {
         <Box
           paddingX={{ sm: 1, xs: 1, md: 4, lg: 4 }}
           paddingTop={{ xs: 10, sm: 10, md: 4, lg: 4 }}
+          width={"100%"}
         >
           {props.children}
         </Box>

@@ -3,14 +3,14 @@ import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import CreateNewPM from "../Create/CreateNewPM";
-import "./projectManagers.css";
-import ProjectManagersTable from "../../../coreUI/components/Tables/PMtable";
+import "./managers.css";
+import ProjectManagersTable from "./PMtable";
 import { useAppSelector } from "../../../models/hooks";
 import { ProjectManager, selectPMs } from "../../../models/PM";
 import { selectRole } from "../../../models/Auth";
 import { Redirect } from "react-router";
 
-export const ProjectManagers = (Props: any) => {
+export const Managers = (Props: any) => {
   const [cellsData, setCellsData] = useState<ProjectManager[]>([]);
   const productManagerData = useAppSelector(selectPMs);
   const onlyPMS = productManagerData.filter((pm) => pm.role !== "OM");

@@ -17,8 +17,8 @@ import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { FC } from "react";
 import IMAGES from "../../../assets/img/Images";
 import { PMsActions, ProjectManager, resendMail } from "../../../models/PM";
-import EditPM from "../../../views/ProjectManagers/Edit/EditPM";
-import DeletePM from "../../../views/ProjectManagers/Delete/DeletePM";
+import EditPM from "../Edit/EditPM";
+import DeletePM from "../Delete/DeletePM";
 import { useDispatch } from "react-redux";
 import {
   toggleDeleteProjectManagerPopup,
@@ -30,6 +30,7 @@ import { useAppSelector } from "../../../models/hooks";
 import { selectAllProjects } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { IProjectManagersProps } from "src/types/components/Table";
+import { ToastSuccess, ToastWarning } from "src/coreUI/components/Typos/Alert";
 
 const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
   const project = useAppSelector(selectAllProjects);
@@ -42,27 +43,9 @@ const ProjectManagersTable: FC<IProjectManagersProps> = ({ cellsData }) => {
     let timeLimit = localStorage.getItem("limit");
     let currentTime = moment.now().toString();
     if (timeLimit && timeLimit >= currentTime) {
-      toast.warn("Please try to resend after one hour", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastWarning("Please try to resend after one hour");
     } else {
-      toast.success("Verification email sent successfully", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: "mail",
-      });
+      ToastSuccess("Verification email sent successfully");
       dispatch(resendMail(id));
       let duration = moment().add(1, "h").unix().toString();
       localStorage.setItem("limit", duration);

@@ -143,10 +143,10 @@ const AppDrawer = (props: any) => {
                 select={props.select}
                 open={open}
                 key="7"
-                onClick={() => history.push("/ProjectManagers")}
-                path={"/ProjectManagers"}
+                onClick={() => history.push("/Managers")}
+                path={"/Managers"}
                 Icon={() => <PersonIcon />}
-                text="Project Managers"
+                text="Managers"
               />
             )}
             {role !== "PM" && (
@@ -182,7 +182,7 @@ const AppDrawer = (props: any) => {
                 onClick={() => history.push("/Categories")}
                 path={"/Categories"}
                 Icon={() => <CategoryIcon />}
-                text="Category"
+                text="Categories"
               />
             )}
           </List>

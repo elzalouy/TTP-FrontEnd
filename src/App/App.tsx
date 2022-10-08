@@ -51,7 +51,7 @@ const App: React.FC = (props) => {
   }, [dispatch, mounted, tokenInfo, userState.authed]);
 
   return (
-    <Box height={"100vh"} width="100%" bgcolor="#FAFAFB !important">
+    <Box height={"100vh"} bgcolor="#FAFAFB !important">
       <AppHooks>
         <ToastContainer
           data-test-id="toastMessage"

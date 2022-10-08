@@ -3,7 +3,7 @@ export * from "./UserOverview";
 export * from "./TaskViewBoard";
 export * from "./TasksListView";
 export * from "./Projects";
-export * from "./ProjectManagers";
+export * from "./Managers";
 export * from "./Notifications";
 export * from "./NotFound/NotFound";
 export * from "./Departments";

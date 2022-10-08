@@ -11,7 +11,7 @@ import {
   NotFound,
   Notifications,
   OverView,
-  ProjectManagers,
+  Managers,
   Projects,
   ResetPassword,
   TasksBoardView,
@@ -225,16 +225,16 @@ const Routes = (props: RoutesProps) => {
       ),
     },
     {
-      routeName: "/ProjectManagers",
+      routeName: "/Managers",
       Route: (
         <Route
-          path="/ProjectManagers"
-          key="/ProjectManagers"
+          path="/Managers"
+          key="/Managers"
           render={(props) => {
             if (isAuthedUser() && !isPM())
               return (
                 <MenuContainer {...props}>
-                  <ProjectManagers {...props} />
+                  <Managers {...props} />
                 </MenuContainer>
               );
             else return <Redirect to="notAuthed" />;
@@ -260,10 +260,9 @@ const Routes = (props: RoutesProps) => {
         />
       ),
     },
-
     // {
     //   routeName: "/notFound",
-    //   Route: <Redirect to="/404" key="not-found" exact />,
+    //   Route: <Redirect to="/404" key="not-found" />,
     // },
   ]);
   return (
