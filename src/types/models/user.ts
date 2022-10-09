@@ -5,7 +5,7 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: "OM" | "PM" | "SM" | undefined;
   trelloMemberId: string;
   image: string;
   type?: MemberType;

@@ -26,10 +26,6 @@ interface RoutesProps {
 const Routes = (props: RoutesProps) => {
   const [routes] = React.useState([
     {
-      routeName: "/404",
-      Route: <Route key="/404" path="/404" component={NotFound} />,
-    },
-    {
       routeName: "/Overview",
       Route: (
         <Route
@@ -261,8 +257,8 @@ const Routes = (props: RoutesProps) => {
       ),
     },
     // {
-    //   routeName: "/notFound",
-    //   Route: <Redirect to="/404" key="not-found" />,
+    //   routeName: "/404",
+    //   Route: <Route key="/404" path={} component={NotFound} />,
     // },
   ]);
   return (

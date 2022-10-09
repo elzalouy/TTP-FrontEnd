@@ -10,7 +10,7 @@ import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { setProjectManagerId } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
-import { selectPMOptions, selectPMs } from "src/models/PM";
+import { Manager, selectPMOptions, selectPMs } from "src/models/Managers";
 import {
   createProject,
   editProject,
@@ -109,7 +109,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         name: data?.name,
         projectManager: data?.projectManager,
         projectManagerName: PMs.find(
-          (item) => item._id === data?.projectManager
+          (item: Manager) => item._id === data?.projectManager
         )?.name,
         projectDeadline:
           data?.deadline !== "" && data?.deadline !== null

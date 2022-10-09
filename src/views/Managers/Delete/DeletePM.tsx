@@ -3,13 +3,12 @@ import Button from "src/coreUI/components/Buttons/Button";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "../../../models/hooks";
-import { deletePM, selectLoading } from "../../../models/PM";
-import { select_Id } from "../../../models/PM/pm.selectors";
+import { deletePM, selectLoading } from "../../../models/Managers";
+import { select_Id } from "../../../models/Managers/managers.selectors";
 import { toggleDeleteProjectManagerPopup } from "../../../models/Ui";
 import { selectDeletePMPopup } from "../../../models/Ui/UI.selectors";
 
 const DeletePM = () => {
-
   const toggler = useAppSelector(selectDeletePMPopup);
   const _id = useAppSelector(select_Id);
   const loading = useAppSelector(selectLoading);

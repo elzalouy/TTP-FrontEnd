@@ -1,8 +1,8 @@
-import { Route, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllClients } from "../models/Clients";
-import { getPMs } from "../models/PM";
+import { getManagers } from "../models/Managers";
 import { getAllDepartments } from "../models/Departments";
 import { getAllCategories } from "../models/Categories";
 import { getAllProjects, getAllTasks } from "../models/Projects";
@@ -42,7 +42,7 @@ const App: React.FC = (props) => {
       dispatch(getAllDepartments(null));
       dispatch(getAllCategories(null));
       dispatch(getAllClients(null));
-      dispatch(getPMs(null));
+      dispatch(getManagers(null));
       dispatch(getAllProjects(null));
       dispatch(getAllTasks(null));
       dispatch(getUnNotified(null));
@@ -67,10 +67,10 @@ const App: React.FC = (props) => {
         />
         <PopUps />
         <Switch>
-          <Routes />
           {process.env.NODE_ENV === "development" && (
             <Route key="/DevComponents" path="/Dev" component={UIComponents} />
           )}
+          <Routes />
         </Switch>
       </AppHooks>
     </Box>

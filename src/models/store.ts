@@ -1,9 +1,9 @@
-import { combineReducers, configureStore, compose } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import reduxThunk from "redux-thunk";
 import categoriesSlice from "./Categories/categories.slice";
 import clientsSlice from "./Clients/clients.slice";
 import departmentsSlice from "./Departments/departments.slice";
-import pmSlice from "./PM/pm.slice";
+import pmSlice from "./Managers/managers.slice";
 import projectsSlice from "./Projects/projects.slice";
 import techMembersSlice from "./TechMember/techMembers.slice";
 import UISlice from "./Ui/UI.slice";
@@ -14,7 +14,7 @@ import statisticsSlice from "./Statistics/statistics.slice";
 const reducers = combineReducers({
   projects: projectsSlice,
   clients: clientsSlice,
-  PMs: pmSlice,
+  Managers: pmSlice,
   departments: departmentsSlice,
   categories: categoriesSlice,
   techMembers: techMembersSlice,

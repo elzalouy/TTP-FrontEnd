@@ -16,7 +16,7 @@ import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { selectPMOptions, selectPMs } from "../../../models/PM";
+import { selectPMOptions, selectPMs } from "../../../models/Managers";
 import {
   filterProjects,
   ProjectsActions,

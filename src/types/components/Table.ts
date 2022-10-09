@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "react-router";
-import { ProjectManager } from "src/models/PM";
+import { Manager } from "src/models/Managers";
 import { Project, Task } from "../models/Projects";
 
 export interface IProjectsTableProps {
@@ -8,7 +8,7 @@ export interface IProjectsTableProps {
   expanded: boolean;
   condition?: number | boolean;
   projects?: Project[] | any;
-  projectManagers: ProjectManager[];
+  projectManagers: Manager[];
   textSize: string;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
   history: RouteComponentProps["history"];
@@ -25,5 +25,5 @@ export interface ITasksTableProps {
 }
 
 export interface IProjectManagersProps {
-  cellsData: ProjectManager[];
+  cellsData: Manager[];
 }

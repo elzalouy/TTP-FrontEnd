@@ -16,7 +16,7 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { selectPMOptions, selectPMs } from "../../../models/PM";
+import { Manager, selectPMOptions, selectPMs } from "../../../models/Managers";
 import {
   editProject as editProjectAction,
   selectEditProject,
@@ -88,7 +88,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.name = formData.name;
     editProject.projectManager = formData.projectManager;
     editProject.projectManagerName = PMs.find(
-      (item) => item._id === formData.projectManager
+      (item: Manager) => item._id === formData.projectManager
     )?.name;
     editProject.projectDeadline = formData.deadline;
     editProject.clientId = formData.clientId;

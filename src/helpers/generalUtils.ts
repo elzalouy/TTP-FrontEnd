@@ -1,6 +1,6 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
 import _, { words } from "lodash";
-import { ProjectManager } from "src/models/PM";
+import { Manager } from "src/models/Managers";
 import { Status } from "src/types/views/BoardView";
 import { Project, ProjectsInterface, Task } from "../types/models/Projects";
 

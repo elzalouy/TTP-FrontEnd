@@ -1,9 +1,4 @@
-import {
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { FC, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -12,7 +7,7 @@ import Button from "src/coreUI/components/Buttons/Button";
 import PasswordInput from "src/coreUI/components/Inputs/Textfield/PasswordInput";
 import { selectLoading } from "src/models/Auth";
 import { useAppSelector } from "src/models/hooks";
-import { resetPMpassword } from "src/models/PM";
+import { resetPMpassword } from "src/models/Managers";
 import { IFormInputs } from "src/types/components/Inputs";
 import { IParam, IResetForm } from "src/types/views/Auth";
 

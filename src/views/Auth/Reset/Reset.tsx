@@ -3,7 +3,7 @@ import IMAGES from "../../../assets/img/Images";
 import Ttp from "../../../assets/img/ttp_logo.png";
 import { useState } from "react";
 import { useAppSelector } from "../../../models/hooks";
-import { selectPayload } from "../../../models/PM";
+import { selectPayload } from "../../../models/Managers";
 import { IFailed, Props } from "src/types/views/Auth";
 import ResetForm from "./ResetForm";
 import AuthContainer from "../AuthComponents/AuthContainer";

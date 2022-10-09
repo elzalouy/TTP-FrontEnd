@@ -3,7 +3,7 @@
 }
 .pm-container {
   background-color: #ffffff;
-  margin: 32px 100px 50px 8px;
+  margin-top: 32px;
   border-radius: 0;
   box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
@@ -21,13 +21,13 @@
   font-weight: bold;
 }
 
-@media (max-width:900px) {
-  .pm-container{
-    margin:20px 20px;
+@media (max-width: 900px) {
+  .pm-container {
+    margin: 20px 20px;
   }
 }
-@media (max-width:500px) {
-  .pm-container{
-    margin:20px 20px;
+@media (max-width: 500px) {
+  .pm-container {
+    margin: 20px 20px;
   }
 }

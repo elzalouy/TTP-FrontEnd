@@ -10,7 +10,7 @@ import { toggleCreateProjectPopup } from "src/models/Ui";
 import Loading from "src/coreUI/components/Loading/Loading";
 import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
-import { selectPMs } from "src/models/PM";
+import { selectPMs } from "src/models/Managers";
 import { RouteComponentProps } from "react-router";
 import "./projects.css";
 

@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
-// import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { useAppSelector } from "../../../models/hooks";
 import {
+  Manager,
   selectLoading,
   selectPMs,
   select_Id,
-  updatePM
-} from "../../../models/PM";
+  updatePM,
+} from "../../../models/Managers";
 import { toggleEditProjectManagerPopup } from "../../../models/Ui";
 import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";
 
@@ -25,7 +25,7 @@ const EditPM: React.FC = () => {
   const [emailFormat, setEmailFormat] = useState(false);
   const dispatch = useDispatch();
   const currentPM = useAppSelector(selectPMs);
-  const currentData = currentPM.filter((element) => {
+  const currentData = currentPM.filter((element: Manager) => {
     return element._id === _id;
   });
   const pattern =
@@ -65,7 +65,7 @@ const EditPM: React.FC = () => {
   return (
     <>
       <PopUp show={toggler} minWidthSize="30vw">
-        <div style={{position:"relative"}}>
+        <div style={{ position: "relative" }}>
           <div
             onClick={() => {
               dispatch(toggleEditProjectManagerPopup("none"));
@@ -73,14 +73,14 @@ const EditPM: React.FC = () => {
               setError(false);
               setEmail("");
             }}
-            className="closeIconContainer">
+            className="closeIconContainer"
+          >
             <img
               className="closeIcon"
               width="9"
               height="9"
               src={IMAGES.closeicon}
               alt="closeIcon"
-
             />
           </div>
         </div>
