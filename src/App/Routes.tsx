@@ -256,10 +256,10 @@ const Routes = (props: RoutesProps) => {
         />
       ),
     },
-    // {
-    //   routeName: "/404",
-    //   Route: <Route key="/404" path={} component={NotFound} />,
-    // },
+    {
+      routeName: "/",
+      Route: <Redirect key="/" to={isAuthedUser() ? "/Overview" : "/login"} />,
+    },
   ]);
   return (
     <>
