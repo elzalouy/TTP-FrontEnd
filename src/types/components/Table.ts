@@ -23,7 +23,3 @@ export interface ITasksTableProps {
   selects: any[];
   setAllSelected: (value: any) => any;
 }
-
-export interface IProjectManagersProps {
-  cellsData: Manager[];
-}

@@ -265,9 +265,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   }
                   align={props.align}
                 >
-                  {role !== "PM" && (
-                    <ProjectPopover id={project?._id} {...props} />
-                  )}
+                  <ProjectPopover id={project?._id} {...props} />
                 </TableCell>
               </TableRow>
             );

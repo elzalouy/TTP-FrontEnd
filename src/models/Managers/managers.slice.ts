@@ -4,9 +4,9 @@ import { ToastSuccess, ToastWarning } from "src/coreUI/components/Typos/Alert";
 import {
   getManagers,
   createManager,
-  updatePM,
+  updateManager,
   deletePM,
-  updatePMpassword,
+  updateManagerpassword,
   resetPMpassword,
   resendMail,
 } from "./managers.actions";
@@ -66,26 +66,26 @@ const PMSlice: Slice<ManagersInterface> = createSlice({
         (pm) => pm._id !== state.current_ID
       );
     });
-    builder.addCase(updatePM.rejected, (state) => {
+    builder.addCase(updateManager.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(updatePM.pending, (state) => {
+    builder.addCase(updateManager.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updatePM.fulfilled, (state, action) => {
+    builder.addCase(updateManager.fulfilled, (state, action) => {
       state.loading = false;
       let oldData = state.managers.filter(
         (pm) => pm._id !== action.payload._id
       );
       state.managers = [...oldData, action.payload];
     });
-    builder.addCase(updatePMpassword.rejected, (state) => {
+    builder.addCase(updateManagerpassword.rejected, (state) => {
       state.loading = false;
     });
-    builder.addCase(updatePMpassword.pending, (state) => {
+    builder.addCase(updateManagerpassword.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updatePMpassword.fulfilled, (state, { payload }) => {
+    builder.addCase(updateManagerpassword.fulfilled, (state, { payload }) => {
       state.loading = false;
       if (payload.msg && payload.status) {
         state.Payload = {

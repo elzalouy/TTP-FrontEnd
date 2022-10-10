@@ -18,7 +18,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
     ) => {
       let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
-      if (user.role === "OM") {
+      if (user.role === "OM" || user.role === "SM") {
         state.OM.projectsCloseToDeadlines = userProjects.filter(
           (item) =>
             item.projectStatus &&
@@ -48,7 +48,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let user: User = action.payload.user;
       let tasks: Task[] = action.payload.tasks;
       if (tasks) {
-        if (user.role === "OM") {
+        if (user.role === "OM" || user.role === "SM") {
           let inprogress = tasks.filter((item) => item.status === "inProgress");
           let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
           let review = tasks.filter((item) => item.status === "Review");

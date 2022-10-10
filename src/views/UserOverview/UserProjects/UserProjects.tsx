@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
 import { useAppSelector } from "src/models/hooks";
-import { selectPMs } from "src/models/Managers";
+import { selectManagers } from "src/models/Managers";
 import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
 import { RouteComponentProps } from "react-router";
@@ -14,7 +14,7 @@ interface Props {
   projects?: Project[] | null;
 }
 const UserProjects: React.FC<Props> = (props) => {
-  const PMs = useAppSelector(selectPMs);
+  const PMs = useAppSelector(selectManagers);
   return (
     <Grid
       justifyContent="flex-start"

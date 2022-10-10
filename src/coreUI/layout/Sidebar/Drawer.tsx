@@ -271,7 +271,7 @@ const AppDrawer = (props: any) => {
                       color="#808191"
                     >
                       {user?.role === "OM"
-                        ? "Admin"
+                        ? "Operation Manager"
                         : user?.role === "PM"
                         ? "Project Manager"
                         : "Super Manager"}

@@ -6,19 +6,9 @@ import AddManager from "../Create/AddManager";
 import "./managers.css";
 import ManagersList from "./ManagersList";
 import { useAppSelector } from "../../../models/hooks";
-import { Manager, selectPMs } from "../../../models/Managers";
+import { Manager, selectManagers } from "../../../models/Managers";
 
 export const Managers = (Props: any) => {
-  const managers = useAppSelector(selectPMs);
-  const [ManagersData, setManagersData] = useState(
-    managers.filter((obj: Manager) => obj.role === "OM" || obj.role === "PM")
-  );
-  useEffect(() => {
-    setManagersData(
-      managers.filter((obj: Manager) => obj.role === "OM" || obj.role === "PM")
-    );
-  }, [managers]);
-
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -41,7 +31,7 @@ export const Managers = (Props: any) => {
         <AddManager />
       </Box>
       <Paper className="pm-container">
-        <ManagersList cellsData={ManagersData} />
+        <ManagersList />
       </Paper>
     </Box>
   );

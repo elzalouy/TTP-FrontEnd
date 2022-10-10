@@ -1,6 +1,6 @@
 import { RootState } from "../store";
 
-export const selectPMs = (state: RootState) => state.Managers.managers;
+export const selectManagers = (state: RootState) => state.Managers.managers;
 export const selectPMOptions = (state: RootState) => {
   if (state.Managers.managers.length > 0) {
     let options = state.Managers.managers

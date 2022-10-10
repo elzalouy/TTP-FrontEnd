@@ -8,9 +8,9 @@ import { useAppSelector } from "../../../models/hooks";
 import {
   Manager,
   selectLoading,
-  selectPMs,
+  selectManagers,
   select_Id,
-  updatePM,
+  updateManager,
 } from "../../../models/Managers";
 import { toggleEditProjectManagerPopup } from "../../../models/Ui";
 import { selectEditPMPopup } from "../../../models/Ui/UI.selectors";
@@ -24,7 +24,7 @@ const EditPM: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [emailFormat, setEmailFormat] = useState(false);
   const dispatch = useDispatch();
-  const currentPM = useAppSelector(selectPMs);
+  const currentPM = useAppSelector(selectManagers);
   const currentData = currentPM.filter((element: Manager) => {
     return element._id === _id;
   });
@@ -45,7 +45,7 @@ const EditPM: React.FC = () => {
         setEmailFormat(true);
       } else {
         dispatch(
-          updatePM({
+          updateManager({
             data: {
               id: _id,
               name: username,

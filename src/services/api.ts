@@ -55,7 +55,7 @@ api.axiosInstance.interceptors.request.use(
   (config: any) => {
     const value = localStorage.getItem("token");
     if (value) {
-      config.headers.Authorization = `Bearer ${value}`;
+      config.headers.authorization = `Bearer ${value}`;
     }
     return config;
   },

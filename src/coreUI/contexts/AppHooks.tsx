@@ -219,7 +219,7 @@ const AppHooks: React.FC<Props> = (props) => {
     if (!loading) {
       let userProjects =
         projects && projects.length > 0
-          ? user && user?.role === "OM"
+          ? user && (user?.role === "OM" || user?.role === "SM")
             ? projects
             : projects.filter(
                 (item) =>

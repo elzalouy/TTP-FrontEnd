@@ -256,10 +256,10 @@ const Routes = (props: RoutesProps) => {
         />
       ),
     },
-    {
-      routeName: "/",
-      Route: <Redirect key="/" to={isAuthedUser() ? "/Overview" : "/login"} />,
-    },
+    // {
+    //   routeName: "/",
+    //   Route: <Redirect key="/" to={isAuthedUser() ? "/Overview" : "/login"} />,
+    // },
   ]);
   return (
     <>

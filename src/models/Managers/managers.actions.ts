@@ -3,7 +3,6 @@ import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import { ToastError, ToastSuccess } from "src/coreUI/components/Typos/Alert";
 import { generateID } from "../../helpers/IdGenerator";
-import { removeAuthToken, setAuthToken } from "../../services/api";
 import PMapi from "../../services/endpoints/PMs";
 import { logout } from "../Auth";
 import { fireCreatePMHook, fireEditPMHook } from "../Ui";
@@ -83,8 +82,8 @@ export const createManager = createAsyncThunk<any, any, any>(
   }
 );
 
-export const updatePM = createAsyncThunk<any, any, any>(
-  "PM/updatePM",
+export const updateManager = createAsyncThunk<any, any, any>(
+  "PM/updateManager",
   async (args: any, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.updateUser(args.data);
@@ -93,33 +92,17 @@ export const updatePM = createAsyncThunk<any, any, any>(
         args.dispatch(fireEditPMHook(""));
         return PMs.data;
       }
-      toast.error("Could not update PM , Please try again", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      ToastError("Could not update PM , Please try again");
+      return rejectWithValue(PMs.data);
     } catch (error: any) {
-      toast.error("There was an error from the server while updating the PM", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("There was an error from the server while updating the PM");
       rejectWithValue(error);
     }
   }
 );
 
-export const updatePMpassword = createAsyncThunk<any, any, any>(
-  "PM/updatePMpassword",
+export const updateManagerpassword = createAsyncThunk<any, any, any>(
+  "PM/updateManagerpassword",
   async (data: object, { rejectWithValue }) => {
     try {
       let PMs = await PMapi.updatePassword(data);

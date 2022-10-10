@@ -4,13 +4,12 @@ export interface Manager {
   _id: string;
   name: string;
   email: string;
-  password: string;
   role: string;
   trelloBoardId: string;
   trelloMemberId: string;
   image: string;
-  type: MemberType;
   userTeams?: string[];
+  verified?: boolean;
 }
 
 interface Res {

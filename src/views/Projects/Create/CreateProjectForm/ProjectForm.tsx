@@ -10,7 +10,7 @@ import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { setProjectManagerId } from "src/helpers/generalUtils";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
-import { Manager, selectPMOptions, selectPMs } from "src/models/Managers";
+import { Manager, selectPMOptions, selectManagers } from "src/models/Managers";
 import {
   createProject,
   editProject,
@@ -48,7 +48,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   });
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
-  const PMs = useAppSelector(selectPMs);
+  const PMs = useAppSelector(selectManagers);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);

@@ -16,24 +16,28 @@ import MailLockIcon from "@mui/icons-material/MailLock";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { FC } from "react";
 import IMAGES from "../../../assets/img/Images";
-import { PMsActions, Manager, resendMail } from "../../../models/Managers";
-import EditPM from "../Edit/EditPM";
-import DeletePM from "../Delete/DeletePM";
+import {
+  PMsActions,
+  Manager,
+  resendMail,
+  selectManagers,
+} from "../../../models/Managers";
+import EditManager from "../Edit/Edit";
+import DeleteManager from "../Delete/Delete";
 import { useDispatch } from "react-redux";
 import {
   toggleDeleteProjectManagerPopup,
   toggleEditProjectManagerPopup,
 } from "../../../models/Ui";
-import { toast } from "react-toastify";
 import moment from "moment";
 import { useAppSelector } from "../../../models/hooks";
 import { selectAllProjects } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { IProjectManagersProps } from "src/types/components/Table";
 import { ToastSuccess, ToastWarning } from "src/coreUI/components/Typos/Alert";
 import { selectUser } from "src/models/Auth";
 
-const ManagersList: FC<IProjectManagersProps> = ({ cellsData }) => {
+const ManagersList = () => {
+  const managersData = useAppSelector(selectManagers);
   const project = useAppSelector(selectAllProjects);
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -66,8 +70,8 @@ const ManagersList: FC<IProjectManagersProps> = ({ cellsData }) => {
 
   return (
     <>
-      <EditPM />
-      <DeletePM />
+      <EditManager />
+      <DeleteManager />
       <TableContainer
         style={{ paddingTop: "10px" }}
         className="customScrollBar"
@@ -153,8 +157,8 @@ const ManagersList: FC<IProjectManagersProps> = ({ cellsData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cellsData.map((cellData) => {
-              const { _id, name, email, password, role } = cellData;
+            {managersData.map((cellData) => {
+              const { _id, name, email, verified, role } = cellData;
               let inProgress = project?.projects?.filter(
                 (item) =>
                   item.projectManager?._id === _id &&
@@ -253,12 +257,12 @@ const ManagersList: FC<IProjectManagersProps> = ({ cellsData }) => {
                           sx={{ paddingY: 0 }}
                           disableRipple
                           onClick={() => {
-                            if (!password) {
+                            if (!verified) {
                               refreshUser(_id);
                             }
                           }}
                         >
-                          {!password ? <MailLockIcon /> : <MarkEmailReadIcon />}
+                          {!verified ? <MailLockIcon /> : <MarkEmailReadIcon />}
                         </IconButton>
                         <IconButton
                           sx={{ paddingY: 0 }}

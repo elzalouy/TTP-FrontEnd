@@ -16,7 +16,11 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { Manager, selectPMOptions, selectPMs } from "../../../models/Managers";
+import {
+  Manager,
+  selectPMOptions,
+  selectManagers,
+} from "../../../models/Managers";
 import {
   editProject as editProjectAction,
   selectEditProject,
@@ -51,7 +55,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     },
   });
   const data = watch();
-  const PMs = useAppSelector(selectPMs);
+  const PMs = useAppSelector(selectManagers);
   const statusOptions = useAppSelector(selectProjectStatusOptions);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);

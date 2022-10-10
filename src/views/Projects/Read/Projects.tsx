@@ -16,7 +16,7 @@ import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import { selectPMOptions, selectPMs } from "../../../models/Managers";
+import { selectPMOptions, selectManagers } from "../../../models/Managers";
 import {
   filterProjects,
   ProjectsActions,
@@ -31,7 +31,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   const loading = useAppSelector(selectLoading);
   const inProgressProjects = useAppSelector(selectInprogressProjects);
   const doneProjects = useAppSelector(selectDoneProjects);
-  const PMs = useAppSelector(selectPMs);
+  const PMs = useAppSelector(selectManagers);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
   const [expanded, setExpanded] = useState<boolean>(true);

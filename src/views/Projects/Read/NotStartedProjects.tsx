@@ -10,7 +10,7 @@ import { toggleCreateProjectPopup } from "src/models/Ui";
 import Loading from "src/coreUI/components/Loading/Loading";
 import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
-import { selectPMs } from "src/models/Managers";
+import { selectManagers } from "src/models/Managers";
 import { RouteComponentProps } from "react-router";
 import "./projects.css";
 
@@ -25,7 +25,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const loading = useAppSelector(selectLoading);
   const notStartedProjects = useAppSelector(selectNotStartedProjects);
-  const PMs = useAppSelector(selectPMs);
+  const PMs = useAppSelector(selectManagers);
   const newProject = useAppSelector(selectNewProject);
 
   const setShow = (value: string) => {

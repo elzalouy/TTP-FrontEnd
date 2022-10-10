@@ -1,13 +1,11 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import UserName from "./UserName/Name";
 import UserProjects from "./UserProjects/UserProjects";
 import UserStatus from "./Status/StatusCard";
 import UserTasks from "./UserTasks/UserTasks";
-import { useDispatch } from "react-redux";
 import UserNotifications from "./Notifications/Notifications";
-import { RouteComponentProps, useHistory } from "react-router";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../models/hooks";
@@ -146,7 +144,7 @@ export const OverView: FC<IOverview> = (props) => {
               alignItems="center"
               marginY={{ md: 4, sm: 4, xs: 4, lg: 0 }}
             >
-              {role === "OM" ? (
+              {role === "OM" || role === "SM" ? (
                 <ManagerNotifications {...props} />
               ) : (
                 role === "PM" && <UserNotifications {...props} />
@@ -156,16 +154,22 @@ export const OverView: FC<IOverview> = (props) => {
           <UserTasks
             pr={3}
             tasks={
-              role === "OM" ? statistics.OM.inProgress : statistics.PM.shared
+              role === "OM" || role === "SM"
+                ? statistics.OM.inProgress
+                : statistics.PM.shared
             }
-            title={role === "OM" ? "Tasks In Progress" : "Shared Tasks"}
+            title={
+              role === "OM" || role === "SM"
+                ? "Tasks In Progress"
+                : "Shared Tasks"
+            }
             img={IMAGES.OverviewInProgressTasksEmpty}
             caption="Stay focused and organized"
           />
           <UserTasks
             pl={3}
             tasks={
-              role === "OM"
+              role === "OM" || role === "SM"
                 ? statistics.OM.tasksCloseToDeadline
                 : statistics.PM.tasksCloseToDeadline
             }
@@ -175,7 +179,7 @@ export const OverView: FC<IOverview> = (props) => {
           />
           <UserProjects
             projects={
-              role === "OM"
+              role === "OM" || role === "SM"
                 ? statistics.OM.projectsCloseToDeadlines
                 : statistics.PM.projectsCloseToDeadlines
             }

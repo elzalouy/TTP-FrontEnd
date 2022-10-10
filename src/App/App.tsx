@@ -48,7 +48,7 @@ const App: React.FC = (props) => {
       dispatch(getUnNotified(null));
       setMounted(true);
     }
-  }, [dispatch, mounted, tokenInfo, userState.authed]);
+  }, [dispatch, mounted, userState.authed]);
 
   return (
     <Box height={"100vh"} bgcolor="#FAFAFB !important">
