@@ -11,4 +11,5 @@ export const selectViewTask = (state: RootState) => state.Ui.viewTaskPopup;
 
 export const createProjectPopup = (state: RootState) =>
   state.Ui.createProjectPopup;
-export const selectNewProjectHook = (state:RootState) => state.Ui.newProjectHook;
+export const selectNewProjectHook = (state: RootState) =>
+  state.Ui.newProjectHook;

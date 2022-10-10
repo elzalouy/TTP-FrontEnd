@@ -10,6 +10,8 @@ import {
   openEditProjectPopup,
 } from "../../../models/Ui";
 import { ProjectsActions } from "../../../models/Projects";
+import { useAppSelector } from "src/models/hooks";
+import { selectRole } from "src/models/Auth";
 
 interface Props {
   id: string;
@@ -20,6 +22,9 @@ interface Props {
 
 const ProjectPopover: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
+
+  const role = useAppSelector(selectRole);
+
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -92,19 +97,21 @@ const ProjectPopover: React.FC<Props> = (props) => {
             <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
             Edit Project
           </Button>
-          <Button
-            onClick={showDeleteProjectPopup}
-            variant="text"
-            className={styles.redButton}
-            id="delete-project-button"
-          >
-            <img
-              src={IMAGES.deleteicon2}
-              width={18}
-              style={{ marginRight: 10 }}
-            ></img>
-            Delete
-          </Button>
+          {role !== "PM" && (
+            <Button
+              onClick={showDeleteProjectPopup}
+              variant="text"
+              className={styles.redButton}
+              id="delete-project-button"
+            >
+              <img
+                src={IMAGES.deleteicon2}
+                width={18}
+                style={{ marginRight: 10 }}
+              ></img>
+              Delete
+            </Button>
+          )}
         </Box>
       </Popover>
     </div>
