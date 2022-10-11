@@ -1,6 +1,6 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import UserName from "./UserName/Name";
 import UserProjects from "./UserProjects/UserProjects";
 import UserStatus from "./Status/StatusCard";
@@ -9,14 +9,57 @@ import UserNotifications from "./Notifications/Notifications";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../models/hooks";
-import { selectRole, selectUser } from "../../models/Auth";
+import {
+  getUserInfo,
+  logout,
+  selectRole,
+  selectUser,
+  selectUserState,
+} from "../../models/Auth";
 import { selectSatistics } from "../../models/Statistics";
 import { IOverview } from "src/types/views/Overview";
+import { useDispatch } from "react-redux";
+import { AuthActions } from "src/models/Auth/auth.slice";
+import { getUserTokenInfo } from "src/services/api";
+import { getAllDepartments } from "src/models/Departments";
+import { getAllCategories } from "src/models/Categories";
+import { getAllClients } from "src/models/Clients";
+import { getManagers } from "src/models/Managers";
+import { getAllProjects, getAllTasks } from "src/models/Projects";
+import { getUnNotified } from "src/models/Notifications";
 
 export const OverView: FC<IOverview> = (props) => {
+  const [tokenInfo, setTokenInfo] = useState(getUserTokenInfo());
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
   const statistics = useAppSelector(selectSatistics);
+  const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
+  const userState = useAppSelector(selectUserState);
+
+  useEffect(() => {
+    setTokenInfo(getUserTokenInfo());
+    if (tokenInfo && tokenInfo.id) {
+      dispatch(
+        getUserInfo({
+          id: tokenInfo.id,
+        })
+      );
+    } else dispatch(logout(true));
+  }, []);
+
+  useEffect(() => {
+    if (tokenInfo?.id && !mounted) {
+      dispatch(getAllDepartments(null));
+      dispatch(getAllCategories(null));
+      dispatch(getAllClients(null));
+      dispatch(getManagers(null));
+      dispatch(getAllProjects(null));
+      dispatch(getAllTasks(null));
+      dispatch(getUnNotified(null));
+      setMounted(true);
+    }
+  }, [dispatch, tokenInfo, mounted, userState.authed]);
 
   return (
     <>

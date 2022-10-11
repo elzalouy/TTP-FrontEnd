@@ -23,7 +23,6 @@ import "src/App/App.css";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
-  const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const allTasks = useAppSelector(selectTasks);

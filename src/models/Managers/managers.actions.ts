@@ -75,6 +75,7 @@ export const createManager = createAsyncThunk<any, any, any>(
       ToastError(
         "Error happened while creating the project manager, please try again"
       );
+      return rejectWithValue(result?.data);
     } catch (error: any) {
       ToastError("There was an error trying to create a PM from the server");
       rejectWithValue(error);

@@ -8,5 +8,5 @@ export const selectImage = (state: RootState) => state?.Auth?.User?.image;
 export const selectUserRoles = (state: RootState) => [
   { id: "OM", value: "OM", text: "OM" },
   { id: "PM", value: "PM", text: "PM" },
-  state.Auth.User?.role === "SM" && { id: "PM", value: "PM", text: "PM" },
+  state.Auth.User?.role === "SM" && { id: "SM", value: "SM", text: "SM" },
 ];

@@ -13,7 +13,11 @@ import initialState from "./auth.state";
 const AuthSlice: Slice<UserInterface> = createSlice({
   name: "Auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    changeAuth: (state, action) => {
+      state.authed = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signIn.rejected, (state) => {
       state.loading = false;
@@ -67,5 +71,5 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     });
   },
 });
-export const AuthAction = AuthSlice.actions;
+export const AuthActions = AuthSlice.actions;
 export default AuthSlice.reducer;

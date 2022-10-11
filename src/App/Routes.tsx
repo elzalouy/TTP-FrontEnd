@@ -26,6 +26,18 @@ interface RoutesProps {
 const Routes = (props: RoutesProps) => {
   const [routes] = React.useState([
     {
+      routeName: "/",
+      Route: (
+        <Route exact path="/">
+          {isAuthedUser() ? (
+            <Redirect to="/Overview" />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+      ),
+    },
+    {
       routeName: "/Overview",
       Route: (
         <Route
@@ -256,10 +268,6 @@ const Routes = (props: RoutesProps) => {
         />
       ),
     },
-    // {
-    //   routeName: "/",
-    //   Route: <Redirect key="/" to={isAuthedUser() ? "/Overview" : "/login"} />,
-    // },
   ]);
   return (
     <>
