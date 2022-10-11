@@ -1,4 +1,5 @@
 export interface UiInterface {
+  appLoading: boolean;
   deleteProjectPopup: string;
   deleteTaskPopup: string;
   editProjectPopup: string;
@@ -41,6 +42,7 @@ export interface UiInterface {
 }
 
 const UiState: UiInterface = {
+  appLoading: false,
   deleteProjectPopup: "none",
   deleteTaskPopup: "none",
   editProjectPopup: "none",

@@ -54,13 +54,17 @@ export const setAuthToken = (token: string) => {
 api.axiosInstance.interceptors.request.use(
   (config: any) => {
     const value = localStorage.getItem("token");
+    console.log({ token: value });
     if (value) {
-      config.headers.authorization = `Bearer ${value}`;
+      config.headers.Authorization = `Bearer ${value}`;
     }
     return config;
   },
-  (error: any) => {
-    return error;
+  (error) => {
+    if (error.response.status !== 401) {
+      return Promise.reject(error);
+    }
+    removeAuthToken();
   }
 );
 

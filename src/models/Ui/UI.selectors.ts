@@ -13,3 +13,5 @@ export const createProjectPopup = (state: RootState) =>
   state.Ui.createProjectPopup;
 export const selectNewProjectHook = (state: RootState) =>
   state.Ui.newProjectHook;
+
+export const selectAppLoading = (state: RootState) => state.Ui.appLoading;

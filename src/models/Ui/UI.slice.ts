@@ -23,6 +23,9 @@ const UISlice: Slice<UiInterface> = createSlice({
       state.openTask = "none";
       state.createProjectPopup = "none";
     },
+    setAppLoading: (state: UiInterface, action: PayloadAction<boolean>) => {
+      state.appLoading = action.payload;
+    },
     openDeleteTaskPopup: (state = UiState, action: PayloadAction<any>) => {
       state.deleteTaskPopup = action.payload;
     },
@@ -171,5 +174,6 @@ export const {
   toggleTask,
   initAppUiState,
   toggleEditTasksPopup,
+  setAppLoading,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

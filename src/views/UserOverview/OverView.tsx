@@ -27,39 +27,13 @@ import { getAllClients } from "src/models/Clients";
 import { getManagers } from "src/models/Managers";
 import { getAllProjects, getAllTasks } from "src/models/Projects";
 import { getUnNotified } from "src/models/Notifications";
+import { useHistory } from "react-router";
+import { selectAppLoading } from "src/models/Ui";
 
 export const OverView: FC<IOverview> = (props) => {
-  const [tokenInfo, setTokenInfo] = useState(getUserTokenInfo());
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
   const statistics = useAppSelector(selectSatistics);
-  const dispatch = useDispatch();
-  const [mounted, setMounted] = useState(false);
-  const userState = useAppSelector(selectUserState);
-
-  useEffect(() => {
-    setTokenInfo(getUserTokenInfo());
-    if (tokenInfo && tokenInfo.id) {
-      dispatch(
-        getUserInfo({
-          id: tokenInfo.id,
-        })
-      );
-    } else dispatch(logout(true));
-  }, []);
-
-  useEffect(() => {
-    if (tokenInfo?.id && !mounted) {
-      dispatch(getAllDepartments(null));
-      dispatch(getAllCategories(null));
-      dispatch(getAllClients(null));
-      dispatch(getManagers(null));
-      dispatch(getAllProjects(null));
-      dispatch(getAllTasks(null));
-      dispatch(getUnNotified(null));
-      setMounted(true);
-    }
-  }, [dispatch, tokenInfo, mounted, userState.authed]);
 
   return (
     <>

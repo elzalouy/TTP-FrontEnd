@@ -11,7 +11,7 @@ export const signIn = createAsyncThunk<any, any, any>(
     try {
       let result: ApiResponse<any> = await api.signIn(args?.data);
       if (result.ok) {
-        localStorage.setItem("token", result?.data?.token);
+        localStorage.setItem("token", result.data.token);
         args.history.push("/Overview");
         ToastSuccess("Login successful");
         return result.data;
@@ -34,7 +34,7 @@ export const getUserInfo = createAsyncThunk<any, any, any>(
         return result.data;
       }
       localStorage.removeItem("token");
-      throw "Error happened";
+      return rejectWithValue(result.data);
     } catch (error) {
       rejectWithValue(error);
     }
