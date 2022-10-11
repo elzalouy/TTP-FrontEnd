@@ -41,7 +41,6 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
     handleClose();
   };
 
-  console.log({ item });
   return (
     <div>
       <Box

@@ -54,7 +54,6 @@ export const setAuthToken = (token: string) => {
 api.axiosInstance.interceptors.request.use(
   (config: any) => {
     const value = localStorage.getItem("token");
-    console.log({ token: value });
     if (value) {
       config.headers.Authorization = `Bearer ${value}`;
     }

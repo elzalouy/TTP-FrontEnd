@@ -152,7 +152,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
-    console.log({ task: state.task, edit: newTask });
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
     if (error || FileError) {
