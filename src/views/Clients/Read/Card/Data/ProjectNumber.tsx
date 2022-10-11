@@ -23,7 +23,7 @@ const ProjectNumber: FC<IProjectNumber> = ({ title, dataTestId, number }) => {
         sx={{ fontWeight: "bold", fontSize: "18px" }}
         data-test-id={dataTestId}
       >
-        {number ? number : 0}
+        {number}
       </Typography>
     </Grid>
   );
