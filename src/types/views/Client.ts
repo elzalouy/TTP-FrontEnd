@@ -3,9 +3,9 @@ import { Status } from "./BoardView";
 export interface IClient {
   _id?: string;
   clientName?: string;
-  doneProject?: string[];
-  inProgressProject?: string[] | number;
-  inProgressTask?: string[];
+  doneProject?: string | number;
+  inProgressProject?: string | number;
+  inProgressTask?: string | number;
   createdAt?: string;
   image?: any;
 }
@@ -32,12 +32,12 @@ export interface ITaskNumber {
   _id: string | undefined;
 }
 export interface IProjectCounterContainer {
-  done: string[];
+  done?: string | number;
   client: IClient;
-  inProgressProject: number | string[] | any;
+  inProgressProject?: number | string;
 }
 export interface IProjectNumber {
   title: string;
-  number: number | string[];
+  number?: number | string;
   dataTestId?: string;
 }

@@ -44,9 +44,7 @@ const ProjectCounterContainer: FC<IProjectCounterContainer> = ({
         style={{ width: "1px !important" }}
         className="hrVertical"
       />
-      <ProjectNumber
-        title="Done Projects"
-        number={done} />
+      <ProjectNumber title="Done Projects" number={done} />
     </Grid>
   );
 };

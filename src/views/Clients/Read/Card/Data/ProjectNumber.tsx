@@ -5,7 +5,12 @@ import { IProjectNumber } from "src/types/views/Client";
 
 const ProjectNumber: FC<IProjectNumber> = ({ title, dataTestId, number }) => {
   return (
-    <Grid item xs={5} style={{ textAlign: "center" }} className="project-counter-wrapper">
+    <Grid
+      item
+      xs={5}
+      style={{ textAlign: "center" }}
+      className="project-counter-wrapper"
+    >
       <Typography
         sx={{ fontSize: 13 }}
         variant="caption"
@@ -18,7 +23,7 @@ const ProjectNumber: FC<IProjectNumber> = ({ title, dataTestId, number }) => {
         sx={{ fontWeight: "bold", fontSize: "18px" }}
         data-test-id={dataTestId}
       >
-        {number}
+        {number ? number : 0}
       </Typography>
     </Grid>
   );

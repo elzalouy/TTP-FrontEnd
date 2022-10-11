@@ -24,6 +24,7 @@ import {
   setProjectsStatistics,
   setTasksStatistics,
 } from "src/models/Statistics";
+import { Project } from "src/types/models/Projects";
 
 type Props = {
   children: any;
@@ -195,21 +196,19 @@ const AppHooks: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (!loading) {
-      let userProjects =
-        projects && projects.length > 0
-          ? user && user?.role === "OM"
-            ? projects
-            : projects.filter(
-                (item) =>
-                  item.projectStatus &&
-                  item.projectManager?._id === user?._id &&
-                  ![
-                    "deliver on time",
-                    "deliver before deadline",
-                    "delivered after deadline",
-                  ].includes(item?.projectStatus)
-              )
-          : [];
+      let userProjects: Project[] = [];
+      if (user?.role === "SM" || user?.role === "PM") userProjects = projects;
+      else
+        userProjects = projects.filter(
+          (item) =>
+            item.projectStatus &&
+            item.projectManager?._id === user?._id &&
+            ![
+              "deliver on time",
+              "deliver before deadline",
+              "delivered after deadline",
+            ].includes(item?.projectStatus)
+        );
       dispatch(setProjectsStatistics({ user: user, projects: userProjects }));
     }
   }, [setProjectsStatisticsHook, user]);
@@ -217,21 +216,19 @@ const AppHooks: React.FC<Props> = (props) => {
   // set statistics hook
   React.useEffect(() => {
     if (!loading) {
-      let userProjects =
-        projects && projects.length > 0
-          ? user && (user?.role === "OM" || user?.role === "SM")
-            ? projects
-            : projects.filter(
-                (item) =>
-                  item.projectStatus &&
-                  item.projectManager?._id === user?._id &&
-                  ![
-                    "deliver on time",
-                    "deliver before deadline",
-                    "delivered after deadline",
-                  ].includes(item?.projectStatus)
-              )
-          : [];
+      let userProjects: Project[] = [];
+      if (user?.role === "SM" || user?.role === "PM") userProjects = projects;
+      else
+        userProjects = projects.filter(
+          (item) =>
+            item.projectStatus &&
+            item.projectManager?._id === user?._id &&
+            ![
+              "deliver on time",
+              "deliver before deadline",
+              "delivered after deadline",
+            ].includes(item?.projectStatus)
+        );
       dispatch(
         setTasksStatistics({
           user,

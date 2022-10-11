@@ -31,7 +31,7 @@ const ClientCard: React.FC<IClientCard> = ({ client }) => {
     >
       <Header client={client} preview={preview} />
       <ProjectCounterContainer
-        done={doneProject ? doneProject : []}
+        done={doneProject}
         client={client}
         inProgressProject={inProgressProject}
       />
