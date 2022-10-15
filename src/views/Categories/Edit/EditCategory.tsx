@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
 // import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { v4 as uuidv4 } from "uuid";
 import IMAGES from "../../../assets/img/Images";
@@ -95,16 +96,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
         setsubCategories([]);
         handleSetDisplay("none");
       } else {
-        toast.error("Category name cannot be set empty", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          toastId: generateID(),
-        });
+        ToastError("Category name cannot be set empty");
       }
     } catch (error: any) {
       console.log(error.message);

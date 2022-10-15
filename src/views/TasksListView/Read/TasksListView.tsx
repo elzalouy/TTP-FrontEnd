@@ -33,6 +33,7 @@ interface Props {
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
 }
+
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
@@ -60,9 +61,14 @@ export const TasksListView: React.FC<Props> = (props) => {
   const onHandleChangeFilter = () => {
     let filter = watch();
     dispatch(
-      filterTasks({ projectId: filter.projectId, status: filter.status })
+      filterTasks({
+        projectId: filter.projectId,
+        status: filter.status,
+        name: filter.name,
+      })
     );
   };
+
   const onHandleChangeStaticFilter = async () => {
     let filter = watch();
     setValue("projectId", "");
@@ -73,6 +79,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       ProjectsActions.onChangeStaticFilters({ clientId: filter.clientId })
     );
   };
+
   const onChangeFilter = (e: any, name: string) => {
     setValue(name, e.target.id);
     onHandleChangeFilter();
@@ -375,7 +382,7 @@ const options = [
       text: "Tasks Board",
     },
     {
-      id: "not clear",
+      id: "Not Clear",
       value: "Not Clear",
       text: "Not Clear",
     },
@@ -384,13 +391,13 @@ const options = [
       value: "inProgress",
       text: "In Progress",
     },
-    { id: "review", value: "Review", text: "Review" },
-    { id: "shared", value: "Shared", text: "Shared" },
+    { id: "Review", value: "Review", text: "Review" },
+    { id: "Shared", value: "Shared", text: "Shared" },
     {
-      id: "done",
+      id: "Done",
       value: "Done",
       text: "Done",
     },
-    { id: "canceled", value: "Cancled", text: "Cancled" },
+    { id: "Cancled", value: "Cancled", text: "Cancled" },
   ],
 ];

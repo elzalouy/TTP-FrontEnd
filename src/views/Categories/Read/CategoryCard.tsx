@@ -64,10 +64,12 @@ const CategoryCard: React.FC<IProps> = ({
         overflow: "hidden",
       }}
     >
-      <DeleteCategory
-        showDelete={showDelete}
-        handleSetShowDelete={handleSetShowDelete}
-      />
+      {role === "SM" && (
+        <DeleteCategory
+          showDelete={showDelete}
+          handleSetShowDelete={handleSetShowDelete}
+        />
+      )}
       <Box
         sx={{
           display: "flex",
@@ -85,14 +87,14 @@ const CategoryCard: React.FC<IProps> = ({
             letterSpacing: 0.2,
             textAlign: "left",
             textTransform: "capitalize",
-            width:"160px",
-            overflowWrap:"break-word",
+            width: "160px",
+            overflowWrap: "break-word",
           }}
           style={{ color: fontColor }}
         >
           {mainCategory}
         </Typography>
-        {role !== "PM" && (
+        {role === "SM" && (
           <CategoryPopover
             color={fontColor}
             handleSetShowDelete={handleSetShowDelete}

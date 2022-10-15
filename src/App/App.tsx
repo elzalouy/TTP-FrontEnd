@@ -50,21 +50,22 @@ const App: React.FC = (props) => {
           })
         );
       dispatch(AuthActions.changeAuth(true));
-    }
+    } else setTokenInfo(null);
+    return () => {
+      if (isAuthedUser()) {
+        dispatch(getAllDepartments(null));
+        dispatch(getAllCategories(null));
+        dispatch(getAllClients(null));
+        dispatch(getManagers(null));
+        dispatch(getAllProjects(null));
+        dispatch(getAllTasks(null));
+        dispatch(getUnNotified(null));
+        setMounted(true);
+      }
+    };
   }, [userState.authed, dispatch]);
 
-  React.useEffect(() => {
-    if (tokenInfo?.id && mounted === false) {
-      dispatch(getAllDepartments(null));
-      dispatch(getAllCategories(null));
-      dispatch(getAllClients(null));
-      dispatch(getManagers(null));
-      dispatch(getAllProjects(null));
-      dispatch(getAllTasks(null));
-      dispatch(getUnNotified(null));
-      setMounted(true);
-    }
-  }, [tokenInfo]);
+  React.useEffect(() => {}, [tokenInfo, userState.authed, userState.loading]);
 
   return (
     <Box height={"100vh"} bgcolor="#FAFAFB !important">

@@ -241,12 +241,12 @@ const ManagersList = () => {
                       color="#707683"
                       data-test-id="number-inprogress-pm"
                     >
-                      {inProgress}
+                      {role === "PM" ? inProgress : "-"}
                     </Typography>
                   </TableCell>
                   <TableCell align="left">
                     <Typography color="#707683" data-test-id="number-done-pm">
-                      {done}
+                      {role === "PM" ? done : "-"}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">

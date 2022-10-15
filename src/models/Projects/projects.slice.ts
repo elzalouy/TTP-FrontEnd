@@ -259,6 +259,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
       state.newProject.project = action.payload;
       state.newProject.tasks = [];
+      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
     });
     builder.addCase(getAllProjects.rejected, (state) => {
       state.loading = false;
@@ -282,6 +283,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       if (action.payload) {
         state.newProject.tasks.push(action.payload);
         state.loading = false;
+        state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       }
     });
     builder.addCase(createTaskFromBoard.rejected, (state) => {
@@ -300,6 +302,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           state.uploadLoading.id = action.payload.result._id;
           state.uploadLoading.loading = true;
         }
+        state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       }
     );
     builder.addCase(filterProjects.rejected, (state) => {
@@ -347,13 +350,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.allTasks = action.payload;
-      if (state.filteredTasks.length === 0) {
-        state.filteredTasks = action.payload;
-      } else {
-        state.filteredTasks = action.payload.filter((task: Task) =>
-          state.filteredTasks.find(({ _id }) => task._id === _id)
-        );
-      }
+      state.filteredTasks = action.payload;
       state.selectedProject.tasks = [...action.payload].filter(
         (item) => item.projectId === state.selectedProject.project?._id
       );
@@ -418,6 +415,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           (item) => item.projectId !== action.payload.id
         );
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+        state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       }
     });
     builder.addCase(deleteProject.pending, (state, action) => {
@@ -453,6 +451,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editProject.fulfilled, (state, action) => {
       state.editProject = undefined;
       state.loading = false;
+      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
     });
     builder.addCase(editProject.rejected, (state, action) => {
       state.loading = false;
@@ -487,6 +486,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.fulfilled, (state) => {
       state.editTask = undefined;
       state.editTaskLoading = false;
+      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
     builder.addCase(editTaskFromBoard.rejected, (state) => {
       state.editTaskLoading = false;

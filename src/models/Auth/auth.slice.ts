@@ -41,13 +41,13 @@ const AuthSlice: Slice<UserInterface> = createSlice({
     });
     builder.addCase(logout.rejected, (state) => {
       state.loading = false;
-      state.authed = false;
     });
     builder.addCase(logout.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(logout.fulfilled, (state, { payload }) => {
       state.loading = false;
+      state.authed = false;
     });
     builder.addCase(getUserInfo.rejected, (state) => {
       state.loading = false;

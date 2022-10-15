@@ -197,7 +197,7 @@ const AppHooks: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!loading) {
       let userProjects: Project[] = [];
-      if (user?.role === "SM" || user?.role === "PM") userProjects = projects;
+      if (user?.role !== "PM") userProjects = projects;
       else
         userProjects = projects.filter(
           (item) =>
@@ -211,13 +211,13 @@ const AppHooks: React.FC<Props> = (props) => {
         );
       dispatch(setProjectsStatistics({ user: user, projects: userProjects }));
     }
-  }, [setProjectsStatisticsHook, user]);
+  }, [setProjectsStatisticsHook]);
 
   // set statistics hook
   React.useEffect(() => {
     if (!loading) {
       let userProjects: Project[] = [];
-      if (user?.role === "SM" || user?.role === "PM") userProjects = projects;
+      if (user?.role !== "PM") userProjects = projects;
       else
         userProjects = projects.filter(
           (item) =>
@@ -237,7 +237,7 @@ const AppHooks: React.FC<Props> = (props) => {
         })
       );
     }
-  }, [setTasksStatisticsHook, user]);
+  }, [setTasksStatisticsHook]);
 
   React.useEffect(() => {
     if (user?._id) {

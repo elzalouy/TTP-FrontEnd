@@ -81,10 +81,10 @@ export const Categories = (props: any) => {
           </Grid>
         ))}
         <Grid sm={6} xs={12} md={6} lg={4} padding={2}>
-          {role !== "PM" && <CreateNewCategory />}
+          {role === "SM" && <CreateNewCategory />}
         </Grid>
       </Grid>
-      {role !== "PM" && (
+      {role === "SM" && (
         <EditCategory display={display} handleSetDisplay={handleSetDisplay} />
       )}
     </Box>

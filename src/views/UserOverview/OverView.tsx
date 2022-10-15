@@ -161,34 +161,28 @@ export const OverView: FC<IOverview> = (props) => {
               alignItems="center"
               marginY={{ md: 4, sm: 4, xs: 4, lg: 0 }}
             >
-              {role === "OM" || role === "SM" ? (
-                <ManagerNotifications {...props} />
+              {role === "PM" ? (
+                <UserNotifications {...props} />
               ) : (
-                role === "PM" && <UserNotifications {...props} />
+                <ManagerNotifications {...props} />
               )}
             </Grid>
           </Grid>
           <UserTasks
             pr={3}
             tasks={
-              role === "OM" || role === "SM"
-                ? statistics.OM.inProgress
-                : statistics.PM.shared
+              role === "PM" ? statistics.PM.shared : statistics.OM.inProgress
             }
-            title={
-              role === "OM" || role === "SM"
-                ? "Tasks In Progress"
-                : "Shared Tasks"
-            }
+            title={role === "PM" ? "Shared Tasks" : "Tasks In Progress"}
             img={IMAGES.OverviewInProgressTasksEmpty}
             caption="Stay focused and organized"
           />
           <UserTasks
             pl={3}
             tasks={
-              role === "OM" || role === "SM"
-                ? statistics.OM.tasksCloseToDeadline
-                : statistics.PM.tasksCloseToDeadline
+              role === "PM"
+                ? statistics.PM.tasksCloseToDeadline
+                : statistics.OM.tasksCloseToDeadline
             }
             title={"Tasks Close to Deadline"}
             img={IMAGES.OverviewCloseToDeadlineEmpty}
@@ -196,9 +190,9 @@ export const OverView: FC<IOverview> = (props) => {
           />
           <UserProjects
             projects={
-              role === "OM" || role === "SM"
-                ? statistics.OM.projectsCloseToDeadlines
-                : statistics.PM.projectsCloseToDeadlines
+              role === "PM"
+                ? statistics.PM.projectsCloseToDeadlines
+                : statistics.OM.projectsCloseToDeadlines
             }
             {...props}
           />
