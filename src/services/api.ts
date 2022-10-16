@@ -20,6 +20,7 @@ export const isAuthedUser = () => {
     }
   } catch (error) {}
 };
+//
 export const getUserTokenInfo = () => {
   try {
     let token = localStorage.getItem("token");
