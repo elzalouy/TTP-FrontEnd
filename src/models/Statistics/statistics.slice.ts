@@ -22,7 +22,6 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
       if (user.role !== "PM") {
-        console.log({ userProjects });
         state.OM.projectsCloseToDeadlines = userProjects.filter(
           (item) =>
             item.projectStatus &&
@@ -69,7 +68,6 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         );
         state.OM.inProgress = inprogress;
       } else {
-        console.log({ userProjects });
         let ids = userProjects.flatMap((item: Project) => item._id);
         let review = tasks.filter(
           (item) => ids.includes(item.projectId) && item.status === "Review"

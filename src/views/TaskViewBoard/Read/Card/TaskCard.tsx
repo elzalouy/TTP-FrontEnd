@@ -69,7 +69,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
 
   // React.useEffect(() => {
   //   document.addEventListener("visibilitychange", () => {
-  //     console.log("visible", location.pathname);
   //     if (
   //       // taskImages[0].error &&
   //       // taskImages[0].error === true &&

@@ -10,8 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import IMAGES from "src/assets/img/Images";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { useAppSelector } from "src/models/hooks";
@@ -35,6 +36,10 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   const [currentStep, setcurrentStep] = useState(0);
   const [clearErr, setClearErr] = useState<boolean>(false);
   const [backTrigger, setBackTrigger] = useState<boolean>(false);
+  const history = useHistory();
+  useEffect(() => {
+    setcurrentStep(0);
+  }, [createProjectPopup]);
 
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -78,7 +83,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
       setBackTrigger(true);
       setcurrentStep(0);
     }
-  }
+  };
 
   return (
     <PopUp
@@ -107,8 +112,16 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
                 <Step key={label}>
                   <StepLabel
                     StepIconComponent={QontoStepIcon}
-                    StepIconProps={{ style: { cursor: (index === 0 && currentStep === 1) ? "pointer" : "default", } }}
-                    onClick={onStepProjectForm}>
+                    StepIconProps={{
+                      style: {
+                        cursor:
+                          index === 0 && currentStep === 1
+                            ? "pointer"
+                            : "default",
+                      },
+                    }}
+                    onClick={onStepProjectForm}
+                  >
                     <Typography
                       fontWeight={currentStep === index ? "700" : "500"}
                       sx={{
@@ -139,15 +152,13 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
             setShow={setShow}
             currentStep={currentStep}
             backTrigger={backTrigger}
-            setBackTrigger={setBackTrigger} />
+            setBackTrigger={setBackTrigger}
+          />
         )}
         {currentStep === 1 && (
           <>
             <TaskForm />
-            <Tasks
-              setCurrentStep={setcurrentStep}
-              setShow={setShow}
-            />
+            <Tasks setCurrentStep={setcurrentStep} setShow={setShow} />
           </>
         )}
       </Grid>

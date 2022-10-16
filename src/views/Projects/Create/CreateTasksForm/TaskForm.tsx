@@ -8,7 +8,11 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import IMAGES from "src/assets/img/Images";
-import { Category, selectAllCategories } from "src/models/Categories";
+import {
+  Category,
+  selectAllCategories,
+  selectCategoriesOptions,
+} from "src/models/Categories";
 import { selectAllDepartments } from "src/models/Departments";
 import { useAppSelector } from "src/models/hooks";
 import {
@@ -48,6 +52,7 @@ const TaskForm: React.FC = () => {
   );
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
+  const categroiesOption = useAppSelector(selectCategoriesOptions);
   const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
@@ -283,17 +288,7 @@ const TaskForm: React.FC = () => {
                     elementType="select"
                     error={onGetError(props.field.name)}
                     onSelect={(e: any) => onChangeCategory(e)}
-                    options={
-                      categories.length > 0
-                        ? categories?.map((item) => {
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.category,
-                            };
-                          })
-                        : []
-                    }
+                    options={categroiesOption}
                   />
                 </>
               )}

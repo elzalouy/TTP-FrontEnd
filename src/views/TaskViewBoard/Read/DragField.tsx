@@ -173,6 +173,7 @@ const DragField: React.FC = (props: any) => {
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
+    console.log({ source, destination });
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
@@ -223,6 +224,9 @@ const DragField: React.FC = (props: any) => {
   return (
     <DragDropContext
       onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+      onDragUpdate={(update) => {
+        console.log({ update });
+      }}
     >
       <Box
         sx={{

@@ -37,7 +37,6 @@ const EditTasks = ({ show, setShow, selects }: props) => {
   };
 
   const onChange = (id: string) => {
-    console.log(editTasks);
     if (editTasks && editTasks.length > 0)
       setEditTasks([...editTasks?.filter((item) => item._id !== id)]);
   };

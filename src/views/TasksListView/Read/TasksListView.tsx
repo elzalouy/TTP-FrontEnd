@@ -87,7 +87,6 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   const onChangeStaticFilter = (e: any, name: string) => {
     e.preventDefault();
-    console.log(name, e.target.id);
     setValue(name, e.target.id);
     onHandleChangeStaticFilter();
   };

@@ -19,6 +19,9 @@ declare global {
        */
       mount: typeof mount;
       login(name: string, password: string): { id: string; token: string };
+      loginBySM(): { id: string; token: string };
+      loginByOM(): { id: string; token: string };
+      loginByPM(): { id: string; token: string };
       getTasks(): Chainable<Cypress.Response<IDepartmentsSlice[]>>;
       getDepartments(): Chainable<Cypress.Response<IDepartmentState[]>>;
       deleteAllDepartments(): Chainable<Cypress.Response<string>>;

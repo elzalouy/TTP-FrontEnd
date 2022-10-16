@@ -28,6 +28,21 @@ Cypress.Commands.add("login", (email: string, password: string) => {
   });
 });
 
+Cypress.Commands.add("loginBySM", () => {
+  let { id, token } = cy.login("abuqannam2@gmail.com", "IAMSuperAdmin1");
+  return { id, token };
+});
+
+Cypress.Commands.add("loginByOM", () => {
+  let { id, token } = cy.login("ezatelzalouy711@gmail.com", "12345678");
+  return { id, token };
+});
+
+Cypress.Commands.add("loginByPM", () => {
+  let { id, token } = cy.login("elzalouy528@gmail.com", "12345678");
+  return { id, token };
+});
+
 Cypress.Commands.add("getTasks", () => {
   return cy.request({
     method: "GET",

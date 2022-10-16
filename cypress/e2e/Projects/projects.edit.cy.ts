@@ -3,7 +3,7 @@ import { Project } from "src/types/models/Projects";
 
 describe("Edit project", () => {
   beforeEach(function () {
-    let { id, token } = cy.login("zed.saheer5@gmail.com", "12345678");
+    let { id, token } = cy.login("abuqannam2@gmail.com", "IAMSuperAdmin1 ");
     cy.createAutomatedProject().then((res) => {
       cy.wrap<Project>(res.body).as("testingProject");
     });

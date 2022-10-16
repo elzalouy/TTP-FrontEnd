@@ -204,7 +204,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const onSubmitEdit = () => {
     if (isDirty || updateDate) {
       if (nameErr.error === undefined) {
-        console.log("Will run the dirty block");
         const result = showAlertBasedOnDate();
         executeEditProject(result);
         reset();

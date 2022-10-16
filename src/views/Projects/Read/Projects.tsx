@@ -58,7 +58,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
       projectManager: getValues().projectManager,
       projectStatus: getValues().projectStatus,
     };
-    console.log(filter);
     dispatch(filterProjects(filter));
   };
 
