@@ -31,7 +31,7 @@ const Empty = ({ loadingFor }: props) => {
                 height={"160px"}
                 alt=""
               />
-              <Typography fontSize={"16px"} color="#505050">
+              <Typography fontSize={"16px"} color="#505050" fontWeight={"bold"}>
                 Nothing have been moved !!
               </Typography>
             </Box>

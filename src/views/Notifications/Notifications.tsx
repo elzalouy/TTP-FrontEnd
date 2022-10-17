@@ -15,6 +15,7 @@ import {
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import NotificationItemSkeleton from "./Loading/NotificationSkeleton";
+import Empty from "./Empty";
 
 export const Notifications = (props: any) => {
   const dispatch = useDispatch();
@@ -56,7 +57,9 @@ export const Notifications = (props: any) => {
             <Grid item xs={12} marginBottom={1}>
               <NotificationItem notifiData={notifications} />
             </Grid>
-          ) : null}
+          ) : (
+            <Empty />
+          )}
         </>
       )}
       {pagination.pages !== pagination.current && (
