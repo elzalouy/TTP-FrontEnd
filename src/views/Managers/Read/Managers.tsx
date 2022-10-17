@@ -1,12 +1,9 @@
 import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
 import AddManager from "../Create/AddManager";
 import "./managers.css";
 import ManagersList from "./ManagersList";
-import { useAppSelector } from "../../../models/hooks";
-import { Manager, selectManagers } from "../../../models/Managers";
 
 export const Managers = (Props: any) => {
   const theme = useTheme();
@@ -25,9 +22,11 @@ export const Managers = (Props: any) => {
         flexDirection="row"
         display="inline-flex"
         justifyContent="space-between"
-        alignItems="center"
+        alignItems="flex-start"
       >
-        <Typography variant={SM ? "h3" : "h2"}>Managers</Typography>
+        <Typography variant={SM ? "h3" : "h2"} p={0} m={0}>
+          Managers
+        </Typography>
         <AddManager />
       </Box>
       <Paper className="pm-container">

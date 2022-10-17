@@ -9,7 +9,7 @@ type Props = {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
-  marginX?: boolean;
+  paddingX?: boolean;
 };
 const MenuContainer = (props: Props) => {
   return (
@@ -18,8 +18,10 @@ const MenuContainer = (props: Props) => {
         <Sidebar {...props} />
         <Bar {...props} />
         <Box
-          paddingX={props.marginX === true ? { sm: 1, xs: 1, md: 4, lg: 4 } : 0}
-          paddingTop={{ xs: 10, sm: 10, md: 4, lg: 4 }}
+          paddingX={
+            props.paddingX === true ? { sm: 1, xs: 1, md: 4, lg: 4 } : 0
+          }
+          paddingTop={{ xs: 13, sm: 13, md: 4, lg: 4 }}
           width={"100%"}
         >
           {props.children}

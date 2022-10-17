@@ -69,6 +69,14 @@ export const selectLateProjects = (state: RootState) =>
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
 export const selectAllProjects = (state: RootState) => state?.projects;
+export const selectActiveProjects = (state: RootState) =>
+  state.projects.projects.filter(
+    (item) =>
+      item.projectStatus &&
+      !["Done", "late", "deliver on time", "deliver before deadline"].includes(
+        item?.projectStatus
+      )
+  );
 export const selectSelectedProject = (state: RootState) =>
   state?.projects.selectedProject;
 export const selectDeleteProjectId = (state: RootState) =>

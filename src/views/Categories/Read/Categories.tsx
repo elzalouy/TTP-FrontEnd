@@ -40,14 +40,7 @@ export const Categories = (props: any) => {
         <Typography
           fontSize={24}
           variant="h2"
-          style={
-            SM
-              ? { margin: "40px 0", paddingBottom: "20px" }
-              : {
-                  margin: "10px 0",
-                  paddingBottom: "20px",
-                }
-          }
+          style={{ paddingBottom: "20px" }}
         >
           Category
         </Typography>

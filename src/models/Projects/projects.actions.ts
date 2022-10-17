@@ -364,6 +364,7 @@ export const editTasksProjectId = createAsyncThunk<any, any, any>(
       });
       if (response.ok) {
         args.closeModal();
+        args.setAllSelected([]);
         return { ids, projectId };
       } else {
         ToastError(response.data.message);

@@ -6,7 +6,7 @@ type Props = {};
 
 const NotificationHeader = (props: Props) => {
   return (
-    <Grid container pt={4}>
+    <Grid container>
       <Grid item xs={12}>
         <Typography variant="h2" gutterBottom component="div">
           Notificaiton

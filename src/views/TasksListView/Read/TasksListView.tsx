@@ -133,7 +133,6 @@ export const TasksListView: React.FC<Props> = (props) => {
         <Typography
           variant="h2"
           marginBottom={2}
-          marginTop={SM ? 5 : MD ? 2 : 0}
         >
           Tasks
           {props.projectId && props.projectId && (
@@ -303,6 +302,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 show={showEditTasks}
                 setShow={setShowEditTasks}
                 selects={selects}
+                setAllSelected={setAllSelected}
               />
             </Grid>
           </>

@@ -39,7 +39,7 @@
 .controllers-cancel {
   cursor: pointer;
   width: 190px;
-  max-width: 48%;
+  max-width: 45%;
   height: 45px;
   background-color: #f4f4f4;
   color: black;
@@ -48,7 +48,7 @@
   font-size: 15px;
   border: none;
   font-weight: bold;
-  margin: 10px 0;
+  margin: 10px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,7 +123,7 @@
   border-radius: 5px;
   border: none;
   font-weight: bold;
-  margin: 10px 0;
+  margin: 10px 10px;
 }
 
 .css-e55tyi-MuiFormControl-root-MuiTextField-root {
@@ -195,7 +195,6 @@
   right: 0;
   cursor: pointer;
 }
-
 
 .popup-select {
   width: 100%;
@@ -580,22 +579,22 @@ table.allTeam-table td.deleteTd {
   transform: scale(1.02) perspective(0px);
   box-shadow: 0 5px 10px rgba(153, 153, 153, 0.7);
 } */
-.add-new-cat>img {
+.add-new-cat > img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-cat>p {
+.add-new-cat > p {
   padding: 5px;
   font-weight: 600;
 }
 
-.add-new-dep>img {
+.add-new-dep > img {
   width: 22px;
   height: 22px;
 }
 
-.add-new-dep>p {
+.add-new-dep > p {
   padding: 5px;
   font-weight: 600;
 }

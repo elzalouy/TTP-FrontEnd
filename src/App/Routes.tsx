@@ -46,7 +46,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <OverView {...props} />
                 </MenuContainer>
               );
@@ -133,7 +133,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Projects {...props} />
                 </MenuContainer>
               );
@@ -151,7 +151,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <TasksListView {...props} />
                 </MenuContainer>
               );
@@ -169,7 +169,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser())
               return (
-                <MenuContainer marginX={false} {...props}>
+                <MenuContainer paddingX={false} {...props}>
                   <TasksBoardView {...props} />
                 </MenuContainer>
               );
@@ -187,7 +187,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser() && !isPM())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Clients {...props} />
                 </MenuContainer>
               );
@@ -205,7 +205,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser() && !isPM())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Departments {...props} />
                 </MenuContainer>
               );
@@ -223,7 +223,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser() && !isPM())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Categories {...props} />
                 </MenuContainer>
               );
@@ -241,7 +241,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser() && !isPM())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Managers {...props} />
                 </MenuContainer>
               );
@@ -259,7 +259,7 @@ const Routes = (props: RoutesProps) => {
           render={(props) => {
             if (isAuthedUser())
               return (
-                <MenuContainer marginX {...props}>
+                <MenuContainer paddingX {...props}>
                   <Notifications {...props} />
                 </MenuContainer>
               );

@@ -14,6 +14,7 @@ type Props = {
   Show: string;
   task: string[];
   setShow: (val: string) => void;
+  setAllSelected?: any;
 };
 
 const DeleteTask: React.FC<Props> = (props) => {

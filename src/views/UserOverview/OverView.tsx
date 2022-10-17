@@ -1,6 +1,6 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import UserName from "./UserName/Name";
 import UserProjects from "./UserProjects/UserProjects";
 import UserStatus from "./Status/StatusCard";
@@ -9,26 +9,9 @@ import UserNotifications from "./Notifications/Notifications";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../models/hooks";
-import {
-  getUserInfo,
-  logout,
-  selectRole,
-  selectUser,
-  selectUserState,
-} from "../../models/Auth";
+import { getUserInfo, logout, selectRole, selectUser } from "../../models/Auth";
 import { selectSatistics } from "../../models/Statistics";
 import { IOverview } from "src/types/views/Overview";
-import { useDispatch } from "react-redux";
-import { AuthActions } from "src/models/Auth/auth.slice";
-import { getUserTokenInfo } from "src/services/api";
-import { getAllDepartments } from "src/models/Departments";
-import { getAllCategories } from "src/models/Categories";
-import { getAllClients } from "src/models/Clients";
-import { getManagers } from "src/models/Managers";
-import { getAllProjects, getAllTasks } from "src/models/Projects";
-import { getUnNotified } from "src/models/Notifications";
-import { useHistory } from "react-router";
-import { selectAppLoading } from "src/models/Ui";
 
 export const OverView: FC<IOverview> = (props) => {
   const role = useAppSelector(selectRole);
@@ -44,13 +27,7 @@ export const OverView: FC<IOverview> = (props) => {
         direction={"row"}
         bgcolor={"#FAFAFB"}
       >
-        <Grid
-          item
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          paddingTop={{ xs: 10, sm: 10, md: 0, lg: 0 }}
-          xs={12}
-        >
+        <Grid item justifyContent="flex-start" alignItems="flex-start" xs={12}>
           <Box
             sx={{
               width: "auto",

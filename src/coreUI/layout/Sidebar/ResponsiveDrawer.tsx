@@ -134,7 +134,7 @@ const ResponsiveDrawer = (props: any) => {
                 open={props.open}
                 key="7"
                 onClick={() => history.push("/ProjectManagers")}
-                path={"/ProjectManagers"}
+                path={"/Managers"}
                 Icon={() => <PersonIcon />}
                 src={IMAGES.person}
                 text="Managers"

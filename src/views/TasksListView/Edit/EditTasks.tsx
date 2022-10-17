@@ -6,20 +6,27 @@ import IMAGES from "src/assets/img/Images";
 import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import SmallPopUp from "src/coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "src/models/hooks";
-import { editTasksProjectId, selectAllProjects } from "src/models/Projects";
+import {
+  editTasksProjectId,
+  selectActiveProjects,
+  selectAllProjects,
+} from "src/models/Projects";
 import { Project, Task } from "src/types/models/Projects";
 
 type props = {
   show: string;
   setShow: any;
   selects: string[];
+  setAllSelected?: any;
 };
 
-const EditTasks = ({ show, setShow, selects }: props) => {
+const EditTasks = ({ show, setShow, selects, setAllSelected }: props) => {
   const dispatch = useDispatch();
-  const { allTasks, projects, loading } = useAppSelector(selectAllProjects);
+  const { allTasks, loading } = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectActiveProjects);
   const [editTasks, setEditTasks] = React.useState<Task[]>();
   const [projectId, setProjectId] = React.useState<string | undefined>();
 
@@ -48,13 +55,20 @@ const EditTasks = ({ show, setShow, selects }: props) => {
       return item._id;
     });
     if (projectId) {
-      dispatch(editTasksProjectId({ ids, projectId, closeModal: onClose }));
+      dispatch(
+        editTasksProjectId({
+          ids,
+          projectId,
+          closeModal: onClose,
+          setAllSelected,
+        })
+      );
     }
   };
 
   return (
-    <SmallPopUp show={show} widthSize="300px">
-      <Grid width={"100%"} paddingX={2} marginY={1} container>
+    <PopUp margin="10px" show={show} maxHeight="600px" maxWidthSize="500px">
+      <Grid width={"100%"} container>
         <Grid
           item
           xs={12}
@@ -76,7 +90,13 @@ const EditTasks = ({ show, setShow, selects }: props) => {
           </Box>
         </Grid>
         <Grid item width="100%" display={"inline-flex"}>
-          <Grid container width={"100%"}>
+          <Grid
+            container
+            width={"100%"}
+            maxHeight={"120px"}
+            className="desktopCustomScrollBar"
+            overflow="scroll"
+          >
             {editTasks &&
               editTasks.map((item) => (
                 <Badge
@@ -122,7 +142,7 @@ const EditTasks = ({ show, setShow, selects }: props) => {
           />
         </Grid>
       </Grid>
-    </SmallPopUp>
+    </PopUp>
   );
 };
 

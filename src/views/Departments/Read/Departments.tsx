@@ -21,7 +21,6 @@ export const Departments = (props: any) => {
           fontSize={24}
           variant="h2"
           style={{
-            margin: SM ? "40px 0" : "10px 0",
             paddingBottom: "20px",
           }}
         >

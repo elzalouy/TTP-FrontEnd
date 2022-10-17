@@ -36,8 +36,8 @@ export const Clients = (props: any) => {
   }, [clientData]);
 
   return (
-    <Grid container pb={SM ? 5 : 4}>
-      <Grid container xs={12} my={1} marginX={0} px={0}>
+    <Grid container>
+      <Grid container xs={12} marginX={0} px={0}>
         <Typography variant="h2">Clients</Typography>
       </Grid>
       <Grid

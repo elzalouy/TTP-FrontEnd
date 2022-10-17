@@ -41,7 +41,7 @@ export const Notifications = (props: any) => {
   };
 
   return (
-    <Grid container paddingY={MD ? 10 : 0} spacing={4} bgcolor="#FAFAFB">
+    <Grid container bgcolor="#FAFAFB">
       <Grid item xs={12} mb={0}>
         <NotificationHeader />
       </Grid>
