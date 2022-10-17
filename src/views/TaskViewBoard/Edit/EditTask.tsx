@@ -145,10 +145,8 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     };
 
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
-    newTask.deadline =
-      data.deadline !== "" && data.deadline !== null
-        ? moment(data?.deadline).toDate().toString()
-        : state.task.deadline;
+    if (data.deadline !== "" && data.deadline !== null)
+      newTask.deadline = moment(data?.deadline).toDate().toString();
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
     if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;

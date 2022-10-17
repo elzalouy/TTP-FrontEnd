@@ -94,11 +94,7 @@ const AppDrawer = (props: any) => {
           >
             {open && <Logo {...props} />}
             <IconButton sx={{ height: "40px" }} onClick={() => setOpen()}>
-              {open ? (
-                <Close htmlColor="#000000" />
-              ) : (
-                <MenuIcon htmlColor="#000000" />
-              )}
+              <MenuIcon htmlColor="#000000" />
             </IconButton>
           </DrawerHeader>
           <List>
