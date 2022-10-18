@@ -4,7 +4,7 @@ import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import "./clients.css";
 import CreateNewClient from "../Create/CreateNewClient";
 import ClientCard from "./ClientCard";
-import { clientsDataSelector } from "../../../models/Clients/clients.selectors";
+import { selectFilteredClients } from "../../../models/Clients/clients.selectors";
 import { useAppSelector } from "../../../models/hooks";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
@@ -14,12 +14,9 @@ import { IClient } from "src/types/views/Client";
 
 export const Clients = (props: any) => {
   const dispatch = useDispatch();
-  const [clients, setClients] = useState<IClient[]>([]);
   const [search, setSearch] = useState<string>("");
   const role = useAppSelector(selectRole);
-  const clientData = useAppSelector(clientsDataSelector);
-  const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
+  const clientData = useAppSelector(selectFilteredClients);
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,12 +25,6 @@ export const Clients = (props: any) => {
     setSearch(e.target.value);
     dispatch(clientsActions.onSearch(e.target.value));
   };
-
-  useEffect(() => {
-    if (clientData) {
-      setClients(clientData);
-    }
-  }, [clientData]);
 
   return (
     <Grid container>
@@ -57,11 +48,11 @@ export const Clients = (props: any) => {
         </Grid>
       </Grid>
       <Grid container className="all-clients" gap={"1%"}>
-        {clients &&
-          clients?.map((clientInfo: IClient) => (
-            <>
-              <ClientCard key={clientInfo._id} client={clientInfo} />
-            </>
+        {clientData &&
+          clientData?.map((clientInfo: IClient) => (
+            <React.Fragment key={clientInfo._id}>
+              <ClientCard client={clientInfo} />
+            </React.Fragment>
           ))}
         {role !== "PM" && <CreateNewClient />}
       </Grid>

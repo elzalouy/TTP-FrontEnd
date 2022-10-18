@@ -9,19 +9,18 @@ import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { generateID } from "../../../helpers/IdGenerator";
 import {
-  clientsDataSelector,
+  selectAllClients,
   creatClient,
   selectLoadingClient,
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import "./CreateNewClient.css";
 
-
 const CreateNewClient: React.FC = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [Show, setShow] = useState("none");
-  const allClients = useAppSelector(clientsDataSelector);
+  const allClients = useAppSelector(selectAllClients);
   const loadingClient = useAppSelector(selectLoadingClient);
   const [error, setError] = useState<boolean>(false);
   const [clientData, setClientData] = useState<IClientState>({
@@ -86,15 +85,7 @@ const CreateNewClient: React.FC = () => {
   };
 
   return (
-    <Grid
-      item
-      mt={2}
-      xl={3.90}
-      lg={3.90}
-      md={5.90}
-      sm={5.90}
-      xs={12}
-    >
+    <Grid item mt={2} xl={3.9} lg={3.9} md={5.9} sm={5.9} xs={12}>
       <Box
         className="add-new-cli"
         onClick={() => {
@@ -108,7 +99,8 @@ const CreateNewClient: React.FC = () => {
       <PopUp show={Show} maxWidthSize="491px">
         <Box>
           <Box position={"relative"}>
-            <div className="closeIconContainer"
+            <div
+              className="closeIconContainer"
               onClick={() => {
                 setShow("none");
                 setImageView(null);
@@ -118,14 +110,14 @@ const CreateNewClient: React.FC = () => {
                 });
                 setShow("none");
                 setError(false);
-              }}>
+              }}
+            >
               <img
                 className="closeIcon"
                 width="9"
                 height="9"
                 src={IMAGES.closeicon}
                 alt="closeIcon"
-
               />
             </div>
           </Box>
@@ -179,7 +171,8 @@ const CreateNewClient: React.FC = () => {
                 loading={loadingClient}
                 dataTestId="create-client-submit-button"
                 form={{
-                  name: "client", type: "submit"
+                  name: "client",
+                  type: "submit",
                 }}
               />
             </Box>

@@ -8,7 +8,7 @@ import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import { IClient } from "src/types/views/Client";
 import { useAppSelector } from "../../../models/hooks";
 import {
-  clientsDataSelector,
+  selectAllClients,
   selectEditClient,
   selectLoadingClient,
   updateClient,
@@ -24,7 +24,7 @@ interface Props {
 
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const editClient: UpdateClientInterface = useAppSelector(selectEditClient);
-  const allClients = useAppSelector(clientsDataSelector);
+  const allClients = useAppSelector(selectAllClients);
   const loadingClient = useAppSelector(selectLoadingClient);
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);

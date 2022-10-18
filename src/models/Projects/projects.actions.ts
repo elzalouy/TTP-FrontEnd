@@ -365,6 +365,7 @@ export const editTasksProjectId = createAsyncThunk<any, any, any>(
       if (response.ok) {
         args.closeModal();
         args.setAllSelected([]);
+        ToastSuccess("Tasks have been moved to the project successfully.");
         return { ids, projectId };
       } else {
         ToastError(response.data.message);

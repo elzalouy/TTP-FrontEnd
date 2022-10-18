@@ -1,11 +1,8 @@
 import { RootState } from "../store";
 import _ from "lodash";
 
-export const clientsDataSelector = (state: RootState) =>
+export const selectAllClients = (state: RootState) =>
   state?.clients?.clientsData;
-
-export const selectClient = (state: RootState) =>
-  state?.clients?.selectedClient;
 
 export const selectClientsNames = (state: RootState) => {
   let names = _.flatMap(state?.clients?.clientsData, (item) => {
@@ -33,3 +30,5 @@ export const selectLoadingClient = (state: RootState) =>
   state?.clients?.loading;
 
 export const selectEditClient = (state: RootState) => state?.clients.editClient;
+export const selectFilteredClients = (state: RootState) =>
+  state?.clients.filteredClients;
