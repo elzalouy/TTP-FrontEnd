@@ -14,7 +14,6 @@ import { RouteComponentProps } from "react-router";
 import PopoverComponent from "../../../coreUI/components/Popovers/Popup/ScrollOver";
 import { useAppSelector } from "../../../models/hooks";
 import { selectSatistics } from "../../../models/Statistics";
-import Status from "../../../coreUI/components/Typos/Status";
 import _ from "lodash";
 import { Task } from "../../../types/models/Projects";
 import { hasMoreItems } from "src/helpers/generalUtils";
@@ -22,6 +21,7 @@ import Empty from "./Empy";
 import { getTaskNotificationsDate } from "src/helpers/equations";
 import { cssTabContent } from "src/coreUI/themes";
 import LoadingFor from "./Loading";
+import TablList from "./Tab/TabList";
 interface Props {
   history: RouteComponentProps["history"];
 }
@@ -138,53 +138,12 @@ const Notifications: React.FC<Props> = (props) => {
                       let { day, month, year, currentDay } =
                         getTaskNotificationsDate(TArray);
                       return (
-                        <>
-                          <Box
-                            key={index + day + month + year + currentDay}
-                            sx={{ display: "inline-flex" }}
-                            marginLeft={1.8}
-                            marginTop={2}
-                          >
-                            <Typography sx={cssDay}>{currentDay}</Typography>
-                            <Typography sx={cssDate}>{`${day}/  ${
-                              month + 1
-                            }/  ${year}`}</Typography>
-                          </Box>
-                          {TArray?.length > 0 &&
-                            (!LG
-                              ? TArray
-                              : open === true
-                              ? TArray
-                              : TArray.slice(0, 2)
-                            ).map((item, index) => {
-                              return (
-                                <Box
-                                  key={item._id}
-                                  sx={cssNotiBox}
-                                  marginBottom={
-                                    index === TArray.length - 1 ? 1.5 : 0.4
-                                  }
-                                >
-                                  <Status status={item?.status} />
-                                  <Box paddingTop={0.2} paddingLeft={1}>
-                                    <Typography sx={cssNotiTitle}>
-                                      {_.truncate(item.name, {
-                                        omission: "...",
-                                        length: 18,
-                                      })}{" "}
-                                    </Typography>
-                                    <Typography sx={cssNotiSubTitle}>
-                                      {_.truncate(item.name, {
-                                        omission: "...  ",
-                                        length: 18,
-                                      })}{" "}
-                                      moved to {item.status}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                              );
-                            })}
-                        </>
+                        <TablList
+                          index={index}
+                          list={TArray}
+                          date={{ day, month, year, currentDay }}
+                          open={open}
+                        />
                       );
                     })}
                   <Empty
@@ -243,40 +202,6 @@ const cssStack = {
   width: "100% !important",
   paddingX: 1.8,
   position: "relative",
-};
-const cssDay = {
-  variant: "h5",
-  fontWeight: "600",
-  paddingRight: 2,
-  color: "#303030",
-};
-const cssDate = {
-  variant: "h6",
-  fontSize: 10,
-  fontWeight: "600",
-  color: "#929292",
-  paddingTop: 0.4,
-};
-const cssNotiBox = {
-  marginTop: 0.5,
-  width: "100%",
-  height: 60,
-  borderRadius: "12px",
-  boxShadow: "0px 5px 15px 5px #FAFAFB;",
-  padding: 1.2,
-  display: "inline-flex",
-  alignItems: "center",
-};
-const cssNotiTitle = {
-  fontFamily: "Cairo",
-  fontWeight: "600",
-  variant: "subtitle1",
-  color: "#303030",
-};
-const cssNotiSubTitle = {
-  color: "#99A0AA",
-  fontFamily: "Cairo",
-  variant: "subtitle2",
 };
 const cssMoreText = {
   fontWeight: "700",
