@@ -5,8 +5,9 @@ import {
   updateClient,
   deleteClient,
 } from "./clients.actions";
-import clientState, { ClientsInterface } from "./clients.state";
+import clientState, { Client, ClientsInterface } from "./clients.state";
 import moment from "moment";
+import _ from "lodash";
 
 const clientSlice: Slice<ClientsInterface> = createSlice({
   name: "clients",
@@ -28,15 +29,10 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       state.clientsData = clientData;
     },
     onSearch: (state = clientState, { payload }: PayloadAction<any>) => {
-      let clientData = state.selectedClient;
-      if (payload === "") {
-        state.clientsData = state.selectedClient;
-      } else {
-        clientData = clientData.filter((client) =>
-          client.clientName.match(new RegExp(payload, "gi"))
-        );
-        state.clientsData = clientData;
-      }
+      let clients = state.clientsData.filter((item) =>
+        item.clientName.match(new RegExp(payload, "i"))
+      );
+      state.filteredClients = clients;
     },
     setEditClient: (state = clientState, { payload }: PayloadAction<any>) => {
       state.editClient = payload;
@@ -55,25 +51,26 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         client.inProgressTask = action.payload.inProgressTask;
         state.clientsData[index] = client;
       }
+      state.filteredClients = state.clientsData;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllClients.rejected, (state) => {
       state.loading = false;
       state.clientsData = [];
-      state.selectedClient = [];
+      state.filteredClients = [];
     });
     builder.addCase(getAllClients.pending, (state) => {
       state.loading = true;
       state.clientsData = [];
-      state.selectedClient = [];
+      state.filteredClients = [];
     });
     builder.addCase(
       getAllClients.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.clientsData = action.payload;
-        state.selectedClient = action.payload;
+        state.filteredClients = action.payload;
       }
     );
     builder.addCase(creatClient.rejected, (state) => {
@@ -84,9 +81,14 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
     });
     builder.addCase(creatClient.fulfilled, (state, action) => {
       state.loading = false;
-      state.clientsData = [...state.clientsData, action.payload];
-      //Updating selected client list with latest created client
-      state.selectedClient = [...state.clientsData, action.payload];
+      state.clientsData = _.uniqBy(
+        [...state.clientsData, action.payload],
+        (item: Client) => item._id
+      );
+      state.filteredClients = _.uniqBy(
+        [...state.clientsData, action.payload],
+        (item: Client) => item._id
+      );
     });
     builder.addCase(updateClient.rejected, (state) => {
       state.loading = false;
@@ -102,9 +104,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
         .indexOf(payload._id);
       clientData.splice(clientIndex, 1, payload);
       state.clientsData = clientData;
-
-      //Updating selected client list with latest updated data
-      state.selectedClient = clientData;
+      state.filteredClients = clientData;
     });
     builder.addCase(deleteClient.rejected, (state) => {
       state.loading = false;
@@ -118,7 +118,7 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       let clients = clientData.filter((item) => item._id !== payload?.id);
       state.clientsData = clients;
       //Updating selected client list with latest deleted data
-      state.selectedClient = clients;
+      state.filteredClients = clients;
     });
   },
 });

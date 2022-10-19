@@ -133,7 +133,17 @@ const TasksTable: React.FC<ITasksTableProps> = ({
             tasks?.map((item, index) => {
               const { _id, status, name, projectId, start, deadline } = item;
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={_id}>
+                <TableRow
+                  sx={{
+                    ":hover": {
+                      boxShadow: "0px 5px 15px #0000001A",
+                    },
+                  }}
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={_id}
+                >
                   <TableCell
                     style={{
                       color: "#334D6E",

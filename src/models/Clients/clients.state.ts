@@ -16,13 +16,13 @@ export interface UpdateClientInterface {
 export interface ClientsInterface {
   loading: boolean | null;
   clientsData: Client[];
-  selectedClient: Client[];
+  filteredClients: Client[];
   editClient: UpdateClientInterface;
 }
 const clientState: ClientsInterface = {
   loading: null,
   clientsData: [],
-  selectedClient: [],
+  filteredClients: [],
   editClient: {
     _id: "",
     clientName: "",
