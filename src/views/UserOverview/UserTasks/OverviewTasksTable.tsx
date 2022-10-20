@@ -62,6 +62,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
           >
             <TableRow
               sx={{
+                background: "white !important",
                 borderBottom: "2px solid #FAFAFB;",
                 paddingTop: 2,
                 zIndex: 0,
@@ -82,7 +83,9 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                     <TableRow
                       sx={{
                         ":hover": {
-                          boxShadow: "0px 5px 15px #0000001A",
+                          backgroundColor: "white !important",
+                          boxShadow: "0px 10px 20px #0000001A",
+                          transition: "all 0.5s ease-out !important",
                         },
                       }}
                       hover

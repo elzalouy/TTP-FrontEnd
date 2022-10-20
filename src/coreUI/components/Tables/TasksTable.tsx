@@ -136,7 +136,9 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 <TableRow
                   sx={{
                     ":hover": {
-                      boxShadow: "0px 5px 15px #0000001A",
+                      backgroundColor: "white !important",
+                      boxShadow: "0px 10px 20px #0000001A",
+                      transition: "all 0.5s ease-out !important",
                     },
                   }}
                   hover
