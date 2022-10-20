@@ -158,7 +158,7 @@ ul[id="core-select-options"].options li.option {
   padding-left: 10px;
 }
 
-ul[id="core-select-options"].options.scroll li.option:hover {
+ul.options li.option:hover {
   background: #9fa1ab0d 0% 0% no-repeat padding-box !important;
 }
 

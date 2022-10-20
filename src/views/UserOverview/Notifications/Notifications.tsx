@@ -56,7 +56,7 @@ const Notifications: React.FC<Props> = (props) => {
 
   const cssMoreBtn = {
     backgroundColor: "white",
-    width: "95%",
+    width: "105% !important",
     height: "30px !important",
     display: {
       lg: hasMore() ? "inline-flex" : "none",
@@ -164,23 +164,23 @@ const Notifications: React.FC<Props> = (props) => {
               );
             })}
           </Box>
-          <Button
-            variant="text"
-            sx={cssMoreBtn}
-            fullWidth={false}
-            onClick={() => setOpen(!open)}
-            disableRipple={true}
-          >
-            {open ? (
-              <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
-            ) : (
-              <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
-            )}
-            <Typography sx={cssMoreText}>
-              {open ? "See Less" : "See More"}
-            </Typography>
-          </Button>
         </Stack>
+        <Button
+          variant="text"
+          sx={cssMoreBtn}
+          fullWidth={true}
+          onClick={() => setOpen(!open)}
+          disableRipple={true}
+        >
+          {open ? (
+            <KeyboardArrowUp htmlColor="#9FA1AB" sx={cssMoreIcon} />
+          ) : (
+            <KeyboardArrowDown htmlColor="#9FA1AB" sx={cssMoreIcon} />
+          )}
+          <Typography sx={cssMoreText}>
+            {open ? "See Less" : "See More"}
+          </Typography>
+        </Button>
       </PopoverComponent>
     </Box>
   );
@@ -200,7 +200,6 @@ const cssTabs = {
 const cssStack = {
   borderRadius: 2,
   width: "100% !important",
-  paddingX: 1.8,
   position: "relative",
 };
 const cssMoreText = {

@@ -36,11 +36,6 @@ const Notification = ({ item, index, arrayLength }: NotificationProps) => {
               })}
             </Typography>
             <Typography sx={cssNotiSubTitle}>
-              {/* {_.truncate(item.name, {
-                omission: "...  ",
-                length: 18,
-              })}{" "}
-              moved to {item.status} */}
               {
                 projects?.projects?.find(
                   (project) => project._id === item.projectId
@@ -56,7 +51,7 @@ const Notification = ({ item, index, arrayLength }: NotificationProps) => {
 
 const cssNotiBox = {
   marginTop: 0.5,
-  width: "100%",
+  width: "93%",
   height: 60,
   borderRadius: "12px",
   boxShadow: "0px 5px 15px 5px #FAFAFB;",
@@ -64,10 +59,11 @@ const cssNotiBox = {
   display: "inline-flex",
   alignItems: "center",
   cursor: "pointer",
+  marginLeft: 1.8,
 };
 
 const cssNotiTitle = {
-  fontFamily: "Cairo",
+  fontFamily: "Cairo, SemiBold",
   fontWeight: "600",
   variant: "subtitle1",
   color: "#303030",
@@ -75,7 +71,7 @@ const cssNotiTitle = {
 
 const cssNotiSubTitle = {
   color: "#99A0AA",
-  fontFamily: "Cairo",
+  fontFamily: "Cairo, SemiBold",
   variant: "subtitle2",
 };
 
