@@ -13,23 +13,25 @@ const notifiSlice: Slice<NotificationsState> = createSlice({
   initialState: NotificationState,
   reducers: {
     toggleLoadingOff: (state = NotificationState) => {
-      state.buttonLoading = true;
       state.loading = false;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
       getNotifications.fulfilled,
       (state = NotificationState, action: PayloadAction<any>) => {
         state.loading = false;
-        if (action.payload.current === state.current + 1) {
+        if (
+          action.payload.current === state.current + 1 &&
+          state.notifications?.length
+        ) {
           state.notifications = [
             ...state.notifications,
             ...action.payload.notifications,
           ];
         } else if (action.payload.current === 0) {
           state.notifications = action.payload.notifications;
-        }
+        } else state.notifications = [];
         state.pages = action.payload.pages;
         state.limit = action.payload.limit;
         state.current = action.payload.current;

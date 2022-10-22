@@ -10,8 +10,7 @@ export type IsNotifiedInterface = {
 };
 export interface NotificationsState {
   loading: boolean | null;
-  buttonLoading: boolean | null;
-  notifications: NotificationInterface[];
+  notifications?: NotificationInterface[] | null;
   pages: number;
   current: number;
   limit: number;

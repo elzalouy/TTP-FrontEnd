@@ -7,13 +7,13 @@ import {
   getNotifications,
   selectNotificationPagination,
   selectNotifications,
-  selectNotificationsButtonLoading,
   selectNotificationsLoading,
+  selectUnNotifiedNum,
   toggleLoadingOff,
   updateNotified,
 } from "../../models/Notifications";
 import NotificationHeader from "./NotificationHeader";
-import NotificationItem from "./NotificationItem";
+import List from "./List";
 import NotificationItemSkeleton from "./Loading/NotificationSkeleton";
 import Empty from "./Empty";
 
@@ -21,7 +21,6 @@ export const Notifications = (props: any) => {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const loading = useAppSelector(selectNotificationsLoading);
-  const buttonLoading = useAppSelector(selectNotificationsButtonLoading);
   const notifications = useAppSelector(selectNotifications);
   const pagination = useAppSelector(selectNotificationPagination);
   const theme = useTheme();
@@ -45,22 +44,20 @@ export const Notifications = (props: any) => {
       <Grid item xs={12} mb={0}>
         <NotificationHeader />
       </Grid>
-      {loading ? (
+      {loading === true && (
         <Grid item xs={12} marginBottom={1}>
-          {[...Array(4)].map((item, key) => (
+          {[...Array(1)].map((item, key) => (
             <NotificationItemSkeleton key={key} />
           ))}
         </Grid>
-      ) : (
-        <>
-          {notifications?.length > 0 ? (
-            <Grid item xs={12} marginBottom={1}>
-              <NotificationItem notifiData={notifications} />
-            </Grid>
-          ) : (
-            <Empty />
-          )}
-        </>
+      )}
+      {loading === false && notifications && notifications.length === 0 && (
+        <Empty />
+      )}
+      {loading === false && notifications && notifications.length > 0 && (
+        <Grid item xs={12} marginBottom={1}>
+          <List notifiData={notifications} />
+        </Grid>
       )}
       {pagination.pages !== pagination.current && (
         <Grid
@@ -77,7 +74,7 @@ export const Notifications = (props: any) => {
               size="small"
               label="load more"
               onClick={handleLoadMore}
-              loading={buttonLoading}
+              loading={loading}
             />
           )}
         </Grid>

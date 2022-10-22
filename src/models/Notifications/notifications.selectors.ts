@@ -1,15 +1,13 @@
 import { RootState } from "../store";
 import _ from "lodash";
 
+export const selectNotificationsState = (state: RootState) => state.notifi;
 export const selectNotificationsLoading = (state: RootState) =>
   state.notifi.loading;
 
-export const selectNotificationsButtonLoading = (state: RootState) =>
-  state.notifi.buttonLoading;
-
 export const selectNotifications = (state: RootState) =>
   state.notifi.notifications;
-  
+
 export const selectNotificationPagination = (state: RootState) => {
   return {
     limit: state.notifi.limit,

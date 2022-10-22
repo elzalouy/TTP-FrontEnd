@@ -86,6 +86,8 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                           backgroundColor: "white !important",
                           boxShadow: "0px 10px 20px #0000001A",
                           transition: "all 0.5s ease-out !important",
+                          WebkitAppearance: "none",
+                          WebkitBoxShadow: "0px 10px 20px #0000001A",
                         },
                       }}
                       hover

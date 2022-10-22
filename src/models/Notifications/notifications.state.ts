@@ -1,9 +1,8 @@
 import { NotificationsState } from "../../../src/types/models/Notifications";
 
 const NotifiState: NotificationsState = {
-  loading: false,
-  buttonLoading:false,
-  notifications: [],
+  loading: true,
+  notifications: undefined,
   pages: 0,
   current: 0,
   limit: 10,
