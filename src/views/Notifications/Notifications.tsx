@@ -54,7 +54,7 @@ export const Notifications = (props: any) => {
       {loading === false && notifications && notifications.length === 0 && (
         <Empty />
       )}
-      {loading === false && notifications && notifications.length > 0 && (
+      {notifications && notifications.length > 0 && (
         <Grid item xs={12} marginBottom={1}>
           <List notifiData={notifications} />
         </Grid>
