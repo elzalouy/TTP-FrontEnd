@@ -29,14 +29,12 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     onChangeNewProject: (state = projectsState, action: PayloadAction<any>) => {
       state.newProject = action.payload;
     },
-
     onChangeNewProjectP: (
       state = projectsState,
       action: PayloadAction<any>
     ) => {
       state.newProject.project = action.payload;
     },
-
     onChangeNewProjectTask: (
       state = projectsState,
       action: PayloadAction<any>
@@ -242,6 +240,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         ];
       }
     },
+    onRemoveFilters: (state: ProjectsInterface) => {
+      state.filteredTasks = [...state.allTasks];
+    },
     fireSetStatisticsHook: (state: ProjectsInterface) => {
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
@@ -297,6 +298,8 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       (state, action: PayloadAction<any>) => {
         state.selectedProject.loading = false;
         state.allTasks.push(action.payload.result);
+        state.filteredTasks.push(action.payload.result);
+
         state.selectedProject.tasks.push(action.payload.result);
         if (action.payload?.attachedFiles > 0) {
           state.uploadLoading.id = action.payload.result._id;
@@ -369,9 +372,23 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(deleteProjectTasks.rejected, (state, action) => {
       state.loading = false;
     });
-    builder.addCase(deleteProjectTasks.fulfilled, (state) => {
+    builder.addCase(deleteProjectTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.deleteProjectTasks = [];
+      state.projects = [
+        ...state.projects.filter((item) => item._id === action.payload.id),
+      ];
+      state.filteredProjects = [
+        ...state.projects.filter((item) => item._id === action.payload.id),
+      ];
+      state.filteredTasks = [
+        ...state.filteredTasks.filter((item) => item._id !== action.payload.id),
+      ];
+      state.allTasks = [
+        ...state.allTasks.filter(
+          (item) => item.projectId !== action.payload.id
+        ),
+      ];
     });
     builder.addCase(editTasksProjectId.rejected, (state) => {
       state.loading = false;
@@ -407,13 +424,17 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           (item) => item._id !== action.payload.id
         );
         state.deleteProject = "";
-        let tasks = [
+        state.allTasks = [
           ...state.allTasks.filter((i) => i.projectId !== action.payload.id),
         ];
-        state.allTasks = tasks;
-        state.selectedProject.tasks = tasks.filter(
+        state.selectedProject.tasks = state.allTasks.filter(
           (item) => item.projectId !== action.payload.id
         );
+        state.filteredTasks = [
+          ...state.filteredTasks.filter(
+            (item) => item.projectId !== action.payload.id
+          ),
+        ];
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
         state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       }

@@ -6,7 +6,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useParams } from "react-router";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import IMAGES from "../../../assets/img/Images";
@@ -23,7 +23,7 @@ import {
   selectProjectOptions,
 } from "../../../models/Projects";
 import { selectClientOptions } from "src/models/Clients/clients.selectors";
-import { ProjectsInterface } from "../../../types/models/Projects";
+import { ProjectsInterface, Task } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import EditTasks from "../Edit/EditTasks";
 import "./TasksListView.css";
@@ -31,16 +31,18 @@ interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
+  match: RouteComponentProps<{ projectId?: string }>["match"];
 }
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
+
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const projectOptions = useAppSelector(selectProjectOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
   const [showEditTasks, setShowEditTasks] = React.useState("none");
+
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const XS = useMediaQuery(theme.breakpoints.down("xs"));
@@ -51,12 +53,13 @@ export const TasksListView: React.FC<Props> = (props) => {
   const { watch, control, setValue } = useForm();
 
   React.useEffect(() => {
-    let state: any = props.location.state;
-    if (props.location.state && state.projectId) {
-      setValue("projectId", state.projectId);
-      dispatch(filterTasks({ projectId: state.projectId }));
-    } else dispatch(getAllTasks(null));
-  }, []);
+    let id = props.match.params?.projectId;
+    console.log(props.match.params);
+    if (id) {
+      setValue("projectId", id);
+      dispatch(filterTasks({ projectId: id }));
+    } else dispatch(ProjectsActions.onRemoveFilters(null));
+  }, [props.match.params]);
 
   const onHandleChangeFilter = () => {
     let filter = watch();
@@ -73,7 +76,11 @@ export const TasksListView: React.FC<Props> = (props) => {
     let filter = watch();
     setValue("projectId", "");
     await dispatch(
-      filterTasks({ projectId: filter.projectId, status: filter.status })
+      filterTasks({
+        projectId: filter.projectId,
+        status: filter.status,
+        name: filter.name,
+      })
     );
     dispatch(
       ProjectsActions.onChangeStaticFilters({ clientId: filter.clientId })
@@ -130,10 +137,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         xs={2}
         mb={SM ? 3 : 0}
       >
-        <Typography
-          variant="h2"
-          marginBottom={2}
-        >
+        <Typography variant="h2" marginBottom={2}>
           Tasks
           {props.projectId && props.projectId && (
             <>

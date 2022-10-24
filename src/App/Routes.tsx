@@ -146,7 +146,7 @@ const Routes = (props: RoutesProps) => {
       routeName: "/TasksList",
       Route: (
         <Route
-          path="/TasksList"
+          path="/TasksList/:projectId?"
           key="/TasksList"
           render={(props) => {
             if (isAuthedUser())
@@ -162,7 +162,7 @@ const Routes = (props: RoutesProps) => {
     },
     //route
     {
-      routeName: "/TasksList",
+      routeName: "/TasksBoard",
       Route: (
         <Route
           key="/TasksBoard"

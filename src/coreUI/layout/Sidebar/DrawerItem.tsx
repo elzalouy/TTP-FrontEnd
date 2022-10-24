@@ -23,8 +23,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
             "& .MuiListItemText-root": { color: "white", boxShadow: "none" },
           },
         }}
-        // onClick={() => props.onClick()}
-        className={props.select === props.path ? "active" : "sideItem"}
+        className={props.select.includes(props.path) ? "active" : "sideItem"}
       >
         <ListItemIcon
           sx={{
@@ -43,7 +42,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         </ListItemIcon>
         <ListItemText
           sx={{
-            color: props.select === props.path ? "white" : "#808191",
+            color: props.select.includes(props.path) ? "white" : "#808191",
             opacity: props.open ? 1 : 0,
             ":hover": {
               color: "#FFF !important",
@@ -51,9 +50,9 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
           }}
         >
           <Typography
-            fontWeight={props.select === props.path ? "600" : "500"}
+            fontWeight={props.select.includes(props.path) ? "600" : "500"}
             fontSize={14}
-            paddingLeft={props.text === "Project Managers" ? "5px" : "0px"}
+            paddingLeft={"0px"}
           >
             {props.text}
           </Typography>

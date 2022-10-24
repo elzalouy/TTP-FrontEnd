@@ -73,9 +73,9 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
                 size="x-small"
                 label="List View"
                 onClick={() =>
-                  props.history.push("/TasksList", {
-                    projectId: selectedProject.project?._id,
-                  })
+                  props.history.push(
+                    `/TasksList/${selectedProject.project?._id}`
+                  )
                 }
                 style={{ marginTop: "0px" }}
               />
