@@ -26,7 +26,7 @@ import { getAllCategories } from "src/models/Categories";
 import { getAllClients } from "src/models/Clients";
 import { getManagers } from "src/models/Managers";
 import { getAllProjects, getAllTasks } from "src/models/Projects";
-import { getUnNotified } from "src/models/Notifications";
+import { getNotifications, getUnNotified } from "src/models/Notifications";
 
 const App: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -60,6 +60,7 @@ const App: React.FC = (props) => {
         dispatch(getAllProjects(null));
         dispatch(getAllTasks(null));
         dispatch(getUnNotified(null));
+        dispatch(getNotifications(`/${0}/${10}`));
         setMounted(true);
       }
     };

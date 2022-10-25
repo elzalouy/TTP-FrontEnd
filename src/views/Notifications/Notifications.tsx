@@ -28,7 +28,6 @@ export const Notifications = (props: any) => {
 
   useEffect(() => {
     if (!mounted) {
-      dispatch(getNotifications(`/${pagination.current}/${pagination.limit}`));
       dispatch(updateNotified(null));
       setMounted(true);
     }
