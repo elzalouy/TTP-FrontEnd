@@ -268,6 +268,14 @@ const AppHooks: React.FC<Props> = (props) => {
         ToastSuccess("New Client created");
         dispatch(clientsActions.createClient(client));
       });
+      socket.on("delete-project", (project) => {
+        console.log({ project });
+        dispatch(ProjectsActions.deleteProjectByIO(project));
+      });
+      socket.on("update-projects", (project) => {
+        console.log({ update: project });
+        dispatch(ProjectsActions.updateProjectByIO(project));
+      });
     }
   }, [user, dispatch]);
 

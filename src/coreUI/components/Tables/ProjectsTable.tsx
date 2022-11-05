@@ -132,7 +132,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                     {project?.name}
                   </Typography>
                   <Typography variant={"h5"} fontSize={14} color="#696974">
-                    {project.projectManager?.name}
+                    {project.projectManagerName}
                   </Typography>
                 </TableCell>
                 <TableCell

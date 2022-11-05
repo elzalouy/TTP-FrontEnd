@@ -84,7 +84,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const executeEditProject = (formData: any) => {
     let editProject = { ...project };
-
+    console.log({ editProject });
     if (alert === "Not Started" || alert === "inProgress") {
       formData.status = "inProgress";
     }

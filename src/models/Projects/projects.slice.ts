@@ -21,7 +21,7 @@ import {
 import projectsState from "./projects.state";
 import _ from "lodash";
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { ProjectsInterface, Task } from "../../types/models/Projects";
+import { Project, ProjectsInterface, Task } from "../../types/models/Projects";
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
   initialState: projectsState,
@@ -146,7 +146,38 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.newProject.newProjectHook =
         state.newProject.newProjectHook === true ? false : true;
     },
-
+    updateProjectByIO: (
+      state: ProjectsInterface,
+      action: PayloadAction<Project>
+    ) => {
+      let data = action.payload;
+      if (state.projects && state.filteredProjects) {
+        let index = state.projects.findIndex((item) => item._id === data._id);
+        let filteredIndex = state.filteredProjects.findIndex(
+          (item) => item._id === data._id
+        );
+        let project: Project = {
+          ...state.projects[index],
+          ...action.payload,
+        };
+        state.projects[index] = project;
+        state.filteredProjects[filteredIndex] = project;
+      }
+    },
+    deleteProjectByIO: (
+      state: ProjectsInterface,
+      action: PayloadAction<Project>
+    ) => {
+      state.projects = [
+        ...state.projects.filter((item) => item._id !== action.payload._id),
+      ];
+      if (state.filteredProjects)
+        state.filteredProjects = [
+          ...state.filteredProjects?.filter(
+            (item) => item._id !== action.payload._id
+          ),
+        ];
+    },
     updateTaskData: (state = projectsState, action: PayloadAction<any>) => {
       if (action.payload?.attachedFiles?.length > 0) {
         state.uploadLoading.loading = false;
