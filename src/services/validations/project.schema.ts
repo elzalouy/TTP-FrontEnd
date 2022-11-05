@@ -1,7 +1,6 @@
 import Joi from "joi";
 import { ToastWarning } from "../../coreUI/components/Typos/Alert";
 
-
 const createProjectSchema = Joi.object({
   name: Joi.string().required().min(4).messages({
     "string.base": "Project Name is required",
@@ -12,6 +11,11 @@ const createProjectSchema = Joi.object({
   }),
   projectManager: Joi.string().required().min(5).messages({
     "string.base": "Project Manager id is required",
+    "string.empty": "Project Manager id should be string",
+    "string.min": "Project Manager id length should be Min 4 chars",
+    "any.required": "Project Manager is required",
+  }),
+  associateProjectManager: Joi.string().optional().min(5).allow(null).messages({
     "string.empty": "Project Manager id should be string",
     "string.min": "Project Manager id length should be Min 4 chars",
     "any.required": "Project Manager is required",
@@ -78,8 +82,10 @@ const validateCreateProject = (data: any) => {
 };
 
 const validateEditProject = (data: any) => {
-  let { error, value, warning } = editProjectSchema.validate(data,{presence:"required"});
+  let { error, value, warning } = editProjectSchema.validate(data, {
+    presence: "required",
+  });
   return { error, value, warning };
 };
 
-export { validateCreateProject , validateEditProject};
+export { validateCreateProject, validateEditProject };

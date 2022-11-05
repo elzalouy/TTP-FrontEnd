@@ -44,6 +44,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       deadline: null,
       startDate: null,
       clientId: "",
+      associateProjectManager: "",
     },
   });
   const dispatch = useDispatch();
@@ -53,8 +54,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
   const newProject = useAppSelector(selectNewProject);
-  // const theme = useTheme();
-  // const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
     if (currentStep === 0 && backTrigger) {
@@ -66,6 +65,11 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       setValue("clientId", newProject.project.clientId);
       setValue("deadline", newProject.project.projectDeadline);
       setValue("startDate", newProject.project.startDate);
+      if (newProject.project.associateProjectManager)
+        setValue(
+          "associateProjectManager",
+          newProject.project?.associateProjectManager
+        );
     }
   }, [newProject.project]);
 
@@ -94,7 +98,10 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.startDate = data.startDate;
     newProjectData.projectStatus =
       (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started";
-
+    newProjectData.associateProjectManager =
+      data.associateProjectManager.length > 0
+        ? data.associateProjectManager
+        : null;
     //Dispatches edit project and sets this data as the new project data for the form, if user tries to come back and change the values
     dispatch(ProjectsActions.onUpdateNewProject(newProjectData));
     dispatch(editProject({ data: newProjectData, dispatch }));
@@ -128,6 +135,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             : "Not Started",
         completedDate: null,
         adminId: token?.id,
+        associateProjectManager: data.associateProjectManager,
       };
 
       let isValid = validateCreateProject(project);
@@ -208,7 +216,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             setValue={setValue}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
           <DateInput
             label={"Start date"}
             name="startDate"
@@ -222,7 +230,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={3} md={3} paddingTop={1} paddingX={1.8}>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
           <DateInput
             label={"Deadline"}
             name="deadline"
@@ -253,6 +261,32 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             }}
             error={
               validateError.error?.details[0]?.path?.includes("projectManager")
+                ? "true"
+                : "false"
+            }
+            options={pmOptions}
+            setValue={setValue}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
+          <ControlledSelect
+            name="associateProjectManager"
+            control={control}
+            label="Select"
+            formLabel="Associate Project manager"
+            dataTestId="create-project-apm-select"
+            elementType="select"
+            onSelect={(e: any) => {
+              setError({
+                error: undefined,
+                value: undefined,
+                warning: undefined,
+              });
+            }}
+            error={
+              validateError.error?.details[0]?.path?.includes(
+                "associateProjectManager"
+              )
                 ? "true"
                 : "false"
             }

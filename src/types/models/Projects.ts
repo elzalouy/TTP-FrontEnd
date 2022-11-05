@@ -57,6 +57,7 @@ export interface Project {
   tasks: Task[];
   NoOfFinishedTasks: any;
   NoOfTasks: any;
+  associateProjectManager?: string | null;
 }
 export interface TasksStatistics {
   numberOfTasks: number | null;

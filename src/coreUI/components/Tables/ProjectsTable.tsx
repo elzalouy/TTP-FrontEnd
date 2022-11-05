@@ -20,12 +20,14 @@ import { Project } from "../../../types/models/Projects";
 import { selectTasks } from "src/models/Projects";
 import { IProjectsTableProps } from "src/types/components/Table";
 import "src/App/App.css";
+import { selectManagers } from "src/models/Managers";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const allTasks = useAppSelector(selectTasks);
+  const PMs = useAppSelector(selectManagers);
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -134,6 +136,17 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   <Typography variant={"h5"} fontSize={14} color="#696974">
                     {project.projectManagerName}
                   </Typography>
+                  {project.associateProjectManager &&
+                    project.associateProjectManager?.length > 0 && (
+                      <Typography variant={"h5"} fontSize={14} color="#696974">
+                        {
+                          PMs.find(
+                            (item) =>
+                              item._id === project?.associateProjectManager
+                          )?.name
+                        }
+                      </Typography>
+                    )}
                 </TableCell>
                 <TableCell
                   onClick={() =>

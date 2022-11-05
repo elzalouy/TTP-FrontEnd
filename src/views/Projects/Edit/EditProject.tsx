@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import Joi from "joi";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -52,6 +53,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       name: project?.name,
       status: project?.projectStatus,
       startDate: project?.startDate,
+      associateProjectManager: project?.associateProjectManager,
     },
   });
   const data = watch();
@@ -74,6 +76,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("name", project?.name);
     setValue("status", project?.projectStatus, { shouldDirty: false });
     setValue("startDate", project?.startDate);
+    setValue("associateProjectManager", project?.associateProjectManager);
   }, [project]);
 
   useEffect(() => {
@@ -98,7 +101,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     editProject.clientId = formData.clientId;
     editProject.projectStatus = formData.status;
     editProject.startDate = formData.startDate;
-
+    editProject.associateProjectManager = formData.associateProjectManager;
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
       if (![typeof status, status].includes("undefined")) {
@@ -223,7 +226,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setShow={setConfirm}
         setTrigger={setTrigger}
       />
-      <PopUp show={show} minWidthSize="50vw">
+      <PopUp show={show} minWidthSize="65vw">
         <div style={{ position: "relative" }}>
           <div className="closeIconContainer" onClick={closeIconOnClick}>
             <img
@@ -240,8 +243,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           <p className="popup-error">Please fill a valid project name</p>
         )}
         <div>
-          <div className="inputs-grid">
-            <div>
+          <Grid
+            className="projectFormContainer"
+            alignItems={"flex-start"}
+            container
+          >
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
               <ControlledInput
                 dataTestId="edit-project-name-input"
                 name="name"
@@ -252,8 +259,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 error={nameErr.error ? "true" : undefined}
                 onChange={handleNameChange}
               />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
               <ControlledSelect
                 name="clientId"
                 control={control}
@@ -263,8 +270,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 options={clientOptions}
                 setValue={setValue}
               />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
               <DateInput
                 dataTestId="edit-project-date-input"
                 label={"Start date"}
@@ -275,8 +282,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 setValue={setValue}
                 setUpdateDate={setUpdateDate}
               />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
               <DateInput
                 dataTestId="edit-project-due-date-input"
                 label={"Deadline"}
@@ -287,8 +294,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 setValue={setValue}
                 setUpdateDate={setUpdateDate}
               />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
               <ControlledSelect
                 name="status"
                 control={control}
@@ -304,8 +311,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 options={statusOptions}
                 setValue={setValue}
               />
-            </div>
-            <div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
               <ControlledSelect
                 name="projectManager"
                 control={control}
@@ -315,8 +322,19 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                 options={pmOptions}
                 setValue={setValue}
               />
-            </div>
-          </div>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+              <ControlledSelect
+                name="associateProjectManager"
+                control={control}
+                label="Select"
+                formLabel="Associate Project manager"
+                elementType="select"
+                options={pmOptions}
+                setValue={setValue}
+              />
+            </Grid>
+          </Grid>
           <div className="controllers">
             <Button
               size="large"
