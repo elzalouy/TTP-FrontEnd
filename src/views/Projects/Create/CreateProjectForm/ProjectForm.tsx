@@ -113,7 +113,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     let token = getUserTokenInfo();
     if (token !== null) {
       let project = {
-        name: data?.name,
+        name: `${
+          clientOptions.find((item) => item.id === data.clientId)?.text
+        }-${data?.name}`,
         projectManager: data?.projectManager,
         projectManagerName: PMs.find(
           (item: Manager) => item._id === data?.projectManager
@@ -135,7 +137,10 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             : "Not Started",
         completedDate: null,
         adminId: token?.id,
-        associateProjectManager: data.associateProjectManager,
+        associateProjectManager:
+          data.associateProjectManager.length > 0
+            ? data.associateProjectManager
+            : null,
       };
 
       let isValid = validateCreateProject(project);

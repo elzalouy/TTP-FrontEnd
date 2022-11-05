@@ -42,6 +42,7 @@ import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import AttachetFiles from "src/coreUI/components/Lists/AttachFiles";
 import Button from "src/coreUI/components/Buttons/Button";
 import { initialHookFormTaskState } from "src/types/views/BoardView";
+import { selectClientOptions } from "src/models/Clients";
 
 const TaskForm: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -53,6 +54,7 @@ const TaskForm: React.FC = () => {
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
   const categroiesOption = useAppSelector(selectCategoriesOptions);
+  const clientsOptions = useAppSelector(selectClientOptions);
   const loadingTask = useAppSelector(selectLoading);
   const newProject = useAppSelector(selectNewProject);
   const [selectedDepartment, setSelectedDepartment] = React.useState<
@@ -81,8 +83,16 @@ const TaskForm: React.FC = () => {
   const onSubmit = async () => {
     let data = watch();
     let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
+    let subCategory = selectedCategory?.subCategoriesId?.find(
+      (item) => item._id === data.subCategoryId
+    );
     let newTask: any = {
-      name: data.name,
+      name: `${
+        clientsOptions.find((item) => item.id === newProject.project.clientId)
+          ?.text
+      }-${newProject.project.name}-${selectedCategory?.category}-${
+        subCategory ? subCategory.subCategory : ""
+      }-${data.name}`,
       projectId: newProject?.project?._id,
       status: list,
       start: new Date().toUTCString(),

@@ -28,6 +28,7 @@ import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
+import { selectClientOptions } from "src/models/Clients";
 
 interface Props {
   show: string;
@@ -41,6 +42,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const categories = useAppSelector(selectAllCategories);
   const selectedProject = useAppSelector(selectSelectedProject);
   const { createTaskPopup } = useAppSelector(selectUi);
+  const clientsOptions = useAppSelector(selectClientOptions);
   const { register, handleSubmit, control, reset, setValue, watch } =
     useForm<IInitialinitialHookFormTaskState>({
       defaultValues: { ...initialHookFormTaskState },
@@ -60,10 +62,18 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-
+    let subCategory = state.selectedCategory?.subCategoriesId?.find(
+      (item) => item._id === data.subCategoryId
+    );
     let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
     let newTask: any = {
-      name: data.name,
+      name: `${
+        clientsOptions.find(
+          (item) => item.id === selectedProject?.project?.clientId
+        )?.text
+      }-${selectedProject?.project?.name}-${state.selectedCategory?.category}-${
+        subCategory ? subCategory.subCategory : ""
+      }-${data.name}`,
       categoryId: data?.categoryId,
       projectId: selectedProject?.project?._id,
       status: list,
