@@ -62,47 +62,52 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-    let subCategory = state.selectedCategory?.subCategoriesId?.find(
-      (item) => item._id === data.subCategoryId
-    );
-    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
-    let newTask: any = {
-      name: `${
-        clientsOptions.find(
-          (item) => item.id === selectedProject?.project?.clientId
-        )?.text
-      }-${selectedProject?.project?.name}-${state.selectedCategory?.category}-${
-        subCategory ? subCategory.subCategory : ""
-      }-${data.name}`,
-      categoryId: data?.categoryId,
-      projectId: selectedProject?.project?._id,
-      status: list,
-      start: new Date().toUTCString(),
-      listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
-        ?.listId,
-      boardId: state.selectedDepartment?.boardId,
-    };
-    if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
-    if (data.teamId !== "") newTask.teamId = data.teamId;
-    if (data.deadline !== "" && data.deadline !== null)
-      newTask.deadline = moment(data?.deadline).toDate().toString();
-    if (state.newFiles) newTask.attachedFiles = state.newFiles;
-    if (data.description) newTask.description = data.description;
-
-    let { error, warning, value, FileError, FormDatatask } =
-      valdiateCreateTask(newTask);
-    if (error || FileError) {
-      State.error = { error, warning, value };
-      setState(State);
-    } else {
-      dispatch(
-        createTaskFromBoard({
-          data: FormDatatask,
-          setShow: setShow,
-          resetState,
-          reset,
-        })
+    if (selectedProject.project) {
+      let subCategory = state.selectedCategory?.subCategoriesId?.find(
+        (item) => item._id === data.subCategoryId
       );
+      let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
+      let projectNames = selectedProject.project.name.split("-");
+      console.log({ projectNames });
+      let projectPureName = projectNames[projectNames.length - 1];
+      let newTask: any = {
+        name: `${
+          clientsOptions.find(
+            (item) => item.id === selectedProject?.project?.clientId
+          )?.text
+        }-${projectPureName}-${state.selectedCategory?.category}-${
+          subCategory ? subCategory.subCategory : ""
+        }-${data.name}`,
+        categoryId: data?.categoryId,
+        projectId: selectedProject?.project?._id,
+        status: list,
+        start: new Date().toUTCString(),
+        listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
+          ?.listId,
+        boardId: state.selectedDepartment?.boardId,
+      };
+      if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
+      if (data.teamId !== "") newTask.teamId = data.teamId;
+      if (data.deadline !== "" && data.deadline !== null)
+        newTask.deadline = moment(data?.deadline).toDate().toString();
+      if (state.newFiles) newTask.attachedFiles = state.newFiles;
+      if (data.description) newTask.description = data.description;
+
+      let { error, warning, value, FileError, FormDatatask } =
+        valdiateCreateTask(newTask);
+      if (error || FileError) {
+        State.error = { error, warning, value };
+        setState(State);
+      } else {
+        dispatch(
+          createTaskFromBoard({
+            data: FormDatatask,
+            setShow: setShow,
+            resetState,
+            reset,
+          })
+        );
+      }
     }
   };
 

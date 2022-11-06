@@ -86,11 +86,14 @@ const TaskForm: React.FC = () => {
     let subCategory = selectedCategory?.subCategoriesId?.find(
       (item) => item._id === data.subCategoryId
     );
+    let projectNames = newProject.project.name.split("-");
+    let projectPureName = projectNames[projectNames.length - 1];
+
     let newTask: any = {
       name: `${
         clientsOptions.find((item) => item.id === newProject.project.clientId)
           ?.text
-      }-${newProject.project.name}-${selectedCategory?.category}-${
+      }-${projectPureName}-${selectedCategory?.category}-${
         subCategory ? subCategory.subCategory : ""
       }-${data.name}`,
       projectId: newProject?.project?._id,
