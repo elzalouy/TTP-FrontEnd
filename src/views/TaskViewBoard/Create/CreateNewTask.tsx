@@ -68,7 +68,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       );
       let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
       let projectNames = selectedProject.project.name.split("-");
-      console.log({ projectNames });
       let projectPureName = projectNames[projectNames.length - 1];
       let newTask: any = {
         name: `${
