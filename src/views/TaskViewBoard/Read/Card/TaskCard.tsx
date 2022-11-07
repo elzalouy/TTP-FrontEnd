@@ -187,17 +187,19 @@ const TaskCard: React.FC<TaskCartProps> = ({
             style={snapshot.isDragging ? afterDropStyle : {}}
           >
             <Stack
-              className="task-card-header-not-clear"
               direction="row"
-              justifyContent="flex-start"
+              justifyContent="space-between"
               alignItems="center"
+              width={"100%"}
             >
               <Typography
                 sx={{
                   fontWeight: "bold",
                   cursor: "pointer",
                   textTransform: "capitalize",
+                  width: "80%",
                 }}
+                noWrap={true}
                 onClick={onViewTask}
               >
                 {name}

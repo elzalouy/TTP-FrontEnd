@@ -27,7 +27,6 @@ import {
   initialHookFormTaskState,
 } from "../../../types/views/BoardView";
 import DateInput from "./DateInput";
-import EditTaskTitle from "./Title";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
