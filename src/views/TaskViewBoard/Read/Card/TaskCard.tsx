@@ -114,7 +114,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
         const floatDays =
           (new Date(deadline).getTime() - new Date().getTime()) /
           (1000 * 60 * 60 * 24);
-        const remainingDays = Math.round(floatDays);
+        const remainingDays = Math.round(floatDays + 1);
         setRemaningDays(remainingDays);
         const daysColor =
           remainingDays <= 2
