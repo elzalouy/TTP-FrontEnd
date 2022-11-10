@@ -82,6 +82,7 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
         args.dispatch(fireDeleteDepartmentHook(""));
         return department.data._id;
       }
+      ToastError(department.data);
       return rejectWithValue(department.data);
     } catch (error: any) {
       ToastError(error);
