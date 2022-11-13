@@ -2,8 +2,6 @@ import { Grid } from "@mui/material";
 import "../auth.css";
 import IMAGES from "../../../assets/img/Images";
 import { useState } from "react";
-import { selectUserState } from "../../../models/Auth";
-import { useAppSelector } from "../../../models/hooks";
 import { IFailed } from "src/types/views/Auth";
 import { Props } from "src/types/views/Auth";
 import AuthContainer from "../AuthComponents/AuthContainer";
