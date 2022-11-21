@@ -2,11 +2,12 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import {
   deleteCategory,
-  selectSelectedCategory
+  selectSelectedCategory,
 } from "../../../models/Categories";
 import { useAppSelector } from "../../../models/hooks";
 import "../../popups-style.css";
@@ -37,38 +38,14 @@ const DeleteCategory: React.FC<Props> = ({
   };
 
   return (
-    <SmallPopUp show={showDelete} widthSize="400px">
-      <div className="imageAlert">
-        <img src={deleteIcon} />
-      </div>
-      <p className="warning-text">
-        Are you sure you want to delete this category?
-      </p>
-      <Grid lg={12} md={12} container justifyContent={"center"} alignItems="center">
-        <Grid item lg={12} md={12}>
-          <Typography textAlign={"center"} variant="h5" fontWeight={600} padding={1}>
-            If you delete this Category, all the Sub-categories in this department
-            will also be deleted.
-          </Typography>
-        </Grid>
-      </Grid>
-      <div className="margin-cover">
-        <div className="controllers-small-popup">
-          <Button
-            type="cancel"
-            size="large"
-            label="cancel"
-            onClick={() => handleSetShowDelete("none")}
-          />
-          <Button
-            type="delete"
-            size="large"
-            label="delete"
-            onClick={handleSubmit}
-          />
-        </div>
-      </div>
-    </SmallPopUp>
+    <>
+      <DeketeWarning
+        message="Are you sure you want to delete this category?"
+        show={showDelete}
+        setShow={handleSetShowDelete}
+        onClick={handleSubmit}
+      />
+    </>
   );
 };
 export default DeleteCategory;

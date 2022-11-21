@@ -306,65 +306,46 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
         }}
       >
         <CreateNewProject {...props} />
-        {loading === false ? (
-          <>
-            <TableBox
-              title={"In Progress"}
-              outTitled={false}
-              expanded={expanded}
-              setExpanded={setExpanded}
-              bgColor={backgroundColor[0]}
-            >
-              <Box id="project-title">
-                <ProjectsTable
-                  align="center"
-                  textSize="medium"
-                  status={"In progress"}
-                  expanded={expanded}
-                  projects={inProgressProjects}
-                  projectManagers={PMs}
-                  {...props}
-                />
-              </Box>
-            </TableBox>
-            <TableBox
-              title={"Done"}
-              outTitled={false}
-              expanded={doneExpanded}
-              setExpanded={setDoneExpanded}
-              bgColor={backgroundColor[1]}
-            >
-              <Box id="project-title">
-                <ProjectsTable
-                  align="center"
-                  textSize="medium"
-                  status={"Done"}
-                  expanded={doneExpanded}
-                  projects={doneProjects}
-                  projectManagers={PMs}
-                  {...props}
-                />
-              </Box>
-            </TableBox>
-          </>
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              borderRadius: "12px",
-              backgroundColor: "#F1F1F4",
-              p: 1,
-              cursor: "pointer",
-              font: "normal normal 600 16px/30px Cairo",
-              color: "#909090",
-            }}
+        <>
+          <TableBox
+            title={"In Progress"}
+            outTitled={false}
+            expanded={expanded}
+            setExpanded={setExpanded}
+            bgColor={backgroundColor[0]}
           >
-            <Loading color="grey" type="spinningBubbles" /> Loading More
-          </Box>
-        )}
+            <Box id="project-title">
+              <ProjectsTable
+                align="center"
+                textSize="medium"
+                status={"In progress"}
+                expanded={expanded}
+                projects={inProgressProjects}
+                projectManagers={PMs}
+                {...props}
+              />
+            </Box>
+          </TableBox>
+          <TableBox
+            title={"Done"}
+            outTitled={false}
+            expanded={doneExpanded}
+            setExpanded={setDoneExpanded}
+            bgColor={backgroundColor[1]}
+          >
+            <Box id="project-title">
+              <ProjectsTable
+                align="center"
+                textSize="medium"
+                status={"Done"}
+                expanded={doneExpanded}
+                projects={doneProjects}
+                projectManagers={PMs}
+                {...props}
+              />
+            </Box>
+          </TableBox>
+        </>
       </Box>
     </Grid>
   );

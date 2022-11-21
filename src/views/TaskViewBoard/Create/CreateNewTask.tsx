@@ -70,13 +70,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       let projectNames = selectedProject.project.name.split("-");
       let projectPureName = projectNames[projectNames.length - 1];
       let newTask: any = {
-        name: `${
-          clientsOptions.find(
-            (item) => item.id === selectedProject?.project?.clientId
-          )?.text
-        }-${projectPureName}-${state.selectedCategory?.category}-${
-          subCategory ? subCategory.subCategory : ""
-        }-${data.name}`,
+        name: data.name,
         categoryId: data?.categoryId,
         projectId: selectedProject?.project?._id,
         status: list,
@@ -98,6 +92,16 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         State.error = { error, warning, value };
         setState(State);
       } else {
+        FormDatatask?.set(
+          "name",
+          `${
+            clientsOptions.find(
+              (item) => item.id === selectedProject?.project?.clientId
+            )?.text
+          }-${projectPureName}-${state.selectedCategory?.category}-${
+            subCategory ? subCategory.subCategory : ""
+          } (${data.name})`
+        );
         dispatch(
           createTaskFromBoard({
             data: FormDatatask,

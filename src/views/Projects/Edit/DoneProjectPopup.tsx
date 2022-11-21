@@ -28,9 +28,11 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
       <hr className="separator" />
       <div className="margin-cover">
         <div
-          className={`controllers-small-popup ${
-            alert.length !== 0 && "controllers-center"
-          }`}
+          className={`${alert.length !== 0 && "controllers-center"}`}
+          style={{
+            marginBottom: "0px !important;",
+            display: "flex",
+          }}
         >
           {!alert && (
             <button
