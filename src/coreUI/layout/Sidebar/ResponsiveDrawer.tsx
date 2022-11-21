@@ -137,7 +137,7 @@ const ResponsiveDrawer = (props: any) => {
                 path={"/Managers"}
                 Icon={() => <PersonIcon />}
                 src={IMAGES.person}
-                text="Managers"
+                text="Users"
               />
             )}
             <DrawerItem

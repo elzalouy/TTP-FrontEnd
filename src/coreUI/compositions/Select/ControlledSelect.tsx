@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { IControlledSelect } from "src/types/components/Containers";
 import Select from "../../components/Inputs/SelectFields/Select";
@@ -19,6 +19,10 @@ const ControlledSelect: FC<IControlledSelect> = ({
   dataTestId,
   error,
 }) => {
+  const [updateOptions, setOpetions] = useState([]);
+  useEffect(() => {
+    setOpetions(options);
+  }, [options]);
   return (
     <>
       {formLabel && <label className="popup-label">{formLabel}</label>}
@@ -38,7 +42,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
               onSelect(e);
             }}
             selected={selected ? selected : props.field.value}
-            options={options}
+            options={updateOptions}
             textTruncate={textTruncate}
             message={message}
             error={error} // it shouldn't be removed

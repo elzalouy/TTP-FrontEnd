@@ -25,7 +25,7 @@ export const Managers = (Props: any) => {
         alignItems="flex-start"
       >
         <Typography variant={SM ? "h3" : "h2"} p={0} m={0}>
-          Managers
+          Users
         </Typography>
         <AddManager />
       </Box>

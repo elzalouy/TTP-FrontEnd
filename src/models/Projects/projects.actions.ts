@@ -270,9 +270,8 @@ export const editProject = createAsyncThunk<any, any, any>(
 
 export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
-  async (args, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue }) => {
     try {
-      let liststr = "";
       let department: IDepartmentState = args?.department;
       let value = args?.value;
       let task = args?.task;
@@ -284,7 +283,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
           cardId: task.cardId,
           listId: newlist.listId,
           status: newlist.name,
-          list: liststr,
+          department: department,
         };
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
         if (moveResult.ok) {

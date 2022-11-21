@@ -55,7 +55,7 @@ const AddManager: React.FC = () => {
       <Button
         type="main"
         size="small"
-        label="Add Manager"
+        label="Add User"
         dataTestId="create-pm-button"
         onClick={() => setShow("flex")}
         style={{ marginTop: "0px" }}
@@ -82,7 +82,7 @@ const AddManager: React.FC = () => {
           </div>
         </div>
         <div>
-          <p className="popup-title">Add new Project Manager</p>
+          <p className="popup-title">Add User</p>
           {error && (
             <p className="popup-error">Please fill all the empty field</p>
           )}
@@ -114,7 +114,7 @@ const AddManager: React.FC = () => {
             error={emailFormat ? "true" : ""}
           />
           <Box paddingTop={1}>
-            <p className="popup-label">Manager Role</p>
+            <p className="popup-label">User Role</p>
             <Select
               elementType="select"
               name="create-manager-role"

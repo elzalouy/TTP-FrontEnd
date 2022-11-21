@@ -84,7 +84,7 @@ const EditPM: React.FC = () => {
             />
           </div>
         </div>
-        <p className="popup-title">Edit project manager</p>
+        <p className="popup-title">Edit User</p>
         {error && (
           <p className="popup-error">Please fill all the empty field</p>
         )}

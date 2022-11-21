@@ -54,6 +54,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const clientOptions = useAppSelector(selectClientOptions);
   const { createProjectPopup } = useAppSelector(selectUi);
   const newProject = useAppSelector(selectNewProject);
+  const [ApmOptions, setApmOptions] = React.useState(pmOptions);
 
   React.useEffect(() => {
     if (currentStep === 0 && backTrigger) {
@@ -259,6 +260,13 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             dataTestId="create-project-pm-select"
             elementType="select"
             onSelect={(e: any) => {
+              setApmOptions(
+                pmOptions.filter((item) => item.id !== watch().projectManager)
+              );
+              console.log(
+                pmOptions.filter((item) => item.id !== watch().projectManager)
+              );
+
               setError({
                 error: undefined,
                 value: undefined,
@@ -296,9 +304,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 ? "true"
                 : "false"
             }
-            options={pmOptions.filter(
-              (item) => item.id !== watch().projectManager
-            )}
+            options={ApmOptions}
             setValue={setValue}
           />
         </Grid>

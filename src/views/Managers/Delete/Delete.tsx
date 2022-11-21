@@ -18,7 +18,7 @@ const DeletePM = () => {
       <DeketeWarning
         show={toggler}
         setShow={onClose}
-        message={"Are you sure you want to delete this client?"}
+        message={"Are you sure you want to delete this user?"}
         loading={loading}
         dataTestId="delete-pm-button"
         onClick={() => {

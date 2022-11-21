@@ -101,7 +101,7 @@ const ManagersList = () => {
                       }
                 }
               >
-                PM Name
+                User Name
               </TableCell>
               <TableCell
                 className="thead"
@@ -112,7 +112,7 @@ const ManagersList = () => {
                   padding: "0px",
                 }}
               >
-                Role
+                User Role
               </TableCell>
               <TableCell
                 className="thead"

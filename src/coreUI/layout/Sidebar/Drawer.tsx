@@ -142,7 +142,7 @@ const AppDrawer = (props: any) => {
                 onClick={() => history.push("/Managers")}
                 path={"/Managers"}
                 Icon={() => <PersonIcon />}
-                text="Managers"
+                text="Users"
               />
             )}
             {role !== "PM" && (

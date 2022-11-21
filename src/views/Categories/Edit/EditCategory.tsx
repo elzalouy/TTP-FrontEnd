@@ -182,15 +182,16 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
             ))}
         </div>
         <br />
-        <div className="controllers">
+        <Grid width={"100%"}>
           <Button
             type="main"
             size="large"
             label="done"
             onClick={handleSubmit}
             loading={loadingCat}
+            style={{ width: "100%", margin: "0px" }}
           />
-        </div>
+        </Grid>
       </PopUp>
     </>
   );

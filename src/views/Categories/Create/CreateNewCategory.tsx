@@ -181,15 +181,16 @@ const CreateNewCategory = () => {
               ))}
             <br />
           </div>
-          <div className="controllers">
+          <Grid width={"100%"}>
             <Button
               type="main"
               size="large"
               label="done"
               onClick={handleSubmit}
               loading={loadingCat}
+              style={{ width: "100%" }}
             />
-          </div>
+          </Grid>
         </Grid>
       </PopUp>
     </>
