@@ -76,7 +76,6 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
           >
             <a
               href={item?.trelloShortUrl}
-              target="_blank"
               className={styles.grayButton}
               style={{
                 textDecoration: "none",
@@ -88,6 +87,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
               <img
                 src={IMAGES.trelloIcon}
                 width={18}
+                alt={"1"}
                 style={{ marginRight: 2, marginLeft: 1 }}
               ></img>
               <span style={{ marginLeft: 7 }}>Open in trello</span>
@@ -102,6 +102,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             <img
               src={IMAGES.deleteicon2}
               width={18}
+              alt="2"
               style={{ marginRight: 10 }}
             ></img>
             Delete Task

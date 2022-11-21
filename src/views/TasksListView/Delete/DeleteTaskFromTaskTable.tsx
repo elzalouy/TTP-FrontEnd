@@ -8,6 +8,8 @@ import "./DeleteTask.css";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 import Button from "src/coreUI/components/Buttons/Button";
 import SmallPopUp from "src/coreUI/components/Popovers/Popup/SmallPopup";
+import { ToastWarning } from "src/coreUI/components/Typos/Alert";
+import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
 type Props = {
   onDelete?: () => void;
@@ -19,59 +21,34 @@ type Props = {
 
 const DeleteTask: React.FC<Props> = (props) => {
   return (
-    <Box style={{ height: "40px" }}>
-      <Box
-        style={{ height: "100%", width: "35px", padding: "0 10px" }}
-        className="filter-icon"
-      >
-        <IconButton
-          disableRipple
-          onClick={() => {
-            if (props.task.length !== 0) {
-              props.setShow("flex");
-            } else {
-              toast.warn("Please select a task you wish to delete", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                toastId: generateID(),
-              });
-            }
-          }}
+    <>
+      <Box style={{ height: "40px" }}>
+        <Box
+          style={{ height: "100%", width: "35px", padding: "0 10px" }}
+          className="filter-icon"
         >
-          <img src={IMAGES.deleteicon} alt="sortout" />
-        </IconButton>
-      </Box>
+          <IconButton
+            disableRipple
+            onClick={() => {
+              if (props.task.length !== 0) {
+                props.setShow("flex");
+              } else {
+                ToastWarning("Please select a task you wish to delete");
+              }
+            }}
+          >
+            <img src={IMAGES.deleteicon} alt="sortout" />
+          </IconButton>
+        </Box>
 
-      <SmallPopUp show={props.Show}>
-        <div className="task-delete-container">
-          <div className="imageAlert">
-            <img src={deleteIcon} />
-          </div>
-          <p className="delete-title">
-            Are you sure you want to delete the selected tasks?
-          </p>
-          <div className="controllers-small-popup">
-            <Button
-              type="cancel"
-              size="large"
-              label="cancel"
-              onClick={() => props.setShow("none")}
-            />
-            <Button
-              type="delete"
-              size="large"
-              label="delete"
-              onClick={props.onDelete}
-            />
-          </div>
-        </div>
-      </SmallPopUp>
-    </Box>
+        <DeketeWarning
+          message="Are you sure you want to delete the selected tasks?"
+          show={props.Show}
+          setShow={props.setShow}
+          onClick={props.onDelete}
+        />
+      </Box>
+    </>
   );
 };
 

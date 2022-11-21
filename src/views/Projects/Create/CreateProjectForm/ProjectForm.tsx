@@ -113,9 +113,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     let token = getUserTokenInfo();
     if (token !== null) {
       let project = {
-        name: `${
-          clientOptions.find((item) => item.id === data.clientId)?.text
-        }-${data?.name}`,
+        name: data.name,
         projectManager: data?.projectManager,
         projectManagerName: PMs.find(
           (item: Manager) => item._id === data?.projectManager
@@ -149,6 +147,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         setError(isValid);
         ToastError(isValid.error.message);
       } else {
+        project.name = `${
+          clientOptions.find((item) => item.id === data.clientId)?.text
+        }-${data?.name}`;
         dispatch(createProject({ data: project, setcurrentStep, dispatch }));
       }
     }
@@ -295,7 +296,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 ? "true"
                 : "false"
             }
-            options={pmOptions}
+            options={pmOptions.filter(
+              (item) => item.id !== watch().projectManager
+            )}
             setValue={setValue}
           />
         </Grid>

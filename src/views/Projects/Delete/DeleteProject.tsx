@@ -1,16 +1,11 @@
 import React from "react";
-import IMAGES from "../../../assets/img/Images";
 import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
-import { useState } from "react";
 // import "../../popups-style.css";
 import { useAppSelector } from "../../../models/hooks";
-import {
-  deleteProject,
-  deleteProjectTasks,
-  selectDeleteProjectId,
-} from "../../../models/Projects";
+import { deleteProject, selectDeleteProjectId } from "../../../models/Projects";
 import { useDispatch } from "react-redux";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
 type Props = {
   show: string;
@@ -28,29 +23,12 @@ const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
 
   return (
     <>
-      <SmallPopUp show={show}>
-        <div className="imageAlert">
-          <img src={deleteIcon} />
-        </div>
-        <p className="warning-text">
-          Are you sure you want to delete this project?
-        </p>
-        <div className="margin-cover">
-          <div className="controllers-small-popup">
-            <button
-              className="controllers-cancel"
-              onClick={() => {
-                setShow("none");
-              }}
-            >
-              Cancel
-            </button>
-            <button className="controllers-delete" onClick={onDeleteProject}>
-              Delete
-            </button>
-          </div>
-        </div>
-      </SmallPopUp>
+      <DeketeWarning
+        message="Are you sure you want to delete this project?"
+        show={show}
+        setShow={setShow}
+        onClick={onDeleteProject}
+      />
     </>
   );
 };

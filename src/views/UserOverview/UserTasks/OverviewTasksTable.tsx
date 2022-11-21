@@ -43,7 +43,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
   return (
     <Paper className={css.Paper}>
       <TableContainer
-        className={`${css.tableContainer} overviewTasksTable`}
+        className={`${css.tableContainer} overviewTasksTable `}
         sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
       >
         <Table
@@ -81,6 +81,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                 return (
                   <>
                     <TableRow
+                      onClick={() => history.push(`/TasksBoard/${projectId}`)}
                       sx={{
                         ":hover": {
                           backgroundColor: "white !important",
@@ -88,6 +89,7 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                           transition: "all 0.5s ease-out !important",
                           WebkitAppearance: "none",
                           WebkitBoxShadow: "0px 10px 20px #0000001A",
+                          position: "relative ",
                         },
                       }}
                       hover
@@ -107,7 +109,6 @@ const OverviewTasksTable: React.FC<OverviewTasksTableProps> = ({
                         <Status status={status} />
                       </TableCell>
                       <TableCell
-                        onClick={() => history.push(`/TasksBoard/${projectId}`)}
                         className={
                           tasks.length - 1 === index
                             ? css.noBorderCell

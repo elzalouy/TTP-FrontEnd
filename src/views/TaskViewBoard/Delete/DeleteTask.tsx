@@ -5,6 +5,7 @@ import { useAppSelector } from "../../../models/hooks";
 import { deleteTask, selectedDeleteTaskId } from "../../../models/Projects";
 import { openDeleteTaskPopup } from "../../../models/Ui";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
+import DeleteWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
 interface DeleteTaskProps {
   show: string;
@@ -20,29 +21,14 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({ show, setShow }) => {
     disptach(openDeleteTaskPopup("none"));
   };
   return (
-    <SmallPopUp show={show}>
-      <div className="imageAlert">
-        <img src={deleteIcon} />
-      </div>
-      <p className="warning-text">Are you sure you want to delete this Task?</p>
-      <div className="margin-cover">
-        <div className="controllers-small-popup">
-          <button
-            className="controllers-cancel"
-            onClick={() => setShow("none")}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onDeleteTask}
-            className="controllers-delete"
-            data-test-id="delete-task-button-confirm"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </SmallPopUp>
+    <>
+      <DeleteWarning
+        show={show}
+        setShow={setShow}
+        onClick={onDeleteTask}
+        message="Are you sure you want to delete this Task?"
+      />
+    </>
   );
 };
 

@@ -56,9 +56,13 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
     let name = watch().team;
     if (index !== undefined) {
       _.remove(teams, teams[index]);
-    } else teams.push({ name: name, listId: "", isDeleted: false });
-    setState({ ...state, teams: teams });
-    resetField("team");
+      setState({ ...state, teams: teams });
+      resetField("team");
+    } else if (name.length >= 3) {
+      teams.push({ name: name, listId: "", isDeleted: false });
+      setState({ ...state, teams: teams });
+      resetField("team");
+    }
   };
 
   const onSubmit = async () => {
@@ -165,7 +169,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
                 size="small"
                 label="add"
                 dataTestId="create-dep-add-team"
-                disabled={watch().team.length < 2}
+                disabled={watch().team.length < 3}
                 onClick={() => onChangeTeams()}
               />
             </Grid>

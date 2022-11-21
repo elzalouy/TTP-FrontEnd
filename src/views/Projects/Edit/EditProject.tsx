@@ -226,7 +226,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         setShow={setConfirm}
         setTrigger={setTrigger}
       />
-      <PopUp show={show} minWidthSize="65vw">
+      <PopUp show={show}>
         <div style={{ position: "relative" }}>
           <div className="closeIconContainer" onClick={closeIconOnClick}>
             <img
@@ -242,108 +242,107 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
         {nameErr.error && (
           <p className="popup-error">Please fill a valid project name</p>
         )}
-        <div>
-          <Grid
-            className="projectFormContainer"
-            alignItems={"flex-start"}
-            container
-          >
-            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-              <ControlledInput
-                dataTestId="edit-project-name-input"
-                name="name"
-                label="Project title"
-                placeholder={"Project name"}
-                type="text"
-                control={control}
-                error={nameErr.error ? "true" : undefined}
-                onChange={handleNameChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-              <ControlledSelect
-                name="clientId"
-                control={control}
-                label="Select"
-                formLabel="client"
-                elementType="select"
-                options={clientOptions}
-                setValue={setValue}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
-              <DateInput
-                dataTestId="edit-project-date-input"
-                label={"Start date"}
-                name="startDate"
-                control={control}
-                placeholder="Start date"
-                register={register}
-                setValue={setValue}
-                setUpdateDate={setUpdateDate}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
-              <DateInput
-                dataTestId="edit-project-due-date-input"
-                label={"Deadline"}
-                name="deadline"
-                control={control}
-                placeholder="Deadline"
-                register={register}
-                setValue={setValue}
-                setUpdateDate={setUpdateDate}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-              <ControlledSelect
-                name="status"
-                control={control}
-                label={
-                  data.status
-                    ? checkProjectStatus(data.status)
-                      ? data.status
-                      : "Done"
-                    : "Project Status"
-                }
-                formLabel="Project Status"
-                elementType="select"
-                options={statusOptions}
-                setValue={setValue}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-              <ControlledSelect
-                name="projectManager"
-                control={control}
-                label="Select"
-                formLabel="Project manager"
-                elementType="select"
-                options={pmOptions}
-                setValue={setValue}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-              <ControlledSelect
-                name="associateProjectManager"
-                control={control}
-                label="Select"
-                formLabel="Associate Project manager"
-                elementType="select"
-                options={pmOptions}
-                setValue={setValue}
-              />
-            </Grid>
-          </Grid>
-          <div className="controllers">
-            <Button
-              size="large"
-              type="main"
-              label="Done"
-              onClick={onSubmitEdit}
-              dataTestId="edit-project-submit-btn"
+        <Grid
+          className="projectFormContainer"
+          alignItems={"flex-start"}
+          container
+          width={"100%"}
+        >
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+            <ControlledInput
+              dataTestId="edit-project-name-input"
+              name="name"
+              label="Project title"
+              placeholder={"Project name"}
+              type="text"
+              control={control}
+              error={nameErr.error ? "true" : undefined}
+              onChange={handleNameChange}
             />
-          </div>
+          </Grid>
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+            <ControlledSelect
+              name="clientId"
+              control={control}
+              label="Select"
+              formLabel="client"
+              elementType="select"
+              options={clientOptions}
+              setValue={setValue}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
+            <DateInput
+              dataTestId="edit-project-date-input"
+              label={"Start date"}
+              name="startDate"
+              control={control}
+              placeholder="Start date"
+              register={register}
+              setValue={setValue}
+              setUpdateDate={setUpdateDate}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
+            <DateInput
+              dataTestId="edit-project-due-date-input"
+              label={"Deadline"}
+              name="deadline"
+              control={control}
+              placeholder="Deadline"
+              register={register}
+              setValue={setValue}
+              setUpdateDate={setUpdateDate}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+            <ControlledSelect
+              name="status"
+              control={control}
+              label={
+                data.status
+                  ? checkProjectStatus(data.status)
+                    ? data.status
+                    : "Done"
+                  : "Project Status"
+              }
+              formLabel="Project Status"
+              elementType="select"
+              options={statusOptions}
+              setValue={setValue}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+            <ControlledSelect
+              name="projectManager"
+              control={control}
+              label="Select"
+              formLabel="Project manager"
+              elementType="select"
+              options={pmOptions}
+              setValue={setValue}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+            <ControlledSelect
+              name="associateProjectManager"
+              control={control}
+              label="Select"
+              formLabel="Associate Project manager"
+              elementType="select"
+              options={pmOptions}
+              setValue={setValue}
+            />
+          </Grid>
+        </Grid>
+        <div className="controllers">
+          <Button
+            size="large"
+            type="main"
+            label="Done"
+            onClick={onSubmitEdit}
+            dataTestId="edit-project-submit-btn"
+          />
         </div>
       </PopUp>
     </>

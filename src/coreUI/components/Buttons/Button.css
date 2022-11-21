@@ -22,12 +22,12 @@ button {
 /* Styles added based on the size */
 
 .button-large {
-  font-size: 16px;
+  font-size: 14px;
   width: 456px;
 }
 
 .button-medium {
-  font-size: 16px;
+  font-size: 14px;
   width: 210px;
 }
 
@@ -38,7 +38,7 @@ button {
 }
 
 .button-x-small {
-  font-size: 12px;
+  font-size: 14px;
   width: 100px;
   height: 40px;
 }
@@ -104,4 +104,3 @@ button.disabled {
     font-size: 14px;
   }
 }
-

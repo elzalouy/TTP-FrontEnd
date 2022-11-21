@@ -60,6 +60,10 @@ const cssNotiBox = {
   alignItems: "center",
   cursor: "pointer",
   marginLeft: 1.8,
+  ":hover": {
+    boxShadow: "0px 10px 20px #0000001A",
+    transition: "all 0.5s ease-out !important",
+  },
 };
 
 const cssNotiTitle = {

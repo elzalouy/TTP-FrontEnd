@@ -6,6 +6,7 @@ import Button from "src/coreUI/components/Buttons/Button";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
 import { deleteClient, selectEditClient } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
+import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
 type Props = {
   show: string;
@@ -23,39 +24,14 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
     } catch (e) {}
   };
 
-  const handleClose = () => {
-    setShow("none");
-  };
-
   return (
     <>
-      <SmallPopUp show={show}>
-        <div className="imageAlert">
-          <img src={deleteIcon} />
-        </div>
-        <p className="warning-text">
-          Are you sure you want to delete this client?
-        </p>
-        <div className="margin-cover">
-          <div className="controllers-small-popup">
-            <Button
-              type="cancel"
-              size="large"
-              label="cancel"
-              onClick={handleClose}
-            />
-            <Button
-              type="delete"
-              size="large"
-              label="delete"
-              dataTestId="delete-client-button-confirm"
-              onClick={() => {
-                handleDelete();
-              }}
-            />
-          </div>
-        </div>
-      </SmallPopUp>
+      <DeketeWarning
+        show={show}
+        setShow={setShow}
+        message={"Are you sure you want to delete this client?"}
+        onClick={handleDelete}
+      />
     </>
   );
 };
