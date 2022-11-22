@@ -4,7 +4,9 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
 import "../../../views/TasksListView/Read/TasksListView.css";
@@ -17,7 +19,9 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import { useDispatch } from "react-redux";
 import { ITasksTableProps } from "src/types/components/Table";
-
+import TablePaginationActions from "./TablePagination";
+import { useAppSelector } from "src/models/hooks";
+import { getAllCategories, selectAllCategories } from "src/models/Categories";
 const TasksTable: React.FC<ITasksTableProps> = ({
   tasks,
   projects,
@@ -29,6 +33,11 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const dispatch = useDispatch();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
+  const categories = useAppSelector(selectAllCategories);
+  const [state, setState] = React.useState({
+    page: 0,
+    rowsPerPage: 5,
+  });
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -45,6 +54,30 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const openProject = (projectId: string | undefined) => {
     if (projectId !== undefined) history.push(`/TasksBoard/${projectId}`);
   };
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    state.page > 0
+      ? Math.max(0, (1 + state.page) * state.rowsPerPage - tasks.length)
+      : 0;
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setState({ ...state, page: newPage });
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    console.log({ rowsPerPage: parseInt(event.target.value, 10) });
+    let newState = { ...state };
+    newState.page = 0;
+    newState.rowsPerPage = parseInt(event.target.value, 10);
+    setState({ ...newState });
+  };
+
   return (
     <TableContainer
       sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
@@ -113,7 +146,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 fontWeight: "normal",
               }}
             >
-              Brief Date
+              Category
             </TableCell>
             <TableCell
               style={{
@@ -129,9 +162,23 @@ const TasksTable: React.FC<ITasksTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {tasks &&
-            tasks?.map((item, index) => {
-              const { _id, status, name, projectId, start, deadline } = item;
+          <>
+            {(state.rowsPerPage > 0
+              ? tasks.slice(
+                  state.page * state.rowsPerPage,
+                  state.page * state.rowsPerPage + state.rowsPerPage
+                )
+              : tasks
+            ).map((item, index) => {
+              const {
+                _id,
+                status,
+                name,
+                projectId,
+                start,
+                deadline,
+                categoryId,
+              } = item;
               return (
                 <TableRow
                   sx={{
@@ -141,6 +188,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                       transition: "all 0.5s ease-out !important",
                       WebkitAppearance: "none",
                       WebkitBoxShadow: "0px 10px 20px #0000001A",
+                      borderBottom: 0,
                     },
                   }}
                   hover
@@ -253,11 +301,15 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   <TableCell
                     onClick={() => openProject(projectId)}
                     align="left"
-                    style={{ color: "#707683", cursor: "pointer" }}
+                    style={{
+                      color: "#707683",
+                      cursor: "pointer",
+                    }}
                   >
-                    {start !== null
-                      ? moment(start).format("MMMM Do, YYYY")
-                      : "-"}
+                    {
+                      categories.find((item) => item._id === categoryId)
+                        ?.category
+                    }
                   </TableCell>
                   <TableCell
                     onClick={() => openProject(projectId)}
@@ -281,7 +333,37 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 </TableRow>
               );
             })}
+          </>
+          <>
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </>
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              sx={{
+                ".MuiTablePagination-toolbar": { height: "40px !important" },
+              }}
+              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+              count={tasks.length}
+              rowsPerPage={state.rowsPerPage}
+              SelectProps={{
+                inputProps: {
+                  "aria-label": "rows per page",
+                },
+                native: true,
+              }}
+              page={state.page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );

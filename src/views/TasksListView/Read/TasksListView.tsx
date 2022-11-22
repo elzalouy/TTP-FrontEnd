@@ -58,7 +58,10 @@ export const TasksListView: React.FC<Props> = (props) => {
     if (id) {
       setValue("projectId", id);
       dispatch(filterTasks({ projectId: id }));
-    } else dispatch(ProjectsActions.onRemoveFilters(null));
+    } else {
+      setValue("projectId", "");
+      dispatch(ProjectsActions.onRemoveFilters(null));
+    }
   }, [props.match.params]);
 
   const onHandleChangeFilter = () => {
@@ -135,7 +138,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         md={2}
         sm={2}
         xs={2}
-        mb={SM ? 3 : 0}
+        mt={{ sm: 2, xs: 2, md: 0, lg: 0, xl: 0 }}
       >
         <Typography variant="h2" marginBottom={2}>
           Tasks
