@@ -98,9 +98,23 @@ button.disabled {
 @media screen and (max-width: 700px) {
   .button-large {
     font-size: 14px;
+    width: 380px;
   }
 
   .button-medium {
     font-size: 14px;
+    width: 180px;
+  }
+
+  .button-small {
+    font-size: 14px;
+    width: 100px;
+    height: 40px;
+  }
+
+  .button-x-small {
+    font-size: 14px;
+    width: 100px;
+    height: 30px;
   }
 }
