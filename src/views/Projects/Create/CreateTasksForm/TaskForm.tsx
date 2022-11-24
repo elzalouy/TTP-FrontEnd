@@ -88,6 +88,9 @@ const TaskForm: React.FC = () => {
     );
     let projectNames = newProject.project.name.split("-");
     let projectPureName = projectNames[projectNames.length - 1];
+    const selectedTeam = selectedDepartment.teams?.find(
+      (item: ITeam) => item._id === data.teamId
+    );
 
     let newTask: any = {
       name: data.name,
@@ -99,6 +102,7 @@ const TaskForm: React.FC = () => {
       boardId: selectedDepartment.boardId,
       description: data.description,
       categoryId: data.categoryId,
+      teamListId: selectedTeam ? selectedTeam.listId : null,
     };
     if (Files) newTask.attachedFiles = Files;
     if (data.teamId !== "") newTask.teamId = data.teamId;
