@@ -130,7 +130,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
+    let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
     let newTask: any = {
       id: State.task._id,
       cardId: State.task.cardId,

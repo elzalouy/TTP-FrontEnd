@@ -234,7 +234,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   >
                     <div
                       className={
-                        status === "inProgress"
+                        status === "In Progress"
                           ? "inProgressStatus"
                           : status === "Review"
                           ? "reviewStatus"
@@ -250,7 +250,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                       }
                       style={{ cursor: "pointer" }}
                     >
-                      {status === "inProgress" ? "In Progress" : status}
+                      {status === "In Progress" ? "In Progress" : status}
                     </div>
                   </TableCell>
                   <TableCell

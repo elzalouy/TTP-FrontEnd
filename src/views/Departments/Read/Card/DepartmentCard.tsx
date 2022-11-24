@@ -33,7 +33,7 @@ const DepartmentCard = ({
         "Tasks Board",
         "Review",
         "Shared",
-        "inProgress",
+        "In Progress",
         "Not Clear",
       ]),
     });

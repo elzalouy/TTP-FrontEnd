@@ -9,7 +9,7 @@ let projects: Cypress.Chainable<Cypress.AUTWindow>,
     "deliver on time",
     "deliver before time",
     "late",
-    "inProgress",
+    "In Progress",
   ],
   date = ["asc", "desc"];
 

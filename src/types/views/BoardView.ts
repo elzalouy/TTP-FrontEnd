@@ -132,7 +132,7 @@ export type Status =
   | "Shared"
   | "Done"
   | "Cancled"
-  | "inProgress"
+  | "In Progress"
   | "Not Clear";
 
 export const videoTypes = [

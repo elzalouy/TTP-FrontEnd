@@ -82,7 +82,7 @@ const TaskForm: React.FC = () => {
   };
   const onSubmit = async () => {
     let data = watch();
-    let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
+    let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
     let subCategory = selectedCategory?.subCategoriesId?.find(
       (item) => item._id === data.subCategoryId
     );

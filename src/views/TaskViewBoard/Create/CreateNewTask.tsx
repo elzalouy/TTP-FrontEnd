@@ -66,7 +66,11 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       let subCategory = state.selectedCategory?.subCategoriesId?.find(
         (item) => item._id === data.subCategoryId
       );
-      let list = data?.teamId === "" ? "Tasks Board" : "inProgress";
+      const selectedTeam = state.selectedDepartment?.teams?.find(
+        (item) => item._id === data.teamId
+      );
+      console.log({ state, selectedTeam, listId: selectedTeam?.listId });
+      let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
       let projectNames = selectedProject.project.name.split("-");
       let projectPureName = projectNames[projectNames.length - 1];
       let newTask: any = {
@@ -78,6 +82,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
           ?.listId,
         boardId: state.selectedDepartment?.boardId,
+        teamListId: selectedTeam ? selectedTeam.listId : null,
       };
       if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
       if (data.teamId !== "") newTask.teamId = data.teamId;
@@ -85,7 +90,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         newTask.deadline = moment(data?.deadline).toDate().toString();
       if (state.newFiles) newTask.attachedFiles = state.newFiles;
       if (data.description) newTask.description = data.description;
-
       let { error, warning, value, FileError, FormDatatask } =
         valdiateCreateTask(newTask);
       if (error || FileError) {

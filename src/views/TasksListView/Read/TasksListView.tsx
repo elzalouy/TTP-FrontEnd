@@ -393,8 +393,8 @@ const options = [
       text: "Not Clear",
     },
     {
-      id: "inProgress",
-      value: "inProgress",
+      id: "In Progress",
+      value: "In Progress",
       text: "In Progress",
     },
     { id: "Review", value: "Review", text: "Review" },

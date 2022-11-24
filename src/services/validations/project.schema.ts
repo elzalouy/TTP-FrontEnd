@@ -51,7 +51,7 @@ const createProjectSchema = Joi.object({
   projectStatus: Joi.string()
     .optional()
     .allow("", null)
-    .valid("inProgress", "Not Started"),
+    .valid("In Progress", "Not Started"),
   completedDate: Joi.date().optional().allow(null),
   adminId: Joi.string().messages({
     "any.required": "Admin id is required for creating a project",

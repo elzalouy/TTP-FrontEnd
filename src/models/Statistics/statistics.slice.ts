@@ -51,7 +51,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let user: User = action.payload.user;
       let tasks: Task[] = action.payload.tasks;
       if (user.role !== "PM") {
-        let inprogress = tasks.filter((item) => item.status === "inProgress");
+        let inprogress = tasks.filter((item) => item.status === "In Progress");
         let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
         let review = tasks.filter((item) => item.status === "Review");
         let shared = tasks.filter((item) => item.status === "Shared");
@@ -76,7 +76,8 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           (item) => ids.includes(item.projectId) && item.status === "Shared"
         );
         let inprogress = tasks.filter(
-          (item) => ids.includes(item.projectId) && item.status === "inProgress"
+          (item) =>
+            ids.includes(item.projectId) && item.status === "In Progress"
         );
         state.PM.shared = shared;
         state.PM.reviewLength = review.length;

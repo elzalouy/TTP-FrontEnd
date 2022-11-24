@@ -8,7 +8,7 @@ export const selectNewProject = (state: RootState) =>
 
 export const selectInprogressProjects = (state: RootState) =>
   state?.projects?.filteredProjects
-    ?.filter((item) => item.projectStatus === "inProgress")
+    ?.filter((item) => item.projectStatus === "In Progress")
     .sort((a, b) =>
       state.projects.sorting === "asc"
         ? new Date(a.projectDeadline) < new Date(b.projectDeadline)
@@ -88,7 +88,7 @@ export const selectSortingValue = (state: RootState) => state.projects.sorting;
 // tasks
 export const selectInProgressTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "inProgress"
+    (item) => item.status === "In Progress"
   );
 export const selectDoneTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(

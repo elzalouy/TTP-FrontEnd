@@ -8,7 +8,7 @@ interface StatusProps {
 
 const Status: React.FC<StatusProps> = (props) => {
   const color =
-    props.status === "inProgress"
+    props.status === "In Progress"
       ? "#ffc400"
       : props.status === "Review"
       ? "#40b4f7"
@@ -22,7 +22,7 @@ const Status: React.FC<StatusProps> = (props) => {
       ? "#ffac38"
       : "#696974";
   const bgColor =
-    props.status === "inProgress"
+    props.status === "In Progress"
       ? "#fff8dd"
       : props.status === "Review"
       ? "#d1e6f3"

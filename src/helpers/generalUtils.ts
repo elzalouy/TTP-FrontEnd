@@ -29,7 +29,7 @@ export const getStatus = (status: string | undefined) => {
     return "Delivered on time";
   } else if (status === "deliver before deadline") {
     return "Delivered earlier";
-  } else if (status === "inProgress") {
+  } else if (status === "In Progress") {
     return "In Progress";
   } else if (status === "Done") {
     return "Done";
@@ -86,7 +86,7 @@ export const checkStatusAndSetBorder = (status: string) => {
     return "#0079bf solid 1px";
   } else if (status === "Done") {
     return "#00aaba4b solid 1px";
-  } else if (status === "inProgress") {
+  } else if (status === "In Progress") {
     return "#ffc500 solid 1px";
   } else if (status === "Cancled") {
     return "#d2343441 solid 1px";
@@ -104,7 +104,7 @@ export const checkStatusAndSetBackground = (status: string) => {
     return "#E1F3F5";
   } else if (status === "Done") {
     return "#E1F3F5";
-  } else if (status === "inProgress") {
+  } else if (status === "In Progress") {
     return "#FBF5E2";
   } else if (status === "Cancled") {
     return "#F7E6E7";
@@ -175,10 +175,10 @@ export const checkValueAndShowOptions = (value: string | undefined) => {
         value
       )
     ) {
-      return [{ value: "inProgress", text: "In Progress" }];
+      return [{ value: "In Progress", text: "In Progress" }];
     } else {
       return [
-        { value: "inProgress", text: "In Progress" },
+        { value: "In Progress", text: "In Progress" },
         { value: "Done", text: "Done" },
       ];
     }
@@ -228,7 +228,7 @@ export const filterOptions = [
       text: "Delivered earlier",
     },
     { id: "late", value: "late", text: "Delivered late" },
-    { id: "inProgress", value: "inProgress", text: "In Progress" },
+    { id: "In Progress", value: "In Progress", text: "In Progress" },
   ],
 ];
 

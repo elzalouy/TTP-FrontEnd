@@ -32,7 +32,7 @@ export const createTaskSchema = Joi.object({
     "string.max": "You should select a department",
     "any.required": "You should select a department",
   }),
-  status: Joi.string().valid("Tasks Board", "inProgress").required().messages({
+  status: Joi.string().valid("Tasks Board", "In Progress").required().messages({
     "string.base": "Status is required",
     "string.empty": "Status should be string with min 4 chars",
     "string.min": "Status length should be Min 4 chars",
@@ -50,6 +50,7 @@ export const createTaskSchema = Joi.object({
   done: Joi.any().allow(null),
   turnoverTime: Joi.allow(null),
   attachedFiles: Joi.array().optional().allow(null),
+  teamListId: Joi.string().optional().allow(null),
 });
 
 export const editTaskSchema = Joi.object({
@@ -75,7 +76,7 @@ export const editTaskSchema = Joi.object({
   status: Joi.string()
     .valid(
       "Tasks Board",
-      "inProgress",
+      "In Progress",
       "Review",
       "Cancled",
       "Done",
@@ -154,6 +155,7 @@ const valdiateCreateTask = (data: any) => {
     task.append("boardId", data.boardId);
     task.append("projectId", data.projectId);
     task.append("start", data.start);
+    task.append("teamListId", data.teamListId);
     if (data.deadline) task.append("deadline", data.deadline);
     if (data.teamId) task.append("teamId", data.teamId);
     if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);

@@ -162,7 +162,7 @@ const ManagersList = () => {
               let inProgress = project?.projects?.filter(
                 (item) =>
                   item.projectManager?._id === _id &&
-                  item.projectStatus === "inProgress"
+                  item.projectStatus === "In Progress"
               )?.length;
               let done = project?.projects?.filter(
                 (item) =>

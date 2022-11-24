@@ -19,7 +19,7 @@ const ProjectsState: ProjectsInterface = {
       projectDeadline: new Date(),
       startDate: new Date(),
       completedDate: new Date(),
-      projectStatus: "inProgress",
+      projectStatus: "In Progress",
       clientId: "",
       tasks: [],
     },

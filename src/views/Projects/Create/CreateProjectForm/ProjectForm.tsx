@@ -98,7 +98,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.projectDeadline = data.deadline;
     newProjectData.startDate = data.startDate;
     newProjectData.projectStatus =
-      (data.deadline && data.startDate) !== null ? "inProgress" : "Not Started";
+      (data.deadline && data.startDate) !== null
+        ? "In Progress"
+        : "Not Started";
     newProjectData.associateProjectManager =
       data.associateProjectManager.length > 0
         ? data.associateProjectManager
@@ -132,7 +134,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         numberOfTasks: 0,
         projectStatus:
           (data.deadline && data.startDate) !== null
-            ? "inProgress"
+            ? "In Progress"
             : "Not Started",
         completedDate: null,
         adminId: token?.id,

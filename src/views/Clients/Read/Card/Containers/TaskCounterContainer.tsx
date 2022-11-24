@@ -2,7 +2,7 @@ import { FC } from "react";
 import ClientTaskNumberCard from "../Data/TaskNumber";
 import "../../clients.css";
 import { ITaskCounterContainer } from "src/types/views/Client";
-import ScrollContainer from 'react-indiana-drag-scroll'
+import ScrollContainer from "react-indiana-drag-scroll";
 
 const TaskCounterContainer: FC<ITaskCounterContainer> = ({ id }) => {
   return (
@@ -16,7 +16,7 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({ id }) => {
         <ClientTaskNumberCard title="Shared Tasks" param={"Shared"} _id={id} />
         <ClientTaskNumberCard
           title="In Progress Tasks"
-          param={"inProgress"}
+          param={"In Progress"}
           _id={id}
         />
         <ClientTaskNumberCard title="Done Tasks" param={"Done"} _id={id} />

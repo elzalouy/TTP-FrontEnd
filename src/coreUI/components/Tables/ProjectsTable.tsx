@@ -32,11 +32,11 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
     let date = new Date(project.projectDeadline);
     if (
       date <= new Date() &&
-      project.projectStatus === "inProgress" &&
+      project.projectStatus === "In Progress" &&
       project.NoOfTasks !== project.NoOfFinishedTasks
     )
       return "#FF2E35 !important";
-    if (project.projectStatus === "inProgress") {
+    if (project.projectStatus === "In Progress") {
       if (project.NoOfTasks === project.NoOfFinishedTasks)
         return "#00ACBA !important";
       else return "";

@@ -59,7 +59,7 @@ const DragField: React.FC = (props: any) => {
       header: "in-progress-header",
       body: "in-progress-task",
       border: "in-progress-border",
-      value: "inProgress",
+      value: "In Progress",
       footer: "task-card-footer-inprogress",
     },
     [uuidv4()]: {
@@ -128,7 +128,7 @@ const DragField: React.FC = (props: any) => {
         header: "in-progress-header",
         body: "in-progress-task",
         border: "in-progress-border",
-        value: "inProgress",
+        value: "In Progress",
         footer: "task-card-footer-inprogress",
       },
       [uuidv4()]: {

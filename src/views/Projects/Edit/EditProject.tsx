@@ -88,8 +88,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const executeEditProject = (formData: any) => {
     let editProject = { ...project };
     console.log({ editProject });
-    if (alert === "Not Started" || alert === "inProgress") {
-      formData.status = "inProgress";
+    if (alert === "Not Started" || alert === "In Progress") {
+      formData.status = "In Progress";
     }
 
     editProject.name = formData.name;
@@ -133,7 +133,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let bothDatesAreNotNull = data.deadline !== null && data.startDate !== null;
     let currentStatus = data.status;
     let done = checkProjectStatusName(currentStatus) === "Done";
-    let inProgress = currentStatus === "inProgress";
+    let inProgress = currentStatus === "In Progress";
 
     if (updateDate) {
       if (inProgress || done) {
