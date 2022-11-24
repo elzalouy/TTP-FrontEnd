@@ -102,9 +102,9 @@ const TaskForm: React.FC = () => {
       boardId: selectedDepartment.boardId,
       description: data.description,
       categoryId: data.categoryId,
-      teamListId: selectedTeam ? selectedTeam.listId : null,
     };
     if (Files) newTask.attachedFiles = Files;
+    if (selectedTeam) newTask.teamListId = selectedTeam.listId;
     if (data.teamId !== "") newTask.teamId = data.teamId;
     if (data.description) newTask.description = data.description;
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;

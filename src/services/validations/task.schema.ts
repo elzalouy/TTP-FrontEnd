@@ -155,7 +155,7 @@ const valdiateCreateTask = (data: any) => {
     task.append("boardId", data.boardId);
     task.append("projectId", data.projectId);
     task.append("start", data.start);
-    task.append("teamListId", data.teamListId);
+    if (data.teamListId) task.append("teamListId", data.teamListId);
     if (data.deadline) task.append("deadline", data.deadline);
     if (data.teamId) task.append("teamId", data.teamId);
     if (data.subCategoryId) task.append("subCategoryId", data.subCategoryId);

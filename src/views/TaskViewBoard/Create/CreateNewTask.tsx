@@ -69,7 +69,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
       const selectedTeam = state.selectedDepartment?.teams?.find(
         (item) => item._id === data.teamId
       );
-      console.log({ state, selectedTeam, listId: selectedTeam?.listId });
       let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
       let projectNames = selectedProject.project.name.split("-");
       let projectPureName = projectNames[projectNames.length - 1];
@@ -82,8 +81,9 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
           ?.listId,
         boardId: state.selectedDepartment?.boardId,
-        teamListId: selectedTeam ? selectedTeam.listId : null,
       };
+
+      if(selectedTeam) newTask.teamListId=selectedTeam.listId
       if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
       if (data.teamId !== "") newTask.teamId = data.teamId;
       if (data.deadline !== "" && data.deadline !== null)
