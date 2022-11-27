@@ -10,7 +10,7 @@ const Options: React.FC<IOptions> = ({
   elementType,
   options,
   setShow,
-  dataTestId
+  dataTestId,
 }) => {
   const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
@@ -38,7 +38,7 @@ const Options: React.FC<IOptions> = ({
               key={item.id}
               id={item.id}
               onClick={onSelect}
-              data-test-id={dataTestId+"-option"}
+              data-test-id={dataTestId + "-option"}
             >
               {item.text}
             </li>

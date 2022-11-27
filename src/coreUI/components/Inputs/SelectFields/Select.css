@@ -164,22 +164,26 @@ ul.options li.option:hover {
 
 /* Custom Scrollbar : This is for SELECT options If they exceed a certain height and overflow inside a popup */
 
-ul[id="core-select-options"].options.scroll {
-  height: 200px;
+ul[id*="core-"].options.scroll {
+  height: 290px;
+  overflow-y: scroll;
 }
 
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar {
+ul[id*="core-"].options.scroll::-webkit-scrollbar {
   display: block !important;
   width: 3px;
   border-radius: 10px;
+  overflow: hidden;
 }
 
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar-track {
-  border-radius: 10px;
+ul[id*="core-"].options.scroll::-webkit-scrollbar-track {
+  border-radius: 10px !important;
   border-color: #ececec !important;
+  overflow: hidden;
+  margin-block: 10px !important;
 }
 
-ul[id="core-select-options"].options.scroll::-webkit-scrollbar-thumb {
-  background: #9fa1ab;
+ul[id*="core-"].options.scroll::-webkit-scrollbar-thumb {
+  background: #dee0e8;
   border-radius: 5px;
 }

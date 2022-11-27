@@ -33,7 +33,7 @@ const Status: React.FC<StatusProps> = (props) => {
       : props.status === "Cancled"
       ? "#ffeeee"
       : props.status === "Not Clear"
-      ? "#f0f0f0"
+      ? "#F0DDC3"
       : "#9fa1ab33";
   const statusStyle = {
     color: color,

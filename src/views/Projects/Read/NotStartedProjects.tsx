@@ -72,21 +72,21 @@ const CreateNewProject: React.FC<Props> = (props) => {
               }
         }
       >
-        {loading === false ? (
-          <div className="create-button-table-wrapper">
-            <ProjectsTable
-              dataTestIdQuote="NotStarted-projects-"
-              align="center"
-              textSize="medium"
-              status={"Not Started"}
-              condition={notStartedProjects?.length === 0 ? true : false}
-              expanded={expanded}
-              projects={notStartedProjects}
-              projectManagers={PMs}
-              {...props}
-            />
-          </div>
-        ) : (
+        {/* {loading === false ? ( */}
+        <div className="create-button-table-wrapper">
+          <ProjectsTable
+            dataTestIdQuote="NotStarted-projects-"
+            align="center"
+            textSize="medium"
+            status={"Not Started"}
+            condition={notStartedProjects?.length === 0 ? true : false}
+            expanded={expanded}
+            projects={notStartedProjects}
+            projectManagers={PMs}
+            {...props}
+          />
+        </div>
+        {/* ) : (
           <Box
             sx={{
               display: "flex",
@@ -104,7 +104,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
           >
             <Loading color="grey" type="spinningBubbles" /> Loading More
           </Box>
-        )}
+        )} */}
         <Box
           onClick={() => {
             setShow("flex");

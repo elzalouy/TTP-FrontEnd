@@ -36,7 +36,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const categories = useAppSelector(selectAllCategories);
   const [state, setState] = React.useState({
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: 8,
   });
 
   const setSingleSelect = (val: string, checked: boolean) => {
@@ -348,7 +348,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
               sx={{
                 ".MuiTablePagination-toolbar": { height: "40px !important" },
               }}
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+              rowsPerPageOptions={[5, 8, 10, 25, { label: "All", value: -1 }]}
               count={tasks.length}
               rowsPerPage={state.rowsPerPage}
               SelectProps={{
