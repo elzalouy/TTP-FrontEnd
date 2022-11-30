@@ -4,7 +4,12 @@ import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
-import { deleteClient, selectEditClient } from "../../../models/Clients";
+import {
+  deleteClient,
+  selectAllClients,
+  selectClientsState,
+  selectEditClient,
+} from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
@@ -16,6 +21,7 @@ type Props = {
 const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
   const editClient = useAppSelector(selectEditClient);
+  const clientsState = useAppSelector(selectClientsState);
 
   const handleDelete = async () => {
     try {
@@ -31,6 +37,7 @@ const DeleteClient: React.FC<Props> = ({ show, setShow }) => {
         setShow={setShow}
         message={"Are you sure you want to delete this client?"}
         onClick={handleDelete}
+        loading={clientsState.deleteClientLoading}
       />
     </>
   );

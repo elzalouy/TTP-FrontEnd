@@ -265,10 +265,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
               setApmOptions(
                 pmOptions.filter((item) => item.id !== watch().projectManager)
               );
-              console.log(
-                pmOptions.filter((item) => item.id !== watch().projectManager)
-              );
-
               setError({
                 error: undefined,
                 value: undefined,

@@ -54,7 +54,6 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     let id = props.match.params?.projectId;
-    console.log(props.match.params);
     if (id) {
       setValue("projectId", id);
       dispatch(filterTasks({ projectId: id }));

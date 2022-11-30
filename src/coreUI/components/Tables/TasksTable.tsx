@@ -71,7 +71,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    console.log({ rowsPerPage: parseInt(event.target.value, 10) });
     let newState = { ...state };
     newState.page = 0;
     newState.rowsPerPage = parseInt(event.target.value, 10);

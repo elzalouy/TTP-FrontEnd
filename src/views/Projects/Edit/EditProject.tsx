@@ -65,6 +65,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
   const [alert, setAlert] = useState<string>("");
+  const [ApmOptions, setApmOptions] = useState(pmOptions);
+  const [status, setStatusOptions] = useState(pmOptions);
   const [nameErr, setNameErr] = useState<{
     error: Joi.ValidationError | undefined | boolean;
   }>({ error: undefined });
@@ -77,7 +79,14 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     setValue("status", project?.projectStatus, { shouldDirty: false });
     setValue("startDate", project?.startDate);
     setValue("associateProjectManager", project?.associateProjectManager);
+    setApmOptions(
+      pmOptions.filter((item) => item.id !== watch().projectManager)
+    );
   }, [project]);
+
+  useEffect(() => {
+    setStatusOptions(statusOptions);
+  }, [statusOptions]);
 
   useEffect(() => {
     if (trigger) {
@@ -87,7 +96,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
 
   const executeEditProject = (formData: any) => {
     let editProject = { ...project };
-    console.log({ editProject });
     if (alert === "Not Started" || alert === "In Progress") {
       formData.status = "In Progress";
     }
@@ -308,7 +316,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               }
               formLabel="Project Status"
               elementType="select"
-              options={statusOptions}
+              options={status}
               setValue={setValue}
             />
           </Grid>
@@ -321,6 +329,11 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               elementType="select"
               options={pmOptions}
               setValue={setValue}
+              onSelect={() => {
+                setApmOptions(
+                  pmOptions.filter((item) => item.id !== watch().projectManager)
+                );
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
@@ -330,7 +343,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               label="Select"
               formLabel="Associate Project manager"
               elementType="select"
-              options={pmOptions}
+              options={ApmOptions}
               setValue={setValue}
             />
           </Grid>

@@ -18,11 +18,13 @@ export interface ClientsInterface {
   clientsData: Client[];
   filteredClients: Client[];
   editClient: UpdateClientInterface;
+  deleteClientLoading?: boolean;
 }
 const clientState: ClientsInterface = {
   loading: null,
   clientsData: [],
   filteredClients: [],
+  deleteClientLoading: false,
   editClient: {
     _id: "",
     clientName: "",

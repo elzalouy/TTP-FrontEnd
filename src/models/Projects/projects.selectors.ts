@@ -31,6 +31,7 @@ export const selectProjectStatusOptions = (state: RootState) => {
         text: item.text,
       };
     });
+
     return options;
   } else return [];
 };

@@ -89,6 +89,8 @@ export interface ProjectsInterface {
   deleteProject: string | undefined;
   deleteProjectTasks: string[] | undefined;
   deleteTask: string | undefined;
+  deleteTaskLoading?: boolean;
+  deleteProjectLoading?: boolean;
   editProject: Project | undefined;
   editTask: string | undefined;
   editTaskLoading: boolean | undefined;
