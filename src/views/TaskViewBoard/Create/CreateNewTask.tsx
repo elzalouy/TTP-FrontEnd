@@ -83,13 +83,14 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         boardId: state.selectedDepartment?.boardId,
       };
 
-      if(selectedTeam) newTask.teamListId=selectedTeam.listId
+      if (selectedTeam) newTask.teamListId = selectedTeam.listId;
       if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
       if (data.teamId !== "") newTask.teamId = data.teamId;
       if (data.deadline !== "" && data.deadline !== null)
         newTask.deadline = moment(data?.deadline).toDate().toString();
       if (state.newFiles) newTask.attachedFiles = state.newFiles;
       if (data.description) newTask.description = data.description;
+      console.log({ newTask, state });
       let { error, warning, value, FileError, FormDatatask } =
         valdiateCreateTask(newTask);
       if (error || FileError) {
