@@ -75,6 +75,8 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             className={styles.grayButton}
           >
             <a
+              target="_blank"
+              rel="noreferrer"
               href={item?.trelloShortUrl}
               className={styles.grayButton}
               style={{

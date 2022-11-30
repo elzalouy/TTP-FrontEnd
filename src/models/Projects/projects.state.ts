@@ -57,6 +57,7 @@ const ProjectsState: ProjectsInterface = {
   deleteProject: undefined,
   deleteProjectTasks: undefined,
   deleteTask: undefined,
+  deleteTaskLoading: false,
   editProject: undefined,
   editTask: "",
   editTaskLoading: undefined,

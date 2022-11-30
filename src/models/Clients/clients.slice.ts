@@ -107,13 +107,13 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       state.filteredClients = clientData;
     });
     builder.addCase(deleteClient.rejected, (state) => {
-      state.loading = false;
+      state.deleteClientLoading = false;
     });
     builder.addCase(deleteClient.pending, (state) => {
-      state.loading = true;
+      state.deleteClientLoading = true;
     });
     builder.addCase(deleteClient.fulfilled, (state, { payload }) => {
-      state.loading = false;
+      state.deleteClientLoading = false;
       let clientData = state.clientsData;
       let clients = clientData.filter((item) => item._id !== payload?.id);
       state.clientsData = clients;

@@ -269,11 +269,9 @@ const AppHooks: React.FC<Props> = (props) => {
         dispatch(clientsActions.createClient(client));
       });
       socket.on("delete-project", (project) => {
-        console.log({ project });
         dispatch(ProjectsActions.deleteProjectByIO(project));
       });
       socket.on("update-projects", (project) => {
-        console.log({ updateProject: project });
         dispatch(ProjectsActions.updateProjectByIO(project));
       });
     }

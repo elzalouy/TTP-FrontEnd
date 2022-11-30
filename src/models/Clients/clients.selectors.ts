@@ -1,9 +1,9 @@
 import { RootState } from "../store";
 import _ from "lodash";
 
+export const selectClientsState = (state: RootState) => state.clients;
 export const selectAllClients = (state: RootState) =>
   state?.clients?.clientsData;
-
 export const selectClientsNames = (state: RootState) => {
   let names = _.flatMap(state?.clients?.clientsData, (item) => {
     return { clientId: item._id, clientName: item.clientName };
