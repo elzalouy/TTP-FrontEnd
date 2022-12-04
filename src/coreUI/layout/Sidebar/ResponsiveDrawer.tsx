@@ -116,41 +116,45 @@ const ResponsiveDrawer = (props: any) => {
               src={IMAGES.projectsicon}
               text="Projects"
             />
-            <DrawerItem
-              {...props}
-              select={props.select}
-              open={props.open}
-              key="2"
-              onClick={() => history.push("/Departments")}
-              path={"/Departments"}
-              src={IMAGES.departments}
-              Icon={() => <DepartmentIcon />}
-              text="Departments"
-            />
+            {role !== "PM" && (
+              <>
+                <DrawerItem
+                  {...props}
+                  select={props.select}
+                  open={props.open}
+                  key="2"
+                  onClick={() => history.push("/Departments")}
+                  path={"/Departments"}
+                  src={IMAGES.departments}
+                  Icon={() => <DepartmentIcon />}
+                  text="Departments"
+                />
+                <DrawerItem
+                  {...props}
+                  select={props.select}
+                  open={props.open}
+                  key="7"
+                  onClick={() => history.push("/ProjectManagers")}
+                  path={"/Managers"}
+                  Icon={() => <PersonIcon />}
+                  src={IMAGES.person}
+                  text="Users"
+                />
+              </>
+            )}
             {role !== "PM" && (
               <DrawerItem
                 {...props}
                 select={props.select}
                 open={props.open}
-                key="7"
-                onClick={() => history.push("/ProjectManagers")}
-                path={"/Managers"}
-                Icon={() => <PersonIcon />}
-                src={IMAGES.person}
-                text="Users"
+                key="3"
+                onClick={() => history.push("/Clients")}
+                path={"/Clients"}
+                Icon={() => <ClientIcon />}
+                src={IMAGES.clients}
+                text="Clients"
               />
             )}
-            <DrawerItem
-              {...props}
-              select={props.select}
-              open={props.open}
-              key="3"
-              onClick={() => history.push("/Clients")}
-              path={"/Clients"}
-              Icon={() => <ClientIcon />}
-              src={IMAGES.clients}
-              text="Clients"
-            />
             <DrawerItem
               {...props}
               select={props.select}
@@ -162,17 +166,19 @@ const ResponsiveDrawer = (props: any) => {
               src={IMAGES.tasks}
               text="Tasks"
             />
-            <DrawerItem
-              {...props}
-              select={props.select}
-              open={props.open}
-              key="5"
-              onClick={() => history.push("/Categories")}
-              path={"/Categories"}
-              Icon={() => <CategoryIcon />}
-              src={IMAGES.categories}
-              text="Category"
-            />
+            {role !== "PM" && (
+              <DrawerItem
+                {...props}
+                select={props.select}
+                open={props.open}
+                key="5"
+                onClick={() => history.push("/Categories")}
+                path={"/Categories"}
+                Icon={() => <CategoryIcon />}
+                src={IMAGES.categories}
+                text="Category"
+              />
+            )}
           </List>
           <Divider sx={{ marginX: 2.5 }} />
           <List>
@@ -259,7 +265,11 @@ const ResponsiveDrawer = (props: any) => {
                     variant="h6"
                     color="#808191"
                   >
-                    {user?.role === "OM" ? "Admin" : "Project Manager"}
+                    {user?.role === "OM"
+                      ? "Operation Manager"
+                      : user?.role === "PM"
+                      ? "Project Manager"
+                      : "Super Manager"}{" "}
                   </Typography>
                 </Box>
                 <Box sx={{ cursor: "pointer" }}>

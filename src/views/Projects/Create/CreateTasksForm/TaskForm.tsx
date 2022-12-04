@@ -93,7 +93,12 @@ const TaskForm: React.FC = () => {
     );
 
     let newTask: any = {
-      name: data.name,
+      name: `${
+        clientsOptions.find((item) => item.id === newProject.project.clientId)
+          ?.text
+      }-${projectPureName}-${selectedCategory?.category}-${
+        subCategory ? subCategory.subCategory : ""
+      } ${data.name.length > 0 ? `(${data.name})` : ""}`,
       projectId: newProject?.project?._id,
       status: list,
       start: new Date().toUTCString(),
@@ -117,15 +122,6 @@ const TaskForm: React.FC = () => {
       let errorResult = { error, warning, value };
       setError(errorResult);
     } else {
-      FormDatatask?.set(
-        "name",
-        `${
-          clientsOptions.find((item) => item.id === newProject.project.clientId)
-            ?.text
-        }-${projectPureName}-${selectedCategory?.category}-${
-          subCategory ? subCategory.subCategory : ""
-        } (${data.name})`
-      );
       dispatch(createProjectTask({ data: FormDatatask, onInit }));
     }
   };
