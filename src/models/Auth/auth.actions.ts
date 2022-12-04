@@ -7,7 +7,7 @@ import apiPM from "../../services/endpoints/PMs";
 
 export const signIn = createAsyncThunk<any, any, any>(
   "auth/signIn",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let result: ApiResponse<any> = await api.signIn(args?.data);
       if (result.ok) {
@@ -27,9 +27,13 @@ export const signIn = createAsyncThunk<any, any, any>(
 
 export const getUserInfo = createAsyncThunk<any, any, any>(
   "auth/getUserInfo",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let result = await apiPM.getUser(args);
+      if (result?.status === 401 || result?.status === 403) {
+        rejectWithValue("Un Authorized");
+        return dispatch(logout(true));
+      }
       if (result.ok === true) {
         return result.data;
       }
@@ -46,7 +50,7 @@ export const logout = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue }) => {
     try {
       removeAuthToken();
-      ToastSuccess("Logout successful");
+
       return true;
     } catch (error) {
       rejectWithValue(error);

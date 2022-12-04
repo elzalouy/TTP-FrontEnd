@@ -10,11 +10,15 @@ import { Manager } from "./managers.state";
 
 export const resendMail = createAsyncThunk<any, any, any>(
   "PM/resendMail",
-  async (data: object, { rejectWithValue }) => {
+  async (data: object, { dispatch, rejectWithValue }) => {
     try {
       let PMs = await PMapi.resendMail({
         id: data,
       });
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (PMs.ok && PMs.data) {
         toast.success("New email sent successfully", {
           position: "top-right",
@@ -38,8 +42,8 @@ export const getManagers = createAsyncThunk<any, any, any>(
     try {
       let PMs = await PMapi.getUsers();
       if (PMs?.status === 401 || PMs?.status === 403) {
-        rejectWithValue("Un Authorized");
         dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
       }
       if (PMs.ok && PMs.data) return PMs.data;
       else return [];
@@ -51,7 +55,7 @@ export const getManagers = createAsyncThunk<any, any, any>(
 
 export const createManager = createAsyncThunk<any, any, any>(
   "PM/createManager",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let result: ApiResponse<Manager> | undefined;
       let manager: Manager = args.data;
@@ -67,6 +71,10 @@ export const createManager = createAsyncThunk<any, any, any>(
           break;
         default:
           break;
+      }
+      if (result?.status === 401 || result?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
       }
       if (result && result.ok && result.data) {
         args.dispatch(fireCreatePMHook(""));
@@ -85,9 +93,14 @@ export const createManager = createAsyncThunk<any, any, any>(
 
 export const updateManager = createAsyncThunk<any, any, any>(
   "PM/updateManager",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let PMs = await PMapi.updateUser(args.data);
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
+
       if (PMs.ok && PMs.data) {
         ToastSuccess("Project Manager updated successfully");
         args.dispatch(fireEditPMHook(""));
@@ -104,9 +117,14 @@ export const updateManager = createAsyncThunk<any, any, any>(
 
 export const updateManagerpassword = createAsyncThunk<any, any, any>(
   "PM/updateManagerpassword",
-  async (data: object, { rejectWithValue }) => {
+  async (data: object, { rejectWithValue, dispatch }) => {
     try {
       let PMs = await PMapi.updatePassword(data);
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
+
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
@@ -127,9 +145,14 @@ export const updateManagerpassword = createAsyncThunk<any, any, any>(
 
 export const resetPMpassword = createAsyncThunk<any, any, any>(
   "PM/resetPMpassword",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let PMs = await PMapi.resetPassword(args.data);
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
+
       if (PMs.ok && PMs.data) {
         toast.success("Your password has been set successfully", {
           position: "top-right",
@@ -150,9 +173,14 @@ export const resetPMpassword = createAsyncThunk<any, any, any>(
 
 export const deletePM = createAsyncThunk<any, any, any>(
   "PM/deletePM",
-  async (id: any, { rejectWithValue }) => {
+  async (id: any, { rejectWithValue, dispatch }) => {
     try {
       let PMs = await PMapi.deleteUser(id);
+      if (PMs?.status === 401 || PMs?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
+
       if (PMs.ok && PMs.data) {
         toast.success("Project Manager deleted successfully", {
           position: "top-right",
