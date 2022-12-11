@@ -70,6 +70,8 @@ export const selectLateProjects = (state: RootState) =>
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
 export const selectAllProjects = (state: RootState) => state?.projects;
+export const selectEditTask = (state: RootState) =>
+  state.projects.allTasks.find((item) => item._id === state.projects.editTask);
 export const selectActiveProjects = (state: RootState) =>
   state.projects.projects.filter(
     (item) =>
