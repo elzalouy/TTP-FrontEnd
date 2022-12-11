@@ -16,22 +16,19 @@ import {
   editTaskFromBoard,
   editTaskLoading,
   ProjectsActions,
-  selectAllProjects,
-  selectSelectedProject,
+  selectEditTask,
 } from "../../../models/Projects";
 import {
   CRUDTaskState,
   EditTaskProps,
   IInitialinitialHookFormTaskState,
   initialEditState,
-  initialHookFormTaskState,
 } from "../../../types/views/BoardView";
 import DateInput from "./DateInput";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
-import { Task } from "src/types/models/Projects";
 import IMAGES from "src/assets/img/Images";
 
 const EditTask: React.FC<EditTaskProps> = (props) => {
@@ -41,63 +38,73 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const loadingTask = useAppSelector(editTaskLoading);
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
-  const { editTask: id } = useAppSelector(selectAllProjects);
-  const selectedProject = useAppSelector(selectSelectedProject);
+  const task = useAppSelector(selectEditTask);
   const [state, setState] = React.useState<CRUDTaskState>({
     ...initialEditState,
   });
   const { register, handleSubmit, control, reset, setValue, watch } =
     useForm<IInitialinitialHookFormTaskState>({
-      defaultValues: initialHookFormTaskState,
+      defaultValues: {
+        name: task?.name,
+        projectId: task?.projectId,
+        categoryId: task?.categoryId,
+        subCategoryId: task?.subCategoryId,
+        teamId: task?.teamId,
+        status: task?.status,
+        description: task?.description,
+        selectedDepartmentId: departments.find(
+          (item) => item.boardId === task?.boardId
+        )?._id,
+        deadline: task?.deadline,
+        attachedFiles: task?.attachedFiles,
+        file: null,
+      },
     });
-
-  const onGetTaskData = async (task: Task | undefined) => {
-    if (task) {
-      let State = { ...state };
-      State.task = task;
-      let dep = departments.find((item) => item.boardId === task?.boardId);
-      State.selectedCategory = categories.find(
-        (item) => item._id === task?.categoryId
-      );
-      State.selectedDepartment = dep;
-      State.selectedDepatmentTeams =
-        dep && dep.teams
-          ? dep?.teams?.filter((item) => item.isDeleted === false)
-          : [];
-      setState({ ...State, updated: state.updated === true ? false : true });
-    }
-  };
-
   /**
    * Get Task data and also selected department, list, team, category, and sub category
    */
   React.useEffect(() => {
-    if (id) {
-      let task = selectedProject.tasks.find((item) => item._id === id);
-      const effect = async () => await onGetTaskData(task);
-      effect();
+    if (task && task._id) {
+      setValue("name", task.name);
+      setValue("projectId", task.projectId);
+      setValue("categoryId", task.categoryId);
+      setValue("subCategoryId", task.subCategoryId);
+      setValue("teamId", task.teamId);
+      setValue("status", task.status);
+      setValue("description", task.description);
+      setValue(
+        "selectedDepartmentId",
+        departments.find((item) => item.boardId === task.boardId)?._id
+      );
+      setValue("deadline", task.deadline);
+      setValue("attachedFiles", task.attachedFiles);
+      setValue("file", null);
+      let selectedDepartment = departments.find(
+        (item) => item.boardId === task.boardId
+      );
+      let selectedCategory = categories.find(
+        (item) => item._id === task.categoryId
+      );
+      let selectedDepatmentTeams =
+        selectedDepartment && selectedDepartment.teams;
+
+      setState({
+        ...state,
+        task:task,
+        selectedDepartment,
+        selectedCategory,
+        selectedDepatmentTeams,
+      });
     }
-  }, [id]);
+  }, [departments, categories, task]);
+  console.log({
+    data: watch(),
+    state,
+  });
 
   /**
    * Set task data to the hook-form, after getting the task data from the previous useEffect hook
    */
-  React.useEffect(() => {
-    let State = { ...state };
-    let task = selectedProject.tasks.find((item) => item._id === id);
-    if (task) {
-      if (state.selectedDepartment)
-        setValue("selectedDepartmentId", state.selectedDepartment._id);
-      setValue("name", task.name);
-      setValue("deadline", task.deadline ? task.deadline : "");
-      setValue("description", task.description ? task.description : "");
-      setValue("teamId", task.teamId ? task.teamId : "");
-      setValue("categoryId", task.categoryId);
-      setValue("subCategoryId", task.subCategoryId ? task.subCategoryId : "");
-      setValue("attachedFiles", task.attachedFiles);
-    }
-    setState(State);
-  }, [state.updated]);
 
   React.useEffect(() => {
     if (editTaskPopup === "none") {
@@ -130,17 +137,16 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   const onSubmit = async () => {
     let data = watch();
     let State = { ...state };
-    let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
     let newTask: any = {
-      id: State.task._id,
-      cardId: State.task.cardId,
+      id: task?._id,
+      cardId: task?.cardId,
       name: data.name,
       categoryId: data?.categoryId,
-      status: State.task.status,
+      status: State.task?.status,
       attachedFiles: state?.newFiles,
       boardId: state.selectedDepartment?.boardId,
-      listId: state.task.listId,
-      teamId: data.teamId === "" ? state.task.teamId : data.teamId,
+      listId: state.task?.listId,
+      teamId: data.teamId === "" ? state.task?.teamId : data.teamId,
     };
 
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
@@ -162,7 +168,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
           setShow: props.setShow,
         })
       );
-      // resetState();
     }
   };
   const resetState = () => {
@@ -201,11 +206,11 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
 
   const onRemoveFile = (item: any) => {
     let State = { ...state };
-    if (item?._id) {
+    if (item?._id && state.task?._id) {
       let task = { ...State.task };
       State.deleteFiles.push(item);
       State.deleteFiles = _.uniq([...State.deleteFiles]);
-      let files = [...State?.task?.attachedFiles];
+      let files = [...State.task?.attachedFiles];
       files = files.filter((file) => file._id !== item._id);
       task.attachedFiles = files;
       State.task = task;
@@ -217,6 +222,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
     }
     setState(State);
   };
+
   const onGetError = (value: string) =>
     state.error?.error?.details.find((item) => item.path.includes(value))
       ? "true"
@@ -307,15 +313,13 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   control={control}
                   onSelect={onChangeCategory}
                   error={onGetError("categoryId")}
-                  options={[
-                    ...categories?.map((item) => {
-                      return {
-                        id: item._id ? item._id : "",
-                        value: item._id ? item._id : "",
-                        text: item.category,
-                      };
-                    }),
-                  ]}
+                  options={categories?.map((item) => {
+                    return {
+                      id: item._id ? item._id : "",
+                      value: item._id ? item._id : "",
+                      text: item.category,
+                    };
+                  })}
                 />
               </div>
               <div>
@@ -351,17 +355,16 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                       setValue("subCategoryId", e.target.id);
                     }}
                     options={
-                      state.selectedCategory?.subCategoriesId
-                        ? state.selectedCategory?.subCategoriesId?.map(
-                            (item) => {
-                              return {
-                                id: item._id ? item._id : "",
-                                value: item._id ? item._id : "",
-                                text: item.subCategory,
-                              };
-                            }
-                          )
-                        : []
+                      categories &&
+                      categories
+                        .find((item) => item._id === task?.categoryId)
+                        ?.subCategoriesId?.map((item) => {
+                          return {
+                            id: item._id ? item._id : "",
+                            value: item._id ? item._id : "",
+                            text: item.subCategory,
+                          };
+                        })
                     }
                   />
                 </div>
@@ -379,18 +382,17 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                         : "Please select a department firstly, to can see the teams inside"
                     }
                     options={
-                      state.selectedDepatmentTeams
-                        ? [
-                            ...state.selectedDepatmentTeams.map((item) => {
-                              if (item && item._id)
-                                return {
-                                  id: item._id,
-                                  value: item._id,
-                                  text: item.name,
-                                };
-                            }),
-                          ]
-                        : []
+                      departments &&
+                      departments
+                        .find((item) => item.boardId === task?.boardId)
+                        ?.teams?.map((item) => {
+                          if (item && item._id)
+                            return {
+                              id: item._id,
+                              value: item._id,
+                              text: item.name,
+                            };
+                        })
                     }
                     error={onGetError("teamId")}
                   />
