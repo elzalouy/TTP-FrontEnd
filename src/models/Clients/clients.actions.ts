@@ -1,8 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { ToastSuccess } from "../../coreUI/components/Typos/Alert";
+import { ToastError, ToastSuccess } from "src/coreUI/components/Typos/Alert";
 import { generateID } from "../../helpers/IdGenerator";
-import { removeAuthToken } from "../../services/api";
 import ClientsApi from "../../services/endpoints/clients";
 import { logout } from "../Auth";
 
@@ -12,8 +11,8 @@ export const getAllClients = createAsyncThunk<any, any, any>(
     try {
       let result = await ClientsApi.getClients();
       if (result?.status === 401 || result?.status === 403) {
-        rejectWithValue("Un Authorized");
         dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
       }
       if (result.data) {
         return result.data;
@@ -26,7 +25,7 @@ export const getAllClients = createAsyncThunk<any, any, any>(
 
 export const creatClient = createAsyncThunk<any, any, any>(
   "client/createClient",
-  async (data: any, { rejectWithValue }) => {
+  async (data: any, { dispatch, rejectWithValue }) => {
     try {
       let formData: FormData = data;
       let result = {
@@ -36,7 +35,11 @@ export const creatClient = createAsyncThunk<any, any, any>(
         inProgressProject: 0,
         inProgressTask: 0,
       };
-      ClientsApi.createClient(data);
+      let response = await ClientsApi.createClient(data);
+      if (response?.status === 401 || response?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       return result;
     } catch (error) {
       rejectWithValue(error);
@@ -46,7 +49,7 @@ export const creatClient = createAsyncThunk<any, any, any>(
 
 export const updateClient = createAsyncThunk<any, any, any>(
   "client/updateClient",
-  async (data: any, { rejectWithValue }) => {
+  async (data: any, { dispatch, rejectWithValue }) => {
     try {
       let formData = new FormData();
       formData.append("_id", data._id);
@@ -54,16 +57,12 @@ export const updateClient = createAsyncThunk<any, any, any>(
       formData.append("image", data.image);
       formData.append("createdAt", data.createdAt);
       let client = await ClientsApi.updateClient(formData);
+      if (client?.status === 401 || client?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (client.ok && client.data) {
-        toast.success("Client updated successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Client updated successfully");
         return client.data;
       } else return [];
     } catch (error) {
@@ -74,41 +73,20 @@ export const updateClient = createAsyncThunk<any, any, any>(
 
 export const deleteClient = createAsyncThunk<any, any, any>(
   "client/deletClient",
-  async (data: any, { rejectWithValue }) => {
+  async (data: any, { dispatch, rejectWithValue }) => {
     try {
       let client = await ClientsApi.deleteClient(data);
+      if (client?.status === 401 || client?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (client.ok && client.data) {
-        toast.success("Client deleted successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        ToastSuccess("Client deleted successfully");
         return data;
       }
-      toast.error("Error hapenned while deleting the client", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      ToastError("Error hapenned while deleting the client");
     } catch (error: any) {
-      toast.error("There was an error from the server", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("There was an error from the server");
       rejectWithValue(error);
     }
   }

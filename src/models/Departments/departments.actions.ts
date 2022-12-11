@@ -17,7 +17,7 @@ export const getAllDepartments = createAsyncThunk<any, any, any>(
       if (departments.ok && departments.data) return departments.data;
       if (departments?.status === 401 || departments?.status === 403) {
         rejectWithValue("Un Authorized");
-        dispatch(logout(true));
+        return dispatch(logout(true));
       } else return [];
     } catch (error) {
       rejectWithValue(error);
@@ -27,9 +27,13 @@ export const getAllDepartments = createAsyncThunk<any, any, any>(
 
 export const createDepartment = createAsyncThunk<any, any, any>(
   "departments/createDepartment",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let department: ApiResponse<any> = await api.createDepartment(args.data);
+      if (department?.status === 401 || department?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (department.ok) {
         ToastSuccess("Department created successfully");
         args.onInitState();
@@ -48,12 +52,16 @@ export const createDepartment = createAsyncThunk<any, any, any>(
 
 export const updateDepartment = createAsyncThunk<any, any, any>(
   "departments/updateDepartment",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let department: ApiResponse<any> = await api.updateDepartment(
         args.id,
         args.data
       );
+      if (department?.status === 401 || department?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (department.ok) {
         args.dispatch(fireUpdateDepartmentHook(""));
         args.dispatch(toggleEditDepartment("none"));
@@ -73,9 +81,13 @@ export const updateDepartment = createAsyncThunk<any, any, any>(
 
 export const deleteDepartment = createAsyncThunk<any, any, any>(
   "departments/deleteDepartment",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let department: ApiResponse<any> = await api.deleteDepartment(args?.id);
+      if (department?.status === 401 || department?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (department.ok) {
         ToastSuccess("Department deleted successfully");
         args.setShow("none");

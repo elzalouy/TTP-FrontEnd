@@ -42,7 +42,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
               onSelect(e);
             }}
             selected={selected ? selected : props.field.value}
-            options={updateOptions}
+            options={options}
             textTruncate={textTruncate}
             message={message}
             error={error} // it shouldn't be removed

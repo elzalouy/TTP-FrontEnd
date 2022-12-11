@@ -22,7 +22,7 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
       let projects = await api.getHttpProjects();
       if (projects?.status === 401 || projects?.status === 403) {
         rejectWithValue("Un Authorized");
-        dispatch(logout(true));
+        return dispatch(logout(true));
       }
       if (projects.ok) {
         return projects.data;
@@ -36,10 +36,14 @@ export const getAllProjects = createAsyncThunk<any, any, any>(
 
 export const createProject = createAsyncThunk<any, any, any>(
   "projects/create",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let project: Project = { ...args.data };
       let result = await api.createProject(project);
+      if (result?.status === 401 || result?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (result.ok) {
         args.dispatch(fireCreateProjectHook(""));
         args.setcurrentStep(1);
@@ -55,9 +59,13 @@ export const createProject = createAsyncThunk<any, any, any>(
 
 export const createProjectTask = createAsyncThunk<any, any, any>(
   "projects/createTask",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let result: ApiResponse<any> = await api.createTask(args.data);
+      if (result?.status === 401 || result?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (result.ok) {
         ToastSuccess("Task have been saved to the Database");
         args.onInit();
@@ -73,10 +81,14 @@ export const createProjectTask = createAsyncThunk<any, any, any>(
 
 export const createTaskFromBoard = createAsyncThunk<any, any, any>(
   "projects/createTaskFromBoard",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let form: FormData = args.data;
       let result: ApiResponse<any> = await api.createTask(form);
+      if (result?.status === 401 || result?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (result.ok) {
         args.setShow("none");
         args.resetState();
@@ -98,9 +110,13 @@ export const createTaskFromBoard = createAsyncThunk<any, any, any>(
 
 export const filterProjects = createAsyncThunk<any, any, any>(
   "projects/filterProjects",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let projects: ApiResponse<any> = await api.filterProjects(args);
+      if (projects?.status === 401 || projects?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (projects.ok && projects.data) return projects?.data?.result;
       throw projects.problem;
     } catch (error: any) {
@@ -115,6 +131,10 @@ export const getTasks = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue, dispatch }) => {
     try {
       let tasks = await api.getTasks(args.url);
+      if (tasks?.status === 401 || tasks?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (tasks?.ok) {
         return tasks?.data;
       }
@@ -128,9 +148,13 @@ export const getTasks = createAsyncThunk<any, any, any>(
 
 export const getProject = createAsyncThunk<any, any, any>(
   "prjects/getProject",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let projects: ApiResponse<any, any> = await api.httpGetProjectById(args);
+      if (projects?.status === 401 || projects?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (projects.ok) return projects?.data[0];
       throw projects.problem;
     } catch (error: any) {
@@ -146,7 +170,11 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
   "projects/getAllTasks",
   async (args, { rejectWithValue, dispatch }) => {
     try {
-      let tasks = await api.getTasks("");
+      let tasks: ApiResponse<any, any> = await api.getTasks("");
+      if (tasks?.status === 401 || tasks?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (tasks?.status === 401 || tasks?.status === 403) {
         rejectWithValue("Un Authorized");
         dispatch(logout(true));
@@ -163,9 +191,13 @@ export const getAllTasks = createAsyncThunk<any, any, any>(
 
 export const filterTasks = createAsyncThunk<any, any, any>(
   "projects/filterTasks",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
-      let tasks = await api.filterTasks(args);
+      let tasks: ApiResponse<any, any> = await api.filterTasks(args);
+      if (tasks?.status === 401 || tasks?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (tasks.ok) return tasks.data;
       throw tasks.problem;
     } catch (error: any) {
@@ -177,9 +209,13 @@ export const filterTasks = createAsyncThunk<any, any, any>(
 
 export const deleteProjectTasks = createAsyncThunk<any, any, any>(
   "projects/deleteProjectTasks",
-  async (args, { rejectWithValue }) => {
+  async (args, { dispatch, rejectWithValue }) => {
     try {
       let deleteResult = await api.deleteProjectTasks(args.data);
+      if (deleteResult?.status === 401 || deleteResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
         ToastSuccess("Project Tasks deleted first.");
@@ -200,9 +236,13 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
 
 export const deleteTasks = createAsyncThunk<any, any, any>(
   "projects/deleteTasks",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let deleteResult = await api.deleteTasks(args.data);
+      if (deleteResult?.status === 401 || deleteResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (deleteResult.ok) {
         args.dispatch(fireDeleteTaskHook(""));
         ToastSuccess("Tasks deleted.");
@@ -218,9 +258,13 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
 
 export const deleteProject = createAsyncThunk<any, any, any>(
   "projects/deleteProject",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let deleteResult = await api.deleteProject(args.data);
+      if (deleteResult?.status === 401 || deleteResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (deleteResult?.ok) {
         args.dispatch(fireDeleteProjectHook(""));
         ToastSuccess("Project Deleted Sucessfully");
@@ -236,9 +280,13 @@ export const deleteProject = createAsyncThunk<any, any, any>(
 
 export const deleteTask = createAsyncThunk<any, any, any>(
   "projects/deleteTask",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let deleteResult = await api.deleteTask(args?.data);
+      if (deleteResult?.status === 401 || deleteResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (deleteResult.ok) {
         args.disptach(fireDeleteTaskHook(""));
         ToastSuccess("Tasks deleted from DB and Trello");
@@ -253,9 +301,13 @@ export const deleteTask = createAsyncThunk<any, any, any>(
 
 export const editProject = createAsyncThunk<any, any, any>(
   "projects/editProject",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let editResult = await api.editProject(args.data);
+      if (editResult?.status === 401 || editResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (editResult.ok) {
         args.dispatch(fireUpdateProjectHook(""));
         ToastSuccess("Project updated successfully");
@@ -270,7 +322,7 @@ export const editProject = createAsyncThunk<any, any, any>(
 
 export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { rejectWithValue, dispatch }) => {
     try {
       let department: IDepartmentState = args?.department;
       let value = args?.value;
@@ -286,6 +338,10 @@ export const moveTask = createAsyncThunk<any, any, any>(
           department: department,
         };
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
+        if (moveResult?.status === 401 || moveResult?.status === 403) {
+          dispatch(logout(true));
+          return rejectWithValue("Un Authorized");
+        }
         if (moveResult.ok) {
           args.dispatch(fireMoveTaskHook(""));
           let returnValue: Task = { ...task };
@@ -309,9 +365,13 @@ export const moveTask = createAsyncThunk<any, any, any>(
  */
 export const editTaskFromBoard = createAsyncThunk<any, any, any>(
   "tasks/editTask",
-  async (args: any, { rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
       let response: ApiResponse<any> = await api.editTask(args.data);
+      if (response?.status === 401 || response?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (response.ok && response.data) {
         args.setShow("none");
         args.dispatch(fireEditTaskHook(""));
@@ -330,12 +390,16 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
   "tasks/downloadAttachment",
   async (
     args: { cardId: string; attachmentId: string; openUrl: boolean },
-    { rejectWithValue }
+    { rejectWithValue, dispatch }
   ) => {
     try {
       let response: any = await api.downloadAttachment(
         `?cardId=${args.cardId}&attachmentId=${args.attachmentId}`
       );
+      if (response?.status === 401 || response?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (response.ok) {
         if (args.openUrl !== false) {
           window.open(response.data?.url);
@@ -353,7 +417,7 @@ export const downloadAttachment = createAsyncThunk<any, any, any>(
 
 export const editTasksProjectId = createAsyncThunk<any, any, any>(
   "tasks/editProjectId",
-  async (args, { rejectWithValue }) => {
+  async (args, { rejectWithValue, dispatch }) => {
     try {
       let ids: string[] = args.ids;
       let projectId: string = args.projectId;
@@ -361,6 +425,10 @@ export const editTasksProjectId = createAsyncThunk<any, any, any>(
         ids,
         projectId,
       });
+      if (response?.status === 401 || response?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
       if (response.ok) {
         args.closeModal();
         args.setAllSelected([]);

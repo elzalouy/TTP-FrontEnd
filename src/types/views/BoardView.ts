@@ -45,7 +45,7 @@ export interface IInitialinitialHookFormTaskState {
   teamId: string;
   status: string;
   description: string;
-  selectedDepartmentId: string;
+  selectedDepartmentId?: string;
   deadline: string;
   attachedFiles: File[] | TaskFile[];
   file: File | null;
