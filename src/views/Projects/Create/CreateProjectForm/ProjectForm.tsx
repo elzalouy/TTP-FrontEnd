@@ -1,14 +1,15 @@
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import moment from "moment";
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { setProjectManagerId } from "src/helpers/generalUtils";
-import { selectClientOptions } from "src/models/Clients/clients.selectors";
+import { selectClientDialogData } from "src/models/Clients/clients.selectors";
 import { useAppSelector } from "src/models/hooks";
 import { Manager, selectPMOptions, selectManagers } from "src/models/Managers";
 import {
@@ -51,7 +52,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const loading = useAppSelector(selectLoading);
   const PMs = useAppSelector(selectManagers);
   const pmOptions = useAppSelector(selectPMOptions);
-  const clientOptions = useAppSelector(selectClientOptions);
+  const clientOptions = useAppSelector(selectClientDialogData);
   const { createProjectPopup } = useAppSelector(selectUi);
   const newProject = useAppSelector(selectNewProject);
   const [ApmOptions, setApmOptions] = React.useState(pmOptions);
@@ -151,7 +152,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         ToastError(isValid.error.message);
       } else {
         project.name = `${
-          clientOptions.find((item) => item.id === data.clientId)?.text
+          clientOptions.find((item) => item.id === data.clientId)?.label
         }-${data?.name}`;
         dispatch(createProject({ data: project, setcurrentStep, dispatch }));
       }
@@ -171,7 +172,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       handleCreateProject(e);
     }
   };
-
+  console.log({ data: watch() });
   return (
     <>
       <Grid
@@ -202,27 +203,24 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-          <ControlledSelect
+          <Controller
             name="clientId"
             control={control}
-            label="Select"
-            formLabel="client"
-            elementType="select"
-            dataTestId="create-project-client-select"
-            onSelect={(e: any) => {
-              setError({
-                error: undefined,
-                value: undefined,
-                warning: undefined,
-              });
+            render={(props) => {
+              return (
+                <SelectDialog
+                  name="clientId"
+                  label="Select Client"
+                  placeholder="Select"
+                  options={clientOptions}
+                  selected={clientOptions.find(
+                    (item) => item.id === watch().clientId
+                  )}
+                  setSelectedValue={setValue}
+                  key={"selectClient"}
+                />
+              );
             }}
-            error={
-              validateError.error?.details[0]?.path?.includes("clientId")
-                ? "true"
-                : "false"
-            }
-            options={clientOptions}
-            setValue={setValue}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>

@@ -1,0 +1,2 @@
+@startuml SelectDialogFlowChart 
+note "single-line note" as noteAlias

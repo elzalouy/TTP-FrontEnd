@@ -25,6 +25,10 @@ export const selectClientOptions = (state: RootState) => {
     return [];
   }
 };
+export const selectClientDialogData = (state: RootState) =>
+  state.clients?.clientsData?.map((item) => {
+    return { label: item.clientName, image: item.image, id: item._id };
+  });
 
 export const selectLoadingClient = (state: RootState) =>
   state?.clients?.loading;
