@@ -40,7 +40,9 @@ const SimpleDialog = ({
     let filtered =
       searchVal.length > 0
         ? options.filter((item) =>
-            item.label.toLocaleLowerCase().includes(searchVal)
+            item.label
+              .toLocaleLowerCase()
+              .includes(searchVal.toLocaleLowerCase())
           )
         : options;
     setFilteredOptions(filtered);
