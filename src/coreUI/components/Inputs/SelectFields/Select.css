@@ -115,6 +115,7 @@ fieldset[id*="select"] .leftIcon {
 
 fieldset[id*="select"] .labelValue {
   font-size: 14px;
+  color: #707683 !important;
   background-color: white;
   border-radius: 10px 0px 0px 10px;
   display: inline-flex;
@@ -122,7 +123,6 @@ fieldset[id*="select"] .labelValue {
   cursor: pointer;
   padding-block: 10px;
   width: 100%;
-  color: #707683 !important;
 }
 
 fieldset[id*="select"] .value {
