@@ -56,7 +56,9 @@ const Select = (props: IFilterProps) => {
     if (state.options.length === 0 && props.message)
       ToastWarning(props.message);
   };
-
+  const onChange = (e: any) => {
+    console.log(e);
+  };
   return (
     <>
       <fieldset

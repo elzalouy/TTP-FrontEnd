@@ -224,7 +224,6 @@ const ManagersList = () => {
                   >
                     {role}
                   </TableCell>
-
                   <TableCell
                     align="left"
                     style={{

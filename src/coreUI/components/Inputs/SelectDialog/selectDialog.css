@@ -1,0 +1,12 @@
+button {
+  cursor: pointer;
+  border-color: transparent !important;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 5px;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid #f1f1f5;
+}
