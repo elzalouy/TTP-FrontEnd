@@ -172,7 +172,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       handleCreateProject(e);
     }
   };
-  console.log({ data: watch() });
   return (
     <>
       <Grid

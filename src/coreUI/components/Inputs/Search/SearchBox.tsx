@@ -3,16 +3,20 @@ import { ISearch } from "src/types/components/Inputs";
 import IMAGES from "../../../../assets/img/Images";
 import "./Search.css";
 
-const Search: React.FC<ISearch> = ({ onChange, placeholder, value, size }) => {
+const Search: React.FC<ISearch> = ({
+  onChange,
+  placeholder,
+  value,
+  size,
+  style,
+  className,
+}) => {
   return (
-    <div
-      className={
-        "core-ui-search-wrapper" + " " + "core-ui-search-wrapper-" + size
-      }
-    >
+    <div className={"core-ui-search-wrapper core-ui-search-wrapper-" + size}>
       <img src={IMAGES.search} className="core-ui-search-icon" />
       <input
-        className={"core-ui-search" + " " + size}
+        style={style}
+        className={`core-ui-search ${size} ${className}`}
         type="text"
         onChange={onChange}
         value={value}
