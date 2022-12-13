@@ -73,7 +73,6 @@ const SimpleDialog = ({
       open={open}
       maxWidth={"xs"}
       fullWidth={true}
-      sx={{ width: "100%" }}
     >
       <DialogTitle className="dialogTitle">
         <Search
