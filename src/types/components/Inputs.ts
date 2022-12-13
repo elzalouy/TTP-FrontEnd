@@ -46,6 +46,8 @@ export interface ISearch {
   onChange: (e: any) => void;
   placeholder?: string;
   size: "custom" | "medium" | "small";
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface IButton {

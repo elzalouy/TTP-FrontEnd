@@ -10,7 +10,11 @@ import Dialog from "@mui/material/Dialog";
 import AddIcon from "@mui/icons-material/Add";
 import { blue } from "@mui/material/colors";
 import Search from "../Search/SearchBox";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
+import "./selectDialog.css";
+import { DialogContent } from "@mui/material";
 type option = { label: string; image?: any; id: string };
 type SelectDialogProps = {
   options: option[];
@@ -33,6 +37,9 @@ const SimpleDialog = ({
   onClose,
   options,
 }: DialogProps) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [searchVal, setSearchVal] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
 
@@ -59,31 +66,48 @@ const SimpleDialog = ({
   const onSearch = (e: any) => setSearchVal(e.target.value);
 
   return (
-    <Dialog maxWidth="xs" fullWidth onClose={handleClose} open={open}>
-      <DialogTitle>
-        <Search value={searchVal} onChange={onSearch} size="custom" />
+    <Dialog
+      className="dialog"
+      fullScreen={fullScreen}
+      onClose={handleClose}
+      open={open}
+    >
+      <DialogTitle className="dialogTitle">
+        <Search
+          placeholder="Search by name"
+          value={searchVal}
+          onChange={onSearch}
+          size="custom"
+        />
       </DialogTitle>
-      <List sx={{ pt: 0, maxHeight: "300px", overflowY: "scroll" }}>
-        {(searchVal.length > 0 ? filteredOptions : options).map((item) => {
-          const image = item?.image?.size
-            ? URL.createObjectURL(item.image)
-            : item.image;
-          return (
-            <ListItem
-              button
-              onClick={() => handleListItemClick(item)}
-              key={item.id}
-            >
-              <ListItemAvatar>
-                <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                  <img src={image} alt="option" />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={item.label} />
-            </ListItem>
-          );
-        })}
-      </List>
+      <DialogContent>
+        <List className="dialogList">
+          {(searchVal.length > 0 ? filteredOptions : options).map((item) => {
+            const image = item?.image?.size
+              ? URL.createObjectURL(item.image)
+              : item.image;
+            return (
+              <ListItem
+                button
+                onClick={() => handleListItemClick(item)}
+                key={item.id}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <img
+                      src={image}
+                      alt="option"
+                      width={"100%"}
+                      height="100%"
+                    />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={item.label} />
+              </ListItem>
+            );
+          })}
+        </List>
+      </DialogContent>
     </Dialog>
   );
 };
