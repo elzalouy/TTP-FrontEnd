@@ -68,12 +68,12 @@ const SimpleDialog = ({
 
   return (
     <Dialog
-      className="dialog"
       fullScreen={fullScreen}
       onClose={handleClose}
       open={open}
       maxWidth={"xs"}
       fullWidth={true}
+      sx={{ width: "100%" }}
     >
       <DialogTitle className="dialogTitle">
         <Search
