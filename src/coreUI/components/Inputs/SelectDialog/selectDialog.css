@@ -1,8 +1,7 @@
 .dialog {
-  width: 100% !important;
+  width: 500px !important;
 }
 .dialogList {
-  height: 350px;
   overflow-y: scroll;
 }
 .dialogTitle {
