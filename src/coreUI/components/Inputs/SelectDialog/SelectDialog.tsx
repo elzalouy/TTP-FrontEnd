@@ -15,6 +15,7 @@ import { useTheme } from "@mui/material/styles";
 
 import "./selectDialog.css";
 import { DialogContent } from "@mui/material";
+import IMAGES from "src/assets/img/Images";
 type option = { label: string; image?: any; id: string };
 type SelectDialogProps = {
   options: option[];
@@ -71,6 +72,8 @@ const SimpleDialog = ({
       fullScreen={fullScreen}
       onClose={handleClose}
       open={open}
+      maxWidth={"xs"}
+      fullWidth={true}
     >
       <DialogTitle className="dialogTitle">
         <Search
@@ -81,9 +84,20 @@ const SimpleDialog = ({
         />
       </DialogTitle>
       <DialogContent>
-        <List className="dialogList">
+        <List
+          className="dialogList"
+          sx={{
+            height: {
+              sm: "100%",
+              xs: "100%",
+              md: "350px",
+              lg: "350px",
+              xl: "350px",
+            },
+          }}
+        >
           {(searchVal.length > 0 ? filteredOptions : options).map((item) => {
-            const image = item?.image?.size
+            const image: any = item?.image?.size
               ? URL.createObjectURL(item.image)
               : item.image;
             return (
@@ -95,7 +109,7 @@ const SimpleDialog = ({
                 <ListItemAvatar>
                   <Avatar>
                     <img
-                      src={image}
+                      src={image ? image : IMAGES.avatarClients}
                       alt="option"
                       width={"100%"}
                       height="100%"
