@@ -97,7 +97,15 @@ const SimpleDialog = ({
           }}
         >
           {(searchVal.length > 0 ? filteredOptions : options).map((item) => {
-            const image: any = item?.image?.size
+            const image: any = [
+              "",
+              null,
+              undefined,
+              "null",
+              "undefined",
+            ].includes(item.image)
+              ? IMAGES.avatarClients
+              : item.image?.size
               ? URL.createObjectURL(item.image)
               : item.image;
             return (
@@ -109,7 +117,7 @@ const SimpleDialog = ({
                 <ListItemAvatar>
                   <Avatar>
                     <img
-                      src={image ? image : IMAGES.avatarClients}
+                      src={image}
                       alt="option"
                       width={"100%"}
                       height="100%"
