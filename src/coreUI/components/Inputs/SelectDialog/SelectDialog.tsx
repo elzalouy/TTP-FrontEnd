@@ -68,7 +68,6 @@ const SimpleDialog = ({
 
   return (
     <Dialog
-      className="dialog"
       fullScreen={fullScreen}
       onClose={handleClose}
       open={open}
