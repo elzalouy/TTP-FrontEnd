@@ -20,6 +20,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+
   const open = Boolean(anchorEl);
 
   const handleOpen = (e: any) => {
@@ -77,7 +78,7 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
             <a
               target="_blank"
               rel="noreferrer"
-              href={item?.trelloShortUrl}
+              href={item.trelloShortUrl}
               className={styles.grayButton}
               style={{
                 textDecoration: "none",

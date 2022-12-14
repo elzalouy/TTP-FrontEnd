@@ -1,10 +1,12 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import IMAGES from "src/assets/img/Images";
 import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
+import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import SmallPopUp from "src/coreUI/components/Popovers/Popup/SmallPopup";
@@ -109,24 +111,16 @@ const EditTasks = ({ show, setShow, selects, setAllSelected }: props) => {
         </Grid>
         <Grid item xs={12}>
           <label className="label-project">Project</label>
-          <Select
-            onSelect={onSelect}
-            selected={projectId}
-            elementType={"select"}
-            name="projectId"
-            options={
-              projects
-                ? [
-                    ...projects.map((item) => ({
-                      text: item.name,
-                      value: item._id,
-                      id: item._id,
-                    })),
-                  ]
-                : []
-            }
-            label={"Select"}
-            message={"No projects found"}
+          <SelectDialog
+            name="clientId"
+            label="Select Client"
+            placeholder="Select"
+            options={projects}
+            selected={projects?.find((item) => item.id === projectId)}
+            setSelectedValue={(name: string, value: string) => {
+              setProjectId(value);
+            }}
+            key={"selectClient"}
           />
         </Grid>
         <Grid item xs={12}>

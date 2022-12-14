@@ -73,13 +73,20 @@ export const selectAllProjects = (state: RootState) => state?.projects;
 export const selectEditTask = (state: RootState) =>
   state.projects.allTasks.find((item) => item._id === state.projects.editTask);
 export const selectActiveProjects = (state: RootState) =>
-  state.projects.projects.filter(
-    (item) =>
-      item.projectStatus &&
-      !["Done", "late", "deliver on time", "deliver before deadline"].includes(
-        item?.projectStatus
-      )
-  );
+  state.projects.projects
+    .filter(
+      (item) =>
+        item.projectStatus &&
+        ![
+          "Done",
+          "late",
+          "deliver on time",
+          "deliver before deadline",
+        ].includes(item?.projectStatus)
+    )
+    .map((item) => {
+      return { id: item._id, label: item.name };
+    });
 export const selectSelectedProject = (state: RootState) =>
   state?.projects.selectedProject;
 export const selectDeleteProjectId = (state: RootState) =>

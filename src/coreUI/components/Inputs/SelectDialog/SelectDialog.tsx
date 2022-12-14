@@ -16,7 +16,7 @@ import { useTheme } from "@mui/material/styles";
 import "./selectDialog.css";
 import { DialogContent } from "@mui/material";
 import IMAGES from "src/assets/img/Images";
-type option = { label: string; image?: any; id: string };
+type option = { label: string; image?: any | undefined; id: string };
 type SelectDialogProps = {
   options: option[];
   selected?: option;
@@ -113,16 +113,18 @@ const SimpleDialog = ({
                 onClick={() => handleListItemClick(item)}
                 key={item.id}
               >
-                <ListItemAvatar>
-                  <Avatar>
-                    <img
-                      src={image}
-                      alt="option"
-                      width={"100%"}
-                      height="100%"
-                    />
-                  </Avatar>
-                </ListItemAvatar>
+                {item.image && (
+                  <ListItemAvatar>
+                    <Avatar>
+                      <img
+                        src={image}
+                        alt="option"
+                        width={"100%"}
+                        height="100%"
+                      />
+                    </Avatar>
+                  </ListItemAvatar>
+                )}
                 <ListItemText primary={item.label} />
               </ListItem>
             );

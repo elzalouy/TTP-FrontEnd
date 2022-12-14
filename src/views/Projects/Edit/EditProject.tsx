@@ -1,9 +1,10 @@
 import { Grid } from "@mui/material";
 import Joi from "joi";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
+import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import {
@@ -15,7 +16,10 @@ import { validateEditProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import { selectClientOptions } from "../../../models/Clients";
+import {
+  selectClientDialogData,
+  selectClientOptions,
+} from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import {
   Manager,
@@ -60,7 +64,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
   const PMs = useAppSelector(selectManagers);
   const statusOptions = useAppSelector(selectProjectStatusOptions);
   const pmOptions = useAppSelector(selectPMOptions);
-  const clientOptions = useAppSelector(selectClientOptions);
+  const clientOptions = useAppSelector(selectClientDialogData);
   const [confirm, setConfirm] = useState<string>("none");
   const [trigger, setTrigger] = useState<boolean>(false);
   const [updateDate, setUpdateDate] = useState<boolean>(false);
@@ -269,14 +273,24 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-            <ControlledSelect
+            <Controller
               name="clientId"
               control={control}
-              label="Select"
-              formLabel="client"
-              elementType="select"
-              options={clientOptions}
-              setValue={setValue}
+              render={(props) => {
+                return (
+                  <SelectDialog
+                    name="clientId"
+                    label="Select Client"
+                    placeholder="Select"
+                    options={clientOptions}
+                    selected={clientOptions.find(
+                      (item) => item.id === watch().clientId
+                    )}
+                    setSelectedValue={setValue}
+                    key={"selectClient"}
+                  />
+                );
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
