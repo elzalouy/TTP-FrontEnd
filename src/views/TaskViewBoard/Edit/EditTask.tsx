@@ -143,13 +143,13 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       boardId: state.selectedDepartment?.boardId,
       listId: state.task?.listId,
       teamId: data.teamId === "" ? state.task?.teamId : data.teamId,
+      description: data.description,
     };
 
     if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
     if (data.deadline !== "" && data.deadline !== null)
       newTask.deadline = moment(data?.deadline).toDate().toString();
     if (state.newFiles) newTask.attachedFiles = state.newFiles;
-    if (data.description) newTask.description = data.description;
     if (state.deleteFiles) newTask.deleteFiles = state.deleteFiles;
     let { error, warning, value, FileError, FormDatatask } =
       validateEditTask(newTask);
