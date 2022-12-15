@@ -99,7 +99,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.projectDeadline = data.deadline;
     newProjectData.startDate = data.startDate;
     newProjectData.projectStatus =
-      (data.deadline && data.startDate) !== null
+      data.startDate !== null
         ? "In Progress"
         : "Not Started";
     newProjectData.associateProjectManager =
@@ -134,7 +134,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         numberOfFinishedTasks: 0,
         numberOfTasks: 0,
         projectStatus:
-          (data.deadline && data.startDate) !== null
+          data.startDate !== null
             ? "In Progress"
             : "Not Started",
         completedDate: null,
@@ -151,9 +151,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         setError(isValid);
         ToastError(isValid.error.message);
       } else {
-        project.name = `${
-          clientOptions.find((item) => item.id === data.clientId)?.label
-        }-${data?.name}`;
+        project.name = `${clientOptions.find((item) => item.id === data.clientId)?.label
+          }-${data?.name}`;
         dispatch(createProject({ data: project, setcurrentStep, dispatch }));
       }
     }

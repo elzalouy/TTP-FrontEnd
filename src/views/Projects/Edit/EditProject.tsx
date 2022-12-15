@@ -148,8 +148,15 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     let inProgress = currentStatus === "In Progress";
 
     if (updateDate) {
-      if (inProgress || done) {
-        if (onlyDeadlineIsNull || onlyStartDateIsNull || bothDatesAreNull) {
+      if (done) {
+        if (onlyDeadlineIsNull) {
+          setAlert("Deadline");
+          setConfirm("flex");
+        }
+        data.status = "Not Started"
+      }
+      if (inProgress) {
+        if (bothDatesAreNull || onlyStartDateIsNull) {
           //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started
           data.status = "Not Started";
         }
@@ -182,10 +189,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       setAlert("Deadline");
       if (done) {
         setConfirm("flex");
-      } else if (inProgress) {
-        setConfirm("flex");
-        data.status = "Not Started";
       } else {
+        setAlert("In Progress");
         setTrigger(true);
       }
     } else if (bothDatesAreNotNull) {
