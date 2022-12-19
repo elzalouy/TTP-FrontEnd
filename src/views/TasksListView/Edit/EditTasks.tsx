@@ -7,16 +7,14 @@ import IMAGES from "src/assets/img/Images";
 import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import SmallPopUp from "src/coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "src/models/hooks";
 import {
   editTasksProjectId,
   selectActiveProjects,
   selectAllProjects,
 } from "src/models/Projects";
-import { Project, Task } from "src/types/models/Projects";
+import { Task } from "src/types/models/Projects";
 
 type props = {
   show: string;
@@ -112,8 +110,8 @@ const EditTasks = ({ show, setShow, selects, setAllSelected }: props) => {
         <Grid item xs={12}>
           <label className="label-project">Project</label>
           <SelectDialog
-            name="clientId"
-            label="Select Client"
+            name="projectId"
+            label="Select Project"
             placeholder="Select"
             options={projects}
             selected={projects?.find((item) => item.id === projectId)}
