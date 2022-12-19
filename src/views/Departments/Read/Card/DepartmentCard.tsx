@@ -60,23 +60,39 @@ const DepartmentCard = ({
         <div
           data-test-id={`departments-card-${department._id}`}
           className="department-Card"
-          style={{ backgroundColor: cardColors[department.color][0] }}
+          style={{
+            backgroundColor: cardColors[department.color]
+              ? cardColors[department.color][0]
+              : "#0079BF1A",
+          }}
         >
           <Grid
             container
             className="dp-card-header"
-            style={{ color: cardColors[department.color][1] }}
+            style={{
+              color: cardColors[department.color]
+                ? cardColors[department.color][1]
+                : "#0079BF",
+            }}
           >
             <Typography
               variant="h2"
-              color={cardColors[department.color][1]}
+              color={
+                cardColors[department.color]
+                  ? cardColors[department.color][1]
+                  : "#0079BF"
+              }
               sx={{ width: "160px", overflowWrap: "break-word" }}
             >
               {department.name}
             </Typography>
             {role !== "PM" && (
               <DepartmentPopover
-                color={cardColors[department?.color][1]}
+                color={
+                  cardColors[department?.color]
+                    ? cardColors[department?.color][1]
+                    : "#0079BF"
+                }
                 handleSetShow={handleSetShowEdit}
                 handleSetShowDelete={handleSetShowDelete}
               />
@@ -89,7 +105,9 @@ const DepartmentCard = ({
                   <>
                     <CardBadge
                       fontColor={
-                        department.color && cardColors[department.color][1]
+                        department.color && cardColors[department.color]
+                          ? cardColors[department.color][1]
+                          : "#0079BF"
                       }
                       _id={_id}
                       text={team.name}

@@ -57,7 +57,7 @@ const SimpleDialog = ({
   }, [searchVal]);
 
   const handleClose = () => {
-    if (selectedValue) onClose(selectedValue);
+    onClose(selectedValue ? selectedValue : { label: "", id: "" });
   };
 
   const handleListItemClick = (value: option) => {
