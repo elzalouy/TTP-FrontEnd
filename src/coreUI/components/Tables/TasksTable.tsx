@@ -30,7 +30,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
 }) => {
   const history = useHistory();
   const theme = useTheme();
-  const dispatch = useDispatch();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
   const categories = useAppSelector(selectAllCategories);
@@ -38,6 +37,10 @@ const TasksTable: React.FC<ITasksTableProps> = ({
     page: 0,
     rowsPerPage: 8,
   });
+
+  React.useEffect(() => {
+    setState({ ...state, page: 0 });
+  }, [tasks]);
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
