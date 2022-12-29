@@ -99,7 +99,6 @@ export const TasksListView: React.FC<Props> = (props) => {
     setValue(name, value);
     let State = { ...state };
     let filter = watch();
-    console.log({ name, value, filter });
     let tasks = projects.allTasks;
     let projectsIds: string[] = projects.projects.map((item) => item._id);
     let projectManagersIds: string[] = projects.projects.map(

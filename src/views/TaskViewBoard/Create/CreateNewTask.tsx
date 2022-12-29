@@ -96,7 +96,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         newTask.deadline = moment(data?.deadline).toDate().toString();
       if (state.newFiles) newTask.attachedFiles = state.newFiles;
       if (data.description) newTask.description = data.description;
-      console.log({ newTask, state });
       let { error, warning, value, FileError, FormDatatask } =
         valdiateCreateTask(newTask);
       if (error || FileError) {

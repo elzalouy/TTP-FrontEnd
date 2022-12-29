@@ -44,7 +44,6 @@ const Select = (props: IFilterProps) => {
     let State = { ...state };
     State.open = props.optionsType === "dialog" ? false : "none";
     if (props.optionsType === "dialog") {
-      console.log(value);
       State.selected = value.label ? value.label : "";
       props.onSelect(value);
     }

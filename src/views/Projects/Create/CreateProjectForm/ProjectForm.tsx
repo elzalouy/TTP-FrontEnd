@@ -112,7 +112,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   const handleCreateProject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log({ data });
     let token = getUserTokenInfo();
     if (token !== null) {
       let project = {
@@ -142,7 +141,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       };
 
       let isValid = validateCreateProject(project);
-      console.log({ isValid });
 
       if (isValid.error) {
         setError(isValid);
