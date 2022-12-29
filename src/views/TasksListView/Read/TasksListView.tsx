@@ -100,25 +100,25 @@ export const TasksListView: React.FC<Props> = (props) => {
     let State = { ...state };
     let filter = watch();
     let tasks = projects.allTasks;
-    let projectsIds: string[] = projects.projects.map((item) => item._id);
+    let projectsIds: string[] = projects.projects.map((item) => item?._id);
     let projectManagersIds: string[] = projects.projects.map(
-      (item) => item.projectManager._id
+      (item) => item.projectManager?._id
     );
     if (filter.clientId !== "") {
       projectsIds = projects.projects
         .filter((item) => item.clientId === filter.clientId)
-        .map((item) => item._id);
+        .map((item) => item?._id);
       projectManagersIds = projects.projects
-        .filter((item) => projectsIds.includes(item._id))
-        .map((item) => item.projectManager._id);
+        .filter((item) => projectsIds.includes(item?._id))
+        .map((item) => item.projectManager?._id);
       tasks = projects.allTasks.filter((item) =>
         projectsIds.includes(item.projectId)
       );
     }
     if (filter.projectManager !== "") {
       projectsIds = projects.projects
-        .filter((item) => item.projectManager._id === filter.projectManager)
-        .map((item) => item._id);
+        .filter((item) => item.projectManager?._id === filter.projectManager)
+        .map((item) => item?._id);
       State.projectsOptions = projectOptions.filter((item) =>
         projectsIds.includes(item.id)
       );
@@ -172,8 +172,9 @@ export const TasksListView: React.FC<Props> = (props) => {
                 alt="more"
               />
               {
-                projects?.projects?.find((item) => item._id === props.projectId)
-                  ?.name
+                projects?.projects?.find(
+                  (item) => item?._id === props.projectId
+                )?.name
               }
             </>
           )}
