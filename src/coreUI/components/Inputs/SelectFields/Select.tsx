@@ -3,62 +3,62 @@ import * as React from "react";
 import IMAGES from "src/assets/img/Images";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import { IFilterProps } from "src/types/components/Inputs";
-import { ToastWarning } from "../../Typos/Alert";
-import Options from "./Options";
+import ListOptions from "./ListOptions";
 import "./Select.css";
+import { SimpleDialog } from "../SelectDialog/SelectDialog";
 
 const Select = (props: IFilterProps) => {
+  // To take control over the mouse click
   const selectRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
   const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
     React.useRef(null);
   useSelect(selectRef, optionsRef);
 
-  const [state, setState] = React.useState({
-    label: props.label,
-    isOpen: "none",
-    selected: "",
-    options: props.options ? props.options : [],
-  });
-
   React.useEffect(() => {
-    if (props.options)
-      setState({
-        ...state,
-        options: props.options,
-      });
-    else
-      setState({
-        ...state,
-        options: [],
-      });
-  }, [props]);
-
-  React.useEffect(() => {
-    let selected = state.options.find(
-      (item: any) => item.id === props.selected
-    )?.text;
-    if (selected) setState({ ...state, selected: selected });
-    else setState({ ...state, selected: "" });
+    setState({
+      ...state,
+      selected: props.options
+        ? props.options.find((item: any) => item.id === props.selected)?.text
+        : "",
+    });
   }, [props.selected]);
 
-  React.useEffect(() => {
-    let selected = state.options.find(
-      (item: any) => item.id === props.selected
-    )?.text;
-    if (selected) setState({ ...state, selected: selected });
-  }, [props.selected, props.options]);
+  // Our component state
+  const [state, setState] = React.useState({
+    open: props.optionsType === "dialog" ? false : "none",
+    selected: "",
+  });
+  const onOpen = () => {
+    let State = { ...state };
+    State.open =
+      props.optionsType === "dialog"
+        ? true
+        : props.options.length > 0
+        ? "flex"
+        : "none";
+    setState(State);
+  };
 
-  const setShow = () => {
-    if (state.isOpen === "none" && state.options.length > 0)
-      setState({ ...state, isOpen: "flex" });
-    else setState({ ...state, isOpen: "none" });
-    if (state.options.length === 0 && props.message)
-      ToastWarning(props.message);
+  const onClose = (value: any) => {
+    let State = { ...state };
+    State.open = props.optionsType === "dialog" ? false : "none";
+    if (props.optionsType === "dialog") {
+      State.selected = value.label ? value.label : "";
+      props.onSelect(value);
+    }
+    setState(State);
   };
-  const onChange = (e: any) => {
-    console.log(e);
+
+  const onSelect = (e: any) => {
+    let State = { ...state };
+    State.selected = props.options
+      ? props.options.find((item: any) => item.id === e.target.id)?.text
+      : "";
+    setState(State);
+    props.onSelect(e);
   };
+
   return (
     <>
       <fieldset
@@ -67,7 +67,9 @@ const Select = (props: IFilterProps) => {
         data-error={props.error ? props.error : ""}
       >
         <label
-          onClick={setShow}
+          onClick={
+            state.open === "none" || state.open === false ? onOpen : onClose
+          }
           id={props.label}
           className="labelValue unselectable"
           data-test-id={props.dataTestId}
@@ -99,20 +101,53 @@ const Select = (props: IFilterProps) => {
           </p>
         </label>
         <img
-          onClick={setShow}
+          onClick={
+            state.open === "none" || state.open === false ? onOpen : onClose
+          }
           src={IMAGES.filterDropdown}
           className="leftIcon"
           alt=""
         />
-        <Options
-          setShow={setShow}
-          selectRef={selectRef}
-          display={state.isOpen}
-          onSelect={props.onSelect}
-          elementType={props.elementType}
-          options={state.options}
-          dataTestId={props.dataTestId}
-        />
+        {props.optionsType === "dialog" ? (
+          <>
+            <SimpleDialog
+              open={
+                state.open === true || state.open === false ? state.open : false
+              }
+              onClose={onClose}
+              selectedValue={{
+                id: props.options.find(
+                  (item: any) => item.id === props.selected
+                )?.id,
+                label: props.options.find(
+                  (item: any) => item.id === props.selected
+                )?.text,
+                image: props.options.find(
+                  (item: any) => item.id === props.selected
+                )?.image,
+              }}
+              options={props.options.map((option: any) => {
+                return {
+                  label: option.text,
+                  id: option.id,
+                  image: option?.image,
+                };
+              })}
+            />
+          </>
+        ) : (
+          <ListOptions
+            setShow={state.open === "none" ? onOpen : onClose}
+            selectRef={selectRef}
+            display={
+              state.open !== true && state.open !== false ? state.open : "none"
+            }
+            onSelect={onSelect}
+            elementType={props.elementType}
+            options={props.options}
+            dataTestId={props.dataTestId}
+          />
+        )}
       </fieldset>
     </>
   );

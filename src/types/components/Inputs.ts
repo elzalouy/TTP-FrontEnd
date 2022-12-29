@@ -16,12 +16,13 @@ export interface IFilterProps {
   elementType: "filter" | "select";
   name: string;
   onSelect?: any;
-  selected?: string;
+  selected?: any;
   options:
     | {
         id: string;
         value: string;
         text: string;
+        image?: string;
       }[]
     | any;
   label?: string;
@@ -29,6 +30,7 @@ export interface IFilterProps {
   error?: string;
   message?: string;
   dataTestId?: string;
+  optionsType?: "list" | "dialog";
 }
 
 export interface IOptions {

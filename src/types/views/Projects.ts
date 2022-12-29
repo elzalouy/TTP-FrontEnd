@@ -3,9 +3,9 @@ import Joi from "joi";
 export interface IProjectFormProps {
   setcurrentStep: any;
   setShow: any;
-  currentStep:any;
-  backTrigger:any;
-  setBackTrigger:any;
+  currentStep: any;
+  backTrigger: any;
+  setBackTrigger: any;
   //Here any is the type because behavior is not clear to me : TODO
 }
 
@@ -14,3 +14,10 @@ export interface IJoiValidation {
   value: any;
   warning: Joi.ValidationError | undefined;
 }
+
+export type Options = {
+  id: string;
+  text: string;
+  value: string;
+  image?: string;
+}[];

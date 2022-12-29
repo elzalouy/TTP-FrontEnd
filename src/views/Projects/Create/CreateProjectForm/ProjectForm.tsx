@@ -4,7 +4,7 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
+import { SelectDialog } from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
@@ -99,9 +99,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.projectDeadline = data.deadline;
     newProjectData.startDate = data.startDate;
     newProjectData.projectStatus =
-      data.startDate !== null
-        ? "In Progress"
-        : "Not Started";
+      data.startDate !== null ? "In Progress" : "Not Started";
     newProjectData.associateProjectManager =
       data.associateProjectManager.length > 0
         ? data.associateProjectManager
@@ -133,10 +131,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         clientId: data?.clientId,
         numberOfFinishedTasks: 0,
         numberOfTasks: 0,
-        projectStatus:
-          data.startDate !== null
-            ? "In Progress"
-            : "Not Started",
+        projectStatus: data.startDate !== null ? "In Progress" : "Not Started",
         completedDate: null,
         adminId: token?.id,
         associateProjectManager:
@@ -151,8 +146,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         setError(isValid);
         ToastError(isValid.error.message);
       } else {
-        project.name = `${clientOptions.find((item) => item.id === data.clientId)?.label
-          }-${data?.name}`;
+        project.name = `${
+          clientOptions.find((item) => item.id === data.clientId)?.label
+        }-${data?.name}`;
         dispatch(createProject({ data: project, setcurrentStep, dispatch }));
       }
     }
@@ -257,7 +253,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             formLabel="Project manager"
             dataTestId="create-project-pm-select"
             elementType="select"
+            optionsType="dialog"
             onSelect={(e: any) => {
+              setValue("projectManager", e.id);
               setApmOptions(
                 pmOptions.filter((item) => item.id !== watch().projectManager)
               );
@@ -273,7 +271,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 : "false"
             }
             options={pmOptions}
-            setValue={setValue}
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
@@ -281,10 +278,12 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             name="associateProjectManager"
             control={control}
             label="Select"
+            optionsType="dialog"
             formLabel="Associate Project manager"
             dataTestId="create-project-apm-select"
             elementType="select"
             onSelect={(e: any) => {
+              setValue("associateProjectManager", e.id);
               setError({
                 error: undefined,
                 value: undefined,
@@ -299,7 +298,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 : "false"
             }
             options={ApmOptions}
-            setValue={setValue}
           />
         </Grid>
         <Grid

@@ -96,7 +96,6 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
         newTask.deadline = moment(data?.deadline).toDate().toString();
       if (state.newFiles) newTask.attachedFiles = state.newFiles;
       if (data.description) newTask.description = data.description;
-      console.log({ newTask, state });
       let { error, warning, value, FileError, FormDatatask } =
         valdiateCreateTask(newTask);
       if (error || FileError) {
@@ -131,11 +130,9 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
 
   const onChangeCategory = (e: any) => {
     let State = { ...state };
-    setValue("categoryId", e.target.id);
+    setValue("categoryId", e.id);
     setValue("subCategoryId", "");
-    State.selectedCategory = categories.find(
-      (item) => item._id === e.target.id
-    );
+    State.selectedCategory = categories.find((item) => item._id === e.id);
     setState(State);
   };
 
@@ -248,8 +245,9 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                   control={control}
                   dataTestId="create-task-cat-select"
                   onSelect={onChangeCategory}
+                  optionsType="dialog"
                   options={[
-                    ...categories?.map((item) => {
+                    ...categories?.map((item: any) => {
                       return {
                         id: item._id ? item._id : "",
                         value: item._id ? item._id : "",
@@ -293,9 +291,8 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                     formLabel="Sub Category"
                     name="subCategoryId"
                     control={control}
-                    onSelect={(e: any) =>
-                      setValue("subCategoryId", e.target.id)
-                    }
+                    optionsType="dialog"
+                    onSelect={(e: any) => setValue("subCategoryId", e.id)}
                     options={
                       state.selectedCategory?.subCategoriesId
                         ? state.selectedCategory?.subCategoriesId?.map(

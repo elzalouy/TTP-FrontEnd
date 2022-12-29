@@ -164,8 +164,8 @@ const TaskForm: React.FC = () => {
     }
   };
   const onChangeCategory = (e: any) => {
-    setValue("categoryId", e.target.id);
-    const cat = categories.find((item) => item._id === e.target.id);
+    setValue("categoryId", e.id);
+    const cat = categories.find((item) => item._id === e.id);
     setSelectCategory(cat);
     setError(initJoiValidationError);
   };
@@ -301,6 +301,7 @@ const TaskForm: React.FC = () => {
                   <Select
                     name="createProject-task-selectCategory"
                     label="Categories list"
+                    optionsType="dialog"
                     selected={watch().categoryId}
                     elementType="select"
                     error={onGetError(props.field.name)}
@@ -342,7 +343,8 @@ const TaskForm: React.FC = () => {
                   label="Sub Categories"
                   selected={watch().subCategoryId}
                   elementType="select"
-                  onSelect={(e: any) => setValue("subCategoryId", e.target.id)}
+                  optionsType="dialog"
+                  onSelect={(e: any) => setValue("subCategoryId", e.id)}
                   options={
                     selectedCategory?.subCategoriesId &&
                     selectedCategory?.subCategoriesId?.length > 0

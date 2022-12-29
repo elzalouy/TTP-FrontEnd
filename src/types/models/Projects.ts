@@ -35,6 +35,8 @@ export interface Task {
   lastMoveDate?: string;
   createdAt?: string;
   trelloShortUrl?: string;
+  categoryName?: string;
+  projectName?: string;
 }
 
 export interface IProjectsPage {

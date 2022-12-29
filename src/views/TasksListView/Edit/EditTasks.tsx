@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import IMAGES from "src/assets/img/Images";
 import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
-import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
+import { SelectDialog } from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { useAppSelector } from "src/models/hooks";
 import {
