@@ -27,12 +27,22 @@ import { ProjectsInterface, Task } from "../../../types/models/Projects";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import EditTasks from "../Edit/EditTasks";
 import "./TasksListView.css";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { selectPMOptions } from "src/models/Managers";
+import { Options } from "src/types/views/Projects";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps<{ projectId?: string }>["match"];
 }
+type filterTypes =
+  | "name"
+  | "clientId"
+  | "projectManager"
+  | "projectId"
+  | "clientId"
+  | "status";
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
@@ -40,83 +50,97 @@ export const TasksListView: React.FC<Props> = (props) => {
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const projectOptions = useAppSelector(selectProjectOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
+  const PmsOptions = useAppSelector(selectPMOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
-  const [showEditTasks, setShowEditTasks] = React.useState("none");
 
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const XS = useMediaQuery(theme.breakpoints.down("xs"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const LG = useMediaQuery(theme.breakpoints.up("lg"));
   const [Show, setShow] = React.useState("none");
-  const [filter, setFilter] = React.useState(true);
-  const { watch, control, setValue } = useForm();
+  const { watch, control, setValue } = useForm({
+    defaultValues: {
+      projectId: "",
+      name: "",
+      projectManager: "",
+      status: "",
+      clientId: "",
+    },
+  });
+  const [state, setState] = React.useState<{
+    filter: boolean;
+    showEditTasks: string;
+    tasks: Task[];
+    projectsOptions: Options;
+    projectManagersOptions: Options;
+  }>({
+    tasks: projects.allTasks,
+    showEditTasks: "none",
+    filter: true,
+    projectsOptions: projectOptions,
+    projectManagersOptions: PmsOptions,
+  });
 
   React.useEffect(() => {
     let id = props.match.params?.projectId;
     if (id) {
       setValue("projectId", id);
-      dispatch(filterTasks({ projectId: id }));
+      setState({
+        ...state,
+        tasks: projects.allTasks
+          ? projects.allTasks.filter((item) => item.projectId === id)
+          : [],
+      });
     } else {
-      setValue("projectId", "");
-      dispatch(ProjectsActions.onRemoveFilters(null));
+      setState({ ...state, tasks: projects.allTasks ? projects.allTasks : [] });
     }
-  }, [props.match.params]);
+  }, [props.match.params, projects]);
 
-  const onHandleChangeFilter = () => {
+  const onSetFilter = (name: filterTypes, value: string) => {
+    setValue(name, value);
+    let State = { ...state };
     let filter = watch();
-    dispatch(
-      filterTasks({
-        projectId: filter.projectId,
-        status: filter.status,
-        name: filter.name,
-      })
+    console.log({ name, value, filter });
+    let tasks = projects.allTasks;
+    let projectsIds: string[] = projects.projects.map((item) => item._id);
+    let projectManagersIds: string[] = projects.projects.map(
+      (item) => item.projectManager._id
     );
-  };
-
-  const onHandleChangeStaticFilter = async () => {
-    let filter = watch();
-    setValue("projectId", "");
-    await dispatch(
-      filterTasks({
-        projectId: filter.projectId,
-        status: filter.status,
-        name: filter.name,
-      })
-    );
-    dispatch(
-      ProjectsActions.onChangeStaticFilters({ clientId: filter.clientId })
-    );
-  };
-
-  const onChangeFilter = (e: any, name: string) => {
-    setValue(name, e.target.id);
-    onHandleChangeFilter();
-  };
-
-  const onChangeStaticFilter = (e: any, name: string) => {
-    e.preventDefault();
-    setValue(name, e.target.id);
-    onHandleChangeStaticFilter();
-  };
-  const onSortTasks = (e: any, name: string) => {
-    e.preventDefault();
-    setValue(name, e.target.id);
-    dispatch(ProjectsActions.onSortTasks(e.target.id));
+    if (filter.clientId !== "") {
+      projectsIds = projects.projects
+        .filter((item) => item.clientId === filter.clientId)
+        .map((item) => item._id);
+      projectManagersIds = projects.projects
+        .filter((item) => projectsIds.includes(item._id))
+        .map((item) => item.projectManager._id);
+      tasks = projects.allTasks.filter((item) =>
+        projectsIds.includes(item.projectId)
+      );
+    }
+    if (filter.projectManager !== "") {
+      projectsIds = projects.projects
+        .filter((item) => item.projectManager._id === filter.projectManager)
+        .map((item) => item._id);
+      State.projectsOptions = projectOptions.filter((item) =>
+        projectsIds.includes(item.id)
+      );
+      tasks = projects.allTasks.filter((item) =>
+        projectsIds.includes(item.projectId)
+      );
+    }
+    if (filter.projectId !== "")
+      tasks = projects.allTasks.filter(
+        (item) => item.projectId === filter.projectId
+      );
+    if (filter.status !== "")
+      tasks = tasks.filter((item) => item.status === filter.status);
+    State.tasks = tasks;
+    setState(State);
   };
 
   const onDeleteTasks = async () => {
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
   };
-
-  React.useEffect(() => {
-    if (MD) {
-      setFilter(false);
-    } else {
-      setFilter(true);
-    }
-  }, [MD]);
 
   return (
     <Grid
@@ -166,10 +190,10 @@ export const TasksListView: React.FC<Props> = (props) => {
           {MD && (
             <>
               <Box
-                onClick={() => setFilter(!filter)}
+                onClick={() => setState({ ...state, filter: !state.filter })}
                 textAlign={"center"}
                 sx={{
-                  bgcolor: !filter ? "black" : "white",
+                  bgcolor: !state.filter ? "black" : "white",
                   borderRadius: 3,
                   paddingTop: 1.2,
                   float: "right",
@@ -178,7 +202,9 @@ export const TasksListView: React.FC<Props> = (props) => {
                 height={38}
               >
                 <img
-                  src={!filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+                  src={
+                    !state.filter ? IMAGES.filtericonwhite : IMAGES.filtericon
+                  }
                   alt="FILTER"
                 />
               </Box>
@@ -209,10 +235,7 @@ export const TasksListView: React.FC<Props> = (props) => {
               <SearchBox
                 value={props.field.value}
                 placeholder="Search"
-                onChange={(e) => {
-                  props.field.onChange(e);
-                  onHandleChangeFilter();
-                }}
+                onChange={(e) => onSetFilter("name", e.target.value)}
                 size={"custom"}
               />
             )}
@@ -220,8 +243,26 @@ export const TasksListView: React.FC<Props> = (props) => {
         </Grid>
       </Grid>
       <Grid container justifyContent={"space-between"} alignItems="center">
-        {filter && (
+        {state.filter && (
           <>
+            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="clientId"
+                  selected={watch().clientId}
+                  optionsType="dialog"
+                  control={control}
+                  label="Client: "
+                  elementType="filter"
+                  textTruncate={10}
+                  onSelect={(value: any) => onSetFilter("clientId", value.id)}
+                  options={[
+                    { id: "", value: "", text: "All", image: "avatar" },
+                    ...clientsOptions,
+                  ]}
+                />
+              </Box>
+            </Grid>
             <Grid
               paddingX={0.5}
               item
@@ -232,56 +273,57 @@ export const TasksListView: React.FC<Props> = (props) => {
               marginY={1}
               flex={1}
             >
-              <ControlledSelect
-                name="sort"
+              <Controller
+                name="projectManager"
                 control={control}
-                label="Due Date: "
-                elementType="filter"
-                textTruncate={6}
-                onSelect={(e: any) => onSortTasks(e, "sort")}
-                options={options[0]}
+                render={(props) => (
+                  <Select
+                    selected={watch().projectManager}
+                    name="projectManager"
+                    optionsType="dialog"
+                    label="Manager: "
+                    elementType="filter"
+                    textTruncate={6}
+                    onSelect={(value: any) =>
+                      onSetFilter("projectManager", value.id)
+                    }
+                    options={[
+                      { id: "", value: "", text: "All" },
+                      ...PmsOptions,
+                    ]}
+                  />
+                )}
               />
+            </Grid>
+            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="projectId"
+                  selected={watch().projectId}
+                  control={control}
+                  label="Project: "
+                  elementType="filter"
+                  optionsType="dialog"
+                  textTruncate={10}
+                  onSelect={(e: any) => onSetFilter("projectId", e.id)}
+                  options={[
+                    { id: "", value: "", text: "All" },
+                    ...projectOptions,
+                  ]}
+                />
+              </Box>
             </Grid>
             <Grid paddingX={0.5} item xs={6} sm={2} md={3} lg={1.9} marginY={1}>
               <Box className="tasks-option">
                 <ControlledSelect
                   name="status"
                   control={control}
+                  selected={watch().status}
                   label="Status: "
                   elementType="filter"
                   textTruncate={10}
-                  onSelect={(e: any) => onChangeFilter(e, "status")}
+                  onSelect={(e: any) => onSetFilter("status", e.target.id)}
                   options={options[1]}
-                />
-              </Box>
-            </Grid>
-            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
-              <Box className="tasks-option">
-                <ControlledSelect
-                  name="projectId"
-                  control={control}
-                  label="Project: "
-                  elementType="filter"
-                  textTruncate={10}
-                  onSelect={(e: any) => {
-                    onChangeFilter(e, "projectId");
-                  }}
-                  options={projectOptions}
-                />
-              </Box>
-            </Grid>
-            <Grid paddingX={0.5} item sm={2} md={3} lg={1.9} marginY={1}>
-              <Box className="tasks-option">
-                <ControlledSelect
-                  name="clientId"
-                  control={control}
-                  label="Client: "
-                  elementType="filter"
-                  textTruncate={10}
-                  onSelect={(e: any) => {
-                    onChangeStaticFilter(e, "clientId");
-                  }}
-                  options={clientsOptions}
                 />
               </Box>
             </Grid>
@@ -295,7 +337,7 @@ export const TasksListView: React.FC<Props> = (props) => {
             </Grid>
             <Grid my={1} item xs={3} sm={3} md={3} lg={1}>
               <Button
-                onClick={() => setShowEditTasks("flex")}
+                onClick={() => setState({ ...state, showEditTasks: "flex" })}
                 type="main"
                 size="x-small"
                 label="Edit Tasks"
@@ -305,8 +347,10 @@ export const TasksListView: React.FC<Props> = (props) => {
                 }}
               />
               <EditTasks
-                show={showEditTasks}
-                setShow={setShowEditTasks}
+                show={state.showEditTasks}
+                setShow={(val: string) =>
+                  setState({ ...state, showEditTasks: val })
+                }
                 selects={selects}
                 setAllSelected={setAllSelected}
               />
@@ -330,10 +374,7 @@ export const TasksListView: React.FC<Props> = (props) => {
             control={control}
             render={(props) => (
               <SearchBox
-                onChange={(e) => {
-                  props.field.onChange(e);
-                  onHandleChangeFilter();
-                }}
+                onChange={(e: any) => onSetFilter("name", e.target.value)}
                 value={props.field.value}
                 placeholder="Search"
                 size={"custom"}
@@ -365,7 +406,7 @@ export const TasksListView: React.FC<Props> = (props) => {
               selects={selects}
               setAllSelected={setAllSelected}
               projects={projects.projects}
-              tasks={projects.filteredTasks}
+              tasks={state.tasks}
               {...props}
             />
           </Paper>

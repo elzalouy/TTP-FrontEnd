@@ -30,7 +30,7 @@ import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
 import IMAGES from "src/assets/img/Images";
-import SelectDialog from "../../../coreUI/components/Inputs/SelectDialog/SelectDialog";
+import { SelectDialog } from "../../../coreUI/components/Inputs/SelectDialog/SelectDialog";
 const EditTask: React.FC<EditTaskProps> = (props) => {
   const dispatch = useDispatch();
   const { editTaskPopup } = useAppSelector(selectUi);

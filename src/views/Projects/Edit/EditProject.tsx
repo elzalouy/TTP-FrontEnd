@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
-import SelectDialog from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
+import { SelectDialog } from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import {
@@ -153,7 +153,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
           setAlert("Deadline");
           setConfirm("flex");
         }
-        data.status = "Not Started"
+        data.status = "Not Started";
       }
       if (inProgress) {
         if (bothDatesAreNull || onlyStartDateIsNull) {

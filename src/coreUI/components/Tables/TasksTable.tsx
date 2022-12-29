@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox,
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
 } from "@mui/material";
 import "../../../views/TasksListView/Read/TasksListView.css";
 import * as React from "react";
@@ -17,11 +19,50 @@ import { useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { checkIndexForLastRow } from "../../../helpers/generalUtils";
-import { useDispatch } from "react-redux";
 import { ITasksTableProps } from "src/types/components/Table";
 import TablePaginationActions from "./TablePagination";
 import { useAppSelector } from "src/models/hooks";
-import { getAllCategories, selectAllCategories } from "src/models/Categories";
+import { selectAllCategories } from "src/models/Categories";
+import { visuallyHidden } from "@mui/utils";
+import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import { Task } from "src/types/models/Projects";
+import { iteratorSymbol } from "immer/dist/internal";
+
+interface HeadCell {
+  id: string;
+  label: string;
+  numeric: boolean;
+}
+type Order = "asc" | "desc";
+
+const TeableHeaderCells: readonly HeadCell[] = [
+  {
+    id: "status",
+    label: "Status",
+    numeric: false,
+  },
+  {
+    id: "name",
+    label: "Task Name",
+    numeric: false,
+  },
+  {
+    id: "projectName",
+    label: "Project Name",
+    numeric: false,
+  },
+  {
+    id: "categoryName",
+    label: "Category",
+    numeric: false,
+  },
+  {
+    id: "deadline",
+    label: "Deadline",
+    numeric: false,
+  },
+];
+
 const TasksTable: React.FC<ITasksTableProps> = ({
   tasks,
   projects,
@@ -33,14 +74,38 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const [select, setSelected] = React.useState(false);
   const categories = useAppSelector(selectAllCategories);
-  const [state, setState] = React.useState({
+  const [state, setState] = React.useState<{
+    page: number;
+    rowsPerPage: number;
+    order: Order;
+    orderBy: string;
+    tasks: Task[];
+  }>({
     page: 0,
     rowsPerPage: 8,
+    order: "asc",
+    orderBy: "name",
+    tasks: tasks,
   });
 
   React.useEffect(() => {
-    setState({ ...state, page: 0 });
-  }, [tasks]);
+    setState({
+      ...state,
+      page: 0,
+      order: "asc",
+      orderBy: "name",
+      tasks: _.orderBy(tasks, ["name"], "asc").map((item) => {
+        return {
+          ...item,
+          categoryName: categories.find((cat) => cat._id === item.categoryId)
+            ?.category,
+          projectName: projects.find(
+            (project) => project._id === item.projectId
+          )?.name,
+        };
+      }),
+    });
+  }, [tasks, projects, categories]);
 
   const setSingleSelect = (val: string, checked: boolean) => {
     if (checked === true) {
@@ -54,6 +119,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
       setAllSelected(selected);
     }
   };
+
   const openProject = (projectId: string | undefined) => {
     if (projectId !== undefined) history.push(`/TasksBoard/${projectId}`);
   };
@@ -79,6 +145,16 @@ const TasksTable: React.FC<ITasksTableProps> = ({
     newState.rowsPerPage = parseInt(event.target.value, 10);
     setState({ ...newState });
   };
+  const createSortHandler = (e: any, orderBy: string) => {
+    const isAsc = state.orderBy === orderBy && state.order === "asc";
+    const order = isAsc ? "desc" : "asc";
+    setState({
+      ...state,
+      orderBy: orderBy,
+      order: order,
+      tasks: _.orderBy(state.tasks, [orderBy], order),
+    });
+  };
 
   return (
     <TableContainer
@@ -89,11 +165,10 @@ const TasksTable: React.FC<ITasksTableProps> = ({
         <TableHead>
           <TableRow>
             <TableCell
+              size="small"
               style={{
                 color: "#334D6E",
                 width: "20px",
-                margin: "0px",
-                padding: "0px 0px 0px 8px",
               }}
             >
               <Checkbox
@@ -106,78 +181,95 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 color="primary"
               />
             </TableCell>
-            <TableCell
-              style={{
-                color: "#334D6E",
-                width: "30px",
-                margin: "0px",
-                padding: "0px 8px 0px 0px",
-                fontWeight: "normal",
-              }}
-            >
-              Status
-            </TableCell>
-            <TableCell
-              style={{
-                color: "#334D6E",
-                width: "300px",
-                margin: "0px",
-                padding: "0px 0px 0px 50px",
-                fontWeight: "normal",
-              }}
-            >
-              Task Name
-            </TableCell>
-            <TableCell
-              style={{
-                color: "#334D6E",
-                width: "300px",
-                margin: "0px",
-                padding: "0px 0px 0px 8px",
-                fontWeight: "normal",
-              }}
-            >
-              Project Name
-            </TableCell>
-            <TableCell
-              style={{
-                color: "#334D6E",
-                width: "250px",
-                margin: "0px",
-                paddingRight: "15px",
-                fontWeight: "normal",
-              }}
-            >
-              Category
-            </TableCell>
-            <TableCell
-              style={{
-                color: "#334D6E",
-                width: "160px",
-                margin: "0px",
-                padding: "0px 15px 0px 8px",
-                fontWeight: "normal",
-              }}
-            >
-              Deadline
-            </TableCell>
+            {TeableHeaderCells.map((headCell) => {
+              return (
+                <TableCell
+                  size="small"
+                  key={headCell.id}
+                  style={{
+                    color:
+                      state.orderBy === headCell.id ? "#ffc500" : "#334D6E",
+                    fontWeight: "normal",
+                    visibility: "visible",
+                  }}
+                  sortDirection={
+                    state.orderBy === headCell.id ? state.order : undefined
+                  }
+                >
+                  <TableSortLabel
+                    color="#334D6E"
+                    sx={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      paddingLeft: "5px",
+                      color: "#334D6E",
+                      ":hover": {
+                        color:
+                          headCell.id === state.orderBy ? "black" : "#334D6E",
+                      },
+                    }}
+                    hideSortIcon={false}
+                    IconComponent={() =>
+                      state.orderBy === headCell.id ? (
+                        state.order === "asc" ? (
+                          <ArrowDownward
+                            sx={{
+                              color:
+                                state.orderBy === headCell.id
+                                  ? "black"
+                                  : "#334D6E",
+                              fontSize: "14px",
+                            }}
+                          ></ArrowDownward>
+                        ) : (
+                          <ArrowUpward
+                            sx={{
+                              color:
+                                state.orderBy === headCell.id
+                                  ? "black"
+                                  : "#334D6E",
+                              fontSize: "14px",
+                            }}
+                          ></ArrowUpward>
+                        )
+                      ) : (
+                        <ArrowDownward
+                          sx={{
+                            color: "#334D6E",
+                            fontSize: "14px",
+                          }}
+                        ></ArrowDownward>
+                      )
+                    }
+                    active={state.orderBy === headCell.id}
+                    direction={
+                      state.orderBy === headCell.id ? state.order : "asc"
+                    }
+                    onClick={(e) => createSortHandler(e, headCell.id)}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
           <>
             {(state.rowsPerPage > 0
-              ? tasks.slice(
+              ? state.tasks.slice(
                   state.page * state.rowsPerPage,
                   state.page * state.rowsPerPage + state.rowsPerPage
                 )
-              : tasks
+              : state.tasks
             ).map((item, index) => {
               const {
                 _id,
                 status,
                 name,
                 projectId,
-                start,
+                projectName,
+                categoryName,
                 deadline,
                 categoryId,
               } = item;
@@ -199,13 +291,10 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   key={_id}
                 >
                   <TableCell
+                    size="small"
                     style={{
                       color: "#334D6E",
                       width: "20px",
-                      margin: "0px",
-                      padding: checkIndexForLastRow(index, tasks)
-                        ? "12px 8px 12px 8px"
-                        : "0px 8px 0px 8px",
                       textTransform: "capitalize",
                     }}
                   >
@@ -221,16 +310,13 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     />
                   </TableCell>
                   <TableCell
+                    size="small"
                     onClick={() => openProject(projectId)}
                     align="left"
                     style={{
                       color: "#334D6E",
-                      margin: "0px",
-                      padding: checkIndexForLastRow(index, tasks)
-                        ? "12px 8px 12px 0px"
-                        : "0px 8px 0px 0px",
                       textTransform: "capitalize",
-                      width: "130px",
+                      width: "100px",
                       cursor: projectId !== undefined ? "pointer" : undefined,
                     }}
                   >
@@ -256,17 +342,13 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     </div>
                   </TableCell>
                   <TableCell
+                    size="small"
                     onClick={() => openProject(projectId)}
                     align="left"
                     style={{
                       cursor: "pointer",
                       color: "#323C47",
-                      width: "300px",
-                      margin: "0px",
-                      padding:
-                        tasks.length - 1 === index
-                          ? "12px 0px 12px 50px"
-                          : "0px 0px 0px 50px",
+                      width: "200px",
                       textTransform: "capitalize",
                       fontWeight: "500",
                     }}
@@ -274,23 +356,18 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     {name}
                   </TableCell>
                   <TableCell
+                    size="small"
                     onClick={() => openProject(projectId)}
                     style={{
                       color: "#707683",
-                      width: "300px",
-                      margin: "0px",
-                      padding:
-                        tasks.length - 1 === index
-                          ? "12px 0px 12px 8px"
-                          : "0px 0px 0px 8px",
+                      width: "200px",
                       textTransform: "capitalize",
                       cursor: "pointer",
                     }}
                     align="left"
                   >
-                    {projectId !== undefined ? (
-                      projects.find((project) => project._id === projectId)
-                        ?.name
+                    {projectName !== undefined ? (
+                      projectName
                     ) : (
                       <div
                         className="endedStatus"
@@ -301,6 +378,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     )}
                   </TableCell>
                   <TableCell
+                    size="small"
                     onClick={() => openProject(projectId)}
                     align="left"
                     style={{
@@ -308,21 +386,13 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                       cursor: "pointer",
                     }}
                   >
-                    {
-                      categories.find((item) => item._id === categoryId)
-                        ?.category
-                    }
+                    {categoryName ? categoryName : "-"}
                   </TableCell>
                   <TableCell
+                    size="small"
                     onClick={() => openProject(projectId)}
                     style={{
                       color: "#707683",
-                      width: "160px",
-                      margin: "0px",
-                      padding:
-                        tasks.length - 1 === index
-                          ? "12px 15px 12px 8px"
-                          : "0px 15px 0px 8px",
                       cursor: "pointer",
                       textTransform: "capitalize",
                     }}

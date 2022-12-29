@@ -23,7 +23,9 @@ const Options: React.FC<IOptions> = ({
         ref={optionsRef}
         id={`core-${elementType}-options`}
         style={{ display: display }}
-        className={options.length > 6 ? "options scroll" : "options"}
+        className={
+          options && options?.length > 6 ? "options scroll" : "options"
+        }
       >
         {elementType === "filter" && (
           <li className="option" value={""} id="" onClick={onSelect}>

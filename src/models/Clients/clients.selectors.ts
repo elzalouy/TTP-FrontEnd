@@ -18,6 +18,7 @@ export const selectClientOptions = (state: RootState) => {
         id: item._id,
         value: item._id,
         text: item.clientName,
+        image: item.image,
       };
     });
     return options;

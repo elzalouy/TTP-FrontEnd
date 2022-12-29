@@ -18,11 +18,8 @@ const ControlledSelect: FC<IControlledSelect> = ({
   message,
   dataTestId,
   error,
+  optionsType,
 }) => {
-  const [updateOptions, setOpetions] = useState([]);
-  useEffect(() => {
-    setOpetions(options);
-  }, [options]);
   return (
     <>
       {formLabel && <label className="popup-label">{formLabel}</label>}
@@ -47,6 +44,7 @@ const ControlledSelect: FC<IControlledSelect> = ({
             message={message}
             error={error} // it shouldn't be removed
             dataTestId={dataTestId}
+            optionsType={optionsType}
           />
         )}
       />

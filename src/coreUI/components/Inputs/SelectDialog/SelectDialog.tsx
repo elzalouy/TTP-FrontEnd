@@ -7,32 +7,19 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import AddIcon from "@mui/icons-material/Add";
-import { blue } from "@mui/material/colors";
 import Search from "../Search/SearchBox";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-
 import "./selectDialog.css";
 import { DialogContent } from "@mui/material";
 import IMAGES from "src/assets/img/Images";
-type option = { label: string; image?: any | undefined; id: string };
-type SelectDialogProps = {
-  options: option[];
-  selected?: option;
-  setSelectedValue: any;
-  label: string;
-  placeholder: string;
-  name: string;
-};
-export interface DialogProps {
-  open: boolean;
-  selectedValue?: option;
-  onClose: (value: option) => void;
-  options: option[];
-}
+import {
+  DialogOption,
+  DialogProps,
+  SelectDialogProps,
+} from "src/types/components/SelectDialog";
 
-const SimpleDialog = ({
+export const SimpleDialog = ({
   open,
   selectedValue,
   onClose,
@@ -60,7 +47,7 @@ const SimpleDialog = ({
     onClose(selectedValue ? selectedValue : { label: "", id: "" });
   };
 
-  const handleListItemClick = (value: option) => {
+  const handleListItemClick = (e: any, value: DialogOption) => {
     onClose(value);
   };
 
@@ -109,15 +96,16 @@ const SimpleDialog = ({
               : item.image;
             return (
               <ListItem
-                button
-                onClick={() => handleListItemClick(item)}
+                onClick={(e) => handleListItemClick(e, item)}
                 key={item.id}
+                id={item.id}
+                sx={{ cursor: "pointer" }}
               >
                 {item.image && (
                   <ListItemAvatar>
                     <Avatar>
                       <img
-                        src={image}
+                        src={item.image === "avatar" ? IMAGES.avatar : image}
                         alt="option"
                         width={"100%"}
                         height="100%"
@@ -135,7 +123,7 @@ const SimpleDialog = ({
   );
 };
 
-const SelectDialog = ({
+export const SelectDialog = ({
   options,
   selected,
   setSelectedValue,
@@ -149,7 +137,7 @@ const SelectDialog = ({
     setOpen(true);
   };
 
-  const handleClose = (value: option) => {
+  const handleClose = (value: DialogOption) => {
     setOpen(false);
     setSelectedValue(name, value.id);
   };
@@ -186,5 +174,3 @@ const SelectDialog = ({
     </div>
   );
 };
-
-export default SelectDialog;
