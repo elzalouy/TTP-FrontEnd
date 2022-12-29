@@ -254,7 +254,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   label="Client: "
                   elementType="filter"
                   textTruncate={10}
-                  onSelect={(value: any) => onSetFilter("clientId", value.id)}
+                  onSelect={(value: any) => onSetFilter("clientId", value?.id)}
                   options={[
                     { id: "", value: "", text: "All", image: "avatar" },
                     ...clientsOptions,
@@ -284,7 +284,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                     elementType="filter"
                     textTruncate={6}
                     onSelect={(value: any) =>
-                      onSetFilter("projectManager", value.id)
+                      onSetFilter("projectManager", value?.id)
                     }
                     options={[
                       { id: "", value: "", text: "All" },
@@ -304,7 +304,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   elementType="filter"
                   optionsType="dialog"
                   textTruncate={10}
-                  onSelect={(e: any) => onSetFilter("projectId", e.id)}
+                  onSelect={(e: any) => onSetFilter("projectId", e?.id)}
                   options={[
                     { id: "", value: "", text: "All" },
                     ...projectOptions,
