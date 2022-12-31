@@ -9,7 +9,7 @@ const IMAGES = {
   notification: require("./notification.svg").default,
   categories: require("./categories.svg").default,
   taskviewicon: require("./taskviewicon.svg").default,
-  ttp_log: require("./ttp-logo.SVG").default,
+  ttp_log: require("./ttp-logo.svg").default,
   logouticon: require("./logouticon.svg").default,
   scheduleNotClear: require("./scheduleNotClear.svg").default,
   closeicon: require("./closeicon.svg").default,

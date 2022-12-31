@@ -31,8 +31,9 @@ fieldset[id*="filter-"] .labelValue {
   padding-left: 15px;
   cursor: pointer;
   padding-block: 10px;
-  width: 100%;
+  width: 100% !important;
   height: 38px !important;
+  overflow: hidden;
 }
 
 fieldset[id*="filter-"] .label {
@@ -44,8 +45,11 @@ fieldset[id*="filter-"] .label {
 
 fieldset[id*="filter-"] .value {
   font-weight: bold;
+  display: inline !important;
+  overflow: hidden;
   text-transform: capitalize;
   font-weight: 14px;
+  text-align: left;
 }
 
 /* Options */

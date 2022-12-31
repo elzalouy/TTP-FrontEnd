@@ -19,7 +19,7 @@ const Header: FC<IClientHeader> = ({ client, preview }) => {
           <img
             src={
               ["", null, undefined, "null", "undefined"].includes(preview)
-                ? IMAGES.avatarClients
+                ? IMAGES.ttp_log
                 : preview
             }
             alt="avatar"
@@ -36,7 +36,12 @@ const Header: FC<IClientHeader> = ({ client, preview }) => {
             }}
           >
             <Typography
-              sx={{ fontWeight: "bold", fontSize: 16, paddingY: 0.5,width:"90px" }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: 16,
+                paddingY: 0.5,
+                width: "90px",
+              }}
               data-test-id="client-name-header"
               textOverflow={"ellipsis"}
             >

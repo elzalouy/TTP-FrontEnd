@@ -90,7 +90,7 @@ export const SimpleDialog = ({
               "null",
               "undefined",
             ].includes(item.image)
-              ? IMAGES.avatarClients
+              ? IMAGES.ttp_log
               : item.image?.size
               ? URL.createObjectURL(item.image)
               : item.image;
@@ -105,7 +105,7 @@ export const SimpleDialog = ({
                   <ListItemAvatar>
                     <Avatar>
                       <img
-                        src={item.image === "avatar" ? IMAGES.avatar : image}
+                        src={item.image === "avatar" ? IMAGES.ttp_log : image}
                         alt="option"
                         width={"100%"}
                         height="100%"

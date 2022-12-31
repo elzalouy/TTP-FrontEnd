@@ -189,7 +189,8 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   style={{
                     color:
                       state.orderBy === headCell.id ? "#ffc500" : "#334D6E",
-                    fontWeight: "normal",
+                    fontWeight:
+                      state.orderBy === headCell.id ? "bold" : "normal",
                     visibility: "visible",
                   }}
                   sortDirection={
@@ -316,7 +317,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     style={{
                       color: "#334D6E",
                       textTransform: "capitalize",
-                      width: "100px",
+                      width: "130px",
                       cursor: projectId !== undefined ? "pointer" : undefined,
                     }}
                   >
@@ -349,7 +350,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                       cursor: "pointer",
                       color: "#323C47",
                       width: "200px",
-                      textTransform: "capitalize",
                       fontWeight: "500",
                     }}
                   >
