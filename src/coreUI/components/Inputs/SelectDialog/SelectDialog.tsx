@@ -82,7 +82,7 @@ export const SimpleDialog = ({
             },
           }}
         >
-          {(searchVal.length > 0 ? filteredOptions : options).map((item) => {
+          {(searchVal.length > 0 ? filteredOptions : options)?.map((item) => {
             const image: any = [
               "",
               null,

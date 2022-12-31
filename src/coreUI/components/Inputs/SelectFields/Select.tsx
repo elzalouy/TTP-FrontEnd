@@ -15,20 +15,20 @@ const Select = (props: IFilterProps) => {
     React.useRef(null);
   useSelect(selectRef, optionsRef);
 
-  React.useEffect(() => {
-    setState({
-      ...state,
-      selected: props.options
-        ? props.options.find((item: any) => item.id === props.selected)?.text
-        : "",
-    });
-  }, [props.selected]);
-
-  // Our component state
   const [state, setState] = React.useState({
     open: props.optionsType === "dialog" ? false : "none",
     selected: "",
   });
+
+  React.useEffect(() => {
+    setState({
+      ...state,
+      selected: props?.options
+        ? props?.options?.find((item: any) => item.id === props.selected)?.text
+        : "",
+    });
+  }, [props.selected]);
+
   const onOpen = () => {
     let State = { ...state };
     State.open =
@@ -81,7 +81,8 @@ const Select = (props: IFilterProps) => {
             className={"value"}
             style={{
               color:
-                props.elementType === "select" && state.selected === ""
+                props.elementType === "select" &&
+                ["", null, undefined].includes(props.selected)
                   ? "#B4B6C4"
                   : "#303030",
             }}
@@ -93,7 +94,11 @@ const Select = (props: IFilterProps) => {
                   : "All"}
               </>
             ) : (
-              <>{state.selected === "" ? props.label : state.selected}</>
+              <>
+                {["", null, undefined].includes(props.selected)
+                  ? props.label
+                  : state.selected}
+              </>
             )}
           </p>
         </label>
@@ -113,23 +118,25 @@ const Select = (props: IFilterProps) => {
               }
               onClose={onClose}
               selectedValue={{
-                id: props.options.find(
+                id: props?.options?.find(
                   (item: any) => item.id === props.selected
                 )?.id,
-                label: props.options.find(
+                label: props?.options?.find(
                   (item: any) => item.id === props.selected
                 )?.text,
-                image: props.options.find(
+                image: props?.options?.find(
                   (item: any) => item.id === props.selected
                 )?.image,
               }}
-              options={props.options.map((option: any) => {
-                return {
-                  label: option.text,
-                  id: option.id,
-                  image: option?.image,
-                };
-              })}
+              options={props.options
+                ?.map((option: any) => {
+                  return {
+                    label: option.text,
+                    id: option.id,
+                    image: option?.image,
+                  };
+                })
+                .filter((item: any) => item.id !== props.selected)}
             />
           </>
         ) : (
@@ -141,7 +148,9 @@ const Select = (props: IFilterProps) => {
             }
             onSelect={onSelect}
             elementType={props.elementType}
-            options={props.options}
+            options={props.options?.filter(
+              (item: any) => item?.id !== props?.selected
+            )}
             dataTestId={props.dataTestId}
           />
         )}

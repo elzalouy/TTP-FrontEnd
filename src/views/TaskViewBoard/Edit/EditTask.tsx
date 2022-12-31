@@ -122,11 +122,9 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
 
   const onChangeCategory = (e: any) => {
     let State = { ...state };
-    setValue("categoryId", e.target.id);
+    setValue("categoryId", e.id);
     setValue("subCategoryId", "");
-    State.selectedCategory = categories.find(
-      (item) => item._id === e.target.id
-    );
+    State.selectedCategory = categories.find((item) => item._id === e.id);
     setState(State);
   };
 
@@ -306,8 +304,10 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   elementType="select"
                   formLabel="Category"
                   name="categoryId"
+                  optionsType="dialog"
                   control={control}
                   onSelect={onChangeCategory}
+                  selected={watch().categoryId}
                   error={onGetError("categoryId")}
                   options={categories?.map((item) => {
                     return {
@@ -347,13 +347,15 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     name="subCategoryId"
                     error={onGetError("subCategoryId")}
                     control={control}
+                    optionsType="dialog"
                     onSelect={(e: any) => {
-                      setValue("subCategoryId", e.target.id);
+                      setValue("subCategoryId", e.id);
                     }}
+                    selected={watch().subCategoryId}
                     options={
                       categories &&
                       categories
-                        .find((item) => item._id === task?.categoryId)
+                        ?.find((item) => item._id === task?.categoryId)
                         ?.subCategoriesId?.map((item) => {
                           return {
                             id: item._id ? item._id : "",

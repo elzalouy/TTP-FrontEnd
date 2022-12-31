@@ -34,7 +34,11 @@ const ControlledSelect: FC<IControlledSelect> = ({
             onSelect={(e: any) => {
               if (setValue) {
                 //Should dirty prop makes the field dirty on change used to handle change in status
-                setValue(props.field.name, e.target.id, { shouldDirty: true });
+                setValue(
+                  props.field.name,
+                  optionsType === "dialog" ? e.id : e.target.id,
+                  { shouldDirty: true }
+                );
               }
               onSelect(e);
             }}

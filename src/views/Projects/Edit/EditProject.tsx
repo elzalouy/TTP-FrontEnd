@@ -117,7 +117,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
       if (![typeof status, status].includes("undefined")) {
-        //Setting project status only if status is not undefined
         editProject.projectStatus = status;
       }
     }
@@ -202,7 +201,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       } else {
         setAlert("Not Started");
         setTrigger(true);
-        //Here the setTrigger when true triggers execute project not needing to return data
       }
     }
   };
@@ -346,12 +344,12 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               label="Select"
               formLabel="Project manager"
               elementType="select"
-              options={pmOptions}
+              optionsType="dialog"
               setValue={setValue}
-              onSelect={() => {
-                setApmOptions(
-                  pmOptions.filter((item) => item.id !== watch().projectManager)
-                );
+              options={pmOptions}
+              onSelect={(e: any) => {
+                setValue("projectManager", e.id);
+                setApmOptions(pmOptions.filter((item) => item.id !== e.id));
               }}
             />
           </Grid>
@@ -363,7 +361,9 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               formLabel="Associate Project manager"
               elementType="select"
               options={ApmOptions}
+              optionsType="dialog"
               setValue={setValue}
+              onSelect={(e: any) => setValue("associateProjectManager", e.id)}
             />
           </Grid>
         </Grid>
