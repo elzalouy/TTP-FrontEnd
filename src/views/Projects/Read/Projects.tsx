@@ -51,7 +51,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     }
   }, [MD]);
 
-  const onHandleChange = (e: any) => {
+  const onHandleChange = () => {
     let filter = {
       name: getValues().name,
       clientId: getValues().clientId,
@@ -68,7 +68,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   const onChange = (e: any, name: string) => {
     e.preventDefault();
     setValue(name, e.target.id);
-    onHandleChange(e);
+    onHandleChange();
   };
 
   const isOpen = () => {
@@ -151,7 +151,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   placeholder="Search"
                   onChange={(e: any) => {
                     props.field.onChange(e);
-                    onHandleChange(e);
+                    onHandleChange();
                   }}
                   size={"custom"}
                 />
@@ -209,8 +209,12 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Project Manager: "
-                    options={pmOptions}
-                    onSelect={(e: any) => onChange(e, "projectManager")}
+                    optionsType="dialog"
+                    options={[{ id: "", value: "", text: "All" }, ...pmOptions]}
+                    onSelect={(e: any) => {
+                      setValue("projectManager", e.id);
+                      onHandleChange();
+                    }}
                     textTruncate={6}
                   />
                 )}
@@ -235,8 +239,15 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Client: "
-                    options={clientOptions}
-                    onSelect={(e: any) => onChange(e, "clientId")}
+                    optionsType="dialog"
+                    options={[
+                      { id: "", value: "", text: "All" },
+                      ...clientOptions,
+                    ]}
+                    onSelect={(e: any) => {
+                      setValue("clientId", e.id);
+                      onHandleChange();
+                    }}
                     textTruncate={10}
                   />
                 )}
@@ -289,7 +300,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                 placeholder="Search"
                 onChange={(e: any) => {
                   props.field.onChange(e);
-                  onHandleChange(e);
+                  onHandleChange();
                 }}
                 size={"custom"}
               />
