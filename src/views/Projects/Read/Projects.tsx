@@ -241,7 +241,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                     label="Client: "
                     optionsType="dialog"
                     options={[
-                      { id: "", value: "", text: "All" },
+                      { id: "", value: "", text: "All", image: "avatar" },
                       ...clientOptions,
                     ]}
                     onSelect={(e: any) => {
