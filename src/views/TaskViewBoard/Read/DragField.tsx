@@ -20,8 +20,19 @@ import {
   selectSharedTasks,
 } from "../../../models/Projects";
 import "./taskViewBoard.css";
-import { Task } from "../../../types/models/Projects";
-const DragField: React.FC = (props: any) => {
+import { Project, Task } from "../../../types/models/Projects";
+
+type DragCloumn = {
+  name: string;
+  items: Task[];
+  header: string;
+  body: string;
+  border: string;
+  NewTask?: any;
+  value: string;
+  footer: string;
+};
+const DragField = (props: { tasks: Task[] }) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const inProgressTasks = useAppSelector(selectInProgressTasks);
@@ -33,8 +44,16 @@ const DragField: React.FC = (props: any) => {
   const sharedTasks = useAppSelector(selectSharedTasks);
   const departments = useAppSelector(selectAllDepartments);
 
-  const [columns, setColumns] = useState({
-    [uuidv4()]: {
+  const [columns, setColumns] = useState<{
+    TasksBoard: DragCloumn;
+    NotClear: DragCloumn;
+    InProgress: DragCloumn;
+    Review: DragCloumn;
+    Shared: DragCloumn;
+    Done: DragCloumn;
+    Cancled: DragCloumn;
+  }>({
+    TasksBoard: {
       name: "Tasks Board",
       items: notStartedTasks,
       header: "not-started-header",
@@ -44,7 +63,7 @@ const DragField: React.FC = (props: any) => {
       value: "Tasks Board",
       footer: "task-card-footer-notstarted",
     },
-    [uuidv4()]: {
+    NotClear: {
       name: "Not clear",
       items: notClearTasks,
       header: "not-clear-header",
@@ -53,7 +72,7 @@ const DragField: React.FC = (props: any) => {
       value: "Not Clear",
       footer: "task-card-footer-notclear",
     },
-    [uuidv4()]: {
+    InProgress: {
       name: "In Progress",
       items: inProgressTasks,
       header: "in-progress-header",
@@ -62,7 +81,7 @@ const DragField: React.FC = (props: any) => {
       value: "In Progress",
       footer: "task-card-footer-inprogress",
     },
-    [uuidv4()]: {
+    Review: {
       name: "Review",
       items: reviewTasks,
       header: "review-header",
@@ -71,7 +90,7 @@ const DragField: React.FC = (props: any) => {
       value: "Review",
       footer: "task-card-footer-review",
     },
-    [uuidv4()]: {
+    Shared: {
       name: "Shared",
       items: sharedTasks,
       header: "canceled-header",
@@ -80,7 +99,7 @@ const DragField: React.FC = (props: any) => {
       value: "Shared",
       footer: "task-card-footer-shared",
     },
-    [uuidv4()]: {
+    Done: {
       name: "Done",
       items: doneTasks,
       header: "done-header",
@@ -89,8 +108,7 @@ const DragField: React.FC = (props: any) => {
       value: "Done",
       footer: "task-card-footer-done",
     },
-
-    [uuidv4()]: {
+    Cancled: {
       name: "Cancled",
       items: cancledTasks,
       header: "canceled-header",
@@ -103,7 +121,7 @@ const DragField: React.FC = (props: any) => {
 
   useEffect(() => {
     let cols: any = {
-      [uuidv4()]: {
+      TasksBoard: {
         name: "Tasks Board",
         items: notStartedTasks,
         header: "not-started-header",
@@ -113,7 +131,7 @@ const DragField: React.FC = (props: any) => {
         value: "Tasks Board",
         footer: "task-card-footer-notstarted",
       },
-      [uuidv4()]: {
+      NotClear: {
         name: "Not clear",
         items: notClearTasks,
         header: "not-clear-header",
@@ -122,7 +140,7 @@ const DragField: React.FC = (props: any) => {
         value: "Not Clear",
         footer: "task-card-footer-notclear",
       },
-      [uuidv4()]: {
+      InProgress: {
         name: "In Progress",
         items: inProgressTasks,
         header: "in-progress-header",
@@ -131,7 +149,7 @@ const DragField: React.FC = (props: any) => {
         value: "In Progress",
         footer: "task-card-footer-inprogress",
       },
-      [uuidv4()]: {
+      Review: {
         name: "Review",
         items: reviewTasks,
         header: "review-header",
@@ -140,16 +158,16 @@ const DragField: React.FC = (props: any) => {
         value: "Review",
         footer: "task-card-footer-review",
       },
-      [uuidv4()]: {
+      Shared: {
         name: "Shared",
         items: sharedTasks,
-        header: "shared-header",
-        body: "shared-task",
-        border: "shared-border",
+        header: "canceled-header",
+        body: "canceled-task",
+        border: "canceled-border",
         value: "Shared",
         footer: "task-card-footer-shared",
       },
-      [uuidv4()]: {
+      Done: {
         name: "Done",
         items: doneTasks,
         header: "done-header",
@@ -158,7 +176,7 @@ const DragField: React.FC = (props: any) => {
         value: "Done",
         footer: "task-card-footer-done",
       },
-      [uuidv4()]: {
+      Cancled: {
         name: "Cancled",
         items: cancledTasks,
         header: "canceled-header",
@@ -258,7 +276,7 @@ const DragField: React.FC = (props: any) => {
                         {column.items.length}
                       </Typography>
                     </Stack>
-                    {column?.NewTask}
+                    {column?.NewTask && column?.NewTask}
                     {column &&
                       column?.items?.map((item: Task, index: number) => {
                         return (

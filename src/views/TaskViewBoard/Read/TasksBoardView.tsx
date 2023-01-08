@@ -1,6 +1,6 @@
 import IMAGES from "../../../assets/img/Images";
 import DragField from "./DragField";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
 import { Box } from "@mui/system";
@@ -13,6 +13,7 @@ import {
 } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import Button from "src/coreUI/components/Buttons/Button";
+import { Project, Task } from "src/types/models/Projects";
 
 interface TasksViewBoard {
   history: RouteComponentProps["history"];
@@ -22,10 +23,28 @@ interface TasksViewBoard {
 export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
-  const all = useAppSelector(selectAllProjects);
+  const ProjectsStore = useAppSelector(selectAllProjects);
+  const projectId = props.match.params.id;
+  const [state, setState] = useState<{
+    project?: Project | null;
+    tasks?: Task[];
+    mounted: boolean;
+  }>({ mounted: false });
+
   useEffect(() => {
-    dispatch(ProjectsActions.onSetSelectedProject(props?.match?.params.id));
-  }, [props.match.params.id, all.projects]);
+    dispatch(ProjectsActions.onSetSelectedProject(projectId));
+  }, [ProjectsStore.projects, ProjectsStore.allTasks, projectId, dispatch]);
+
+  useEffect(() => {
+    if (!state.mounted && selectedProject.loading === false) {
+      dispatch(ProjectsActions.onSetSelectedProject(projectId));
+      setState({
+        mounted: true,
+        project: selectedProject.project,
+        tasks: selectedProject.tasks,
+      });
+    }
+  }, [projectId, selectedProject.loading]);
 
   return (
     <>
@@ -87,7 +106,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
           xs={12}
           sx={{ width: "100%", overflowX: "scroll", position: "relative" }}
         >
-          <DragField {...props} />
+          <DragField tasks={state.tasks} {...props} />
         </Grid>
       </Grid>
     </>
