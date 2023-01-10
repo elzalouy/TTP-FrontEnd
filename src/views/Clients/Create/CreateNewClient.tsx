@@ -15,6 +15,7 @@ import {
 } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import "./CreateNewClient.css";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
 
 const CreateNewClient: React.FC = () => {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -30,6 +31,14 @@ const CreateNewClient: React.FC = () => {
 
   const [ImageView, setImageView] = useState<string | null>(null);
 
+  const onClearAndClose = () => {
+    setShow("none");
+    setImageView(null);
+    setClientData({
+      image: null,
+      clientName: "",
+    });
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();
@@ -41,27 +50,12 @@ const CreateNewClient: React.FC = () => {
     if (!checkName) {
       //Initial guard for name duplication
       if (clientData.clientName.length !== 0) {
-        dispatch(creatClient(formData));
-        setImageView(null);
-        setClientData({
-          image: null,
-          clientName: "",
-        });
-        setShow("none");
+        dispatch(creatClient({ data: formData, onClearAndClose }));
       } else {
         setError(true);
       }
     } else {
-      toast.error("Client name already exist", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      ToastError("Client name already exist");
     }
   };
 

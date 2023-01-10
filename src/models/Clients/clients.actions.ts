@@ -25,22 +25,18 @@ export const getAllClients = createAsyncThunk<any, any, any>(
 
 export const creatClient = createAsyncThunk<any, any, any>(
   "client/createClient",
-  async (data: any, { dispatch, rejectWithValue }) => {
+  async (args: any, { dispatch, rejectWithValue }) => {
     try {
-      let formData: FormData = data;
-      let result = {
-        clientName: formData.get("clientName"),
-        image: formData.get("image"),
-        doneProject: 0,
-        inProgressProject: 0,
-        inProgressTask: 0,
-      };
-      let response = await ClientsApi.createClient(data);
+      let formData: FormData = args.data;
+      let response = await ClientsApi.createClient(formData);
       if (response?.status === 401 || response?.status === 403) {
         dispatch(logout(true));
         return rejectWithValue("Un Authorized");
       }
-      return result;
+      if (response.ok) {
+        args.onClearAndClose();
+        return response.data;
+      }
     } catch (error) {
       rejectWithValue(error);
     }
