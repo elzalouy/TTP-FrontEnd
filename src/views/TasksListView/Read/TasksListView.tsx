@@ -132,6 +132,10 @@ export const TasksListView: React.FC<Props> = (props) => {
       );
     if (filter.status !== "")
       tasks = tasks.filter((item) => item.status === filter.status);
+    if (filter.name !== "")
+      tasks = tasks.filter((item) =>
+        item.name.toLocaleLowerCase().includes(filter.name.toLocaleLowerCase())
+      );
     State.tasks = tasks;
     setState(State);
   };
