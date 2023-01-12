@@ -108,7 +108,6 @@ const EditTasks = ({ show, setShow, selects, setAllSelected }: props) => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <label className="label-project">Project</label>
           <SelectDialog
             name="projectId"
             label="Select Project"
