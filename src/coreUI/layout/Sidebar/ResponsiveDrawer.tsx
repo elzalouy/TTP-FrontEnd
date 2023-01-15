@@ -9,23 +9,17 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  AppBarProps,
 } from "@mui/material";
 import * as React from "react";
 import Avatar from "react-avatar";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import {
-  ChevronLeft as ChevronLeftIcon,
-  Menu as MenuIcon,
-  Logout as LogoutIcon,
-  Close as Close,
-} from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+import { Logout as LogoutIcon, Close } from "@mui/icons-material";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 import { useDispatch } from "react-redux";
 import { logout, selectImage, selectRole, selectUser } from "src/models/Auth";
 import IMAGES from "src/assets/img/Images";
-import { RouteComponentProps, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import { useAppSelector } from "src/models/hooks";
 import Overviewicon from "src/assets/icons/Overview";
 import PersonIcon from "src/assets/icons/Person";

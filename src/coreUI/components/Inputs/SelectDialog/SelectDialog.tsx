@@ -27,7 +27,6 @@ export const SimpleDialog = ({
 }: DialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const [searchVal, setSearchVal] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
 
@@ -55,11 +54,11 @@ export const SimpleDialog = ({
 
   return (
     <Dialog
-      fullScreen={fullScreen}
       onClose={handleClose}
       open={open}
       maxWidth={"xs"}
       fullWidth={true}
+      fullScreen={fullScreen}
     >
       <DialogTitle className="dialogTitle">
         <Search

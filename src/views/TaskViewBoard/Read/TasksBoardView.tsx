@@ -76,7 +76,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
               variant="h2"
               fontFamily={"Cairo"}
               fontSize={20}
-              onClick={() => props?.history?.push("/Projects")}
+              onClick={() => props?.history?.push("/projects")}
             >
               Projects
               <img
