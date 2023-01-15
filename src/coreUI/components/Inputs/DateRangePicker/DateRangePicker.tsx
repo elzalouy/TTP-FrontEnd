@@ -1,9 +1,12 @@
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "../../Buttons/Button";
 import { Dialog, DialogContent, Grid } from "@mui/material";
 import { DateRange, RangeKeyDict } from "react-date-range";
+import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import Button from "../../Buttons/Button";
+import "./DateRange.css";
 
 export type DateRangeType = {
   startDate?: Date;
@@ -12,6 +15,9 @@ export type DateRangeType = {
 };
 
 const DateInput = (props: { open: boolean; onClose: any }) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [state, setState] = useState<DateRangeType[]>([
     { startDate: new Date(), endDate: undefined, key: "selection" },
   ]);
@@ -33,7 +39,7 @@ const DateInput = (props: { open: boolean; onClose: any }) => {
   };
 
   return (
-    <Dialog sx={{ width: "150px" }} onClose={onClear} open={props.open}>
+    <Dialog onClose={onClear} open={props.open}>
       <DialogContent>
         <DateRange
           rangeColors={["#ffc500"]}
