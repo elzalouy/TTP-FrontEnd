@@ -152,6 +152,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         <ControlledSelect
           name="color"
           control={control}
+          optionsType="list"
           label="Select"
           formLabel="color"
           elementType="select"

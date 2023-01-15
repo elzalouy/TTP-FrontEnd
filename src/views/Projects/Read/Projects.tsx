@@ -180,6 +180,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                     name={"projects-" + props.field.name}
                     selected={props.field.value}
                     label="Due Date: "
+                    optionsType="list"
                     onSelect={(e: any) => {
                       onChange(e, "deadline");
                       onHandleSort(props.field.value);
@@ -275,6 +276,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                       label="Status: "
                       options={filterOptions[1]}
                       onSelect={(e: any) => onChange(e, "projectStatus")}
+                      optionsType="list"
                       textTruncate={5}
                     />
                   </>

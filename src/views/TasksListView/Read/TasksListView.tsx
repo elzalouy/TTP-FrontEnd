@@ -6,7 +6,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { RouteComponentProps, useParams } from "react-router";
+import { RouteComponentProps } from "react-router";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import IMAGES from "../../../assets/img/Images";
@@ -16,9 +16,6 @@ import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTasks,
-  filterTasks,
-  getAllTasks,
-  ProjectsActions,
   selectAllProjects,
   selectProjectOptions,
 } from "../../../models/Projects";
@@ -30,6 +27,8 @@ import "./TasksListView.css";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import { selectPMOptions } from "src/models/Managers";
 import { Options } from "src/types/views/Projects";
+import DateRangePicker from "src/coreUI/components/Inputs/DateRangePicker/DateRangePicker";
+import { RangeKeyDict } from "react-date-range";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
@@ -42,7 +41,9 @@ type filterTypes =
   | "projectManager"
   | "projectId"
   | "clientId"
-  | "status";
+  | "status"
+  | "start"
+  | "end";
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
@@ -64,6 +65,8 @@ export const TasksListView: React.FC<Props> = (props) => {
       projectManager: "",
       status: "",
       clientId: "",
+      start: "",
+      end: "",
     },
   });
   const [state, setState] = React.useState<{
@@ -136,6 +139,18 @@ export const TasksListView: React.FC<Props> = (props) => {
       tasks = tasks.filter((item) =>
         item.name.toLocaleLowerCase().includes(filter.name.toLocaleLowerCase())
       );
+
+    if (filter.start !== "")
+      tasks = tasks.filter(
+        (item) =>
+          new Date(item.deadline).getTime() >= new Date(filter.start).getTime()
+      );
+    if (filter.end !== "")
+      tasks = tasks.filter(
+        (item) =>
+          new Date(item.deadline).getTime() <= new Date(filter.end).getTime()
+      );
+    console.log(filter);
     State.tasks = tasks;
     setState(State);
   };
@@ -158,31 +173,44 @@ export const TasksListView: React.FC<Props> = (props) => {
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
-        lg={12}
-        md={2}
-        sm={2}
-        xs={2}
         mt={{ sm: 2, xs: 2, md: 0, lg: 0, xl: 0 }}
       >
         <Typography variant="h2" marginBottom={2}>
           Tasks
-          {props.projectId && props.projectId && (
-            <>
-              <img
-                style={{ margin: "0 20px" }}
-                src={IMAGES.arrowHeader}
-                alt="more"
-              />
-              {
-                projects?.projects?.find(
-                  (item) => item?._id === props.projectId
-                )?.name
-              }
-            </>
-          )}
         </Typography>
+        <Grid
+          data-test-id="filter-projects"
+          paddingX={0.5}
+          item
+          xs={8}
+          sm={5}
+          md={8}
+          lg={4}
+          xl={4}
+          alignItems="center"
+          justifyContent={{
+            xs: "",
+            sm: "flex-end",
+            md: "flex-end",
+            lg: "flex-end",
+          }}
+          display={{ md: "flex", lg: "flex", sm: "flex", xs: "flex" }}
+        >
+          <Controller
+            name="name"
+            control={control}
+            render={(props) => (
+              <SearchBox
+                value={props.field.value}
+                placeholder="Search"
+                onChange={(e) => onSetFilter("name", e.target.value)}
+                size={"custom"}
+              />
+            )}
+          />
+        </Grid>
       </Grid>
       <Grid container xs={10} sm={10} md={10} lg={12} justifyContent="flex-end">
         <Grid
@@ -214,36 +242,6 @@ export const TasksListView: React.FC<Props> = (props) => {
               </Box>
             </>
           )}
-        </Grid>
-        <Grid
-          data-test-id="filter-projects"
-          paddingX={0.5}
-          item
-          xs={8}
-          sm={5}
-          md={8}
-          lg={8}
-          alignItems="center"
-          justifyContent={{
-            xs: "",
-            sm: "flex-end",
-            md: "flex-end",
-            lg: "flex-end",
-          }}
-          display={{ md: "none", lg: "none", sm: "flex", xs: "flex" }}
-        >
-          <Controller
-            name="name"
-            control={control}
-            render={(props) => (
-              <SearchBox
-                value={props.field.value}
-                placeholder="Search"
-                onChange={(e) => onSetFilter("name", e.target.value)}
-                size={"custom"}
-              />
-            )}
-          />
         </Grid>
       </Grid>
       <Grid container justifyContent={"space-between"} alignItems="center">
@@ -328,6 +326,34 @@ export const TasksListView: React.FC<Props> = (props) => {
                   textTruncate={10}
                   onSelect={(e: any) => onSetFilter("status", e.target.id)}
                   options={options[1]}
+                  optionsType="list"
+                />
+              </Box>
+            </Grid>
+            <Grid paddingX={0.5} item xs={6} sm={2} md={3} lg={1.9} marginY={1}>
+              <Box className="tasks-option">
+                <ControlledSelect
+                  name="date"
+                  control={control}
+                  selected={watch().start}
+                  label="Deadline :"
+                  elementType="filter"
+                  optionsType="date-picker"
+                  options={[]}
+                  onSelect={(value: RangeKeyDict) => {
+                    onSetFilter(
+                      "start",
+                      value[0]?.startDate !== undefined
+                        ? value[0]?.startDate?.toDateString()
+                        : ""
+                    );
+                    onSetFilter(
+                      "end",
+                      value[0]?.endDate !== undefined
+                        ? value[0]?.endDate?.toDateString()
+                        : ""
+                    );
+                  }}
                 />
               </Box>
             </Grid>
@@ -361,31 +387,6 @@ export const TasksListView: React.FC<Props> = (props) => {
             </Grid>
           </>
         )}
-        {/* </Grid> */}
-        <Grid
-          item
-          display={{ xs: "none", sm: "none", md: "flex", lg: "flex" }}
-          justifyContent={"flex-end"}
-          xs={12}
-          sm={12}
-          md={8}
-          lg={2}
-          paddingLeft={1}
-          mt={SM ? "10px" : "0px"}
-        >
-          <Controller
-            name="name"
-            control={control}
-            render={(props) => (
-              <SearchBox
-                onChange={(e: any) => onSetFilter("name", e.target.value)}
-                value={props.field.value}
-                placeholder="Search"
-                size={"custom"}
-              />
-            )}
-          />
-        </Grid>
       </Grid>
       {projects.loading === true ? (
         <>

@@ -75,7 +75,7 @@ button.add {
 button.cancel {
   background-color: #f4f4f4;
   color: #000000;
-  width: 210px !important;
+  width: 210px;
   border: 6px !important;
 }
 

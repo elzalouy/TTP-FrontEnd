@@ -211,6 +211,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                   control={control}
                   elementType={"select"}
                   label={"Select"}
+                  optionsType="list"
                   dataTestId="create-task-dep-select"
                   onSelect={onChangeDepartment}
                   options={[
@@ -314,6 +315,7 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
                     label="Select"
                     formLabel="Assign to team"
                     name="teamId"
+                    optionsType="list"
                     message={
                       state.selectedDepartment
                         ? `${state.selectedDepartment?.name} department has no teams yet.`

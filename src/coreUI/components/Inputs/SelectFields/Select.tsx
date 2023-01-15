@@ -1,14 +1,15 @@
-import _ from "lodash";
 import * as React from "react";
 import IMAGES from "src/assets/img/Images";
+import DateRange from "../DateRangePicker/DateRangePicker";
+import ListOptions from "./ListOptions";
 import { useSelect } from "src/coreUI/hooks/useSelect";
 import { IFilterProps } from "src/types/components/Inputs";
-import ListOptions from "./ListOptions";
-import "./Select.css";
 import { SimpleDialog } from "../SelectDialog/SelectDialog";
+import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "./Select.css";
 
 const Select = (props: IFilterProps) => {
-  // To take control over the mouse click
   const selectRef: React.MutableRefObject<HTMLFieldSetElement | null> =
     React.useRef(null);
   const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
@@ -16,38 +17,85 @@ const Select = (props: IFilterProps) => {
   useSelect(selectRef, optionsRef);
 
   const [state, setState] = React.useState({
-    open: props.optionsType === "dialog" ? false : "none",
+    open: props.optionsType === "list" ? "none" : false,
     selected: "",
   });
 
   React.useEffect(() => {
-    setState({
-      ...state,
-      selected: props?.options
-        ? props?.options?.find((item: any) => item.id === props.selected)?.text
-        : "",
-    });
+    let State = { ...state };
+    switch (props.optionsType) {
+      case "list":
+        State.selected = props?.options
+          ? props?.options?.find((item: any) => item.id === props.selected)
+              ?.text
+          : "";
+        break;
+      case "date-picker":
+        State.selected =
+          props.selected !== "" && props.selected !== undefined ? "Range" : "";
+        break;
+      case "dialog":
+        State.selected = props?.options
+          ? props?.options?.find((item: any) => item.id === props.selected)
+              ?.text
+          : "";
+        break;
+      default:
+        break;
+    }
+    setState(State);
   }, [props.selected]);
 
   const onOpen = () => {
     let State = { ...state };
-    State.open =
-      props.optionsType === "dialog"
-        ? true
-        : props.options.length > 0
-        ? "flex"
-        : "none";
-    setState(State);
+    switch (props.optionsType) {
+      case "list":
+        State.open = "flex";
+        setState(State);
+        break;
+      case "date-picker":
+        State.open = true;
+        setState(State);
+
+        break;
+      case "dialog":
+        State.open = true;
+        setState(State);
+
+        break;
+      default:
+        State.open = "none";
+        break;
+    }
   };
 
   const onClose = (value: any) => {
     let State = { ...state };
-    State.open = props.optionsType === "dialog" ? false : "none";
-    if (props.optionsType === "dialog") {
-      State.selected = value.label ? value.label : "";
-      props.onSelect(value);
+    console.log({ props });
+    switch (props.optionsType) {
+      case "date-picker":
+        State = {
+          selected: value?.startDate !== undefined ? "Range" : "",
+          open: false,
+        };
+        setState({ ...State });
+        props.onSelect(value);
+        break;
+      case "dialog":
+        State = {
+          selected: value.label ? value.label : "",
+          open: false,
+        };
+        setState({ ...State });
+
+        props.onSelect(value);
+        break;
+      case "list":
+        State.open = "none";
+        setState({ ...State });
+
+        break;
     }
-    setState(State);
   };
 
   const onSelect = (e: any) => {
@@ -110,7 +158,7 @@ const Select = (props: IFilterProps) => {
           className="leftIcon"
           alt=""
         />
-        {props.optionsType === "dialog" ? (
+        {props.optionsType === "dialog" && (
           <>
             <SimpleDialog
               open={
@@ -139,19 +187,24 @@ const Select = (props: IFilterProps) => {
                 .filter((item: any) => item.id !== props.selected)}
             />
           </>
-        ) : (
+        )}
+        {props.optionsType === "list" && (
           <ListOptions
             setShow={state.open === "none" ? onOpen : onClose}
             selectRef={selectRef}
-            display={
-              state.open !== true && state.open !== false ? state.open : "none"
-            }
+            display={typeof state.open === "string" ? state.open : "none"}
             onSelect={onSelect}
             elementType={props.elementType}
             options={props.options?.filter(
               (item: any) => item?.id !== props?.selected
             )}
             dataTestId={props.dataTestId}
+          />
+        )}
+        {props.optionsType === "date-picker" && (
+          <DateRange
+            onClose={onClose}
+            open={typeof state.open === "boolean" ? state.open : false}
           />
         )}
       </fieldset>

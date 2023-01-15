@@ -140,6 +140,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
           </Grid>
           <ControlledSelect
             name="color"
+            optionsType="list"
             control={control}
             label="Select"
             formLabel="label"

@@ -324,6 +324,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             <ControlledSelect
               name="status"
               control={control}
+              optionsType="list"
               label={
                 data.status
                   ? checkProjectStatus(data.status)

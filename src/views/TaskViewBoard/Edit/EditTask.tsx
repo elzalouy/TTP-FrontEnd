@@ -272,6 +272,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                   formLabel="Department name"
                   name="selectedDepartmentId"
                   control={control}
+                  optionsType="list"
                   elementType={"select"}
                   label={"Select"}
                   onSelect={onChangeDepartment}
@@ -373,6 +374,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     label="Select"
                     formLabel="Assign to team"
                     name="teamId"
+                    optionsType="list"
                     control={control}
                     onSelect={(e: any) => setValue("teamId", e.target.id)}
                     message={

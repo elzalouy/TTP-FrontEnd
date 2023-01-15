@@ -30,7 +30,7 @@ export interface IFilterProps {
   error?: string;
   message?: string;
   dataTestId?: string;
-  optionsType?: "list" | "dialog";
+  optionsType?: "list" | "dialog" | "date-picker";
 }
 
 export interface IOptions {
@@ -55,7 +55,7 @@ export interface ISearch {
 export interface IButton {
   label: string;
   size: "x-small" | "large" | "medium" | "small";
-  type: "main" | "delete" | "add" | "cancel";
+  type: "main" | "delete" | "add" | "cancel" | "";
   onClick?: (e: any) => any;
   loading?: boolean | null;
   disabled?: boolean;
