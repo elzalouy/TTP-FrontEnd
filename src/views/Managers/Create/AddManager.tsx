@@ -121,6 +121,7 @@ const AddManager: React.FC = () => {
               onSelect={(e: any) => setRole(e.target.id)}
               selected={role}
               options={roles}
+              optionsType="list"
             />
           </Box>
         </div>

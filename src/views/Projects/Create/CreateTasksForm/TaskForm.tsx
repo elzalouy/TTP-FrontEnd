@@ -214,6 +214,7 @@ const TaskForm: React.FC = () => {
                       setError(initJoiValidationError);
                     }}
                     error={onGetError(props.field.name)}
+                    optionsType="list"
                     options={[
                       ...departments.map((item) => {
                         return {
@@ -378,6 +379,7 @@ const TaskForm: React.FC = () => {
                       : "Please select a department firstly, to can see the teams inside"
                   }
                   onSelect={(e: any) => setValue("teamId", e.target.id)}
+                  optionsType="list"
                   options={
                     selectedDepartment?.teams
                       ? selectedDepartment?.teams

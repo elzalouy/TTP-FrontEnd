@@ -135,7 +135,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         completedDate: null,
         adminId: token?.id,
         associateProjectManager:
-          data.associateProjectManager.length > 0
+          data?.associateProjectManager?.length > 0
             ? data.associateProjectManager
             : null,
       };

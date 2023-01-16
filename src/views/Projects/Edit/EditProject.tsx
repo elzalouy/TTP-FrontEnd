@@ -104,16 +104,17 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
       formData.status = "In Progress";
     }
 
-    editProject.name = formData.name;
-    editProject.projectManager = formData.projectManager;
+    console.log(formData);
+    editProject.name = formData?.name;
+    editProject.projectManager = formData?.projectManager;
     editProject.projectManagerName = PMs.find(
-      (item: Manager) => item._id === formData.projectManager
+      (item: Manager) => item._id === formData?.projectManager
     )?.name;
-    editProject.projectDeadline = formData.deadline;
-    editProject.clientId = formData.clientId;
-    editProject.projectStatus = formData.status;
-    editProject.startDate = formData.startDate;
-    editProject.associateProjectManager = formData.associateProjectManager;
+    editProject.projectDeadline = formData?.deadline;
+    editProject.clientId = formData?.clientId;
+    editProject.projectStatus = formData?.status;
+    editProject.startDate = formData?.startDate;
+    editProject.associateProjectManager = formData?.associateProjectManager;
     if (editProject.projectStatus === "Done") {
       let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
       if (![typeof status, status].includes("undefined")) {
