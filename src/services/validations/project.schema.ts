@@ -59,6 +59,7 @@ const createProjectSchema = Joi.object({
 });
 
 const editProjectSchema = Joi.object({
+  _id: Joi.string().required().label("project id"),
   name: Joi.string().required().min(4).messages({
     "string.base": "Project Name is required",
     "string.empty": "Project name should be string with min 4 chars",
@@ -66,6 +67,55 @@ const editProjectSchema = Joi.object({
     "string.max": "Project name length should be Max 20 chars",
     "any.required": "Project Name is required",
   }),
+  projectManager: Joi.string().required().min(5).messages({
+    "string.base": "Project Manager id is required",
+    "string.empty": "Project Manager id should be string",
+    "string.min": "Project Manager id length should be Min 4 chars",
+    "any.required": "Project Manager is required",
+  }),
+  associateProjectManager: Joi.string().optional().min(5).allow(null).messages({
+    "string.empty": "Project Manager id should be string",
+    "string.min": "Project Manager id length should be Min 4 chars",
+    "any.required": "Project Manager is required",
+  }),
+  projectManagerName: Joi.string().required().min(2).max(50).messages({
+    "string.base": "Project Manager Name  should be string",
+    "string.empty": "Project Manager Name  is required",
+    "string.min": "Project Manager Name length should be Min 2 chars",
+    "string.required": "Project Manager is required",
+  }),
+  projectDeadline: Joi.date()
+    .optional()
+    .label("project deadline")
+    .allow(null, "")
+    .messages({
+      "any.required": "Project Deadline is required",
+    }),
+  startDate: Joi.date()
+    .label("start date")
+    .optional()
+    .allow(null, "")
+    .messages({
+      "any.required": "Project Start Date is required",
+    }),
+  clientId: Joi.string().required().min(2).max(50).messages({
+    "any.required": "Client is required",
+    "string.base": "Client should be string",
+    "string.empty": "Client is required",
+    "string.min": "Client length should be Min 2 chars",
+  }),
+  projectStatus: Joi.string()
+    .optional()
+    .allow("", null)
+    .valid(
+      "Not Started",
+      "In Progress",
+      "late",
+      "delivered on time",
+      "delivered before deadline",
+      "delivered after deadline"
+    ),
+  deliveryDate: Joi.date().label("delivery date").optional().allow(null, ""),
 });
 
 export const validateDate = (date: any, msg: any, greater: any) => {
@@ -82,9 +132,7 @@ const validateCreateProject = (data: any) => {
 };
 
 const validateEditProject = (data: any) => {
-  let { error, value, warning } = editProjectSchema.validate(data, {
-    presence: "required",
-  });
+  let { error, value, warning } = editProjectSchema.validate(data);
   return { error, value, warning };
 };
 

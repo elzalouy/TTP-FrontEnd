@@ -9,26 +9,28 @@ import {
 } from "../../../models/Projects";
 import { useDispatch } from "react-redux";
 import deleteIcon from "../../../assets/img/deleteAlert.png";
-import DeketeWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
+import DeleteWarning from "src/coreUI/components/Containers/Warning/DeleteWarning";
 
 type Props = {
   show: string;
   setShow: any;
+  id?: string;
 };
 
-const DeleteProject: React.FC<Props> = ({ show, setShow }) => {
-  const id = useAppSelector(selectDeleteProjectId);
+const DeleteProject: React.FC<Props> = ({ show, setShow, id }) => {
   const projectsState = useAppSelector(selectAllProjects);
   const dispatch = useDispatch();
 
   const onDeleteProject = async () => {
-    await dispatch(deleteProject({ data: { id: id }, dispatch }));
-    setShow("none");
+    if (id) {
+      await dispatch(deleteProject({ data: { id: id }, dispatch }));
+      setShow("none");
+    }
   };
 
   return (
     <>
-      <DeketeWarning
+      <DeleteWarning
         message="Are you sure you want to delete this project?"
         show={show}
         setShow={setShow}

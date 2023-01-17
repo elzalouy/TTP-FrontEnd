@@ -26,7 +26,7 @@ const Select = (props: IFilterProps) => {
     switch (props.optionsType) {
       case "list":
         State.selected = props?.options
-          ? props?.options?.find((item: any) => item.id === props.selected)
+          ? props?.options?.find((item: any) => item?.id === props.selected)
               ?.text
           : "";
         break;
@@ -36,7 +36,7 @@ const Select = (props: IFilterProps) => {
         break;
       case "dialog":
         State.selected = props?.options
-          ? props?.options?.find((item: any) => item.id === props.selected)
+          ? props?.options?.find((item: any) => item?.id === props.selected)
               ?.text
           : "";
         break;
@@ -71,7 +71,6 @@ const Select = (props: IFilterProps) => {
 
   const onClose = (value: any) => {
     let State = { ...state };
-    console.log({ props });
     switch (props.optionsType) {
       case "date-picker":
         State = {
@@ -87,13 +86,11 @@ const Select = (props: IFilterProps) => {
           open: false,
         };
         setState({ ...State });
-
         props.onSelect(value);
         break;
       case "list":
         State.open = "none";
         setState({ ...State });
-
         break;
     }
   };
@@ -101,7 +98,7 @@ const Select = (props: IFilterProps) => {
   const onSelect = (e: any) => {
     let State = { ...state };
     State.selected = props.options
-      ? props.options.find((item: any) => item.id === e.target.id)?.text
+      ? props.options.find((item: any) => item?.id === e.target.id)?.text
       : "";
     setState(State);
     props.onSelect(e);
@@ -167,13 +164,13 @@ const Select = (props: IFilterProps) => {
               onClose={onClose}
               selectedValue={{
                 id: props?.options?.find(
-                  (item: any) => item.id === props.selected
+                  (item: any) => item?.id === props.selected
                 )?.id,
                 label: props?.options?.find(
-                  (item: any) => item.id === props.selected
+                  (item: any) => item?.id === props.selected
                 )?.text,
                 image: props?.options?.find(
-                  (item: any) => item.id === props.selected
+                  (item: any) => item?.id === props.selected
                 )?.image,
               }}
               options={props.options
@@ -184,7 +181,7 @@ const Select = (props: IFilterProps) => {
                     image: option?.image,
                   };
                 })
-                .filter((item: any) => item.id !== props.selected)}
+                .filter((item: any) => item?.id !== props.selected)}
             />
           </>
         )}

@@ -42,7 +42,6 @@ const Modals: React.FC<Props> = (props) => {
   const { pathname } = useLocation();
   const {
     deleteProjectPopup,
-    editProjectPopup,
     editClientPopup,
     deleteClientPopup,
     createTaskPopup,
@@ -61,9 +60,6 @@ const Modals: React.FC<Props> = (props) => {
 
   const showDeleteProjectPopup = (val: string) =>
     dispatch(openDeleteProjectPopup(val));
-
-  const showEditProjectPopup = (val: string) =>
-    dispatch(openEditProjectPopup(val));
 
   const showEditClientPopup = (val: string) =>
     dispatch(openEditClientPopup(val));
@@ -97,11 +93,6 @@ const Modals: React.FC<Props> = (props) => {
   };
   return (
     <>
-      <DeleteProject
-        show={deleteProjectPopup}
-        setShow={showDeleteProjectPopup}
-      />
-      <EditProject setShow={showEditProjectPopup} show={editProjectPopup} />
       <EditClient setShow={showEditClientPopup} show={editClientPopup} />
       <DeleteClient setShow={showDeleteClientPopup} show={deleteClientPopup} />
       <CreateNewTask

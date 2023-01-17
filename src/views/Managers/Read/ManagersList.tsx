@@ -167,8 +167,8 @@ const ManagersList = () => {
               let done = project?.projects?.filter(
                 (item) =>
                   item.projectManager?._id === _id &&
-                  (item.projectStatus === "deliver before deadline" ||
-                    item.projectStatus === "deliver on time" ||
+                  (item.projectStatus === "delivered before deadline" ||
+                    item.projectStatus === "delivered on time" ||
                     item.projectStatus === "delivered after deadline")
               )?.length;
               return (

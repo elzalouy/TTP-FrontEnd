@@ -4,27 +4,29 @@ import { logout } from "../../../models/Auth";
 import { toggleLogOutPopup } from "../../../models/Ui";
 
 interface LogoutPopupProps {
-  show: string;
-  setShow: (val: string) => void;
   alert: string;
-  setAlert: (param: string) => void;
-  setTrigger: (param: boolean) => void;
+  show: string;
+  setShow: (e: any) => any;
+  cancel: boolean;
+  ok?: boolean;
+  onOk: (e: any) => any;
+  okText: string;
+  cancelText: string;
 }
 
 const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
   show,
-  setShow,
-  setTrigger,
   alert,
-  setAlert,
+  setShow,
+  onOk,
+  ok,
+  cancel,
+  cancelText,
+  okText,
 }) => {
   return (
     <SmallPopUp show={show}>
-      <p className="warning-text">
-        {alert.length === 0
-          ? "Are you sure you want to end this project?"
-          : `Please add a ${alert} to update this project status`}
-      </p>
+      <p className="warning-text">{alert}</p>
       <hr className="separator" />
       <div className="margin-cover">
         <div
@@ -34,28 +36,19 @@ const DoneProjectConfirm: React.FC<LogoutPopupProps> = ({
             display: "flex",
           }}
         >
-          {!alert && (
+          {cancel && (
             <button
               className="controllers-cancel"
               onClick={() => setShow("none")}
             >
-              Cancel
+              {cancelText}
             </button>
           )}
-          <button
-            className="controllers-delete"
-            onClick={() => {
-              if (alert) {
-                setTrigger(false);
-              } else {
-                setTrigger(true);
-              }
-              setShow("none");
-              setAlert("");
-            }}
-          >
-            {alert ? `Try again` : "End"}
-          </button>
+          {ok && (
+            <button className="controllers-delete" onClick={onOk}>
+              {okText}
+            </button>
+          )}
         </div>
       </div>
     </SmallPopUp>

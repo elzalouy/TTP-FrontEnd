@@ -1,6 +1,6 @@
 import api from "../api";
 
-export default {
+const endpoints = {
   getHttpProjects: () => api.get("getProject"),
   getAllTasksStatistics: () => api.get("getAllTasksStatistics"),
   httpGetProjectById: (args: any) => api.get(`getProject${args}`),
@@ -20,3 +20,4 @@ export default {
   downloadAttachment: (args: any) => api.get(`downloadAttachment${args}`),
   editTasksProjectId: (args: any) => api.put("editTasksProjectId", args),
 };
+export default endpoints;

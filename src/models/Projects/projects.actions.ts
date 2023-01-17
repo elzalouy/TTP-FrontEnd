@@ -309,9 +309,9 @@ export const editProject = createAsyncThunk<any, any, any>(
         return rejectWithValue("Un Authorized");
       }
       if (editResult.ok) {
-        args.dispatch(fireUpdateProjectHook(""));
+        args.setShow("none");
         ToastSuccess("Project updated successfully");
-        return true;
+        return editResult.data;
       } else throw editResult.problem;
     } catch (error: any) {
       ToastError(error);

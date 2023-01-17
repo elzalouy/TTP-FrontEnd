@@ -15,6 +15,16 @@ interface Props {
 }
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectManagers);
+  const [forms, openForm] = React.useState<{
+    edit: string;
+    delete: string;
+  }>({ edit: "none", delete: "none" });
+
+  const onEditProject = (value: string) =>
+    openForm({ delete: "none", edit: value });
+  const onDeleteProject = (value: string) =>
+    openForm({ delete: value, edit: "none" });
+
   return (
     <Grid
       justifyContent="flex-start"
@@ -35,6 +45,8 @@ const UserProjects: React.FC<Props> = (props) => {
           </>
         ) : (
           <ProjectsTable
+            editProject={onEditProject}
+            deleteProject={onDeleteProject}
             progress={true}
             align={"left"}
             textSize="small"

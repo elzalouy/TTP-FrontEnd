@@ -54,12 +54,12 @@ export interface Project {
   projectDeadline: any;
   startDate?: Date | any;
   completedDate?: any;
-  projectStatus?: string;
+  projectStatus: ProjectStatus;
   clientId: string;
   tasks: Task[];
   NoOfFinishedTasks: any;
   NoOfTasks: any;
-  associateProjectManager?: string | null;
+  associateProjectManager?: string;
 }
 export interface TasksStatistics {
   numberOfTasks: number | null;
@@ -97,8 +97,16 @@ export interface ProjectsInterface {
   editTask: string | undefined;
   editTaskLoading: boolean | undefined;
   sorting: string | null;
-  filteredProjects: Project[] | null;
+  filteredProjects?: Project[];
   openTaskDetails: Task;
   setTasksStatisticsHook: boolean | undefined;
   setProjectsStatisticsHook: boolean | undefined;
 }
+
+export type ProjectStatus =
+  | "Not Started"
+  | "In Progress"
+  | "late"
+  | "delivered on time"
+  | "delivered before deadline"
+  | "delivered after deadline";

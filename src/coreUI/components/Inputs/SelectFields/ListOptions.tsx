@@ -36,9 +36,9 @@ const Options: React.FC<IOptions> = ({
           options?.map((item) => (
             <li
               className="option unselectable"
-              value={item.id}
-              key={item.id}
-              id={item.id}
+              value={item?.id}
+              key={item?.id}
+              id={item?.id}
               onClick={onSelect}
               data-test-id={dataTestId + "-option"}
             >

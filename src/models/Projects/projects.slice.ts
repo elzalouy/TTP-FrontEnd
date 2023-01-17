@@ -503,7 +503,18 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editProject.fulfilled, (state, action) => {
       state.editProject = undefined;
       state.loading = false;
-      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
+      let projectIndex = state.projects.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      if (projectIndex) {
+        state.projects[projectIndex] = action.payload;
+      }
+      let projectIndex2 = state?.filteredProjects?.findIndex(
+        (item) => item._id === action.payload._id
+      );
+      if (projectIndex2 && state.filteredProjects) {
+        state.filteredProjects[projectIndex2] = action.payload;
+      }
     });
     builder.addCase(editProject.rejected, (state, action) => {
       state.loading = false;

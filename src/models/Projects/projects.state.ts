@@ -63,7 +63,6 @@ const ProjectsState: ProjectsInterface = {
   editTaskLoading: undefined,
   uploadLoading: { id: undefined, loading: undefined },
   sorting: null,
-  filteredProjects: null,
   openTaskDetails: {
     _id: "",
     name: "",
