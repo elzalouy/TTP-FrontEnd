@@ -277,7 +277,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   }
                   align={props.align}
                 >
-                  <ProjectPopover id={project?._id} {...props} />
+                  <ProjectPopover project={project} {...props} />
                 </TableCell>
               </TableRow>
             );

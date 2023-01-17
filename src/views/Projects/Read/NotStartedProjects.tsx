@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import "../Create/createNewProject.css";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "src/models/hooks";
-import { selectNotStartedProjects, selectLoading } from "src/models/Projects";
+import {
+  selectNotStartedProjects,
+  selectLoading,
+  deleteProject,
+} from "src/models/Projects";
 import { selectNewProject } from "src/models/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "src/assets/img/Images";
@@ -18,6 +22,8 @@ type Props = {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
+  editProject: any;
+  deleteProject: any;
 };
 
 const CreateNewProject: React.FC<Props> = (props) => {
@@ -42,37 +48,20 @@ const CreateNewProject: React.FC<Props> = (props) => {
     >
       <Box
         id="project-container"
-        sx={
-          notStartedProjects?.length === 0
-            ? {
-                display: "flex",
-                justifyContent: "flex-end",
-                flexDirection: "column",
-                width: "100%",
-                borderRadius: "12px",
-                backgroundColor: "#F1F1F4",
-                py: 1,
-                px: 0,
-                mb: 1,
-                font: "normal normal 600 16px/30px Cairo",
-                color: "#505050",
-              }
-            : {
-                display: "flex",
-                justifyContent: "flex-end",
-                flexDirection: "column",
-                width: "100%",
-                borderRadius: "12px",
-                backgroundColor: "#F1F1F4",
-                py: 1,
-                px: 0,
-                mb: 4,
-                font: "normal normal 600 16px/30px Cairo",
-                color: "#505050",
-              }
-        }
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          flexDirection: "column",
+          width: "100%",
+          borderRadius: "12px",
+          backgroundColor: "#F1F1F4",
+          py: 1,
+          px: 0,
+          mb: notStartedProjects?.length === 0 ? 1 : 4,
+          font: "normal normal 600 16px/30px Cairo",
+          color: "#505050",
+        }}
       >
-        {/* {loading === false ? ( */}
         <div className="create-button-table-wrapper">
           <ProjectsTable
             dataTestIdQuote="NotStarted-projects-"
@@ -86,25 +75,6 @@ const CreateNewProject: React.FC<Props> = (props) => {
             {...props}
           />
         </div>
-        {/* ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              borderRadius: "12px",
-              backgroundColor: "#F1F1F4",
-              p: 1,
-              my: 2,
-              cursor: "pointer",
-              font: "normal normal 600 16px/30px Cairo",
-              color: "#909090",
-            }}
-          >
-            <Loading color="grey" type="spinningBubbles" /> Loading More
-          </Box>
-        )} */}
         <Box
           onClick={() => {
             setShow("flex");

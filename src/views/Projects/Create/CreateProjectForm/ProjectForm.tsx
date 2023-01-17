@@ -103,7 +103,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.associateProjectManager =
       data.associateProjectManager.length > 0
         ? data.associateProjectManager
-        : null;
+        : undefined;
     //Dispatches edit project and sets this data as the new project data for the form, if user tries to come back and change the values
     dispatch(ProjectsActions.onUpdateNewProject(newProjectData));
     dispatch(editProject({ data: newProjectData, dispatch }));

@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import Joi from "joi";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -7,11 +6,6 @@ import Button from "src/coreUI/components/Buttons/Button";
 import { SelectDialog } from "src/coreUI/components/Inputs/SelectDialog/SelectDialog";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import {
-  calculateStatusBasedOnDeadline,
-  checkProjectStatus,
-  checkProjectStatusName,
-} from "src/helpers/generalUtils";
 import { validateEditProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 import IMAGES from "../../../assets/img/Images";
@@ -33,231 +27,165 @@ import {
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
+import { Project } from "src/types/models/Projects";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
+import moment from "moment";
 
 type Props = {
   show: string;
   setShow: any;
+  project?: Project;
 };
 
-const EditProject: React.FC<Props> = ({ show, setShow }) => {
+type FormState = {
+  clientId: string;
+  projectManager: string;
+  projectDeadline: any;
+  name: string;
+  projectStatus: string;
+  startDate: any;
+  associateProjectManager: string;
+};
+const EditProjectStatus = ["Not Started", "In Progress", "Done"];
+const DoneStatusList = [
+  "delivered on time",
+  "delivered before deadline",
+  "delivered after deadline",
+];
+/**
+ * Edit Project Comonent
+ * Edit project form makes the user able to edit
+ *  - Project Name
+ *  - Project Manager
+ *  - Associate Project Manager
+ *  - Project's Start Date
+ *  - Project's End Date
+ *  - Project's status
+ *  - Project's Client
+ *
+ * Edit Project Rules
+ *  - Start date, deadline, and associate project manager is not required
+ *  - if the project's start date is selected and the status was "Not Started", project's status should be "In Progress"
+ *  - if the status changed from in progress to Done, it should have a deadline also before going to execute the action.
+ */
+const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   const dispatch = useDispatch();
-  const project = useAppSelector(selectEditProject);
-  const {
-    control,
-    register,
-    watch,
-    setValue,
-    formState: { isDirty },
-    reset,
-  } = useForm({
-    defaultValues: {
-      clientId: project?.clientId,
-      projectManager: project?.projectManager?._id,
-      deadline: project?.projectDeadline,
-      name: project?.name,
-      status: project?.projectStatus,
-      startDate: project?.startDate,
-      associateProjectManager: project?.associateProjectManager,
+  const clients = useAppSelector(selectClientDialogData);
+  const managers = useAppSelector(selectPMOptions);
+  const { control, register, watch, setValue, reset } = useForm<FormState>();
+  const [state, setState] = useState({
+    status: EditProjectStatus.map((item) => {
+      return { id: item, text: item, value: item };
+    }),
+    AssociatePMs: managers,
+    alertPopupDiplay: "none",
+    formData: {
+      name: "",
+      associateProjectManager: "",
+      projectStatus: "",
+      startDate: "",
+      projectManager: "",
+      projectDeadline: "",
+      clientId: "",
+      deliveryDate: typeof "" === "string" ? new Date() : null,
     },
   });
-  const data = watch();
-  const PMs = useAppSelector(selectManagers);
-  const statusOptions = useAppSelector(selectProjectStatusOptions);
-  const pmOptions = useAppSelector(selectPMOptions);
-  const clientOptions = useAppSelector(selectClientDialogData);
-  const [confirm, setConfirm] = useState<string>("none");
-  const [trigger, setTrigger] = useState<boolean>(false);
-  const [updateDate, setUpdateDate] = useState<boolean>(false);
-  const [alert, setAlert] = useState<string>("");
-  const [ApmOptions, setApmOptions] = useState(pmOptions);
-  const [status, setStatusOptions] = useState(pmOptions);
-  const [nameErr, setNameErr] = useState<{
-    error: Joi.ValidationError | undefined | boolean;
-  }>({ error: undefined });
 
   useEffect(() => {
-    setValue("clientId", project?.clientId);
-    setValue("projectManager", project?.projectManager?._id);
-    setValue("deadline", project?.projectDeadline);
-    setValue("name", project?.name);
-    setValue("status", project?.projectStatus, { shouldDirty: false });
-    setValue("startDate", project?.startDate);
-    setValue("associateProjectManager", project?.associateProjectManager);
-    setApmOptions(
-      pmOptions.filter((item) => item.id !== watch().projectManager)
-    );
-  }, [project]);
-
-  useEffect(() => {
-    setStatusOptions(statusOptions);
-  }, [statusOptions]);
-
-  useEffect(() => {
-    if (trigger) {
-      executeEditProject(data);
+    let State = { ...state };
+    if (project?._id) {
+      let defaultStatus = EditProjectStatus.map((item) => {
+        return { id: item, text: item, value: item };
+      });
+      State.status = project.startDate
+        ? [defaultStatus[1], defaultStatus[2]]
+        : State.status;
+      State.AssociatePMs = managers.filter(
+        (item) => item.id !== project.projectManager?._id
+      );
+      setState(State);
+      reset({
+        name: project?.name,
+        associateProjectManager: project?.associateProjectManager,
+        projectStatus: DoneStatusList.includes(project?.projectStatus)
+          ? "Done"
+          : project?.projectStatus,
+        startDate: project?.startDate ? new Date(project?.startDate) : "",
+        projectManager: project?.projectManager?._id,
+        projectDeadline: project.projectDeadline
+          ? new Date(project.projectDeadline)
+          : "",
+        clientId: project?.clientId,
+      });
     }
-  }, [trigger]);
+  }, [project, managers]);
 
-  const executeEditProject = (formData: any) => {
-    let editProject = { ...project };
-    if (alert === "Not Started" || alert === "In Progress") {
-      formData.status = "In Progress";
-    }
+  const onSubmit = () => {
+    let data = watch();
+    let deadline = new Date(data?.projectDeadline);
+    const today = new Date();
 
-    console.log(formData);
-    editProject.name = formData?.name;
-    editProject.projectManager = formData?.projectManager;
-    editProject.projectManagerName = PMs.find(
-      (item: Manager) => item._id === formData?.projectManager
-    )?.name;
-    editProject.projectDeadline = formData?.deadline;
-    editProject.clientId = formData?.clientId;
-    editProject.projectStatus = formData?.status;
-    editProject.startDate = formData?.startDate;
-    editProject.associateProjectManager = formData?.associateProjectManager;
-    if (editProject.projectStatus === "Done") {
-      let status = calculateStatusBasedOnDeadline(editProject.projectDeadline);
-      if (![typeof status, status].includes("undefined")) {
-        editProject.projectStatus = status;
-      }
-    }
-
-    dispatch(editProjectAction({ data: editProject, dispatch }));
-    setShow("none");
-    setUpdateDate(false);
-    setTrigger(false);
-    setAlert("");
-  };
-
-  const handleNameChange = (e: any) => {
-    let { error } = validateEditProject({ name: e.target.value });
-    if (error) {
-      setNameErr({ error: error });
-    } else {
-      setNameErr({ error: undefined });
-    }
-  };
-
-  const showAlertBasedOnDate = () => {
-    let onlyStartDateIsNull = data.startDate === null && data.deadline !== null;
-    let onlyDeadlineIsNull = data.deadline === null && data.startDate !== null;
-    let bothDatesAreNull = data.deadline === null && data.startDate === null;
-    let bothDatesAreNotNull = data.deadline !== null && data.startDate !== null;
-    let currentStatus = data.status;
-    let done = checkProjectStatusName(currentStatus) === "Done";
-    let inProgress = currentStatus === "In Progress";
-
-    if (updateDate) {
-      if (done) {
-        if (onlyDeadlineIsNull) {
-          setAlert("Deadline");
-          setConfirm("flex");
-        }
-        data.status = "Not Started";
-      }
-      if (inProgress) {
-        if (bothDatesAreNull || onlyStartDateIsNull) {
-          //If at any point the user tries to clear date and set status to or from inprogess or done , It will set the status to not started
-          data.status = "Not Started";
-        }
-      }
-      //Exits the function and returns data
-      return data;
-    }
-
-    if (bothDatesAreNull) {
-      setAlert("Starting date and Deadline");
-      if (done) {
-        setConfirm("flex");
-      } else if (inProgress) {
-        setConfirm("flex");
-        data.status = "Not Started";
-      } else {
-        setTrigger(true);
-      }
-    } else if (onlyStartDateIsNull) {
-      setAlert("Starting date");
-      if (done) {
-        setConfirm("flex");
-      } else if (inProgress) {
-        setConfirm("flex");
-        data.status = "Not Started";
-      } else {
-        setTrigger(true);
-      }
-    } else if (onlyDeadlineIsNull) {
-      setAlert("Deadline");
-      if (done) {
-        setConfirm("flex");
-      } else {
-        setAlert("In Progress");
-        setTrigger(true);
-      }
-    } else if (bothDatesAreNotNull) {
-      setAlert("");
-      if (done) {
-        setConfirm("flex");
-      } else if (inProgress) {
-        setTrigger(true);
-      } else {
-        setAlert("Not Started");
-        setTrigger(true);
-      }
-    }
-  };
-
-  const closeIconOnClick = () => {
-    setShow("none");
-    reset();
-    setValue("clientId", project?.clientId);
-    setValue("projectManager", project?.projectManager?._id);
-    setValue("deadline", project?.projectDeadline);
-    setValue("name", project?.name);
-    setValue("status", project?.projectStatus, {
-      shouldDirty: false,
-    });
-    setValue("startDate", project?.startDate);
-    setNameErr({ error: undefined });
-  };
-
-  const onSubmitEdit = () => {
-    if (isDirty || updateDate) {
-      if (nameErr.error === undefined) {
-        const result = showAlertBasedOnDate();
-        executeEditProject(result);
-        reset();
-      }
-    } else {
-      setShow("none");
-      setNameErr({ error: undefined });
+    let editData = {
+      ...data,
+      _id: project?._id,
+      projectManagerName: managers.find(
+        (item: any) => item.id === data.projectManager
+      )?.text,
+      projectStatus:
+        data.projectStatus === "Done"
+          ? deadline.toDateString() === today.toDateString()
+            ? "delivered on time"
+            : deadline.getTime() > today.getTime()
+            ? "delivered before deadline"
+            : "delivered after deadline"
+          : data.projectStatus,
+      deliveryDate: data.projectStatus === "Done" ? new Date(Date.now()) : null,
+    };
+    if (["Done", "In Progress"].includes(data.projectStatus) && !data.startDate)
+      ToastError(
+        "Start Date should be inserted to move project to In progress or Done"
+      );
+    else {
+      const validate = validateEditProject(editData);
+      if (!validate.error) {
+        setState({ ...state, formData: editData });
+        data.projectStatus === "Done"
+          ? setState({ ...state, alertPopupDiplay: "flex" })
+          : dispatch(editProjectAction({ data: editData, setShow }));
+      } else ToastError(validate.error.details[0].message);
     }
   };
 
   return (
     <>
       <DoneProjectConfirm
-        alert={alert}
-        setAlert={setAlert}
-        show={confirm}
-        setShow={setConfirm}
-        setTrigger={setTrigger}
+        ok={true}
+        show={state.alertPopupDiplay}
+        setShow={(value: string) =>
+          setState({ ...state, alertPopupDiplay: value })
+        }
+        onOk={() =>
+          dispatch(editProjectAction({ data: state.formData, setShow }))
+        }
+        okText={"End"}
+        cancel={true}
+        cancelText={"Cancel"}
+        alert={"Are you sure you want to end this project ?"}
       />
       <PopUp show={show}>
         <div style={{ position: "relative" }}>
-          <div className="closeIconContainer" onClick={closeIconOnClick}>
+          <div className="closeIconContainer">
             <img
               className="closeIcon"
               width="9"
               height="9"
               src={IMAGES.closeicon}
               alt="closeIcon"
+              onClick={() => setShow("none")}
             />
           </div>
         </div>
         <p className="popup-title">Edit project</p>
-        {nameErr.error && (
-          <p className="popup-error">Please fill a valid project name</p>
-        )}
         <Grid
           className="projectFormContainer"
           alignItems={"flex-start"}
@@ -272,8 +200,6 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               placeholder={"Project name"}
               type="text"
               control={control}
-              error={nameErr.error ? "true" : undefined}
-              onChange={handleNameChange}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
@@ -286,8 +212,8 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
                     name="clientId"
                     label="Select Client"
                     placeholder="Select"
-                    options={clientOptions}
-                    selected={clientOptions.find(
+                    options={clients}
+                    selected={clients.find(
                       (item) => item.id === watch().clientId
                     )}
                     setSelectedValue={setValue}
@@ -306,37 +232,33 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               placeholder="Start date"
               register={register}
               setValue={setValue}
-              setUpdateDate={setUpdateDate}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
             <DateInput
               dataTestId="edit-project-due-date-input"
               label={"Deadline"}
-              name="deadline"
+              name="projectDeadline"
               control={control}
               placeholder="Deadline"
               register={register}
               setValue={setValue}
-              setUpdateDate={setUpdateDate}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
             <ControlledSelect
-              name="status"
+              name="projectStatus"
+              dataTestId="edit-project-status-input"
               control={control}
               optionsType="list"
-              label={
-                data.status
-                  ? checkProjectStatus(data.status)
-                    ? data.status
-                    : "Done"
-                  : "Project Status"
-              }
               formLabel="Project Status"
               elementType="select"
-              options={status}
-              setValue={setValue}
+              options={state.status}
+              onSelect={(e: any) => setValue("projectStatus", e.target.id)}
+              selected={
+                state.status.find((item) => item.id === watch().projectStatus)
+                  ?.id
+              }
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
@@ -348,11 +270,19 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               elementType="select"
               optionsType="dialog"
               setValue={setValue}
-              options={pmOptions}
+              options={managers}
+              dataTestId="edit-project-associatePM"
               onSelect={(e: any) => {
                 setValue("projectManager", e.id);
-                setApmOptions(pmOptions.filter((item) => item.id !== e.id));
+                setState({
+                  ...state,
+                  AssociatePMs: managers.filter((item) => item.id !== e.id),
+                });
               }}
+              selected={
+                managers.find((item: any) => item.id === watch().projectManager)
+                  ?.id
+              }
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
@@ -362,9 +292,15 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
               label="Select"
               formLabel="Associate Project manager"
               elementType="select"
-              options={ApmOptions}
+              options={state.AssociatePMs}
               optionsType="dialog"
               setValue={setValue}
+              dataTestId="edit-project-associatePM"
+              selected={
+                state.AssociatePMs.find(
+                  (item: any) => item.id === watch().associateProjectManager
+                )?.id
+              }
               onSelect={(e: any) => setValue("associateProjectManager", e.id)}
             />
           </Grid>
@@ -374,7 +310,7 @@ const EditProject: React.FC<Props> = ({ show, setShow }) => {
             size="large"
             type="main"
             label="Done"
-            onClick={onSubmitEdit}
+            onClick={onSubmit}
             dataTestId="edit-project-submit-btn"
           />
         </div>

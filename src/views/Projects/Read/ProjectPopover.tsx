@@ -12,9 +12,12 @@ import {
 import { ProjectsActions } from "../../../models/Projects";
 import { useAppSelector } from "src/models/hooks";
 import { selectRole } from "src/models/Auth";
+import { Project } from "src/types/models/Projects";
 
 interface Props {
-  id: string;
+  project: Project;
+  editProject: any;
+  deleteProject: any;
   history: RouteComponentProps["history"];
 }
 
@@ -36,21 +39,19 @@ const ProjectPopover: React.FC<Props> = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showDeleteProjectPopup = () => {
-    dispatch(ProjectsActions.onSetDeleteProjectId(props.id));
-    dispatch(openDeleteProjectPopup("flex"));
-    handleClose();
-  };
-  const showEditProjectPopup = () => {
-    dispatch(ProjectsActions.onSetEditProjectId(props.id));
-    dispatch(openEditProjectPopup("flex"));
-    handleClose();
-  };
 
+  const onEditProject = () => {
+    handleClose();
+    props.editProject("flex", props.project);
+  };
+  const onDeleteProject = () => {
+    handleClose();
+    props.deleteProject("flex", props.project);
+  };
   return (
     <div className="project-actions-wrapper">
       <Box
-        data-test-id={`projects-row-dot-icon-${props.id}`}
+        data-test-id={`projects-row-dot-icon-${props.project._id}`}
         onClick={handleOpen}
         marginBottom={2}
         sx={{ cursor: "pointer" }}
@@ -77,7 +78,9 @@ const ProjectPopover: React.FC<Props> = (props) => {
       >
         <Box display={"grid"} padding={1}>
           <Button
-            onClick={() => props.history.push(`/TasksBoard/${props.id}`)}
+            onClick={() =>
+              props.history.push(`/TasksBoard/${props.project._id}`)
+            }
             variant="text"
             className={styles.grayButton}
           >
@@ -89,9 +92,9 @@ const ProjectPopover: React.FC<Props> = (props) => {
             Open Tasks
           </Button>
           <Button
-            data-test-id={`projects-edit-project-btn-${props.id}`}
+            data-test-id={`projects-edit-project-btn-${props.project._id}`}
             variant="text"
-            onClick={showEditProjectPopup}
+            onClick={onEditProject}
             className={styles.grayButton}
           >
             <img src={IMAGES.edit} width={18} style={{ marginRight: 10 }}></img>
@@ -99,7 +102,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
           </Button>
           {role !== "PM" && (
             <Button
-              onClick={showDeleteProjectPopup}
+              onClick={onDeleteProject}
               variant="text"
               className={styles.redButton}
               id="delete-project-button"

@@ -10,6 +10,8 @@ export interface IProjectsTableProps {
   projects?: Project[] | any;
   projectManagers: Manager[];
   textSize: string;
+  editProject: any;
+  deleteProject: any;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];

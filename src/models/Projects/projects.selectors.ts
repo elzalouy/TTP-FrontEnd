@@ -52,8 +52,8 @@ export const selectProjectOptions = (state: RootState) => {
 export const selectDoneProjects = (state: RootState) =>
   state?.projects?.filteredProjects?.filter(
     (item) =>
-      item.projectStatus === "deliver on time" ||
-      item.projectStatus === "deliver before deadline" ||
+      item.projectStatus === "delivered on time" ||
+      item.projectStatus === "delivered before deadline" ||
       item.projectStatus === "delivered after deadline" ||
       item.projectStatus === "late"
   );
