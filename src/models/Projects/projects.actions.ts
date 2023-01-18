@@ -245,15 +245,9 @@ export const downloadTasks = createAsyncThunk<any, any, any>(
         return rejectWithValue("Un Authorized");
       }
       if (downloadResult.ok) {
-        console.log(downloadResult.data);
         window.open(
           `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`
         );
-        let url =
-          process.env.NODE_ENV === "development"
-            ? `${apiUrl.SOCKET_DEV_URL}${downloadResult?.data?.downloadPath}`
-            : `${apiUrl.SOCKET_BASE_URL}${downloadResult?.data?.downloadPath}`;
-        window.open(url);
         ToastSuccess("Tasks downloaded to your pc right now.");
       }
       rejectWithValue(downloadResult.problem);
