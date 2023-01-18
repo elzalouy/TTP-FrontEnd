@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
 import { toast } from "react-toastify";
 import api from "../../services/endpoints/projects";
+import apiUrl from "../../services/api.json";
 import {
   fireCreateProjectHook,
   fireDeleteProjectHook,
@@ -229,6 +230,34 @@ export const deleteProjectTasks = createAsyncThunk<any, any, any>(
       throw deleteResult.problem;
     } catch (error: any) {
       ToastError("There was an error deleting the tasks from the server");
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const downloadTasks = createAsyncThunk<any, any, any>(
+  "projects/downloadTasks",
+  async (args, { rejectWithValue, dispatch }) => {
+    try {
+      let downloadResult: ApiResponse<any> = await api.downloadTasks(args);
+      if (downloadResult?.status === 401 || downloadResult?.status === 403) {
+        dispatch(logout(true));
+        return rejectWithValue("Un Authorized");
+      }
+      if (downloadResult.ok) {
+        console.log(downloadResult.data);
+        window.open(
+          `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`
+        );
+        let url =
+          process.env.NODE_ENV === "development"
+            ? `${apiUrl.SOCKET_DEV_URL}${downloadResult?.data?.downloadPath}`
+            : `${apiUrl.SOCKET_BASE_URL}${downloadResult?.data?.downloadPath}`;
+        window.open(url);
+        ToastSuccess("Tasks downloaded to your pc right now.");
+      }
+      rejectWithValue(downloadResult.problem);
+    } catch (error: any) {
       return rejectWithValue(error);
     }
   }

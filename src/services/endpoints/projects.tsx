@@ -19,5 +19,6 @@ const endpoints = {
   editTask: (args: any) => api.post("updateTask", args),
   downloadAttachment: (args: any) => api.get(`downloadAttachment${args}`),
   editTasksProjectId: (args: any) => api.put("editTasksProjectId", args),
+  downloadTasks: (args: any) => api.post(`taskscsv`, { ids: args }),
 };
 export default endpoints;

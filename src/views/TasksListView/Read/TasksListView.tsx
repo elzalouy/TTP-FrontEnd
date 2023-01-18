@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -14,8 +14,10 @@ import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
 import Loading from "../../../coreUI/components/Loading/Loading";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import {
   deleteTasks,
+  downloadTasks,
   selectAllProjects,
   selectProjectOptions,
 } from "../../../models/Projects";
@@ -155,9 +157,12 @@ export const TasksListView: React.FC<Props> = (props) => {
     setState(State);
   };
 
-  const onDeleteTasks = async () => {
+  const onDeleteTasks = () => {
     dispatch(deleteTasks({ data: { ids: selects }, dispatch: dispatch }));
     setShow("none");
+  };
+  const onDownloadTasksFile = () => {
+    dispatch(downloadTasks(state.tasks.map((item) => item._id)));
   };
 
   return (
@@ -384,6 +389,11 @@ export const TasksListView: React.FC<Props> = (props) => {
                 selects={selects}
                 setAllSelected={setAllSelected}
               />
+            </Grid>
+            <Grid my={1} item xs={2} sm={2} md={1} lg={0.5}>
+              <IconButton disableRipple onClick={onDownloadTasksFile}>
+                <CloudDownloadIcon></CloudDownloadIcon>
+              </IconButton>
             </Grid>
           </>
         )}
