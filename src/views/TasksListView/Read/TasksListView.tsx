@@ -390,7 +390,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 setAllSelected={setAllSelected}
               />
             </Grid>
-            <Grid my={1} item xs={2} sm={2} md={1} lg={0.5}>
+            <Grid my={1} item xs={2} sm={2} md={1} lg={0.5} ml={1}>
               <IconButton disableRipple onClick={onDownloadTasksFile}>
                 <CloudDownloadIcon></CloudDownloadIcon>
               </IconButton>
