@@ -119,6 +119,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       });
     }
   }, [project, managers]);
+  console.log({ state });
 
   const onSubmit = () => {
     let data = watch();
@@ -149,9 +150,13 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       const validate = validateEditProject(editData);
       if (!validate.error) {
         setState({ ...state, formData: editData });
-        data.projectStatus === "Done"
-          ? setState({ ...state, alertPopupDiplay: "flex" })
-          : dispatch(editProjectAction({ data: editData, setShow }));
+        if (
+          data.projectStatus === "Done" &&
+          project?.projectStatus &&
+          !DoneStatusList.includes(project?.projectStatus)
+        )
+          setState({ ...state, formData: editData, alertPopupDiplay: "flex" });
+        else dispatch(editProjectAction({ data: editData, setShow }));
       } else ToastError(validate.error.details[0].message);
     }
   };
