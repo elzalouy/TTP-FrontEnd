@@ -515,6 +515,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       if (projectIndex2 && state.filteredProjects) {
         state.filteredProjects[projectIndex2] = action.payload;
       }
+      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
     });
     builder.addCase(editProject.rejected, (state, action) => {
       state.loading = false;
