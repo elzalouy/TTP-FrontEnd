@@ -334,6 +334,7 @@ export const editProject = createAsyncThunk<any, any, any>(
       if (editResult.ok) {
         args.setShow("none");
         ToastSuccess("Project updated successfully");
+
         return editResult.data;
       } else throw editResult.problem;
     } catch (error: any) {
