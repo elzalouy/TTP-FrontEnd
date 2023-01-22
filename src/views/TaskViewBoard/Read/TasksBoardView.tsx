@@ -25,26 +25,10 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
   const selectedProject = useAppSelector(selectSelectedProject);
   const ProjectsStore = useAppSelector(selectAllProjects);
   const projectId = props.match.params.id;
-  const [state, setState] = useState<{
-    project?: Project | null;
-    tasks?: Task[];
-    mounted: boolean;
-  }>({ mounted: false });
 
   useEffect(() => {
     dispatch(ProjectsActions.onSetSelectedProject(projectId));
   }, [ProjectsStore.projects, ProjectsStore.allTasks, projectId, dispatch]);
-
-  useEffect(() => {
-    if (!state.mounted && selectedProject.loading === false) {
-      dispatch(ProjectsActions.onSetSelectedProject(projectId));
-      setState({
-        mounted: true,
-        project: selectedProject.project,
-        tasks: selectedProject.tasks,
-      });
-    }
-  }, [projectId, selectedProject.loading]);
 
   return (
     <>
@@ -106,7 +90,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
           xs={12}
           sx={{ width: "100%", overflowX: "scroll", position: "relative" }}
         >
-          <DragField tasks={state.tasks} {...props} />
+          <DragField tasks={ProjectsStore.selectedProject.tasks} {...props} />
         </Grid>
       </Grid>
     </>

@@ -80,13 +80,6 @@ const clientSlice: Slice<ClientsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(creatClient.fulfilled, (state, action) => {
-      console.log({
-        action: action.payload,
-        clients: _.uniqBy(
-          [...state.clientsData, action.payload],
-          (item: Client) => item._id
-        ),
-      });
       state.clientsData = _.uniqBy(
         [...state.clientsData, action.payload],
         (item: Client) => item._id

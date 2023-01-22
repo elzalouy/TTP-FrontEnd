@@ -152,7 +152,6 @@ export const TasksListView: React.FC<Props> = (props) => {
         (item) =>
           new Date(item.deadline).getTime() <= new Date(filter.end).getTime()
       );
-    console.log(filter);
     State.tasks = tasks;
     setState(State);
   };

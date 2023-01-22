@@ -65,20 +65,21 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
    */
   React.useEffect(() => {
     if (task && task._id) {
-      setValue("name", task.name);
-      setValue("projectId", task.projectId);
-      setValue("categoryId", task.categoryId);
-      setValue("subCategoryId", task.subCategoryId);
-      setValue("teamId", task.teamId);
-      setValue("status", task.status);
-      setValue("description", task.description);
-      setValue(
-        "selectedDepartmentId",
-        departments.find((item) => item.boardId === task.boardId)?._id
-      );
-      setValue("deadline", task.deadline);
-      setValue("attachedFiles", task.attachedFiles);
-      setValue("file", null);
+      reset({
+        name: task.name,
+        projectId: task.projectId,
+        categoryId: task.categoryId,
+        subCategoryId: task.subCategoryId,
+        teamId: task.teamId,
+        status: task.status,
+        description: task.description,
+        selectedDepartmentId: departments.find(
+          (item) => item.boardId === task.boardId
+        )?._id,
+        deadline: task.deadline,
+        attachedFiles: task.attachedFiles,
+        file: null,
+      });
       let selectedDepartment = departments.find(
         (item) => item.boardId === task.boardId
       );
@@ -87,7 +88,6 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
       );
       let selectedDepatmentTeams =
         selectedDepartment && selectedDepartment.teams;
-
       setState({
         ...state,
         task: task,
@@ -382,19 +382,14 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                         ? `${state.selectedDepartment?.name} department has no teams yet.`
                         : "Please select a department firstly, to can see the teams inside"
                     }
-                    options={
-                      departments &&
-                      departments
-                        .find((item) => item.boardId === task?.boardId)
-                        ?.teams?.map((item) => {
-                          if (item && item._id)
-                            return {
-                              id: item._id,
-                              value: item._id,
-                              text: item.name,
-                            };
-                        })
-                    }
+                    options={state.selectedDepatmentTeams?.map((item) => {
+                      if (item && item._id)
+                        return {
+                          id: item._id,
+                          value: item._id,
+                          text: item.name,
+                        };
+                    })}
                     error={onGetError("teamId")}
                   />
                 </Box>

@@ -196,7 +196,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                       color="#00ACBA"
                       fontSize={14}
                     >
-                      {(NoOfFinished / NoOfTasks) * 100 || 0}%
+                      {Math.ceil((NoOfFinished / NoOfTasks) * 100) || 0}%
                     </Typography>
                   ) : (
                     <Box sx={{ display: "inline-flex" }}>

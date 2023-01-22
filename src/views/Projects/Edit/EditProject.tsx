@@ -119,7 +119,6 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       });
     }
   }, [project, managers]);
-  console.log({ state });
 
   const onSubmit = () => {
     let data = watch();

@@ -32,7 +32,7 @@ type DragCloumn = {
   value: string;
   footer: string;
 };
-const DragField = (props: { tasks: Task[] }) => {
+const DragField = () => {
   const dispatch = useDispatch();
   const selectedProject = useAppSelector(selectSelectedProject);
   const inProgressTasks = useAppSelector(selectInProgressTasks);
@@ -120,6 +120,7 @@ const DragField = (props: { tasks: Task[] }) => {
   });
 
   useEffect(() => {
+    console.log({ changed: selectedProject.tasks });
     let cols: any = {
       TasksBoard: {
         name: "Tasks Board",
@@ -187,7 +188,16 @@ const DragField = (props: { tasks: Task[] }) => {
       },
     };
     setColumns(cols);
-  }, [selectedProject.tasks]);
+  }, [
+    selectedProject.tasks,
+    inProgressTasks,
+    cancledTasks,
+    notClearTasks,
+    reviewTasks,
+    sharedTasks,
+    doneTasks,
+    notStartedTasks,
+  ]);
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -253,7 +263,7 @@ const DragField = (props: { tasks: Task[] }) => {
       >
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
-            <Droppable droppableId={columnId} key={index}>
+            <Droppable droppableId={columnId} key={columnId}>
               {(provided, snapshot) => {
                 return (
                   <Grid

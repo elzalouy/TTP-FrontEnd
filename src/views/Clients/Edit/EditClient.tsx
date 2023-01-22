@@ -61,9 +61,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
         });
         setImageView(null);
         setShow("none");
-      } catch (error: any) {
-        console.log(error);
-      }
+      } catch (error: any) {}
     } else {
       toast.error("Client name already exist", {
         position: "top-right",

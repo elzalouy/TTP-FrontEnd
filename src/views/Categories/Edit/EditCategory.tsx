@@ -98,9 +98,7 @@ const EditCategory: React.FC<Props> = ({ display, handleSetDisplay }) => {
       } else {
         ToastError("Category name cannot be set empty");
       }
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    } catch (error: any) {}
   };
 
   return (

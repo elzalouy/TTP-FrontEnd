@@ -93,16 +93,10 @@ const TaskCard: React.FC<TaskCartProps> = ({
       );
       setTaskFiles(others);
     }
-  }, [
-    allTasks,
-    item.attachedFiles,
-    boardId.includes,
-    data,
-    deadline,
-    departments,
-    item.teamId,
-    status,
-  ]);
+    let department = departments.find((dep) => dep.boardId === item.boardId);
+    let member = department?.teams.find((mem) => mem._id === item.teamId);
+    setData({ department: department?.name, member: member?.name });
+  }, [item, departments]);
 
   useEffect(() => {
     if (status !== "Not Started") {
