@@ -31,6 +31,7 @@ import { selectPMOptions } from "src/models/Managers";
 import { Options } from "src/types/views/Projects";
 import DateRangePicker from "src/coreUI/components/Inputs/DateRangePicker/DateRangePicker";
 import { RangeKeyDict } from "react-date-range";
+import { selectRole } from "src/models/Auth";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
@@ -56,6 +57,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const PmsOptions = useAppSelector(selectPMOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
 
+  const role = useAppSelector(selectRole);
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const MD = useMediaQuery(theme.breakpoints.down("md"));
@@ -393,11 +395,13 @@ export const TasksListView: React.FC<Props> = (props) => {
                 setAllSelected={setAllSelected}
               />
             </Grid>
-            <Grid my={1} item xs={2} sm={2} md={1} lg={0.5} ml={1}>
-              <IconButton disableRipple onClick={onDownloadTasksFile}>
-                <CloudDownloadIcon></CloudDownloadIcon>
-              </IconButton>
-            </Grid>
+            {["OM", "SM", undefined].includes(role) && (
+              <Grid my={1} item xs={2} sm={2} md={1} lg={0.5} ml={1}>
+                <IconButton disableRipple onClick={onDownloadTasksFile}>
+                  <CloudDownloadIcon></CloudDownloadIcon>
+                </IconButton>
+              </Grid>
+            )}
           </>
         )}
       </Grid>
