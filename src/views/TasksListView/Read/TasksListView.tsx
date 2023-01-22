@@ -161,7 +161,11 @@ export const TasksListView: React.FC<Props> = (props) => {
     setShow("none");
   };
   const onDownloadTasksFile = () => {
-    dispatch(downloadTasks(state.tasks.map((item) => item._id)));
+    dispatch(
+      downloadTasks(
+        selects.length > 0 ? selects : state.tasks.map((item) => item._id)
+      )
+    );
   };
 
   return (
