@@ -106,7 +106,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       setState(State);
       reset({
         name: project?.name,
-        associateProjectManager: project?.associateProjectManager,
+        associateProjectManager: project?.associateProjectManager
+          ? project.associateProjectManager
+          : "",
         projectStatus: DoneStatusList.includes(project?.projectStatus)
           ? "Done"
           : project?.projectStatus,
@@ -134,6 +136,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       projectManagerName: managers.find(
         (item: any) => item.id === data.projectManager
       )?.text,
+      associateProjectManager: data?.associateProjectManager
+        ? data.associateProjectManager
+        : "",
       projectStatus:
         data.projectStatus === "Done"
           ? deadline.toDateString() === today.toDateString()
@@ -149,6 +154,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         "Start Date should be inserted to move project to In progress or Done"
       );
     else {
+      console.log({ editData });
       const validate = validateEditProject(editData);
       if (!validate.error) {
         setState({ ...state, formData: editData });

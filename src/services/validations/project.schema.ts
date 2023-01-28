@@ -73,10 +73,10 @@ const editProjectSchema = Joi.object({
     "string.min": "Project Manager id length should be Min 4 chars",
     "any.required": "Project Manager is required",
   }),
-  associateProjectManager: Joi.string().optional().min(5).allow(null).messages({
-    "string.empty": "Project Manager id should be string",
-    "string.min": "Project Manager id length should be Min 4 chars",
-    "any.required": "Project Manager is required",
+  associateProjectManager: Joi.string().optional().allow(null, "").messages({
+    "string.empty": "Associate Project Manager should be string",
+    "string.min": "Associate Project Manager length should be Min 4 chars",
+    "any.required": "Associate Project Manager is required",
   }),
   projectManagerName: Joi.string().required().min(2).max(50).messages({
     "string.base": "Project Manager Name  should be string",
