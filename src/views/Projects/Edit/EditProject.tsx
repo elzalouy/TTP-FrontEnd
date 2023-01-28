@@ -128,6 +128,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
     let editData = {
       ...data,
       _id: project?._id,
+      cardId: project?.cardId,
+      boardId: project?.boardId,
+      listId: project?.listId,
       projectManagerName: managers.find(
         (item: any) => item.id === data.projectManager
       )?.text,
@@ -168,9 +171,10 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         setShow={(value: string) =>
           setState({ ...state, alertPopupDiplay: value })
         }
-        onOk={() =>
-          dispatch(editProjectAction({ data: state.formData, setShow }))
-        }
+        onOk={() => {
+          dispatch(editProjectAction({ data: state.formData, setShow }));
+          setState({ ...state, alertPopupDiplay: "none" });
+        }}
         okText={"End"}
         cancel={true}
         cancelText={"Cancel"}
@@ -277,6 +281,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               options={managers}
               dataTestId="edit-project-associatePM"
               onSelect={(e: any) => {
+                setValue("associateProjectManager", "");
                 setValue("projectManager", e.id);
                 setState({
                   ...state,
@@ -305,7 +310,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
                   (item: any) => item.id === watch().associateProjectManager
                 )?.id
               }
-              onSelect={(e: any) => setValue("associateProjectManager", e.id)}
+              onSelect={(e: any) => {
+                setValue("associateProjectManager", e.id);
+              }}
             />
           </Grid>
         </Grid>

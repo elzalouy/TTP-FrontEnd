@@ -116,6 +116,9 @@ const editProjectSchema = Joi.object({
       "delivered after deadline"
     ),
   deliveryDate: Joi.date().label("delivery date").optional().allow(null, ""),
+  boardId: Joi.any(),
+  listId: Joi.any(),
+  cardId: Joi.any(),
 });
 
 export const validateDate = (date: any, msg: any, greater: any) => {

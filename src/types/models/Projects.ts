@@ -60,6 +60,9 @@ export interface Project {
   NoOfFinishedTasks: any;
   NoOfTasks: any;
   associateProjectManager?: string;
+  cardId?: string;
+  boardId?: string;
+  listId?: string;
 }
 export interface TasksStatistics {
   numberOfTasks: number | null;

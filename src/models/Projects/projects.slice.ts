@@ -506,15 +506,14 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       let projectIndex = state.projects.findIndex(
         (item) => item._id === action.payload._id
       );
-      if (projectIndex) {
-        state.projects[projectIndex] = action.payload;
-      }
+      state.projects[projectIndex] = action.payload;
       let projectIndex2 = state?.filteredProjects?.findIndex(
         (item) => item._id === action.payload._id
       );
-      if (projectIndex2 && state.filteredProjects) {
+      if (state.filteredProjects && projectIndex2) {
+        console.log({ projectIndex, projectIndex2, project: action.payload });
         state.filteredProjects[projectIndex2] = action.payload;
-      }
+      } else state.filteredProjects = state.projects;
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
     });
     builder.addCase(editProject.rejected, (state, action) => {

@@ -65,21 +65,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
   const [daysBgColor, setDaysBgColor] = useState("");
   const [taskImages, setTaskImages] = useState<TaskFile[]>([]);
   const [taskFiles, setTaskFiles] = useState<any[]>([]);
-  const [loaded, setLoaded] = useState(false);
-
-  // React.useEffect(() => {
-  //   document.addEventListener("visibilitychange", () => {
-  //     if (
-  //       // taskImages[0].error &&
-  //       // taskImages[0].error === true &&
-  //       document.visibilityState === "visible" &&
-  //       location.pathname.includes("/TasksBoard/")
-  //     ) {
-  //       ToastSuccess("loading images again");
-  //       dispatch(getAllTasks(null));
-  //     }
-  //   });
-  // }, []);
 
   useEffect(() => {
     let mimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/svg"];
@@ -139,7 +124,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
       (member) => member._id === item.teamId
     )?.name;
     setData(newData);
-  }, []);
+  }, [item]);
 
   const getRemainingDays = (day: number) => {
     if (day > 0) {

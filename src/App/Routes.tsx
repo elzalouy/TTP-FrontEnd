@@ -50,7 +50,7 @@ const Routes = (props: RoutesProps) => {
                   <OverView {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -137,7 +137,7 @@ const Routes = (props: RoutesProps) => {
                   <Projects {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -155,7 +155,7 @@ const Routes = (props: RoutesProps) => {
                   <TasksListView {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -174,7 +174,7 @@ const Routes = (props: RoutesProps) => {
                   <TasksBoardView {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -192,7 +192,7 @@ const Routes = (props: RoutesProps) => {
                   <Clients {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -210,7 +210,7 @@ const Routes = (props: RoutesProps) => {
                   <Departments {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -228,7 +228,7 @@ const Routes = (props: RoutesProps) => {
                   <Categories {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -246,7 +246,7 @@ const Routes = (props: RoutesProps) => {
                   <Managers {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),
@@ -264,7 +264,7 @@ const Routes = (props: RoutesProps) => {
                   <Notifications {...props} />
                 </MenuContainer>
               );
-            else return <Redirect to="notAuthed" />;
+            else return <Redirect to="/notAuthed" />;
           }}
         />
       ),

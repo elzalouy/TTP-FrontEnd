@@ -120,7 +120,6 @@ const DragField = () => {
   });
 
   useEffect(() => {
-    console.log({ changed: selectedProject.tasks });
     let cols: any = {
       TasksBoard: {
         name: "Tasks Board",
