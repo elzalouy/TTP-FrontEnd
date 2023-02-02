@@ -19,6 +19,7 @@ import {
   UpdatePassword,
 } from "src/views";
 import AuthRedirection from "src/views/Auth/AuthRedirection/AuthRedirection";
+import Statistics from "src/views/Statitics/Statistics";
 interface RoutesProps {
   children?: any;
 }
@@ -35,6 +36,24 @@ const Routes = (props: RoutesProps) => {
             <Redirect to="/login" />
           )}
         </Route>
+      ),
+    },
+    {
+      routeName: "/Statistics",
+      Route: (
+        <Route
+          path="/Statistics"
+          key="/Statistics"
+          render={(props) => {
+            if (isAuthedUser() && !isPM())
+              return (
+                <MenuContainer paddingX {...props}>
+                  <Statistics {...props} />
+                </MenuContainer>
+              );
+            else return <Redirect to="/notAuthed" />;
+          }}
+        />
       ),
     },
     {

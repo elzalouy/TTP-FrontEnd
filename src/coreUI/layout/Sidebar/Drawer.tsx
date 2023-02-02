@@ -35,6 +35,7 @@ import { selectUnNotifiedNum } from "src/models/Notifications";
 import { toggleLogOutPopup, toggleSideMenu } from "src/models/Ui";
 import { selectSideMenuToggle } from "src/models/Ui/UI.selectors";
 import { Logo } from "src/coreUI/components/Images/Images";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 import DrawerItem from "./DrawerItem";
 import "./slider.css";
 
@@ -101,6 +102,22 @@ const AppDrawer = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
+              open={props.open}
+              key="9"
+              onClick={() => history.push("/Statistics")}
+              path={"/Statistics"}
+              Icon={() => (
+                <EqualizerIcon
+                  htmlColor={
+                    props.select.includes("Statistics") ? "#FFF" : "#808191"
+                  }
+                />
+              )}
+              text="Statistics"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
               open={open}
               key="0"
               onClick={() => history.push("/Overview")}
@@ -110,7 +127,6 @@ const AppDrawer = (props: any) => {
             />
             <DrawerItem
               {...props}
-              PM
               select={props.select}
               open={open}
               key="1"

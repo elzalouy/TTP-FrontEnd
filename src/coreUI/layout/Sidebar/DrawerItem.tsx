@@ -9,6 +9,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
+  console.log({ select: props.select, path: props.path, text: props.text });
   return (
     <Link style={{ textDecoration: "none" }} to={props.path}>
       <ListItemButton
@@ -28,7 +29,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         <ListItemIcon
           sx={{
             minWidth: 0,
-            mr: props.open ? 3 : "auto",
+            mr: 3,
             justifyContent: "center",
           }}
         >
@@ -43,9 +44,8 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         <ListItemText
           sx={{
             color: props.select.includes(props.path) ? "white" : "#808191",
-            opacity: props.open ? 1 : 0,
             ":hover": {
-              color: "#FFF !important",
+              color: "#FFF",
             },
           }}
         >

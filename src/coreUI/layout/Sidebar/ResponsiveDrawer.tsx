@@ -32,6 +32,7 @@ import DepartmentIcon from "src/assets/icons/DepartmentIcon";
 import { toggleLogOutPopup } from "src/models/Ui";
 import { getAllProjects } from "src/models/Projects";
 import { selectUnNotifiedNum } from "src/models/Notifications";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 
 const ResponsiveDrawer = (props: any) => {
   const dispatch = useDispatch();
@@ -85,6 +86,22 @@ const ResponsiveDrawer = (props: any) => {
             </IconButton>
           </DrawerHeader>
           <List>
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
+              key="9"
+              onClick={() => history.push("/Statistics")}
+              path={"/Statistics"}
+              Icon={() => (
+                <EqualizerIcon
+                  htmlColor={
+                    props.select.includes("Statistics") ? "#FFF" : "#808191"
+                  }
+                />
+              )}
+              text="Statistics"
+            />
             <DrawerItem
               {...props}
               select={props.select}
