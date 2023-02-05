@@ -24,32 +24,14 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({
         <ClientTasksCounter
           title="Shared Tasks"
           param={"Shared"}
-          count={
-            projectsState.allTasks.filter(
-              (item) =>
-                projectsIds.includes(item._id) && item.status === "Shared"
-            ).length
-          }
+          count={shared}
         />
         <ClientTasksCounter
           title="In Progress Tasks"
           param={"In Progress"}
-          count={
-            projectsState.allTasks.filter(
-              (item) =>
-                projectsIds.includes(item._id) && item.status === "In Progress"
-            ).length
-          }
+          count={inProgress}
         />
-        <ClientTasksCounter
-          title="Done Tasks"
-          param={"Done"}
-          count={
-            projectsState.allTasks.filter(
-              (item) => projectsIds.includes(item._id) && item.status === "Done"
-            ).length
-          }
-        />
+        <ClientTasksCounter title="Done Tasks" param={"Done"} count={done} />
       </div>
     </ScrollContainer>
   );
