@@ -12,6 +12,7 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({
   inProgress,
   done,
 }) => {
+  const projectsState = useAppSelector(selectAllProjects);
   return (
     <ScrollContainer
       className="scroll-container counter-container-tasks"
@@ -23,14 +24,32 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({
         <ClientTasksCounter
           title="Shared Tasks"
           param={"Shared"}
-          count={shared}
+          count={
+            projectsState.allTasks.filter(
+              (item) =>
+                projectsIds.includes(item._id) && item.status === "Shared"
+            ).length
+          }
         />
         <ClientTasksCounter
           title="In Progress Tasks"
           param={"In Progress"}
-          count={inProgress}
+          count={
+            projectsState.allTasks.filter(
+              (item) =>
+                projectsIds.includes(item._id) && item.status === "In Progress"
+            ).length
+          }
         />
-        <ClientTasksCounter title="Done Tasks" param={"Done"} count={done} />
+        <ClientTasksCounter
+          title="Done Tasks"
+          param={"Done"}
+          count={
+            projectsState.allTasks.filter(
+              (item) => projectsIds.includes(item._id) && item.status === "Done"
+            ).length
+          }
+        />
       </div>
     </ScrollContainer>
   );
