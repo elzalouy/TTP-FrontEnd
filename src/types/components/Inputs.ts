@@ -78,6 +78,7 @@ export interface IDateInputProps {
   tempError?: boolean;
   setUpdateDate?: React.Dispatch<React.SetStateAction<boolean>>;
   dataTestId?: string;
+  message?: string;
 }
 
 export interface IPasswordInputProps {

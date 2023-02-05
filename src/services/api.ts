@@ -33,7 +33,6 @@ export const getUserTokenInfo = () => {
 };
 export const isPM = () => {
   let token = getUserTokenInfo();
-  console.log({ token });
   if (token) {
     if (token.role === "PM") return true;
     else return false;

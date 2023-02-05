@@ -1,22 +1,9 @@
 import { Typography } from "@mui/material";
 import { FC } from "react";
 import "../../clients.css";
-import { Status } from "../../../../../types/views/BoardView";
-import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects, selectTasks } from "src/models/Projects";
-import { getTasksByClientIdAndStatus } from "src/helpers/generalUtils";
 import { ITaskNumber } from "src/types/views/Client";
 
-const ClientTaskNumberCard: FC<ITaskNumber> = ({
-  title,
-  param,
-  _id
-}) => {
-
-  const projects = useAppSelector(selectAllProjects);
-  const tasks = useAppSelector(selectTasks);
-  const taskNumber = getTasksByClientIdAndStatus(param, projects, tasks, _id)
-
+const ClientTasksCounter: FC<ITaskNumber> = ({ title, param, count }) => {
   return (
     <div className="task-number-card">
       <Typography
@@ -26,11 +13,9 @@ const ClientTaskNumberCard: FC<ITaskNumber> = ({
       >
         {title}
       </Typography>
-      <Typography className="task-number">
-        {taskNumber}
-      </Typography>
+      <Typography className="task-number">{count}</Typography>
     </div>
   );
 };
 
-export default ClientTaskNumberCard;
+export default ClientTasksCounter;

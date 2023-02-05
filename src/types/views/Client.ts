@@ -25,15 +25,17 @@ export interface IClientHeader {
 }
 export interface ITaskCounterContainer {
   id: string | undefined;
+  shared: number;
+  inProgress: number;
+  done: number;
 }
 export interface ITaskNumber {
   title: string;
   param: Status;
-  _id: string | undefined;
+  count?: number;
 }
 export interface IProjectCounterContainer {
   done?: string | number;
-  client: IClient;
   inProgressProject?: number | string;
 }
 export interface IProjectNumber {

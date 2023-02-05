@@ -82,7 +82,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
 
     onSortProjects: (state = projectsState, action: PayloadAction<any>) => {
       state.sorting = action.payload;
-      let projects = [...state.projects];
+      let projects = state.filteredProjects
+        ? [...state?.filteredProjects]
+        : [...state.projects];
       _.sortBy(projects, ["projectDeadline"], [action.payload]);
       state.projects = projects;
     },
@@ -511,7 +513,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         (item) => item._id === action.payload._id
       );
       if (state.filteredProjects && projectIndex2) {
-        console.log({ projectIndex, projectIndex2, project: action.payload });
         state.filteredProjects[projectIndex2] = action.payload;
       } else state.filteredProjects = state.projects;
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;

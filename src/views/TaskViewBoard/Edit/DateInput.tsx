@@ -4,10 +4,9 @@ import moment from "moment";
 import * as React from "react";
 import { Controller } from "react-hook-form";
 import { dataTimePickerInputStyle } from "src/coreUI/themes";
-import { getYesterdaysDate, notNullorFalsy } from "src/helpers/generalUtils";
+import { notNullorFalsy } from "src/helpers/generalUtils";
 import { IDateInputProps } from "src/types/components/Inputs";
 import IMAGES from "../../../assets/img/Images";
-import { validateDate } from "../../../services/validations/project.schema";
 
 const DateInput: React.FC<IDateInputProps> = ({
   control,
@@ -19,9 +18,9 @@ const DateInput: React.FC<IDateInputProps> = ({
   label,
   tempError,
   setUpdateDate,
-  dataTestId
+  dataTestId,
+  message,
 }) => {
-
   let error = state
     ? state.error.error?.details[0].path.includes(name)
     : tempError;
@@ -43,11 +42,6 @@ const DateInput: React.FC<IDateInputProps> = ({
                 closeOnSelect
                 value={props.field.value}
                 onChange={(e: any) => {
-                  validateDate(
-                    moment(e).toDate(),
-                    "Deadline has passed today's date",
-                    getYesterdaysDate()
-                  );
                   props.field.onChange(moment(e).toDate());
                 }}
                 leftArrowButtonText="arrow"

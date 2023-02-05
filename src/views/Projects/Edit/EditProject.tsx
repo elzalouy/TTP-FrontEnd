@@ -27,7 +27,7 @@ import {
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
-import { Project } from "src/types/models/Projects";
+import { DoneStatusList, Project } from "src/types/models/Projects";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
 import moment from "moment";
 
@@ -47,11 +47,6 @@ type FormState = {
   associateProjectManager: string;
 };
 const EditProjectStatus = ["Not Started", "In Progress", "Done"];
-const DoneStatusList = [
-  "delivered on time",
-  "delivered before deadline",
-  "delivered after deadline",
-];
 /**
  * Edit Project Comonent
  * Edit project form makes the user able to edit
@@ -154,17 +149,33 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         "Start Date should be inserted to move project to In progress or Done"
       );
     else {
-      console.log({ editData });
       const validate = validateEditProject(editData);
       if (!validate.error) {
         setState({ ...state, formData: editData });
-        if (
-          data.projectStatus === "Done" &&
-          project?.projectStatus &&
-          !DoneStatusList.includes(project?.projectStatus)
-        )
-          setState({ ...state, formData: editData, alertPopupDiplay: "flex" });
-        else dispatch(editProjectAction({ data: editData, setShow }));
+        switch (data.projectStatus) {
+          case "Done":
+            if (data.projectDeadline === "") {
+              ToastError(
+                "Project Deadline should be selected to move project to Done."
+              );
+              break;
+            }
+            if (
+              project?.projectStatus &&
+              !DoneStatusList.includes(project?.projectStatus)
+            ) {
+              setState({
+                ...state,
+                formData: editData,
+                alertPopupDiplay: "flex",
+              });
+              break;
+            } else dispatch(editProjectAction({ data: editData, setShow }));
+            break;
+          default:
+            dispatch(editProjectAction({ data: editData, setShow }));
+            break;
+        }
       } else ToastError(validate.error.details[0].message);
     }
   };

@@ -26,8 +26,8 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           (item) =>
             item.projectStatus &&
             ![
-              "deliver on time",
-              "deliver before deadline",
+              "delivered on time",
+              "delivered before deadline",
               "delivered after deadline",
             ].includes(item?.projectStatus) &&
             item.projectDeadline &&

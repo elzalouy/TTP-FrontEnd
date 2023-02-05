@@ -161,12 +161,12 @@ const ManagersList = () => {
               const { _id, name, email, verified, role } = cellData;
               let inProgress = project?.projects?.filter(
                 (item) =>
-                  item.projectManager?._id === _id &&
+                  item.projectManager === _id &&
                   item.projectStatus === "In Progress"
               )?.length;
               let done = project?.projects?.filter(
                 (item) =>
-                  item.projectManager?._id === _id &&
+                  item.projectManager === _id &&
                   (item.projectStatus === "delivered before deadline" ||
                     item.projectStatus === "delivered on time" ||
                     item.projectStatus === "delivered after deadline")

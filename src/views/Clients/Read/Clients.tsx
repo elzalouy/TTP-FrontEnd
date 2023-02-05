@@ -17,7 +17,6 @@ export const Clients = (props: any) => {
   const [search, setSearch] = useState<string>("");
   const role = useAppSelector(selectRole);
   const clientData = useAppSelector(selectFilteredClients);
-
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

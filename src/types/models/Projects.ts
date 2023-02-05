@@ -113,3 +113,9 @@ export type ProjectStatus =
   | "delivered on time"
   | "delivered before deadline"
   | "delivered after deadline";
+
+export const DoneStatusList = [
+  "delivered on time",
+  "delivered before deadline",
+  "delivered after deadline",
+];

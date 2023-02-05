@@ -50,17 +50,36 @@ export const selectProjectOptions = (state: RootState) => {
 };
 
 export const selectDoneProjects = (state: RootState) =>
-  state?.projects?.filteredProjects?.filter(
-    (item) =>
-      item.projectStatus === "delivered on time" ||
-      item.projectStatus === "delivered before deadline" ||
-      item.projectStatus === "delivered after deadline" ||
-      item.projectStatus === "late"
-  );
+  state?.projects?.filteredProjects
+    ?.filter(
+      (item) =>
+        item.projectStatus === "delivered on time" ||
+        item.projectStatus === "delivered before deadline" ||
+        item.projectStatus === "delivered after deadline" ||
+        item.projectStatus === "late"
+    )
+    .sort((a, b) =>
+      state.projects.sorting === "asc"
+        ? new Date(a.projectDeadline) < new Date(b.projectDeadline)
+          ? -1
+          : 1
+        : new Date(a.projectDeadline) < new Date(b.projectDeadline)
+        ? 1
+        : -1
+    );
+
 export const selectNotStartedProjects = (state: RootState) =>
-  state?.projects?.filteredProjects?.filter(
-    (item) => item.projectStatus === "Not Started"
-  );
+  state?.projects?.filteredProjects
+    ?.filter((item) => item.projectStatus === "Not Started")
+    .sort((a, b) =>
+      state.projects.sorting === "asc"
+        ? new Date(a.projectDeadline) < new Date(b.projectDeadline)
+          ? -1
+          : 1
+        : new Date(a.projectDeadline) < new Date(b.projectDeadline)
+        ? 1
+        : -1
+    );
 
 export const selectLateProjects = (state: RootState) =>
   state?.projects?.filteredProjects?.filter(
