@@ -254,34 +254,35 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                     href={image.url}
                                     className="login-link"
                                     target="_blank"
+                                    rel="noreferrer"
                                   >
                                     you are not authorized on trelloId to see
                                     this attachment. Click here to sign in first
                                   </a>
                                 </div>
                               );
-                            return (
-                              <SwiperSlide
-                                key={index}
-                                className={`swiper-slide`}
-                              >
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    borderRadius: 8,
-                                    marginTop: "10px",
-                                  }}
-                                  referrerPolicy="origin"
-                                  onError={(e) => {
-                                    setImageError(index);
-                                  }}
-                                  srcSet={image?.url + "/?"}
-                                  src={image?.url + "/?"}
-                                  alt="more"
-                                />
-                              </SwiperSlide>
-                            );
+                            else
+                              return (
+                                <SwiperSlide
+                                  key={index}
+                                  className={`swiper-slide`}
+                                >
+                                  <img
+                                    style={{
+                                      width: "100%",
+                                      height: 120,
+                                      borderRadius: 8,
+                                      marginTop: "10px",
+                                    }}
+                                    onError={(e) => {
+                                      e.preventDefault();
+                                      setImageError(index);
+                                    }}
+                                    src={image?.url + "/?"}
+                                    alt="more"
+                                  />
+                                </SwiperSlide>
+                              );
                           })}
                         </>
 
