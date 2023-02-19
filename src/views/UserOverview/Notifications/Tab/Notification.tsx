@@ -13,15 +13,28 @@ type NotificationProps = {
   index: number;
   arrayLength: number;
 };
-
-const Notification = ({ item, index, arrayLength }: NotificationProps) => {
-  const projects = useAppSelector(selectAllProjects);
+type LinkProps = {
+  id: String | null;
+};
+const LinkContainer = (props: React.PropsWithChildren<LinkProps>) => {
   return (
     <>
-      <Link
-        to={`/TasksBoard/${item.projectId}`}
-        style={{ textDecoration: "none" }}
-      >
+      {props.id ? (
+        <Link style={{ textDecoration: "none" }} to={`/TasksBoard/${props.id}`}>
+          {props.children}
+        </Link>
+      ) : (
+        props.children
+      )}
+    </>
+  );
+};
+const Notification = ({ item, index, arrayLength }: NotificationProps) => {
+  const projects = useAppSelector(selectAllProjects);
+  console.log({ item });
+  return (
+    <>
+      <LinkContainer id={item.projectId}>
         <Box
           key={item._id}
           sx={cssNotiBox}
@@ -44,7 +57,7 @@ const Notification = ({ item, index, arrayLength }: NotificationProps) => {
             </Typography>
           </Box>
         </Box>
-      </Link>
+      </LinkContainer>
     </>
   );
 };
