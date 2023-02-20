@@ -245,7 +245,7 @@ export const downloadTasks = createAsyncThunk<any, any, any>(
         return rejectWithValue("Un Authorized");
       }
       if (downloadResult.ok) {
-        let navigator = window.open(
+        window.open(
           `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`,
           "_self"
         );
