@@ -274,6 +274,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                       borderRadius: 8,
                                       marginTop: "10px",
                                     }}
+                                    onLoad={(e) => {
+                                      e.preventDefault();
+                                    }}
                                     onError={(e) => {
                                       e.preventDefault();
                                       setImageError(index);
