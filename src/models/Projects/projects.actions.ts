@@ -245,8 +245,9 @@ export const downloadTasks = createAsyncThunk<any, any, any>(
         return rejectWithValue("Un Authorized");
       }
       if (downloadResult.ok) {
-        window.open(
-          `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`
+        let navigator = window.open(
+          `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`,
+          "_self"
         );
         ToastSuccess("Tasks downloaded to your pc right now.");
       }
