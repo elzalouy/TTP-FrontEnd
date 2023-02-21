@@ -31,6 +31,7 @@ export interface IFilterProps {
   message?: string;
   dataTestId?: string;
   optionsType?: "list" | "dialog" | "date-picker";
+  removeAllOption?: boolean;
 }
 
 export interface IOptions {
@@ -41,6 +42,7 @@ export interface IOptions {
   options: { id: string; value: string; text: string }[];
   setShow: any;
   dataTestId?: string;
+  removeAllOption?: boolean;
 }
 
 export interface ISearch {
