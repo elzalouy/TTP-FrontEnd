@@ -10,6 +10,7 @@ const Options: React.FC<IOptions> = ({
   elementType,
   options,
   setShow,
+  removeAllOption,
   dataTestId,
 }) => {
   const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
@@ -27,7 +28,7 @@ const Options: React.FC<IOptions> = ({
           options && options?.length > 6 ? "options scroll" : "options"
         }
       >
-        {elementType === "filter" && (
+        {!removeAllOption && elementType === "filter" && (
           <li className="option" value={""} id="" onClick={onSelect}>
             All
           </li>

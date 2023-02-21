@@ -187,6 +187,7 @@ const Select = (props: IFilterProps) => {
         )}
         {props.optionsType === "list" && (
           <ListOptions
+            removeAllOption={props.removeAllOption}
             setShow={state.open === "none" ? onOpen : onClose}
             selectRef={selectRef}
             display={typeof state.open === "string" ? state.open : "none"}
