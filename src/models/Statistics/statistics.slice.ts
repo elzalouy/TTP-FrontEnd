@@ -66,7 +66,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           (item) =>
             item.deadline &&
             isCloseToDeadline(item.deadline, item.start, 25) &&
-            !["Done", "In Progress"].includes(item.status)
+            !["Done", "Cancled"].includes(item.status)
         );
         state.OM.inProgress = inprogress;
       } else {
