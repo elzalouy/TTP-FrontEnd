@@ -24,8 +24,8 @@ const Button: FC<IButton> = ({
       form={form?.name ? form.name : ""}
       data-test-id={dataTestId}
       className={disabled ? disabledClassName : className}
-      style={{ ...style }}
       disabled={loading ? loading : false}
+      style={{ ...style }}
     >
       {loading ? <CircularProgress className="button-loading" /> : label}
     </button>

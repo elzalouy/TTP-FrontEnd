@@ -72,12 +72,13 @@ const AppDrawer = (props: any) => {
           overflow: "hidden",
           position: "inherit",
           display: { xs: "none", sm: "none", lg: "block", md: "block" },
-          width: open ? (LG ? "20%" : "16%") : `calc(2% + 1px)`,
+          width: open ? "16%" : "4%",
           flexShrink: 0,
           transition: " all 0.5s ease !important",
           marginRight: open ? 0 : 5,
           "& .MuiDrawer-paper": {
-            width: open ? (LG ? "20%" : "16%") : "4%",
+            overflow: "hidden",
+            width: open ? "16%" : "4%",
             transition: "all 0.5s ease !important",
           },
           zIndex: 3,
@@ -85,7 +86,12 @@ const AppDrawer = (props: any) => {
         open={open}
         variant="permanent"
       >
-        <List sx={{ height: "90%", overflowX: "scroll" }}>
+        <List
+          sx={{
+            height: "90%",
+            overflowY: "scroll",
+          }}
+        >
           <DrawerHeader
             sx={{
               justifyContent: open ? "space-between" : "center",
@@ -102,7 +108,7 @@ const AppDrawer = (props: any) => {
             <DrawerItem
               {...props}
               select={props.select}
-              open={props.open}
+              open={open}
               key="9"
               onClick={() => history.push("/Statistics")}
               path={"/Statistics"}

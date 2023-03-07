@@ -28,7 +28,7 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
         <ListItemIcon
           sx={{
             minWidth: 0,
-            mr: 3,
+            mr: props.open ? 3 : 0,
             justifyContent: "center",
           }}
         >
@@ -40,22 +40,24 @@ const DrawerItem: React.FC = ({ Icon, ...props }: any) => {
             <>{Icon && <Icon />}</>
           )}
         </ListItemIcon>
-        <ListItemText
-          sx={{
-            color: props.select.includes(props.path) ? "white" : "#808191",
-            ":hover": {
-              color: "#FFF",
-            },
-          }}
-        >
-          <Typography
-            fontWeight={props.select.includes(props.path) ? "600" : "500"}
-            fontSize={14}
-            paddingLeft={"0px"}
+        {props.open && (
+          <ListItemText
+            sx={{
+              color: props.select.includes(props.path) ? "white" : "#808191",
+              ":hover": {
+                color: "#FFF",
+              },
+            }}
           >
-            {props.text}
-          </Typography>
-        </ListItemText>
+            <Typography
+              fontWeight={props.select.includes(props.path) ? "600" : "500"}
+              fontSize={14}
+              paddingLeft={"0px"}
+            >
+              {props.text}
+            </Typography>
+          </ListItemText>
+        )}
       </ListItemButton>
     </Link>
   );
