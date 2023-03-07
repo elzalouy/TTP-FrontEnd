@@ -64,7 +64,9 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.OM.shared = setTasksToArrays(shared);
         state.OM.tasksCloseToDeadline = tasks.filter(
           (item) =>
-            item.deadline && isCloseToDeadline(item.deadline, item.start, 25)
+            item.deadline &&
+            isCloseToDeadline(item.deadline, item.start, 25) &&
+            !["Done", "In Progress"].includes(item.status)
         );
         state.OM.inProgress = inprogress;
       } else {
