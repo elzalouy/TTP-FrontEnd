@@ -1,4 +1,4 @@
-import { Grid, IconButton, Typography } from "@mui/material";
+import { Badge, Grid, IconButton, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import * as React from "react";
@@ -51,6 +51,16 @@ interface IState {
   projectManagersOptions: Options;
   openFilter: boolean;
 }
+const defaultValues = {
+  projectId: "",
+  name: "",
+  projectManager: "",
+  status: "",
+  clientId: "",
+  start: "",
+  end: "",
+  category: "",
+};
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
@@ -60,16 +70,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const [selects, setAllSelected] = React.useState<string[]>([]);
 
   const { watch, control, setValue, reset } = useForm({
-    defaultValues: {
-      projectId: "",
-      name: "",
-      projectManager: "",
-      status: "",
-      clientId: "",
-      start: "",
-      end: "",
-      category: "",
-    },
+    defaultValues: defaultValues,
   });
   const [state, setState] = React.useState<IState>({
     tasks: projects.allTasks,
@@ -248,25 +249,49 @@ export const TasksListView: React.FC<Props> = (props) => {
               )}
             </Grid>
             <Grid item>
-              <Box
-                onClick={() => setState({ ...state, filter: !state.filter })}
-                textAlign={"center"}
-                sx={{
-                  bgcolor: state.filter ? "black" : "white",
-                  borderRadius: 3,
-                  paddingTop: 1.2,
-                  float: "right",
-                  cursor: "pointer",
-                }}
-                width={38}
-                height={38}
-              >
-                <img
-                  src={
-                    state.filter ? IMAGES.filtericonwhite : IMAGES.filtericon
-                  }
-                  alt="FILTER"
-                />
+              <Box>
+                {projects.allTasks === state.tasks ? (
+                  <IconButton
+                    disableRipple
+                    onClick={() =>
+                      setState({ ...state, filter: !state.filter })
+                    }
+                    sx={filterBtnStyle}
+                  >
+                    <img
+                      src={
+                        state.filter
+                          ? IMAGES.filtericonwhite
+                          : IMAGES.filtericon
+                      }
+                      alt="FILTER"
+                    />
+                  </IconButton>
+                ) : (
+                  <Badge
+                    overlap="circular"
+                    badgeContent=""
+                    variant="dot"
+                    color="warning"
+                  >
+                    <IconButton
+                      disableRipple
+                      onClick={() =>
+                        setState({ ...state, filter: !state.filter })
+                      }
+                      sx={filterBtnStyle}
+                    >
+                      <img
+                        src={
+                          state.filter
+                            ? IMAGES.filtericonwhite
+                            : IMAGES.filtericon
+                        }
+                        alt="FILTER"
+                      />
+                    </IconButton>
+                  </Badge>
+                )}
               </Box>
             </Grid>
           </Grid>
@@ -313,4 +338,14 @@ export const TasksListView: React.FC<Props> = (props) => {
       />
     </Grid>
   );
+};
+const filterBtnStyle = {
+  bgcolor: "white",
+  borderRadius: 3,
+  paddingTop: 1.2,
+  float: "right",
+  cursor: "pointer",
+  width: "38px",
+  height: "38px",
+  textAlign: "center",
 };

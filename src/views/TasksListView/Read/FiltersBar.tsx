@@ -1,4 +1,11 @@
-import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Drawer,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { useAppSelector } from "src/models/hooks";
 import { selectClientOptions } from "src/models/Clients";
@@ -88,7 +95,8 @@ const FiltersBar = ({
             Filter Tasks
           </Typography>
           <Box
-            style={{ height: "35px", width: "35px", padding: "0 10px" }}
+            mr={1}
+            style={{ height: "32px", width: "32px", padding: "0 10px" }}
             className="filter-icon"
           >
             <IconButton disableRipple onClick={clearFilters}>
