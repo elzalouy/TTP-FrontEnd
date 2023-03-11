@@ -21,6 +21,7 @@ import { selectTasks } from "src/models/Projects";
 import { IProjectsTableProps } from "src/types/components/Table";
 import "src/App/App.css";
 import { selectManagers } from "src/models/Managers";
+import { selectAllClients } from "src/models/Clients";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const classes = projectsTableStyle(props.status)();
@@ -28,6 +29,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
   const allTasks = useAppSelector(selectTasks);
   const PMs = useAppSelector(selectManagers);
+  const clients = useAppSelector(selectAllClients);
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -134,7 +136,8 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                     {project?.name}
                   </Typography>
                   <Typography variant={"h5"} fontSize={14} color="#696974">
-                    {project.projectManagerName}
+                    {clients.find((item) => item._id === project.clientId)
+                      ?.clientName ?? project.projectManagerName}
                   </Typography>
                   {project.associateProjectManager &&
                     project.associateProjectManager?.length > 0 && (

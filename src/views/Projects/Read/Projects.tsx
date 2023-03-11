@@ -5,41 +5,50 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { RouteComponentProps } from "react-router";
 import Filter from "src/coreUI/components/Inputs/SelectFields/Select";
 import { filterOptions } from "src/helpers/generalUtils";
 import { IProjectsPage, Project } from "src/types/models/Projects";
 import IMAGES from "../../../assets/img/Images";
 import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
 import SearchBox from "../../../coreUI/components/Inputs/Search/SearchBox";
-import Loading from "../../../coreUI/components/Loading/Loading";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { selectClientOptions } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions, selectManagers } from "../../../models/Managers";
-import {
-  filterProjects,
-  ProjectsActions,
-  selectDoneProjects,
-  selectInprogressProjects,
-  selectLoading,
-} from "../../../models/Projects";
+import { ProjectsActions, selectAllProjects } from "../../../models/Projects";
 import CreateNewProject from "./NotStartedProjects";
 import EditProject from "../Edit/EditProject";
 import DeleteProject from "../Delete/DeleteProject";
+import { selectUser } from "src/models/Auth";
 
 export const Projects: React.FC<IProjectsPage> = (props) => {
   const dispatch = useDispatch();
-  const inProgressProjects = useAppSelector(selectInprogressProjects);
-  const doneProjects = useAppSelector(selectDoneProjects);
+
+  const [state, setState] = useState<{
+    inProgressProjects: Project[];
+    doneProjects: Project[];
+    projects: Project[];
+  }>({ inProgressProjects: [], doneProjects: [], projects: [] });
+
+  const projects = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectManagers);
   const pmOptions = useAppSelector(selectPMOptions);
   const clientOptions = useAppSelector(selectClientOptions);
+  const user = useAppSelector(selectUser);
   const [expanded, setExpanded] = useState<boolean>(true);
   const [doneExpanded, setDoneExpanded] = useState<boolean>(true);
   const [filter, setFilter] = useState(true);
   const backgroundColor = ["#FFC5001A", "#00ACBA1A", "#b5b5be"];
-  const { watch, control, setValue, getValues } = useForm();
+  const { watch, control, setValue, getValues } = useForm({
+    defaultValues: {
+      name: "",
+      clientId: "",
+      projectManager: "",
+      projectStatus: "",
+      deadline: "",
+    },
+  });
+
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const LG = useMediaQuery(theme.breakpoints.up("md"));
@@ -57,21 +66,62 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     }
   }, [MD]);
 
+  useEffect(() => {
+    let isPm = user?.role === "PM";
+    if (isPm) setValue("projectManager", user?._id ?? "");
+    onHandleChange();
+  }, [user, projects.projects]);
+
   const onHandleChange = () => {
-    let filter = {
-      name: getValues().name,
-      clientId: getValues().clientId,
-      projectManager: getValues().projectManager,
-      projectStatus: getValues().projectStatus,
-    };
-    dispatch(filterProjects(filter));
+    let filter = watch();
+    let allProjects = projects.projects;
+    if (filter.name !== "") {
+      allProjects = allProjects.filter((item) =>
+        item.name.toLowerCase().includes(filter.name?.toString().toLowerCase())
+      );
+    }
+
+    if (filter.clientId !== "") {
+      allProjects = allProjects.filter(
+        (item) => item.clientId === filter.clientId
+      );
+    }
+
+    if (filter.projectManager !== "")
+      allProjects = allProjects.filter(
+        (item) => item.projectManager === filter.projectManager
+      );
+    if (filter.projectStatus !== "")
+      allProjects = allProjects.filter(
+        (item) => item.projectStatus === filter.projectStatus
+      );
+    let done = allProjects.filter((item) =>
+      [
+        "delivered on time",
+        "delivered before deadline",
+        "delivered after deadline",
+        "late",
+      ].includes(item.projectStatus)
+    );
+    let inProgress = allProjects.filter(
+      (item) => item.projectStatus === "In Progress"
+    );
+
+    setState({
+      projects: allProjects,
+      inProgressProjects: [...inProgress],
+      doneProjects: [...done],
+    });
   };
 
   const onHandleSort = (e: any) => {
     dispatch(ProjectsActions.onSortProjects(getValues().deadline));
   };
 
-  const onChange = (e: any, name: string) => {
+  const onChange = (
+    e: any,
+    name: "name" | "clientId" | "projectManager" | "projectStatus" | "deadline"
+  ) => {
     e.preventDefault();
     setValue(name, e.target.id);
     onHandleChange();
@@ -352,7 +402,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   textSize="medium"
                   status={"In progress"}
                   expanded={expanded}
-                  projects={inProgressProjects}
+                  projects={state.inProgressProjects}
                   projectManagers={PMs}
                   editProject={onEditProject}
                   deleteProject={onDeleteProject}
@@ -373,7 +423,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   textSize="medium"
                   status={"Done"}
                   expanded={doneExpanded}
-                  projects={doneProjects}
+                  projects={state.doneProjects}
                   projectManagers={PMs}
                   editProject={onEditProject}
                   deleteProject={onDeleteProject}

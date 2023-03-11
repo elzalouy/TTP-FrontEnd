@@ -232,8 +232,6 @@ export const filterOptions = [
       value: "delivered after deadline",
       text: "Delivered late",
     },
-
-    { id: "late", value: "late", text: "Delivered late" },
     { id: "In Progress", value: "In Progress", text: "In Progress" },
   ],
 ];
