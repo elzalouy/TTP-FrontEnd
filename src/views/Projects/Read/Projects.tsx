@@ -28,7 +28,13 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     inProgressProjects: Project[];
     doneProjects: Project[];
     projects: Project[];
-  }>({ inProgressProjects: [], doneProjects: [], projects: [] });
+    notStarted: Project[];
+  }>({
+    inProgressProjects: [],
+    doneProjects: [],
+    projects: [],
+    notStarted: [],
+  });
 
   const projects = useAppSelector(selectAllProjects);
   const PMs = useAppSelector(selectManagers);
@@ -106,11 +112,14 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     let inProgress = allProjects.filter(
       (item) => item.projectStatus === "In Progress"
     );
-
+    let notStarted = allProjects.filter(
+      (item) => item.projectStatus === "Not Started"
+    );
     setState({
       projects: allProjects,
       inProgressProjects: [...inProgress],
       doneProjects: [...done],
+      notStarted: [...notStarted],
     });
   };
 
@@ -384,9 +393,9 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
           }}
         >
           <CreateNewProject
+            projects={state.notStarted}
             editProject={onEditProject}
             deleteProject={onDeleteProject}
-            {...props}
           />
           <>
             <TableBox

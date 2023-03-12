@@ -2,38 +2,27 @@ import React, { useState } from "react";
 import "../Create/createNewProject.css";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "src/models/hooks";
-import {
-  selectNotStartedProjects,
-  selectLoading,
-  deleteProject,
-} from "src/models/Projects";
-import { selectNewProject } from "src/models/Projects/projects.selectors";
 import { useDispatch } from "react-redux";
 import IMAGES from "src/assets/img/Images";
 import { toggleCreateProjectPopup } from "src/models/Ui";
-import Loading from "src/coreUI/components/Loading/Loading";
 import TableBox from "src/coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "src/coreUI/components/Tables/ProjectsTable";
 import { selectManagers } from "src/models/Managers";
-import { RouteComponentProps } from "react-router";
 import "./projects.css";
+import { Project } from "src/types/models/Projects";
+import { CreateProjectContainerStyles } from "./styles";
 
 type Props = {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
   editProject: any;
   deleteProject: any;
+  projects: Project[];
 };
 
 const CreateNewProject: React.FC<Props> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(true);
+  const style = CreateProjectContainerStyles(props);
   const dispatch = useDispatch();
-  const loading = useAppSelector(selectLoading);
-  const notStartedProjects = useAppSelector(selectNotStartedProjects);
   const PMs = useAppSelector(selectManagers);
-  const newProject = useAppSelector(selectNewProject);
-
   const setShow = (value: string) => {
     dispatch(toggleCreateProjectPopup(value));
   };
@@ -46,50 +35,26 @@ const CreateNewProject: React.FC<Props> = (props) => {
       setExpanded={setExpanded}
       bgColor={"#F1F1F4"}
     >
-      <Box
-        id="project-container"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          flexDirection: "column",
-          width: "100%",
-          borderRadius: "12px",
-          backgroundColor: "#F1F1F4",
-          py: 1,
-          px: 0,
-          mb: notStartedProjects?.length === 0 ? 1 : 4,
-          font: "normal normal 600 16px/30px Cairo",
-          color: "#505050",
-        }}
-      >
+      <Box id="project-container" sx={style.notStartedContainer}>
         <div className="create-button-table-wrapper">
           <ProjectsTable
             dataTestIdQuote="NotStarted-projects-"
             align="center"
             textSize="medium"
             status={"Not Started"}
-            condition={notStartedProjects?.length === 0 ? true : false}
+            condition={props.projects?.length === 0 ? true : false}
             expanded={expanded}
-            projects={notStartedProjects}
             projectManagers={PMs}
-            {...props}
+            projects={props.projects}
+            deleteProject={props.deleteProject}
+            editProject={props.editProject}
           />
         </div>
         <Box
           onClick={() => {
             setShow("flex");
           }}
-          sx={{
-            backgroundColor: "#E8E8E8",
-            border: "1px solid #9FA1AB",
-            borderRadius: "10px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-            py: 1,
-            my: 1,
-          }}
+          sx={style.createProjectBtn}
           data-test-id="create-project"
         >
           <img

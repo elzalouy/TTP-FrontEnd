@@ -3,7 +3,7 @@ import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../../../coreUI/themes/Styles";
 import IMAGES from "../../../assets/img/Images";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import {
   openDeleteProjectPopup,
@@ -18,14 +18,13 @@ interface Props {
   project: Project;
   editProject: any;
   deleteProject: any;
-  history: RouteComponentProps["history"];
 }
 
 //SX Styles Object
 
 const ProjectPopover: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const role = useAppSelector(selectRole);
 
   const styles = popOverStyle()();
@@ -78,9 +77,7 @@ const ProjectPopover: React.FC<Props> = (props) => {
       >
         <Box display={"grid"} padding={1}>
           <Button
-            onClick={() =>
-              props.history.push(`/TasksBoard/${props.project._id}`)
-            }
+            onClick={() => history.push(`/TasksBoard/${props.project._id}`)}
             variant="text"
             className={styles.grayButton}
           >

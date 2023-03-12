@@ -13,9 +13,6 @@ export interface IProjectsTableProps {
   editProject: any;
   deleteProject: any;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
   dataTestIdQuote?: string;
 }
 

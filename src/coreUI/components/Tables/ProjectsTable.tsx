@@ -22,8 +22,10 @@ import { IProjectsTableProps } from "src/types/components/Table";
 import "src/App/App.css";
 import { selectManagers } from "src/models/Managers";
 import { selectAllClients } from "src/models/Clients";
+import { useHistory } from "react-router";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
+  const history = useHistory();
   const classes = projectsTableStyle(props.status)();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -117,9 +119,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                     cursor: "pointer",
                     borderColor: setBorder(project),
                   }}
-                  onClick={() =>
-                    props.history.push(`/TasksBoard/${project._id}`)
-                  }
+                  onClick={() => history.push(`/TasksBoard/${project._id}`)}
                 >
                   <Typography
                     data-test-id={`projects-row-name-${project._id}`}
@@ -152,9 +152,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                     )}
                 </TableCell>
                 <TableCell
-                  onClick={() =>
-                    props.history.push(`/TasksBoard/${project._id}`)
-                  }
+                  onClick={() => history.push(`/TasksBoard/${project._id}`)}
                   sx={{
                     cursor: "pointer",
                     borderColor: setBorder(project),
@@ -182,9 +180,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell
-                  onClick={() =>
-                    props.history.push(`/TasksBoard/${project._id}`)
-                  }
+                  onClick={() => history.push(`/TasksBoard/${project._id}`)}
                   sx={{
                     cursor: "pointer",
                     borderColor: setBorder(project),
@@ -217,9 +213,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   )}
                 </TableCell>
                 <TableCell
-                  onClick={() =>
-                    props.history.push(`/TasksBoard/${project._id}`)
-                  }
+                  onClick={() => history.push(`/TasksBoard/${project._id}`)}
                   sx={{
                     cursor: "pointer",
                     borderColor: setBorder(project),
@@ -251,9 +245,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                 </TableCell>
                 {props.status === "Done" && (
                   <TableCell
-                    onClick={() =>
-                      props.history.push(`/TasksBoard/${project._id}`)
-                    }
+                    onClick={() => history.push(`/TasksBoard/${project._id}`)}
                     sx={{
                       cursor: "pointer",
                       borderColor: setBorder(project),
