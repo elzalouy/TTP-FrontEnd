@@ -273,7 +273,10 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                       borderRadius: 8,
                                       marginTop: "10px",
                                     }}
-                                    onError={() => setImageError(index)}
+                                    onError={({ currentTarget }) => {
+                                      currentTarget.onerror = null;
+                                      setImageError(index);
+                                    }}
                                     src={image?.url + "/?"}
                                     alt="more"
                                   />
