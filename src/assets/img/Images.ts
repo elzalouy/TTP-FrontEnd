@@ -66,6 +66,7 @@ const IMAGES = {
   OverviewCloseToDeadlineEmpty: require("./Overview/OverviewCloseToDeadlineEmpty.png"),
   OvervieCloseProjectsEmpty: require("./Overview/OvervieCloseProjectsEmpty.png"),
   OverviewNotificationsEmpty: require("./Overview/OverviewNotificationsEmpty.png"),
+  notFoundImage: require("./Overview/notFoundImg.png"),
 };
 
 export default IMAGES;

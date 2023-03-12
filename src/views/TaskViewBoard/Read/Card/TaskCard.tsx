@@ -29,7 +29,7 @@ import "swiper/css/navigation";
 import "./taskCard.css";
 import TaskFiles from "./TaskFiles";
 import { useLocation } from "react-router";
-
+import notFoundImg from "src/assets/img/Overview/DrawKit Larry Character Illustration (1).png";
 interface TaskCartProps {
   index: number;
   item: Task;
@@ -46,11 +46,9 @@ const TaskCard: React.FC<TaskCartProps> = ({
   footerStyle,
 }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigationPrevRef = React.useRef(null);
   const navigationNextRef = React.useRef(null);
   const departments = useAppSelector(selectAllDepartments);
-  const allTasks = useAppSelector(selectTasks);
   const uploadingFiles = useAppSelector(selectUploadLoading);
   const { _id, name, deadline, status, boardId } = item;
   const [data, setData] = useState<
@@ -146,6 +144,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
     let images = [...taskImages];
     let img = { ...images[index] };
     img.error = true;
+    // img.url = IMAGES.notFoundImage;
     images[index] = img;
     setTaskImages([...images]);
   };
@@ -274,13 +273,7 @@ const TaskCard: React.FC<TaskCartProps> = ({
                                       borderRadius: 8,
                                       marginTop: "10px",
                                     }}
-                                    onLoad={(e) => {
-                                      e.preventDefault();
-                                    }}
-                                    onError={(e) => {
-                                      e.preventDefault();
-                                      setImageError(index);
-                                    }}
+                                    onError={() => setImageError(index)}
                                     src={image?.url + "/?"}
                                     alt="more"
                                   />
@@ -301,7 +294,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
                       </Swiper>
                     </>
                   )}
-                  {/* stack files */}
                   <TaskFiles taskFiles={taskFiles} cardId={item.cardId} />
                 </>
               )}
