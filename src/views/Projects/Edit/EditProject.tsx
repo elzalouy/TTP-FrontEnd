@@ -140,14 +140,6 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
 
     editData.startDate =
       data.startDate !== "" ? new Date(data.startDate).toDateString() : null;
-    editData.projectStatus =
-      editData.projectStatus === "Not Started" && editData.startDate
-        ? "In Progress"
-        : "Not Started";
-    editData.projectStatus =
-      editData.projectStatus !== "Not Started" && !editData.startDate
-        ? "Not Started"
-        : editData.projectStatus;
     const validate = validateEditProject(editData);
     if (!validate.error) {
       setState({ ...state, formData: editData });
