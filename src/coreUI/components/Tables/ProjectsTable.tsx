@@ -136,8 +136,8 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                     {project?.name}
                   </Typography>
                   <Typography variant={"h5"} fontSize={14} color="#696974">
-                    {clients.find((item) => item._id === project.clientId)
-                      ?.clientName ?? project.projectManagerName}
+                    {PMs.find((item) => item._id === project.projectManager)
+                      ?.name ?? project.projectManagerName}
                   </Typography>
                   {project.associateProjectManager &&
                     project.associateProjectManager?.length > 0 && (

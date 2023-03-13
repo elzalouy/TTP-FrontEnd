@@ -95,12 +95,15 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
 
     if (filter.projectManager !== "")
       allProjects = allProjects.filter(
-        (item) => item.projectManager === filter.projectManager
+        (item) =>
+          item.projectManager === filter.projectManager ||
+          item.associateProjectManager === filter.projectManager
       );
     if (filter.projectStatus !== "")
       allProjects = allProjects.filter(
         (item) => item.projectStatus === filter.projectStatus
       );
+
     let done = allProjects.filter((item) =>
       [
         "delivered on time",
