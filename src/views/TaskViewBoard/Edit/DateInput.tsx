@@ -83,7 +83,7 @@ const DateInput: React.FC<IDateInputProps> = ({
                             setUpdateDate(true);
                           }
 
-                          setValue(name, null);
+                          setValue(name, "");
                           /* I have replaced the "deadline" with name to make this function dynamic for all use case */
                         }}
                       />

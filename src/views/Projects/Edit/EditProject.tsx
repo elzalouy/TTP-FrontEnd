@@ -10,26 +10,14 @@ import { validateEditProject } from "src/services/validations/project.schema";
 import DateInput from "src/views/TaskViewBoard/Edit/DateInput";
 import IMAGES from "../../../assets/img/Images";
 import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
-import {
-  selectClientDialogData,
-  selectClientOptions,
-} from "../../../models/Clients";
+import { selectClientDialogData } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
-import {
-  Manager,
-  selectPMOptions,
-  selectManagers,
-} from "../../../models/Managers";
-import {
-  editProject as editProjectAction,
-  selectEditProject,
-  selectProjectStatusOptions,
-} from "../../../models/Projects";
+import { selectPMOptions } from "../../../models/Managers";
+import { editProject as editProjectAction } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import { DoneStatusList, Project } from "src/types/models/Projects";
 import { ToastError } from "src/coreUI/components/Typos/Alert";
-import moment from "moment";
 
 type Props = {
   show: string;
@@ -87,9 +75,14 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   });
 
   useEffect(() => {
-    let State = { ...state };
+    let defaultStatus: {
+        id: string;
+        text: string;
+        value: string;
+      }[],
+      State = { ...state };
     if (project?._id) {
-      let defaultStatus = EditProjectStatus.map((item) => {
+      defaultStatus = EditProjectStatus.map((item) => {
         return { id: item, text: item, value: item };
       });
       State.status = project.startDate
@@ -108,7 +101,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           ? "Done"
           : project?.projectStatus,
         startDate: project?.startDate ? new Date(project?.startDate) : "",
-        projectManager: project?.projectManager?._id,
+        projectManager: project?.projectManager,
         projectDeadline: project.projectDeadline
           ? new Date(project.projectDeadline)
           : "",
@@ -144,40 +137,45 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           : data.projectStatus,
       deliveryDate: data.projectStatus === "Done" ? new Date(Date.now()) : null,
     };
-    if (["Done", "In Progress"].includes(data.projectStatus) && !data.startDate)
-      ToastError(
-        "Start Date should be inserted to move project to In progress or Done"
-      );
-    else {
-      const validate = validateEditProject(editData);
-      if (!validate.error) {
-        setState({ ...state, formData: editData });
-        switch (data.projectStatus) {
-          case "Done":
-            if (data.projectDeadline === "") {
-              ToastError(
-                "Project Deadline should be selected to move project to Done."
-              );
-              break;
-            }
-            if (
-              project?.projectStatus &&
-              !DoneStatusList.includes(project?.projectStatus)
-            ) {
-              setState({
-                ...state,
-                formData: editData,
-                alertPopupDiplay: "flex",
-              });
-              break;
-            } else dispatch(editProjectAction({ data: editData, setShow }));
+
+    editData.startDate =
+      data.startDate !== "" ? new Date(data.startDate).toDateString() : null;
+    editData.projectStatus =
+      editData.projectStatus === "Not Started" && editData.startDate
+        ? "In Progress"
+        : "Not Started";
+    editData.projectStatus =
+      editData.projectStatus !== "Not Started" && !editData.startDate
+        ? "Not Started"
+        : editData.projectStatus;
+    const validate = validateEditProject(editData);
+    if (!validate.error) {
+      setState({ ...state, formData: editData });
+      switch (data.projectStatus) {
+        case "Done":
+          if (data.projectDeadline === "") {
+            ToastError(
+              "Project Deadline should be selected to move project to Done."
+            );
             break;
-          default:
-            dispatch(editProjectAction({ data: editData, setShow }));
+          }
+          if (
+            project?.projectStatus &&
+            !DoneStatusList.includes(project?.projectStatus)
+          ) {
+            setState({
+              ...state,
+              formData: editData,
+              alertPopupDiplay: "flex",
+            });
             break;
-        }
-      } else ToastError(validate.error.details[0].message);
-    }
+          } else dispatch(editProjectAction({ data: editData, setShow }));
+          break;
+        default:
+          dispatch(editProjectAction({ data: editData, setShow }));
+          break;
+      }
+    } else ToastError(validate.error.details[0].message);
   };
 
   return (
@@ -294,7 +292,6 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               formLabel="Project manager"
               elementType="select"
               optionsType="dialog"
-              setValue={setValue}
               options={managers}
               dataTestId="edit-project-associatePM"
               onSelect={(e: any) => {
@@ -305,10 +302,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
                   AssociatePMs: managers.filter((item) => item.id !== e.id),
                 });
               }}
-              selected={
-                managers.find((item: any) => item.id === watch().projectManager)
-                  ?.id
-              }
+              selected={watch().projectManager}
             />
           </Grid>
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
@@ -322,11 +316,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               optionsType="dialog"
               setValue={setValue}
               dataTestId="edit-project-associatePM"
-              selected={
-                state.AssociatePMs.find(
-                  (item: any) => item.id === watch().associateProjectManager
-                )?.id
-              }
+              selected={watch().associateProjectManager}
               onSelect={(e: any) => {
                 setValue("associateProjectManager", e.id);
               }}
