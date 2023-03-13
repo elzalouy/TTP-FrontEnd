@@ -17,7 +17,7 @@ import { editProject as editProjectAction } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import { DoneStatusList, Project } from "src/types/models/Projects";
-import { ToastError } from "src/coreUI/components/Typos/Alert";
+import { ToastError, ToastWarning } from "src/coreUI/components/Typos/Alert";
 
 type Props = {
   show: string;
@@ -85,9 +85,12 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       defaultStatus = EditProjectStatus.map((item) => {
         return { id: item, text: item, value: item };
       });
-      State.status = project.startDate
-        ? [defaultStatus[1], defaultStatus[2]]
-        : State.status;
+      State.status =
+        project.projectStatus === "Not Started"
+          ? [defaultStatus[1]]
+          : project.projectStatus === "In Progress"
+          ? [defaultStatus[2]]
+          : [defaultStatus[1]];
       State.AssociatePMs = managers.filter(
         (item) => item.id !== project.projectManager?._id
       );
@@ -140,6 +143,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
 
     editData.startDate =
       data.startDate !== "" ? new Date(data.startDate).toDateString() : null;
+    if (editData.startDate === null && editData.projectStatus !== "Not Started")
+      ToastWarning("Start date should be a value, so you can move the project");
+    if (editData.startDate === null) editData.projectStatus = "Not Started";
     const validate = validateEditProject(editData);
     if (!validate.error) {
       setState({ ...state, formData: editData });
