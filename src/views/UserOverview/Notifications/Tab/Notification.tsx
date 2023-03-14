@@ -31,7 +31,6 @@ const LinkContainer = (props: React.PropsWithChildren<LinkProps>) => {
 };
 const Notification = ({ item, index, arrayLength }: NotificationProps) => {
   const projects = useAppSelector(selectAllProjects);
-  console.log({ item });
   return (
     <>
       <LinkContainer id={item.projectId}>

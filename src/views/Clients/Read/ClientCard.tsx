@@ -15,7 +15,6 @@ const ClientCard: React.FC<IClientCard> = ({ client }) => {
   const projectsIds = projectState.projects
     .filter((item) => item.clientId === _id)
     .map((item) => item._id);
-  console.log({ projectsIds });
   const shared = projectState.allTasks.filter(
     (item) => projectsIds.includes(item.projectId) && item.status === "Shared"
   ).length;
