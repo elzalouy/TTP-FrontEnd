@@ -10,9 +10,10 @@
   background-color: rgba(0, 0, 0, 0.3);
   align-items: center;
   z-index: 3;
+  transition: 0.5s all;
 }
 
-.open-popup{
+.open-popup {
   width: 96vw;
   left: 4%;
 }
@@ -29,7 +30,7 @@
 }
 
 .pop-up {
-  width: auto !important;
+  width: auto;
   background-color: white;
   padding: 20px;
   animation: zoomIn 0.3s;

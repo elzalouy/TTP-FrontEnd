@@ -35,7 +35,17 @@ export const getStatus = (status: string | undefined) => {
     return "Done";
   }
 };
+export const getDifBetweenDates = (start: Date, end: Date) => {
+  let d1 = start.getTime();
+  let d2 = end.getTime();
+  const diffInMs = Math.abs(d2 - d1);
+  const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
 
+  const years = Math.floor(diffInDays / 365);
+  const months = Math.floor((diffInDays % 365) / 30);
+  const days = Math.floor((diffInDays % 365) % 30);
+  return { years, months, days, diffInDays };
+};
 export const calculateStatusBasedOnDeadline = (data: any) => {
   if (![typeof data, data].includes("undefined" || "null")) {
     let formattedDeadline = format(new Date(data), "dd-mm-yyyy");

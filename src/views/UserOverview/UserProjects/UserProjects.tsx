@@ -21,12 +21,15 @@ const UserProjects: React.FC<Props> = (props) => {
     edit: string;
     delete: string;
     project?: Project;
-  }>({ edit: "none", delete: "none" });
+    details: string;
+  }>({ edit: "none", delete: "none", details: "none" });
 
   const onEditProject = (value: string, project: Project) =>
-    openForm({ delete: "none", edit: value, project });
+    openForm({ delete: "none", edit: value, project, details: "none" });
   const onDeleteProject = (value: string, project: Project) =>
-    openForm({ delete: value, edit: "none", project });
+    openForm({ delete: value, edit: "none", project, details: "none" });
+  const onOpenProjectDetails = (value: string, project: Project) =>
+    openForm({ delete: "none", edit: "none", project, details: value });
 
   return (
     <>
@@ -57,6 +60,7 @@ const UserProjects: React.FC<Props> = (props) => {
               status={"In progress"}
               expanded={true}
               projectManagers={PMs}
+              openDetails={onOpenProjectDetails}
               {...props}
             />
           )}

@@ -52,4 +52,6 @@ export interface IPopup {
   overFlowY?: overFlow;
   margin?: string;
   containerClassName?: string;
+  width?: string;
+  height?: string;
 }

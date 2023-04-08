@@ -96,18 +96,8 @@ const Notifications: React.FC<Props> = (props) => {
               },
             }}
           >
-            <Tab
-              value={"0"}
-              label="In Progress Tasks"
-              sx={cssTab("0")}
-              disableRipple={true}
-            />
-            <Tab
-              value={"1"}
-              label="Review Tasks"
-              sx={cssTab("1")}
-              disableRipple={true}
-            />
+            <Tab value={"0"} label="In Progress Tasks" sx={cssTab("0")} />
+            <Tab value={"1"} label="Review Tasks" sx={cssTab("1")} />
           </Tabs>
           <Box paddingBottom={!LG || open ? "30px" : 0}>
             {tabs?.map((tabItem, index) => {

@@ -20,6 +20,7 @@ import CreateNewProject from "./NotStartedProjects";
 import EditProject from "../Edit/EditProject";
 import DeleteProject from "../Delete/DeleteProject";
 import { selectUser } from "src/models/Auth";
+import ProjectDetails from "./Details/ProjectDetails";
 
 export const Projects: React.FC<IProjectsPage> = (props) => {
   const dispatch = useDispatch();
@@ -62,7 +63,8 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     edit: string;
     delete: string;
     project?: Project;
-  }>({ edit: "none", delete: "none" });
+    details: string;
+  }>({ edit: "none", delete: "none", details: "none" });
 
   useEffect(() => {
     if (MD) {
@@ -149,10 +151,26 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   };
 
   const onEditProject = (value: string, project?: Project) =>
-    openForm({ delete: "none", edit: value, project: project });
+    openForm({
+      delete: "none",
+      edit: value,
+      project: project,
+      details: "none",
+    });
   const onDeleteProject = (value: string, project?: Project) =>
-    openForm({ delete: value, edit: "none", project: project });
-
+    openForm({
+      delete: value,
+      edit: "none",
+      project: project,
+      details: "none",
+    });
+  const onOpenProjectDetails = (value: string, project?: Project) =>
+    openForm({
+      details: value,
+      edit: "none",
+      project: project,
+      delete: "none",
+    });
   return (
     <>
       <Grid
@@ -399,6 +417,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
             projects={state.notStarted}
             editProject={onEditProject}
             deleteProject={onDeleteProject}
+            openDetails={onOpenProjectDetails}
           />
           <>
             <TableBox
@@ -418,6 +437,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   projectManagers={PMs}
                   editProject={onEditProject}
                   deleteProject={onDeleteProject}
+                  openDetails={onOpenProjectDetails}
                   {...props}
                 />
               </Box>
@@ -439,6 +459,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   projectManagers={PMs}
                   editProject={onEditProject}
                   deleteProject={onDeleteProject}
+                  openDetails={onOpenProjectDetails}
                   {...props}
                 />
               </Box>
@@ -446,6 +467,11 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
           </>
         </Box>
       </Grid>
+      <ProjectDetails
+        show={forms.details}
+        project={forms.project}
+        setShow={onOpenProjectDetails}
+      />
       <EditProject
         project={forms.project}
         show={forms.edit}

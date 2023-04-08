@@ -3,7 +3,7 @@
   margin-bottom: 30px;
 }
 
-.container-popup>.popup {
+.container-popup > .popup {
   display: flex;
   justify-content: center;
   align-items: center;

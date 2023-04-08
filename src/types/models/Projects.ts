@@ -16,14 +16,9 @@ export interface Task {
   categoryId: string;
   subCategoryId: string;
   teamId: string;
-  countNotClear?: any;
-  countShared?: any;
   status: string;
   start: any;
   deadline?: any;
-  deliveryDate?: any;
-  done: any;
-  turnoverTime: any;
   attachedFiles: TaskFile[];
   attachedCard: string;
   listId: string;
@@ -31,12 +26,15 @@ export interface Task {
   boardId: string;
   file?: any;
   description: string;
-  lastMove?: string;
-  lastMoveDate?: string;
-  createdAt?: string;
+  createdAt: string;
   trelloShortUrl?: string;
   categoryName?: string;
   projectName?: string;
+  movements: TaskMovement[];
+}
+export interface TaskMovement {
+  status: string;
+  movedAt: Date;
 }
 
 export interface IProjectsPage {

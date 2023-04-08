@@ -29,21 +29,12 @@ export const isCloseToDeadline = (
 };
 export const setTasksToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
-    if (item?.lastMoveDate && item?.lastMove) {
-      let date = new Date(item?.lastMoveDate);
-      return new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      ).toDateString();
-    } else if (item?.createdAt) {
-      let date = new Date(item?.createdAt);
-      return new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      ).toDateString();
-    }
+    let date = new Date(item?.createdAt);
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    ).toDateString();
   });
   dates = _.uniq(dates);
   let sortedTasks: Task[][] | any = dates.map((Item) => {
@@ -53,23 +44,13 @@ export const setTasksToArrays = (tasks: Task[]) => {
       let month = item?.getMonth();
       let year = item?.getFullYear();
       return tasks.filter((item) => {
-        if (item?.lastMoveDate) {
-          let date = new Date(item?.lastMoveDate);
-          return (
-            date.getDate() === day &&
-            date.getMonth() == month &&
-            date.getFullYear() === year &&
-            item
-          );
-        } else if (item?.createdAt) {
-          let date = new Date(item?.createdAt);
-          return (
-            date.getDate() === day &&
-            date.getMonth() == month &&
-            date.getFullYear() === year &&
-            item
-          );
-        }
+        let date = new Date(item?.createdAt);
+        return (
+          date.getDate() === day &&
+          date.getMonth() == month &&
+          date.getFullYear() === year &&
+          item
+        );
       });
     }
   });
@@ -119,39 +100,20 @@ export const getTaskNotificationsDate = (tasks: Task[]) => {
     year = "",
     month = 0,
     currentDay = "";
-  if (
-    tasks &&
-    tasks?.length > 0 &&
-    tasks[0]?.lastMoveDate &&
-    tasks[0]?.lastMoveDate !== null
-  ) {
-    let date = new Date(tasks[0].lastMoveDate);
-    day = date?.getDate().toString();
-    month = date?.getMonth();
-    year = date?.getFullYear().toString();
-    currentDay = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ][date?.getDay()];
-  } else if (tasks?.length > 0 && tasks[0]?.createdAt) {
-    let date = new Date(tasks[0].createdAt);
-    day = date?.getDate().toString();
-    month = date?.getMonth();
-    year = date?.getFullYear().toString();
-    currentDay = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ][date?.getDay()];
-  }
+
+  let date = new Date(tasks[0].createdAt);
+  day = date?.getDate().toString();
+  month = date?.getMonth();
+  year = date?.getFullYear().toString();
+  currentDay = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ][date?.getDay()];
+
   return { day, month, year, currentDay };
 };

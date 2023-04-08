@@ -16,6 +16,7 @@ type Props = {
   editProject: any;
   deleteProject: any;
   projects: Project[];
+  openDetails: any;
 };
 
 const CreateNewProject: React.FC<Props> = (props) => {
@@ -48,6 +49,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
             projects={props.projects}
             deleteProject={props.deleteProject}
             editProject={props.editProject}
+            openDetails={props.openDetails}
           />
         </div>
         <Box

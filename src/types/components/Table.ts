@@ -11,6 +11,7 @@ export interface IProjectsTableProps {
   projectManagers: Manager[];
   textSize: string;
   editProject: any;
+  openDetails: any;
   deleteProject: any;
   align: "left" | "center" | "right" | "justify" | "inherit" | undefined;
   dataTestIdQuote?: string;

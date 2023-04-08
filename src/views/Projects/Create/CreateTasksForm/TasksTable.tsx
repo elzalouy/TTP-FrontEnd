@@ -40,14 +40,9 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     categoryId: "",
     subCategoryId: "",
     teamId: "",
-    countNotClear: "",
-    countShared: "",
     status: "",
     start: "",
     deadline: "",
-    deliveryDate: "",
-    done: "",
-    turnoverTime: "",
     attachedFiles: [],
     attachedCard: "",
     listId: "",
@@ -55,6 +50,8 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     boardId: "",
     file: "",
     description: "",
+    movements: [],
+    createdAt: "",
   });
   const dispatch = useDispatch();
 

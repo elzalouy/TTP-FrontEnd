@@ -18,6 +18,7 @@ interface Props {
   project: Project;
   editProject: any;
   deleteProject: any;
+  openDetails: any;
 }
 
 //SX Styles Object
@@ -46,6 +47,10 @@ const ProjectPopover: React.FC<Props> = (props) => {
   const onDeleteProject = () => {
     handleClose();
     props.deleteProject("flex", props.project);
+  };
+  const onOpenProjectDetails = () => {
+    handleClose();
+    props.openDetails("flex", props.project);
   };
   return (
     <div className="project-actions-wrapper">
@@ -76,6 +81,14 @@ const ProjectPopover: React.FC<Props> = (props) => {
         }}
       >
         <Box display={"grid"} padding={1}>
+          <Button onClick={onOpenProjectDetails} className={styles.grayButton}>
+            <img
+              src={IMAGES.departmentsIcon}
+              width={22}
+              style={{ marginRight: 6 }}
+            ></img>
+            Details
+          </Button>
           <Button
             onClick={() => history.push(`/TasksBoard/${props.project._id}`)}
             variant="text"

@@ -14,6 +14,8 @@ const PopUp: React.FC<IPopup> = ({
   overFlowY,
   margin,
   containerClassName,
+  width,
+  height,
 }) => {
   const open = useAppSelector(selectSideMenuToggle);
   return (
@@ -33,6 +35,8 @@ const PopUp: React.FC<IPopup> = ({
           maxHeight: maxHeight,
           overflowY: overFlowY ? overFlowY : "unset",
           margin: margin,
+          width: width,
+          height: height,
         }}
       >
         {children}
