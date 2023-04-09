@@ -46,18 +46,18 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
   });
 
   useEffect(() => {
-    if (props.project) {
-      const projectTasks = allTasks.filter(
+    if (props.project && allTasks) {
+      const projectTasks = allTasks?.filter(
         (item) => item.projectId === props?.project?._id
       );
       if (projectTasks && projectTasks.length > 0) {
-        const unHealthyTasks = projectTasks.filter(
+        const unHealthyTasks = projectTasks?.filter(
           (item) =>
             item.movements.filter((item) => item.status === "Not Clear")
               .length > 0
         );
-        const healthyTasks = projectTasks.filter((item) =>
-          item.movements.filter((move) => move.status === "Not Clear")
+        const healthyTasks = projectTasks?.filter((item) =>
+          item?.movements?.filter((move) => move.status === "Not Clear")
         );
         let isUnHealthy = (unHealthyTasks.length / projectTasks.length) * 100;
         let projectState: ProjectState =
@@ -283,7 +283,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                       </Typography>
                       <Typography fontSize="16px" sx={{ fontWeight: "bold" }}>
                         {`${
-                          state.tasks.filter(
+                          state?.tasks?.filter(
                             (item) => item.status === "Not Clear"
                           ).length
                         } Tasks` || `0 Tasks`}

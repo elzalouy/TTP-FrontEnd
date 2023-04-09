@@ -21,7 +21,7 @@ export type stateType = {
   valuesInArr: number[];
 };
 const ProjectTasksChart: FC<ProjectTasksChartProps> = ({ project, tasks }) => {
-  const doughnutRef = useRef<HTMLCanvasElement | null>(null);
+  const doughnutRef = useRef<any>(null);
   const [state, setState] = useState<stateType>({
     status: {
       taskBoard: 0,
@@ -107,6 +107,9 @@ const ProjectTasksChart: FC<ProjectTasksChartProps> = ({ project, tasks }) => {
         },
       });
     }
+    return () => {
+      doughnutRef.current = null;
+    };
   }, [project, tasks]);
   return (
     <>
