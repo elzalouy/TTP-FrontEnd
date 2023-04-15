@@ -3,6 +3,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectSideMenuToggle } from "src/models/Ui";
 import { IPopup } from "src/types/components/Containers";
 import "./popUp.css";
+import { Box } from "@mui/material";
 
 const PopUp: React.FC<IPopup> = ({
   show,
@@ -16,20 +17,25 @@ const PopUp: React.FC<IPopup> = ({
   containerClassName,
   width,
   height,
+  styles,
+  sx,
+  containerSx,
 }) => {
   const open = useAppSelector(selectSideMenuToggle);
   return (
-    <div
+    <Box
       className={
         open
           ? "container-popup" + " " + containerClassName
           : "container-popup" + " " + containerClassName + " " + "open-popup"
       }
-      style={{ display: show, backgroundColor: color }}
+      style={{ display: show }}
+      sx={containerSx}
     >
-      <div
+      <Box
         className={maxHeight ? "pop-up desktopCustomScrollBar" : "pop-up"}
         style={{
+          backgroundColor: color,
           minWidth: minWidthSize,
           maxWidth: maxWidthSize,
           maxHeight: maxHeight,
@@ -37,11 +43,13 @@ const PopUp: React.FC<IPopup> = ({
           margin: margin,
           width: width,
           height: height,
+          ...styles,
         }}
+        sx={sx}
       >
         {children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

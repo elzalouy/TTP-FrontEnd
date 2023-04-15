@@ -10,12 +10,10 @@ export interface UiInterface {
   viewTaskPopup: string;
   editProjectManagerPopup: string;
   deleteProjectManagerPopup: string;
-  openTask: string;
   logoutPopup: string;
   createProjectPopup: string;
   editDepartmentPopup: string;
   deleteDepartmentPopup: string;
-  editTasksPopup: string;
   moveTaskOnTrelloHook: any;
   isSideMenuOpened: boolean;
   /*
@@ -58,9 +56,7 @@ const UiState: UiInterface = {
   logoutPopup: "none",
   isSideMenuOpened: true,
   createProjectPopup: "none",
-  editTasksPopup: "none",
   moveTaskOnTrelloHook: undefined,
-  openTask: "none",
   /*
   this hooks shouldn't be used except for updating
   the state of the project while a certain exndpoint or function called 

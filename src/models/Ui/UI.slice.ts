@@ -20,7 +20,6 @@ const UISlice: Slice<UiInterface> = createSlice({
       state.deleteProjectManagerPopup = "none";
       state.logoutPopup = "none";
       state.createProjectPopup = "none";
-      state.openTask = "none";
       state.createProjectPopup = "none";
     },
     setAppLoading: (state: UiInterface, action: PayloadAction<boolean>) => {
@@ -74,15 +73,11 @@ const UISlice: Slice<UiInterface> = createSlice({
     toggleCreateProjectPopup: (state = UiState, action: PayloadAction<any>) => {
       state.createProjectPopup = action.payload;
     },
-    toggleTask: (state = UiState, action: PayloadAction<any>) => {
-      state.openTask = action.payload;
-    },
+
     toggleDeleteDepartment: (state = UiState, action: PayloadAction<any>) => {
       state.deleteDepartmentPopup = action.payload;
     },
-    toggleEditTasksPopup: (state: UiInterface, action: PayloadAction<any>) => {
-      state.editTasksPopup = action.payload;
-    },
+
     // hooks
     fireNewProjectHook: (state = UiState, action: PayloadAction<any>) => {
       state.newProjectHook = !state.newProjectHook;
@@ -171,9 +166,7 @@ export const {
   fireDeleteTeamHook,
   fireMoveTaskOnTrello,
   toggleDeleteDepartment,
-  toggleTask,
   initAppUiState,
-  toggleEditTasksPopup,
   setAppLoading,
 } = UISlice.actions;
 export const UiActions = UISlice.actions;

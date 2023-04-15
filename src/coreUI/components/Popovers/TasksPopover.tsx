@@ -5,17 +5,15 @@ import { popOverStyle } from "../../../coreUI/themes/Styles";
 import IMAGES from "../../../assets/img/Images";
 import { useDispatch } from "react-redux";
 import { openDeleteTaskPopup, toggleEditTaskPopup } from "../../../models/Ui";
-import { ProjectsActions, selectTaskDetails } from "../../../models/Projects";
-import { useAppSelector } from "../../../models/hooks";
-import { selectAllDepartments } from "../../../models/Departments";
+import { ProjectsActions } from "../../../models/Projects";
 import { Task } from "../../../types/models/Projects";
+
 interface Props {
   item: Task;
 }
+
 const TasksPopover: React.FC<Props> = ({ item }) => {
   const dispatch = useDispatch();
-  const departments = useAppSelector(selectAllDepartments);
-  const viewTask = useAppSelector(selectTaskDetails);
   const styles = popOverStyle()();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -95,6 +93,20 @@ const TasksPopover: React.FC<Props> = ({ item }) => {
               ></img>
               <span style={{ marginLeft: 7 }}>Open in trello</span>
             </a>
+          </Button>
+          <Button
+            onClick={onEditTask}
+            variant="text"
+            className={styles.grayButton}
+            id="edit-task-button"
+          >
+            <img
+              src={IMAGES.editicon}
+              width={18}
+              alt="2"
+              style={{ marginRight: 10 }}
+            ></img>
+            Edit Task
           </Button>
           <Button
             onClick={onDeleteTask}

@@ -7,6 +7,7 @@ import {
   UseFormStateReturn,
 } from "react-hook-form";
 import { IFilterProps, IInputProps } from "./Inputs";
+import { SxProps, Theme } from "@mui/material";
 
 export interface ITableContainerProps {
   title: string;
@@ -54,4 +55,7 @@ export interface IPopup {
   containerClassName?: string;
   width?: string;
   height?: string;
+  styles?: React.CSSProperties;
+  sx?: SxProps<Theme>;
+  containerSx?: SxProps<Theme>;
 }

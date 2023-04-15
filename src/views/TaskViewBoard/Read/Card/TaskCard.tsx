@@ -8,7 +8,6 @@ import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
 import {
   ProjectsActions,
-  selectTasks,
   selectUploadLoading,
 } from "../../../../models/Projects";
 import {
@@ -22,14 +21,13 @@ import {
   ArrowForwardIos as ArrowForwardIosIcon,
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { toggleEditTaskPopup } from "../../../../models/Ui";
 import { Project, Task, TaskFile } from "../../../../types/models/Projects";
+import TaskFiles from "./TaskFiles";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";
-import TaskFiles from "./TaskFiles";
-import { useLocation } from "react-router";
-import notFoundImg from "src/assets/img/Overview/DrawKit Larry Character Illustration (1).png";
+import { toggleViewTaskPopup } from "src/models/Ui";
+
 interface TaskCartProps {
   index: number;
   item: Task;
@@ -136,9 +134,8 @@ const TaskCard: React.FC<TaskCartProps> = ({
   };
 
   const onViewTask = async () => {
-    dispatch(ProjectsActions.onEditTask(item._id));
-    dispatch(toggleEditTaskPopup("flex"));
     dispatch(ProjectsActions.onOpenTask(item));
+    dispatch(toggleViewTaskPopup("flex"));
   };
   const setImageError = (index: any) => {
     let images = [...taskImages];
@@ -284,7 +281,6 @@ const TaskCard: React.FC<TaskCartProps> = ({
                               );
                           })}
                         </>
-
                         <div ref={navigationPrevRef}>
                           <ArrowBackIosNewIcon
                             className="prev"

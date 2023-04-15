@@ -24,11 +24,11 @@ interface ProjectDetailsProps {
 type ProjectState = "UnHealthy" | "Verified" | "Not Verified";
 type State = {
   project?: Project;
-  tasks: Task[];
-  unHealthyTasks: Task[];
-  healthyTasks: Task[];
-  projectState: ProjectState;
-  PLT: string;
+  tasks?: Task[];
+  unHealthyTasks?: Task[];
+  healthyTasks?: Task[];
+  projectState?: ProjectState;
+  PLT?: string;
 };
 
 const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
@@ -37,13 +37,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
   const PMs = useAppSelector(selectManagers);
   const [value, setValue] = React.useState("1");
 
-  const [state, setState] = useState<State>({
-    tasks: [],
-    unHealthyTasks: [],
-    healthyTasks: [],
-    projectState: "Not Verified",
-    PLT: "Not Available",
-  });
+  const [state, setState] = useState<State>();
 
   useEffect(() => {
     if (props.project && allTasks) {
@@ -111,7 +105,11 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
           <div style={{ position: "relative" }}>
             <div
               className="closeIconContainer"
-              onClick={() => props.setShow("none")}
+              onClick={() => {
+                setValue("1");
+                setState({});
+                props.setShow("none");
+              }}
             >
               <img
                 className="closeIcon"
@@ -127,19 +125,19 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
           </Typography>
         </Grid>
         <Box display={"-webkit-inline-box"} pt={0.5}>
-          {state.projectState === "Verified" && (
+          {state?.projectState === "Verified" && (
             <VerifiedIcon
               htmlColor="#00ACBA"
               sx={{ pr: 1, fontSize: "24px" }}
             />
           )}
-          {state.projectState === "Not Verified" && (
+          {state?.projectState === "Not Verified" && (
             <DangerousIcon
               htmlColor="#667085"
               sx={{ pr: 1, fontSize: "24px" }}
             />
           )}
-          {state.projectState === "UnHealthy" && (
+          {state?.projectState === "UnHealthy" && (
             <DangerousIcon htmlColor="red" sx={{ pr: 1, fontSize: "24px" }} />
           )}
           <Typography
@@ -147,14 +145,14 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
             textAlign={"justify"}
             mt={0.5}
             color={
-              state.projectState === "Not Verified"
+              state?.projectState === "Not Verified"
                 ? "#667085"
-                : state.projectState === "UnHealthy"
+                : state?.projectState === "UnHealthy"
                 ? "red"
                 : "#00ACBA"
             }
           >
-            {state.projectState}
+            {state?.projectState}
           </Typography>
         </Box>
         <Grid item xs={12}>
@@ -267,7 +265,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                         Project Lead Time
                       </Typography>
                       <Typography fontSize="16px" fontWeight={"bold"}>
-                        {state.PLT}
+                        {state?.PLT}
                       </Typography>
                     </Card>
                   </Grid>
@@ -323,7 +321,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                             mt={1}
                             justifyContent={"center"}
                           >
-                            {state.tasks.length} Tasks
+                            {state?.tasks?.length ?? 0} Tasks
                           </Typography>
                         </Box>
                         <Typography
@@ -338,7 +336,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
                       <Grid item xs={12} sm={12} md={6} lg={7} xl={7}>
                         <ProjectTasksChart
                           project={props.project}
-                          tasks={state.tasks}
+                          tasks={state?.tasks}
                         />
                       </Grid>
                     </Grid>
