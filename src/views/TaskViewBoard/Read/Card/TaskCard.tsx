@@ -74,9 +74,12 @@ const TaskCard: React.FC<TaskCartProps> = ({
       );
       setTaskFiles(others);
     }
-    let department = departments.find((dep) => dep.boardId === item.boardId);
-    let member = department?.teams.find((mem) => mem._id === item.teamId);
-    setData({ department: department?.name, member: member?.name });
+    let department = departments.find((dep) => dep.boardId === item?.boardId);
+    let member = department?.teams.find((mem) => mem._id === item?.teamId);
+    setData({
+      department: department?.name,
+      member: member?.name,
+    });
   }, [item, departments]);
 
   useEffect(() => {

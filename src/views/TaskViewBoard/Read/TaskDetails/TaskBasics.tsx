@@ -1,7 +1,7 @@
 import { Avatar, Box, Grid, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CircleIcon from "@mui/icons-material/Circle";
-import { selectAllCategories } from "src/models/Categories";
+import { Category, selectAllCategories } from "src/models/Categories";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
@@ -10,33 +10,61 @@ import { getDifBetweenDates } from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
-import DoneIcon from "@mui/icons-material/Done";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 
 interface TaskBasicsProps {}
 
+type state = {
+  taskTeam?: ITeam;
+  taskBoard?: IDepartmentState;
+  taskCategory?: Category;
+  taskMovements?: {
+    index: number;
+    status: string;
+    movedAt: Date;
+  }[];
+  sharedMovements: {
+    index: number;
+    status: string;
+    movedAt: Date;
+  }[];
+};
 const TaskBasics: FC<TaskBasicsProps> = () => {
+  const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
   const { openTaskDetails: task } = useAppSelector(selectAllProjects);
-  const taskBoard = departments.find((item) => item.boardId === task.boardId);
-  const taskTeam = taskBoard?.teams.find((item) => item._id === task.teamId);
-  const category = categories.find((item) => item._id === task.categoryId);
-  const taskMovements = task.movements.map((item, index) => {
-    return { ...item, index };
-  });
-  const sharedMovements =
-    taskMovements && taskMovements.filter((item) => item.status === "Shared");
+
+  useEffect(() => {
+    const taskBoard = departments.find((item) => item.boardId === task.boardId);
+    const taskTeam = taskBoard?.teams.find((item) => item._id === task.teamId);
+    const category = categories.find((item) => item._id === task.categoryId);
+    const taskMovements = task.movements.map((item, index) => {
+      return { ...item, index };
+    });
+    const sharedMovements =
+      taskMovements && taskMovements.filter((item) => item.status === "Shared");
+    setState({
+      sharedMovements,
+      taskTeam,
+      taskCategory: category,
+      taskMovements,
+      taskBoard,
+    });
+  }, [task]);
 
   const TaskLeadTime = () => {
-    if (sharedMovements && sharedMovements?.length > 0) {
+    if (state?.sharedMovements && state?.sharedMovements?.length > 0) {
       let tlt = getDifBetweenDates(
         new Date(task.start),
-        new Date(sharedMovements[sharedMovements.length - 1].movedAt)
+        new Date(
+          state?.sharedMovements[state?.sharedMovements.length - 1].movedAt
+        )
       );
-      return tlt.diffInDays;
+      return tlt.remainingDays;
     } else
       return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-        .diffInDays;
+        .remainingDays;
   };
 
   /**
@@ -47,16 +75,19 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       However, when calculating the total processing time, only the last time the task was moved to the "Shared" stage should be taken into account
  * @returns  number
  */
+
   const taskProcessingTime = () => {
-    let inProgressMove = taskMovements.filter(
+    let inProgressMove = state?.taskMovements?.filter(
       (item) => item.status === "In Progress"
     );
-    let sharedMoveIndex = sharedMovements.length - 1;
-    if (inProgressMove.length > 0) {
-      let afterShared = taskMovements.filter(
+    let sharedMoveIndex = state?.sharedMovements
+      ? state?.sharedMovements?.length - 1
+      : -1;
+    if (inProgressMove && inProgressMove?.length > 0) {
+      let afterShared = state?.taskMovements?.filter(
         (item, index) =>
-          sharedMovements.length &&
-          index > sharedMovements[sharedMoveIndex]?.index
+          state?.sharedMovements.length &&
+          index > state?.sharedMovements[sharedMoveIndex]?.index
       );
       let isShiftedBack =
         afterShared &&
@@ -65,22 +96,80 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
         ) === undefined
           ? false
           : true;
-      if (sharedMoveIndex >= 0 && !isShiftedBack) {
+      if (state?.sharedMovements && sharedMoveIndex >= 0 && !isShiftedBack) {
         return getDifBetweenDates(
           new Date(inProgressMove[0].movedAt),
-          new Date(sharedMovements[sharedMoveIndex].movedAt)
-        ).diffInDays;
+          new Date(state?.sharedMovements[sharedMoveIndex].movedAt)
+        ).remainingDays;
       } else
         return getDifBetweenDates(
           new Date(inProgressMove[0].movedAt),
           new Date(Date.now())
-        ).diffInDays;
+        ).remainingDays;
     } else return 0;
+  };
+
+  const taskSchedulingTime = () => {
+    let inProgressMovements = task.movements.filter(
+      (item) => item.status === "In Progress"
+    );
+    if (task.start) {
+      if (inProgressMovements.length > 0)
+        return getDifBetweenDates(
+          new Date(task.start),
+          new Date(inProgressMovements[0].movedAt)
+        ).totalHours;
+      else if (task.assignedAt) {
+        return getDifBetweenDates(
+          new Date(task.start),
+          new Date(task.assignedAt)
+        ).totalHours;
+      } else
+        return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
+          .totalHours;
+    } else return 0;
+  };
+
+  const unClearTime = () => {};
+  const TaskState = () => {
+    return (
+      <>
+        {state?.sharedMovements.length === 0 ||
+        ["Done", "Cancled"].includes(task.status) ? (
+          <NorthIcon
+            htmlColor="#fc164f"
+            sx={{
+              fontSize: "0.8rem",
+              mb: 1,
+              width: "1em",
+              ml: "10px",
+              fontWeight: "600",
+            }}
+          />
+        ) : (
+          <Typography
+            sx={{
+              width: "35px",
+              fontSize: "12px",
+              borderRadius: 10,
+              background: "#ffc500",
+              color: "white",
+              fontWeight: "700",
+              textAlign: "center",
+              mb: 0.5,
+              ml: 1,
+            }}
+          >
+            100%
+          </Typography>
+        )}
+      </>
+    );
   };
 
   return (
     <>
-      {category && (
+      {state?.taskCategory && (
         <Box
           sx={{
             border: "1px solid #8e8f95",
@@ -97,7 +186,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
           }}
         >
           <CircleIcon htmlColor="#444452" sx={{ fontSize: 10, mr: 1 }} />
-          {category.category}
+          {state?.taskCategory.category}
         </Box>
       )}
       <Typography fontWeight={"600"} fontSize={20} pt={1}>
@@ -106,7 +195,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       <Typography fontWeight={400} fontSize={12} color={"#909497"}>
         {task.description}
       </Typography>
-      {taskTeam && (
+      {state?.taskTeam && (
         <>
           <Typography fontWeight={600} pt={2} fontSize={14} color={"#293241"}>
             Assigned to:
@@ -127,7 +216,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
               sx={{
                 bgcolor: "#ffc500",
                 width: 20,
-                height: 20,
+                height: 30,
                 borderRadius: 0.5,
                 fontSize: 12,
                 mr: 1,
@@ -135,10 +224,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
               }}
               variant="square"
             >
-              {`${taskTeam?.name[0].toUpperCase()} ${taskTeam?.name[1].toUpperCase()}`}
+              {`${state?.taskTeam?.name[0].toUpperCase()} ${state?.taskTeam?.name[1].toUpperCase()}`}
             </Avatar>
             <Typography fontSize={14} color="#293241">
-              {taskTeam?.name}
+              {state?.taskTeam?.name}
             </Typography>
           </Box>
         </>
@@ -182,34 +271,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   >
                     days
                   </Typography>
-                  {sharedMovements.length === 0 ? (
-                    <NorthIcon
-                      htmlColor="#fc164f"
-                      sx={{
-                        fontSize: "0.8rem",
-                        mb: 1,
-                        width: "1em",
-                        ml: "10px",
-                        fontWeight: "600",
-                      }}
-                    />
-                  ) : (
-                    <Typography
-                      sx={{
-                        width: "35px",
-                        fontSize: "12px",
-                        borderRadius: 10,
-                        background: "#ffc500",
-                        color: "white",
-                        fontWeight: "700",
-                        textAlign: "center",
-                        mb: 0.5,
-                        ml: 1,
-                      }}
-                    >
-                      100%
-                    </Typography>
-                  )}
+                  {TaskState()}
                 </Box>
               </Grid>
               <Grid xs={3}>
@@ -266,34 +328,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   >
                     days
                   </Typography>
-                  {sharedMovements.length === 0 ? (
-                    <NorthIcon
-                      htmlColor="#fc164f"
-                      sx={{
-                        fontSize: "0.8rem",
-                        mb: 1,
-                        width: "1em",
-                        ml: "10px",
-                        fontWeight: "600",
-                      }}
-                    />
-                  ) : (
-                    <Typography
-                      sx={{
-                        width: "35px",
-                        fontSize: "12px",
-                        borderRadius: 10,
-                        background: "#ffc500",
-                        color: "white",
-                        fontWeight: "700",
-                        textAlign: "center",
-                        mb: 0.5,
-                        ml: 1,
-                      }}
-                    >
-                      100%
-                    </Typography>
-                  )}
+                  {TaskState()}
                 </Box>
               </Grid>
               <Grid xs={3}>
@@ -339,7 +374,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    0
+                    {taskSchedulingTime()}
                   </Typography>
                   <Typography
                     ml={1}
@@ -348,34 +383,21 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     fontWeight={"500"}
                     color={"ActiveBorder"}
                   >
-                    days
+                    Hours
                   </Typography>
-                  {sharedMovements.length === 0 ? (
-                    <NorthIcon
-                      htmlColor="#fc164f"
-                      sx={{
-                        fontSize: "0.8rem",
-                        mb: 1,
-                        width: "1em",
-                        ml: "10px",
-                        fontWeight: "600",
-                      }}
-                    />
-                  ) : (
+                  {taskSchedulingTime() > 24 && (
                     <Typography
                       sx={{
-                        width: "35px",
-                        fontSize: "12px",
-                        borderRadius: 10,
-                        background: "#ffc500",
-                        color: "white",
-                        fontWeight: "700",
-                        textAlign: "center",
-                        mb: 0.5,
+                        p: "3px",
                         ml: 1,
+                        fontSize: "10px",
+                        mb: 0.5,
+                        borderRadius: 0.5,
+                        background: "#F1CBCC",
+                        color: "#FF0000",
                       }}
                     >
-                      100%
+                      Late
                     </Typography>
                   )}
                 </Box>

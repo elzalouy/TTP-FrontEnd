@@ -31,6 +31,7 @@ export interface Task {
   categoryName?: string;
   projectName?: string;
   movements: TaskMovement[];
+  assignedAt?: Date | number;
 }
 export interface TaskMovement {
   status: string;

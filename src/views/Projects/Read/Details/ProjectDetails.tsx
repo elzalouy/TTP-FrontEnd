@@ -74,7 +74,9 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
           tasks: projectTasks,
           projectState: projectState,
           project: props.project,
-          PLT: PLT?.diffInDays ? `${PLT?.diffInDays} days` : "Not Available",
+          PLT: PLT?.remainingDays
+            ? `${PLT?.remainingDays} days`
+            : "Not Available",
         });
       }
     }
