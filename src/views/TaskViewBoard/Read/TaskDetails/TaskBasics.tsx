@@ -11,6 +11,9 @@ import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
+import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
+import _ from "lodash";
+import { TaskMovement } from "src/types/models/Projects";
 
 interface TaskBasicsProps {}
 
@@ -29,6 +32,7 @@ type state = {
     movedAt: Date;
   }[];
 };
+
 const TaskBasics: FC<TaskBasicsProps> = () => {
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
@@ -130,7 +134,59 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     } else return 0;
   };
 
-  const unClearTime = () => {};
+  const unClearTime = () => {
+    let tasksMovements = task.movements;
+    if (tasksMovements.length > 0) {
+      let notClearMovements = tasksMovements.filter((item, index) => {
+        if (
+          item.status === "Not Clear" &&
+          tasksMovements[index - 1] &&
+          tasksMovements[index - 1].status
+        )
+          return item;
+      });
+      if (notClearMovements.length > 0) {
+        let indexedMovements = notClearMovements.map((item, index) => {
+          let i = tasksMovements.findIndex((move) => move._id === item._id);
+          return { item, index: i };
+        });
+        let diffs = indexedMovements.map((item) => {
+          return getDifBetweenDates(
+            new Date(tasksMovements[item.index - 1].movedAt),
+            new Date(item.item.movedAt)
+          ).totalHours;
+        });
+        return { hours: _.sum(diffs), times: notClearMovements.length };
+      }
+    }
+    return { times: 0, hours: 0 };
+  };
+  const turnAroundTime = () => {
+    let taskMovements = task.movements;
+    if (task.movements.length > 0) {
+      let turnAroundMovements = taskMovements.filter(
+        (item, index) =>
+          item.status === "Not Clear" &&
+          taskMovements[index + 1] &&
+          taskMovements[index + 1].status === "In Progress"
+      );
+      if (turnAroundMovements.length > 0) {
+        let indexedMovements = turnAroundMovements.map((item) => {
+          let index = taskMovements.findIndex((m) => m._id === item._id);
+          return { item, index };
+        });
+        let diffs = indexedMovements.map((item) => {
+          return getDifBetweenDates(
+            new Date(item.item.movedAt),
+            new Date(taskMovements[item.index + 1].movedAt)
+          ).totalHours;
+        });
+        console.log({ diffs });
+        return { hours: _.sum(diffs), times: turnAroundMovements.length };
+      }
+    }
+    return { times: 0, hours: 0 };
+  };
   const TaskState = () => {
     return (
       <>
@@ -242,7 +298,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             sx={{
               background: "#f6f6f6",
               borderRadius: 3,
-              minWidth: 200,
               p: 2,
               mt: 2,
               mr: 1,
@@ -299,7 +354,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             sx={{
               background: "#f6f6f6",
               borderRadius: 3,
-              minWidth: 200,
               p: 2,
               mt: 2,
               mr: 1,
@@ -356,7 +410,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             sx={{
               background: "#f6f6f6",
               borderRadius: 3,
-              minWidth: 200,
               p: 2,
               mt: 2,
               mr: 1,
@@ -418,6 +471,128 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   <ScheduleSendIcon sx={{ fontSize: 22 }} />
                 </Box>
               </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+        {/* Task UnClear time */}
+        <Grid xs={12} sm={12} md={8} lg={8} xl={8} pr={1}>
+          <Box
+            sx={{
+              background: "#f6f6f6",
+              borderRadius: 3,
+              p: 2,
+              mt: 2,
+              mr: 1,
+            }}
+          >
+            <Grid
+              container
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems="center"
+            >
+              <Grid item xs={9}>
+                <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                  Task UnClear time
+                </Typography>
+                <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
+                  <Typography fontSize={26} fontWeight={"700"}>
+                    {unClearTime().hours}
+                  </Typography>
+                  <Typography
+                    ml={1}
+                    mb={0.5}
+                    fontSize={14}
+                    fontWeight={"500"}
+                    color={"ActiveBorder"}
+                  >
+                    Hours
+                  </Typography>
+                  {unClearTime().times > 1 && (
+                    <Typography
+                      sx={{
+                        p: "3px",
+                        ml: 1,
+                        fontSize: "10px",
+                        mb: 0.5,
+                        borderRadius: 0.5,
+                        background: "#F1CBCC",
+                        color: "#FF0000",
+                      }}
+                    >
+                      {unClearTime().times} times
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+              <Grid xs={3}>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "#ffc500",
+                    borderRadius: 10,
+                    width: 45,
+                    height: 45,
+                  }}
+                >
+                  <ManageHistoryIcon sx={{ fontSize: 22 }} />
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+        {/* Task Turn Around time */}
+        <Grid xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Box
+            sx={{
+              background: "#f6f6f6",
+              borderRadius: 3,
+              p: 2,
+              mt: 2,
+              mr: 1,
+            }}
+          >
+            <Grid
+              container
+              display="flex"
+              justifyContent={"space-between"}
+              alignItems="center"
+            >
+              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                Turn Around Time
+              </Typography>
+              <Box display={"inline-flex"} pt={2.8} alignItems="flex-end">
+                <Typography fontSize={18} fontWeight={"700"}>
+                  {turnAroundTime().hours}
+                </Typography>
+                <Typography
+                  ml={1}
+                  mb={0.5}
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={"ActiveBorder"}
+                >
+                  Hours
+                </Typography>
+                {turnAroundTime().times > 1 && (
+                  <Typography
+                    sx={{
+                      p: "3px",
+                      ml: 1,
+                      fontSize: "10px",
+                      mb: 0.5,
+                      borderRadius: 0.5,
+                      background: "#F1CBCC",
+                      color: "#FF0000",
+                    }}
+                  >
+                    {turnAroundTime().times} times
+                  </Typography>
+                )}
+              </Box>
             </Grid>
           </Box>
         </Grid>

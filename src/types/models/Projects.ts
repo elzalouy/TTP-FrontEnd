@@ -34,6 +34,7 @@ export interface Task {
   assignedAt?: Date | number;
 }
 export interface TaskMovement {
+  _id: string;
   status: string;
   movedAt: Date;
 }
