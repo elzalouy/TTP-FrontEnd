@@ -68,7 +68,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       let lcMove = cMoves[cMoves.length - 1].index;
       if (props.movements[lcMove - 1].status === "In Progress")
         return "Canceled";
-      if (props.movements[lcMove - 1].status === "Cancled") return "Disturbed";
+      if (props.movements[lcMove - 1].status === "Cancled") return "Disrupted";
       if (["Review", "Shared"].includes(props.movements[lcMove - 1].status))
         return "Flagged";
     }
