@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { selectAllProjects } from "src/models/Projects";
@@ -14,6 +14,7 @@ interface TaskDetailsProps {
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
   const { openTaskDetails: task } = useAppSelector(selectAllProjects);
+
   return (
     <PopUp
       width="80vw"
@@ -35,7 +36,17 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
     >
       <Grid container height={"100%"}>
         <TaskHeader setShow={setShow} task={task} />
-        <Grid xs={12} sm={12} md={12} lg={6} xl={6} p={3}>
+        <Grid
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+          sx={{
+            height: "100%",
+            pb: 10,
+          }}
+        >
           <TaskBasics />
         </Grid>
         <Grid
@@ -46,14 +57,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           xl={6}
           sx={{
             background: "#fafafa",
-            overflowY: "scroll",
             height: "100%",
             pb: 10,
           }}
         >
-          <Typography fontSize={"16px"} pl={4} pt={3} pb={2} fontWeight={600}>
-            Recent activity
-          </Typography>
           <TaskTimeLine movements={task.movements} />
         </Grid>
       </Grid>

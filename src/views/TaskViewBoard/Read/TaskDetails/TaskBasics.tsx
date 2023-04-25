@@ -181,12 +181,12 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             new Date(taskMovements[item.index + 1].movedAt)
           ).totalHours;
         });
-        console.log({ diffs });
         return { hours: _.sum(diffs), times: turnAroundMovements.length };
       }
     }
     return { times: 0, hours: 0 };
   };
+
   const TaskState = () => {
     return (
       <>
@@ -224,7 +224,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   return (
-    <>
+    <Grid sx={{ height: "100%", overflowY: "scroll", p: 3 }}>
       {state?.taskCategory && (
         <Box
           sx={{
@@ -597,7 +597,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
           </Box>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
