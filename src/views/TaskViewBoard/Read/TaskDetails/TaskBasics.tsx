@@ -6,14 +6,16 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
 import UpdateIcon from "@mui/icons-material/Update";
-import { getDifBetweenDates } from "src/helpers/generalUtils";
+import {
+  getDifBetweenDates,
+  getTasksByClientIdAndStatus,
+} from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
-import { TaskMovement } from "src/types/models/Projects";
 
 interface TaskBasicsProps {}
 
@@ -31,6 +33,13 @@ type state = {
     status: string;
     movedAt: Date;
   }[];
+  statitics: {
+    taskSchedulingTime: number;
+    taskProcessingTime: number;
+    taskLeadTime: number;
+    unClearTime: { times: number; hours: number };
+    turnAroundTime: { times: number; hours: number };
+  };
 };
 
 const TaskBasics: FC<TaskBasicsProps> = () => {
@@ -38,7 +47,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
   const { openTaskDetails: task } = useAppSelector(selectAllProjects);
-
   useEffect(() => {
     const taskBoard = departments.find((item) => item.boardId === task.boardId);
     const taskTeam = taskBoard?.teams.find((item) => item._id === task.teamId);
@@ -46,6 +54,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     const taskMovements = task.movements.map((item, index) => {
       return { ...item, index };
     });
+
     const sharedMovements =
       taskMovements && taskMovements.filter((item) => item.status === "Shared");
     setState({
@@ -54,6 +63,13 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       taskCategory: category,
       taskMovements,
       taskBoard,
+      statitics: {
+        taskLeadTime: TaskLeadTime(),
+        taskProcessingTime: taskProcessingTime(),
+        turnAroundTime: turnAroundTime(),
+        unClearTime: unClearTime(),
+        taskSchedulingTime: taskSchedulingTime(),
+      },
     });
   }, [task]);
 
@@ -117,6 +133,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     let inProgressMovements = task.movements.filter(
       (item) => item.status === "In Progress"
     );
+    console.log({ moves: task.movements });
     if (task.start) {
       if (inProgressMovements.length > 0)
         return getDifBetweenDates(
@@ -224,7 +241,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   return (
-    <Grid sx={{ height: "100%", overflowY: "scroll", p: 3 }}>
+    <Grid
+      sx={{ height: "100%", p: 3, lg: { overflowY: "scroll", xl: "scroll" } }}
+    >
       {state?.taskCategory && (
         <Box
           sx={{
@@ -315,7 +334,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {TaskLeadTime()}
+                    {state?.statitics.taskLeadTime}
                   </Typography>
                   <Typography
                     ml={1}
@@ -427,7 +446,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {taskSchedulingTime()}
+                    {state?.statitics.taskSchedulingTime}
                   </Typography>
                   <Typography
                     ml={1}
@@ -438,21 +457,22 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   >
                     Hours
                   </Typography>
-                  {taskSchedulingTime() > 24 && (
-                    <Typography
-                      sx={{
-                        p: "3px",
-                        ml: 1,
-                        fontSize: "10px",
-                        mb: 0.5,
-                        borderRadius: 0.5,
-                        background: "#F1CBCC",
-                        color: "#FF0000",
-                      }}
-                    >
-                      Late
-                    </Typography>
-                  )}
+                  {state?.statitics.taskSchedulingTime &&
+                    state?.statitics.taskSchedulingTime > 24 && (
+                      <Typography
+                        sx={{
+                          p: "3px",
+                          ml: 1,
+                          fontSize: "10px",
+                          mb: 0.5,
+                          borderRadius: 0.5,
+                          background: "#F1CBCC",
+                          color: "#FF0000",
+                        }}
+                      >
+                        Late
+                      </Typography>
+                    )}
                 </Box>
               </Grid>
               <Grid xs={2}>
@@ -497,7 +517,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {unClearTime().hours}
+                    {state?.statitics.unClearTime.hours}
                   </Typography>
                   <Typography
                     ml={1}
@@ -520,7 +540,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                         color: "#FF0000",
                       }}
                     >
-                      {unClearTime().times} times
+                      {state?.statitics.unClearTime.times} times
                     </Typography>
                   )}
                 </Box>
@@ -566,7 +586,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
               </Typography>
               <Box display={"inline-flex"} pt={2.8} alignItems="flex-end">
                 <Typography fontSize={18} fontWeight={"700"}>
-                  {turnAroundTime().hours}
+                  {state?.statitics.turnAroundTime.hours}
                 </Typography>
                 <Typography
                   ml={1}
@@ -577,21 +597,22 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 >
                   Hours
                 </Typography>
-                {turnAroundTime().times > 1 && (
-                  <Typography
-                    sx={{
-                      p: "3px",
-                      ml: 1,
-                      fontSize: "10px",
-                      mb: 0.5,
-                      borderRadius: 0.5,
-                      background: "#F1CBCC",
-                      color: "#FF0000",
-                    }}
-                  >
-                    {turnAroundTime().times} times
-                  </Typography>
-                )}
+                {state?.statitics.turnAroundTime.times &&
+                  state?.statitics.turnAroundTime.times > 1 && (
+                    <Typography
+                      sx={{
+                        p: "3px",
+                        ml: 1,
+                        fontSize: "10px",
+                        mb: 0.5,
+                        borderRadius: 0.5,
+                        background: "#F1CBCC",
+                        color: "#FF0000",
+                      }}
+                    >
+                      {turnAroundTime().times} times
+                    </Typography>
+                  )}
               </Box>
             </Grid>
           </Box>

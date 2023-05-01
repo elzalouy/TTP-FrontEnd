@@ -87,8 +87,6 @@
     width: 90vw !important;
     background-color: white;
     margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
@@ -100,8 +98,6 @@
     width: 60vw !important;
     background-color: white;
     margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
@@ -124,8 +120,6 @@
     width: 80vw !important;
     background-color: white;
     margin-top: 50px;
-    min-height: 150px;
-    max-height: 65vh;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
