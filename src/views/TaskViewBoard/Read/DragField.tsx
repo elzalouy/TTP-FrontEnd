@@ -20,7 +20,6 @@ const DragField = (props: DragFieldProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const projectId = props.match.params.id;
   const project = projects.find((item) => item._id === projectId);
-  const [state, setState] = useState({ allTasks });
   const [columns, setColumns] = useState<{
     TasksBoard: DragCloumnType;
     NotClear: DragCloumnType;
@@ -32,7 +31,6 @@ const DragField = (props: DragFieldProps) => {
   }>(columnsValues);
 
   useEffect(() => {
-    setState({ allTasks });
     setColumns({
       TasksBoard: {
         ...columns.TasksBoard,
@@ -64,6 +62,7 @@ const DragField = (props: DragFieldProps) => {
       },
     });
   }, [allTasks]);
+
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
