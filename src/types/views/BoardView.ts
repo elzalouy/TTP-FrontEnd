@@ -2,6 +2,7 @@ import Joi from "joi";
 import { Category } from "../../models/Categories";
 import { IDepartmentState, ITeam } from "../models/Departments";
 import { Task, TaskFile } from "../models/Projects";
+import CreateNewTask from "src/views/TaskViewBoard/Read/CreateTaskBtn";
 
 export type EditTaskProps = {
   show: string;
@@ -147,3 +148,82 @@ export const videoTypes = [
   "video/divx",
   "video/mov",
 ];
+
+export type DragCloumnType = {
+  name: string;
+  header: string;
+  body: string;
+  items?: Task[];
+  border: string;
+  NewTask?: any;
+  value: string;
+  footer: string;
+};
+
+export const columnsValues: {
+  TasksBoard: DragCloumnType;
+  NotClear: DragCloumnType;
+  InProgress: DragCloumnType;
+  Review: DragCloumnType;
+  Shared: DragCloumnType;
+  Done: DragCloumnType;
+  Cancled: DragCloumnType;
+} = {
+  TasksBoard: {
+    name: "Tasks Board",
+    header: "not-started-header",
+    body: "not-started-task",
+    border: "not-started-border",
+    NewTask: CreateNewTask,
+    value: "Tasks Board",
+    footer: "task-card-footer-notstarted",
+  },
+  NotClear: {
+    name: "Not clear",
+    header: "not-clear-header",
+    body: "not-clear-task",
+    border: "not-clear-border",
+    value: "Not Clear",
+    footer: "task-card-footer-notclear",
+  },
+  InProgress: {
+    name: "In Progress",
+    header: "in-progress-header",
+    body: "in-progress-task",
+    border: "in-progress-border",
+    value: "In Progress",
+    footer: "task-card-footer-inprogress",
+  },
+  Review: {
+    name: "Review",
+    header: "review-header",
+    body: "review-task",
+    border: "review-border",
+    value: "Review",
+    footer: "task-card-footer-review",
+  },
+  Shared: {
+    name: "Shared",
+    header: "canceled-header",
+    body: "canceled-task",
+    border: "canceled-border",
+    value: "Shared",
+    footer: "task-card-footer-shared",
+  },
+  Done: {
+    name: "Done",
+    header: "done-header",
+    body: "done-task",
+    border: "done-border",
+    value: "Done",
+    footer: "task-card-footer-done",
+  },
+  Cancled: {
+    name: "Cancled",
+    header: "canceled-header",
+    body: "canceled-task",
+    border: "canceled-border",
+    value: "Cancled",
+    footer: "task-card-footer-cancled",
+  },
+};

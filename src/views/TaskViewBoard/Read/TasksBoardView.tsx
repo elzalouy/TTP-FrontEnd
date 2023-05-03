@@ -4,31 +4,27 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../models/hooks";
 import { Box } from "@mui/system";
-import { RouteComponentProps, useLocation } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { Grid, Stack, Typography } from "@mui/material";
-import {
-  ProjectsActions,
-  selectAllProjects,
-  selectSelectedProject,
-} from "../../../models/Projects";
+import { selectAllProjects } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import Button from "src/coreUI/components/Buttons/Button";
-import { Project, Task } from "src/types/models/Projects";
+import { Project } from "src/types/models/Projects";
 
-interface TasksViewBoard {
-  history: RouteComponentProps["history"];
-  location: RouteComponentProps["location"];
-  match: RouteComponentProps["match"];
-}
-export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
-  const dispatch = useDispatch();
-  const selectedProject = useAppSelector(selectSelectedProject);
+type TasksViewBoardProps = RouteComponentProps<{ id: string }>;
+
+export const TasksBoardView = (props: TasksViewBoardProps) => {
   const ProjectsStore = useAppSelector(selectAllProjects);
   const projectId = props.match.params.id;
+  const [state, setState] = useState<{ project: Project }>();
 
   useEffect(() => {
-    dispatch(ProjectsActions.onSetSelectedProject(projectId));
-  }, [ProjectsStore.projects, ProjectsStore.allTasks, projectId, dispatch]);
+    let project = ProjectsStore.projects.find((item) => item._id === projectId);
+    if (project)
+      setState({
+        project,
+      });
+  }, [ProjectsStore.projects]);
 
   return (
     <>
@@ -68,7 +64,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
                 src={IMAGES.arrowHeader}
                 alt="more"
               />
-              {selectedProject?.project?.name}
+              {state?.project?.name}
             </Typography>
             <Box className="task-broad-settings">
               <Button
@@ -76,9 +72,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
                 size="x-small"
                 label="List View"
                 onClick={() =>
-                  props.history.push(
-                    `/TasksList/${selectedProject.project?._id}`
-                  )
+                  props.history.push(`/TasksList/${state?.project?._id}`)
                 }
                 style={{ marginTop: "0px" }}
               />
@@ -90,7 +84,7 @@ export const TasksBoardView: React.FC<TasksViewBoard> = (props: any) => {
           xs={12}
           sx={{ width: "100%", overflowX: "scroll", position: "relative" }}
         >
-          <DragField tasks={ProjectsStore.selectedProject.tasks} {...props} />
+          <DragField {...props} />
         </Grid>
       </Grid>
     </>

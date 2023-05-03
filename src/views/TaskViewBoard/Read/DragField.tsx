@@ -3,200 +3,67 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import { selectAllDepartments } from "../../../models/Departments";
 import { useAppSelector } from "../../../models/hooks";
-import CreateNewTask from "./CreateTaskBtn";
 import TaskCard from "./Card/TaskCard";
-import {
-  moveTask,
-  selectCancledTasks,
-  selectDoneTasks,
-  selectInProgressTasks,
-  selectNotClearTasks,
-  selectNotStartedTasks,
-  selectReviewTasks,
-  selectSelectedProject,
-  selectSharedTasks,
-} from "../../../models/Projects";
+import { moveTask, selectAllProjects } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import { Project, Task } from "../../../types/models/Projects";
+import { RouteComponentProps } from "react-router";
+import { DragCloumnType, columnsValues } from "src/types/views/BoardView";
 
-type DragCloumn = {
-  name: string;
-  items: Task[];
-  header: string;
-  body: string;
-  border: string;
-  NewTask?: any;
-  value: string;
-  footer: string;
-};
-const DragField = () => {
-  const dispatch = useDispatch();
-  const selectedProject = useAppSelector(selectSelectedProject);
-  const inProgressTasks = useAppSelector(selectInProgressTasks);
-  const doneTasks = useAppSelector(selectDoneTasks);
-  const reviewTasks = useAppSelector(selectReviewTasks);
-  const notClearTasks = useAppSelector(selectNotClearTasks);
-  const notStartedTasks = useAppSelector(selectNotStartedTasks);
-  const cancledTasks = useAppSelector(selectCancledTasks);
-  const sharedTasks = useAppSelector(selectSharedTasks);
+type DragFieldProps = RouteComponentProps<{ id: string }>;
+
+const DragField = (props: DragFieldProps) => {
   const departments = useAppSelector(selectAllDepartments);
-
+  const dispatch = useDispatch();
+  const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const projectId = props.match.params.id;
+  const project = projects.find((item) => item._id === projectId);
+  const [state, setState] = useState({ allTasks });
   const [columns, setColumns] = useState<{
-    TasksBoard: DragCloumn;
-    NotClear: DragCloumn;
-    InProgress: DragCloumn;
-    Review: DragCloumn;
-    Shared: DragCloumn;
-    Done: DragCloumn;
-    Cancled: DragCloumn;
-  }>({
-    TasksBoard: {
-      name: "Tasks Board",
-      items: notStartedTasks,
-      header: "not-started-header",
-      body: "not-started-task",
-      border: "not-started-border",
-      NewTask: <CreateNewTask />,
-      value: "Tasks Board",
-      footer: "task-card-footer-notstarted",
-    },
-    NotClear: {
-      name: "Not clear",
-      items: notClearTasks,
-      header: "not-clear-header",
-      body: "not-clear-task",
-      border: "not-clear-border",
-      value: "Not Clear",
-      footer: "task-card-footer-notclear",
-    },
-    InProgress: {
-      name: "In Progress",
-      items: inProgressTasks,
-      header: "in-progress-header",
-      body: "in-progress-task",
-      border: "in-progress-border",
-      value: "In Progress",
-      footer: "task-card-footer-inprogress",
-    },
-    Review: {
-      name: "Review",
-      items: reviewTasks,
-      header: "review-header",
-      body: "review-task",
-      border: "review-border",
-      value: "Review",
-      footer: "task-card-footer-review",
-    },
-    Shared: {
-      name: "Shared",
-      items: sharedTasks,
-      header: "canceled-header",
-      body: "canceled-task",
-      border: "canceled-border",
-      value: "Shared",
-      footer: "task-card-footer-shared",
-    },
-    Done: {
-      name: "Done",
-      items: doneTasks,
-      header: "done-header",
-      body: "done-task",
-      border: "done-border",
-      value: "Done",
-      footer: "task-card-footer-done",
-    },
-    Cancled: {
-      name: "Cancled",
-      items: cancledTasks,
-      header: "canceled-header",
-      body: "canceled-task",
-      border: "canceled-border",
-      value: "Cancled",
-      footer: "task-card-footer-cancled",
-    },
-  });
+    TasksBoard: DragCloumnType;
+    NotClear: DragCloumnType;
+    InProgress: DragCloumnType;
+    Review: DragCloumnType;
+    Shared: DragCloumnType;
+    Done: DragCloumnType;
+    Cancled: DragCloumnType;
+  }>(columnsValues);
 
   useEffect(() => {
-    let cols: any = {
+    setState({ allTasks });
+    setColumns({
       TasksBoard: {
-        name: "Tasks Board",
-        items: notStartedTasks,
-        header: "not-started-header",
-        body: "not-started-task",
-        border: "not-started-border",
-        NewTask: <CreateNewTask />,
-        value: "Tasks Board",
-        footer: "task-card-footer-notstarted",
+        ...columns.TasksBoard,
+        items: allTasks.filter((item) => item.status === "Tasks Board"),
       },
       NotClear: {
-        name: "Not clear",
-        items: notClearTasks,
-        header: "not-clear-header",
-        body: "not-clear-task",
-        border: "not-clear-border",
-        value: "Not Clear",
-        footer: "task-card-footer-notclear",
+        ...columns.NotClear,
+        items: allTasks.filter((item) => item.status === "Not Clear"),
       },
       InProgress: {
-        name: "In Progress",
-        items: inProgressTasks,
-        header: "in-progress-header",
-        body: "in-progress-task",
-        border: "in-progress-border",
-        value: "In Progress",
-        footer: "task-card-footer-inprogress",
+        ...columns.InProgress,
+        items: allTasks.filter((item) => item.status === "In Progress"),
       },
       Review: {
-        name: "Review",
-        items: reviewTasks,
-        header: "review-header",
-        body: "review-task",
-        border: "review-border",
-        value: "Review",
-        footer: "task-card-footer-review",
-      },
-      Shared: {
-        name: "Shared",
-        items: sharedTasks,
-        header: "canceled-header",
-        body: "canceled-task",
-        border: "canceled-border",
-        value: "Shared",
-        footer: "task-card-footer-shared",
+        ...columns.Review,
+        items: allTasks.filter((item) => item.status === "Review"),
       },
       Done: {
-        name: "Done",
-        items: doneTasks,
-        header: "done-header",
-        body: "done-task",
-        border: "done-border",
-        value: "Done",
-        footer: "task-card-footer-done",
+        ...columns.Done,
+        items: allTasks.filter((item) => item.status === "Done"),
       },
       Cancled: {
-        name: "Cancled",
-        items: cancledTasks,
-        header: "canceled-header",
-        body: "canceled-task",
-        border: "canceled-border",
-        value: "Cancled",
-        footer: "task-card-footer-cancled",
+        ...columns.Cancled,
+        items: allTasks.filter((item) => item.status === "Cancled"),
       },
-    };
-    setColumns(cols);
-  }, [
-    selectedProject.tasks,
-    inProgressTasks,
-    cancledTasks,
-    notClearTasks,
-    reviewTasks,
-    sharedTasks,
-    doneTasks,
-    notStartedTasks,
-  ]);
+      Shared: {
+        ...columns.Shared,
+        items: allTasks.filter((item) => item.status === "Shared"),
+      },
+    });
+  }, [allTasks]);
   const onDragEnd = (result: DropResult, columns: any, setColumns: any) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -261,6 +128,12 @@ const DragField = () => {
         display="inline-flex"
       >
         {Object.entries(columns).map(([columnId, column], index) => {
+          let items: Task[] = [];
+          if (projectId && column.value)
+            items = allTasks.filter(
+              (item) =>
+                item.projectId === projectId && item.status === column.value
+            );
           return (
             <Droppable droppableId={columnId} key={columnId}>
               {(provided, snapshot) => {
@@ -282,16 +155,16 @@ const DragField = () => {
                     >
                       <Typography style={{ padding: "14px" }}>
                         <span className={column?.header}>{column.name}</span>{" "}
-                        {column.items.length}
+                        {items.length}
                       </Typography>
                     </Stack>
                     {column?.NewTask && column?.NewTask}
                     {column &&
-                      column?.items?.map((item: Task, index: number) => {
+                      items?.map((item: Task, index: number) => {
                         return (
                           <Box key={item._id} className={column.border}>
                             <TaskCard
-                              project={selectedProject?.project}
+                              project={project}
                               key={item?._id}
                               item={item}
                               index={index}
