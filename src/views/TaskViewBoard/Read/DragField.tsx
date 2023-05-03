@@ -48,6 +48,10 @@ const DragField = (props: DragFieldProps) => {
         ...columns.Review,
         items: allTasks.filter((item) => item.status === "Review"),
       },
+      Shared: {
+        ...columns.Shared,
+        items: allTasks.filter((item) => item.status === "Shared"),
+      },
       Done: {
         ...columns.Done,
         items: allTasks.filter((item) => item.status === "Done"),
@@ -55,10 +59,6 @@ const DragField = (props: DragFieldProps) => {
       Cancled: {
         ...columns.Cancled,
         items: allTasks.filter((item) => item.status === "Cancled"),
-      },
-      Shared: {
-        ...columns.Shared,
-        items: allTasks.filter((item) => item.status === "Shared"),
       },
     });
   }, [allTasks]);
