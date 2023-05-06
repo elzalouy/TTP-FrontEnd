@@ -136,6 +136,11 @@ const DragField = (props: DragFieldProps) => {
           return (
             <Droppable droppableId={columnId} key={columnId}>
               {(provided, snapshot) => {
+                let CreateTask: React.FC = column.NewTask
+                  ? column.NewTask
+                  : () => {
+                      return <></>;
+                    };
                 return (
                   <Grid
                     ref={provided.innerRef}
@@ -157,7 +162,7 @@ const DragField = (props: DragFieldProps) => {
                         {items.length}
                       </Typography>
                     </Stack>
-                    {column?.NewTask && column?.NewTask}
+                    <CreateTask />
                     {column &&
                       items?.map((item: Task, index: number) => {
                         return (

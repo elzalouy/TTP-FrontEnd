@@ -22,7 +22,14 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
-
+  const [countByStatus, setCountByStatus] = React.useState<{
+    inProgress: number;
+    tasksBoard: number;
+    notClear: number;
+    shared: number;
+    review: number;
+    done: number;
+  }>();
   React.useEffect(() => {
     setMovements(props.movements);
   }, [props.movements]);
@@ -163,7 +170,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           )}
         </Grid>
       </Grid>
-      <Grid item container xs={10} height={"72%"} alignContent={"flex-start"}>
+      <Grid item container xs={12} height={"72%"} alignContent={"flex-start"}>
         <Grid item xs={10} sx={{ overflow: "scroll", height: "100%" }}>
           <Timeline
             sx={{
@@ -188,6 +195,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                     new Date(item?.movedAt)
                   )
                 : undefined;
+
               return (
                 <TimelineItem sx={itemStyle}>
                   <TimelineSeparator sx={{ height: "auto" }}>
@@ -286,7 +294,12 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               "Cancled",
             ].map((item) => (
               <ListItem
-                sx={{ px: 0, py: 0.5, cursor: "pointer" }}
+                sx={{
+                  px: 1,
+                  py: 0.5,
+                  cursor: "pointer",
+                  justifyContent: "space-between",
+                }}
                 onClick={() =>
                   filter !== item ? setFilter(item) : setFilter("")
                 }
@@ -296,6 +309,18 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                   color={filter === item ? "#ffc500" : "#7c828c"}
                 >
                   {item}
+                </Typography>
+
+                <Typography
+                  textAlign={"center"}
+                  bgcolor={"#9ea1a7"}
+                  color="black"
+                  fontSize="11px"
+                  borderRadius={"5px"}
+                  px={"5px"}
+                  py={"1px"}
+                >
+                  {0}
                 </Typography>
               </ListItem>
             ))}

@@ -458,21 +458,23 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     Hours
                   </Typography>
                   {state?.statitics.taskSchedulingTime &&
-                    state?.statitics.taskSchedulingTime > 24 && (
-                      <Typography
-                        sx={{
-                          p: "3px",
-                          ml: 1,
-                          fontSize: "10px",
-                          mb: 0.5,
-                          borderRadius: 0.5,
-                          background: "#F1CBCC",
-                          color: "#FF0000",
-                        }}
-                      >
-                        Late
-                      </Typography>
-                    )}
+                  state?.statitics.taskSchedulingTime > 24 ? (
+                    <Typography
+                      sx={{
+                        p: "3px",
+                        ml: 1,
+                        fontSize: "10px",
+                        mb: 0.5,
+                        borderRadius: 0.5,
+                        background: "#F1CBCC",
+                        color: "#FF0000",
+                      }}
+                    >
+                      Late
+                    </Typography>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
               </Grid>
               <Grid xs={2}>

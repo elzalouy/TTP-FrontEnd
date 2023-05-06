@@ -3,6 +3,7 @@ import { Category } from "../../models/Categories";
 import { IDepartmentState, ITeam } from "../models/Departments";
 import { Task, TaskFile } from "../models/Projects";
 import CreateNewTask from "src/views/TaskViewBoard/Read/CreateTaskBtn";
+import React from "react";
 
 export type EditTaskProps = {
   show: string;
@@ -155,7 +156,7 @@ export type DragCloumnType = {
   body: string;
   items?: Task[];
   border: string;
-  NewTask?: any;
+  NewTask?: React.FC;
   value: string;
   footer: string;
 };
