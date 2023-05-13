@@ -133,7 +133,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     let inProgressMovements = task.movements.filter(
       (item) => item.status === "In Progress"
     );
-    console.log({ moves: task.movements });
     if (task.start) {
       if (inProgressMovements.length > 0)
         return getDifBetweenDates(

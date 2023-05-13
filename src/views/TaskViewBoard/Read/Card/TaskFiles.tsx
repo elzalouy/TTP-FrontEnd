@@ -34,14 +34,13 @@ const TaskFiles: React.FC<TaskFilesProps> = ({ taskFiles, cardId }) => {
           taskFiles.map((item) => {
             let name = formatFileName(item.name);
             return (
-              <>
-                <Typography
-                  onClick={() => onDownload(item)}
-                  className={styles.file}
-                >
-                  {name}
-                </Typography>
-              </>
+              <Typography
+                key={item._id}
+                onClick={() => onDownload(item)}
+                className={styles.file}
+              >
+                {name}
+              </Typography>
             );
           })}
       </Box>

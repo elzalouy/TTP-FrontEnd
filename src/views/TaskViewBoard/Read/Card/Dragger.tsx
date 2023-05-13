@@ -1,19 +1,13 @@
 import { Box } from "@mui/system";
-import React, { memo, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { selectAllDepartments } from "../../../../models/Departments";
 import { useAppSelector } from "../../../../models/hooks";
 import {
-  ProjectsActions,
-  selectUploadLoading,
-} from "../../../../models/Projects";
-import {
   checkStatusAndSetBackground,
   checkStatusAndSetBorder,
 } from "../../../../helpers/generalUtils";
-import { useDispatch } from "react-redux";
-import { toggleEditTaskPopup } from "../../../../models/Ui";
-import { Project, Task, TaskFile } from "../../../../types/models/Projects";
+import { Project, Task } from "../../../../types/models/Projects";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./taskCard.css";

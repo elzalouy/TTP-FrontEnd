@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import IMAGES from "../../../assets/img/Images";
 import { openCreateTaskPopup } from "../../../models/Ui";
-
 import "./taskViewBoard.css";
+
 const CreateNewTask: React.FC = () => {
   const disptach = useDispatch();
   const handleOpenCreateTaskPopup = () => {

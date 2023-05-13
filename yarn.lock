@@ -10547,6 +10547,11 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.0, react-transition-g
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-virtualize@^1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/react-virtualize/-/react-virtualize-1.2.9.tgz#75bbe591a5fcc0cf916b1ef59d551cd34d1959c9"
+  integrity sha512-90Eyy6arOeGs4E6Rdgrv5O1B69VI2lhf5hpgkPc3sEH1je4BqSI2Rv4LJ6RxgH7Rzj3jZC7vsM6OZqI1yjWbSQ==
+
 react@18:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"

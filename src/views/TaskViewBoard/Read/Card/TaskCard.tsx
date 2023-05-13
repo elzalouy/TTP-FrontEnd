@@ -1,6 +1,6 @@
 import { Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import IMAGES from "../../../../assets/img/Images";
 import TasksPopover from "../../../../coreUI/components/Popovers/TasksPopover";
@@ -28,6 +28,7 @@ import "swiper/css/navigation";
 import "./taskCard.css";
 import { toggleViewTaskPopup } from "src/models/Ui";
 import { DragCloumnType } from "src/types/views/BoardView";
+import { divide } from "lodash";
 
 interface TaskCartProps {
   index: number;

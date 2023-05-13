@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { Category } from "../../models/Categories";
 import { IDepartmentState, ITeam } from "../models/Departments";
-import { Task, TaskFile } from "../models/Projects";
+import { Project, Task, TaskFile } from "../models/Projects";
 import CreateNewTask from "src/views/TaskViewBoard/Read/CreateTaskBtn";
 import React from "react";
 
@@ -11,6 +11,8 @@ export type EditTaskProps = {
 };
 
 export interface CRUDTaskState {
+  loading: boolean;
+  selectedProject?: Project;
   updated?: boolean;
   newFiles: (File | null)[];
   deleteFiles: {
@@ -66,6 +68,7 @@ export const initialHookFormTaskState: IInitialinitialHookFormTaskState = {
   file: null,
 };
 export const initialEditState: CRUDTaskState = {
+  loading: false,
   newFiles: [],
   deleteFiles: [],
   task: {
@@ -96,6 +99,7 @@ export const initialEditState: CRUDTaskState = {
   selectedDepatmentTeams: [],
 };
 export const initialCreateState: CRUDTaskState = {
+  loading: false,
   newFiles: [],
   deleteFiles: [],
   task: {
@@ -161,6 +165,42 @@ export type DragCloumnType = {
   footer: string;
 };
 
+export const moveListsObject: any = {
+  TasksBoard: "Tasks Board",
+  NotClear: "Not Clear",
+  InProgress: "In Progress",
+  Review: "Review",
+  Shared: "Shared",
+  Done: "Done",
+  Cancled: "Cancled",
+};
+export const moveListsIndexes: any = {
+  TasksBoard: 0,
+  NotClear: 1,
+  InProgress: 2,
+  Review: 3,
+  Shared: 4,
+  Done: 5,
+  Cancled: 6,
+};
+export type moveListsValuesType =
+  | "TasksBoard"
+  | "NotClear"
+  | "InProgress"
+  | "Review"
+  | "Shared"
+  | "Done"
+  | "Cancled"
+  | "";
+export const moveListsValues = [
+  "TasksBoard",
+  "NotClear",
+  "InProgress",
+  "Review",
+  "Shared",
+  "Done",
+  "Cancled",
+];
 export const columnsValues: {
   TasksBoard: DragCloumnType;
   NotClear: DragCloumnType;

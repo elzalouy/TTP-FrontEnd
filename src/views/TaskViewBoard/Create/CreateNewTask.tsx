@@ -16,7 +16,7 @@ import { selectUi } from "../../../models/Ui/UI.selectors";
 import { valdiateCreateTask } from "../../../services/validations/task.schema";
 import {
   createTaskFromBoard,
-  selectSelectedProject,
+  selectAllProjects,
 } from "../../../models/Projects";
 import {
   CRUDTaskState,
@@ -29,18 +29,26 @@ import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import TextArea from "src/coreUI/components/Inputs/Textfield/StyledArea";
 import Button from "src/coreUI/components/Buttons/Button";
 import { selectClientOptions } from "src/models/Clients";
+import { RouteComponentProps, useLocation, useParams } from "react-router";
+import { Project } from "src/types/models/Projects";
 
-interface Props {
+type Props = {
+  props: RouteComponentProps<
+    | {
+        id: string;
+      }
+    | any
+  >;
   show: string;
   setShow: (val: string) => void;
   edit: boolean;
-}
+};
 
-const CreateNewTask = ({ show, setShow, edit }: Props) => {
+const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
-  const selectedProject = useAppSelector(selectSelectedProject);
+  const projects = useAppSelector(selectAllProjects);
   const { createTaskPopup } = useAppSelector(selectUi);
   const clientsOptions = useAppSelector(selectClientOptions);
   const { register, handleSubmit, control, reset, setValue, watch } =
@@ -54,63 +62,79 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
   });
 
   React.useEffect(() => {
+    setState({
+      ...state,
+      selectedProject: projects.projects.find(
+        (item) =>
+          item._id ===
+          props.location.pathname.split("/")[
+            props.location.pathname.split("/").length - 1
+          ]
+      ),
+    });
+  }, [projects]);
+  React.useEffect(() => {
     if (createTaskPopup === "none") {
       reset();
     }
   }, [createTaskPopup]);
-
   const onSubmit = async () => {
-    let data = watch();
-    let State = { ...state };
-    if (selectedProject.project) {
-      let subCategory = state.selectedCategory?.subCategoriesId?.find(
-        (item) => item._id === data.subCategoryId
-      );
-      const selectedTeam = state.selectedDepartment?.teams?.find(
-        (item) => item._id === data.teamId
-      );
-      let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
-      let projectNames = selectedProject.project.name.split("-");
-      let projectPureName = projectNames[projectNames.length - 1];
-      let newTask: any = {
-        name: `${
-          clientsOptions.find(
-            (item) => item.id === selectedProject?.project?.clientId
-          )?.text
-        }-${projectPureName}-${state.selectedCategory?.category}-${
-          subCategory ? subCategory.subCategory : ""
-        } ${data.name.length > 0 ? `(${data.name})` : ""}`,
-        categoryId: data?.categoryId,
-        projectId: selectedProject?.project?._id,
-        status: list,
-        start: new Date().toUTCString(),
-        listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
-          ?.listId,
-        boardId: state.selectedDepartment?.boardId,
-      };
-
-      if (selectedTeam) newTask.teamListId = selectedTeam.listId;
-      if (data.subCategoryId !== "") newTask.subCategoryId = data.subCategoryId;
-      if (data.teamId !== "") newTask.teamId = data.teamId;
-      if (data.deadline !== "" && data.deadline !== null)
-        newTask.deadline = moment(data?.deadline).toDate().toString();
-      if (state.newFiles) newTask.attachedFiles = state.newFiles;
-      if (data.description) newTask.description = data.description;
-      let { error, warning, value, FileError, FormDatatask } =
-        valdiateCreateTask(newTask);
-      if (error || FileError) {
-        State.error = { error, warning, value };
-        setState(State);
-      } else {
-        dispatch(
-          createTaskFromBoard({
-            data: FormDatatask,
-            setShow: setShow,
-            resetState,
-            reset,
-          })
+    try {
+      let data = watch();
+      setState({ ...state, loading: true });
+      let State = { ...state };
+      if (state.selectedProject) {
+        let subCategory = state.selectedCategory?.subCategoriesId?.find(
+          (item) => item._id === data.subCategoryId
         );
+        const selectedTeam = state.selectedDepartment?.teams?.find(
+          (item) => item._id === data.teamId
+        );
+        let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
+        let projectNames = state.selectedProject.name.split("-");
+        let projectPureName = projectNames[projectNames.length - 1];
+        let newTask: any = {
+          name: `${
+            clientsOptions.find(
+              (item) => item.id === state.selectedProject?.clientId
+            )?.text
+          }-${projectPureName}-${state.selectedCategory?.category}-${
+            subCategory ? subCategory.subCategory : ""
+          } ${data.name.length > 0 ? `(${data.name})` : ""}`,
+          categoryId: data?.categoryId,
+          projectId: state.selectedProject?._id,
+          status: list,
+          start: new Date().toUTCString(),
+          listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
+            ?.listId,
+          boardId: state.selectedDepartment?.boardId,
+        };
+        if (selectedTeam) newTask.teamListId = selectedTeam.listId;
+        if (data.subCategoryId !== "")
+          newTask.subCategoryId = data.subCategoryId;
+        if (data.teamId !== "") newTask.teamId = data.teamId;
+        if (data.deadline !== "" && data.deadline !== null)
+          newTask.deadline = moment(data?.deadline).toDate().toString();
+        if (state.newFiles) newTask.attachedFiles = state.newFiles;
+        if (data.description) newTask.description = data.description;
+        let { error, warning, value, FileError, FormDatatask } =
+          valdiateCreateTask(newTask);
+        if (error || FileError) {
+          State.error = { error, warning, value };
+          setState(State);
+        } else {
+          dispatch(
+            createTaskFromBoard({
+              data: FormDatatask,
+              setShow: setShow,
+              resetState,
+              reset,
+            })
+          );
+        }
       }
+    } catch (error) {
+      console.log({ error });
     }
   };
 
@@ -359,10 +383,10 @@ const CreateNewTask = ({ show, setShow, edit }: Props) => {
               }}
             >
               <Button
+                loading={state.loading}
                 size="large"
                 type="main"
                 label="Done"
-                loading={selectedProject.loading}
                 onClick={onSubmit}
                 dataTestId="create-task-submit"
               />

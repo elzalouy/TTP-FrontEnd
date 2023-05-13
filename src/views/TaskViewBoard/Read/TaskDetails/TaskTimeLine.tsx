@@ -22,14 +22,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
-  const [countByStatus, setCountByStatus] = React.useState<{
-    inProgress: number;
-    tasksBoard: number;
-    notClear: number;
-    shared: number;
-    review: number;
-    done: number;
-  }>();
   React.useEffect(() => {
     setMovements(props.movements);
   }, [props.movements]);
@@ -197,7 +189,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 : undefined;
 
               return (
-                <TimelineItem sx={itemStyle}>
+                <TimelineItem key={item._id} sx={itemStyle}>
                   <TimelineSeparator sx={{ height: "auto" }}>
                     <TimelineDot sx={dotStyle}>
                       <Typography sx={timeLineDotNumStyle}>
@@ -292,38 +284,51 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               "Shared",
               "Done",
               "Cancled",
-            ].map((item) => (
-              <ListItem
-                sx={{
-                  px: 1,
-                  py: 0.5,
-                  cursor: "pointer",
-                  justifyContent: "space-between",
-                }}
-                onClick={() =>
-                  filter !== item ? setFilter(item) : setFilter("")
-                }
-              >
-                <Typography
-                  fontSize="10px"
-                  color={filter === item ? "#ffc500" : "#7c828c"}
+            ].map((item) => {
+              let count =
+                filter !== ""
+                  ? props.movements.filter(
+                      (move, index) =>
+                        props.movements[index + 1] &&
+                        props.movements[index + 1]?.status === filter &&
+                        move.status === item
+                    ).length
+                  : 0;
+              return (
+                <ListItem
+                  key={item}
+                  sx={{
+                    px: 1,
+                    py: 0.5,
+                    cursor: "pointer",
+                    justifyContent: "space-between",
+                  }}
+                  onClick={() =>
+                    filter !== item ? setFilter(item) : setFilter("")
+                  }
                 >
-                  {item}
-                </Typography>
-
-                <Typography
-                  textAlign={"center"}
-                  bgcolor={"#9ea1a7"}
-                  color="black"
-                  fontSize="11px"
-                  borderRadius={"5px"}
-                  px={"5px"}
-                  py={"1px"}
-                >
-                  {0}
-                </Typography>
-              </ListItem>
-            ))}
+                  <Typography
+                    fontSize="10px"
+                    color={filter === item ? "#ffc500" : "#7c828c"}
+                  >
+                    {item}
+                  </Typography>
+                  {count !== 0 && (
+                    <Typography
+                      textAlign={"center"}
+                      bgcolor={"#9ea1a7"}
+                      color="black"
+                      fontSize="11px"
+                      borderRadius={"5px"}
+                      px={"5px"}
+                      py={"1px"}
+                    >
+                      {count}
+                    </Typography>
+                  )}
+                </ListItem>
+              );
+            })}
           </List>
         </Grid>
       </Grid>

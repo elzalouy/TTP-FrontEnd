@@ -25,11 +25,14 @@ import {
 } from "src/models/Ui";
 import EditDepartment from "src/views/Departments/Edit/EditDepartment";
 import DeleteDepartment from "src/views/Departments/Delete/DeleteDepartment";
-import { useLocation } from "react-router";
+import { RouteComponentProps, useLocation } from "react-router";
 import TaskDetails from "src/views/TaskViewBoard/Read/TaskDetails";
 
 type Props = {
   children?: any;
+  history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
+  match: RouteComponentProps["match"];
 };
 
 const Modals: React.FC<Props> = (props) => {
@@ -85,6 +88,7 @@ const Modals: React.FC<Props> = (props) => {
         setShow={showCreateTaskPopup}
         show={createTaskPopup}
         edit={true}
+        props={props}
       />
       <Logout setShow={showLoggoutPopup} show={logoutPopup} />
       <EditTask show={editTaskPopup} setShow={showEditTaskPopup} />

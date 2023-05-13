@@ -10,6 +10,7 @@ import { selectAllProjects } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import Button from "src/coreUI/components/Buttons/Button";
 import { Project } from "src/types/models/Projects";
+import AutoSizer from "src/coreUI/components/AutoSizer/AutoSizer";
 
 type TasksViewBoardProps = RouteComponentProps<{ id: string }>;
 
@@ -27,66 +28,51 @@ export const TasksBoardView = (props: TasksViewBoardProps) => {
   }, [ProjectsStore.projects]);
 
   return (
-    <>
+    <Grid container>
       <Grid
-        direction="row"
-        width="100%"
+        item
         sx={{
-          display: "grid",
-          overflowX: "hidden",
-          overflowY: "hidden",
+          paddingX: { sm: 1, xs: 1, md: 4, lg: 4 },
+          marginBottom: "20px",
+          overflow: "hidden",
+          width: "auto",
+          justifyContent: "space",
         }}
       >
-        <Grid
-          item
-          xs={12}
-          sx={{
-            marginX: { sm: 1, xs: 1, md: 4, lg: 4 },
-            marginBottom: "20px",
-            overflow: "hidden",
-          }}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
+          <Typography
+            sx={{ cursor: "pointer" }}
+            variant="h2"
+            fontFamily={"Cairo"}
+            fontSize={20}
+            onClick={() => props?.history?.push("/projects")}
           >
-            <Typography
-              sx={{ cursor: "pointer" }}
-              variant="h2"
-              fontFamily={"Cairo"}
-              fontSize={20}
-              onClick={() => props?.history?.push("/projects")}
-            >
-              Projects
-              <img
-                style={{ margin: "0 20px" }}
-                src={IMAGES.arrowHeader}
-                alt="more"
-              />
-              {state?.project?.name}
-            </Typography>
-            <Box className="task-broad-settings">
-              <Button
-                type="main"
-                size="x-small"
-                label="List View"
-                onClick={() =>
-                  props.history.push(`/TasksList/${state?.project?._id}`)
-                }
-                style={{ marginTop: "0px" }}
-              />
-            </Box>
-          </Stack>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{ width: "100%", overflowX: "scroll", position: "relative" }}
-        >
-          <DragField {...props} />
-        </Grid>
+            Projects
+            <img
+              style={{ margin: "0 20px" }}
+              src={IMAGES.arrowHeader}
+              alt="more"
+            />
+            {state?.project?.name}
+          </Typography>
+          <Box className="task-broad-settings">
+            <Button
+              type="main"
+              size="x-small"
+              label="List View"
+              onClick={() =>
+                props.history.push(`/TasksList/${state?.project?._id}`)
+              }
+              style={{ marginTop: "0px" }}
+            />
+          </Box>
+        </Stack>
       </Grid>
-    </>
+      <DragField props={props} />
+    </Grid>
   );
 };

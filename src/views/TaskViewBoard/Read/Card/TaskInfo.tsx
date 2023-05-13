@@ -193,7 +193,7 @@ const TaskInfo = memo(
                       {taskImages.map((image, index) => {
                         if (image?.error === true)
                           return (
-                            <div className="fallback-container">
+                            <div key={image._id} className="fallback-container">
                               <a
                                 href={image.url}
                                 className="login-link"
@@ -205,7 +205,10 @@ const TaskInfo = memo(
                             </div>
                           );
                         return (
-                          <SwiperSlide key={index} className={`swiper-slide`}>
+                          <SwiperSlide
+                            key={image._id}
+                            className={`swiper-slide`}
+                          >
                             <img
                               style={{
                                 width: "100%",

@@ -19,7 +19,7 @@ const Button: FC<IButton> = ({
 
   return (
     <button
-      onClick={onClick}
+      onClick={loading !== true ? onClick : () => {}}
       type={form?.type ? form.type : "button"}
       form={form?.name ? form.name : ""}
       data-test-id={dataTestId}
@@ -27,7 +27,11 @@ const Button: FC<IButton> = ({
       disabled={loading ? loading : false}
       style={{ ...style }}
     >
-      {loading ? <CircularProgress className="button-loading" /> : label}
+      {loading === true ? (
+        <CircularProgress className="button-loading" />
+      ) : (
+        label
+      )}
     </button>
   );
 };

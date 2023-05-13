@@ -1,15 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiResponse } from "apisauce";
-import { toast } from "react-toastify";
 import api from "../../services/endpoints/projects";
-import apiUrl from "../../services/api.json";
 import {
   fireCreateProjectHook,
   fireDeleteProjectHook,
   fireDeleteTaskHook,
   fireEditTaskHook,
   fireMoveTaskHook,
-  fireUpdateProjectHook,
 } from "../Ui";
 import { logout } from "../Auth";
 import { Project, Task } from "../../types/models/Projects";
@@ -346,20 +343,18 @@ export const editProject = createAsyncThunk<any, any, any>(
 
 export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
-  async (args: any, { rejectWithValue, dispatch }) => {
+  async (
+    args: { dep: IDepartmentState; newList: IList; task: Task },
+    { rejectWithValue, dispatch }
+  ) => {
     try {
-      let department: IDepartmentState = args?.department;
-      let value = args?.value;
-      let task = args?.task;
-      let newlist: IList | undefined = department?.lists?.find(
-        (item) => item.name === value
-      );
-      if (newlist?.name && newlist.listId) {
+      let { dep, newList, task } = args;
+      if (task && dep && newList && task) {
         let Data: any = {
           cardId: task.cardId,
-          listId: newlist.listId,
-          status: newlist.name,
-          department: department,
+          listId: newList.listId,
+          status: newList.name,
+          department: dep,
         };
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
         if (moveResult?.status === 401 || moveResult?.status === 403) {
@@ -367,10 +362,11 @@ export const moveTask = createAsyncThunk<any, any, any>(
           return rejectWithValue("Un Authorized");
         }
         if (moveResult.ok) {
-          args.dispatch(fireMoveTaskHook(""));
+          console.log({ taskMoveResult: moveResult.data });
+          dispatch(fireMoveTaskHook(""));
           let returnValue: Task = { ...task };
-          returnValue.status = newlist.name;
-          returnValue.listId = newlist.listId;
+          returnValue.status = newList.name;
+          returnValue.listId = newList.listId;
           return returnValue;
         } else throw moveResult.problem;
       }

@@ -71,7 +71,13 @@ const AppDrawer = (props: any) => {
         sx={{
           overflow: "hidden",
           position: "inherit",
-          display: { xs: "none", sm: "none", lg: "block", md: "block" },
+          display: {
+            xs: "none",
+            sm: "none",
+            lg: "block",
+            md: "block",
+            xl: "block",
+          },
           width: open ? "16%" : "4%",
           flexShrink: 0,
           transition: " all 0.5s ease !important",

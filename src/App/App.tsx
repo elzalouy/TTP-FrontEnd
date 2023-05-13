@@ -1,4 +1,11 @@
-import { Route, Switch } from "react-router-dom";
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  useHistory,
+  useLocation,
+  useRouteMatch,
+} from "react-router-dom";
 import * as React from "react";
 import { ToastContainer } from "react-toastify";
 import AppHooks from "../coreUI/contexts/AppHooks";
@@ -29,6 +36,9 @@ import { getAllProjects, getAllTasks } from "src/models/Projects";
 import { getNotifications, getUnNotified } from "src/models/Notifications";
 
 const App: React.FC = (props) => {
+  const location = useLocation<any>();
+  const history = useHistory<any>();
+  const match = useRouteMatch<any>();
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(setAppLoading(true));
@@ -66,10 +76,8 @@ const App: React.FC = (props) => {
     };
   }, [userState.authed, dispatch]);
 
-  React.useEffect(() => {}, [tokenInfo, userState.authed, userState.loading]);
-
   return (
-    <Box height={"100vh"} bgcolor="#FAFAFB !important">
+    <Box height={"100%"} bgcolor="#FAFAFB !important">
       <AppHooks>
         <ToastContainer
           data-test-id="toastMessage"
@@ -83,7 +91,7 @@ const App: React.FC = (props) => {
           limit={1}
           draggable
         />
-        <PopUps />
+        <PopUps history={history} match={match} location={location} />
         <Switch>
           {process.env.NODE_ENV === "development" && (
             <Route key="/DevComponents" path="/Dev" component={UIComponents} />

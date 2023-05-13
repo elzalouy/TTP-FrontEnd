@@ -1,11 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import {
-  Toolbar,
-  AppBar,
-  IconButton,
-  Badge,
-  buttonClasses,
-} from "@mui/material";
+import { Toolbar, AppBar, IconButton, Badge } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import "./AppBar.css";
 import { Logo } from "src/coreUI/components/Images/Images";
@@ -25,6 +19,7 @@ const Bar = (props: Props) => {
   const location = useLocation();
   const history = useHistory();
   const noOfNotifications = useAppSelector(selectUnNotifiedNum);
+
   useEffect(() => {
     setSelected(location?.pathname);
   }, [location.pathname]);
