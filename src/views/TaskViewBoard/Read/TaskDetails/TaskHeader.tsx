@@ -4,6 +4,8 @@ import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
 import CloseIcon from "@mui/icons-material/Close";
 import { Task } from "src/types/models/Projects";
+import { selectManagers } from "src/models/Managers";
+import { useAppSelector } from "src/models/hooks";
 
 interface TaskHeaderProps {
   task: Task;
@@ -11,6 +13,23 @@ interface TaskHeaderProps {
 }
 
 const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
+  const users = useAppSelector(selectManagers);
+  const isMissedDelivery = () => {
+    const isDeadlineChanged =
+      task.deadlineChain?.filter(
+        (item) =>
+          item.trelloMember === false &&
+          users.find(
+            (user) =>
+              user._id === item.userId && ["OM", "PM"].includes(user.role)
+          ) &&
+          item.before.getTime() < item.current.getTime()
+      ).length !== 0;
+    const isDeadlinePassed =
+      new Date(task.deadline).getTime() < new Date(Date.now()).getTime();
+    return isDeadlineChanged || isDeadlinePassed;
+  };
+  console.log(isMissedDelivery());
   return (
     <Grid
       item
@@ -111,6 +130,37 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
               : "Not Set"}
           </Typography>
         </Box>
+        {isMissedDelivery() && (
+          <>
+            <Divider
+              orientation="vertical"
+              variant="inset"
+              flexItem
+              sx={{ mx: 2 }}
+            />
+            <Box
+              sx={{
+                minWidth: 170,
+                alignItems: "center",
+                textAlign: "center",
+                display: "inline-flex",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#FF0000",
+                  background: "#F1CBCC",
+                  padding: "8px",
+                  borderRadius: "5px",
+                  fontSize: "12px",
+                  height: "auto",
+                }}
+              >
+                Missed Delivery
+              </Typography>
+            </Box>
+          </>
+        )}
       </Grid>
       <Grid item xs={1} display={"flex"} justifyContent={"flex-end"}>
         <Box
