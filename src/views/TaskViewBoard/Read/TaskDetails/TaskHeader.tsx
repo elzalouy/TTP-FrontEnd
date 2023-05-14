@@ -94,7 +94,9 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
             fontSize={"12px"}
           >
             <EventIcon htmlColor="#9ea1a7" sx={{ fontSize: "12px", mr: 1 }} />
-            {format(new Date(task.start), "dd MMMM yyyy")}
+            {task.start
+              ? format(new Date(task.start), "dd MMMM yyyy")
+              : "Not Set"}
           </Typography>
         </Box>
         <Divider
