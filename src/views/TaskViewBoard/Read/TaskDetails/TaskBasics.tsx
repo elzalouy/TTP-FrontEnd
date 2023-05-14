@@ -36,7 +36,7 @@ type state = {
   statitics: {
     taskSchedulingTime: number;
     taskProcessingTime: number;
-    taskLeadTime: number;
+    taskLeadTime: number | string;
     unClearTime: { times: number; hours: number };
     turnAroundTime: { times: number; hours: number };
   };
@@ -83,8 +83,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       );
       return tlt.remainingDays;
     } else
-      return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-        .remainingDays;
+      return task.start
+        ? getDifBetweenDates(new Date(task.start), new Date(Date.now()))
+            .remainingDays
+        : "not available";
   };
 
   /**
