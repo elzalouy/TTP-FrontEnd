@@ -30,7 +30,7 @@ const ControlledInput: FC<IControlledInput> = ({
           dataTestId={dataTestId}
           onChange={(e: any) => {
             props.field.onChange(e);
-            onChange(e);
+            if (onChange) onChange(e);
           }}
           placeholder={placeholder}
           elementType={elementType}
