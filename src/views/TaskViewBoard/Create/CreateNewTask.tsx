@@ -51,11 +51,14 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
   const projects = useAppSelector(selectAllProjects);
   const { createTaskPopup } = useAppSelector(selectUi);
   const clientsOptions = useAppSelector(selectClientOptions);
+  const projectId =
+    props.location.pathname.split("/")[
+      props.location.pathname.split("/").length - 1
+    ];
   const { register, handleSubmit, control, reset, setValue, watch } =
     useForm<IInitialinitialHookFormTaskState>({
       defaultValues: { ...initialHookFormTaskState },
     });
-
   const files = React.useRef<HTMLInputElement>(null);
   const [state, setState] = React.useState<CRUDTaskState>({
     ...initialCreateState,
@@ -64,15 +67,10 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
   React.useEffect(() => {
     setState({
       ...state,
-      selectedProject: projects.projects.find(
-        (item) =>
-          item._id ===
-          props.location.pathname.split("/")[
-            props.location.pathname.split("/").length - 1
-          ]
-      ),
+      selectedProject: projects.projects.find((item) => item._id === projectId),
     });
-  }, [projects]);
+  }, [projectId]);
+
   React.useEffect(() => {
     if (createTaskPopup === "none") {
       reset();
@@ -80,10 +78,14 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
   }, [createTaskPopup]);
   const onSubmit = async () => {
     try {
+      let selectedProject = projects.projects.find(
+        (item) => item._id === projectId
+      );
+      console.log({ selectedProject });
       let data = watch();
       setState({ ...state, loading: true });
       let State = { ...state };
-      if (state.selectedProject) {
+      if (selectedProject) {
         let subCategory = state.selectedCategory?.subCategoriesId?.find(
           (item) => item._id === data.subCategoryId
         );
@@ -91,18 +93,17 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
           (item) => item._id === data.teamId
         );
         let list = data?.teamId === "" ? "Tasks Board" : "In Progress";
-        let projectNames = state.selectedProject.name.split("-");
+        let projectNames = selectedProject.name.split("-");
         let projectPureName = projectNames[projectNames.length - 1];
         let newTask: any = {
           name: `${
-            clientsOptions.find(
-              (item) => item.id === state.selectedProject?.clientId
-            )?.text
+            clientsOptions.find((item) => item.id === selectedProject?.clientId)
+              ?.text
           }-${projectPureName}-${state.selectedCategory?.category}-${
             subCategory ? subCategory.subCategory : ""
           } ${data.name.length > 0 ? `(${data.name})` : ""}`,
           categoryId: data?.categoryId,
-          projectId: state.selectedProject?._id,
+          projectId: selectedProject?._id,
           status: list,
           start: new Date().toUTCString(),
           listId: state.selectedDepartment?.lists?.find((l) => l.name === list)
