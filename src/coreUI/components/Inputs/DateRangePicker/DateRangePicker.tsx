@@ -68,7 +68,7 @@ const DateInput = (props: { open: boolean; onClose: any }) => {
               size="small"
               onClick={onClose}
               type="add"
-              style={{ width: "auto", textAlign: "center" }}
+              style={{ width: "100%", textAlign: "center" }}
             />
           </Grid>
         </Grid>

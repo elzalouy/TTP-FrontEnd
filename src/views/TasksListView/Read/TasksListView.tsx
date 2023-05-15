@@ -72,6 +72,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const { watch, control, setValue, reset } = useForm({
     defaultValues: defaultValues,
   });
+  const [filtering, setIfFiltering] = React.useState(false);
   const [state, setState] = React.useState<IState>({
     tasks: projects.allTasks,
     showEditTasks: "none",
@@ -97,29 +98,40 @@ export const TasksListView: React.FC<Props> = (props) => {
     }
   }, [props.match.params, projects]);
 
+  React.useEffect(() => {
+    try {
+      let {
+        projectId,
+        projectManager,
+        clientId,
+        status,
+        start,
+        name,
+        end,
+        category,
+      } = watch();
+      let tasks = projects.allTasks.filter((task) => {
+        // filter by project id
+      });
+    } catch (error) {}
+  }, [filtering]);
   const onSetFilter = (name: filterTypes, value: string) => {
     setValue(name, value);
     let State = { ...state };
     let filter = watch();
     let tasks = projects.allTasks;
     let projectsIds: string[] = projects.projects.map((item) => item?._id);
-    let projectManagersIds: string[] = projects.projects.map(
-      (item) => item.projectManager?._id
-    );
     if (filter.clientId !== "") {
       projectsIds = projects.projects
         .filter((item) => item.clientId === filter.clientId)
         .map((item) => item?._id);
-      projectManagersIds = projects.projects
-        .filter((item) => projectsIds.includes(item?._id))
-        .map((item) => item.projectManager?._id);
       tasks = projects.allTasks.filter((item) =>
         projectsIds.includes(item.projectId)
       );
     }
     if (filter.projectManager !== "") {
       projectsIds = projects.projects
-        .filter((item) => item.projectManager?._id === filter.projectManager)
+        .filter((item) => item.projectManager === filter.projectManager)
         .map((item) => item?._id);
       State.projectsOptions = projectOptions.filter((item) =>
         projectsIds.includes(item.id)

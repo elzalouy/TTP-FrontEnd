@@ -29,7 +29,6 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
       new Date(task.deadline).getTime() < new Date(Date.now()).getTime();
     return isDeadlineChanged || isDeadlinePassed;
   };
-  console.log(isMissedDelivery());
   return (
     <Grid
       item
