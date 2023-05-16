@@ -51,13 +51,14 @@ export const getDifBetweenDates = (start: Date, end: Date) => {
   const hours = Math.floor(
     (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
+  const mins = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
 
   // calculate the total number of hours in the time difference
   const totalHours = years * 365 * 24 + months * 30 * 24 + days * 24 + hours;
 
   return {
     isLate: d2 > d1 ? false : true,
-    difference: { years, months, days, hours },
+    difference: { years, months, days, hours, mins },
     remainingDays,
     totalHours,
   };

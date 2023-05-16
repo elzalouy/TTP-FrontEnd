@@ -52,6 +52,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           years: 0,
           months: 0,
           days: 0,
+          mins: 0,
           hours: 0,
         },
         remainingDays: 0,
@@ -263,7 +264,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             fontSize={"10px"}
                           >
                             {due ? due.difference.days : 0} Days{",  "}
-                            {due ? due.difference.hours : 0} Hours{" "}
+                            {due ? due.difference.hours : 0} Hours{", "}
+                            {due ? due.difference.mins : 0} mins{" "}
                           </Typography>
                         </Box>
                       )}
@@ -361,7 +363,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             {getDiff("In Progress", "Review").difference.days} d,{" "}
-            {getDiff("In Progress", "Review").difference.hours} h
+            {getDiff("In Progress", "Review").difference.hours} h,
+            {getDiff("In Progress", "Review").difference.mins} mins,
           </Typography>
         </Box>
         <Box
@@ -380,7 +383,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             {getDiff("Review", "Shared").difference.days} d,{" "}
-            {getDiff("Review", "Shared").difference.hours} h
+            {getDiff("Review", "Shared").difference.hours} h,
+            {getDiff("Review", "Shared").difference.mins} mins,
           </Typography>
         </Box>
         <Box
@@ -399,7 +403,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             {getDiff("Shared", "Done").difference.days} d,{" "}
-            {getDiff("Shared", "Done").difference.hours} h
+            {getDiff("Shared", "Done").difference.hours} h,
+            {getDiff("Shared", "Done").difference.mins} mins,
           </Typography>
         </Box>
       </Grid>

@@ -34,9 +34,9 @@ type state = {
     movedAt: Date;
   }[];
   statitics: {
-    taskSchedulingTime: number;
-    taskProcessingTime: number;
-    taskLeadTime: number | string;
+    taskSchedulingTime: any;
+    taskProcessingTime: any;
+    taskLeadTime: any;
     unClearTime: { times: number; hours: number };
     turnAroundTime: { times: number; hours: number };
   };
@@ -81,12 +81,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
           state?.sharedMovements[state?.sharedMovements.length - 1].movedAt
         )
       );
-      return tlt.remainingDays;
+      return tlt;
     } else
       return task.start
         ? getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-            .remainingDays
-        : "not available";
+        : null;
   };
 
   /**
@@ -122,12 +121,12 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
         return getDifBetweenDates(
           new Date(inProgressMove[0].movedAt),
           new Date(state?.sharedMovements[sharedMoveIndex].movedAt)
-        ).remainingDays;
+        );
       } else
         return getDifBetweenDates(
           new Date(inProgressMove[0].movedAt),
           new Date(Date.now())
-        ).remainingDays;
+        );
     } else return 0;
   };
 
@@ -209,7 +208,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     return (
       <>
         {state?.sharedMovements.length === 0 ||
-        ["Done", "Cancled"].includes(task.status) ? (
+        ["Done", "Cancled"].includes(task.status) ||
+        !task.start ? (
           <NorthIcon
             htmlColor="#fc164f"
             sx={{
@@ -242,9 +242,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   return (
-    <Grid
-      sx={{ height: "100%", p: 3, lg: { overflowY: "scroll", xl: "scroll" } }}
-    >
+    <Grid sx={{ height: "100%", p: 3, overflowY: "scroll" }}>
       {state?.taskCategory && (
         <Box
           sx={{
@@ -292,7 +290,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
               sx={{
                 bgcolor: "#ffc500",
                 width: 20,
-                height: 30,
+                height: 20,
                 borderRadius: 0.5,
                 fontSize: 12,
                 mr: 1,
@@ -335,7 +333,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.taskLeadTime}
+                    {state?.statitics.taskLeadTime.difference.days}
                   </Typography>
                   <Typography
                     ml={1}
@@ -344,7 +342,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     fontWeight={"500"}
                     color={"ActiveBorder"}
                   >
-                    days
+                    days , {state?.statitics.taskLeadTime.difference.hours}{" "}
+                    hours
                   </Typography>
                   {TaskState()}
                 </Box>
@@ -391,7 +390,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {taskProcessingTime()}
+                    {state?.statitics.taskProcessingTime?.difference?.days ?? 0}
                   </Typography>
                   <Typography
                     ml={1}
@@ -400,7 +399,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     fontWeight={"500"}
                     color={"ActiveBorder"}
                   >
-                    days
+                    days,{" "}
+                    {state?.statitics.taskProcessingTime.difference?.hours ?? 0}{" "}
+                    hours
                   </Typography>
                   {TaskState()}
                 </Box>
@@ -456,7 +457,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     fontWeight={"500"}
                     color={"ActiveBorder"}
                   >
-                    Hours
+                    Hours,{" "}
+                    {state?.statitics.taskSchedulingTime?.difference?.mins ?? 0}{" "}
+                    mins
                   </Typography>
                   {state?.statitics.taskSchedulingTime &&
                   state?.statitics.taskSchedulingTime > 24 ? (
