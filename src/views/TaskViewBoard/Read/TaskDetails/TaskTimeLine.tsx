@@ -263,9 +263,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             fontWeight={"bold"}
                             fontSize={"10px"}
                           >
-                            {due ? due.difference.days : 0} Days{",  "}
-                            {due ? due.difference.hours : 0} Hours{", "}
-                            {due ? due.difference.mins : 0} mins{" "}
+                            {due?.difference?.days ?? 0} Days{",  "}
+                            {due?.difference?.hours ?? 0} Hours{", "}
+                            {due?.difference?.mins ?? 0} mins{" "}
                           </Typography>
                         </Box>
                       )}
@@ -362,9 +362,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Fullfillment : &nbsp;
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
-            {getDiff("In Progress", "Review").difference.days} d,{" "}
-            {getDiff("In Progress", "Review").difference.hours} h,
-            {getDiff("In Progress", "Review").difference.mins} mins,
+            {getDiff("In Progress", "Review")?.difference?.days ?? 0} d,{" "}
+            {getDiff("In Progress", "Review")?.difference?.hours ?? 0} h,
+            {getDiff("In Progress", "Review")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
         <Box
@@ -382,9 +382,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Delivery : &nbsp;
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
-            {getDiff("Review", "Shared").difference.days} d,{" "}
-            {getDiff("Review", "Shared").difference.hours} h,
-            {getDiff("Review", "Shared").difference.mins} mins,
+            {getDiff("Review", "Shared")?.difference?.days ?? 0} d,{" "}
+            {getDiff("Review", "Shared")?.difference?.hours ?? 0} h,
+            {getDiff("Review", "Shared")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
         <Box
@@ -402,9 +402,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Closing : &nbsp;
           </Typography>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
-            {getDiff("Shared", "Done").difference.days} d,{" "}
-            {getDiff("Shared", "Done").difference.hours} h,
-            {getDiff("Shared", "Done").difference.mins} mins,
+            {getDiff("Shared", "Done")?.difference?.days ?? 0} d,{" "}
+            {getDiff("Shared", "Done")?.difference?.hours ?? 0} h,
+            {getDiff("Shared", "Done")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
       </Grid>

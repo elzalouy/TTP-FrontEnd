@@ -333,7 +333,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 </Typography>
                 <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                   <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.taskLeadTime.difference.days}
+                    {state?.statitics.taskLeadTime?.difference?.days ?? 0}
                   </Typography>
                   <Typography
                     ml={1}
@@ -342,7 +342,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     fontWeight={"500"}
                     color={"ActiveBorder"}
                   >
-                    days , {state?.statitics.taskLeadTime.difference.hours}{" "}
+                    days ,{" "}
+                    {state?.statitics.taskLeadTime?.difference?.hours ?? 0}{" "}
                     hours
                   </Typography>
                   {TaskState()}
