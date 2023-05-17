@@ -289,10 +289,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             <Avatar
               sx={{
                 bgcolor: "#ffc500",
-                width: 20,
-                height: 20,
+                width: "auto",
+                height: "auto",
                 borderRadius: 0.5,
                 fontSize: 12,
+                padding: "5px",
                 mr: 1,
                 fontWeight: "700",
               }}
@@ -311,289 +312,231 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       </Typography>
       <Grid container display={"flex"}>
         {/* Task lead time */}
-        <Grid xs={12} sm={12} md={6} lg={6} xl={6} pr={1}>
-          <Box
-            sx={{
-              background: "#f6f6f6",
-              borderRadius: 3,
-              p: 2,
-              mt: 2,
-              mr: 1,
-            }}
+        <Grid
+          xs={12}
+          sm={12}
+          md={5.8}
+          lg={5.8}
+          xl={5.8}
+          sx={{
+            background: "#f6f6f6",
+            borderRadius: 3,
+            p: 2,
+            mt: 0.5,
+            mr: { xl: 1, lg: 0.5, md: 0.5 },
+          }}
+        >
+          <Grid
+            container
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
           >
-            <Grid
-              container
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
-            >
-              <Grid item xs={9}>
-                <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-                  Task Lead Time
+            <Grid item xs={9}>
+              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                Task Lead Time
+              </Typography>
+              <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
+                <Typography fontSize={26} fontWeight={"700"}>
+                  {state?.statitics.taskLeadTime?.difference?.days ?? 0}
                 </Typography>
-                <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
-                  <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.taskLeadTime?.difference?.days ?? 0}
-                  </Typography>
-                  <Typography
-                    ml={1}
-                    mb={0.5}
-                    fontSize={14}
-                    fontWeight={"500"}
-                    color={"ActiveBorder"}
-                  >
-                    days ,{" "}
-                    {state?.statitics.taskLeadTime?.difference?.hours ?? 0}{" "}
-                    hours
-                  </Typography>
-                  {TaskState()}
-                </Box>
-              </Grid>
-              <Grid xs={3}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "#ffc500",
-                    borderRadius: 10,
-                    width: 45,
-                    height: 45,
-                  }}
+                <Typography
+                  ml={1}
+                  mb={0.5}
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={"ActiveBorder"}
                 >
-                  <UpdateIcon sx={{ fontSize: 22 }} />
-                </Box>
-              </Grid>
+                  days , {state?.statitics.taskLeadTime?.difference?.hours ?? 0}{" "}
+                  hours
+                </Typography>
+                {TaskState()}
+              </Box>
             </Grid>
-          </Box>
+            <Grid xs={3}>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "#ffc500",
+                  borderRadius: 10,
+                  width: 45,
+                  height: 45,
+                }}
+              >
+                <UpdateIcon sx={{ fontSize: 22 }} />
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
         {/* Task processing Time Card */}
-        <Grid xs={12} sm={12} md={6} lg={6} xl={6} pr={1}>
-          <Box
-            sx={{
-              background: "#f6f6f6",
-              borderRadius: 3,
-              p: 2,
-              mt: 2,
-              mr: 1,
-            }}
+        <Grid
+          xs={12}
+          sm={12}
+          md={6}
+          lg={6}
+          xl={6}
+          sx={{
+            background: "#f6f6f6",
+            borderRadius: 3,
+            p: 2,
+            mt: 0.5,
+          }}
+        >
+          <Grid
+            container
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
           >
-            <Grid
-              container
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
-            >
-              <Grid item xs={9}>
-                <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-                  Task Processing Time
+            <Grid item xs={9}>
+              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                Task Processing Time
+              </Typography>
+              <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
+                <Typography fontSize={26} fontWeight={"700"}>
+                  {state?.statitics.taskProcessingTime?.difference?.days ?? 0}
                 </Typography>
-                <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
-                  <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.taskProcessingTime?.difference?.days ?? 0}
-                  </Typography>
-                  <Typography
-                    ml={1}
-                    mb={0.5}
-                    fontSize={14}
-                    fontWeight={"500"}
-                    color={"ActiveBorder"}
-                  >
-                    days,{" "}
-                    {state?.statitics.taskProcessingTime.difference?.hours ?? 0}{" "}
-                    hours
-                  </Typography>
-                  {TaskState()}
-                </Box>
-              </Grid>
-              <Grid xs={3}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "#ffc500",
-                    borderRadius: 10,
-                    width: 45,
-                    height: 45,
-                  }}
+                <Typography
+                  ml={1}
+                  mb={0.5}
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={"ActiveBorder"}
                 >
-                  <ModelTrainingIcon sx={{ fontSize: 22 }} />
-                </Box>
-              </Grid>
+                  days,{" "}
+                  {state?.statitics.taskProcessingTime.difference?.hours ?? 0}{" "}
+                  hours
+                </Typography>
+                {TaskState()}
+              </Box>
             </Grid>
-          </Box>
+            <Grid xs={3}>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "#ffc500",
+                  borderRadius: 10,
+                  width: 45,
+                  height: 45,
+                }}
+              >
+                <ModelTrainingIcon sx={{ fontSize: 22 }} />
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
         {/* Task Scheduling Time card */}
-        <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Box
-            sx={{
-              background: "#f6f6f6",
-              borderRadius: 3,
-              p: 2,
-              mt: 2,
-              mr: 1,
-            }}
+        <Grid
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+          sx={{
+            background: "#f6f6f6",
+            borderRadius: 3,
+            p: 2,
+            mt: 0.5,
+          }}
+        >
+          <Grid
+            container
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
           >
-            <Grid
-              container
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
-            >
-              <Grid item xs={10}>
-                <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-                  Task Scheduling Time
+            <Grid item width={{ xl: "88%", xs: "75%" }}>
+              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                Task Scheduling Time
+              </Typography>
+              <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
+                <Typography fontSize={26} fontWeight={"700"}>
+                  {state?.statitics.taskSchedulingTime}
                 </Typography>
-                <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
-                  <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.taskSchedulingTime}
-                  </Typography>
-                  <Typography
-                    ml={1}
-                    mb={0.5}
-                    fontSize={14}
-                    fontWeight={"500"}
-                    color={"ActiveBorder"}
-                  >
-                    Hours,{" "}
-                    {state?.statitics.taskSchedulingTime?.difference?.mins ?? 0}{" "}
-                    mins
-                  </Typography>
-                  {state?.statitics.taskSchedulingTime &&
-                  state?.statitics.taskSchedulingTime > 24 ? (
-                    <Typography
-                      sx={{
-                        p: "3px",
-                        ml: 1,
-                        fontSize: "10px",
-                        mb: 0.5,
-                        borderRadius: 0.5,
-                        background: "#F1CBCC",
-                        color: "#FF0000",
-                      }}
-                    >
-                      Late
-                    </Typography>
-                  ) : (
-                    <></>
-                  )}
-                </Box>
-              </Grid>
-              <Grid xs={2}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "#ffc500",
-                    borderRadius: 10,
-                    width: 45,
-                    height: 45,
-                  }}
+                <Typography
+                  ml={1}
+                  mb={0.5}
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={"ActiveBorder"}
                 >
-                  <ScheduleSendIcon sx={{ fontSize: 22 }} />
-                </Box>
-              </Grid>
+                  Hours,{" "}
+                  {state?.statitics.taskSchedulingTime?.difference?.mins ?? 0}{" "}
+                  mins
+                </Typography>
+                {state?.statitics.taskSchedulingTime &&
+                state?.statitics.taskSchedulingTime > 24 ? (
+                  <Typography
+                    sx={{
+                      p: "3px",
+                      ml: 1,
+                      fontSize: "10px",
+                      mb: 0.5,
+                      borderRadius: 0.5,
+                      background: "#F1CBCC",
+                      color: "#FF0000",
+                    }}
+                  >
+                    Late
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+              </Box>
             </Grid>
-          </Box>
+            <Grid width={{ xl: "13%", sm: "25%" }}>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "#ffc500",
+                  borderRadius: 10,
+                  width: 45,
+                  height: 45,
+                }}
+              >
+                <ScheduleSendIcon sx={{ fontSize: 22 }} />
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
         {/* Task UnClear time */}
-        <Grid xs={12} sm={12} md={8} lg={8} xl={8} pr={1}>
-          <Box
-            sx={{
-              background: "#f6f6f6",
-              borderRadius: 3,
-              p: 2,
-              mt: 2,
-              mr: 1,
-            }}
+        <Grid
+          xs={12}
+          sm={12}
+          md={7.8}
+          lg={7.8}
+          xl={7.8}
+          pr={1}
+          sx={{
+            background: "#f6f6f6",
+            borderRadius: 3,
+            p: 2,
+            mt: 0.5,
+            mr: { xl: 1, lg: 0.5, md: 0.5 },
+          }}
+        >
+          <Grid
+            container
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
           >
-            <Grid
-              container
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
-            >
-              <Grid item xs={9}>
-                <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-                  Task UnClear time
-                </Typography>
-                <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
-                  <Typography fontSize={26} fontWeight={"700"}>
-                    {state?.statitics.unClearTime.hours}
-                  </Typography>
-                  <Typography
-                    ml={1}
-                    mb={0.5}
-                    fontSize={14}
-                    fontWeight={"500"}
-                    color={"ActiveBorder"}
-                  >
-                    Hours
-                  </Typography>
-                  {unClearTime().times > 1 && (
-                    <Typography
-                      sx={{
-                        p: "3px",
-                        ml: 1,
-                        fontSize: "10px",
-                        mb: 0.5,
-                        borderRadius: 0.5,
-                        background: "#F1CBCC",
-                        color: "#FF0000",
-                      }}
-                    >
-                      {state?.statitics.unClearTime.times} times
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid xs={3}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "#ffc500",
-                    borderRadius: 10,
-                    width: 45,
-                    height: 45,
-                  }}
-                >
-                  <ManageHistoryIcon sx={{ fontSize: 22 }} />
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-        {/* Task Turn Around time */}
-        <Grid xs={12} sm={12} md={4} lg={4} xl={4}>
-          <Box
-            sx={{
-              background: "#f6f6f6",
-              borderRadius: 3,
-              p: 2,
-              mt: 2,
-              mr: 1,
-            }}
-          >
-            <Grid
-              container
-              display="flex"
-              justifyContent={"space-between"}
-              alignItems="center"
-            >
+            <Grid item xs={9}>
               <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-                Turn Around Time
+                Task UnClear time
               </Typography>
-              <Box display={"inline-flex"} pt={2.8} alignItems="flex-end">
-                <Typography fontSize={18} fontWeight={"700"}>
-                  {state?.statitics.turnAroundTime.hours}
+              <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
+                <Typography fontSize={26} fontWeight={"700"}>
+                  {state?.statitics.unClearTime.hours}
                 </Typography>
                 <Typography
                   ml={1}
@@ -604,25 +547,101 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 >
                   Hours
                 </Typography>
-                {state?.statitics.turnAroundTime.times &&
-                  state?.statitics.turnAroundTime.times > 1 && (
-                    <Typography
-                      sx={{
-                        p: "3px",
-                        ml: 1,
-                        fontSize: "10px",
-                        mb: 0.5,
-                        borderRadius: 0.5,
-                        background: "#F1CBCC",
-                        color: "#FF0000",
-                      }}
-                    >
-                      {turnAroundTime().times} times
-                    </Typography>
-                  )}
+                {unClearTime().times > 1 && (
+                  <Typography
+                    sx={{
+                      p: "3px",
+                      ml: 1,
+                      fontSize: "10px",
+                      mb: 0.5,
+                      borderRadius: 0.5,
+                      background: "#F1CBCC",
+                      color: "#FF0000",
+                    }}
+                  >
+                    {state?.statitics.unClearTime.times} times
+                  </Typography>
+                )}
               </Box>
             </Grid>
-          </Box>
+            <Grid xs={3}>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "#ffc500",
+                  borderRadius: 10,
+                  width: 45,
+                  height: 45,
+                }}
+              >
+                <ManageHistoryIcon sx={{ fontSize: 22 }} />
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+        {/* Task Turn Around time */}
+        <Grid
+          xs={12}
+          sm={12}
+          md={4}
+          lg={4}
+          xl={4}
+          sx={{
+            background: "#f6f6f6",
+            borderRadius: 3,
+            p: 2,
+            mt: 0.5,
+          }}
+        >
+          <Grid
+            container
+            display="flex"
+            justifyContent={"space-between"}
+            alignItems="center"
+          >
+            <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+              Turn Around Time
+            </Typography>
+            <Box
+              display={"inline-flex"}
+              pt={{ xl: 2.8, lg: 2.8 }}
+              alignItems="flex-end"
+            >
+              <Typography fontSize={18} fontWeight={"700"}>
+                {state?.statitics.turnAroundTime.hours}
+              </Typography>
+              <Typography
+                ml={1}
+                mb={0.5}
+                fontSize={14}
+                fontWeight={"500"}
+                color={"ActiveBorder"}
+              >
+                Hours
+              </Typography>
+              {state?.statitics.turnAroundTime.times &&
+              state?.statitics.turnAroundTime.times > 1 ? (
+                <Typography
+                  sx={{
+                    p: "3px",
+                    ml: 1,
+                    fontSize: "10px",
+                    mb: 0.5,
+                    borderRadius: 0.5,
+                    background: "#F1CBCC",
+                    color: "#FF0000",
+                  }}
+                >
+                  {turnAroundTime().times} times
+                </Typography>
+              ) : (
+                <></>
+              )}
+            </Box>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

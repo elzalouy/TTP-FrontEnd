@@ -47,6 +47,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           xl={6}
           sx={{
             height: "100%",
+            overflowY: "scroll",
+            pb: 8,
           }}
         >
           <TaskBasics />

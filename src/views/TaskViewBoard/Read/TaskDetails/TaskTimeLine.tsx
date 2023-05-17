@@ -94,7 +94,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       }}
     >
       <Grid
-        height={"10%"}
+        height={"12%"}
         item
         xs={12}
         container
@@ -103,7 +103,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         pt={3}
         pb={2}
       >
-        <Grid item xs={12} sm={12} md={12} lg={2.5} xl={2.5}>
+        <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
           <Typography fontSize={"16px"} fontWeight={600}>
             Recent activity
           </Typography>
@@ -113,8 +113,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           xs={12}
           sm={12}
           md={12}
-          lg={9.5}
-          xl={9.5}
+          lg={8}
+          xl={8}
           display={"inline-flex"}
           alignItems={"flex-start"}
         >
