@@ -6,8 +6,6 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import { timelineOppositeContentClasses } from "@mui/lab/TimelineOppositeContent";
-import { timelineClasses } from "@mui/lab/Timeline";
-
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { TaskMovement } from "src/types/models/Projects";
 import { format } from "date-fns";
@@ -17,6 +15,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 type TaskStatusTimlineProps = {
   movements: TaskMovement[];
 };
+
 const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
@@ -37,10 +36,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     let firstMove = props.movements.find((item) => item.status === start);
     let lMove = lastMoves[lastMoves.length - 1];
     if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
-      console.log({
-        inProgress: firstMove?.movedAt ?? null,
-        review: lMove.movedAt ?? null,
-      });
       return getDifBetweenDates(
         new Date(firstMove.movedAt),
         new Date(lMove.movedAt)
@@ -176,18 +171,21 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             }}
           >
             {movements?.map((item, index) => {
-              let prevMove = props.movements.find(
-                (move, index) =>
-                  props.movements.findIndex((move) => item._id === move._id) -
-                    1 ===
-                  index
-              );
-              let due = prevMove
-                ? getDifBetweenDates(
-                    new Date(prevMove?.movedAt),
-                    new Date(item?.movedAt)
-                  )
-                : undefined;
+              let nextMoveIndex =
+                props.movements.findIndex((nm) => nm._id === item._id) + 1;
+              let prevMoveIndex =
+                props.movements.findIndex((pm) => pm._id === item._id) - 1;
+              let nextMove = props.movements[nextMoveIndex];
+              let prevMove = props.movements[prevMoveIndex];
+              let due = undefined;
+              if (nextMove) {
+                due = nextMove
+                  ? getDifBetweenDates(
+                      new Date(nextMove?.movedAt),
+                      new Date(item?.movedAt)
+                    )
+                  : undefined;
+              }
 
               return (
                 <TimelineItem key={item._id} sx={itemStyle}>
@@ -239,7 +237,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                         </Typography>
                       </Box>
                       <Box display={"inline-flex"} alignItems={"flex-start"}>
-                        {filter !== "" && (
+                        {prevMove && (
                           <>
                             <Typography color={"#94989b"} pr={1} fontSize={12}>
                               Moved from: &nbsp;
@@ -250,7 +248,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                           </>
                         )}
                       </Box>
-
                       {due && (
                         <Box display={"inline-flex"} alignItems={"center"}>
                           <CircleIcon
