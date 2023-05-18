@@ -155,9 +155,9 @@ const DragField = (props: DragFieldProps) => {
       };
       map.set(task._id, move);
       setMoveMap(map);
-      console.log("move");
-      moveAction(taskDepartment, newTaskListInDep, task);
     }
+    if (taskDepartment && newTaskListInDep && task)
+      moveAction(taskDepartment, newTaskListInDep, task);
   };
   const moveAction = (dep: IDepartmentState, newList: IList, task: Task) => {
     console.log("move action called");
