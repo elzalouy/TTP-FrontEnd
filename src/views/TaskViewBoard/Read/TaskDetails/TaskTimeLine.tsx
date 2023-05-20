@@ -73,7 +73,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       cMoves.map((lcMove) => {
         if (props.movements[lcMove.index - 1].status === "In Progress")
           map.set("Canceled", "Canceled");
-        if (props.movements[lcMove.index - 1].status === "Cancled")
+        if (props.movements[lcMove.index - 1].status === "Tasks Board")
           map.set("Disrupted", "Disrupted");
         if (
           ["Review", "Shared"].includes(
