@@ -111,10 +111,34 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         pt={3}
         pb={2}
       >
-        <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={4}
+          xl={4}
+          display={"inline-flex"}
+        >
           <Typography fontSize={"16px"} fontWeight={600}>
             Recent activity
           </Typography>
+          {filter !== "" && (
+            <Typography
+              sx={{
+                background: "#9EA19B",
+                color: "black",
+                p: 0.5,
+                borderRadius: "5px",
+                fontWeight: 500,
+                fontSize: 12,
+                ml: 1,
+                height: "24px",
+              }}
+            >
+              {movements?.length}
+            </Typography>
+          )}
         </Grid>
         <Grid
           item
