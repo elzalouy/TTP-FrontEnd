@@ -15,14 +15,20 @@ import CircleIcon from "@mui/icons-material/Circle";
 type TaskStatusTimlineProps = {
   movements: TaskMovement[];
 };
+type cancelTypes = "Canceled" | "Disrupted" | "Flagged" | "";
 
 const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
+  const [cancelType, setCancelType] = React.useState<Map<string, cancelTypes>>(
+    new Map()
+  );
+
   React.useEffect(() => {
     setMovements(props.movements);
+    getCancelationType();
   }, [props.movements]);
 
   React.useEffect(() => {
@@ -56,6 +62,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   };
 
   const getCancelationType = () => {
+    let map = cancelType;
     let cMoves = props.movements
       .filter((item) => item.status === "Cancled")
       .map((item) => {
@@ -63,14 +70,20 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         return { index: itemIndex, ...item };
       });
     if (cMoves && cMoves.length > 0) {
-      let lcMove = cMoves[cMoves.length - 1].index;
-      if (props.movements[lcMove - 1].status === "In Progress")
-        return "Canceled";
-      if (props.movements[lcMove - 1].status === "Cancled") return "Disrupted";
-      if (["Review", "Shared"].includes(props.movements[lcMove - 1].status))
-        return "Flagged";
+      cMoves.map((lcMove) => {
+        if (props.movements[lcMove.index - 1].status === "In Progress")
+          map.set("Canceled", "Canceled");
+        if (props.movements[lcMove.index - 1].status === "Cancled")
+          map.set("Disrupted", "Disrupted");
+        if (
+          ["Review", "Shared"].includes(
+            props.movements[lcMove.index - 1].status
+          )
+        )
+          map.set("Flagged", "Flagged");
+      });
     }
-    return "";
+    setCancelType(map);
   };
 
   return (
@@ -141,7 +154,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               UnHealthy
             </Typography>
           )}
-          {getCancelationType() !== "" && (
+          {cancelType.has("Canceled") && (
             <Typography
               sx={{
                 background: "#f1cbcc",
@@ -153,7 +166,37 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 ml: 0.5,
               }}
             >
-              {getCancelationType()}
+              Canceled
+            </Typography>
+          )}
+          {cancelType.has("Disrupted") && (
+            <Typography
+              sx={{
+                background: "#f1cbcc",
+                borderRadius: "5px",
+                color: "black",
+                fontWeight: 500,
+                fontSize: "12px",
+                p: "4px",
+                ml: 0.5,
+              }}
+            >
+              Disrupted
+            </Typography>
+          )}
+          {cancelType.has("Flagged") && (
+            <Typography
+              sx={{
+                background: "#f1cbcc",
+                borderRadius: "5px",
+                color: "black",
+                fontWeight: 500,
+                fontSize: "12px",
+                p: "4px",
+                ml: 0.5,
+              }}
+            >
+              Flagged
             </Typography>
           )}
         </Grid>
