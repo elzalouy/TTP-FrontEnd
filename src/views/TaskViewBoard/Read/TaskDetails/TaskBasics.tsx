@@ -332,10 +332,33 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             justifyContent={"space-between"}
             alignItems="center"
           >
-            <Grid item xs={9}>
-              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Typography
+                color={"#7c828c"}
+                fontSize={14}
+                fontWeight={"500"}
+                pt={1}
+              >
                 Task Lead Time
               </Typography>
+              <Typography
+                sx={{
+                  padding: "10px",
+                  background: "#ffc500",
+                  borderRadius: "100%",
+                  width: "46px",
+                  textAlign: "center",
+                  textAlignLast: "center",
+                }}
+              >
+                <UpdateIcon sx={{ fontSize: 22 }} />
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
                   {state?.statitics.taskLeadTime?.difference?.days ?? 0}
@@ -351,22 +374,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   hours
                 </Typography>
                 {TaskState()}
-              </Box>
-            </Grid>
-            <Grid xs={3}>
-              <Box
-                sx={{
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "#ffc500",
-                  borderRadius: 10,
-                  width: 45,
-                  height: 45,
-                }}
-              >
-                <UpdateIcon sx={{ fontSize: 22 }} />
               </Box>
             </Grid>
           </Grid>
@@ -391,10 +398,33 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             justifyContent={"space-between"}
             alignItems="center"
           >
-            <Grid item xs={9}>
-              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Typography
+                color={"#7c828c"}
+                fontSize={14}
+                fontWeight={"500"}
+                pt={1}
+              >
                 Task Processing Time
               </Typography>
+              <Typography
+                sx={{
+                  padding: "10px",
+                  background: "#ffc500",
+                  borderRadius: "100%",
+                  width: "46px",
+                  textAlign: "center",
+                  textAlignLast: "center",
+                }}
+              >
+                <ModelTrainingIcon sx={{ fontSize: 22 }} />
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
                   {state?.statitics.taskProcessingTime?.difference?.days ?? 0}
@@ -411,22 +441,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   hours
                 </Typography>
                 {TaskState()}
-              </Box>
-            </Grid>
-            <Grid xs={3}>
-              <Box
-                sx={{
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "#ffc500",
-                  borderRadius: 10,
-                  width: 45,
-                  height: 45,
-                }}
-              >
-                <ModelTrainingIcon sx={{ fontSize: 22 }} />
               </Box>
             </Grid>
           </Grid>
@@ -451,10 +465,28 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             justifyContent={"space-between"}
             alignItems="center"
           >
-            <Grid item width={{ xl: "88%", xs: "75%" }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
                 Task Scheduling Time
               </Typography>
+              <Typography
+                sx={{
+                  padding: "10px",
+                  background: "#ffc500",
+                  borderRadius: "100%",
+                  width: "46px",
+                  textAlign: "center",
+                  textAlignLast: "center",
+                }}
+              >
+                <ScheduleSendIcon sx={{ fontSize: 22 }} />
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
                   {state?.statitics.taskSchedulingTime}
@@ -490,22 +522,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 )}
               </Box>
             </Grid>
-            <Grid width={{ xl: "13%", sm: "25%" }}>
-              <Box
-                sx={{
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "#ffc500",
-                  borderRadius: 10,
-                  width: 45,
-                  height: 45,
-                }}
-              >
-                <ScheduleSendIcon sx={{ fontSize: 22 }} />
-              </Box>
-            </Grid>
           </Grid>
         </Grid>
         {/* Task UnClear time */}
@@ -530,10 +546,28 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             justifyContent={"space-between"}
             alignItems="center"
           >
-            <Grid item xs={9}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
                 Task UnClear time
               </Typography>
+              <Typography
+                sx={{
+                  padding: "10px",
+                  background: "#ffc500",
+                  borderRadius: "100%",
+                  width: "46px",
+                  textAlign: "center",
+                  textAlignLast: "center",
+                }}
+              >
+                <ManageHistoryIcon sx={{ fontSize: 22 }} />
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
                   {state?.statitics.unClearTime.hours}
@@ -564,22 +598,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 )}
               </Box>
             </Grid>
-            <Grid xs={3}>
-              <Box
-                sx={{
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "#ffc500",
-                  borderRadius: 10,
-                  width: 45,
-                  height: 45,
-                }}
-              >
-                <ManageHistoryIcon sx={{ fontSize: 22 }} />
-              </Box>
-            </Grid>
           </Grid>
         </Grid>
         {/* Task Turn Around time */}
@@ -601,14 +619,17 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             display="flex"
             justifyContent={"space-between"}
             alignItems="center"
+            height={"100%"}
+            alignContent={"space-between"}
           >
-            <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
-              Turn Around Time
-            </Typography>
-            <Box
-              display={"inline-flex"}
-              pt={{ xl: 2.8, lg: 2.8 }}
-              alignItems="flex-end"
+            <Grid xs={12}>
+              <Typography color={"#7c828c"} fontSize={14} fontWeight={"500"}>
+                Turn Around Time
+              </Typography>
+            </Grid>
+            <Grid
+              xs={12}
+              sx={{ display: "flex", justifyContent: "space-between" }}
             >
               <Typography fontSize={18} fontWeight={"700"}>
                 {state?.statitics.turnAroundTime.hours}
@@ -640,7 +661,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
               ) : (
                 <></>
               )}
-            </Box>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

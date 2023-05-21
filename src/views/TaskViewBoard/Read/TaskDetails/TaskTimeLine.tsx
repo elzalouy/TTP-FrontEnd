@@ -99,31 +99,17 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         background: "#fafafa",
         height: "100%",
         alignContent: "flex-start",
+        pl: 3,
       }}
     >
-      <Grid
-        height={"12%"}
-        item
-        xs={12}
-        container
-        direction="row"
-        pl={4}
-        pt={3}
-        pb={2}
-      >
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          lg={4}
-          xl={4}
-          display={"inline-flex"}
-        >
+      <Box sx={{ my: 1 }}>
+        <Box sx={{ float: "left", m: 0.5 }}>
           <Typography fontSize={"16px"} fontWeight={600}>
             Recent activity
           </Typography>
-          {filter !== "" && (
+        </Box>
+        {filter !== "" && (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#9EA19B",
@@ -132,26 +118,16 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 borderRadius: "5px",
                 fontWeight: 500,
                 fontSize: 12,
-                ml: 1,
                 height: "24px",
               }}
             >
               {movements?.length}
             </Typography>
-          )}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          lg={8}
-          xl={8}
-          display={"inline-flex"}
-          alignItems={"flex-start"}
-        >
-          {props.movements.filter((item) => item.status === "Not Clear")
-            .length === 0 ? (
+          </Box>
+        )}
+        {props.movements.filter((item) => item.status === "Not Clear")
+          .length === 0 ? (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#e1edf4",
@@ -164,7 +140,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             >
               Verified
             </Typography>
-          ) : (
+          </Box>
+        ) : (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#F1CBCC",
@@ -177,8 +155,10 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             >
               UnHealthy
             </Typography>
-          )}
-          {cancelType.has("Canceled") && (
+          </Box>
+        )}
+        {cancelType.has("Canceled") && (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#f1cbcc",
@@ -187,13 +167,14 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 fontWeight: 500,
                 fontSize: "12px",
                 p: "4px",
-                ml: 0.5,
               }}
             >
               Canceled
             </Typography>
-          )}
-          {cancelType.has("Disrupted") && (
+          </Box>
+        )}
+        {cancelType.has("Disrupted") && (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#f1cbcc",
@@ -202,13 +183,14 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 fontWeight: 500,
                 fontSize: "12px",
                 p: "4px",
-                ml: 0.5,
               }}
             >
               Disrupted
             </Typography>
-          )}
-          {cancelType.has("Flagged") && (
+          </Box>
+        )}
+        {cancelType.has("Flagged") && (
+          <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
                 background: "#f1cbcc",
@@ -217,14 +199,13 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 fontWeight: 500,
                 fontSize: "12px",
                 p: "4px",
-                ml: 0.5,
               }}
             >
               Flagged
             </Typography>
-          )}
-        </Grid>
-      </Grid>
+          </Box>
+        )}
+      </Box>
       <Grid item container xs={12} height={"72%"} alignContent={"flex-start"}>
         <Grid item xs={10} sx={{ overflow: "scroll", height: "100%" }}>
           <Timeline
@@ -483,7 +464,7 @@ const timeLineDotNumStyle = {
 const itemStyle = {
   "::before": {
     flex: 0,
-    padding: { xs: "5px", sm: "5px", md: "5px", lg: "16px", xl: "16px" },
+    padding: { xs: "5px", sm: "5px", md: "5px", lg: "0px", xl: "0px" },
   },
 };
 const dotStyle = {
@@ -496,4 +477,5 @@ const dotStyle = {
   border: "1px solid #e1e1e1",
   justifyContent: "center",
 };
+const labelStyle = {};
 export default TaskStatusTimline;
