@@ -207,8 +207,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   const TaskState = () => {
     return (
       <>
-        {state?.sharedMovements ||
-        ["Done", "Cancled", "Shared"].includes(task.status) ? (
+        {["Done", "Cancled", "Shared"].includes(task.status) ? (
           <Typography
             sx={{
               width: "35px",
