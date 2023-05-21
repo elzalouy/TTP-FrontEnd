@@ -207,20 +207,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   const TaskState = () => {
     return (
       <>
-        {state?.sharedMovements.length === 0 ||
-        ["Done", "Cancled"].includes(task.status) ||
-        !task.start ? (
-          <NorthIcon
-            htmlColor="#fc164f"
-            sx={{
-              fontSize: "0.8rem",
-              mb: 1,
-              width: "1em",
-              ml: "10px",
-              fontWeight: "600",
-            }}
-          />
-        ) : (
+        {state?.sharedMovements ||
+        ["Done", "Cancled", "Shared"].includes(task.status) ? (
           <Typography
             sx={{
               width: "35px",
@@ -236,6 +224,17 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
           >
             100%
           </Typography>
+        ) : (
+          <NorthIcon
+            htmlColor="#fc164f"
+            sx={{
+              fontSize: "0.8rem",
+              mb: 1,
+              width: "1em",
+              ml: "10px",
+              fontWeight: "600",
+            }}
+          />
         )}
       </>
     );
