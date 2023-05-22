@@ -19,7 +19,6 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
       (new Date(task.deadline).getTime() - new Date().getTime()) /
       (1000 * 60 * 60 * 24);
     const remainingDays = Math.round(remainingDaysFloated + 1);
-    console.log({ remainingDaysFloated, remainingDays });
     const isDeadlineChanged =
       task.deadlineChain &&
       task.deadlineChain?.filter(
