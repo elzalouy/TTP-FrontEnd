@@ -123,10 +123,9 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
     }, [item]);
 
     const getRemainingDays = (day: number) => {
-      if (day > 0) {
+      if (day > 1) {
         return `${day} Days Left`;
-      }
-      if (day === 0) {
+      } else if (day === 1) {
         return "Today";
       } else {
         return `${Math.abs(day)} Days ago`;

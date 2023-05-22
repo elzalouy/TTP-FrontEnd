@@ -15,7 +15,11 @@ interface TaskHeaderProps {
 const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
   const users = useAppSelector(selectManagers);
   const isMissedDelivery = () => {
-    console.log({ chain: task.deadlineChain });
+    const remainingDaysFloated =
+      (new Date(task.deadline).getTime() - new Date().getTime()) /
+      (1000 * 60 * 60 * 24);
+    const remainingDays = Math.round(remainingDaysFloated + 1);
+
     const isDeadlineChanged =
       task.deadlineChain &&
       task.deadlineChain?.filter(
@@ -28,9 +32,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
           item.before &&
           new Date(item?.before).getTime() < new Date(item.current).getTime()
       ).length !== 0;
-    const isDeadlinePassed =
-      new Date(task.deadline).getTime() < new Date(Date.now()).getTime();
-    return isDeadlineChanged || isDeadlinePassed;
+    return isDeadlineChanged || remainingDays < 1;
   };
   return (
     <Grid

@@ -264,9 +264,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       <Typography fontWeight={"600"} fontSize={20} pt={1}>
         {task.name}
       </Typography>
-      <Typography fontWeight={400} fontSize={12} color={"#909497"}>
-        {task.description}
-      </Typography>
+      {task.description && task.description !== "undefined" && (
+        <Typography fontWeight={400} fontSize={12} color={"#909497"}>
+          {task.description}
+        </Typography>
+      )}
       {state?.taskTeam && (
         <>
           <Typography fontWeight={600} pt={2} fontSize={14} color={"#293241"}>
