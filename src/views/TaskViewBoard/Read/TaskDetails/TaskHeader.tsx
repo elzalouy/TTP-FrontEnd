@@ -15,7 +15,9 @@ interface TaskHeaderProps {
 const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
   const users = useAppSelector(selectManagers);
   const isMissedDelivery = () => {
+    console.log({ chain: task.deadlineChain });
     const isDeadlineChanged =
+      task.deadlineChain &&
       task.deadlineChain?.filter(
         (item) =>
           item.trelloMember === false &&
@@ -23,7 +25,8 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
             (user) =>
               user._id === item.userId && ["OM", "PM"].includes(user.role)
           ) &&
-          item.before.getTime() < item.current.getTime()
+          item.before &&
+          new Date(item?.before).getTime() < new Date(item.current).getTime()
       ).length !== 0;
     const isDeadlinePassed =
       new Date(task.deadline).getTime() < new Date(Date.now()).getTime();
