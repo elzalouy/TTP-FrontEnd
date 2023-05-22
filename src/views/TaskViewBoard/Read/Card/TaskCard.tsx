@@ -128,7 +128,7 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
       } else if (day === 1) {
         return "Today";
       } else {
-        return `${Math.abs(day)} Days ago`;
+        return `${Math.abs(day) + 1} Days ago`;
       }
     };
 
