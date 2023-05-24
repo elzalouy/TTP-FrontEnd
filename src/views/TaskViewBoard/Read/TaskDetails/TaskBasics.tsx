@@ -6,10 +6,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
 import UpdateIcon from "@mui/icons-material/Update";
-import {
-  getDifBetweenDates,
-  getTasksByClientIdAndStatus,
-} from "src/helpers/generalUtils";
+import { getDifBetweenDates } from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
@@ -242,24 +239,20 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   return (
     <Grid sx={{ height: "100%", p: 3, overflowY: "scroll" }}>
       {state?.taskCategory && (
-        <Box
+        <Typography
           sx={{
             border: "1px solid #8e8f95",
             background: "#f3eefd",
             color: "#444452",
             borderRadius: 10,
-            maxWidth: 120,
-            width: 120,
-            height: 25,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            pl: 1,
+            width: "fit-content",
+            p: "2px",
+            textAlign: "center",
           }}
         >
           <CircleIcon htmlColor="#444452" sx={{ fontSize: 10, mr: 1 }} />
           {state?.taskCategory.category}
-        </Box>
+        </Typography>
       )}
       <Typography fontWeight={"600"} fontSize={20} pt={1}>
         {task.name}

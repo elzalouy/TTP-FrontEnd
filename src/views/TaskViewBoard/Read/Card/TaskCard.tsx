@@ -136,6 +136,7 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
       dispatch(ProjectsActions.onOpenTask(item));
       dispatch(toggleViewTaskPopup("flex"));
     };
+
     const setImageError = (index: any) => {
       let images = [...taskImages];
       let img = { ...images[index] };
@@ -144,6 +145,7 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
       images[index] = img;
       setTaskImages([...images]);
     };
+
     return (
       <Draggable index={index} draggableId={`${_id}`}>
         {(provided, snapshot) => {
