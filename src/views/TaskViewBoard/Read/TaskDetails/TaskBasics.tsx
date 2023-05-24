@@ -71,18 +71,15 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   }, [task]);
 
   const TaskLeadTime = () => {
-    if (state?.sharedMovements && state?.sharedMovements?.length > 0) {
-      let tlt = getDifBetweenDates(
-        new Date(task.start),
-        new Date(
-          state?.sharedMovements[state?.sharedMovements.length - 1].movedAt
+    let lastShared = task.movements.findLast(
+      (item) => item.status === "Shared"
+    );
+    return task.start
+      ? getDifBetweenDates(
+          new Date(task.start),
+          lastShared ? new Date(lastShared.movedAt) : new Date(Date.now())
         )
-      );
-      return tlt;
-    } else
-      return task.start
-        ? getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-        : null;
+      : null;
   };
 
   /**
