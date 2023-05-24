@@ -13,6 +13,8 @@ import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
+import { deAT } from "date-fns/locale";
+import { TaskMovement } from "src/types/models/Projects";
 
 interface TaskBasicsProps {}
 
@@ -71,9 +73,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   }, [task]);
 
   const TaskLeadTime = () => {
-    let lastShared = task.movements.findLast(
+    let lastShared = _.findLast(
+      task.movements,
       (item) => item.status === "Shared"
     );
+
     return task.start
       ? getDifBetweenDates(
           new Date(task.start),
@@ -92,57 +96,51 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
  */
 
   const taskProcessingTime = () => {
-    let inProgressMove = state?.taskMovements?.filter(
-      (item) => item.status === "In Progress"
+    let inProgress = task.movements.find(
+      (item: TaskMovement) => item.status === "In Progress"
     );
-    let sharedMoveIndex = state?.sharedMovements
-      ? state?.sharedMovements?.length - 1
-      : -1;
-    if (inProgressMove && inProgressMove?.length > 0) {
-      let afterShared = state?.taskMovements?.filter(
-        (item, index) =>
-          state?.sharedMovements.length &&
-          index > state?.sharedMovements[sharedMoveIndex]?.index
+    let sharedMove = _.findLast(task.movements, (item: TaskMovement) => {
+      return item.status === "Shared";
+    });
+
+    if (inProgress) {
+      return getDifBetweenDates(
+        new Date(inProgress.movedAt),
+        sharedMove ? new Date(sharedMove.movedAt) : new Date(Date.now())
       );
-      let isShiftedBack =
-        afterShared &&
-        afterShared.find((item) =>
-          ["In Progress", "Shared", "Not Clear", "Review"].includes(item.status)
-        ) === undefined
-          ? false
-          : true;
-      if (state?.sharedMovements && sharedMoveIndex >= 0 && !isShiftedBack) {
-        return getDifBetweenDates(
-          new Date(inProgressMove[0].movedAt),
-          new Date(state?.sharedMovements[sharedMoveIndex].movedAt)
-        );
-      } else
-        return getDifBetweenDates(
-          new Date(inProgressMove[0].movedAt),
-          new Date(Date.now())
-        );
-    } else return 0;
+    }
+    return null;
   };
 
   const taskSchedulingTime = () => {
-    let inProgressMovements = task.movements.filter(
+    let inProgressMove = task.movements.find(
       (item) => item.status === "In Progress"
     );
-    if (task.start) {
-      if (inProgressMovements.length > 0)
-        return getDifBetweenDates(
+    console.log({ taskStart: task.start, inProgressMove });
+    return inProgressMove && task.start
+      ? getDifBetweenDates(
           new Date(task.start),
-          new Date(inProgressMovements[0].movedAt)
-        ).totalHours;
-      else if (task.assignedAt) {
-        return getDifBetweenDates(
-          new Date(task.start),
-          new Date(task.assignedAt)
-        ).totalHours;
-      } else
-        return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-          .totalHours;
-    } else return 0;
+          new Date(inProgressMove.movedAt)
+        )
+      : null;
+    // let inProgressMovements = task.movements.filter(
+    //   (item) => item.status === "In Progress"
+    // );
+    // if (task.start) {
+    //   if (inProgressMovements.length > 0)
+    //     return getDifBetweenDates(
+    //       new Date(task.start),
+    //       new Date(inProgressMovements[0].movedAt)
+    //     ).totalHours;
+    //   else if (task.assignedAt) {
+    //     return getDifBetweenDates(
+    //       new Date(task.start),
+    //       new Date(task.assignedAt)
+    //     ).totalHours;
+    //   } else
+    //     return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
+    //       .totalHours;
+    // } else return 0;
   };
 
   const unClearTime = () => {
@@ -427,7 +425,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   color={"ActiveBorder"}
                 >
                   days,{" "}
-                  {state?.statitics.taskProcessingTime.difference?.hours ?? 0}{" "}
+                  {state?.statitics.taskProcessingTime?.difference?.hours ?? 0}{" "}
                   hours
                 </Typography>
                 {TaskState()}
@@ -479,7 +477,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
-                  {state?.statitics.taskSchedulingTime}
+                  {state?.statitics?.taskSchedulingTime?.difference?.hours ?? 0}
                 </Typography>
                 <Typography
                   ml={1}
@@ -489,11 +487,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   color={"ActiveBorder"}
                 >
                   Hours,{" "}
-                  {state?.statitics.taskSchedulingTime?.difference?.mins ?? 0}{" "}
+                  {state?.statitics?.taskSchedulingTime?.difference?.mins ?? 0}{" "}
                   mins
                 </Typography>
-                {state?.statitics.taskSchedulingTime &&
-                state?.statitics.taskSchedulingTime > 24 ? (
+                {state?.statitics?.taskSchedulingTime &&
+                state?.statitics?.taskSchedulingTime > 24 ? (
                   <Typography
                     sx={{
                       p: "3px",
