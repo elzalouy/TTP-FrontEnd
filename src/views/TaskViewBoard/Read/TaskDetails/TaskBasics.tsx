@@ -221,7 +221,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             color: "#444452",
             borderRadius: 10,
             width: "fit-content",
-            p: "2px",
+            p: "5px",
             textAlign: "center",
           }}
         >
