@@ -173,9 +173,8 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
                     fontWeight: "bold",
                     cursor: "pointer",
                     textTransform: "capitalize",
-                    width: "80%",
+                    width: "90%",
                   }}
-                  noWrap={true}
                   onClick={onViewTask}
                 >
                   {name}
