@@ -77,7 +77,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       task.movements,
       (item) => item.status === "Shared"
     );
-
     return task.start
       ? getDifBetweenDates(
           new Date(task.start),
@@ -116,31 +115,12 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     let inProgressMove = task.movements.find(
       (item) => item.status === "In Progress"
     );
-    console.log({ taskStart: task.start, inProgressMove });
     return inProgressMove && task.start
       ? getDifBetweenDates(
           new Date(task.start),
           new Date(inProgressMove.movedAt)
         )
       : null;
-    // let inProgressMovements = task.movements.filter(
-    //   (item) => item.status === "In Progress"
-    // );
-    // if (task.start) {
-    //   if (inProgressMovements.length > 0)
-    //     return getDifBetweenDates(
-    //       new Date(task.start),
-    //       new Date(inProgressMovements[0].movedAt)
-    //     ).totalHours;
-    //   else if (task.assignedAt) {
-    //     return getDifBetweenDates(
-    //       new Date(task.start),
-    //       new Date(task.assignedAt)
-    //     ).totalHours;
-    //   } else
-    //     return getDifBetweenDates(new Date(task.start), new Date(Date.now()))
-    //       .totalHours;
-    // } else return 0;
   };
 
   const unClearTime = () => {
@@ -477,7 +457,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             <Grid xs={12}>
               <Box display={"inline-flex"} pt={1.5} alignItems="flex-end">
                 <Typography fontSize={26} fontWeight={"700"}>
-                  {state?.statitics?.taskSchedulingTime?.difference?.hours ?? 0}
+                  {state?.statitics?.taskSchedulingTime?.difference?.days ?? 0}
                 </Typography>
                 <Typography
                   ml={1}
@@ -486,9 +466,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   fontWeight={"500"}
                   color={"ActiveBorder"}
                 >
-                  Hours,{" "}
-                  {state?.statitics?.taskSchedulingTime?.difference?.mins ?? 0}{" "}
-                  mins
+                  Days,{" "}
+                  {state?.statitics?.taskSchedulingTime?.difference?.hours ?? 0}{" "}
+                  hours
                 </Typography>
                 {state?.statitics?.taskSchedulingTime &&
                 state?.statitics?.taskSchedulingTime > 24 ? (
