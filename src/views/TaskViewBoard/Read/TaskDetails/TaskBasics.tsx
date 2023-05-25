@@ -13,7 +13,6 @@ import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
-import { deAT } from "date-fns/locale";
 import { TaskMovement } from "src/types/models/Projects";
 
 interface TaskBasicsProps {}
@@ -124,32 +123,25 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   const unClearTime = () => {
-    let tasksMovements = task.movements;
-    if (tasksMovements.length > 0) {
-      let notClearMovements = tasksMovements.filter((item, index) => {
-        if (
-          item.status === "Not Clear" &&
-          tasksMovements[index - 1] &&
-          tasksMovements[index - 1].status
-        )
-          return item;
-      });
-      if (notClearMovements.length > 0) {
-        let indexedMovements = notClearMovements.map((item, index) => {
-          let i = tasksMovements.findIndex((move) => move._id === item._id);
-          return { item, index: i };
-        });
-        let diffs = indexedMovements.map((item) => {
-          return getDifBetweenDates(
-            new Date(tasksMovements[item.index - 1].movedAt),
-            new Date(item.item.movedAt)
-          ).totalHours;
-        });
-        return { hours: _.sum(diffs), times: notClearMovements.length };
+    // how many times task moved to notClear
+    let times = task.movements.filter(
+      (item) => item.status === "Not Clear"
+    ).length;
+    let total = { hours: 0 };
+    task.movements.forEach((item, index) => {
+      if (item.status === "Not Clear") {
+        let nextMove = task.movements[index + 1];
+        let dif = getDifBetweenDates(
+          new Date(item.movedAt),
+          nextMove ? new Date(nextMove.movedAt) : new Date(Date.now())
+        );
+        total.hours += dif.totalHours;
       }
-    }
-    return { times: 0, hours: 0 };
+    });
+    console.log({ times, total });
+    return { times, ...total };
   };
+
   const turnAroundTime = () => {
     let taskMovements = task.movements;
     if (task.movements.length > 0) {
@@ -339,7 +331,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   color={"ActiveBorder"}
                 >
                   days , {state?.statitics.taskLeadTime?.difference?.hours ?? 0}{" "}
-                  hours
+                  hours,
+                  {state?.statitics.taskLeadTime?.difference?.mins ?? 0} mins
                 </Typography>
                 {TaskState()}
               </Box>
@@ -406,7 +399,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 >
                   days,{" "}
                   {state?.statitics.taskProcessingTime?.difference?.hours ?? 0}{" "}
-                  hours
+                  hours,
+                  {state?.statitics.taskProcessingTime?.difference?.mins ??
+                    0}{" "}
+                  mins
                 </Typography>
                 {TaskState()}
               </Box>
@@ -468,7 +464,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 >
                   Days,{" "}
                   {state?.statitics?.taskSchedulingTime?.difference?.hours ?? 0}{" "}
-                  hours
+                  hours,
+                  {state?.statitics?.taskSchedulingTime?.difference?.mins ??
+                    0}{" "}
+                  mins
                 </Typography>
                 {state?.statitics?.taskSchedulingTime &&
                 state?.statitics?.taskSchedulingTime > 24 ? (
@@ -549,21 +548,19 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 >
                   Hours
                 </Typography>
-                {unClearTime().times > 1 && (
-                  <Typography
-                    sx={{
-                      p: "3px",
-                      ml: 1,
-                      fontSize: "10px",
-                      mb: 0.5,
-                      borderRadius: 0.5,
-                      background: "#F1CBCC",
-                      color: "#FF0000",
-                    }}
-                  >
-                    {state?.statitics.unClearTime.times} times
-                  </Typography>
-                )}
+                <Typography
+                  sx={{
+                    p: "3px",
+                    ml: 1,
+                    fontSize: "10px",
+                    mb: 0.5,
+                    borderRadius: 0.5,
+                    background: "#F1CBCC",
+                    color: "#FF0000",
+                  }}
+                >
+                  {state?.statitics?.unClearTime?.times} times
+                </Typography>
               </Box>
             </Grid>
           </Grid>
