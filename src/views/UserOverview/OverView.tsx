@@ -1,6 +1,6 @@
 import "./overview.css";
 import { Box, Grid, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import UserName from "./UserName/Name";
 import UserProjects from "./UserProjects/UserProjects";
 import UserStatus from "./Status/StatusCard";
@@ -9,16 +9,14 @@ import UserNotifications from "./Notifications/Notifications";
 import ManagerNotifications from "./Notifications/ManagerNotifications";
 import IMAGES from "../../assets/img/Images";
 import { useAppSelector } from "../../models/hooks";
-import { getUserInfo, logout, selectRole, selectUser } from "../../models/Auth";
+import { selectRole, selectUser } from "../../models/Auth";
 import { selectSatistics } from "../../models/Statistics";
 import { IOverview } from "src/types/views/Overview";
-import { selectAllProjects } from "src/models/Projects";
 
 export const OverView: FC<IOverview> = (props) => {
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
   const statistics = useAppSelector(selectSatistics);
-  const projects = useAppSelector(selectAllProjects);
 
   return (
     <>

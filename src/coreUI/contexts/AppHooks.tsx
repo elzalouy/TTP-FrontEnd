@@ -229,6 +229,7 @@ const AppHooks: React.FC<Props> = (props) => {
               "delivered after deadline",
             ].includes(item?.projectStatus)
         );
+      console.log({ userProjects });
       dispatch(
         setTasksStatistics({
           user,

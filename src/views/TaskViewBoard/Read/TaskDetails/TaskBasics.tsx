@@ -469,8 +469,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                     0}{" "}
                   mins
                 </Typography>
-                {state?.statitics?.taskSchedulingTime &&
-                state?.statitics?.taskSchedulingTime > 24 ? (
+                {state?.statitics?.taskSchedulingTime?.difference?.days > 0 ? (
                   <Typography
                     sx={{
                       p: "3px",

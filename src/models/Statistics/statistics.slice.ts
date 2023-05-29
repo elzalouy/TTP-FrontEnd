@@ -50,6 +50,7 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
       let tasks: Task[] = action.payload.tasks;
+      console.log({ userProjects, user, tasks });
       if (user.role !== "PM") {
         let inprogress = tasks.filter((item) => item.status === "In Progress");
         let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
