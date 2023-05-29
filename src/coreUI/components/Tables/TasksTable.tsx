@@ -18,15 +18,12 @@ import _ from "lodash";
 import { useHistory } from "react-router";
 import moment from "moment";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { checkIndexForLastRow } from "../../../helpers/generalUtils";
 import { ITasksTableProps } from "src/types/components/Table";
 import TablePaginationActions from "./TablePagination";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllCategories } from "src/models/Categories";
-import { visuallyHidden } from "@mui/utils";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Task } from "src/types/models/Projects";
-import { iteratorSymbol } from "immer/dist/internal";
 
 interface HeadCell {
   id: string;
@@ -108,12 +105,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   }, [tasks, projects, categories]);
 
   const setSingleSelect = (val: string, checked: boolean) => {
-    console.log({
-      checked,
-      id: val,
-      selects,
-      selected: selects.filter((i) => i !== val),
-    });
     let selected = [...selects];
     if (checked === true) {
       selected.push(val);

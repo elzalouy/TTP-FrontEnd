@@ -263,13 +263,10 @@ export const deleteTasks = createAsyncThunk<any, any, any>(
       if (deleteResult?.status === 401 || deleteResult?.status === 403) {
         dispatch(logout(true));
         return rejectWithValue("Un Authorized");
-      }
-      if (deleteResult.ok) {
-        args.dispatch(fireDeleteTaskHook(""));
+      } else if (deleteResult.ok) {
+        dispatch(fireDeleteTaskHook(""));
         ToastSuccess("Tasks deleted.");
-        return args.ids;
-      }
-      throw deleteResult.problem;
+      } else return rejectWithValue("Error");
     } catch (error: any) {
       ToastError("There was an error while deleting the tasks from server");
       return rejectWithValue(error);
