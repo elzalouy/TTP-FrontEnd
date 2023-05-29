@@ -108,16 +108,21 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   }, [tasks, projects, categories]);
 
   const setSingleSelect = (val: string, checked: boolean) => {
+    console.log({
+      checked,
+      id: val,
+      selects,
+      selected: selects.filter((i) => i !== val),
+    });
+    let selected = [...selects];
     if (checked === true) {
-      let selected = [...selects];
       selected.push(val);
-      selected = _.uniq(selected);
-      setAllSelected(selected);
     } else {
-      let selected = [...selects];
-      _.remove(selected, (item) => item === val);
+      selected = selected.filter((item) => item !== val);
       setAllSelected(selected);
     }
+    selected = _.uniq(selected);
+    setAllSelected(selected);
   };
 
   const openProject = (projectId: string | undefined) => {
@@ -300,9 +305,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                     }}
                   >
                     <Checkbox
-                      checked={
-                        select || selects.findIndex((i) => i === _id) >= 0
-                      }
+                      checked={selects.find((i) => i === _id) !== undefined}
                       onChange={(e, checked) =>
                         setSingleSelect(`${_id}`, checked)
                       }

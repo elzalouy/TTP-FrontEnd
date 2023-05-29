@@ -121,10 +121,13 @@ export const TasksListView: React.FC<Props> = (props) => {
         projectsIds.includes(item.projectId)
       );
     }
-    if (filter.projectId !== "")
+    if (filter.projectId !== "") {
       tasks = projects.allTasks.filter(
         (item) => item.projectId === filter.projectId
       );
+      let project = projects.projects.find((p) => p._id === filter.projectId);
+      setValue("projectManager", project?.projectManager ?? "");
+    }
     if (filter.status !== "")
       tasks = tasks.filter((item) => item.status === filter.status);
     if (filter.name !== "")
