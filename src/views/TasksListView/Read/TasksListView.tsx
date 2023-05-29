@@ -24,7 +24,7 @@ import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import EditTasks from "../Edit/EditTasks";
-import { selectRole } from "src/models/Auth";
+import { selectRole, selectUser } from "src/models/Auth";
 import DownloadIcon from "@mui/icons-material/Download";
 interface Props {
   projectId?: string;
@@ -64,6 +64,7 @@ const defaultValues = {
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
+  const user = useAppSelector(selectUser);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
@@ -72,7 +73,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const { watch, control, setValue, reset } = useForm({
     defaultValues: defaultValues,
   });
-  const [filtering, setIfFiltering] = React.useState(false);
+
   const [state, setState] = React.useState<IState>({
     tasks: projects.allTasks,
     showEditTasks: "none",
@@ -85,36 +86,16 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     let id = props.match.params?.projectId;
-    if (id) {
-      setValue("projectId", id);
-      setState({
-        ...state,
-        tasks: projects.allTasks
-          ? projects.allTasks.filter((item) => item.projectId === id)
-          : [],
-      });
-    } else {
-      setState({ ...state, tasks: projects.allTasks ? projects.allTasks : [] });
-    }
+    setValue("projectId", id ?? "");
+    setState({
+      ...state,
+      tasks: id
+        ? projects.allTasks.filter((item) => item.projectId === id) ?? []
+        : projects.allTasks ?? [],
+    });
+    if (user?.role === "PM") onSetFilter("projectManager", user._id);
   }, [props.match.params, projects]);
 
-  React.useEffect(() => {
-    try {
-      let {
-        projectId,
-        projectManager,
-        clientId,
-        status,
-        start,
-        name,
-        end,
-        category,
-      } = watch();
-      let tasks = projects.allTasks.filter((task) => {
-        // filter by project id
-      });
-    } catch (error) {}
-  }, [filtering]);
   const onSetFilter = (name: filterTypes, value: string) => {
     setValue(name, value);
     let State = { ...state };

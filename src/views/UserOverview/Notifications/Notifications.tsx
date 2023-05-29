@@ -45,6 +45,7 @@ const Notifications: React.FC<Props> = (props) => {
       margin: 0,
       justifyContent: "flex-end",
       paddingBottom: 1.2,
+      pl: 2,
     };
   };
   const hasMore = () =>

@@ -196,40 +196,23 @@ const AppHooks: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (!loading) {
-      let userProjects: Project[] = [];
-      if (user?.role !== "PM") userProjects = projects;
-      else
-        userProjects = projects.filter(
-          (item) =>
-            item.projectStatus &&
-            item.projectManager?._id === user?._id &&
-            ![
-              "deliver on time",
-              "deliver before deadline",
-              "delivered after deadline",
-            ].includes(item?.projectStatus)
-        );
-      dispatch(setProjectsStatistics({ user: user, projects: userProjects }));
+      let userProjects: Project[] =
+        user?.role === "PM"
+          ? projects.filter((item) => item.projectManager === user._id)
+          : projects;
+      dispatch(
+        setProjectsStatistics({ user: user, projects: userProjects, tasks })
+      );
     }
   }, [setProjectsStatisticsHook]);
 
   // set statistics hook
   React.useEffect(() => {
     if (!loading) {
-      let userProjects: Project[] = [];
-      if (user?.role !== "PM") userProjects = projects;
-      else
-        userProjects = projects.filter(
-          (item) =>
-            item.projectStatus &&
-            item.projectManager?._id === user?._id &&
-            ![
-              "deliver on time",
-              "deliver before deadline",
-              "delivered after deadline",
-            ].includes(item?.projectStatus)
-        );
-      console.log({ userProjects });
+      let userProjects: Project[] =
+        user?.role === "PM"
+          ? projects.filter((item) => item.projectManager === user._id)
+          : projects;
       dispatch(
         setTasksStatistics({
           user,

@@ -1,7 +1,7 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
 import { FC } from "react";
-import { useMediaQuery } from "@mui/material";
+
 interface UserStatusProps {
   loading: boolean;
   Icon: any;
