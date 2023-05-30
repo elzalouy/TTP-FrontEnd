@@ -46,9 +46,11 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   const departments = useAppSelector(selectAllDepartments);
   const { openTaskDetails: task } = useAppSelector(selectAllProjects);
   useEffect(() => {
-    const taskBoard = departments.find((item) => item.boardId === task.boardId);
-    const taskTeam = taskBoard?.teams.find((item) => item._id === task.teamId);
-    const category = categories.find((item) => item._id === task.categoryId);
+    const taskBoard = departments?.find(
+      (item) => item.boardId === task.boardId
+    );
+    const taskTeam = taskBoard?.teams?.find((item) => item._id === task.teamId);
+    const category = categories?.find((item) => item._id === task.categoryId);
     const taskMovements = task.movements.map((item, index) => {
       return { ...item, index };
     });
@@ -95,7 +97,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
  */
 
   const taskProcessingTime = () => {
-    let inProgress = task.movements.find(
+    let inProgress = task.movements?.find(
       (item: TaskMovement) => item.status === "In Progress"
     );
     let sharedMove = _.findLast(task.movements, (item: TaskMovement) => {
@@ -112,7 +114,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   const taskSchedulingTime = () => {
-    let inProgressMove = task.movements.find(
+    let inProgressMove = task?.movements?.find(
       (item) => item.status === "In Progress"
     );
     return inProgressMove && task.start
@@ -154,7 +156,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
       );
       if (turnAroundMovements?.length > 0) {
         let indexedMovements = turnAroundMovements.map((item) => {
-          let index = taskMovements.findIndex((m) => m._id === item._id);
+          let index = taskMovements?.findIndex((m) => m._id === item._id);
           return { item, index };
         });
         let diffs = indexedMovements.map((item) => {

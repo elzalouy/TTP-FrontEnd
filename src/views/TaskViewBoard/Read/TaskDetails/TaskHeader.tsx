@@ -24,7 +24,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
       task?.deadlineChain?.filter(
         (item) =>
           item.trelloMember === false &&
-          users.find(
+          users?.find(
             (user) =>
               user._id === item.userId && ["OM", "PM"].includes(user.role)
           ) &&

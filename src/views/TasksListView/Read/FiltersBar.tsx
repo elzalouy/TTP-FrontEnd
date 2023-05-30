@@ -41,11 +41,11 @@ interface IState {
 interface FiltersBarProps {
   selects: string[];
   control: any;
-  onSetFilter: (name: filterTypes, value: string) => any;
+  onSetFilter: (name: filterTypes, value: string | undefined) => any;
   state: IState;
   setState: any;
   watch: UseFormWatch<{
-    projectId: string;
+    projectId?: string;
     name: string;
     projectManager: string;
     status: string;
@@ -216,6 +216,17 @@ const FiltersBar = ({
                 onSetFilter("category", e?.id);
               }}
             />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
+          <Box className="tasks-option">
+            <Button
+              size="x-small"
+              type="add"
+              style={{ textTransform: "lowercase" }}
+              label="Un Assigned Tasks"
+              onClick={() => onSetFilter("projectId", undefined)}
+            ></Button>
           </Box>
         </Grid>
       </Grid>

@@ -51,7 +51,17 @@ interface IState {
   projectManagersOptions: Options;
   openFilter: boolean;
 }
-const defaultValues = {
+type filterType = {
+  projectId?: string;
+  name: string;
+  projectManager: string;
+  status: string;
+  clientId: string;
+  start: string;
+  end: string;
+  category: string;
+};
+const defaultValues: filterType = {
   projectId: "",
   name: "",
   projectManager: "",
@@ -96,7 +106,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     if (user?.role === "PM") onSetFilter("projectManager", user._id);
   }, [props.match.params, projects]);
 
-  const onSetFilter = (name: filterTypes, value: string) => {
+  const onSetFilter = (name: filterTypes, value: string | undefined) => {
     setValue(name, value);
     let State = { ...state };
     let filter = watch();
@@ -121,11 +131,11 @@ export const TasksListView: React.FC<Props> = (props) => {
         projectsIds.includes(item.projectId)
       );
     }
-    if (filter.projectId !== "") {
+    if (![null, "", undefined].includes(filter.projectId)) {
       tasks = projects.allTasks.filter(
-        (item) => item.projectId === filter.projectId
+        (item) => item.projectId === filter?.projectId
       );
-      let project = projects.projects.find((p) => p._id === filter.projectId);
+      let project = projects.projects.find((p) => p._id === filter?.projectId);
       setValue("projectManager", project?.projectManager ?? "");
     }
     if (filter.status !== "")
@@ -147,6 +157,11 @@ export const TasksListView: React.FC<Props> = (props) => {
       );
     if (filter.category !== "")
       tasks = tasks.filter((item) => item.categoryId === filter.category);
+    if (filter.projectId === undefined) {
+      tasks = tasks.filter((item) =>
+        [null, "", undefined].includes(item.projectId)
+      );
+    }
     State.tasks = tasks;
     setState(State);
   };

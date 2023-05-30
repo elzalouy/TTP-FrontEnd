@@ -39,7 +39,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   const getDiff = (start: string, end: string) => {
     let lastMoves = props?.movements?.filter((item) => item.status === end);
-    let firstMove = props.movements.find((item) => item.status === start);
+    let firstMove = props.movements?.find((item) => item.status === start);
     let lMove = lastMoves[lastMoves?.length - 1];
     if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
       return getDifBetweenDates(
@@ -66,7 +66,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     let cMoves = props?.movements
       ?.filter((item) => item.status === "Cancled")
       .map((item) => {
-        let itemIndex = props.movements.findIndex((m) => m === item);
+        let itemIndex = props.movements?.findIndex((m) => m === item);
         return { index: itemIndex, ...item };
       });
     if (cMoves && cMoves?.length > 0) {
@@ -220,9 +220,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           >
             {movements?.map((item, index) => {
               let nextMoveIndex =
-                props.movements.findIndex((nm) => nm._id === item._id) + 1;
+                props.movements?.findIndex((nm) => nm._id === item._id) + 1;
               let prevMoveIndex =
-                props.movements.findIndex((pm) => pm._id === item._id) - 1;
+                props.movements?.findIndex((pm) => pm._id === item._id) - 1;
               let nextMove = props.movements[nextMoveIndex];
               let prevMove = props.movements[prevMoveIndex];
               let due = undefined;
@@ -241,7 +241,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                   <TimelineSeparator sx={{ height: "auto" }}>
                     <TimelineDot sx={dotStyle}>
                       <Typography sx={timeLineDotNumStyle}>
-                        {props.movements.findIndex(
+                        {props.movements?.findIndex(
                           (move) => item._id === move._id
                         ) + 1}
                       </Typography>
