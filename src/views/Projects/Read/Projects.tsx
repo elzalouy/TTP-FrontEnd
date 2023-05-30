@@ -130,9 +130,20 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
 
   const onSetSort = (e: string) => {
     let inProgress = state.inProgressProjects.sort((i, t) => {
-      return e === "asc" ? -1 : 1;
+      return e === "desc" ? -1 : e === "asc" ? 1 : 0;
     });
-    setState({ ...state, inProgressProjects: inProgress });
+    let done = state.doneProjects.sort((i, t) => {
+      return e === "desc" ? -1 : e === "asc" ? 1 : 0;
+    });
+    let notStarted = state.doneProjects.sort((i, t) => {
+      return e === "desc" ? -1 : e === "asc" ? 1 : 0;
+    });
+    setState({
+      ...state,
+      inProgressProjects: inProgress,
+      notStarted,
+      doneProjects: done,
+    });
   };
 
   const onChange = (
@@ -256,7 +267,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
           </Grid>
           {filter && (
             <>
-              <Grid
+              {/* <Grid
                 data-test-id="filter-projects"
                 display={() => isOpen()}
                 marginX={0.5}
@@ -277,15 +288,15 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                       label="Due Date: "
                       optionsType="list"
                       onSelect={(e: any) => {
-                        onChange(e, "deadline");
-                        onSetSort(props.field.value);
+                        console.log({ value: e.target.id });
+                        onSetSort(e.target.id);
                       }}
                       textTruncate={4}
                       options={filterOptions[0]}
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
               <Grid
                 data-test-id="filter-projects"
                 display={() => isOpen()}

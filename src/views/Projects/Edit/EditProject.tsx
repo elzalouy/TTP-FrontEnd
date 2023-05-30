@@ -72,6 +72,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       clientId: "",
       deliveryDate: typeof "" === "string" ? new Date() : null,
     },
+    loading: false,
   });
 
   useEffect(() => {
@@ -114,6 +115,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   }, [project, managers]);
 
   const onSubmit = () => {
+    setState({ ...state, loading: true });
     let data = watch();
     let deadline = new Date(data?.projectDeadline);
     const today = new Date();
@@ -174,6 +176,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           break;
       }
     } else ToastError(validate.error.details[0].message);
+    setState({ ...state, loading: false });
   };
 
   return (
@@ -325,9 +328,11 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           <Button
             size="large"
             type="main"
+            disabled={state.loading}
             label="Done"
             onClick={onSubmit}
             dataTestId="edit-project-submit-btn"
+            loading={state.loading}
           />
         </div>
       </PopUp>
