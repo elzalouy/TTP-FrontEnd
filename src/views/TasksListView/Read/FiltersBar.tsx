@@ -153,11 +153,7 @@ const FiltersBar = ({
               optionsType="dialog"
               textTruncate={10}
               onSelect={(e: any) => onSetFilter("projectId", e?.id)}
-              options={[
-                { id: "", value: "", text: "All" },
-                { id: null, value: null, text: "Not Assigned to projects" },
-                ...projectOptions,
-              ]}
+              options={[{ id: "", value: "", text: "All" }, ...projectOptions]}
             />
           </Box>
         </Grid>
