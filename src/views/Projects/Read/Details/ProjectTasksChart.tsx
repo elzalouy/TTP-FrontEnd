@@ -70,7 +70,7 @@ const ProjectTasksChart: FC<ProjectTasksChartProps> = ({ project, tasks }) => {
       "Canceled",
     ];
     let valuesKeys = Object.keys(values);
-    labels = labels.filter((item) => valuesKeys.includes(item));
+    labels = labels?.filter((item) => valuesKeys.includes(item));
     console.log({ tasks, labels });
     setState({
       ...state,

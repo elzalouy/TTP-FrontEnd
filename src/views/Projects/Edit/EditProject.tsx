@@ -92,7 +92,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           : project.projectStatus === "In Progress"
           ? [defaultStatus[2]]
           : [defaultStatus[1]];
-      State.AssociatePMs = managers.filter(
+      State.AssociatePMs = managers?.filter(
         (item) => item.id !== project.projectManager?._id
       );
       setState(State);
@@ -300,7 +300,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
                 setValue("projectManager", e.id);
                 setState({
                   ...state,
-                  AssociatePMs: managers.filter((item) => item.id !== e.id),
+                  AssociatePMs: managers?.filter((item) => item.id !== e.id),
                 });
               }}
               selected={watch().projectManager}

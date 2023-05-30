@@ -47,7 +47,7 @@ const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
       if (projectTasks && projectTasks.length > 0) {
         const unHealthyTasks = projectTasks?.filter(
           (item) =>
-            item.movements.filter((item) => item.status === "Not Clear")
+            item?.movements?.filter((item) => item.status === "Not Clear")
               .length > 0
         );
         const healthyTasks = projectTasks?.filter((item) =>

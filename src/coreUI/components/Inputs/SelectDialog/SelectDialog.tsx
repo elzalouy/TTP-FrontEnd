@@ -112,7 +112,10 @@ export const SimpleDialog = ({
                     </Avatar>
                   </ListItemAvatar>
                 )}
-                <ListItemText primary={item.label} />
+                <ListItemText
+                  primary={item.label}
+                  sx={{ color: item.id === null ? "red" : "gray" }}
+                />
               </ListItem>
             );
           })}

@@ -33,14 +33,14 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   React.useEffect(() => {
     if (filter !== "")
-      setMovements(props.movements.filter((item) => item.status === filter));
+      setMovements(props?.movements?.filter((item) => item.status === filter));
     else setMovements(props.movements);
   }, [filter]);
 
   const getDiff = (start: string, end: string) => {
-    let lastMoves = props.movements.filter((item) => item.status === end);
+    let lastMoves = props?.movements?.filter((item) => item.status === end);
     let firstMove = props.movements.find((item) => item.status === start);
-    let lMove = lastMoves[lastMoves.length - 1];
+    let lMove = lastMoves[lastMoves?.length - 1];
     if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
       return getDifBetweenDates(
         new Date(firstMove.movedAt),
@@ -63,13 +63,13 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   const getCancelationType = () => {
     let map = cancelType;
-    let cMoves = props.movements
-      .filter((item) => item.status === "Cancled")
+    let cMoves = props?.movements
+      ?.filter((item) => item.status === "Cancled")
       .map((item) => {
         let itemIndex = props.movements.findIndex((m) => m === item);
         return { index: itemIndex, ...item };
       });
-    if (cMoves && cMoves.length > 0) {
+    if (cMoves && cMoves?.length > 0) {
       cMoves.map((lcMove) => {
         if (props.movements[lcMove.index - 1].status === "In Progress")
           map.set("Canceled", "Canceled");
@@ -125,8 +125,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {props.movements.filter((item) => item.status === "Not Clear")
-          .length === 0 ? (
+        {props?.movements?.filter((item) => item.status === "Not Clear")
+          ?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -313,8 +313,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             {due?.difference?.hours ?? 0} Hours{", "}
                             {due?.difference?.mins ?? 0} mins{" "}
                             {movements[index]._id ===
-                              props.movements[props.movements.length - 1]._id &&
-                              "(Till Now)"}
+                              props.movements[props?.movements?.length - 1]
+                                ._id && "(Till Now)"}
                           </Typography>
                         </Box>
                       )}
@@ -338,12 +338,12 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             ].map((item) => {
               let count =
                 filter !== ""
-                  ? props.movements.filter(
+                  ? props?.movements?.filter(
                       (move, index) =>
                         props.movements[index + 1] &&
                         props.movements[index + 1]?.status === filter &&
                         move.status === item
-                    ).length
+                    )?.length
                   : 0;
               return (
                 <ListItem

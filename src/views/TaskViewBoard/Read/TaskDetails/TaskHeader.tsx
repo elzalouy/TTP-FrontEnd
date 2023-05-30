@@ -21,7 +21,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
     const remainingDays = Math.round(remainingDaysFloated + 1);
     const isDeadlineChanged =
       task.deadlineChain &&
-      task.deadlineChain?.filter(
+      task?.deadlineChain?.filter(
         (item) =>
           item.trelloMember === false &&
           users.find(
@@ -30,7 +30,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
           ) &&
           item.before &&
           new Date(item?.before).getTime() < new Date(item.current).getTime()
-      ).length !== 0;
+      )?.length !== 0;
     return isDeadlineChanged || remainingDays < 0;
   };
 
@@ -67,7 +67,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
             borderRadius={"100%"}
             ml={1}
           >
-            {task.movements.length}
+            {task?.movements?.length}
           </Typography>
         </Box>
         <Divider

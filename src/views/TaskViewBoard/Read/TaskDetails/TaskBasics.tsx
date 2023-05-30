@@ -54,7 +54,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     });
 
     const sharedMovements =
-      taskMovements && taskMovements.filter((item) => item.status === "Shared");
+      taskMovements &&
+      taskMovements?.filter((item) => item.status === "Shared");
     setState({
       sharedMovements,
       taskTeam,
@@ -124,9 +125,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
 
   const unClearTime = () => {
     // how many times task moved to notClear
-    let times = task.movements.filter(
+    let times = task?.movements?.filter(
       (item) => item.status === "Not Clear"
-    ).length;
+    )?.length;
     let total = { hours: 0 };
     task.movements.forEach((item, index) => {
       if (item.status === "Not Clear") {
@@ -144,14 +145,14 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
 
   const turnAroundTime = () => {
     let taskMovements = task.movements;
-    if (task.movements.length > 0) {
-      let turnAroundMovements = taskMovements.filter(
+    if (task?.movements?.length > 0) {
+      let turnAroundMovements = taskMovements?.filter(
         (item, index) =>
           item.status === "Not Clear" &&
           taskMovements[index + 1] &&
           taskMovements[index + 1].status === "In Progress"
       );
-      if (turnAroundMovements.length > 0) {
+      if (turnAroundMovements?.length > 0) {
         let indexedMovements = turnAroundMovements.map((item) => {
           let index = taskMovements.findIndex((m) => m._id === item._id);
           return { item, index };
@@ -162,7 +163,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
             new Date(taskMovements[item.index + 1].movedAt)
           ).totalHours;
         });
-        return { hours: _.sum(diffs), times: turnAroundMovements.length };
+        return { hours: _.sum(diffs), times: turnAroundMovements?.length };
       }
     }
     return { times: 0, hours: 0 };
