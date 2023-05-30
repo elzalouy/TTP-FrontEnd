@@ -328,7 +328,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   mb={0.5}
                   fontSize={14}
                   fontWeight={"500"}
-                  color={"ActiveBorder"}
+                  color={"#767676"}
                 >
                   days , {state?.statitics.taskLeadTime?.difference?.hours ?? 0}{" "}
                   hours,
@@ -395,7 +395,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   mb={0.5}
                   fontSize={14}
                   fontWeight={"500"}
-                  color={"ActiveBorder"}
+                  color={"#767676"}
                 >
                   days,{" "}
                   {state?.statitics.taskProcessingTime?.difference?.hours ?? 0}{" "}
@@ -460,7 +460,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   mb={0.5}
                   fontSize={14}
                   fontWeight={"500"}
-                  color={"ActiveBorder"}
+                  color={"#767676"}
                 >
                   Days,{" "}
                   {state?.statitics?.taskSchedulingTime?.difference?.hours ?? 0}{" "}
@@ -543,7 +543,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                   mb={0.5}
                   fontSize={14}
                   fontWeight={"500"}
-                  color={"ActiveBorder"}
+                  color={"#767676"}
                 >
                   Hours
                 </Typography>
@@ -603,7 +603,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
                 mb={0.5}
                 fontSize={14}
                 fontWeight={"500"}
-                color={"ActiveBorder"}
+                color={"#767676"}
               >
                 Hours
               </Typography>

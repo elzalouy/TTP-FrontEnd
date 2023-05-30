@@ -77,10 +77,10 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   useEffect(() => {
     let isPm = user?.role === "PM";
     if (isPm) setValue("projectManager", user?._id ?? "");
-    onHandleChange();
+    onSetFilter();
   }, [user, projects.projects]);
 
-  const onHandleChange = () => {
+  const onSetFilter = () => {
     let filter = watch();
     let allProjects = projects.projects;
     if (filter.name !== "") {
@@ -128,8 +128,11 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     });
   };
 
-  const onHandleSort = (e: any) => {
-    dispatch(ProjectsActions.onSortProjects(getValues().deadline));
+  const onSetSort = (e: string) => {
+    let inProgress = state.inProgressProjects.sort((i, t) => {
+      return e === "asc" ? -1 : 1;
+    });
+    setState({ ...state, inProgressProjects: inProgress });
   };
 
   const onChange = (
@@ -138,7 +141,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   ) => {
     e.preventDefault();
     setValue(name, e.target.id);
-    onHandleChange();
+    onSetFilter();
   };
 
   const isOpen = () => {
@@ -243,7 +246,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                     placeholder="Search"
                     onChange={(e: any) => {
                       props.field.onChange(e);
-                      onHandleChange();
+                      onSetFilter();
                     }}
                     size={"custom"}
                   />
@@ -275,7 +278,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                       optionsType="list"
                       onSelect={(e: any) => {
                         onChange(e, "deadline");
-                        onHandleSort(props.field.value);
+                        onSetSort(props.field.value);
                       }}
                       textTruncate={4}
                       options={filterOptions[0]}
@@ -309,7 +312,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                       ]}
                       onSelect={(e: any) => {
                         setValue("projectManager", e.id);
-                        onHandleChange();
+                        onSetFilter();
                       }}
                       textTruncate={6}
                     />
@@ -342,7 +345,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                       ]}
                       onSelect={(e: any) => {
                         setValue("clientId", e.id);
-                        onHandleChange();
+                        onSetFilter();
                       }}
                       textTruncate={10}
                     />
@@ -397,7 +400,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
                   placeholder="Search"
                   onChange={(e: any) => {
                     props.field.onChange(e);
-                    onHandleChange();
+                    onSetFilter();
                   }}
                   size={"custom"}
                 />
