@@ -27,14 +27,14 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   );
 
   React.useEffect(() => {
-    setMovements(props.movements);
+    setMovements(props?.movements);
     getCancelationType();
   }, [props.movements]);
 
   React.useEffect(() => {
     if (filter !== "")
       setMovements(props?.movements?.filter((item) => item.status === filter));
-    else setMovements(props.movements);
+    else setMovements(props?.movements);
   }, [filter]);
 
   const getDiff = (start: string, end: string) => {
@@ -66,18 +66,18 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     let cMoves = props?.movements
       ?.filter((item) => item.status === "Cancled")
       .map((item) => {
-        let itemIndex = props.movements?.findIndex((m) => m === item);
+        let itemIndex = props?.movements?.findIndex((m) => m === item);
         return { index: itemIndex, ...item };
       });
     if (cMoves && cMoves?.length > 0) {
       cMoves.map((lcMove) => {
-        if (props.movements[lcMove.index - 1].status === "In Progress")
+        if (props?.movements[lcMove.index - 1].status === "In Progress")
           map.set("Canceled", "Canceled");
-        if (props.movements[lcMove.index - 1].status === "Tasks Board")
+        if (props?.movements[lcMove.index - 1].status === "Tasks Board")
           map.set("Disrupted", "Disrupted");
         if (
           ["Review", "Shared"].includes(
-            props.movements[lcMove.index - 1].status
+            props?.movements[lcMove.index - 1].status
           )
         )
           map.set("Flagged", "Flagged");
@@ -218,111 +218,116 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               },
             }}
           >
-            {movements?.map((item, index) => {
-              let nextMoveIndex =
-                props.movements?.findIndex((nm) => nm._id === item._id) + 1;
-              let prevMoveIndex =
-                props.movements?.findIndex((pm) => pm._id === item._id) - 1;
-              let nextMove = props.movements[nextMoveIndex];
-              let prevMove = props.movements[prevMoveIndex];
-              let due = undefined;
-              due = nextMove
-                ? getDifBetweenDates(
-                    new Date(nextMove?.movedAt),
-                    new Date(item?.movedAt)
-                  )
-                : getDifBetweenDates(
-                    new Date(new Date(Date.now())),
-                    new Date(item?.movedAt)
-                  );
+            {movements &&
+              movements?.map((item, index) => {
+                let nextMoveIndex =
+                  props.movements?.findIndex((nm) => nm._id === item._id) + 1;
+                let prevMoveIndex =
+                  props.movements?.findIndex((pm) => pm._id === item._id) - 1;
+                let nextMove = props.movements[nextMoveIndex];
+                let prevMove = props.movements[prevMoveIndex];
+                let due = undefined;
+                due = nextMove
+                  ? getDifBetweenDates(
+                      new Date(nextMove?.movedAt),
+                      new Date(item?.movedAt)
+                    )
+                  : getDifBetweenDates(
+                      new Date(new Date(Date.now())),
+                      new Date(item?.movedAt)
+                    );
 
-              return (
-                <TimelineItem key={item._id} sx={itemStyle}>
-                  <TimelineSeparator sx={{ height: "auto" }}>
-                    <TimelineDot sx={dotStyle}>
-                      <Typography sx={timeLineDotNumStyle}>
-                        {props.movements?.findIndex(
-                          (move) => item._id === move._id
-                        ) + 1}
-                      </Typography>
-                    </TimelineDot>
-                    <TimelineConnector
-                      sx={{ width: "1px", opacity: 0.5 }}
-                      color="#e1e1e1"
-                    />
-                  </TimelineSeparator>
-                  <TimelineContent
-                    sx={{
-                      mb: 2,
-                      mt: 0,
-                      mx: 2,
-                      padding: "5px",
-                      border: "1px solid #e1e1e1",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <Box
-                      display={"inline-flex"}
-                      flexDirection={"column"}
-                      alignItems={"flex-start"}
+                return (
+                  <TimelineItem key={item._id} sx={itemStyle}>
+                    <TimelineSeparator sx={{ height: "auto" }}>
+                      <TimelineDot sx={dotStyle}>
+                        <Typography sx={timeLineDotNumStyle}>
+                          {props.movements?.findIndex(
+                            (move) => item._id === move._id
+                          ) + 1}
+                        </Typography>
+                      </TimelineDot>
+                      <TimelineConnector
+                        sx={{ width: "1px", opacity: 0.5 }}
+                        color="#e1e1e1"
+                      />
+                    </TimelineSeparator>
+                    <TimelineContent
+                      sx={{
+                        mb: 2,
+                        mt: 0,
+                        mx: 2,
+                        padding: "5px",
+                        border: "1px solid #e1e1e1",
+                        borderRadius: "10px",
+                      }}
                     >
-                      <Box alignItems={"flex-start"} display={"inline-flex"}>
-                        <Typography color={"#94989b"} fontSize={12}>
-                          moved to: &nbsp;
-                        </Typography>
-                        <Typography fontSize={11} fontWeight={"600"}>
-                          {item.status} &nbsp;
-                        </Typography>
-                      </Box>
-                      <Box alignItems={"flex-start"} display={"inline-flex"}>
-                        <Typography color={"#94989b"} fontSize={12}>
-                          Moved at: &nbsp;
-                        </Typography>
-                        <Typography fontSize={11} fontWeight={"600"}>
-                          {item.movedAt
-                            ? format(new Date(item.movedAt), "dd MMMM yyyy")
-                            : "Not defined"}{" "}
-                          &nbsp;
-                        </Typography>
-                      </Box>
-                      <Box display={"inline-flex"} alignItems={"flex-start"}>
-                        {prevMove && (
-                          <>
-                            <Typography color={"#94989b"} pr={1} fontSize={12}>
-                              Moved from: &nbsp;
-                            </Typography>
-                            <Typography fontSize={11} fontWeight={"600"}>
-                              {prevMove?.status} &nbsp;
-                            </Typography>
-                          </>
-                        )}
-                      </Box>
-                      {due && (
-                        <Box display={"inline-flex"} alignItems={"center"}>
-                          <CircleIcon
-                            htmlColor="#444452"
-                            sx={{ fontSize: "8px", mr: 1 }}
-                          />
-
-                          <Typography
-                            color={"#94989b"}
-                            fontWeight={"bold"}
-                            fontSize={"10px"}
-                          >
-                            {due?.difference?.days ?? 0} Days{",  "}
-                            {due?.difference?.hours ?? 0} Hours{", "}
-                            {due?.difference?.mins ?? 0} mins{" "}
-                            {movements[index]._id ===
-                              props.movements[props?.movements?.length - 1]
-                                ._id && "(Till Now)"}
+                      <Box
+                        display={"inline-flex"}
+                        flexDirection={"column"}
+                        alignItems={"flex-start"}
+                      >
+                        <Box alignItems={"flex-start"} display={"inline-flex"}>
+                          <Typography color={"#94989b"} fontSize={12}>
+                            moved to: &nbsp;
+                          </Typography>
+                          <Typography fontSize={11} fontWeight={"600"}>
+                            {item.status} &nbsp;
                           </Typography>
                         </Box>
-                      )}
-                    </Box>
-                  </TimelineContent>
-                </TimelineItem>
-              );
-            })}
+                        <Box alignItems={"flex-start"} display={"inline-flex"}>
+                          <Typography color={"#94989b"} fontSize={12}>
+                            Moved at: &nbsp;
+                          </Typography>
+                          <Typography fontSize={11} fontWeight={"600"}>
+                            {item.movedAt
+                              ? format(new Date(item.movedAt), "dd MMMM yyyy")
+                              : "Not defined"}{" "}
+                            &nbsp;
+                          </Typography>
+                        </Box>
+                        <Box display={"inline-flex"} alignItems={"flex-start"}>
+                          {prevMove && (
+                            <>
+                              <Typography
+                                color={"#94989b"}
+                                pr={1}
+                                fontSize={12}
+                              >
+                                Moved from: &nbsp;
+                              </Typography>
+                              <Typography fontSize={11} fontWeight={"600"}>
+                                {prevMove?.status} &nbsp;
+                              </Typography>
+                            </>
+                          )}
+                        </Box>
+                        {due && (
+                          <Box display={"inline-flex"} alignItems={"center"}>
+                            <CircleIcon
+                              htmlColor="#444452"
+                              sx={{ fontSize: "8px", mr: 1 }}
+                            />
+
+                            <Typography
+                              color={"#94989b"}
+                              fontWeight={"bold"}
+                              fontSize={"10px"}
+                            >
+                              {due?.difference?.days ?? 0} Days{",  "}
+                              {due?.difference?.hours ?? 0} Hours{", "}
+                              {due?.difference?.mins ?? 0} mins{" "}
+                              {movements[index]._id ===
+                                props.movements[props?.movements?.length - 1]
+                                  ._id && "(Till Now)"}
+                            </Typography>
+                          </Box>
+                        )}
+                      </Box>
+                    </TimelineContent>
+                  </TimelineItem>
+                );
+              })}
           </Timeline>
         </Grid>
         <Grid item xs={2} height={"fit-content"}>
@@ -337,7 +342,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               "Cancled",
             ].map((item) => {
               let count =
-                filter !== ""
+                filter !== "" && props.movements
                   ? props?.movements?.filter(
                       (move, index) =>
                         props.movements[index + 1] &&

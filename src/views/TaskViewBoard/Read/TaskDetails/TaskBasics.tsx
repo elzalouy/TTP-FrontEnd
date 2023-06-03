@@ -51,7 +51,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     );
     const taskTeam = taskBoard?.teams?.find((item) => item._id === task.teamId);
     const category = categories?.find((item) => item._id === task.categoryId);
-    const taskMovements = task.movements.map((item, index) => {
+    const taskMovements = task?.movements?.map((item, index) => {
       return { ...item, index };
     });
 
@@ -76,12 +76,12 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
 
   const TaskLeadTime = () => {
     let lastShared = _.findLast(
-      task.movements,
+      task?.movements,
       (item) => item.status === "Shared"
     );
-    return task.start
+    return task.createdAt
       ? getDifBetweenDates(
-          new Date(task.start),
+          new Date(task.createdAt),
           lastShared ? new Date(lastShared.movedAt) : new Date(Date.now())
         )
       : null;
@@ -117,9 +117,9 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
     let inProgressMove = task?.movements?.find(
       (item) => item.status === "In Progress"
     );
-    return inProgressMove && task.start
+    return inProgressMove && task.createdAt
       ? getDifBetweenDates(
-          new Date(task.start),
+          new Date(task.createdAt),
           new Date(inProgressMove.movedAt)
         )
       : null;
@@ -141,7 +141,6 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
         total.hours += dif.totalHours;
       }
     });
-    console.log({ times, total });
     return { times, ...total };
   };
 

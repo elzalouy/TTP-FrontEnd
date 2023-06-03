@@ -89,7 +89,40 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
             fontWeight={"600"}
             fontSize={"12px"}
           >
-            Task created:
+            Created At:
+          </Typography>
+          <Typography
+            color="black"
+            alignItems={"center"}
+            display={"inline-flex"}
+            fontSize={"12px"}
+          >
+            <EventIcon htmlColor="#9ea1a7" sx={{ fontSize: "12px", mr: 1 }} />
+            {task.createdAt
+              ? format(new Date(task.createdAt), "dd MMMM yyyy")
+              : "Not Set"}
+          </Typography>
+        </Box>
+        <Divider
+          orientation="vertical"
+          variant="inset"
+          flexItem
+          sx={{ mx: 2 }}
+        />
+        <Box
+          sx={{
+            minWidth: 170,
+            alignItems: "flex-start",
+            textAlign: "left",
+          }}
+        >
+          <Typography
+            color="#9ea1a7"
+            mb={0.5}
+            fontWeight={"600"}
+            fontSize={"12px"}
+          >
+            Start Date:
           </Typography>
           <Typography
             color="black"
