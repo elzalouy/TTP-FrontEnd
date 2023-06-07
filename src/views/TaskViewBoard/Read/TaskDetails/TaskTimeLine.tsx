@@ -105,7 +105,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       <Box sx={{ my: 1 }}>
         <Box sx={{ float: "left", m: 0.5 }}>
           <Typography fontSize={"16px"} fontWeight={600}>
-            Recent activity
+            Task Journey
           </Typography>
         </Box>
         {filter !== "" && (
