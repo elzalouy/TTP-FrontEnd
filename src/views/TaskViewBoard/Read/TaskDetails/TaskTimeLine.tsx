@@ -92,10 +92,11 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       return { ...item, index };
     });
     moves = moves.filter(
-      (item, index) =>
+      (item) =>
         status.includes(item?.status) &&
-        props.movements[index + 1]?.status === "Tasks Board"
+        props.movements[item.index + 1]?.status === "Tasks Board"
     );
+    console.log({ moves });
     return moves.length;
   };
 
