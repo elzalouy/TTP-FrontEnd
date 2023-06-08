@@ -77,7 +77,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           map.set("Disrupted", "Disrupted");
         if (
           ["Review", "Shared"].includes(
-            props?.movements[lcMove.index - 1].status
+            props?.movements[lcMove.index - 1]?.status
           )
         )
           map.set("Flagged", "Flagged");
@@ -93,8 +93,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     });
     moves = moves.filter(
       (item, index) =>
-        status.includes(item.status) &&
-        props.movements[index + 1].status === "Tasks Board"
+        status.includes(item?.status) &&
+        props.movements[index + 1]?.status === "Tasks Board"
     );
     return moves.length;
   };
@@ -138,7 +138,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {props?.movements?.filter((item) => item.status === "Not Clear")
+        {props?.movements?.filter((item) => item?.status === "Not Clear")
           ?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
@@ -301,7 +301,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             moved to: &nbsp;
                           </Typography>
                           <Typography fontSize={11} fontWeight={"600"}>
-                            {item.status} &nbsp;
+                            {item?.status} &nbsp;
                           </Typography>
                         </Box>
                         <Box alignItems={"flex-start"} display={"inline-flex"}>
