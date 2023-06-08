@@ -231,7 +231,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 p: "4px",
               }}
             >
-              Canceled
+              Nasty
             </Typography>
           </Box>
         )}
