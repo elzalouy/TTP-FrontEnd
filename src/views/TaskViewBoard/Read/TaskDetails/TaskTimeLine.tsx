@@ -86,6 +86,19 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     setCancelType(map);
   };
 
+  const isNasty = () => {
+    const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
+    let moves = props.movements.map((item, index) => {
+      return { ...item, index };
+    });
+    moves = moves.filter(
+      (item, index) =>
+        status.includes(item.status) &&
+        props.movements[index + 1].status === "Tasks Board"
+    );
+    return moves.length;
+  };
+
   return (
     <Grid
       item
@@ -202,6 +215,22 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               }}
             >
               Flagged
+            </Typography>
+          </Box>
+        )}
+        {isNasty() > 0 && (
+          <Box sx={{ float: "left", m: 0.5 }}>
+            <Typography
+              sx={{
+                background: "#f1cbcc",
+                borderRadius: "5px",
+                color: "black",
+                fontWeight: 500,
+                fontSize: "12px",
+                p: "4px",
+              }}
+            >
+              Canceled
             </Typography>
           </Box>
         )}
