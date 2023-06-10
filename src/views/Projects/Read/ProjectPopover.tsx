@@ -3,13 +3,8 @@ import Popover from "@mui/material/Popover";
 import { Box, Button, Typography } from "@mui/material";
 import { popOverStyle } from "../../../coreUI/themes/Styles";
 import IMAGES from "../../../assets/img/Images";
-import { RouteComponentProps, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
-import {
-  openDeleteProjectPopup,
-  openEditProjectPopup,
-} from "../../../models/Ui";
-import { ProjectsActions } from "../../../models/Projects";
 import { useAppSelector } from "src/models/hooks";
 import { selectRole } from "src/models/Auth";
 import { Project } from "src/types/models/Projects";

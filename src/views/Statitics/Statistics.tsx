@@ -1,70 +1,82 @@
-import { Grid, Typography } from "@mui/material";
-import React from "react";
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { getDifBetweenDates } from "src/helpers/generalUtils";
+import { selectAllProjects } from "src/models/Projects";
+import { useAppSelector } from "src/models/hooks";
+import { Task } from "src/types/models/Projects";
 
-const options = [
-  { id: "10", value: "10", text: "10 seconds" },
-  { id: "60", value: "60", text: "one minute" },
-  { id: "300", value: "300", text: "5 minutes" },
-  { id: "1800", value: "1800", text: "30 minutes" },
-  { id: "3600", value: "3600", text: "1 hour" },
-  { id: "86400", value: "86400", text: "24 hour" },
-  { id: "1209600", value: "1209600", text: "14 days" },
-  { id: "2592000", value: "2592000", text: "30 days" },
-];
+type stateType = {
+  tasks: Task[];
+};
 const Statistics = (props: any) => {
-  const [state, setState] = React.useState({ maxDataAge: "300" });
-  const setMaxDataAge = (maxDataAge: string) => {
-    setState({ maxDataAge: maxDataAge });
+  const [state, setState] = useState<stateType>({ tasks: [] });
+  const { allTasks } = useAppSelector(selectAllProjects);
+  useEffect(() => {
+    setState({ tasks: allTasks });
+  }, [allTasks]);
+  const onSetSchedulingTimeAverage = () => {
+    let ScheduledTasksTimes = allTasks.map((item) => {
+      let boardMoveIndex = item.movements.findIndex(
+        (i) => i.status === "Tasks Board"
+      );
+      let inProgressMoveIndex = item.movements.findIndex(
+        (i, index) => i.status === "In Progress" && index > boardMoveIndex
+      );
+      if (boardMoveIndex >= 0 && inProgressMoveIndex >= 0) {
+        let { totalMins } = getDifBetweenDates(
+          new Date(item.movements[boardMoveIndex]?.movedAt),
+          new Date(item.movements[inProgressMoveIndex]?.movedAt)
+        );
+        return totalMins;
+      } else return 0;
+    });
+    ScheduledTasksTimes = ScheduledTasksTimes.filter((i) => i !== 0);
+    let average = Math.floor(
+      _.sum(ScheduledTasksTimes) / ScheduledTasksTimes.length
+    );
+    let hours = Math.floor(average / 60);
+    let mins = Math.floor(average % 60);
+    console.log({ average, hours, mins });
+    return { hours, mins };
   };
-
+  onSetSchedulingTimeAverage();
   return (
     <Grid
       container
-      overflow={"hidden"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      alignContent="center"
+      justifyContent={"space-between"}
+      alignItems={"normal"}
+      direction={"row"}
+      bgcolor={"#FAFAFB"}
     >
-      <Grid
-        container
-        xs={12}
-        direction={"row"}
-        justifyContent={"space-between"}
-      >
-        <Grid item xl={10} lg={10} md={10} sm={12} xs={12}>
+      <Grid container xs={12} direction={"row"}>
+        <Grid item xs={3} sm={3} md={3} lg={12} mb={4}>
           <Typography variant="h2" fontFamily={"Cairo"}>
             Statistics
           </Typography>
         </Grid>
-        <Grid item xl={2} lg={2} md={2} sm={12} xs={12}>
-          <Select
-            optionsType="list"
-            name=""
-            removeAllOption={true}
-            selected={state.maxDataAge}
-            options={options}
-            elementType="filter"
-            onSelect={(e: any) => setMaxDataAge(e.target.id)}
-          />
-        </Grid>
-        <iframe
-          title="Mongo Charts"
-          style={{
-            background: "transparent",
-            border: "none",
-            borderRadius: "2px",
-            width: "100%",
-            minHeight: "100vh",
-            height: "fit-content",
-          }}
-          src={`https://charts.mongodb.com/charts-project-0-tfstk/embed/dashboards?id=63da3210-4370-40d0-88fc-bdb19c6a8dcf&theme=light&autoRefresh=true&maxDataAge=${parseInt(
-            state.maxDataAge
-          )}&showTitleAndDesc=false&scalingWidth=fixed&scalingHeight=fixed`}
-        ></iframe>
+      </Grid>
+      <Grid xs={5} sx={staticNumberItem}>
+        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+          Scheduling Average
+        </Typography>
+        {onSetSchedulingTimeAverage().hours > 0 ? (
+          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+            {onSetSchedulingTimeAverage().hours} hours,{" "}
+            {onSetSchedulingTimeAverage().mins} mins
+          </Typography>
+        ) : (
+          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+        )}
       </Grid>
     </Grid>
   );
 };
 
+const staticNumberItem = {
+  background: "white",
+  borderRadius: 1,
+  padding: 1,
+};
 export default Statistics;
