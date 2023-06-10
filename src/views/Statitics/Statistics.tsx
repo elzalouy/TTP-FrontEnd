@@ -38,7 +38,6 @@ const Statistics = (props: any) => {
     );
     let hours = Math.floor(average / 60);
     let mins = Math.floor(average % 60);
-    console.log({ average, hours, mins });
     return { hours, mins };
   };
   onSetSchedulingTimeAverage();
