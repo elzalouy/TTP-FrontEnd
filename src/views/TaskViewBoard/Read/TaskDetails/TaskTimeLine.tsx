@@ -96,7 +96,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         status.includes(item?.status) &&
         props.movements[item.index + 1]?.status === "Tasks Board"
     );
-    console.log({ moves });
     return moves.length;
   };
 

@@ -57,7 +57,6 @@ const ProjectTasksChart: FC<ProjectTasksChartProps> = ({ project, tasks }) => {
 
   useEffect(() => {
     let values = countBy(tasks, "status");
-    console.log({ values });
     let valuesInArr = Object.values(values).map(Number);
 
     let labels: any[] = [
@@ -71,7 +70,6 @@ const ProjectTasksChart: FC<ProjectTasksChartProps> = ({ project, tasks }) => {
     ];
     let valuesKeys = Object.keys(values);
     labels = labels?.filter((item) => valuesKeys.includes(item));
-    console.log({ tasks, labels });
     setState({
       ...state,
       valuesInDic: values,
