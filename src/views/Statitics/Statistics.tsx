@@ -8,14 +8,34 @@ import { useAppSelector } from "src/models/hooks";
 import { Task } from "src/types/models/Projects";
 
 type stateType = {
-  tasks: Task[];
+  tasks?: Task[];
+  unClearTasksCount: number;
+  schedulingAverage: { hours: number; mins: number };
+  loading: boolean;
+  turnAroundAverage: { hours: number; mins: number };
+  fulFillmentAverage: { hours: number; mins: number };
 };
 const Statistics = (props: any) => {
-  const [state, setState] = useState<stateType>({ tasks: [] });
-  const { allTasks, loading } = useAppSelector(selectAllProjects);
-  console.log(loading);
+  const [state, setState] = useState<stateType>({
+    loading: true,
+    unClearTasksCount: -1,
+    schedulingAverage: { hours: -1, mins: -1 },
+    turnAroundAverage: { hours: -1, mins: -1 },
+    fulFillmentAverage: { hours: -1, mins: -1 },
+  });
+  const { allTasks } = useAppSelector(selectAllProjects);
   useEffect(() => {
-    setState({ tasks: allTasks });
+    let State = { ...state };
+    State.tasks = allTasks;
+    State.unClearTasksCount = onSetUnClearTasksAndTimes(allTasks);
+    State.schedulingAverage = onSetSchedulingTimeAverage(allTasks);
+    State.loading =
+      State.schedulingAverage.hours >= 0 && State.unClearTasksCount >= 0
+        ? false
+        : true;
+    State.turnAroundAverage = onSetTurnAround(allTasks);
+    State.fulFillmentAverage = onSetFulfillment(allTasks);
+    setState(State);
   }, [allTasks]);
 
   /**
@@ -25,31 +45,29 @@ const Statistics = (props: any) => {
    * This time depends on how many task existed and how much each task take to move from "Tasks Board" to "In Progress"
    * @returns number
    */
-  const onSetSchedulingTimeAverage = () => {
-    if (state.tasks) {
-      let ScheduledTasksTimes = state.tasks.map((item) => {
-        let boardMoveIndex = item.movements.findIndex(
-          (i) => i.status === "Tasks Board"
-        );
-        let inProgressMoveIndex = item.movements.findIndex(
-          (i, index) => i.status === "In Progress" && index > boardMoveIndex
-        );
-        if (boardMoveIndex >= 0 && inProgressMoveIndex >= 0) {
-          let { totalMins } = getDifBetweenDates(
-            new Date(item.movements[boardMoveIndex]?.movedAt),
-            new Date(item.movements[inProgressMoveIndex]?.movedAt)
-          );
-          return totalMins;
-        } else return 0;
-      });
-      ScheduledTasksTimes = ScheduledTasksTimes.filter((i) => i !== 0);
-      let average = Math.floor(
-        _.sum(ScheduledTasksTimes) / ScheduledTasksTimes.length
+  const onSetSchedulingTimeAverage = (tasks: Task[]) => {
+    let ScheduledTasksTimes = tasks?.map((item) => {
+      let boardMoveIndex = item.movements.findIndex(
+        (i) => i.status === "Tasks Board"
       );
-      let hours = Math.floor(average / 60);
-      let mins = Math.floor(average % 60);
-      return { hours, mins };
-    } else return null;
+      let inProgressMoveIndex = item.movements.findIndex(
+        (i, index) => i.status === "In Progress" && index > boardMoveIndex
+      );
+      if (boardMoveIndex >= 0 && inProgressMoveIndex >= 0) {
+        let { totalMins } = getDifBetweenDates(
+          new Date(item.movements[boardMoveIndex]?.movedAt),
+          new Date(item.movements[inProgressMoveIndex]?.movedAt)
+        );
+        return totalMins;
+      } else return 0;
+    });
+    ScheduledTasksTimes = ScheduledTasksTimes.filter((i) => i !== 0);
+    let average = Math.floor(
+      _.sum(ScheduledTasksTimes) / ScheduledTasksTimes.length
+    );
+    let hours = Math.floor(average / 60);
+    let mins = Math.floor(average % 60);
+    return { hours, mins };
   };
 
   /**
@@ -57,8 +75,8 @@ const Statistics = (props: any) => {
    *
    * the time it take till the task goes from "Tasks Board" or "In Progress" to "Not Clear"
    */
-  const onSetUnClearTasksAndTimes = () => {
-    const unClearTasksCount = state?.tasks?.filter((item) => {
+  const onSetUnClearTasksAndTimes = (tasks: Task[]) => {
+    const unClearTasksCount = tasks?.filter((item) => {
       let move = item.movements.find((m, index) => {
         if (
           item.movements[index - 1] &&
@@ -71,8 +89,78 @@ const Statistics = (props: any) => {
       });
       if (move) return item;
     });
-    return unClearTasksCount;
+    return unClearTasksCount.length;
   };
+
+  /**
+   * onSetTurnAround
+   *
+   * turnAround is the time that any task take to be moved from Not Clear to In Progress.
+   * @param tasks Tasks[]
+   * @returns {hours:number;mins:nunmber;}
+   */
+  const onSetTurnAround = (tasks: Task[]) => {
+    const TurnArountTimesPerTask = tasks.map((task) => {
+      let turnMoves = task.movements
+        .map((i, index) => {
+          if (
+            i.status === "In Progress" &&
+            task.movements[index - 1]?.status === "Not Clear"
+          )
+            return getDifBetweenDates(
+              new Date(task.movements[index - 1].movedAt),
+              new Date(i.movedAt)
+            ).totalMins;
+          else return 0;
+        })
+        .filter((i) => i !== 0);
+      return {
+        taskId: task._id,
+        times: turnMoves.length,
+        turnMovesMins: _.sum(turnMoves),
+      };
+    });
+    let turnAroundMins = _.sum(
+      TurnArountTimesPerTask.map((i) => i.turnMovesMins)
+    );
+    let turned = TurnArountTimesPerTask.filter((item) => item.times > 0).length;
+    let averageMins = turnAroundMins / turned;
+    let hours = Math.floor(averageMins / 60);
+    let mins = Math.floor(averageMins % 60);
+    return { hours, mins };
+  };
+
+  const onSetFulfillment = (tasks: Task[]) => {
+    const fullFilmentMoves = tasks.map((task) => {
+      let fullfilmentsMins = task.movements
+        .map((i, index) => {
+          if (
+            i.status === "Review" &&
+            task.movements[index - 1]?.status === "In Progress"
+          )
+            return getDifBetweenDates(
+              new Date(task.movements[index - 1].movedAt),
+              new Date(i.movedAt)
+            ).totalMins;
+          else return 0;
+        })
+        .filter((i) => i !== 0);
+      return {
+        taskId: task._id,
+        times: fullfilmentsMins.length,
+        fullfilmentsMins: _.sum(fullfilmentsMins),
+      };
+    });
+    let fullFillmentsMins = _.sum(
+      fullFilmentMoves.map((i) => i.fullfilmentsMins)
+    );
+    let fulledMoves = fullFilmentMoves.filter((i) => i.times > 0).length;
+    let averageMins = (fulledMoves = fullFillmentsMins / fulledMoves);
+    let hours = Math.floor(averageMins / 60);
+    let mins = Math.floor(averageMins % 60);
+    return { hours, mins };
+  };
+
   return (
     <Grid
       container
@@ -88,28 +176,27 @@ const Statistics = (props: any) => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid ml={1} xs={5} sx={staticNumberItem}>
+      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
         <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Scheduling Average
+          Scheduling Average time
         </Typography>
-        {onSetSchedulingTimeAverage() !== null ? (
+        {state.schedulingAverage.hours >= 0 && !state.loading ? (
           <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {onSetSchedulingTimeAverage()?.hours} hours,{" "}
-            {onSetSchedulingTimeAverage()?.mins} mins
+            {state.schedulingAverage?.hours} hours,{" "}
+            {state.schedulingAverage?.mins} mins
           </Typography>
         ) : (
           <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
         )}
       </Grid>
-      <Grid ml={1} xs={5} sx={staticNumberItem}>
+      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
         <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
           UnClear Tasks
         </Typography>
-
-        {onSetUnClearTasksAndTimes() !== null ? (
+        {state.unClearTasksCount >= 0 && !state.loading ? (
           <Box display={"inline-flex"} pt={2}>
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {onSetUnClearTasksAndTimes()?.length} tasks went to Not Clear of{" "}
+              {state.unClearTasksCount} tasks went to Not Clear of{" "}
               {state.tasks?.length}
             </Typography>
             <Typography
@@ -122,11 +209,37 @@ const Statistics = (props: any) => {
               }}
             >
               {Math.floor(
-                (onSetUnClearTasksAndTimes().length / state.tasks?.length) * 100
+                (state.unClearTasksCount / (state.tasks?.length ?? 0)) * 100
               )}{" "}
               %
             </Typography>
           </Box>
+        ) : (
+          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+        )}
+      </Grid>
+      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+          Turn Around Average time
+        </Typography>
+        {state.turnAroundAverage.hours >= 0 && !state.loading ? (
+          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+            {state.turnAroundAverage?.hours} hours,{" "}
+            {state.turnAroundAverage?.mins} mins
+          </Typography>
+        ) : (
+          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+        )}
+      </Grid>
+      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+          Fulfillment Average time
+        </Typography>
+        {state.fulFillmentAverage.hours >= 0 && !state.loading ? (
+          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+            {state.fulFillmentAverage?.hours} hours,{" "}
+            {state.fulFillmentAverage?.mins} mins
+          </Typography>
         ) : (
           <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
         )}
