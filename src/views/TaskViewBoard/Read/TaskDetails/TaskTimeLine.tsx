@@ -70,12 +70,12 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         return { index: itemIndex, ...item };
       });
     if (cMoves && cMoves?.length > 0) {
-      cMoves.map((lcMove) => {
+      cMoves.forEach((lcMove) => {
         if (props?.movements[lcMove.index - 1].status === "In Progress")
           map.set("Canceled", "Canceled");
-        if (props?.movements[lcMove.index - 1].status === "Tasks Board")
+        else if (props?.movements[lcMove.index - 1].status === "Tasks Board")
           map.set("Disrupted", "Disrupted");
-        if (
+        else if (
           ["Review", "Shared"].includes(
             props?.movements[lcMove.index - 1]?.status
           )
