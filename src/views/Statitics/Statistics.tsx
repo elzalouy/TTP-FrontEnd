@@ -1,10 +1,12 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Skeleton, Typography } from "@mui/material";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { getDifBetweenDates } from "src/helpers/generalUtils";
 import { selectAllProjects } from "src/models/Projects";
 import { useAppSelector } from "src/models/hooks";
 import { Task } from "src/types/models/Projects";
+import FilterMenu from "./FilterMenu";
+import IMAGES from "src/assets/img/Images";
 
 type time = {
   hours: number;
@@ -15,8 +17,9 @@ type time = {
     movesTimesMins: number;
   }[];
 };
+
 type stateType = {
-  tasks?: Task[];
+  filter: boolean;
   unClearTasksCount: number;
   schedulingAverage: time;
   loading: boolean;
@@ -34,10 +37,12 @@ type stateType = {
   revisitingTasksTimes: time;
   revivedTasksTimes: time;
 };
+
 const initialMetrics = { hours: -1, mins: -1, totalDurationsAndTimes: [] };
 
 const Statistics = (props: any) => {
   const [state, setState] = useState<stateType>({
+    filter: false,
     loading: true,
     unClearTasksCount: -1,
     schedulingAverage: initialMetrics,
@@ -56,66 +61,93 @@ const Statistics = (props: any) => {
     revivedTasksTimes: initialMetrics,
   });
   const { allTasks } = useAppSelector(selectAllProjects);
+  const [globalState, setGlobalState] = useState({
+    tasks: allTasks,
+    filterResult: allTasks,
+  });
+
+  useEffect(() => {
+    setGlobalState({ ...globalState, tasks: allTasks, filterResult: allTasks });
+  }, [allTasks]);
   useEffect(() => {
     let State = { ...state };
-    State.tasks = allTasks;
-    State.unClearTasksCount = onSetUnClearTasksAndTimes(allTasks);
+    State.unClearTasksCount = onSetUnClearTasksAndTimes(
+      globalState.filterResult
+    );
     State.schedulingAverage = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Tasks Board",
       "In Progress"
     );
-    State.loading =
-      State.schedulingAverage.hours >= 0 && State.unClearTasksCount >= 0
-        ? false
-        : true;
+
     State.turnAroundAverage = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Not Clear",
       "In Progress"
     );
-    State.fulFillmentAverage = onGetAverage(allTasks, "In Progress", "Review");
-    State.reviewAverage = onGetAverage(allTasks, "Review", "Shared");
-    State.closingTimeAverage = onGetAverage(allTasks, "Shared", "Done");
+    State.fulFillmentAverage = onGetAverage(
+      globalState.filterResult,
+      "In Progress",
+      "Review"
+    );
+    State.reviewAverage = onGetAverage(
+      globalState.filterResult,
+      "Review",
+      "Shared"
+    );
+    State.closingTimeAverage = onGetAverage(
+      globalState.filterResult,
+      "Shared",
+      "Done"
+    );
     State.taskCancelationTimes = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Tasks Board",
       "Cancled"
     );
     State.taskDistrubingTimes = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "In Progress",
       "Cancled"
     );
     State.taskFlaggedTimesFromReview = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Review",
       "Cancled"
     );
     State.taskFlaggedTimesFromShared = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Shared",
       "Cancled"
     );
     State.unClearBackToTasksBoardTimes = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Not Clear",
       "Tasks Board"
     );
     State.wrongFulfillmentTimes = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Review",
       "Tasks Board"
     );
     State.commentsOrChangedTimes = onGetAverage(
-      allTasks,
+      globalState.filterResult,
       "Shared",
       "Tasks Board"
     );
-    State.revisitingTasksTimes = onGetAverage(allTasks, "Done", "Tasks Board");
-    State.revivedTasksTimes = onGetAverage(allTasks, "Cancled", "Tasks Board");
+    State.revisitingTasksTimes = onGetAverage(
+      globalState.filterResult,
+      "Done",
+      "Tasks Board"
+    );
+    State.revivedTasksTimes = onGetAverage(
+      globalState.filterResult,
+      "Cancled",
+      "Tasks Board"
+    );
+    State.loading = false;
     setState(State);
-  }, [allTasks]);
+  }, [globalState.filterResult]);
 
   /**
    * onSetSchedulingTimeAverage
@@ -181,344 +213,386 @@ const Statistics = (props: any) => {
     let turnAroundMins = _.sum(movementsMetrics.map((i) => i.movesTimesMins));
     let turned = movementsMetrics.filter((item) => item.times > 0).length;
     let averageMins = turnAroundMins / turned;
-    let hours = Math.floor(averageMins / 60);
-    let mins = Math.floor(averageMins % 60);
+    let hours = !isNaN(Math.floor(averageMins / 60))
+      ? Math.floor(averageMins / 60)
+      : 0;
+    let mins = !isNaN(Math.floor(averageMins % 60))
+      ? Math.floor(averageMins % 60)
+      : 0;
     return { hours, mins, totalDurationsAndTimes: movementsMetrics };
   };
 
   return (
-    <Grid
-      container
-      justifyContent={"flex-start"}
-      alignItems={"center"}
-      direction={"row"}
-      bgcolor={"#FAFAFB"}
-    >
-      <Grid container xs={12} direction={"row"}>
-        <Grid item xs={3} sm={3} md={3} lg={12} mb={4}>
-          <Typography variant="h2" fontFamily={"Cairo"}>
-            Statistics
+    <>
+      <Grid
+        container
+        justifyContent={"flex-start"}
+        alignItems={"center"}
+        direction={"row"}
+        bgcolor={"#FAFAFB"}
+      >
+        <Grid container xs={12} direction={"row"}>
+          <Grid item xs={10} mb={4}>
+            <Typography variant="h2" fontFamily={"Cairo"}>
+              Statistics
+            </Typography>
+          </Grid>
+          <Grid xs={2}>
+            <IconButton
+              disableRipple
+              onClick={() => setState({ ...state, filter: !state.filter })}
+              sx={filterBtnStyle}
+            >
+              <img
+                src={state.filter ? IMAGES.filtericonwhite : IMAGES.filtericon}
+                alt="FILTER"
+              />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Scheduling Average time
           </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average time any task take to go from the tasks board list to
+            the in progress list.
+          </Typography>
+          {!state.loading ? (
+            <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+              {state.schedulingAverage?.hours ?? 0} hours,{" "}
+              {state.schedulingAverage?.mins ?? 0} mins
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            UnClear Tasks
+          </Typography>
+
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The number of tasks became not clear.
+          </Typography>
+          {!state.loading ? (
+            <Box display={"inline-flex"} pt={2}>
+              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                {state.unClearTasksCount ?? 0} tasks went to Not Clear of{" "}
+                {globalState.filterResult?.length ?? 0}
+              </Typography>
+              <Typography
+                sx={{
+                  bgcolor: "#ffc500",
+                  color: "black",
+                  padding: 0.2,
+                  borderRadius: "5px",
+                  ml: 1,
+                }}
+              >
+                {!isNaN(
+                  Math.floor(
+                    (state.unClearTasksCount /
+                      globalState.filterResult?.length) *
+                      100
+                  )
+                )
+                  ? Math.floor(
+                      (state.unClearTasksCount /
+                        globalState.filterResult?.length) *
+                        100
+                    )
+                  : 0}{" "}
+                %
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Turn Around Average time
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average time any task take to go back to in progress after
+            becaming not clear.
+          </Typography>
+          {!state.loading ? (
+            <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+              {state.turnAroundAverage?.hours ?? 0} hours,{" "}
+              {state.turnAroundAverage?.mins ?? 0} mins
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Fulfillment Average time
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average time of processing the task and move it from In Progress
+            to be under the Review list.
+          </Typography>
+          {!state.loading ? (
+            <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+              {state.fulFillmentAverage?.hours ?? 0} hours,{" "}
+              {state.fulFillmentAverage?.mins ?? 0} mins
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Review Average time
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average time of Reviewing the task and move it from Review to be
+            under the Shared list with the client.
+          </Typography>
+          {!state.loading ? (
+            <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+              {state.reviewAverage?.hours ?? 0} hours,{" "}
+              {state.reviewAverage?.mins ?? 0} mins
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task Closing Average time
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average time of Closing the task and move it from Shared to be
+            under the Done list.
+          </Typography>
+          {!state.loading ? (
+            <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
+              {state.closingTimeAverage?.hours ?? 0} hours,{" "}
+              {state.closingTimeAverage?.mins ?? 0} mins
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task Cancelation times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The total times of canceling the task and move it from Tasks Board
+            to be under the Cancel list.
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.taskCancelationTimes.hours ?? 0} hours,{" "}
+                {state.taskCancelationTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskCancelationTimes.totalDurationsAndTimes.length} times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task Disturbing times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The total times of Disturbing the task and move it from In Progress
+            to be under the Cancelled list.
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.taskDistrubingTimes.hours ?? 0} hours,{" "}
+                {state.taskDistrubingTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskDistrubingTimes.totalDurationsAndTimes.length} times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task Flagged From Review times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The total times of canceling the task and move it from the Review
+            list to the Cancled list.
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.taskFlaggedTimesFromReview.hours ?? 0} hours,{" "}
+                {state.taskFlaggedTimesFromReview.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskFlaggedTimesFromReview.totalDurationsAndTimes.length}{" "}
+                times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task Flagged From Shared times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The total times of canceling the task and move it from the Shared
+            list to the Cancled list.
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.taskFlaggedTimesFromShared.hours || 0} hours,{" "}
+                {state.taskFlaggedTimesFromShared.mins || 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskFlaggedTimesFromShared.totalDurationsAndTimes.length}{" "}
+                times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Task unclear back times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average number of moving the tasks to Tasks Board from Not
+            Clear.
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.unClearBackToTasksBoardTimes.hours ?? 0} hours,{" "}
+                {state.unClearBackToTasksBoardTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {
+                  state.unClearBackToTasksBoardTimes.totalDurationsAndTimes
+                    .length
+                }{" "}
+                times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Tasks Wrong or missing Fulfillment times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average duration and number of moves happened for the tasks from
+            Review to Tasks Board
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.wrongFulfillmentTimes.hours ?? 0} hours,{" "}
+                {state.wrongFulfillmentTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.wrongFulfillmentTimes.totalDurationsAndTimes.length}{" "}
+                times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Tasks with comments or changes times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average duration and number of moves happened for the tasks from
+            Shared to Tasks Board
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.commentsOrChangedTimes.hours ?? 0} hours,{" "}
+                {state.commentsOrChangedTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.commentsOrChangedTimes.totalDurationsAndTimes.length}{" "}
+                times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Tasks with Revisiting times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average duration and number of moves happened for the tasks from
+            Done to Tasks Board
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.revisitingTasksTimes.hours ?? 0} hours,{" "}
+                {state.revisitingTasksTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.revisitingTasksTimes.totalDurationsAndTimes.length} times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
+        </Grid>
+        <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
+          <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
+            Tasks with Revived times
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 12 }}>
+            The average duration and number of moves happened for the tasks from
+            Canceled to Tasks Board
+          </Typography>
+          {!state.loading ? (
+            <Box pt={2} display={"flex"} alignItems={"center"}>
+              <Typography sx={valueStyle}>
+                {state.revivedTasksTimes.hours ?? 0} hours,{" "}
+                {state.revivedTasksTimes.mins ?? 0} mins{" "}
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.revivedTasksTimes.totalDurationsAndTimes.length} times
+              </Typography>
+            </Box>
+          ) : (
+            <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
+          )}
         </Grid>
       </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Scheduling Average time
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average time any task take to go from the tasks board list to the
-          in progress list.
-        </Typography>
-        {!state.loading ? (
-          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {state.schedulingAverage?.hours} hours,{" "}
-            {state.schedulingAverage?.mins} mins
-          </Typography>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          UnClear Tasks
-        </Typography>
-
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The number of tasks became not clear.
-        </Typography>
-        {!state.loading ? (
-          <Box display={"inline-flex"} pt={2}>
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {state.unClearTasksCount} tasks went to Not Clear of{" "}
-              {state.tasks?.length}
-            </Typography>
-            <Typography
-              sx={{
-                bgcolor: "#ffc500",
-                color: "black",
-                padding: 0.2,
-                borderRadius: "5px",
-                ml: 1,
-              }}
-            >
-              {Math.floor(
-                (state.unClearTasksCount / (state.tasks?.length ?? 0)) * 100
-              )}{" "}
-              %
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Turn Around Average time
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average time any task take to go back to in progress after
-          becaming not clear.
-        </Typography>
-        {!state.loading ? (
-          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {state.turnAroundAverage?.hours} hours,{" "}
-            {state.turnAroundAverage?.mins} mins
-          </Typography>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Fulfillment Average time
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average time of processing the task and move it from In Progress
-          to be under the Review list.
-        </Typography>
-        {!state.loading ? (
-          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {state.fulFillmentAverage?.hours} hours,{" "}
-            {state.fulFillmentAverage?.mins} mins
-          </Typography>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Review Average time
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average time of Reviewing the task and move it from Review to be
-          under the Shared list with the client.
-        </Typography>
-        {!state.loading ? (
-          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {state.reviewAverage?.hours} hours, {state.reviewAverage?.mins} mins
-          </Typography>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task Closing Average time
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average time of Closing the task and move it from Shared to be
-          under the Done list.
-        </Typography>
-        {!state.loading ? (
-          <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
-            {state.closingTimeAverage?.hours} hours,{" "}
-            {state.closingTimeAverage?.mins} mins
-          </Typography>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task Cancelation times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The total times of canceling the task and move it from Tasks Board to
-          be under the Cancel list.
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.taskCancelationTimes.hours || 0} hours,{" "}
-              {state.taskCancelationTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.taskCancelationTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task Disturbing times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The total times of Disturbing the task and move it from In Progress to
-          be under the Cancelled list.
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.taskDistrubingTimes.hours || 0} hours,{" "}
-              {state.taskDistrubingTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.taskDistrubingTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task Flagged From Review times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The total times of canceling the task and move it from the Review list
-          to the Cancled list.
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.taskFlaggedTimesFromReview.hours || 0} hours,{" "}
-              {state.taskFlaggedTimesFromReview.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.taskFlaggedTimesFromReview.totalDurationsAndTimes.length}{" "}
-              times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task Flagged From Shared times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The total times of canceling the task and move it from the Shared list
-          to the Cancled list.
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.taskFlaggedTimesFromShared.hours || 0} hours,{" "}
-              {state.taskFlaggedTimesFromShared.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.taskFlaggedTimesFromShared.totalDurationsAndTimes.length}{" "}
-              times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Task unclear back times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average number of moving the tasks to Tasks Board from Not Clear.
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.unClearBackToTasksBoardTimes.hours || 0} hours,{" "}
-              {state.unClearBackToTasksBoardTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.unClearBackToTasksBoardTimes.totalDurationsAndTimes.length}{" "}
-              times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Tasks Wrong or missing Fulfillment times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average duration and number of moves happened for the tasks from
-          Review to Tasks Board
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.wrongFulfillmentTimes.hours || 0} hours,{" "}
-              {state.wrongFulfillmentTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.wrongFulfillmentTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Tasks with comments or changes times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average duration and number of moves happened for the tasks from
-          Shared to Tasks Board
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.commentsOrChangedTimes.hours || 0} hours,{" "}
-              {state.commentsOrChangedTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.commentsOrChangedTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Tasks with Revisiting times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average duration and number of moves happened for the tasks from
-          Done to Tasks Board
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.revisitingTasksTimes.hours || 0} hours,{" "}
-              {state.revisitingTasksTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.revisitingTasksTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-      <Grid mb={1} ml={1} xs={5} sx={staticNumberItem}>
-        <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-          Tasks with Revived times
-        </Typography>
-        <Typography sx={{ color: "gray", fontSize: 12 }}>
-          The average duration and number of moves happened for the tasks from
-          Canceled to Tasks Board
-        </Typography>
-        {!state.loading ? (
-          <Box pt={2} display={"flex"} alignItems={"center"}>
-            <Typography sx={valueStyle}>
-              {state.revivedTasksTimes.hours || 0} hours,{" "}
-              {state.revivedTasksTimes.mins || 0} mins{" "}
-            </Typography>
-            <Typography sx={valueTimesStyle}>
-              {state.revivedTasksTimes.totalDurationsAndTimes.length} times
-            </Typography>
-          </Box>
-        ) : (
-          <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
-        )}
-      </Grid>
-    </Grid>
+      <FilterMenu
+        filter={state.filter}
+        onSetFilterResult={(filterResult: Task[]) =>
+          setGlobalState({ ...globalState, filterResult: filterResult })
+        }
+        onCloseFilter={() => setState({ ...state, filter: false })}
+      />
+    </>
   );
 };
 const valueStyle = {
@@ -541,3 +615,13 @@ const staticNumberItem = {
   padding: 1,
 };
 export default Statistics;
+const filterBtnStyle = {
+  bgcolor: "white",
+  borderRadius: 3,
+  paddingTop: 1.2,
+  float: "right",
+  cursor: "pointer",
+  width: "38px",
+  height: "38px",
+  textAlign: "center",
+};
