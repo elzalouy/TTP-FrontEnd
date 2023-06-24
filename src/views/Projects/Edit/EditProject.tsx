@@ -18,6 +18,8 @@ import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import { DoneStatusList, Project } from "src/types/models/Projects";
 import { ToastError, ToastWarning } from "src/coreUI/components/Typos/Alert";
+import { getDifBetweenDates } from "src/helpers/generalUtils";
+import { isDate } from "lodash";
 
 type Props = {
   show: string;
@@ -115,11 +117,10 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   }, [project, managers]);
 
   const onSubmit = () => {
-    setState({ ...state, loading: true });
     let data = watch();
     let deadline = new Date(data?.projectDeadline);
     const today = new Date();
-
+    const diff = getDifBetweenDates(today, deadline);
     let editData = {
       ...data,
       _id: project?._id,
@@ -132,51 +133,57 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       associateProjectManager: data?.associateProjectManager
         ? data.associateProjectManager
         : "",
-      projectStatus:
-        data.projectStatus === "Done"
-          ? deadline.toDateString() === today.toDateString()
-            ? "delivered on time"
-            : deadline.getTime() > today.getTime()
-            ? "delivered before deadline"
-            : "delivered after deadline"
-          : data.projectStatus,
+
       deliveryDate: data.projectStatus === "Done" ? new Date(Date.now()) : null,
     };
-
+    if (data.projectStatus === "Done") {
+      if (diff.difference.days === 0 && diff.isLate)
+        editData.projectStatus = "delivered on time";
+      else if (diff.difference.days > 1 && diff.isLate)
+        editData.projectStatus = "delivered after deadline";
+      else editData.projectStatus = "delivered before deadline";
+    } else editData.projectStatus = data.projectStatus;
     editData.startDate =
       data.startDate !== "" ? new Date(data.startDate).toDateString() : null;
     if (editData.startDate === null && editData.projectStatus !== "Not Started")
-      ToastWarning("Start date should be a value, so you can move the project");
+      return ToastWarning(
+        "Start date should be a value, so you can move the project"
+      );
     if (editData.startDate === null) editData.projectStatus = "Not Started";
     const validate = validateEditProject(editData);
     if (!validate.error) {
       setState({ ...state, formData: editData });
-      switch (data.projectStatus) {
-        case "Done":
-          if (data.projectDeadline === "") {
-            ToastError(
-              "Project Deadline should be selected to move project to Done."
-            );
-            break;
-          }
-          if (
-            project?.projectStatus &&
-            !DoneStatusList.includes(project?.projectStatus)
-          ) {
-            setState({
-              ...state,
-              formData: editData,
-              alertPopupDiplay: "flex",
-            });
-            break;
-          } else dispatch(editProjectAction({ data: editData, setShow }));
-          break;
-        default:
-          dispatch(editProjectAction({ data: editData, setShow }));
-          break;
+      if (
+        editData?.projectStatus &&
+        !isDate(data.projectDeadline) &&
+        DoneStatusList.includes(editData.projectStatus)
+      )
+        return ToastError(
+          "Project Deadline should be selected to move project to Done."
+        );
+      if (
+        editData?.projectStatus &&
+        DoneStatusList.includes(editData?.projectStatus)
+      ) {
+        return setState({
+          ...state,
+          loading: true,
+          alertPopupDiplay: "flex",
+          formData: { ...editData },
+        });
+      } else {
+        setState({ ...state, loading: true, formData: { ...editData } });
+        return dispatch(
+          editProjectAction({
+            data: editData,
+            setShow: (value: string) => {
+              setState({ ...state, loading: false });
+              setShow(value);
+            },
+          })
+        );
       }
     } else ToastError(validate.error.details[0].message);
-    setState({ ...state, loading: false });
   };
 
   return (
@@ -189,7 +196,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         }
         onOk={() => {
           dispatch(editProjectAction({ data: state.formData, setShow }));
-          setState({ ...state, alertPopupDiplay: "none" });
+          setState({ ...state, loading: false, alertPopupDiplay: "none" });
         }}
         okText={"End"}
         cancel={true}
@@ -278,7 +285,9 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               formLabel="Project Status"
               elementType="select"
               options={state.status}
-              onSelect={(e: any) => setValue("projectStatus", e.target.id)}
+              onSelect={(e: any) => {
+                setValue("projectStatus", e.target.id);
+              }}
               selected={
                 state.status.find((item) => item.id === watch().projectStatus)
                   ?.id
