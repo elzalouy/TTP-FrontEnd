@@ -60,14 +60,18 @@ const Statistics = (props: any) => {
     revisitingTasksTimes: initialMetrics,
     revivedTasksTimes: initialMetrics,
   });
-  const { allTasks } = useAppSelector(selectAllProjects);
+  const { allTasks, loading } = useAppSelector(selectAllProjects);
   const [globalState, setGlobalState] = useState({
     tasks: allTasks,
     filterResult: allTasks,
   });
 
   useEffect(() => {
-    setGlobalState({ ...globalState, tasks: allTasks, filterResult: allTasks });
+    setGlobalState({
+      ...globalState,
+      tasks: allTasks,
+      filterResult: allTasks,
+    });
   }, [allTasks]);
   useEffect(() => {
     let State = { ...state };
@@ -172,7 +176,7 @@ const Statistics = (props: any) => {
     });
     return unClearTasksCount.length;
   };
-
+  useEffect(() => {}, []);
   /**
    * onGetAverage
    *
@@ -258,7 +262,7 @@ const Statistics = (props: any) => {
             The average time any task take to go from the tasks board list to
             the in progress list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
               {state.schedulingAverage?.hours ?? 0} hours,{" "}
               {state.schedulingAverage?.mins ?? 0} mins
@@ -275,7 +279,7 @@ const Statistics = (props: any) => {
           <Typography sx={{ color: "gray", fontSize: 12 }}>
             The number of tasks became not clear.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box display={"inline-flex"} pt={2}>
               <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
                 {state.unClearTasksCount ?? 0} tasks went to Not Clear of{" "}
@@ -318,7 +322,7 @@ const Statistics = (props: any) => {
             The average time any task take to go back to in progress after
             becaming not clear.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
               {state.turnAroundAverage?.hours ?? 0} hours,{" "}
               {state.turnAroundAverage?.mins ?? 0} mins
@@ -335,7 +339,7 @@ const Statistics = (props: any) => {
             The average time of processing the task and move it from In Progress
             to be under the Review list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
               {state.fulFillmentAverage?.hours ?? 0} hours,{" "}
               {state.fulFillmentAverage?.mins ?? 0} mins
@@ -352,7 +356,7 @@ const Statistics = (props: any) => {
             The average time of Reviewing the task and move it from Review to be
             under the Shared list with the client.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
               {state.reviewAverage?.hours ?? 0} hours,{" "}
               {state.reviewAverage?.mins ?? 0} mins
@@ -369,7 +373,7 @@ const Statistics = (props: any) => {
             The average time of Closing the task and move it from Shared to be
             under the Done list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
               {state.closingTimeAverage?.hours ?? 0} hours,{" "}
               {state.closingTimeAverage?.mins ?? 0} mins
@@ -386,7 +390,7 @@ const Statistics = (props: any) => {
             The total times of canceling the task and move it from Tasks Board
             to be under the Cancel list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.taskCancelationTimes.hours ?? 0} hours,{" "}
@@ -408,7 +412,7 @@ const Statistics = (props: any) => {
             The total times of Disturbing the task and move it from In Progress
             to be under the Cancelled list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.taskDistrubingTimes.hours ?? 0} hours,{" "}
@@ -430,7 +434,7 @@ const Statistics = (props: any) => {
             The total times of canceling the task and move it from the Review
             list to the Cancled list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.taskFlaggedTimesFromReview.hours ?? 0} hours,{" "}
@@ -453,7 +457,7 @@ const Statistics = (props: any) => {
             The total times of canceling the task and move it from the Shared
             list to the Cancled list.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.taskFlaggedTimesFromShared.hours || 0} hours,{" "}
@@ -476,7 +480,7 @@ const Statistics = (props: any) => {
             The average number of moving the tasks to Tasks Board from Not
             Clear.
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.unClearBackToTasksBoardTimes.hours ?? 0} hours,{" "}
@@ -502,7 +506,7 @@ const Statistics = (props: any) => {
             The average duration and number of moves happened for the tasks from
             Review to Tasks Board
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.wrongFulfillmentTimes.hours ?? 0} hours,{" "}
@@ -525,7 +529,7 @@ const Statistics = (props: any) => {
             The average duration and number of moves happened for the tasks from
             Shared to Tasks Board
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.commentsOrChangedTimes.hours ?? 0} hours,{" "}
@@ -548,7 +552,7 @@ const Statistics = (props: any) => {
             The average duration and number of moves happened for the tasks from
             Done to Tasks Board
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.revisitingTasksTimes.hours ?? 0} hours,{" "}
@@ -570,7 +574,7 @@ const Statistics = (props: any) => {
             The average duration and number of moves happened for the tasks from
             Canceled to Tasks Board
           </Typography>
-          {!state.loading ? (
+          {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
               <Typography sx={valueStyle}>
                 {state.revivedTasksTimes.hours ?? 0} hours,{" "}

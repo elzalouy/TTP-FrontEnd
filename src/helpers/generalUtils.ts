@@ -59,6 +59,7 @@ export const getDifBetweenDates = (start: Date, end: Date) => {
     totalHours,
   };
 };
+
 export const calculateStatusBasedOnDeadline = (data: any) => {
   if (![typeof data, data].includes("undefined" || "null")) {
     let formattedDeadline = format(new Date(data), "dd-mm-yyyy");

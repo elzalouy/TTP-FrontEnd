@@ -5,12 +5,22 @@ import { selectClientOptions } from "src/models/Clients";
 import { selectAllProjects, selectProjectOptions } from "src/models/Projects";
 import { ProjectsInterface, Task } from "src/types/models/Projects";
 import { Options } from "src/types/views/Projects";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import { selectCategoriesOptions } from "src/models/Categories";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import {
+  selectAllDepartments,
+  selectDepartmentOptions,
+} from "src/models/Departments";
 
-type filterTypes = "clientId" | "projectManager";
+type filterTypes =
+  | "clientId"
+  | "projectManager"
+  | "category"
+  | "boardId"
+  | "teamId";
 
 interface IState {
   filter: boolean;
@@ -30,11 +40,19 @@ const FiltersBar = ({
   onCloseFilter,
   onSetFilterResult,
 }: FiltersBarProps) => {
-  const { control, watch, setValue } = useForm<{
+  const { control, watch, setValue, reset } = useForm<{
     clientId: string;
     projectManager: string;
+    category: string;
+    boardId: string;
+    teamId: string;
   }>({
-    defaultValues: { clientId: "", projectManager: "" },
+    defaultValues: {
+      clientId: "",
+      projectManager: "",
+      category: "",
+      boardId: "",
+    },
   });
 
   const clientsOptions = useAppSelector(selectClientOptions);
@@ -42,22 +60,37 @@ const FiltersBar = ({
   const PmsOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const boardOptions = useAppSelector(selectDepartmentOptions);
+  const departments = useAppSelector(selectAllDepartments);
 
   const onSetFilter = (name: filterTypes, value: string) => {
     setValue(name, value);
     let filter = watch();
     let projectsIds: string[] = projects.projects.map((item) => item?._id);
+    let fprojects = projects.projects;
     let tasks = projects.allTasks;
-
     if (filter.clientId !== "") {
-      projectsIds = projects.projects
-        .filter((item) => item.clientId === filter.clientId)
-        .map((item) => item?._id);
-      tasks = projects.allTasks.filter((item) =>
-        projectsIds.includes(item.projectId)
-      );
+      fprojects = fprojects.filter((item) => item.clientId === filter.clientId);
+      projectsIds = fprojects.map((item) => item?._id);
+      tasks = tasks.filter((item) => projectsIds.includes(item.projectId));
     }
-    console.log({ tasks });
+    if (filter.category !== "")
+      tasks = tasks.filter((item) => item.categoryId === filter.category);
+
+    if (filter.projectManager !== "") {
+      fprojects = fprojects.filter(
+        (item) => item.projectManager === filter.projectManager
+      );
+      projectsIds = fprojects.map((item) => item?._id);
+      tasks = tasks.filter((item) => projectsIds.includes(item.projectId));
+    }
+    if (filter.boardId !== "") {
+      let dep = departments.find((d) => d._id === filter.boardId);
+      tasks = tasks.filter((i) => i.boardId === dep?.boardId);
+    }
+    // if (filter.teamId !== "") {
+    //   let dep=
+    // }
     onSetFilterResult(tasks);
   };
   return (
@@ -89,7 +122,13 @@ const FiltersBar = ({
             style={{ height: "32px", width: "32px", padding: "0 10px" }}
             className="filter-icon"
           >
-            <IconButton disableRipple onClick={() => {}}>
+            <IconButton
+              disableRipple
+              onClick={() => {
+                reset();
+                onSetFilterResult(projects.allTasks);
+              }}
+            >
               <img src={IMAGES.deleteicon} alt="sortout" />
             </IconButton>
           </Box>
@@ -112,7 +151,26 @@ const FiltersBar = ({
             />
           </Box>
         </Grid>
-        {/* <Grid paddingX={0.5} item sm={12} marginY={1} flex={1}>
+        <Grid paddingX={0.5} item sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <ControlledSelect
+              name="category"
+              control={control}
+              selected={watch().category}
+              label="Category :"
+              elementType="filter"
+              optionsType="dialog"
+              options={[
+                { id: "", value: "", text: "All" },
+                ...categoriesOptions,
+              ]}
+              onSelect={(e: any) => {
+                onSetFilter("category", e?.id);
+              }}
+            />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item sm={12} marginY={1} flex={1}>
           <Controller
             name="projectManager"
             control={control}
@@ -124,44 +182,32 @@ const FiltersBar = ({
                 label="Manager: "
                 elementType="filter"
                 textTruncate={6}
-                // onSelect={(value: any) =>
-                //   onSetFilter("projectManager", value?.id)
-                // }
+                onSelect={(value: any) =>
+                  onSetFilter("projectManager", value?.id)
+                }
                 options={[{ id: "", value: "", text: "All" }, ...PmsOptions]}
               />
             )}
           />
         </Grid>
-        <Grid paddingX={0.5} item sm={12} marginY={1}>
-          <Box className="tasks-option">
-            <ControlledSelect
-              name="projectId"
-              selected={watch().projectId}
-              control={control}
-              label="Project: "
-              elementType="filter"
-              optionsType="dialog"
-              textTruncate={10}
-              // onSelect={(e: any) => onSetFilter("projectId", e?.id)}
-              options={[{ id: "", value: "", text: "All" }, ...projectOptions]}
-            />
-          </Box>
-        </Grid>
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
             <ControlledSelect
-              name="status"
+              name="boardId"
               control={control}
-              selected={watch().status}
-              label="Status: "
+              selected={watch().boardId}
+              label="Board: "
               elementType="filter"
               textTruncate={10}
-              // onSelect={(e: any) => onSetFilter("status", e.target.id)}
-              options={options[1]}
-              optionsType="list"
+              onSelect={(e: any) => onSetFilter("boardId", e?.id)}
+              options={[{ id: "", value: "", text: "All" }, ...boardOptions]}
+              optionsType="dialog"
             />
           </Box>
         </Grid>
+        {/* 
+       
+      
         <Grid paddingX={0.5} item sm={12} marginY={1}>
           <Box className="tasks-option">
             <ControlledSelect
@@ -189,25 +235,7 @@ const FiltersBar = ({
             />
           </Box>
         </Grid>
-        <Grid paddingX={0.5} item sm={12} marginY={1}>
-          <Box className="tasks-option">
-            <ControlledSelect
-              name="category"
-              control={control}
-              selected={watch().start}
-              label="Category :"
-              elementType="filter"
-              optionsType="dialog"
-              options={[
-                { id: "", value: "", text: "All" },
-                ...categoriesOptions,
-              ]}
-              // onSelect={(e: any) => {
-              //   onSetFilter("category", e?.id);
-              // }}
-            />
-          </Box>
-        </Grid>
+     
         <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
           <Box className="tasks-option">
             <Button
