@@ -182,7 +182,7 @@ const Statistics = (props: any) => {
     });
     return unClearTasksCount.length;
   };
-  useEffect(() => {}, []);
+
   /**
    * onGetAverage
    *
@@ -289,7 +289,8 @@ const Statistics = (props: any) => {
           </Typography>
 
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The number of tasks became not clear.
+            The number of tasks moved from Tasks Board or In Progress to Not
+            Clear.
           </Typography>
           {!state.loading && !loading ? (
             <Box display={"inline-flex"} pt={2}>

@@ -15,16 +15,14 @@ import CircleIcon from "@mui/icons-material/Circle";
 type TaskStatusTimlineProps = {
   movements: TaskMovement[];
 };
-type cancelTypes = "Canceled" | "Disrupted" | "Flagged" | "";
+type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
 const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
-  const [cancelType, setCancelType] = React.useState<Map<string, cancelTypes>>(
-    new Map()
-  );
+  const [cancelType, setCancelType] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     setMovements(props?.movements);
@@ -62,28 +60,25 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   };
 
   const getCancelationType = () => {
-    let map = cancelType;
-    let cMoves = props?.movements
-      ?.filter((item) => item.status === "Cancled")
-      .map((item) => {
-        let itemIndex = props?.movements?.findIndex((m) => m === item);
-        return { index: itemIndex, ...item };
-      });
-    if (cMoves && cMoves?.length > 0) {
-      cMoves.forEach((lcMove) => {
-        if (props?.movements[lcMove.index - 1].status === "In Progress")
-          map.set("Canceled", "Canceled");
-        else if (props?.movements[lcMove.index - 1].status === "Tasks Board")
-          map.set("Disrupted", "Disrupted");
-        else if (
-          ["Review", "Shared"].includes(
-            props?.movements[lcMove.index - 1]?.status
-          )
-        )
-          map.set("Flagged", "Flagged");
-      });
-    }
-    setCancelType(map);
+    let cMoves = props?.movements.map((item, index) => {
+      if (
+        item.status === "Cancled" &&
+        props?.movements[index - 1].status === "In Progress"
+      )
+        return "Canceled";
+      else if (
+        item.status === "Cancled" &&
+        props?.movements[index - 1].status === "Tasks Board"
+      )
+        return "Disturbed";
+      else if (
+        item.status === "Cancled" &&
+        ["Review", "Shared"].includes(props?.movements[index - 1]?.status)
+      )
+        return "Flagged";
+      else return "";
+    });
+    setCancelType(cMoves);
   };
 
   const isNasty = () => {
@@ -170,7 +165,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {cancelType.has("Canceled") && (
+        {cancelType.includes("Canceled") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -186,7 +181,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {cancelType.has("Disrupted") && (
+        {cancelType.includes("Disturbed") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -198,11 +193,11 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 p: "4px",
               }}
             >
-              Disrupted
+              Disturbed
             </Typography>
           </Box>
         )}
-        {cancelType.has("Flagged") && (
+        {cancelType.includes("Flagged") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
