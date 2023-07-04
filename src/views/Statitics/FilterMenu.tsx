@@ -56,7 +56,6 @@ const FiltersBar = ({
   });
 
   const clientsOptions = useAppSelector(selectClientOptions);
-  const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);

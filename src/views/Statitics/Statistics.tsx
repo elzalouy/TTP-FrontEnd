@@ -16,6 +16,7 @@ type time = {
     times: number;
     movesTimesMins: number;
   }[];
+  totalTimesInAllTasks: number;
 };
 
 type stateType = {
@@ -38,7 +39,12 @@ type stateType = {
   revivedTasksTimes: time;
 };
 
-const initialMetrics = { hours: -1, mins: -1, totalDurationsAndTimes: [] };
+const initialMetrics: time = {
+  hours: -1,
+  mins: -1,
+  totalDurationsAndTimes: [],
+  totalTimesInAllTasks: -1,
+};
 
 const Statistics = (props: any) => {
   const [state, setState] = useState<stateType>({
@@ -186,6 +192,7 @@ const Statistics = (props: any) => {
    * @param to string
    * @returns object
    */
+
   const onGetAverage = (tasks: Task[], from: string, to: string) => {
     const movementsMetrics = tasks
       .map((task) => {
@@ -223,7 +230,12 @@ const Statistics = (props: any) => {
     let mins = !isNaN(Math.floor(averageMins % 60))
       ? Math.floor(averageMins % 60)
       : 0;
-    return { hours, mins, totalDurationsAndTimes: movementsMetrics };
+    return {
+      hours,
+      mins,
+      totalDurationsAndTimes: movementsMetrics,
+      totalTimesInAllTasks: _.sum(movementsMetrics.map((i) => i.times)),
+    };
   };
 
   return (
@@ -397,7 +409,11 @@ const Statistics = (props: any) => {
                 {state.taskCancelationTimes.mins ?? 0} mins{" "}
               </Typography>
               <Typography sx={valueTimesStyle}>
-                {state.taskCancelationTimes.totalDurationsAndTimes.length} times
+                {state.taskCancelationTimes.totalDurationsAndTimes.length}{" "}
+                Cancelled tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskCancelationTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -419,7 +435,11 @@ const Statistics = (props: any) => {
                 {state.taskDistrubingTimes.mins ?? 0} mins{" "}
               </Typography>
               <Typography sx={valueTimesStyle}>
-                {state.taskDistrubingTimes.totalDurationsAndTimes.length} times
+                {state.taskDistrubingTimes.totalDurationsAndTimes.length}{" "}
+                Disturbed tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskDistrubingTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -442,7 +462,10 @@ const Statistics = (props: any) => {
               </Typography>
               <Typography sx={valueTimesStyle}>
                 {state.taskFlaggedTimesFromReview.totalDurationsAndTimes.length}{" "}
-                times
+                Flagged Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskFlaggedTimesFromReview.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -465,7 +488,10 @@ const Statistics = (props: any) => {
               </Typography>
               <Typography sx={valueTimesStyle}>
                 {state.taskFlaggedTimesFromShared.totalDurationsAndTimes.length}{" "}
-                times
+                Flagged Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.taskFlaggedTimesFromShared.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -491,7 +517,10 @@ const Statistics = (props: any) => {
                   state.unClearBackToTasksBoardTimes.totalDurationsAndTimes
                     .length
                 }{" "}
-                times
+                Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.unClearBackToTasksBoardTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -514,7 +543,10 @@ const Statistics = (props: any) => {
               </Typography>
               <Typography sx={valueTimesStyle}>
                 {state.wrongFulfillmentTimes.totalDurationsAndTimes.length}{" "}
-                times
+                Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.wrongFulfillmentTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -537,7 +569,10 @@ const Statistics = (props: any) => {
               </Typography>
               <Typography sx={valueTimesStyle}>
                 {state.commentsOrChangedTimes.totalDurationsAndTimes.length}{" "}
-                times
+                Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.commentsOrChangedTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -559,7 +594,10 @@ const Statistics = (props: any) => {
                 {state.revisitingTasksTimes.mins ?? 0} mins{" "}
               </Typography>
               <Typography sx={valueTimesStyle}>
-                {state.revisitingTasksTimes.totalDurationsAndTimes.length} times
+                {state.revisitingTasksTimes.totalDurationsAndTimes.length} Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.revisitingTasksTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
@@ -581,7 +619,10 @@ const Statistics = (props: any) => {
                 {state.revivedTasksTimes.mins ?? 0} mins{" "}
               </Typography>
               <Typography sx={valueTimesStyle}>
-                {state.revivedTasksTimes.totalDurationsAndTimes.length} times
+                {state.revivedTasksTimes.totalDurationsAndTimes.length} Tasks
+              </Typography>
+              <Typography sx={valueTimesStyle}>
+                {state.revivedTasksTimes.totalTimesInAllTasks} times
               </Typography>
             </Box>
           ) : (
