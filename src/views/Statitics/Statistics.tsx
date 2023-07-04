@@ -365,8 +365,8 @@ const Statistics = (props: any) => {
             Review Average time
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average time of Reviewing the task and move it from Review to be
-            under the Shared list with the client.
+            The average time any task takes to go back to in progress after
+            becoming not clear.
           </Typography>
           {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
@@ -382,8 +382,8 @@ const Statistics = (props: any) => {
             Task Closing Average time
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average time of Closing the task and move it from Shared to be
-            under the Done list.
+            The average time of Closing the task and moving it from Shared to
+            the Done list.
           </Typography>
           {!state.loading && !loading ? (
             <Typography sx={{ pt: 2, fontSize: 12, fontWeight: 500 }}>
@@ -399,8 +399,8 @@ const Statistics = (props: any) => {
             Task Cancelation times
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The total times of canceling the task and move it from Tasks Board
-            to be under the Cancel list.
+            The total times of canceling the task and moving it from the Tasks
+            Board to be under the Cancel list.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -448,11 +448,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Task Flagged From Review times
+            Flagged from the Review
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The total times of canceling the task and move it from the Review
-            list to the Cancled list.
+            The total times and the average duration of canceling the task and
+            move it from the Review list to the Cancled list.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -474,11 +474,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Task Flagged From Shared times
+            Flagged From Shared
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The total times of canceling the task and move it from the Shared
-            list to the Cancled list.
+            The total times and the average duration of canceling the task and
+            move it from the Shared list to the Cancled list.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -500,11 +500,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Task unclear back times
+            Unclear Back
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average number of moving the tasks to Tasks Board from Not
-            Clear.
+            The total times and the average duration of moving the tasks to
+            Tasks Board from Not Clear.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -516,7 +516,7 @@ const Statistics = (props: any) => {
                 {
                   state.unClearBackToTasksBoardTimes.totalDurationsAndTimes
                     .length
-                }{" "}
+                }
                 Tasks
               </Typography>
               <Typography sx={valueTimesStyle}>
@@ -529,11 +529,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Tasks Wrong or missing Fulfillment times
+            Wrong or missing Fulfillment
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average duration and number of moves happened for the tasks from
-            Review to Tasks Board
+            The average duration and number of moves that happened for the tasks
+            from Review to Tasks Board.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -555,11 +555,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Tasks with comments or changes times
+            Comments or Changes
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average duration and number of moves happened for the tasks from
-            Shared to Tasks Board
+            The average duration and number of moves that happened for the tasks
+            from Shared to Tasks Board.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -581,11 +581,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Tasks with Revisiting times
+            Revisiting times and average
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average duration and number of moves happened for the tasks from
-            Done to Tasks Board
+            The average duration and the number of moves that happened for the
+            tasks from Done to Tasks Board.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
@@ -606,11 +606,11 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
-            Tasks with Revived times
+            Revived times and average
           </Typography>
           <Typography sx={{ color: "gray", fontSize: 12 }}>
-            The average duration and number of moves happened for the tasks from
-            Canceled to Tasks Board
+            The average duration and the number of moves that happened for the
+            tasks from Canceled to Tasks Board.
           </Typography>
           {!state.loading && !loading ? (
             <Box pt={2} display={"flex"} alignItems={"center"}>
