@@ -14,13 +14,16 @@ import {
   selectAllDepartments,
   selectDepartmentOptions,
 } from "src/models/Departments";
+import { useEffect, useState } from "react";
+import { ITeam } from "src/types/models/Departments";
 
 type filterTypes =
   | "clientId"
   | "projectManager"
   | "category"
   | "boardId"
-  | "teamId";
+  | "teamId"
+  | "projectId";
 
 interface IState {
   filter: boolean;
@@ -46,12 +49,14 @@ const FiltersBar = ({
     category: string;
     boardId: string;
     teamId: string;
+    projectId: string;
   }>({
     defaultValues: {
       clientId: "",
       projectManager: "",
       category: "",
       boardId: "",
+      projectId: "",
     },
   });
 
@@ -61,6 +66,14 @@ const FiltersBar = ({
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
   const boardOptions = useAppSelector(selectDepartmentOptions);
   const departments = useAppSelector(selectAllDepartments);
+  const projectsOptions = useAppSelector(selectProjectOptions);
+  const [teams, setTeams] = useState<
+    {
+      id?: string;
+      value?: string;
+      text?: string;
+    }[]
+  >([]);
 
   const onSetFilter = (name: filterTypes, value: string) => {
     setValue(name, value);
@@ -86,12 +99,24 @@ const FiltersBar = ({
     if (filter.boardId !== "") {
       let dep = departments.find((d) => d._id === filter.boardId);
       tasks = tasks.filter((i) => i.boardId === dep?.boardId);
+      if (dep && dep.teams) {
+        setTeams(
+          dep.teams.map((item) => {
+            return {
+              id: item._id,
+              value: item._id,
+              text: item.name,
+            };
+          })
+        );
+      }
+    } else setTeams([]);
+    if (filter.projectId !== "") {
+      tasks = tasks.filter((item) => item.projectId === filter.projectId);
     }
-    // if (filter.teamId !== "") {
-    //   let dep=
-    // }
     onSetFilterResult(tasks);
   };
+
   return (
     <Drawer
       anchor="right"
@@ -143,10 +168,7 @@ const FiltersBar = ({
               elementType="filter"
               textTruncate={10}
               onSelect={(value: any) => onSetFilter("clientId", value?.id)}
-              options={[
-                { id: "", value: "", text: "All", image: "avatar" },
-                ...clientsOptions,
-              ]}
+              options={[{ id: "", value: "", text: "All", image: "avatar" }, ,]}
             />
           </Box>
         </Grid>
@@ -200,6 +222,36 @@ const FiltersBar = ({
               textTruncate={10}
               onSelect={(e: any) => onSetFilter("boardId", e?.id)}
               options={[{ id: "", value: "", text: "All" }, ...boardOptions]}
+              optionsType="dialog"
+            />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <ControlledSelect
+              name="teamId"
+              control={control}
+              selected={watch().boardId}
+              label="Team From Board: "
+              elementType="filter"
+              textTruncate={10}
+              onSelect={(e: any) => onSetFilter("teamId", e?.id)}
+              options={[{ id: "", value: "", text: "All" }, ...teams]}
+              optionsType="dialog"
+            />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <ControlledSelect
+              name="projectId"
+              control={control}
+              selected={watch().boardId}
+              label="Project : "
+              elementType="filter"
+              textTruncate={10}
+              onSelect={(e: any) => onSetFilter("projectId", e?.id)}
+              options={[{ id: "", value: "", text: "All" }, ...projectsOptions]}
               optionsType="dialog"
             />
           </Box>

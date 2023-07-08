@@ -63,12 +63,12 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     let cMoves = props?.movements.map((item, index) => {
       if (
         item.status === "Cancled" &&
-        props?.movements[index - 1].status === "In Progress"
+        props?.movements[index - 1].status === "Tasks Board"
       )
         return "Canceled";
       else if (
         item.status === "Cancled" &&
-        props?.movements[index - 1].status === "Tasks Board"
+        props?.movements[index - 1].status === "In Progress"
       )
         return "Disturbed";
       else if (

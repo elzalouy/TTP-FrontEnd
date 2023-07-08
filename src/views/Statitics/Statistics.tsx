@@ -7,6 +7,7 @@ import { useAppSelector } from "src/models/hooks";
 import { Task } from "src/types/models/Projects";
 import FilterMenu from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
+import StatusChart from "./StatusChart";
 
 type time = {
   hours: number;
@@ -266,7 +267,19 @@ const Statistics = (props: any) => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid xs={12}>
+          <StatusChart tasks={globalState.tasks}></StatusChart>
+        </Grid>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Scheduling Average time
           </Typography>
@@ -283,7 +296,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             UnClear Tasks
           </Typography>
@@ -327,7 +349,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Turn Around Average time
           </Typography>
@@ -344,7 +375,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Fulfillment Average time
           </Typography>
@@ -361,7 +401,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Review Average time
           </Typography>
@@ -378,7 +427,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Task Closing Average time
           </Typography>
@@ -395,7 +453,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Task Cancelation times
           </Typography>
@@ -421,7 +488,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Task Disturbing times
           </Typography>
@@ -447,7 +523,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Flagged from the Review
           </Typography>
@@ -473,7 +558,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Flagged From Shared
           </Typography>
@@ -499,7 +593,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Unclear Back
           </Typography>
@@ -528,7 +631,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Wrong or missing Fulfillment
           </Typography>
@@ -554,7 +666,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Comments or Changes
           </Typography>
@@ -580,7 +701,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Revisiting times and average
           </Typography>
@@ -605,7 +735,16 @@ const Statistics = (props: any) => {
             <Skeleton variant="text" width={200} height={35} sx={{ pt: 2 }} />
           )}
         </Grid>
-        <Grid mb={1} ml={1} xs={5.9} sx={staticNumberItem}>
+        <Grid
+          mb={1}
+          ml={1}
+          lg={5.9}
+          xl={5.9}
+          md={12}
+          sm={12}
+          xs={12}
+          sx={staticNumberItem}
+        >
           <Typography sx={{ fontSize: 18, fontWeight: 700 }}>
             Revived times and average
           </Typography>
