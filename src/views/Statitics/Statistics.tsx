@@ -8,6 +8,8 @@ import { Task } from "src/types/models/Projects";
 import FilterMenu from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
 import StatusChart from "./StatusChart";
+import { DialogOption } from "src/types/components/SelectDialog";
+import { selectAllDepartments } from "src/models/Departments";
 
 type time = {
   hours: number;
@@ -68,18 +70,34 @@ const Statistics = (props: any) => {
     revivedTasksTimes: initialMetrics,
   });
   const { allTasks, loading } = useAppSelector(selectAllProjects);
+  const departments = useAppSelector(selectAllDepartments);
   const [globalState, setGlobalState] = useState({
     tasks: allTasks,
     filterResult: allTasks,
   });
 
-  useEffect(() => {
+  const onSelectedBoard = () => {
+    let values: DialogOption[] = departments
+      .filter((item) => item.priority === 1)
+      .map((item) => {
+        return { id: item.boardId, label: item.name };
+      });
+    let tasks = [...allTasks];
+    let ids = values.map((value) => value.id);
+    if (ids.length > 0)
+      tasks = tasks.filter((item) => ids.includes(item.boardId));
     setGlobalState({
       ...globalState,
-      tasks: allTasks,
-      filterResult: allTasks,
+      tasks: tasks,
+      filterResult: tasks,
     });
+  };
+
+  useEffect(() => {
+    console.log(allTasks);
+    onSelectedBoard();
   }, [allTasks]);
+
   useEffect(() => {
     let State = { ...state };
     State.unClearTasksCount = onSetUnClearTasksAndTimes(

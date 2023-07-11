@@ -11,19 +11,35 @@ import Search from "../Search/SearchBox";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import "./selectDialog.css";
-import { DialogContent } from "@mui/material";
+import { Box, DialogContent, ListItemIcon, Typography } from "@mui/material";
 import IMAGES from "src/assets/img/Images";
-import {
-  DialogOption,
-  DialogProps,
-  SelectDialogProps,
-} from "src/types/components/SelectDialog";
+import { DialogOption } from "src/types/components/SelectDialog";
+import CheckIcon from "@mui/icons-material/CheckCircle";
+export type SelectComponentProps = {
+  options: DialogOption[];
+  selected?: DialogOption[];
+  label: string;
+  name: string;
+  onSelect: any;
+  onDiselect: (item: DialogOption) => void;
+};
+
+export interface DialogProps {
+  open: boolean;
+  selected?: DialogOption[];
+  onClose: any;
+  options: DialogOption[];
+  onSelect: any;
+  onDiselect: (item: DialogOption) => void;
+}
 
 export const SimpleDialog = ({
   open,
-  selectedValue,
-  onClose,
+  selected,
   options,
+  onSelect,
+  onClose,
+  onDiselect,
 }: DialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -42,19 +58,15 @@ export const SimpleDialog = ({
     setFilteredOptions(filtered);
   }, [searchVal]);
 
-  const handleClose = () => {
-    onClose(selectedValue ?? { label: "", id: "" });
-  };
-
   const handleListItemClick = (e: any, value: DialogOption) => {
-    onClose(value);
+    let index = selected ? selected.findIndex((i) => i.id === value.id) : -1;
+    if (index >= 0) onDiselect(value);
+    else onSelect(value);
   };
-
   const onSearch = (e: any) => setSearchVal(e.target.value);
-
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={() => onClose(false)}
       open={open}
       maxWidth={"xs"}
       fullWidth={true}
@@ -98,7 +110,14 @@ export const SimpleDialog = ({
                 onClick={(e) => handleListItemClick(e, item)}
                 key={item.id}
                 id={item.id}
-                sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: "pointer",
+                  border: selected?.find((i) => i.id === item.id)
+                    ? "1px solid black"
+                    : "0px",
+                  marginBottom: "2px",
+                  borderRadius: "5px",
+                }}
               >
                 {item.image && (
                   <ListItemAvatar>
@@ -116,6 +135,11 @@ export const SimpleDialog = ({
                   primary={item.label}
                   sx={{ color: item.id === null ? "red" : "gray" }}
                 />
+                {selected?.find((i) => i.id === item.id) && (
+                  <ListItemIcon>
+                    <CheckIcon></CheckIcon>
+                  </ListItemIcon>
+                )}
               </ListItem>
             );
           })}
@@ -125,53 +149,67 @@ export const SimpleDialog = ({
   );
 };
 
-export const SelectDialog = ({
+export const MulitSelectDialogComponent = ({
   options,
   selected,
-  setSelectedValue,
-  placeholder,
   label,
   name,
-}: SelectDialogProps) => {
+  onSelect,
+  onDiselect,
+}: SelectComponentProps) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: DialogOption) => {
-    setOpen(false);
-    setSelectedValue(name, value.id);
-  };
-
-  const inputStyle = {
-    border: "1px solid #b4b6c4;",
-    borderRadius: "6px",
-    justifyContent: "flex-start",
+  const filterInputStyle = {
     fontSize: "14px",
-    color: selected ? "#303030" : "#b4b6c4 !important",
+    backgroundColor: "white",
+    borderRadius: "10px 0px 0px 10px",
+    display: "inline-flex",
+    border: 0,
+    paddingLeft: "15px",
+    cursor: "pointer",
+    paddingBlock: "10px",
+    height: "38px !important",
+    overflow: "hidden",
+    color: "#696974",
+    float: "left",
+    justifyContent: "flex-start",
     ":hover": {
-      border: "1px solid #b4b6c4;",
-      backgroundColor: "transparent",
+      backgroundColor: "white",
     },
   };
   return (
     <div>
-      <label className="popup-label">{label}</label>
-      <Button
-        variant="outlined"
-        fullWidth
-        sx={inputStyle}
-        disableRipple={true}
-        onClick={handleClickOpen}
-      >
-        {selected ? selected.label : placeholder}
-      </Button>
+      <Box width={"100%"} display={"inline-flex"}>
+        <Button
+          variant={"text"}
+          fullWidth
+          sx={filterInputStyle}
+          disableRipple={true}
+          onClick={handleClickOpen}
+        >
+          {label}
+          <Typography color={"#303030"} fontWeight={"600"}>
+            {"  " + selected?.length + " selected"}
+          </Typography>
+        </Button>
+        <img
+          onClick={handleClickOpen}
+          src={IMAGES.filterDropdown}
+          className="filter-leftIcon"
+          alt=""
+        />
+      </Box>
       <SimpleDialog
-        options={options}
-        selectedValue={selected}
         open={open}
-        onClose={handleClose}
+        options={options}
+        selected={selected}
+        onClose={setOpen}
+        onSelect={onSelect}
+        onDiselect={onDiselect}
       />
     </div>
   );

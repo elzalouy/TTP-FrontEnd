@@ -12,10 +12,14 @@ import { selectCategoriesOptions } from "src/models/Categories";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import {
   selectAllDepartments,
+  selectBoardsOptions,
   selectDepartmentOptions,
+  updateDepartmentsPriority,
 } from "src/models/Departments";
 import { useEffect, useState } from "react";
-import { ITeam } from "src/types/models/Departments";
+import { useDispatch } from "react-redux";
+import { DialogOption } from "src/types/components/SelectDialog";
+import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 
 type filterTypes =
   | "clientId"
@@ -59,14 +63,15 @@ const FiltersBar = ({
       projectId: "",
     },
   });
-
+  const dispatch = useDispatch();
   const clientsOptions = useAppSelector(selectClientOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const boardOptions = useAppSelector(selectDepartmentOptions);
+  const boardOptions = useAppSelector(selectBoardsOptions);
   const departments = useAppSelector(selectAllDepartments);
   const projectsOptions = useAppSelector(selectProjectOptions);
+  const [selectedBoards, setSelectedBoards] = useState<DialogOption[]>([]);
   const [teams, setTeams] = useState<
     {
       id?: string;
@@ -74,6 +79,24 @@ const FiltersBar = ({
       text?: string;
     }[]
   >([]);
+
+  useEffect(() => {
+    onSetSelectedBoards();
+  }, [projects.allTasks]);
+
+  const onSetSelectedBoards = () => {
+    let values: DialogOption[] = departments
+      .filter((item) => item.priority === 1)
+      .map((item) => {
+        return { id: item.boardId, label: item.name };
+      });
+    setSelectedBoards(values);
+    console.log({ values });
+    let tasks = [...projects.allTasks];
+    let ids = values.map((value) => value.id);
+    tasks = tasks.filter((item) => ids.includes(item.boardId));
+    onSetFilterResult(tasks);
+  };
 
   const onSetFilter = (name: filterTypes, value: string) => {
     setValue(name, value);
@@ -96,24 +119,22 @@ const FiltersBar = ({
       projectsIds = fprojects.map((item) => item?._id);
       tasks = tasks.filter((item) => projectsIds.includes(item.projectId));
     }
-    if (filter.boardId !== "") {
-      let dep = departments.find((d) => d._id === filter.boardId);
-      tasks = tasks.filter((i) => i.boardId === dep?.boardId);
-      if (dep && dep.teams) {
-        setTeams(
-          dep.teams.map((item) => {
-            return {
-              id: item._id,
-              value: item._id,
-              text: item.name,
-            };
-          })
-        );
-      }
-    } else setTeams([]);
+
     if (filter.projectId !== "") {
       tasks = tasks.filter((item) => item.projectId === filter.projectId);
     }
+
+    onSetFilterResult(tasks);
+  };
+
+  const onFilterByBoards = (values: DialogOption[]) => {
+    let tasks = [...projects.allTasks];
+    const boardsIds = values.map((item) => item.id);
+    console.log({ boardsIds });
+
+    dispatch(updateDepartmentsPriority(boardsIds));
+    if (boardsIds.length > 0)
+      tasks = tasks.filter((i) => boardsIds.includes(i.boardId));
     onSetFilterResult(tasks);
   };
 
@@ -168,7 +189,10 @@ const FiltersBar = ({
               elementType="filter"
               textTruncate={10}
               onSelect={(value: any) => onSetFilter("clientId", value?.id)}
-              options={[{ id: "", value: "", text: "All", image: "avatar" }, ,]}
+              options={[
+                { id: "", value: "", text: "All", image: "avatar" },
+                clientsOptions,
+              ]}
             />
           </Box>
         </Grid>
@@ -213,20 +237,33 @@ const FiltersBar = ({
         </Grid>
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
-            <ControlledSelect
+            <Controller
               name="boardId"
               control={control}
-              selected={watch().boardId}
-              label="Board: "
-              elementType="filter"
-              textTruncate={10}
-              onSelect={(e: any) => onSetFilter("boardId", e?.id)}
-              options={[{ id: "", value: "", text: "All" }, ...boardOptions]}
-              optionsType="dialog"
+              render={(props) => (
+                <MulitSelectDialogComponent
+                  name="boardId"
+                  selected={selectedBoards}
+                  options={boardOptions.map((i) => {
+                    return { id: i.id, label: i.text };
+                  })}
+                  label="Board: "
+                  onSelect={(value: DialogOption) => {
+                    setSelectedBoards([...selectedBoards, value]);
+                    onFilterByBoards([...selectedBoards, value]);
+                  }}
+                  onDiselect={(item: DialogOption) => {
+                    let selects = [...selectedBoards];
+                    selects = selects.filter((i) => i.id !== item.id);
+                    setSelectedBoards(selects);
+                    onFilterByBoards(selects);
+                  }}
+                />
+              )}
             />
           </Box>
         </Grid>
-        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+        {/* <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
             <ControlledSelect
               name="teamId"
@@ -240,7 +277,7 @@ const FiltersBar = ({
               optionsType="dialog"
             />
           </Box>
-        </Grid>
+        </Grid> */}
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
             <ControlledSelect
@@ -256,48 +293,6 @@ const FiltersBar = ({
             />
           </Box>
         </Grid>
-        {/* 
-       
-      
-        <Grid paddingX={0.5} item sm={12} marginY={1}>
-          <Box className="tasks-option">
-            <ControlledSelect
-              name="date"
-              control={control}
-              selected={watch().start}
-              label="Deadline :"
-              elementType="filter"
-              optionsType="date-picker"
-              options={[]}
-              // onSelect={(value: RangeKeyDict) => {
-              //   onSetFilter(
-              //     "start",
-              //     value[0]?.startDate !== undefined
-              //       ? value[0]?.startDate?.toDateString()
-              //       : ""
-              //   );
-              //   onSetFilter(
-              //     "end",
-              //     value[0]?.endDate !== undefined
-              //       ? value[0]?.endDate?.toDateString()
-              //       : ""
-              //   );
-              // }}
-            />
-          </Box>
-        </Grid>
-     
-        <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
-          <Box className="tasks-option">
-            <Button
-              size="x-small"
-              type="add"
-              style={{ textTransform: "lowercase" }}
-              label="Un Assigned Tasks"
-              // onClick={() => onSetFilter("projectId", undefined)}
-            ></Button>
-          </Box>
-        </Grid> */}
       </Grid>
     </Drawer>
   );

@@ -18,6 +18,7 @@ export interface IDepartmentState {
   teams: ITeam[];
   boardURL?: string;
   boardId: string;
+  priority?: number;
 }
 
 export interface IDepartmentsSlice {

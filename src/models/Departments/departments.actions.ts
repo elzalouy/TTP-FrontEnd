@@ -8,6 +8,7 @@ import {
   toggleEditDepartment,
 } from "../Ui";
 import { ToastError, ToastSuccess } from "../../coreUI/components/Typos/Alert";
+import { IDepartmentState } from "src/types/models/Departments";
 
 export const getAllDepartments = createAsyncThunk<any, any, any>(
   "departments/getAll",
@@ -96,6 +97,21 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
       }
       ToastError(department.data);
       return rejectWithValue(department.data);
+    } catch (error: any) {
+      ToastError(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateDepartmentsPriority = createAsyncThunk<any, any, any>(
+  "departments/updateDepartments",
+  async (args: any, { dispatch, rejectWithValue }) => {
+    try {
+      let response: ApiResponse<IDepartmentState[]> =
+        await api.updateDepartmentsPriority(args);
+      if (response.ok) return response.data;
+      else rejectWithValue(response);
     } catch (error: any) {
       ToastError(error);
       return rejectWithValue(error);
