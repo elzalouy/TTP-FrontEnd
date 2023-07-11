@@ -113,9 +113,9 @@ export const SimpleDialog = ({
                 sx={{
                   cursor: "pointer",
                   border: selected?.find((i) => i.id === item.id)
-                    ? "1px solid #5fda71"
+                    ? "2px solid #5fda71"
                     : "0px",
-                  marginBottom: "2px",
+                  marginBottom: "3px",
                   borderRadius: "5px",
                 }}
               >
