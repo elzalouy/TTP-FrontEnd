@@ -112,11 +112,11 @@ export const SimpleDialog = ({
                 id={item.id}
                 sx={{
                   cursor: "pointer",
-                  border: selected?.find((i) => i.id === item.id)
-                    ? "2px solid #5fda71"
-                    : "0px",
                   marginBottom: "3px",
                   borderRadius: "5px",
+                  ":hover": {
+                    backgroundColor: "#fafafb",
+                  },
                 }}
               >
                 {item.image && (
@@ -137,7 +137,7 @@ export const SimpleDialog = ({
                 />
                 {selected?.find((i) => i.id === item.id) && (
                   <ListItemIcon>
-                    <CheckIcon></CheckIcon>
+                    <CheckIcon htmlColor="#5fda71"></CheckIcon>
                   </ListItemIcon>
                 )}
               </ListItem>
