@@ -130,7 +130,6 @@ const FiltersBar = ({
   const onFilterByBoards = (values: DialogOption[]) => {
     let tasks = [...projects.allTasks];
     const boardsIds = values.map((item) => item.id);
-    console.log({ boardsIds });
 
     dispatch(updateDepartmentsPriority(boardsIds));
     if (boardsIds.length > 0)
