@@ -3,7 +3,6 @@ import _ from "lodash";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
@@ -19,6 +18,8 @@ import {
   ICreateDepartmentState,
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
+import AddTeams from "./AddTeams";
+import AddLists from "./AddSideLists";
 
 const addNewDepartmentContainerStyles = {
   py: 1,
@@ -64,7 +65,19 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
       resetField("team");
     }
   };
-
+  const onChangeLists = (index?: number) => {
+    let lists = [...state.mainLists];
+    let name = watch().list;
+    if (index !== undefined && index >= 0) {
+      _.remove(lists, lists[index]);
+      setState({ ...state, mainLists: lists });
+      resetField("list");
+    } else {
+      lists.push({ name: name, listId: "" });
+      setState({ ...state, mainLists: lists });
+      resetField("list");
+    }
+  };
   const onSubmit = async () => {
     setState({ ...state, loading: true });
     let data = watch();
@@ -72,6 +85,7 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
       name: data.name,
       color: data.color,
       teams: [...state.teams],
+      sideLists: state.mainLists,
     };
     let validation = CreateDepartmantJoiSchema.validate(department);
     if (validation.error) {
@@ -148,45 +162,18 @@ const CreateNewDepartment: React.FC<ICreateDepartmentProps> = () => {
             onSelect={(e: any) => setValue("color", e.target.id)}
             options={getDepartmentOptions(state.colors)}
           />
-          <Grid container alignItems="center">
-            <Grid item xs={9} lg={9}>
-              <ControlledInput
-                name="team"
-                label={"Teams"}
-                placeholder="Team name"
-                type="text"
-                control={control}
-                dataTestId="create-dep-teamName"
-              />
-            </Grid>
-            <Grid
-              item
-              xs={3}
-              lg={3}
-              sx={{ paddingLeft: "10px", marginTop: "32px" }}
-            >
-              <Button
-                type="add"
-                size="small"
-                label="add"
-                dataTestId="create-dep-add-team"
-                disabled={watch().team.length < 3}
-                onClick={() => onChangeTeams()}
-              />
-            </Grid>
-          </Grid>
-          <div className="names-container">
-            {state.teams.map((el, index) => {
-              return (
-                <Badge
-                  name={el.name}
-                  key={index}
-                  onChange={() => onChangeTeams(index)}
-                />
-              );
-            })}
-          </div>
-          <br />
+          <AddTeams
+            control={control}
+            teams={state.teams}
+            onChangeTeams={onChangeTeams}
+            disabled={watch().team.length < 3}
+          />
+          <AddLists
+            control={control}
+            lists={state.mainLists}
+            disabled={watch().list.length < 3}
+            onChangeLists={onChangeLists}
+          />
           <div className="controllers">
             <Button
               type="main"

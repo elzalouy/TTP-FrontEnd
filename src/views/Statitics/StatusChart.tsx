@@ -81,6 +81,7 @@ const StatusChart: FC<StatusChartProps> = ({ tasks }) => {
   }, [tasks]);
 
   useEffect(() => {
+    console.log({ state });
     if (state.tasks && state.tasks?.length > 0) {
       const ctx = doughnutRef?.current?.getContext("2d");
       if (ctx?.arc) {

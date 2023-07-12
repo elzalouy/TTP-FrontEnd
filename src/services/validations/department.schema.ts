@@ -41,6 +41,10 @@ export const CreateDepartmantJoiSchema = Joi.object({
     .unique((a, b) => a.name === b.name)
     .required()
     .label("department teams"),
+  sideLists: Joi.array().items({
+    name: Joi.string().required().min(2).label("Side list name"),
+    listId: Joi.string().allow(""),
+  }),
 });
 
 export const editDepartmentSchema = (teams: string[]) => {
