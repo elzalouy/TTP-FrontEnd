@@ -72,9 +72,12 @@ export interface IEditDepartmentProps {
 export interface IEditDepartmentState {
   _id?: string;
   teams: ITeam[];
+  lists: IList[];
   addTeams?: string[];
   removeTeams?: string[];
-  formData: { name: string; color: string; team: string };
+  addLists?: string[];
+  removeLists?: string[];
+  formData: { name: string; color: string; team: string; list: string };
   colors: string[];
   show: string;
   loading: boolean;
@@ -88,9 +91,12 @@ export interface IEditDepartmentState {
 export const editDepartmentInitState: IEditDepartmentState = {
   addTeams: [],
   removeTeams: [],
+  addLists: [],
+  removeLists: [],
   teams: [],
+  lists: [],
   colors: color,
-  formData: { team: "", name: "", color: "blue" },
+  formData: { team: "", name: "", color: "blue", list: "" },
   show: "none",
   loading: false,
   error: {

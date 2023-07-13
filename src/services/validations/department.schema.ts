@@ -62,5 +62,7 @@ export const editDepartmentSchema = (teams: string[]) => {
       )
       .optional(),
     removeTeams: Joi.array().items(Joi.string()).optional(),
+    removeSideLists: Joi.array().items(Joi.string()).optional(),
+    addSideLists: Joi.array().items(Joi.string()).optional(),
   });
 };

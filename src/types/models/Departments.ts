@@ -19,6 +19,7 @@ export interface IDepartmentState {
   boardURL?: string;
   boardId: string;
   priority?: number;
+  sideLists: IList[];
 }
 
 export interface IDepartmentsSlice {
@@ -35,4 +36,5 @@ export const initDepartmentState: IDepartmentState = {
   teams: [],
   boardURL: "",
   boardId: "",
+  sideLists: [],
 };
