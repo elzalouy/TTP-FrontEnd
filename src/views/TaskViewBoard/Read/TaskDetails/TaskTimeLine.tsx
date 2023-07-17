@@ -15,16 +15,14 @@ import CircleIcon from "@mui/icons-material/Circle";
 type TaskStatusTimlineProps = {
   movements: TaskMovement[];
 };
-type cancelTypes = "Canceled" | "Disrupted" | "Flagged" | "";
+type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
 const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
-  const [cancelType, setCancelType] = React.useState<Map<string, cancelTypes>>(
-    new Map()
-  );
+  const [cancelType, setCancelType] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     setMovements(props?.movements);
@@ -62,28 +60,38 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   };
 
   const getCancelationType = () => {
-    let map = cancelType;
-    let cMoves = props?.movements
-      ?.filter((item) => item.status === "Cancled")
-      .map((item) => {
-        let itemIndex = props?.movements?.findIndex((m) => m === item);
-        return { index: itemIndex, ...item };
-      });
-    if (cMoves && cMoves?.length > 0) {
-      cMoves.map((lcMove) => {
-        if (props?.movements[lcMove.index - 1].status === "In Progress")
-          map.set("Canceled", "Canceled");
-        if (props?.movements[lcMove.index - 1].status === "Tasks Board")
-          map.set("Disrupted", "Disrupted");
-        if (
-          ["Review", "Shared"].includes(
-            props?.movements[lcMove.index - 1].status
-          )
-        )
-          map.set("Flagged", "Flagged");
-      });
-    }
-    setCancelType(map);
+    let cMoves = props?.movements.map((item, index) => {
+      if (
+        item.status === "Cancled" &&
+        props?.movements[index - 1].status === "Tasks Board"
+      )
+        return "Canceled";
+      else if (
+        item.status === "Cancled" &&
+        props?.movements[index - 1].status === "In Progress"
+      )
+        return "Disturbed";
+      else if (
+        item.status === "Cancled" &&
+        ["Review", "Shared"].includes(props?.movements[index - 1]?.status)
+      )
+        return "Flagged";
+      else return "";
+    });
+    setCancelType(cMoves);
+  };
+
+  const isNasty = () => {
+    const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
+    let moves = props.movements.map((item, index) => {
+      return { ...item, index };
+    });
+    moves = moves.filter(
+      (item) =>
+        status.includes(item?.status) &&
+        props.movements[item.index + 1]?.status === "Tasks Board"
+    );
+    return moves.length;
   };
 
   return (
@@ -125,7 +133,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {props?.movements?.filter((item) => item.status === "Not Clear")
+        {props?.movements?.filter((item) => item?.status === "Not Clear")
           ?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
@@ -157,7 +165,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {cancelType.has("Canceled") && (
+        {cancelType.includes("Canceled") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -173,7 +181,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {cancelType.has("Disrupted") && (
+        {cancelType.includes("Disturbed") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -185,11 +193,11 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 p: "4px",
               }}
             >
-              Disrupted
+              Disturbed
             </Typography>
           </Box>
         )}
-        {cancelType.has("Flagged") && (
+        {cancelType.includes("Flagged") && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -202,6 +210,22 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               }}
             >
               Flagged
+            </Typography>
+          </Box>
+        )}
+        {isNasty() > 0 && (
+          <Box sx={{ float: "left", m: 0.5 }}>
+            <Typography
+              sx={{
+                background: "#f1cbcc",
+                borderRadius: "5px",
+                color: "black",
+                fontWeight: 500,
+                fontSize: "12px",
+                p: "4px",
+              }}
+            >
+              Nasty
             </Typography>
           </Box>
         )}
@@ -272,7 +296,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             moved to: &nbsp;
                           </Typography>
                           <Typography fontSize={11} fontWeight={"600"}>
-                            {item.status} &nbsp;
+                            {item?.status} &nbsp;
                           </Typography>
                         </Box>
                         <Box alignItems={"flex-start"} display={"inline-flex"}>

@@ -4,3 +4,10 @@
 .dialogTitle {
   background-color: #fafafb;
 }
+.filter-leftIcon {
+  background-color: white;
+  padding-inline: 10px;
+  border-radius: 0px 10px 10px 0px;
+  margin-left: 1px;
+  float: left;
+}

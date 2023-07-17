@@ -3,7 +3,6 @@ import _ from "lodash";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import Badge from "src/coreUI/components/Badge/FormBadge";
 import Button from "src/coreUI/components/Buttons/Button";
 import ControlledInput from "src/coreUI/compositions/Input/ControlledInput";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
@@ -25,6 +24,8 @@ import {
   IEditDepartmentState,
 } from "../../../types/views/Departments";
 import "../../popups-style.css";
+import CreateUpdateTeams from "./CreateUpdateTeams";
+import CreateUpdateSideLists from "./CreateUpdateSideList";
 
 const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
       selectedDepartment.color &&
       selectedDepartment.teams
     ) {
+      console.log({ selectedDepartment });
       setValue("name", selectedDepartment?.name);
       setValue("color", selectedDepartment?.color);
       setState({
@@ -52,6 +54,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         teams: selectedDepartment?.teams.filter(
           (item) => item.isDeleted === false
         ),
+        lists: selectedDepartment.sideLists ?? [],
       });
     }
   }, [selectedDepartment, editDepartmentPopup]);
@@ -67,7 +70,7 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
   };
 
   const onChangeNewTeams = (index?: number) => {
-    if (state.addTeams && state.removeTeams) {
+    if (state.addTeams) {
       let teams = [...state.addTeams];
       let team = watch().team;
       if (index !== undefined) _.remove(teams, (item) => item === teams[index]);
@@ -79,6 +82,20 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
     }
     resetField("team");
   };
+
+  const onChangeNewLists = (index?: number) => {
+    console.log({ index, lists: state.lists });
+    if (state.addLists && state.addLists.length >= 0) {
+      let lists = [...state.addLists];
+      let list = watch().list;
+      if (index !== undefined) _.remove(lists, (item) => item === lists[index]);
+      else lists.push(list);
+      console.log({ lists });
+      setState({ ...state, addLists: lists });
+    }
+    resetField("list");
+  };
+
   const onRemoveOldTeam = (id: string, index: number) => {
     // Remove old team
     let teams = [...state.teams];
@@ -88,6 +105,17 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
     removeTeams.push(id);
     setState({ ...state, removeTeams: removeTeams, teams: teams });
   };
+
+  const onRemoveOldList = (id: string, index: number) => {
+    let lists = [...state.lists];
+    let removeLists = state.removeLists ? [...state?.removeLists] : [];
+    if (id !== undefined && id !== "") {
+      lists = lists.filter((item) => item._id !== id);
+      removeLists.push(id);
+    }
+    setState({ ...state, removeLists, lists });
+  };
+
   const handleSubmit = async () => {
     setState({ ...state, loading: true });
     let data = watch();
@@ -96,6 +124,8 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
       color: data.color,
       removeTeams: state.removeTeams,
       addTeams: state.addTeams,
+      addSideLists: state.addLists,
+      removeSideLists: state.removeLists,
     };
 
     let validation = editDepartmentSchema(
@@ -159,60 +189,22 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
           onSelect={(e: any) => setValue("color", e.target.id)}
           options={getDepartmentOptions(state.colors)}
         />
-        <Grid container justifyContent={"space-between"}>
-          <Grid item xs={9} lg={9}>
-            <ControlledInput
-              name="team"
-              label={"Teams"}
-              placeholder="Team name"
-              type="text"
-              control={control}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            lg={3}
-            sx={{ paddingLeft: "10px", marginTop: "32px" }}
-          >
-            <Button
-              type="add"
-              size="small"
-              label="add"
-              dataTestId="edit-dep-add-team"
-              disabled={watch().team.length < 2}
-              onClick={() => onChangeNewTeams()}
-            />
-          </Grid>
-        </Grid>
-        <div className="names-container">
-          {selectedDepartment &&
-            state.teams &&
-            state?.teams.map((el, index) => {
-              if (el)
-                return (
-                  <Badge
-                    name={el.name}
-                    key={index}
-                    onChange={() =>
-                      onRemoveOldTeam(el?._id ? el._id : "", index)
-                    }
-                  />
-                );
-            })}
-          {state.addTeams &&
-            state?.addTeams.map((el, index) => {
-              if (el)
-                return (
-                  <Badge
-                    name={el}
-                    key={index}
-                    onChange={() => onChangeNewTeams(index)}
-                  />
-                );
-            })}
-        </div>
-        <br />
+        <CreateUpdateTeams
+          teams={state.teams}
+          onRemoveOldTeam={onRemoveOldTeam}
+          onChangeNewTeams={onChangeNewTeams}
+          disabled={watch().team.length < 2}
+          addTeams={state.addTeams ?? []}
+          control={control}
+        />
+        <CreateUpdateSideLists
+          lists={state.lists}
+          control={control}
+          disabled={watch().list.length <= 2}
+          addLists={state.addLists ?? []}
+          onRemoveOldList={onRemoveOldList}
+          onChangeNewLists={onChangeNewLists}
+        />
         <div className="controllers">
           <Button
             type="main"

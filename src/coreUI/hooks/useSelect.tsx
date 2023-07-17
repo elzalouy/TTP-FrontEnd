@@ -9,13 +9,13 @@ import React from "react";
  */
 export function useSelect(
   selectRef: React.MutableRefObject<any>,
-  optionsRed: React.MutableRefObject<any>
+  optionsRef: React.MutableRefObject<any>
 ) {
   React.useEffect(() => {
     function click(event: any) {
-      if (selectRef.current && optionsRed.current) {
+      if (selectRef.current && optionsRef.current) {
         if (!selectRef.current.contains(event.target)) {
-          optionsRed.current.style.display = "none";
+          optionsRef.current.style.display = "none";
         }
       }
     }

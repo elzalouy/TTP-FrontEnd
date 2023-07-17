@@ -43,6 +43,7 @@ type filterTypes =
   | "start"
   | "end"
   | "category";
+
 interface IState {
   filter: boolean;
   showEditTasks: string;
@@ -51,6 +52,7 @@ interface IState {
   projectManagersOptions: Options;
   openFilter: boolean;
 }
+
 type filterType = {
   projectId?: string;
   name: string;
@@ -61,6 +63,7 @@ type filterType = {
   end: string;
   category: string;
 };
+
 const defaultValues: filterType = {
   projectId: "",
   name: "",
@@ -120,6 +123,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         projectsIds.includes(item.projectId)
       );
     }
+
     if (filter.projectManager !== "") {
       projectsIds = projects.projects
         .filter((item) => item.projectManager === filter.projectManager)
@@ -165,6 +169,7 @@ export const TasksListView: React.FC<Props> = (props) => {
     State.tasks = tasks;
     setState(State);
   };
+
   const clearFilters = () => {
     reset();
     setState({ ...state, tasks: projects.allTasks });

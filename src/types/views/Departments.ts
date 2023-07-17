@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { IDepartmentState, ITeam } from "../models/Departments";
+import { IDepartmentState, IList, ITeam } from "../models/Departments";
 // constants
 
 export const color = [
@@ -37,7 +37,8 @@ export interface IDepartmentsComponentState {
 export interface ICreateDepartmentProps {}
 export interface ICreateDepartmentState {
   teams: ITeam[];
-  formData: { name: string; color: string; team: string };
+  mainLists: IList[];
+  formData: { name: string; color: string; team: string; list: string };
   colors: string[];
   show: string;
   loading: boolean;
@@ -50,8 +51,9 @@ export interface ICreateDepartmentState {
 
 export const IcreateDepartmentInit: ICreateDepartmentState = {
   teams: [],
+  mainLists: [],
   colors: color,
-  formData: { team: "", name: "", color: "blue" },
+  formData: { team: "", name: "", color: "blue", list: "" },
   show: "none",
   loading: false,
   error: {
@@ -70,9 +72,12 @@ export interface IEditDepartmentProps {
 export interface IEditDepartmentState {
   _id?: string;
   teams: ITeam[];
+  lists: IList[];
   addTeams?: string[];
   removeTeams?: string[];
-  formData: { name: string; color: string; team: string };
+  addLists?: string[];
+  removeLists?: string[];
+  formData: { name: string; color: string; team: string; list: string };
   colors: string[];
   show: string;
   loading: boolean;
@@ -86,9 +91,12 @@ export interface IEditDepartmentState {
 export const editDepartmentInitState: IEditDepartmentState = {
   addTeams: [],
   removeTeams: [],
+  addLists: [],
+  removeLists: [],
   teams: [],
+  lists: [],
   colors: color,
-  formData: { team: "", name: "", color: "blue" },
+  formData: { team: "", name: "", color: "blue", list: "" },
   show: "none",
   loading: false,
   error: {

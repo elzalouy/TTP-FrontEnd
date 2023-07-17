@@ -5,7 +5,7 @@ export interface ITeam {
   isDeleted: boolean;
 }
 export interface IList {
-  _id: string;
+  _id?: string;
   name: string;
   listId: string;
 }
@@ -18,6 +18,8 @@ export interface IDepartmentState {
   teams: ITeam[];
   boardURL?: string;
   boardId: string;
+  priority?: number;
+  sideLists: IList[];
 }
 
 export interface IDepartmentsSlice {
@@ -34,4 +36,5 @@ export const initDepartmentState: IDepartmentState = {
   teams: [],
   boardURL: "",
   boardId: "",
+  sideLists: [],
 };
