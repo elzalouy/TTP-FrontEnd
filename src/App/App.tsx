@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { selectAppLoading, setAppLoading } from "src/models/Ui";
 import { useAppSelector } from "src/models/hooks";
 import { selectSatistics } from "src/models/Statistics";
+
 import {
   AuthActions,
   getUserInfo,
@@ -91,7 +92,9 @@ const App: React.FC = (props) => {
           limit={1}
           draggable
         />
-        <PopUps history={history} match={match} location={location} />
+        {isAuthedUser() && (
+          <PopUps history={history} match={match} location={location} />
+        )}
         <Switch>
           {process.env.NODE_ENV === "development" && (
             <Route key="/DevComponents" path="/Dev" component={UIComponents} />

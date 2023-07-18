@@ -88,7 +88,7 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
   return (
     <PopUp
       show={createProjectPopup}
-      maxHeight={currentStep === 0 ? undefined : "calc(100% - 20px)"}
+      maxHeight={"90vh"}
       overFlowY={currentStep === 1 ? "scroll" : undefined}
       margin={"30px"}
       containerClassName="projectForm"

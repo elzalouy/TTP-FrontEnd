@@ -106,7 +106,7 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
 
   return (
     <>
-      <PopUp show={show}>
+      <PopUp show={show} maxHeight="90%">
         <Box>
           <Box position={"relative"}>
             <div className="closeIconContainer" onClick={handleClose}>
