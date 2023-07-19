@@ -17,6 +17,9 @@ export const selectPMOptions = (state: RootState) => {
     return [];
   }
 };
+export const selectPMs = (state: RootState) =>
+  state.Managers.managers.filter((item) => item.role === "PM");
+
 export const select_Id = (state: RootState) => state?.Managers?.current_ID;
 export const selectPayload = (state: RootState) => state?.Managers?.Payload;
 export const selectLoading = (state: RootState) => state?.Managers?.loading;

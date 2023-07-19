@@ -8,7 +8,7 @@ import TaskTimeLine from "./TaskTimeLine";
 import TaskBasics from "./TaskBasics";
 import TaskFooter from "./TaskFooter";
 import { selectSideMenuToggle } from "src/models/Ui";
-import { getDifBetweenDates } from "src/helpers/generalUtils";
+import { getTaskJournies } from "src/helpers/generalUtils";
 import { TaskMovement } from "src/types/models/Projects";
 import _ from "lodash";
 
@@ -35,25 +35,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
   // build a use effect to calculate the journies once the component is rendered once.
 
   React.useEffect(() => {
-    let State = { ...state },
-      movements = [...task.movements],
-      endOfJourney = ["Cancled", "Shared", "Done"],
-      journey: TaskMovement[] = [];
-    // Done => then Shared => Cancled
-    movements.forEach((item, index) => {
-      if (endOfJourney.includes(item.status)) {
-        journey.push(item);
-      } else if (
-        movements[index - 1] &&
-        !endOfJourney.includes(item.status) &&
-        endOfJourney.includes(movements[index - 1].status)
-      ) {
-        State.journies.push(journey);
-        journey = [item];
-      } else {
-        journey.push(item);
-      }
-    });
+    let State = { ...state };
+    State.journies = getTaskJournies(task).journies;
     State.selected = State.journies[0];
     State.selectedIndex = 0;
     setState(State);
@@ -66,7 +49,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
       selectedIndex: value - 1,
     });
   };
-  console.log({ state });
   return (
     <PopUp
       show={show}
