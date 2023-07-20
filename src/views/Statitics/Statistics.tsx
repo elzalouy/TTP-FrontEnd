@@ -288,9 +288,9 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <TodByCategory />
         </Grid>
-        <Grid xs={12} height={"auto"}>
+        {/* <Grid xs={12} height={"auto"}>
           <BySharedMonth />
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

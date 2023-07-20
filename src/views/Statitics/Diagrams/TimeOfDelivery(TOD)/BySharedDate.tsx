@@ -9,7 +9,11 @@ import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
 import { get_TLT_ByComparisonTasks } from "../../utils";
 import _ from "lodash";
-import { Months, getRandomColor } from "src/helpers/generalUtils";
+import {
+  Months,
+  getRandomColor,
+  getTaskJournies,
+} from "src/helpers/generalUtils";
 import { Task, TaskFile, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
@@ -75,122 +79,15 @@ const BySharedMonth = () => {
   useEffect(() => {
     let months = Months;
     // chart data
+
     const data = {
       labels: months,
       datasets: [
         {
           label: "My First Dataset",
           data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderWidth: 1,
-        },
-        {
-          label: "My First Dataset",
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderWidth: 1,
-        },
-        {
-          label: "My First Dataset",
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderWidth: 1,
-        },
-        {
-          label: "My First Dataset",
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderWidth: 1,
-        },
-        {
-          label: "My First Dataset",
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
-          borderColor: [
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-            getRandomColor([]),
-          ],
+          backgroundColor: [],
+          borderColor: [],
           borderWidth: 1,
         },
       ],
@@ -288,42 +185,41 @@ const BySharedMonth = () => {
   const onGetDatasetsByTeams = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
-    let Categories = categories.map((item) => {
-      return { id: item._id, name: item.category };
+    let months = Months.map((item) => {
+      return { id: item, name: item };
     });
     return teams.map((team) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
-      let tasksData = tasks.filter((i) => i.teamId && i.teamId === team._id);
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
-      };
-      let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
-        return {
-          tasks: tasks ?? [],
-          color,
-          borderColor,
-          comparisonId: team._id,
-        };
-      });
-
-      return {
-        label: team.name,
-        data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
-        ),
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
+      // let { color, borderColor } = getRandomColor(bgColors);
+      // bgColors.push(color);
+      // borderColors.push(borderColor);
+      // let tasksData = tasks.filter((i) => i.teamId && i.teamId === team._id);
+      // tasksData = tasksData.filter((item) =>
+      //   item.movements.findIndex((i, index) => i.status === "Shared")
+      // );
+      // let tasksOfTeamGroupedByDelivery = tasksData.filter((item) => {
+      //   let {journies} = getTaskJournies(item);
+      //   if(journies[journies.length-1])
+      // });
+      // let datasetData = _.map((item) => {
+      //   let tasks = tasksOfTeamGroupedByDelivery[item.id];
+      //   return {
+      //     tasks: tasks ?? [],
+      //     color,
+      //     borderColor,
+      //     comparisonId: team._id,
+      //   };
+      // });
+      // return {
+      //   label: team.name,
+      //   data: datasetData.map(
+      //     (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+      //   ),
+      //   backgroundColor: datasetData.map((items) => items.color),
+      //   borderColor: datasetData.map((items) => items.borderColor),
+      //   borderWidth: 3,
+      //   hoverBorderWidth: 4,
+      //   skipNull: true,
+      // };
     });
   };
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -344,7 +240,7 @@ const BySharedMonth = () => {
         Time of delivery by Shared Month
       </Typography>
       <Bar options={state.options} data={state.data} />
-      <form>
+      <form className="ComparisonOptions">
         <label htmlFor="teams">Teams</label>
         <input
           type="radio"

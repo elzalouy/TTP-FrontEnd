@@ -252,7 +252,7 @@ const TodByCategory = () => {
         Time of delivery By Categories
       </Typography>
       <Bar options={state.options} data={state.data} />
-      <form id="ComparisonOptions">
+      <form className="ComparisonOptions">
         <label htmlFor="teams">Teams</label>
         <input
           type="radio"

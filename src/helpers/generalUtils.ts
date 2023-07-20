@@ -325,7 +325,7 @@ export const getTaskJournies = (task: Task) => {
       journey = [];
     }
   });
-  return { id: task._id, name: task.name, journies, movements };
+  return { id: task._id, name: task.name, journies };
 };
 
 export function getRandomColor(colors: string[]): {
