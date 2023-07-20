@@ -86,7 +86,6 @@
   .pop-up {
     width: 90vw !important;
     background-color: white;
-    margin-top: 50px;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
@@ -97,7 +96,6 @@
   .pop-up {
     width: 60vw !important;
     background-color: white;
-    margin-top: 50px;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;
@@ -119,7 +117,6 @@
   .pop-up {
     width: 80vw !important;
     background-color: white;
-    margin-top: 50px;
     padding: 20px;
     animation: zoomIn 0.3s;
     overflow: auto;

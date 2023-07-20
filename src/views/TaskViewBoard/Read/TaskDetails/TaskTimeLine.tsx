@@ -14,6 +14,8 @@ import CircleIcon from "@mui/icons-material/Circle";
 
 type TaskStatusTimlineProps = {
   movements: TaskMovement[];
+  journeyIndex: number;
+  journiesLength: number;
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
@@ -34,30 +36,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       setMovements(props?.movements?.filter((item) => item.status === filter));
     else setMovements(props?.movements);
   }, [filter]);
-
-  const getDiff = (start: string, end: string) => {
-    let lastMoves = props?.movements?.filter((item) => item.status === end);
-    let firstMove = props.movements?.find((item) => item.status === start);
-    let lMove = lastMoves[lastMoves?.length - 1];
-    if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
-      return getDifBetweenDates(
-        new Date(firstMove.movedAt),
-        new Date(lMove.movedAt)
-      );
-    } else
-      return {
-        isLate: false,
-        difference: {
-          years: 0,
-          months: 0,
-          days: 0,
-          mins: 0,
-          hours: 0,
-        },
-        remainingDays: 0,
-        totalHours: 0,
-      };
-  };
 
   const getCancelationType = () => {
     let cMoves = props?.movements.map((item, index) => {
@@ -94,23 +72,33 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     return moves.length;
   };
 
+  const getDiff = (start: string, end: string) => {
+    let lastMoves = props?.movements?.filter((item) => item.status === end);
+    let firstMove = props.movements?.find((item) => item.status === start);
+    let lMove = lastMoves[lastMoves?.length - 1];
+    if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
+      return getDifBetweenDates(
+        new Date(firstMove.movedAt),
+        new Date(lMove.movedAt)
+      );
+    } else
+      return {
+        isLate: false,
+        difference: {
+          years: 0,
+          months: 0,
+          days: 0,
+          mins: 0,
+          hours: 0,
+        },
+        remainingDays: 0,
+        totalHours: 0,
+      };
+  };
+
   return (
-    <Grid
-      item
-      container
-      xs={12}
-      sm={12}
-      md={12}
-      lg={6}
-      xl={6}
-      sx={{
-        background: "#fafafa",
-        height: "100%",
-        alignContent: "flex-start",
-        pl: 3,
-      }}
-    >
-      <Box sx={{ my: 1 }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      <Box sx={{ py: 1 }}>
         <Box sx={{ float: "left", m: 0.5 }}>
           <Typography fontSize={"16px"} fontWeight={600}>
             Task Journey
@@ -230,8 +218,15 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           </Box>
         )}
       </Box>
-      <Grid item container xs={12} height={"72%"} alignContent={"flex-start"}>
-        <Grid item xs={10} sx={{ overflow: "scroll", height: "100%" }}>
+      <Grid
+        item
+        container
+        xs={12}
+        height={"100%"}
+        pt={1}
+        alignContent={"flex-start"}
+      >
+        <Grid item xs={10} sx={{ overflow: "scroll", height: "90%" }}>
           <Timeline
             sx={{
               p: 0,
@@ -251,15 +246,16 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 let nextMove = props.movements[nextMoveIndex];
                 let prevMove = props.movements[prevMoveIndex];
                 let due = undefined;
-                due = nextMove
-                  ? getDifBetweenDates(
-                      new Date(nextMove?.movedAt),
-                      new Date(item?.movedAt)
-                    )
-                  : getDifBetweenDates(
-                      new Date(new Date(Date.now())),
-                      new Date(item?.movedAt)
-                    );
+                due =
+                  nextMove && props.journeyIndex !== props.journiesLength
+                    ? getDifBetweenDates(
+                        new Date(nextMove?.movedAt),
+                        new Date(item?.movedAt)
+                      )
+                    : getDifBetweenDates(
+                        new Date(new Date(Date.now())),
+                        new Date(item?.movedAt)
+                      );
 
                 return (
                   <TimelineItem key={item._id} sx={itemStyle}>
@@ -332,7 +328,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                               htmlColor="#444452"
                               sx={{ fontSize: "8px", mr: 1 }}
                             />
-
                             <Typography
                               color={"#94989b"}
                               fontWeight={"bold"}
@@ -341,9 +336,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                               {due?.difference?.days ?? 0} Days{",  "}
                               {due?.difference?.hours ?? 0} Hours{", "}
                               {due?.difference?.mins ?? 0} mins{" "}
-                              {movements[index]._id ===
-                                props.movements[props?.movements?.length - 1]
-                                  ._id && "(Till Now)"}
+                              {nextMove &&
+                                props.journeyIndex === props.journiesLength &&
+                                "(Till Now)"}
                             </Typography>
                           </Box>
                         )}
@@ -354,7 +349,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               })}
           </Timeline>
         </Grid>
-        <Grid item xs={2} height={"fit-content"}>
+        <Grid item xs={2} height={"87%"}>
           <List>
             {[
               "Tasks Board",
@@ -439,54 +434,34 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
             Fullfillment : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
             {getDiff("In Progress", "Review")?.difference?.days ?? 0} d,{" "}
             {getDiff("In Progress", "Review")?.difference?.hours ?? 0} h,
             {getDiff("In Progress", "Review")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
-        <Box
-          display={{
-            xl: "inline-flex",
-            lg: "inline-flex",
-            md: "inline-flex",
-            sm: "inline-block",
-            xs: "inline-block",
-          }}
-          textAlign={"center"}
-          pl={1}
-        >
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
+        <Box textAlign={"center"} display={"inline-flex"} pl={1}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Delivery : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
             {getDiff("Review", "Shared")?.difference?.days ?? 0} d,{" "}
             {getDiff("Review", "Shared")?.difference?.hours ?? 0} h,
             {getDiff("Review", "Shared")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
-        <Box
-          display={{
-            xl: "inline-flex",
-            lg: "inline-flex",
-            md: "inline-flex",
-            sm: "inline-block",
-            xs: "inline-block",
-          }}
-          textAlign={"center"}
-          pl={1}
-        >
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
+        <Box textAlign={"center"} display={"inline-flex"} pl={1}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Closing : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
             {getDiff("Shared", "Done")?.difference?.days ?? 0} d,{" "}
             {getDiff("Shared", "Done")?.difference?.hours ?? 0} h,
             {getDiff("Shared", "Done")?.difference?.mins ?? 0} mins,
           </Typography>
         </Box>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 
@@ -510,5 +485,5 @@ const dotStyle = {
   border: "1px solid #e1e1e1",
   justifyContent: "center",
 };
-const labelStyle = {};
+
 export default TaskStatusTimline;

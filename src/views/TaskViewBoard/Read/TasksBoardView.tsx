@@ -10,7 +10,6 @@ import { selectAllProjects } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import Button from "src/coreUI/components/Buttons/Button";
 import { Project } from "src/types/models/Projects";
-import AutoSizer from "src/coreUI/components/AutoSizer/AutoSizer";
 
 type TasksViewBoardProps = RouteComponentProps<{ id: string }>;
 

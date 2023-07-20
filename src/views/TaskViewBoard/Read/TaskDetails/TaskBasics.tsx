@@ -13,9 +13,14 @@ import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
-import { TaskMovement } from "src/types/models/Projects";
+import { Task, TaskMovement } from "src/types/models/Projects";
 
-interface TaskBasicsProps {}
+interface TaskBasicsProps {
+  task: Task;
+  movements: TaskMovement[];
+  journeyIndex: number;
+  journiesLength: number;
+}
 
 type state = {
   taskTeam?: ITeam;
@@ -40,18 +45,17 @@ type state = {
   };
 };
 
-const TaskBasics: FC<TaskBasicsProps> = () => {
+const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
-  const { openTaskDetails: task } = useAppSelector(selectAllProjects);
   useEffect(() => {
     const taskBoard = departments?.find(
       (item) => item.boardId === task.boardId
     );
     const taskTeam = taskBoard?.teams?.find((item) => item._id === task.teamId);
     const category = categories?.find((item) => item._id === task.categoryId);
-    const taskMovements = task?.movements?.map((item, index) => {
+    const taskMovements = movements?.map((item, index) => {
       return { ...item, index };
     });
 
@@ -72,13 +76,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
         taskSchedulingTime: taskSchedulingTime(),
       },
     });
-  }, [task]);
+  }, [task, movements]);
 
   const TaskLeadTime = () => {
-    let lastShared = _.findLast(
-      task?.movements,
-      (item) => item.status === "Shared"
-    );
+    let lastShared = _.findLast(movements, (item) => item.status === "Shared");
     return task.createdAt
       ? getDifBetweenDates(
           new Date(task.createdAt),
@@ -97,10 +98,10 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
  */
 
   const taskProcessingTime = () => {
-    let inProgress = task.movements?.find(
+    let inProgress = movements?.find(
       (item: TaskMovement) => item.status === "In Progress"
     );
-    let sharedMove = _.findLast(task.movements, (item: TaskMovement) => {
+    let sharedMove = _.findLast(movements, (item: TaskMovement) => {
       return item.status === "Shared";
     });
 
@@ -114,7 +115,7 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   const taskSchedulingTime = () => {
-    let inProgressMove = task?.movements?.find(
+    let inProgressMove = movements?.find(
       (item) => item.status === "In Progress"
     );
     return inProgressMove && task.createdAt
@@ -127,13 +128,13 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
 
   const unClearTime = () => {
     // how many times task moved to notClear
-    let times = task?.movements?.filter(
+    let times = movements?.filter(
       (item) => item.status === "Not Clear"
     )?.length;
     let total = { hours: 0 };
-    task.movements.forEach((item, index) => {
+    movements.forEach((item, index) => {
       if (item.status === "Not Clear") {
-        let nextMove = task.movements[index + 1];
+        let nextMove = movements[index + 1];
         let dif = getDifBetweenDates(
           new Date(item.movedAt),
           nextMove ? new Date(nextMove.movedAt) : new Date(Date.now())
@@ -145,8 +146,8 @@ const TaskBasics: FC<TaskBasicsProps> = () => {
   };
 
   const turnAroundTime = () => {
-    let taskMovements = task.movements;
-    if (task?.movements?.length > 0) {
+    let taskMovements = movements;
+    if (movements?.length > 0) {
       let turnAroundMovements = taskMovements?.filter(
         (item, index) =>
           item.status === "Not Clear" &&

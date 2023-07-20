@@ -1,0 +1,11 @@
+form.ComparisonOptions input[type="radio"] {
+  margin-left: 5px !important;
+}
+form.ComparisonOptions label {
+  margin-left: 15px;
+}
+form.ComparisonOptions form {
+  padding-top: 20px;
+  display: inline-flex;
+  align-items: center;
+}
