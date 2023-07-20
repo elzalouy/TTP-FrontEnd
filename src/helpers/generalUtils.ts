@@ -369,3 +369,17 @@ function hslToRgb(h: number, s: number, l: number): number[] {
 
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+export const Months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

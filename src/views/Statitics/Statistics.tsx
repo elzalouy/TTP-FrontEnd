@@ -10,6 +10,7 @@ import IMAGES from "src/assets/img/Images";
 import TodByCategory from "./Diagrams/TimeOfDelivery(TOD)/ByCategory";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { selectAllDepartments } from "src/models/Departments";
+import BySharedMonth from "./Diagrams/TimeOfDelivery(TOD)/BySharedDate";
 
 type time = {
   hours: number;
@@ -286,6 +287,9 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid xs={12} height={"auto"}>
           <TodByCategory />
+        </Grid>
+        <Grid xs={12} height={"auto"}>
+          <BySharedMonth />
         </Grid>
       </Grid>
     </>

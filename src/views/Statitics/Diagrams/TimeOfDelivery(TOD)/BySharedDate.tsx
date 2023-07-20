@@ -9,7 +9,7 @@ import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
 import { get_TLT_ByComparisonTasks } from "../../utils";
 import _ from "lodash";
-import { getRandomColor } from "src/helpers/generalUtils";
+import { Months, getRandomColor } from "src/helpers/generalUtils";
 import { Task, TaskFile, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
@@ -38,7 +38,7 @@ interface ITaskInfo extends Task {
  * @param param0
  * @returns
  */
-const TodByCategory = () => {
+const BySharedMonth = () => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
@@ -73,38 +73,129 @@ const TodByCategory = () => {
   }, [departments]);
 
   useEffect(() => {
-    let Categories = categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-
+    let months = Months;
+    // chart data
     const data = {
-      labels: Categories.map((item) => item.name),
-      datasets:
-        state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient()
-          : state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
-          : onGetDatasetsByTeams(),
-    };
-
-    const options = {
-      scales: {
-        x: {
-          type: "category",
-          position: "bottom",
-          ticks: {
-            beginAtZero: true,
-          },
+      labels: months,
+      datasets: [
+        {
+          label: "My First Dataset",
+          data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderWidth: 1,
         },
-        y: {
-          ticks: {
-            beginAtZero: true,
-          },
+        {
+          label: "My First Dataset",
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderWidth: 1,
         },
-      },
+        {
+          label: "My First Dataset",
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderWidth: 1,
+        },
+        {
+          label: "My First Dataset",
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderWidth: 1,
+        },
+        {
+          label: "My First Dataset",
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderColor: [
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+            getRandomColor([]),
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
-    setState({ ...state, options, data });
-  }, [categories, tasks, teams, state.comparisonBy]);
+  }, [tasks, teams, state.comparisonBy]);
 
   const onGetDataSetsByPM = () => {
     let bgColors: string[] = [];
@@ -193,6 +284,7 @@ const TodByCategory = () => {
       };
     });
   };
+
   const onGetDatasetsByTeams = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
@@ -249,10 +341,10 @@ const TodByCategory = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Time of delivery By Categories
+        Time of delivery by Shared Month
       </Typography>
       <Bar options={state.options} data={state.data} />
-      <form id="ComparisonOptions">
+      <form>
         <label htmlFor="teams">Teams</label>
         <input
           type="radio"
@@ -285,4 +377,4 @@ const TodByCategory = () => {
   );
 };
 
-export default TodByCategory;
+export default BySharedMonth;
