@@ -339,7 +339,6 @@ export const getTaskJournies = (task: ITaskInfo) => {
     } else {
       journey.movements.push(item);
       if (index === movements.length - 1) {
-        journey.movements.push(item);
         journies.push(journey);
         journey = {
           clientId: task.clientId,

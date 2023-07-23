@@ -48,6 +48,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
       selectedIndex: value - 1,
     });
   };
+
+  console.log({ state });
+
   return (
     <PopUp
       show={show}
@@ -119,6 +122,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
             journeyIndex={state.selectedIndex ?? 0}
             journiesLength={state.journies.length}
             movements={state.selected ?? []}
+            allMovementsOfTask={task.movements}
           />
         </Grid>
         <Grid

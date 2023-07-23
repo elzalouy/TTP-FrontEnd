@@ -16,6 +16,7 @@ type TaskStatusTimlineProps = {
   movements: TaskMovement[];
   journeyIndex: number;
   journiesLength: number;
+  allMovementsOfTask: TaskMovement[];
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
@@ -240,29 +241,32 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             {movements &&
               movements?.map((item, index) => {
                 let nextMoveIndex =
-                  props.movements?.findIndex((nm) => nm._id === item._id) + 1;
+                  props.allMovementsOfTask?.findIndex(
+                    (nm) => nm._id === item._id
+                  ) + 1;
                 let prevMoveIndex =
-                  props.movements?.findIndex((pm) => pm._id === item._id) - 1;
-                let nextMove = props.movements[nextMoveIndex];
-                let prevMove = props.movements[prevMoveIndex];
+                  props.allMovementsOfTask?.findIndex(
+                    (pm) => pm._id === item._id
+                  ) - 1;
+                let nextMove = props.allMovementsOfTask[nextMoveIndex];
+                let prevMove = props.allMovementsOfTask[prevMoveIndex];
                 let due = undefined;
-                due =
-                  nextMove && props.journeyIndex !== props.journiesLength
-                    ? getDifBetweenDates(
-                        new Date(nextMove?.movedAt),
-                        new Date(item?.movedAt)
-                      )
-                    : getDifBetweenDates(
-                        new Date(new Date(Date.now())),
-                        new Date(item?.movedAt)
-                      );
+                due = nextMove
+                  ? getDifBetweenDates(
+                      new Date(nextMove?.movedAt),
+                      new Date(item?.movedAt)
+                    )
+                  : getDifBetweenDates(
+                      new Date(new Date(Date.now())),
+                      new Date(item?.movedAt)
+                    );
 
                 return (
                   <TimelineItem key={item._id} sx={itemStyle}>
                     <TimelineSeparator sx={{ height: "auto" }}>
                       <TimelineDot sx={dotStyle}>
                         <Typography sx={timeLineDotNumStyle}>
-                          {props.movements?.findIndex(
+                          {props.allMovementsOfTask?.findIndex(
                             (move) => item._id === move._id
                           ) + 1}
                         </Typography>
