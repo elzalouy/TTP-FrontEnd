@@ -46,7 +46,6 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
       selectedDepartment.color &&
       selectedDepartment.teams
     ) {
-      console.log({ selectedDepartment });
       setValue("name", selectedDepartment?.name);
       setValue("color", selectedDepartment?.color);
       setState({
@@ -84,13 +83,11 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
   };
 
   const onChangeNewLists = (index?: number) => {
-    console.log({ index, lists: state.lists });
     if (state.addLists && state.addLists.length >= 0) {
       let lists = [...state.addLists];
       let list = watch().list;
       if (index !== undefined) _.remove(lists, (item) => item === lists[index]);
       else lists.push(list);
-      console.log({ lists });
       setState({ ...state, addLists: lists });
     }
     resetField("list");

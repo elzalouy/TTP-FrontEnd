@@ -15,6 +15,7 @@ import { User } from "src/types/models/user";
 import { selectManagers, selectPMs } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { getJourneyLeadTime } from "../../utils";
+import { TooltipItem } from "chart.js";
 
 interface StateType {
   data: {
@@ -88,6 +89,19 @@ const TodByCategory = () => {
           : onGetDatasetsByTeams(),
     };
     const options = {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context: any) {
+              const value: number = context.dataset.data[context.dataIndex];
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return `Days: ${days}, Hours: ${hours}`;
+            },
+          },
+        },
+      },
       scales: {
         x: {
           type: "category",
@@ -241,33 +255,35 @@ const TodByCategory = () => {
       </Typography>
       <Bar options={state.options} data={state.data} />
       <form className="ComparisonOptions">
-        <label htmlFor="teams">Teams</label>
         <input
-          type="radio"
+          type="checkbox"
           id={"teams"}
           value={"Teams"}
           name="teams"
           checked={state.comparisonBy === "Teams"}
           onChange={onHandleChange}
         />
-        <label htmlFor="clients">Clients</label>
+        <label htmlFor="teams">Teams</label>
+
         <input
-          type="radio"
+          type="checkbox"
           id="clients"
           value={"Clients"}
           name="clients"
           checked={state.comparisonBy === "Clients"}
           onChange={onHandleChange}
         />
-        <label htmlFor="pms">Project Managers</label>
+        <label htmlFor="clients">Clients</label>
+
         <input
           id="pms"
-          type="radio"
+          type="checkbox"
           value={"PMs"}
           name="pms"
           checked={state.comparisonBy === "PMs"}
           onChange={onHandleChange}
         />
+        <label htmlFor="pms">Project Managers</label>
       </form>
     </Grid>
   );

@@ -49,8 +49,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
     });
   };
 
-  console.log({ state });
-
   return (
     <PopUp
       show={show}

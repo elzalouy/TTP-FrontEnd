@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { RootState } from "../store";
 
 export const selectAllDepartments = (state: RootState) =>
@@ -15,6 +16,19 @@ export const selectDepartmentOptions = (state: RootState) => {
     return options;
   } else return [];
 };
+
+export const selectTeamsOptions = (state: RootState) => {
+  const teams = state.departments.departments.map((item) => item.teams);
+  let teamsOptions = _.flattenDeep(teams);
+  return teamsOptions.map((team) => {
+    return {
+      id: team._id,
+      value: team._id,
+      text: team.name,
+    };
+  });
+};
+
 export const selectBoardsOptions = (state: RootState) => {
   if (state.departments.departments) {
     let options = state.departments.departments.map((item) => {

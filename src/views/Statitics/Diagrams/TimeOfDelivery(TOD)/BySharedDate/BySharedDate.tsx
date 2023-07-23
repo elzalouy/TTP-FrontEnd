@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
-import "./style.css";
+import { Grid, IconButton, Typography } from "@mui/material";
+import "../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { selectAllCategories } from "src/models/Categories";
+import { Category, selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
@@ -14,10 +14,12 @@ import {
   getTaskJournies,
 } from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
-import { selectAllClients } from "src/models/Clients";
+import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
-import { selectPMs } from "src/models/Managers";
-import { getJourneyLeadTime } from "../../utils";
+import { Manager, selectPMs } from "src/models/Managers";
+import { getJourneyLeadTime } from "../../../utils";
+import IMAGES from "src/assets/img/Images";
+import FilterBar from "./FilterMenu";
 
 interface StateType {
   data: {
@@ -48,13 +50,20 @@ interface ITaskInfo extends Task {
  */
 const BySharedMonth = () => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const categories = useAppSelector(selectAllCategories);
+  const allCategories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
-  const managers = useAppSelector(selectPMs);
-  const clients = useAppSelector(selectAllClients);
+  const allManagers = useAppSelector(selectPMs);
+  const allClients = useAppSelector(selectAllClients);
+  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
+  const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
+  const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
+
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -78,7 +87,10 @@ const BySharedMonth = () => {
       return newTask;
     });
     setTasks([...newTasks]);
-    let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
+  }, [projects, allTasks]);
+
+  useEffect(() => {
+    let journiesData = tasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
     flattenedJournies = flattenedJournies.map((item) => {
       let shared =
@@ -95,9 +107,23 @@ const BySharedMonth = () => {
       };
     });
     setJournies(flattenedJournies);
-  }, [clients, projects, managers, allTasks]);
+    setAllJournies(flattenedJournies);
+  }, [tasks]);
 
   useEffect(() => {
+    setClients(allClients);
+  }, [allClients]);
+
+  useEffect(() => {
+    setManagers(allManagers);
+  }, [allManagers]);
+
+  useEffect(() => {
+    setCategories(allCategories);
+  }, [allCategories]);
+
+  useEffect(() => {
+    setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
     setTeams(_.flattenDeep(departments.map((item) => item.teams)));
   }, [departments]);
 
@@ -115,6 +141,19 @@ const BySharedMonth = () => {
           : onGetDatasetsByTeams(),
     };
     const options = {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context: any) {
+              const value: number = context.dataset.data[context.dataIndex];
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return `Days: ${days}, Hours: ${hours}`;
+            },
+          },
+        },
+      },
       scales: {
         x: {
           type: "category",
@@ -131,7 +170,38 @@ const BySharedMonth = () => {
       },
     };
     setState({ ...state, options, data });
-  }, [tasks, teams, state.comparisonBy, managers, clients]);
+  }, [journies, state.comparisonBy]);
+
+  const onSetFilterResult = (filter: {
+    clients: string[];
+    managers: string[];
+    categories: string[];
+    teams: string[];
+  }) => {
+    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setManagers(
+      allManagers.filter((i) => i._id && filter.managers.includes(i._id))
+    );
+    setClients(
+      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+    );
+    setCategories(
+      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+    );
+    setJournies(
+      allJournies.filter(
+        (j) =>
+          j.teamId &&
+          filter.teams.includes(j.teamId) &&
+          j.projectManager &&
+          filter.managers.includes(j.projectManager) &&
+          j.categoryId &&
+          filter.categories.includes(j.categoryId) &&
+          j.clientId &&
+          filter.clients.includes(j.clientId)
+      )
+    );
+  };
 
   const onGetDataSetsByPM = () => {
     let bgColors: string[] = [];
@@ -262,43 +332,70 @@ const BySharedMonth = () => {
         margin: "8px",
         padding: 1,
         marginBottom: 2,
+        justifyContent: "space-between",
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
         Time of delivery by Shared Month
       </Typography>
+      <Grid xs={2}>
+        <IconButton
+          disableRipple
+          onClick={() => openFilterPopup(true)}
+          sx={filterBtnStyle}
+        >
+          <img src={IMAGES.filtericon} alt="FILTER" />
+        </IconButton>
+      </Grid>
       <Bar options={state.options} data={state.data} />
       <form className="ComparisonOptions">
-        <label htmlFor="teams-bySharedDate">Teams</label>
         <input
-          type="radio"
+          type="checkbox"
           id={"teams-bySharedDate"}
           value={"Teams"}
           name="teams-bySharedDate"
           checked={state.comparisonBy === "Teams"}
           onChange={onHandleChange}
         />
-        <label htmlFor="clients-bySharedDate">Clients</label>
+        <label htmlFor="teams-bySharedDate">Teams</label>
         <input
-          type="radio"
+          type="checkbox"
           id="clients-bySharedDate"
           value={"Clients"}
           name="clients-bySharedDate"
           checked={state.comparisonBy === "Clients"}
           onChange={onHandleChange}
         />
-        <label htmlFor="pms-bySharedDate">Project Managers</label>
+        <label htmlFor="clients-bySharedDate">Clients</label>
         <input
           id="pms-bySharedDate"
-          type="radio"
+          type="checkbox"
           value={"PMs"}
           name="pms-bySharedDate"
           checked={state.comparisonBy === "PMs"}
           onChange={onHandleChange}
         />
+        <label htmlFor="pms-bySharedDate">Project Managers</label>
       </form>
+      <FilterBar
+        options={{ clients, managers, categories, teams }}
+        filter={filterPopup}
+        onCloseFilter={() => openFilterPopup(false)}
+        onSetFilterResult={onSetFilterResult}
+      />
     </Grid>
   );
 };
 
 export default BySharedMonth;
+
+const filterBtnStyle = {
+  bgcolor: "#FAFAFB",
+  borderRadius: 3,
+  paddingTop: 1.2,
+  float: "right",
+  cursor: "pointer",
+  width: "38px",
+  height: "38px",
+  textAlign: "center",
+};

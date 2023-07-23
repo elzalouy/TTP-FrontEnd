@@ -359,7 +359,6 @@ export const moveTask = createAsyncThunk<any, any, any>(
           return rejectWithValue("Un Authorized");
         }
         if (moveResult.ok) {
-          console.log({ taskMoveResult: moveResult.data });
           dispatch(fireMoveTaskHook(""));
           let returnValue: Task = { ...task };
           returnValue.status = newList.name;

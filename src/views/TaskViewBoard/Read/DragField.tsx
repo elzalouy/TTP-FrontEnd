@@ -143,7 +143,6 @@ const DragField = (props: DragFieldProps) => {
     let newTaskListInDep = taskDepartment?.lists?.find(
       (newList) => newList.name === status
     );
-    console.log({ task, taskDepartment, taskListinDep, newTaskListInDep });
     if (task && taskDepartment && taskListinDep && newTaskListInDep) {
       let move: moveObject = {
         taskId: task._id,
@@ -160,7 +159,6 @@ const DragField = (props: DragFieldProps) => {
       moveAction(taskDepartment, newTaskListInDep, task);
   };
   const moveAction = (dep: IDepartmentState, newList: IList, task: Task) => {
-    console.log("move action called");
     dispatch(moveTask({ dep, newList, task }));
   };
   return (
