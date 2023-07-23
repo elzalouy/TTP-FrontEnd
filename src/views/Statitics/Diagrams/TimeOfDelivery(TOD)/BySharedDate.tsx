@@ -97,8 +97,6 @@ const BySharedMonth = () => {
     setJournies(flattenedJournies);
   }, [clients, projects, managers, allTasks]);
 
-  console.log({ journies });
-
   useEffect(() => {
     setTeams(_.flattenDeep(departments.map((item) => item.teams)));
   }, [departments]);
