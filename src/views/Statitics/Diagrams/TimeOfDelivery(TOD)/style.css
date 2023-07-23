@@ -4,8 +4,9 @@ form.ComparisonOptions input[type="radio"] {
 form.ComparisonOptions label {
   margin-left: 15px;
 }
-form.ComparisonOptions form {
+form.ComparisonOptions {
   padding-top: 20px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  height: 60px;
 }

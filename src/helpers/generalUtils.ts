@@ -8,6 +8,7 @@ import {
   Task,
   TaskMovement,
 } from "../types/models/Projects";
+import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
 
 interface options {
   id?: string;
@@ -302,27 +303,55 @@ export const setProjectManagerId = (name: any): string => {
   }
 };
 
-export const getTaskJournies = (task: Task) => {
-  let movements = [...task.movements],
+export const getTaskJournies = (task: ITaskInfo) => {
+  let journies: Journies = [];
+  let movements = task.movements,
     endOfJourney = ["Cancled", "Shared", "Done"],
-    journey: TaskMovement[] = [],
-    journies: TaskMovement[][] = [];
+    journey: Journey = {
+      clientId: task.clientId,
+      projectManager: task.projectManager,
+      categoryId: task.categoryId,
+      taskId: task._id,
+      index: journies.length,
+      teamId: task.teamId,
+      movements: [],
+      sharedAtMonth: "",
+    };
+
   movements.forEach((item, index) => {
     if (
       endOfJourney.includes(item.status) &&
       movements[index + 1] &&
-      movements[index + 1].status === "Tasks Board" &&
-      index < movements.length
+      movements[index + 1].status === "Tasks Board"
     ) {
-      journey.push(item);
+      journey.movements.push(item);
       journies.push(journey);
-      journey = [];
+      journey = {
+        clientId: task.clientId,
+        projectManager: task.projectManager,
+        categoryId: task.categoryId,
+        taskId: task._id,
+        index: journies.length,
+        teamId: task.teamId,
+        movements: [],
+        sharedAtMonth: "",
+      };
     } else {
-      journey.push(item);
-    }
-    if (index === movements.length - 1) {
-      journies.push(journey);
-      journey = [];
+      journey.movements.push(item);
+      if (index === movements.length - 1) {
+        journey.movements.push(item);
+        journies.push(journey);
+        journey = {
+          clientId: task.clientId,
+          projectManager: task.projectManager,
+          categoryId: task.categoryId,
+          taskId: task._id,
+          index: journies.length,
+          teamId: task.teamId,
+          movements: [],
+          sharedAtMonth: "",
+        };
+      }
     }
   });
   return { id: task._id, name: task.name, journies };

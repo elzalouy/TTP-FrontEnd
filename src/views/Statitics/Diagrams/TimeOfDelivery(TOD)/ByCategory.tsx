@@ -7,13 +7,14 @@ import { selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
-import { get_TLT_ByComparisonTasks } from "../../utils";
 import _ from "lodash";
-import { getRandomColor } from "src/helpers/generalUtils";
+import { getRandomColor, getTaskJournies } from "src/helpers/generalUtils";
 import { Task, TaskFile, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
 import { selectManagers, selectPMs } from "src/models/Managers";
+import { ITaskInfo, Journies } from "src/types/views/Statistics";
+import { getJourneyLeadTime } from "../../utils";
 
 interface StateType {
   data: {
@@ -29,10 +30,6 @@ interface StateType {
   options: any;
   comparisonBy: string;
 }
-interface ITaskInfo extends Task {
-  clientId?: string;
-  projectManager?: string;
-}
 /**
  * Time of delivery diagram by the Category
  * @param param0
@@ -46,6 +43,7 @@ const TodByCategory = () => {
   const clients = useAppSelector(selectAllClients);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
+  const [journies, setJournies] = useState<Journies>([]);
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -66,7 +64,10 @@ const TodByCategory = () => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [clients, projects, managers]);
+    let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
+    let flattenedJournies = _.flatten(journiesData);
+    setJournies(flattenedJournies);
+  }, [clients, projects, managers, allTasks]);
 
   useEffect(() => {
     setTeams(_.flattenDeep(departments.map((item) => item.teams)));
@@ -86,7 +87,6 @@ const TodByCategory = () => {
           ? onGetDataSetsByPM()
           : onGetDatasetsByTeams(),
     };
-
     const options = {
       scales: {
         x: {
@@ -116,30 +116,26 @@ const TodByCategory = () => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let tasksData = tasks.filter(
-        (i) => i.projectManager && i.projectManager === manager._id
+      let journiesData = journies.filter(
+        (item) => item.projectManager === manager._id
       );
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
+      let journiesOfClientGroupedByCategory = {
+        ..._.groupBy(journiesData, "categoryId"),
       };
       let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
+        let journies = journiesOfClientGroupedByCategory[item.id];
         return {
-          tasks: tasks ?? [],
+          journies: journies ?? [],
           color,
           borderColor,
           comparisonId: manager._id,
         };
       });
-
       return {
         label: manager.name,
         data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+          (i) =>
+            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -160,30 +156,26 @@ const TodByCategory = () => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let tasksData = tasks.filter(
-        (i) => i.clientId && i.clientId === client._id
+      let journiesData = journies.filter(
+        (item) => item.clientId === client._id
       );
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
+      let journiesOfClientGroupedByCategory = {
+        ..._.groupBy(journiesData, "categoryId"),
       };
       let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
+        let journies = journiesOfClientGroupedByCategory[item.id];
         return {
-          tasks: tasks ?? [],
+          journies: journies ?? [],
           color,
           borderColor,
           comparisonId: client._id,
         };
       });
-
       return {
         label: client.clientName,
         data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+          (i) =>
+            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -203,28 +195,24 @@ const TodByCategory = () => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let tasksData = tasks.filter((i) => i.teamId && i.teamId === team._id);
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
+      let journiesData = journies.filter((item) => item.teamId === team._id);
+      let journiesOfClientGroupedByCategory = {
+        ..._.groupBy(journiesData, "categoryId"),
       };
       let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
+        let journies = journiesOfClientGroupedByCategory[item.id];
         return {
-          tasks: tasks ?? [],
+          journies: journies ?? [],
           color,
           borderColor,
           comparisonId: team._id,
         };
       });
-
       return {
         label: team.name,
         data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+          (i) =>
+            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),

@@ -7,17 +7,17 @@ import { selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
-import { get_TLT_ByComparisonTasks } from "../../utils";
 import _ from "lodash";
 import {
   Months,
   getRandomColor,
   getTaskJournies,
 } from "src/helpers/generalUtils";
-import { Task, TaskFile, TaskMovement } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
-import { User } from "src/types/models/user";
-import { selectManagers, selectPMs } from "src/models/Managers";
+import { Task, TaskMovement } from "src/types/models/Projects";
+import { selectAllClients } from "src/models/Clients";
+import { Journies } from "src/types/views/Statistics";
+import { selectPMs } from "src/models/Managers";
+import { getJourneyLeadTime } from "../../utils";
 
 interface StateType {
   data: {
@@ -32,11 +32,15 @@ interface StateType {
   };
   options: any;
   comparisonBy: string;
+  year: number;
+  quarter?: number;
 }
+
 interface ITaskInfo extends Task {
   clientId?: string;
   projectManager?: string;
 }
+
 /**
  * Time of delivery diagram by the Category
  * @param param0
@@ -50,6 +54,7 @@ const BySharedMonth = () => {
   const clients = useAppSelector(selectAllClients);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
+  const [journies, setJournies] = useState<Journies>([]);
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -57,7 +62,10 @@ const BySharedMonth = () => {
     },
     options: null,
     comparisonBy: "Teams",
+    year: new Date(Date.now()).getFullYear(),
+    quarter: 1,
   });
+
   useEffect(() => {
     let tasksData = [...allTasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
@@ -70,7 +78,26 @@ const BySharedMonth = () => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [clients, projects, managers]);
+    let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
+    let flattenedJournies = _.flatten(journiesData);
+    flattenedJournies = flattenedJournies.map((item) => {
+      let shared =
+        item.movements &&
+        _.findLast(
+          item.movements,
+          (move: TaskMovement) => move.status === "Shared"
+        )?.movedAt;
+      return {
+        ...item,
+        sharedAtMonth: shared
+          ? new Date(shared).toLocaleString("en-us", { month: "long" })
+          : undefined,
+      };
+    });
+    setJournies(flattenedJournies);
+  }, [clients, projects, managers, allTasks]);
+
+  console.log({ journies });
 
   useEffect(() => {
     setTeams(_.flattenDeep(departments.map((item) => item.teams)));
@@ -82,52 +109,61 @@ const BySharedMonth = () => {
 
     const data = {
       labels: months,
-      datasets: [
-        {
-          label: "My First Dataset",
-          data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40],
-          backgroundColor: [],
-          borderColor: [],
-          borderWidth: 1,
-        },
-      ],
+      datasets:
+        state.comparisonBy === "Clients"
+          ? onGetDataSetsByClient()
+          : state.comparisonBy === "PMs"
+          ? onGetDataSetsByPM()
+          : onGetDatasetsByTeams(),
     };
-  }, [tasks, teams, state.comparisonBy]);
+    const options = {
+      scales: {
+        x: {
+          type: "category",
+          position: "bottom",
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+        y: {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      },
+    };
+    setState({ ...state, options, data });
+  }, [tasks, teams, state.comparisonBy, managers, clients]);
 
   const onGetDataSetsByPM = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
-    let Categories = categories.map((item) => {
-      return { id: item._id, name: item.category };
+    let months = Months.map((item) => {
+      return { id: item, name: item };
     });
     return managers.map((manager) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let tasksData = tasks.filter(
+      let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
+      let journiesOfManagerGroupedByMonth = {
+        ..._.groupBy(journiesData, "sharedAtMonth"),
       };
-      let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
+      let datasetData = months.map((item) => {
+        let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
-          tasks: tasks ?? [],
+          journies: journies ?? [],
           color,
           borderColor,
           comparisonId: manager._id,
         };
       });
-
       return {
         label: manager.name,
         data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -141,37 +177,32 @@ const BySharedMonth = () => {
   const onGetDataSetsByClient = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
-    let Categories = categories.map((item) => {
-      return { id: item._id, name: item.category };
+    let months = Months.map((item) => {
+      return { id: item, name: item };
     });
     return clients.map((client) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let tasksData = tasks.filter(
+      let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
-      tasksData = tasksData.filter(
-        (item) => item.categoryId !== null && item.categoryId !== undefined
-      );
-      let tasksOfTeamGroupedByCategories = {
-        ..._.groupBy(tasksData, "categoryId"),
+      let journiesOfManagerGroupedByMonth = {
+        ..._.groupBy(journiesData, "sharedAtMonth"),
       };
-      let datasetData = Categories.map((item) => {
-        let tasks = tasksOfTeamGroupedByCategories[item.id];
-
+      let datasetData = months.map((item) => {
+        let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
-          tasks: tasks ?? [],
+          journies: journies ?? [],
           color,
           borderColor,
           comparisonId: client._id,
         };
       });
-
       return {
         label: client.clientName,
         data: datasetData.map(
-          (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
+          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -189,42 +220,41 @@ const BySharedMonth = () => {
       return { id: item, name: item };
     });
     return teams.map((team) => {
-      // let { color, borderColor } = getRandomColor(bgColors);
-      // bgColors.push(color);
-      // borderColors.push(borderColor);
-      // let tasksData = tasks.filter((i) => i.teamId && i.teamId === team._id);
-      // tasksData = tasksData.filter((item) =>
-      //   item.movements.findIndex((i, index) => i.status === "Shared")
-      // );
-      // let tasksOfTeamGroupedByDelivery = tasksData.filter((item) => {
-      //   let {journies} = getTaskJournies(item);
-      //   if(journies[journies.length-1])
-      // });
-      // let datasetData = _.map((item) => {
-      //   let tasks = tasksOfTeamGroupedByDelivery[item.id];
-      //   return {
-      //     tasks: tasks ?? [],
-      //     color,
-      //     borderColor,
-      //     comparisonId: team._id,
-      //   };
-      // });
-      // return {
-      //   label: team.name,
-      //   data: datasetData.map(
-      //     (items) => get_TLT_ByComparisonTasks(items.tasks) / 24
-      //   ),
-      //   backgroundColor: datasetData.map((items) => items.color),
-      //   borderColor: datasetData.map((items) => items.borderColor),
-      //   borderWidth: 3,
-      //   hoverBorderWidth: 4,
-      //   skipNull: true,
-      // };
+      let { color, borderColor } = getRandomColor(bgColors);
+      bgColors.push(color);
+      borderColors.push(borderColor);
+      let journiesData = journies.filter(
+        (i) => i.teamId && i.teamId === team._id
+      );
+      let journiesOfManagerGroupedByMonth = {
+        ..._.groupBy(journiesData, "sharedAtMonth"),
+      };
+      let datasetData = months.map((item) => {
+        let journies = journiesOfManagerGroupedByMonth[item.id];
+        return {
+          journies: journies ?? [],
+          color,
+          borderColor,
+          comparisonId: team._id,
+        };
+      });
+      return {
+        label: team.name,
+        data: datasetData.map(
+          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
+        ),
+        backgroundColor: datasetData.map((items) => items.color),
+        borderColor: datasetData.map((items) => items.borderColor),
+        borderWidth: 3,
+        hoverBorderWidth: 4,
+        skipNull: true,
+      };
     });
   };
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
+
   return (
     <Grid
       container
@@ -241,30 +271,30 @@ const BySharedMonth = () => {
       </Typography>
       <Bar options={state.options} data={state.data} />
       <form className="ComparisonOptions">
-        <label htmlFor="teams">Teams</label>
+        <label htmlFor="teams-bySharedDate">Teams</label>
         <input
           type="radio"
-          id={"teams"}
+          id={"teams-bySharedDate"}
           value={"Teams"}
-          name="teams"
+          name="teams-bySharedDate"
           checked={state.comparisonBy === "Teams"}
           onChange={onHandleChange}
         />
-        <label htmlFor="clients">Clients</label>
+        <label htmlFor="clients-bySharedDate">Clients</label>
         <input
           type="radio"
-          id="clients"
+          id="clients-bySharedDate"
           value={"Clients"}
-          name="clients"
+          name="clients-bySharedDate"
           checked={state.comparisonBy === "Clients"}
           onChange={onHandleChange}
         />
-        <label htmlFor="pms">Project Managers</label>
+        <label htmlFor="pms-bySharedDate">Project Managers</label>
         <input
-          id="pms"
+          id="pms-bySharedDate"
           type="radio"
           value={"PMs"}
-          name="pms"
+          name="pms-bySharedDate"
           checked={state.comparisonBy === "PMs"}
           onChange={onHandleChange}
         />

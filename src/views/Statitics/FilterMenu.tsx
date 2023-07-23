@@ -36,6 +36,7 @@ interface IState {
   projectsOptions: Options;
   projectManagersOptions: Options;
 }
+
 interface FiltersBarProps {
   filter: boolean;
   onCloseFilter: any;
@@ -91,7 +92,6 @@ const FiltersBar = ({
         return { id: item.boardId, label: item.name };
       });
     setSelectedBoards(values);
-    console.log({ values });
     let tasks = [...projects.allTasks];
     let ids = values.map((value) => value.id);
     tasks = tasks.filter((item) => ids.includes(item.boardId));
@@ -123,14 +123,12 @@ const FiltersBar = ({
     if (filter.projectId !== "") {
       tasks = tasks.filter((item) => item.projectId === filter.projectId);
     }
-
     onSetFilterResult(tasks);
   };
 
   const onFilterByBoards = (values: DialogOption[]) => {
     let tasks = [...projects.allTasks];
     const boardsIds = values.map((item) => item.id);
-
     dispatch(updateDepartmentsPriority(boardsIds));
     if (boardsIds.length > 0)
       tasks = tasks.filter((i) => boardsIds.includes(i.boardId));

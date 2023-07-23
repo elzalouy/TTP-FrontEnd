@@ -288,10 +288,15 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <TodByCategory />
         </Grid>
-        {/* <Grid xs={12} height={"auto"}>
+        <Grid xs={12} height={"auto"}>
           <BySharedMonth />
-        </Grid> */}
+        </Grid>
       </Grid>
+      {/* <FilterMenu
+        filter={state.filter}
+        onCloseFilter={() => setState({ ...state, filter: false })}
+        onSetFilterResult={() => {}}
+      /> */}
     </>
   );
 };

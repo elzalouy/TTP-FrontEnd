@@ -16,9 +16,7 @@ interface TaskDetailsProps {
   show: string;
   setShow: any;
 }
-type TaskJourny = {
-  movements: TaskMovement[];
-};
+
 type TaskJournies = TaskMovement[][];
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
@@ -36,7 +34,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
 
   React.useEffect(() => {
     let State = { ...state };
-    State.journies = getTaskJournies(task).journies;
+    let journies = getTaskJournies(task).journies.map((item) => item.movements);
+    State.journies = journies;
     State.selected = State.journies[0];
     State.selectedIndex = 0;
     setState(State);

@@ -15,6 +15,13 @@ import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
 import { Task, TaskMovement } from "src/types/models/Projects";
 
+let initialDifferenceBetweenDates = {
+  isLate: false,
+  difference: { days: 0, hours: 0, mins: 0 },
+  remainingDays: 0,
+  totalMins: 0,
+  totalHours: 0,
+};
 interface TaskBasicsProps {
   task: Task;
   movements: TaskMovement[];
@@ -79,13 +86,14 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   }, [task, movements]);
 
   const TaskLeadTime = () => {
-    let lastShared = _.findLast(movements, (item) => item.status === "Shared");
-    return task.createdAt
-      ? getDifBetweenDates(
-          new Date(task.createdAt),
-          lastShared ? new Date(lastShared.movedAt) : new Date(Date.now())
-        )
-      : null;
+    let end = _.findLast(movements, (item) => item.status === "Shared");
+    let start = task.createdAt;
+    if (end && start)
+      return getDifBetweenDates(
+        new Date(task.createdAt),
+        new Date(end.movedAt)
+      );
+    else return initialDifferenceBetweenDates;
   };
 
   /**
@@ -337,7 +345,6 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
                   hours,
                   {state?.statitics.taskLeadTime?.difference?.mins ?? 0} mins
                 </Typography>
-                {TaskState()}
               </Box>
             </Grid>
           </Grid>
@@ -407,7 +414,6 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
                     0}{" "}
                   mins
                 </Typography>
-                {TaskState()}
               </Box>
             </Grid>
           </Grid>
