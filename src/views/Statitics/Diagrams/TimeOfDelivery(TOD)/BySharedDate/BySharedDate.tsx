@@ -319,6 +319,7 @@ const BySharedMonth = () => {
       };
     });
   };
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
