@@ -14,9 +14,9 @@ export const getJourneyLeadTime = (journey: Journey) => {
   } else return 0;
   return journeyLeadTime;
 };
-export const getRevisionOfTaskTime = () => {
-  // let noOfJOurnies
-};
+
+export const getRevisionOfTaskTime = () => {};
+
 export const getMeetingDeadline = (tasks: Task[]) => {
   const doneStatus = ["Shared", "Done", "Cancled"];
   const finishedTasks = tasks.filter((i) => doneStatus.includes(i.status));
