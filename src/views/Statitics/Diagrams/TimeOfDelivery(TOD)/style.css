@@ -28,7 +28,6 @@ form.ComparisonOptions input[type="checkbox"]:checked {
 }
 
 form.ComparisonOptions input[type="checkbox"]:checked::before {
-  content: "\2713";
   /* Other styles */
   position: absolute;
   top: -10px;
