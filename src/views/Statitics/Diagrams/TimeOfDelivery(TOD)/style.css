@@ -36,7 +36,7 @@ form.ComparisonOptions input[type="checkbox"]:checked::before {
   color: white;
   font-size: 18px;
 }
-form {
+form.ComparisonOptions {
   width: 100%;
   display: flex;
   justify-content: center;

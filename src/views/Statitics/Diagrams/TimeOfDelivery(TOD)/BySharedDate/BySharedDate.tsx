@@ -129,7 +129,6 @@ const BySharedMonth = () => {
 
   useEffect(() => {
     let months = Months;
-    // chart data
 
     const data = {
       labels: months,
@@ -169,6 +168,7 @@ const BySharedMonth = () => {
         },
       },
     };
+
     setState({ ...state, options, data });
   }, [journies, state.comparisonBy]);
 
@@ -351,15 +351,6 @@ const BySharedMonth = () => {
       <form className="ComparisonOptions">
         <input
           type="checkbox"
-          id={"teams-bySharedDate"}
-          value={"Teams"}
-          name="teams-bySharedDate"
-          checked={state.comparisonBy === "Teams"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="teams-bySharedDate">Teams</label>
-        <input
-          type="checkbox"
           id="clients-bySharedDate"
           value={"Clients"}
           name="clients-bySharedDate"
@@ -367,6 +358,15 @@ const BySharedMonth = () => {
           onChange={onHandleChange}
         />
         <label htmlFor="clients-bySharedDate">Clients</label>
+        <input
+          type="checkbox"
+          id={"teams-bySharedDate"}
+          value={"Teams"}
+          name="teams-bySharedDate"
+          checked={state.comparisonBy === "Teams"}
+          onChange={onHandleChange}
+        />
+        <label htmlFor="teams-bySharedDate">Teams</label>
         <input
           id="pms-bySharedDate"
           type="checkbox"

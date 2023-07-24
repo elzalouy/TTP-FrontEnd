@@ -14,5 +14,21 @@ export const getJourneyLeadTime = (journey: Journey) => {
   } else return 0;
   return journeyLeadTime;
 };
+export const getRevisionOfTaskTime = () => {
+  // let noOfJOurnies
+};
+export const getMeetingDeadline = (tasks: Task[]) => {
+  const doneStatus = ["Shared", "Done", "Cancled"];
+  const finishedTasks = tasks.filter((i) => doneStatus.includes(i.status));
+  const finishedBefore = finishedTasks.filter((i) => {
+    let dif = getDifBetweenDates(
+      new Date(i.deadline),
+      new Date(i.movements[i.movements.length - 1]?.movedAt)
+    );
+    if (dif.difference.days > 0) return i;
+  });
 
-export const get_TLT = (tasks: Journey) => {};
+  return finishedBefore.length / finishedTasks.length >= 0
+    ? Math.floor((finishedBefore.length / finishedTasks.length) * 100)
+    : 0;
+};

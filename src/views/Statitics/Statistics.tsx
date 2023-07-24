@@ -1,11 +1,9 @@
 import { Grid, IconButton, Typography } from "@mui/material";
 import _ from "lodash";
 import React, { useState } from "react";
-import { selectAllProjects } from "src/models/Projects";
-import { useAppSelector } from "src/models/hooks";
-import IMAGES from "src/assets/img/Images";
 import TodByCategory from "./Diagrams/TimeOfDelivery(TOD)/ByCategory";
 import BySharedMonth from "./Diagrams/TimeOfDelivery(TOD)/BySharedDate/BySharedDate";
+import TrackClientHealthTable from "./Diagrams/ClientHealthTracker/TrackTable";
 
 type time = {
   hours: number;
@@ -51,14 +49,11 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <BySharedMonth />
         </Grid>
+        <Grid xs={12} height={"auto"}>
+          <TrackClientHealthTable />
+        </Grid>
       </Grid>
     </>
   );
 };
-const valueStyle = {
-  fontSize: 12,
-  fontWeight: 500,
-  float: "left",
-};
-
 export default Statistics;

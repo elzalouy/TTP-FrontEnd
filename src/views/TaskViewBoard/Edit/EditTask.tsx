@@ -229,7 +229,7 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
   };
   return (
     <>
-      <PopUp show={props.show} minWidthSize="50vw" maxHeight="90vh">
+      <PopUp show={props.show} minWidthSize="50vw" maxHeight="95vh">
         <Grid
           direction={"row"}
           justifyContent="space-between"

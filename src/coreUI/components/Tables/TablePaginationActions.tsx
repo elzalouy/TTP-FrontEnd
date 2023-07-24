@@ -14,7 +14,7 @@ interface TablePaginationProps {
   ) => void;
 }
 
-export default function TablePagination(props: TablePaginationProps) {
+export default function TablePaginationActions(props: TablePaginationProps) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 

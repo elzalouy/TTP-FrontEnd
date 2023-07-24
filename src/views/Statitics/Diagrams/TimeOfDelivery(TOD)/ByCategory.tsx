@@ -257,16 +257,6 @@ const TodByCategory = () => {
       <form className="ComparisonOptions">
         <input
           type="checkbox"
-          id={"teams"}
-          value={"Teams"}
-          name="teams"
-          checked={state.comparisonBy === "Teams"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="teams">Teams</label>
-
-        <input
-          type="checkbox"
           id="clients"
           value={"Clients"}
           name="clients"
@@ -274,6 +264,15 @@ const TodByCategory = () => {
           onChange={onHandleChange}
         />
         <label htmlFor="clients">Clients</label>
+        <input
+          type="checkbox"
+          id={"teams"}
+          value={"Teams"}
+          name="teams"
+          checked={state.comparisonBy === "Teams"}
+          onChange={onHandleChange}
+        />
+        <label htmlFor="teams">Teams</label>
 
         <input
           id="pms"
