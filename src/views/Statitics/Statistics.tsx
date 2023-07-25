@@ -56,4 +56,5 @@ const Statistics = (props: any) => {
     </>
   );
 };
+
 export default Statistics;
