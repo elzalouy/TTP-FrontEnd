@@ -27,7 +27,8 @@ import { Client, selectAllClients } from "src/models/Clients";
 import { selectAllProjects } from "src/models/Projects";
 import TablePaginationActions from "src/coreUI/components/Tables/TablePaginationActions";
 import { getTaskJournies } from "src/helpers/generalUtils";
-import { getMeetingDeadline } from "../../utils";
+import { getJourneyLeadTime, getMeetingDeadline } from "../../utils";
+import { Journies } from "src/types/views/Statistics";
 
 interface HeadCell {
   id: string;
@@ -53,8 +54,8 @@ const TeableHeaderCells: readonly HeadCell[] = [
     label: "# of Projects",
   },
   {
-    id: "_ofTasks",
-    label: "# of Tasks",
+    id: "_OfJournies",
+    label: "# of journies",
   },
   {
     id: "averageTOD",
@@ -92,8 +93,8 @@ const TrackClientHealthTable = () => {
       clientName: string;
       lastBrief: string;
       _ofProjects: number;
-      _ofTasks: number;
-      averageTOD: number;
+      _OfJournies: number;
+      averageTOD: string;
       revision: number;
       meetDeadline: number;
     }[];
@@ -120,24 +121,31 @@ const TrackClientHealthTable = () => {
       clients: clients,
     };
     State.cells = clients.map((item) => {
-      let { lastBrief, _ofProjects, _ofTasks, meetDeadline } = getClientTrack(
-        item._id
-      );
+      let {
+        lastBrief,
+        _ofProjects,
+        _OfJournies,
+        meetDeadline,
+        averageTOD,
+        revision,
+      } = getClientTrack(item._id);
       let lastBriefDate = new Date(lastBrief);
       let localLastBriefDate = lastBriefDate.toLocaleDateString("en-US", {
         day: "numeric",
         month: "long",
         year: "numeric",
       });
+      let totalDays = Math.floor(averageTOD / 24);
+      let totalHours = Math.floor(averageTOD % 24);
       return {
         clientId: item._id ?? "",
         clientName: item.clientName,
-        revision: 0,
-        meetDeadline: meetDeadline,
+        meetDeadline,
         lastBrief: localLastBriefDate,
-        averageTOD: 0,
-        _ofTasks: _ofTasks,
-        _ofProjects: _ofProjects,
+        averageTOD: `${totalDays} Days, ${totalHours} Hours`,
+        _OfJournies,
+        _ofProjects,
+        revision,
       };
     });
     setState(State);
@@ -154,22 +162,42 @@ const TrackClientHealthTable = () => {
 
   const getClientTrack = (clientId: string) => {
     setState({ ...state, loading: true });
-    let projectIds = projects
+    let projectIds: string[],
+      tasks,
+      orderedTasks,
+      journies: {
+        id: string;
+        name: string;
+        journies: Journies;
+      }[],
+      clientJournies,
+      tlts,
+      averageTOD,
+      revisionJournies,
+      revision;
+    projectIds = projects
       .filter((i: Project) => i.clientId === clientId)
       .map((i: Project) => i._id);
-    let tasks = allTasks.filter((item: Task) =>
+    tasks = allTasks.filter((item: Task) =>
       projectIds.includes(item.projectId)
     );
-    let orderedTasks = _.orderBy(tasks, "createdAt");
+    orderedTasks = _.orderBy(tasks, "createdAt");
 
-    let journies = tasks.map((i) => getTaskJournies(i));
-    let clientJournies = _.flattenDeep(journies.map((i) => i.journies));
+    journies = tasks.map((i) => getTaskJournies(i));
+    clientJournies = _.flattenDeep(journies.map((i) => i.journies));
+    tlts = clientJournies.map((item) => getJourneyLeadTime(item));
+    averageTOD =
+      _.sum(tlts) > 0 ? Math.floor(_.sum(tlts) / journies.length) : 0;
     const meet = getMeetingDeadline(tasks);
+    revisionJournies = journies.filter((i) => i.journies.length > 1);
+    revision = Math.floor((revisionJournies.length / journies.length) * 100);
     return {
       lastBrief: orderedTasks[orderedTasks.length - 1]?.createdAt,
       _ofProjects: projectIds.length,
-      _ofTasks: tasks.length,
+      _OfJournies: clientJournies.length,
       meetDeadline: meet,
+      averageTOD,
+      revision,
     };
   };
 
@@ -316,7 +344,7 @@ const TrackClientHealthTable = () => {
                 meetDeadline,
                 lastBrief,
                 averageTOD,
-                _ofTasks,
+                _OfJournies,
                 _ofProjects,
               } = item;
               return (
@@ -411,7 +439,7 @@ const TrackClientHealthTable = () => {
                         height={20}
                       />
                     ) : (
-                      <>{_ofTasks}</>
+                      <>{_OfJournies}</>
                     )}
                   </TableCell>
                   <TableCell
