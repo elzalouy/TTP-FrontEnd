@@ -46,35 +46,32 @@ const EditDeadline: FC<EditDeadlineProps> = ({
         </Typography>
       </Grid>
       <Grid>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <DateInput
-              label={"Deadline date"}
-              name="deadline"
-              control={control}
-              placeholder="Deadline"
-              register={register}
-              setValue={setValue}
+        <div>
+          <DateInput
+            label={"Deadline date"}
+            name="deadline"
+            control={control}
+            placeholder="Deadline"
+            register={register}
+            setValue={setValue}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              size="large"
+              type="main"
+              loading={loading}
+              label="Done"
+              onClick={() => handleSubmit(watch().deadline)}
+              dataTestId="edit-task-submit"
             />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                size="large"
-                type="main"
-                loading={loading}
-                form={{ type: "submit", name: "submit" }}
-                label="Done"
-                onClick={handleSubmit}
-                dataTestId="edit-task-submit"
-              />
-            </div>
           </div>
-        </form>
+        </div>
       </Grid>
     </PopUp>
   );

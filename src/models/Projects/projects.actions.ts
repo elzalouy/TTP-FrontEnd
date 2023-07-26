@@ -346,12 +346,14 @@ export const moveTask = createAsyncThunk<any, any, any>(
       newList: IList;
       task: Task;
       deadline?: string;
+      setDeadlineChange?: any;
     },
     { rejectWithValue, dispatch }
   ) => {
     try {
-      let { dep, newList, task, deadline } = args;
-      if (task && dep && newList && task) {
+      let { dep, newList, task, deadline, setDeadlineChange } = args;
+      console.log({ task, dep, newList });
+      if (task && dep && newList) {
         let Data: any = {
           cardId: task.cardId,
           listId: newList.listId,
@@ -359,19 +361,23 @@ export const moveTask = createAsyncThunk<any, any, any>(
           department: dep,
         };
         if (deadline) Data.deadline = deadline;
+
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
-        if (moveResult?.status === 401 || moveResult?.status === 403) {
-          dispatch(logout(true));
-          return rejectWithValue("Un Authorized");
-        }
+        console.log({ moveResult });
         if (moveResult.ok) {
           dispatch(fireMoveTaskHook(""));
           let returnValue: Task = { ...task };
           returnValue.status = newList.name;
           returnValue.listId = newList.listId;
+          if (deadline) returnValue.deadline = deadline;
+          if (setDeadlineChange) setDeadlineChange();
           return returnValue;
-        } else throw moveResult.problem;
-      }
+        } else rejectWithValue(task);
+        if (moveResult?.status === 401 || moveResult?.status === 403) {
+          dispatch(logout(true));
+          return rejectWithValue("Un Authorized");
+        }
+      } else rejectWithValue("missed data");
     } catch (error: any) {
       ToastError(error);
       return rejectWithValue(error);

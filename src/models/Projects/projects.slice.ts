@@ -494,7 +494,9 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(editTaskFromBoard.pending, (state) => {
       state.editTaskLoading = true;
     });
-    builder.addCase(moveTask.rejected, (state, action) => {});
+    builder.addCase(moveTask.rejected, (state) => {
+      state.allTasks = [...state.allTasks];
+    });
     builder.addCase(moveTask.fulfilled, (state, action) => {
       let index = state.allTasks.findIndex(
         (item) => item._id === action.payload._id

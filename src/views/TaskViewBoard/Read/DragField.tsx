@@ -58,7 +58,8 @@ const DragField = (props: DragFieldProps) => {
     showPopup: "none" | "flex";
     value: string;
     loading: boolean;
-  }>({ showPopup: "none", value: "", loading: false });
+    changed: boolean;
+  }>({ showPopup: "none", value: "", loading: false, changed: false });
   useEffect(() => {
     let projectTasks = allTasks.filter((item) => item.projectId === projectId);
     setTasks(projectTasks);
@@ -141,7 +142,6 @@ const DragField = (props: DragFieldProps) => {
       );
     }
   };
-
   const setMoveToMap = (id: string, status: string) => {
     let map = new Map(moveMap);
     let task = tasks.find((item) => item._id === id);
@@ -175,14 +175,30 @@ const DragField = (props: DragFieldProps) => {
       ["Done", "Shared", "Cancled"].includes(task.status)
     ) {
       setMove({ dep, newList, task });
-      setDeadlineChange({ showPopup: "flex", value: "", loading: false });
+      setDeadlineChange({
+        ...deadlineChange,
+        showPopup: "flex",
+        value: "",
+        loading: false,
+      });
     } else dispatch(moveTask({ dep, newList, task }));
   };
 
-  const onSumbitDeadlineChange = (e: any) => {
+  const onSumbitDeadlineChange = (e: string) => {
+    console.log({ e });
     setDeadlineChange({ ...deadlineChange, loading: true });
-    console.log(e);
-    // dispatch(moveTask({ move, deadline: "" }));
+    dispatch(
+      moveTask({
+        ...move,
+        deadline: e,
+        setDeadlineChange: () =>
+          setDeadlineChange({
+            ...deadlineChange,
+            loading: false,
+            changed: true,
+          }),
+      })
+    );
   };
 
   return (
@@ -268,9 +284,19 @@ const DragField = (props: DragFieldProps) => {
       <EditDeadline
         loading={deadlineChange.loading}
         show={deadlineChange.showPopup}
-        onCloseModel={() =>
-          setDeadlineChange({ ...deadlineChange, showPopup: "none" })
-        }
+        onCloseModel={() => {
+          setDeadlineChange({ ...deadlineChange, showPopup: "none" });
+          let map = { ...moveMap };
+          let keys = map.keys();
+          let lastKey;
+          for (let key in keys) {
+            lastKey = key;
+          }
+          if (lastKey) {
+            map.delete(lastKey);
+            setMoveMap(map);
+          }
+        }}
         handleSubmit={onSumbitDeadlineChange}
       />
     </>
