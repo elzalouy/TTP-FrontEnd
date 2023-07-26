@@ -185,7 +185,6 @@ const DragField = (props: DragFieldProps) => {
   };
 
   const onSumbitDeadlineChange = (e: string) => {
-    console.log({ e });
     setDeadlineChange({ ...deadlineChange, loading: true });
     dispatch(
       moveTask({
