@@ -154,8 +154,7 @@ const TrackClientHealthTable = () => {
   // React.useEffect(() => {
   //   if (
   //     state.cells.length === clients.length &&
-  //     state.cells[state.cells.length - 1] &&
-  //     state.cells[state.cells.length - 1].lastBrief !== "Invalid Date"
+  //     state.cells[state.cells.length - 1]
   //   )
   //     setState({ ...state, loading: false });
   // }, [state.cells]);
@@ -196,7 +195,8 @@ const TrackClientHealthTable = () => {
         100
     );
     revisionJournies = journies.filter((i) => i.journies.length > 1);
-    revision = Math.floor((revisionJournies.length / journies.length) * 100);
+    revision =
+      Math.floor((revisionJournies.length / journies.length) * 100) ?? 0;
     return {
       lastBrief: orderedTasks[orderedTasks.length - 1]?.createdAt,
       _ofProjects: projectIds.length,
@@ -407,7 +407,7 @@ const TrackClientHealthTable = () => {
                         height={20}
                       />
                     ) : (
-                      <>{lastBrief}</>
+                      <>{lastBrief !== "Invalid Date" ? lastBrief : ""}</>
                     )}
                   </TableCell>
                   <TableCell
@@ -483,7 +483,7 @@ const TrackClientHealthTable = () => {
                         height={20}
                       />
                     ) : (
-                      <>{revision ?? 0} %</>
+                      <>{revision >= 0 ? revision : 0} %</>
                     )}
                   </TableCell>
                   <TableCell
@@ -502,7 +502,7 @@ const TrackClientHealthTable = () => {
                         height={20}
                       />
                     ) : (
-                      <>{meetDeadline} %</>
+                      <>{meetDeadline >= 0 ? meetDeadline : 0} %</>
                     )}
                   </TableCell>
                 </TableRow>
