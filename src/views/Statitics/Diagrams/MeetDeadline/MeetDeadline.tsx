@@ -106,7 +106,11 @@ const MeetDeadline = () => {
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
           : undefined,
-        journeyDeadline: last,
+        journeyDeadline: last
+          ? new Date(last).toLocaleString("en-us", {
+              month: "long",
+            })
+          : undefined,
       };
     });
     setJournies(flattenedJournies);
@@ -165,8 +169,12 @@ const MeetDeadline = () => {
           },
         },
         y: {
+          min: 0,
+          max: 100,
           ticks: {
-            beginAtZero: true,
+            callback: function (value: any, index: any, values: any) {
+              return value + "%";
+            },
           },
         },
       },
@@ -319,6 +327,12 @@ const MeetDeadline = () => {
         label: team.name,
         data: datasetData.map((i) => {
           let result = getMeetingDeadline(i.journies);
+          console.log({
+            journies: i.journies.length,
+            meet: result.notPassedDeadline.length,
+            notmeet: result.passedDeadline.length,
+          });
+
           return Math.floor(
             (result.notPassedDeadline.length / i.journies.length) * 100
           );
