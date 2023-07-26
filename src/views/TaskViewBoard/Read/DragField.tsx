@@ -196,6 +196,7 @@ const DragField = (props: DragFieldProps) => {
             ...deadlineChange,
             loading: false,
             changed: true,
+            showPopup: "none",
           }),
       })
     );
