@@ -16,6 +16,7 @@ import {
   moveListsObject,
 } from "src/types/views/BoardView";
 import { IDepartmentState, IList } from "src/types/models/Departments";
+import EditDeadline from "../Edit/EditDeadline";
 
 type DragFieldProps = {
   props: RouteComponentProps<{ id: string }>;
@@ -48,6 +49,16 @@ const DragField = (props: DragFieldProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [moveMap, setMoveMap] = useState<Map<string, moveObject>>(new Map());
+  const [move, setMove] = useState<{
+    task: Task;
+    dep: IDepartmentState;
+    newList: IList;
+  }>();
+  const [deadlineChange, setDeadlineChange] = useState<{
+    showPopup: "none" | "flex";
+    value: string;
+    loading: boolean;
+  }>({ showPopup: "none", value: "", loading: false });
   useEffect(() => {
     let projectTasks = allTasks.filter((item) => item.projectId === projectId);
     setTasks(projectTasks);
@@ -159,86 +170,110 @@ const DragField = (props: DragFieldProps) => {
       moveAction(taskDepartment, newTaskListInDep, task);
   };
   const moveAction = (dep: IDepartmentState, newList: IList, task: Task) => {
-    dispatch(moveTask({ dep, newList, task }));
+    if (
+      newList.name === "Tasks Board" &&
+      ["Done", "Shared", "Cancled"].includes(task.status)
+    ) {
+      setMove({ dep, newList, task });
+      setDeadlineChange({ showPopup: "flex", value: "", loading: false });
+    } else dispatch(moveTask({ dep, newList, task }));
   };
+
+  const onSumbitDeadlineChange = (e: any) => {
+    setDeadlineChange({ ...deadlineChange, loading: true });
+    console.log(e);
+    // dispatch(moveTask({ move, deadline: "" }));
+  };
+
   return (
-    <Grid
-      item
-      xs={12}
-      sx={{
-        width: "100%",
-        height: "auto",
-        overflowX: "auto",
-        pr: 10,
-        position: "relative",
-        display: "inline-flex",
-        transition: " all 0.5s ease !important",
-      }}
-      ref={containerRef}
-    >
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-        <Box sx={{ display: "flex", width: "100%" }}>
-          {Object.entries(columns).map(([columnId, column], index) => {
-            return (
-              <Droppable
-                droppableId={columnId}
-                key={columnId}
-                direction="horizontal"
-              >
-                {(provided, snapshot) => {
-                  let CreateTask: React.FC = column.NewTask
-                    ? column.NewTask
-                    : () => {
-                        return <></>;
-                      };
-                  return (
-                    <Grid
-                      ref={provided.innerRef}
-                      className={column?.body}
-                      key={columnId}
-                      xs
-                      minWidth={"312px"}
-                      height="auto"
-                      // sx={{ overflowY: "scroll" }}
-                      data-test-id="task-card-container"
-                      {...provided.droppableProps}
-                    >
-                      <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
+    <>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          width: "100%",
+          height: "auto",
+          overflowX: "auto",
+          pr: 10,
+          position: "relative",
+          display: "inline-flex",
+          transition: " all 0.5s ease !important",
+        }}
+        ref={containerRef}
+      >
+        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+          <Box sx={{ display: "flex", width: "100%" }}>
+            {Object.entries(columns).map(([columnId, column], index) => {
+              return (
+                <Droppable
+                  droppableId={columnId}
+                  key={columnId}
+                  direction="horizontal"
+                >
+                  {(provided, snapshot) => {
+                    let CreateTask: React.FC = column.NewTask
+                      ? column.NewTask
+                      : () => {
+                          return <></>;
+                        };
+                    return (
+                      <Grid
+                        ref={provided.innerRef}
+                        className={column?.body}
+                        key={columnId}
+                        xs
+                        minWidth={"312px"}
+                        height="auto"
+                        data-test-id="task-card-container"
+                        {...provided.droppableProps}
                       >
-                        <Typography style={{ padding: "14px" }}>
-                          <span className={column?.header}>{column.name}</span>{" "}
-                          {column.items?.length}
-                        </Typography>
-                      </Stack>
-                      <CreateTask />
-                      {column?.items &&
-                        column?.items?.map((item: Task, index: number) => {
-                          return (
-                            <Box key={item._id} className={column.border}>
-                              <TaskCard
-                                project={project}
-                                key={item?._id}
-                                item={item}
-                                index={index}
-                                footerStyle={column?.footer}
-                                column={column}
-                              />
-                            </Box>
-                          );
-                        })}
-                      {provided.placeholder}
-                    </Grid>
-                  );
-                }}
-              </Droppable>
-            );
-          })}
-        </Box>
-      </DragDropContext>
-    </Grid>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Typography style={{ padding: "14px" }}>
+                            <span className={column?.header}>
+                              {column.name}
+                            </span>{" "}
+                            {column.items?.length}
+                          </Typography>
+                        </Stack>
+                        <CreateTask />
+                        {column?.items &&
+                          column?.items?.map((item: Task, index: number) => {
+                            return (
+                              <Box key={item._id} className={column.border}>
+                                <TaskCard
+                                  project={project}
+                                  key={item?._id}
+                                  item={item}
+                                  index={index}
+                                  footerStyle={column?.footer}
+                                  column={column}
+                                />
+                              </Box>
+                            );
+                          })}
+                        {provided.placeholder}
+                      </Grid>
+                    );
+                  }}
+                </Droppable>
+              );
+            })}
+          </Box>
+        </DragDropContext>
+      </Grid>
+      <EditDeadline
+        loading={deadlineChange.loading}
+        show={deadlineChange.showPopup}
+        onCloseModel={() =>
+          setDeadlineChange({ ...deadlineChange, showPopup: "none" })
+        }
+        handleSubmit={onSumbitDeadlineChange}
+      />
+    </>
   );
 };
 export default DragField;

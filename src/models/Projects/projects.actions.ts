@@ -341,11 +341,16 @@ export const editProject = createAsyncThunk<any, any, any>(
 export const moveTask = createAsyncThunk<any, any, any>(
   "tasks/moveTasks",
   async (
-    args: { dep: IDepartmentState; newList: IList; task: Task },
+    args: {
+      dep: IDepartmentState;
+      newList: IList;
+      task: Task;
+      deadline?: string;
+    },
     { rejectWithValue, dispatch }
   ) => {
     try {
-      let { dep, newList, task } = args;
+      let { dep, newList, task, deadline } = args;
       if (task && dep && newList && task) {
         let Data: any = {
           cardId: task.cardId,
@@ -353,6 +358,7 @@ export const moveTask = createAsyncThunk<any, any, any>(
           status: newList.name,
           department: dep,
         };
+        if (deadline) Data.deadline = deadline;
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
         if (moveResult?.status === 401 || moveResult?.status === 403) {
           dispatch(logout(true));

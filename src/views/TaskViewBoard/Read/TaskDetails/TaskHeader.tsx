@@ -14,24 +14,13 @@ interface TaskHeaderProps {
 
 const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
   const users = useAppSelector(selectManagers);
+
   const isMissedDelivery = () => {
     const remainingDaysFloated =
       (new Date(task.deadline).getTime() - new Date().getTime()) /
       (1000 * 60 * 60 * 24);
     const remainingDays = Math.round(remainingDaysFloated + 1);
-    const isDeadlineChanged =
-      task.deadlineChain &&
-      task?.deadlineChain?.filter(
-        (item) =>
-          item.trelloMember === false &&
-          users?.find(
-            (user) =>
-              user._id === item.userId && ["OM", "PM"].includes(user.role)
-          ) &&
-          item.before &&
-          new Date(item?.before).getTime() < new Date(item.current).getTime()
-      )?.length !== 0;
-    return isDeadlineChanged || remainingDays < 0;
+    return remainingDays < 0;
   };
 
   return (
