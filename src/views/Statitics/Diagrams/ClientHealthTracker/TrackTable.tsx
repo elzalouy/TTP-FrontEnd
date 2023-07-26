@@ -99,7 +99,7 @@ const TrackClientHealthTable = () => {
       meetDeadline: number;
     }[];
   }>({
-    loading: true,
+    loading: false,
     page: 0,
     rowsPerPage: 8,
     order: Order.asc,
@@ -161,7 +161,7 @@ const TrackClientHealthTable = () => {
   // }, [state.cells]);
 
   const getClientTrack = (clientId: string) => {
-    setState({ ...state, loading: true });
+    // setState({ ...state, loading: true });
     let projectIds: string[],
       tasks,
       orderedTasks,
