@@ -151,14 +151,14 @@ const TrackClientHealthTable = () => {
     setState(State);
   }, [allTasks, projects, categories, clients]);
 
-  React.useEffect(() => {
-    if (
-      state.cells.length === clients.length &&
-      state.cells[state.cells.length - 1] &&
-      state.cells[state.cells.length - 1].lastBrief !== "Invalid Date"
-    )
-      setState({ ...state, loading: false });
-  }, [state.cells]);
+  // React.useEffect(() => {
+  //   if (
+  //     state.cells.length === clients.length &&
+  //     state.cells[state.cells.length - 1] &&
+  //     state.cells[state.cells.length - 1].lastBrief !== "Invalid Date"
+  //   )
+  //     setState({ ...state, loading: false });
+  // }, [state.cells]);
 
   const getClientTrack = (clientId: string) => {
     setState({ ...state, loading: true });
