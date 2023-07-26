@@ -174,7 +174,8 @@ const TrackClientHealthTable = () => {
       tlts,
       averageTOD,
       revisionJournies,
-      revision;
+      revision,
+      meetDeadlineResult;
     projectIds = projects
       .filter((i: Project) => i.clientId === clientId)
       .map((i: Project) => i._id);
@@ -188,7 +189,12 @@ const TrackClientHealthTable = () => {
     tlts = clientJournies.map((item) => getJourneyLeadTime(item));
     averageTOD =
       _.sum(tlts) > 0 ? Math.floor(_.sum(tlts) / journies.length) : 0;
-    const meet = getMeetingDeadline(tasks);
+
+    meetDeadlineResult = getMeetingDeadline(clientJournies);
+    const meet = Math.floor(
+      (meetDeadlineResult.notPassedDeadline.length / clientJournies.length) *
+        100
+    );
     revisionJournies = journies.filter((i) => i.journies.length > 1);
     revision = Math.floor((revisionJournies.length / journies.length) * 100);
     return {

@@ -15,20 +15,28 @@ export const getJourneyLeadTime = (journey: Journey) => {
   return journeyLeadTime;
 };
 
-export const getRevisionOfTaskTime = () => {};
-
-export const getMeetingDeadline = (tasks: Task[]) => {
-  const doneStatus = ["Shared", "Done", "Cancled"];
-  const finishedTasks = tasks.filter((i) => doneStatus.includes(i.status));
-  const finishedBefore = finishedTasks.filter((i) => {
-    let dif = getDifBetweenDates(
-      new Date(i.deadline),
-      new Date(i.movements[i.movements.length - 1]?.movedAt)
-    );
-    if (dif.difference.days > 0) return i;
+export const getMeetingDeadline = (journies: Journey[]) => {
+  let passedDeadline = journies.filter((i) => {
+    let journeyDeadline = i.movements[i.movements.length - 1].journeyDeadline;
+    let movedAt = i.movements[i.movements.length - 1].journeyDeadline;
+    if (journeyDeadline && movedAt) {
+      let diff = getDifBetweenDates(
+        new Date(movedAt),
+        new Date(journeyDeadline)
+      );
+      if (diff.totalHours > 24) return i;
+    }
   });
-
-  return finishedBefore.length / finishedTasks.length >= 0
-    ? Math.floor((finishedBefore.length / finishedTasks.length) * 100)
-    : 0;
+  let notPassedDeadline = journies.filter((i) => {
+    let journeyDeadline = i.movements[i.movements.length - 1].journeyDeadline;
+    let movedAt = i.movements[i.movements.length - 1].journeyDeadline;
+    if (journeyDeadline && movedAt) {
+      let diff = getDifBetweenDates(
+        new Date(movedAt),
+        new Date(journeyDeadline)
+      );
+      if (diff.totalHours < 24) return i;
+    }
+  });
+  return { passedDeadline, notPassedDeadline };
 };

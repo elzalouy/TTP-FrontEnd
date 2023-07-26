@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Grid, IconButton, Typography } from "@mui/material";
-import "../../../style.css";
+import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
 import { ITeam } from "src/types/models/Departments";
 import _ from "lodash";
@@ -17,9 +17,8 @@ import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
 import { Manager, selectPMs } from "src/models/Managers";
-import { getJourneyLeadTime } from "../../../utils";
+import { getMeetingDeadline } from "../../utils";
 import IMAGES from "src/assets/img/Images";
-import FilterBar from "./FilterMenu";
 
 interface StateType {
   data: {
@@ -48,7 +47,7 @@ interface ITaskInfo extends Task {
  * @param param0
  * @returns
  */
-const BySharedMonth = () => {
+const MeetDeadline = () => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
@@ -99,11 +98,15 @@ const BySharedMonth = () => {
           item.movements,
           (move: TaskMovement) => move.status === "Shared"
         )?.movedAt;
+      let last =
+        item.movements[item.movements.length - 1]?.journeyDeadline &&
+        item.movements[item.movements.length - 1].journeyDeadline;
       return {
         ...item,
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
           : undefined,
+        journeyDeadline: last,
       };
     });
     setJournies(flattenedJournies);
@@ -140,19 +143,19 @@ const BySharedMonth = () => {
           : onGetDatasetsByTeams(),
     };
     const options = {
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function (context: any) {
-              const value: number = context.dataset.data[context.dataIndex];
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return `Days: ${days}, Hours: ${hours}`;
-            },
-          },
-        },
-      },
+      //   plugins: {
+      //     tooltip: {
+      //       callbacks: {
+      //         label: function (context: any) {
+      //           const value: number = context.dataset.data[context.dataIndex];
+      //           let totalHours = value * 24;
+      //           let days = Math.floor(totalHours / 24);
+      //           const hours = Math.floor(totalHours % 24);
+      //           return `Days: ${days}, Hours: ${hours}`;
+      //         },
+      //       },
+      //     },
+      //   },
       scales: {
         x: {
           type: "category",
@@ -217,7 +220,7 @@ const BySharedMonth = () => {
         (i) => i.projectManager && i.projectManager === manager._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
+        ..._.groupBy(journiesData, "journeyDeadline"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -230,9 +233,12 @@ const BySharedMonth = () => {
       });
       return {
         label: manager.name,
-        data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
-        ),
+        data: datasetData.map((i) => {
+          let result = getMeetingDeadline(i.journies);
+          return Math.floor(
+            (result.notPassedDeadline.length / i.journies.length) * 100
+          );
+        }),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -256,7 +262,7 @@ const BySharedMonth = () => {
         (i) => i.clientId && i.clientId === client._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
+        ..._.groupBy(journiesData, "journeyDeadline"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -269,9 +275,12 @@ const BySharedMonth = () => {
       });
       return {
         label: client.clientName,
-        data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
-        ),
+        data: datasetData.map((i) => {
+          let result = getMeetingDeadline(i.journies);
+          return Math.floor(
+            (result.notPassedDeadline.length / i.journies.length) * 100
+          );
+        }),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -295,7 +304,7 @@ const BySharedMonth = () => {
         (i) => i.teamId && i.teamId === team._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
+        ..._.groupBy(journiesData, "journeyDeadline"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -308,9 +317,12 @@ const BySharedMonth = () => {
       });
       return {
         label: team.name,
-        data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
-        ),
+        data: datasetData.map((i) => {
+          let result = getMeetingDeadline(i.journies);
+          return Math.floor(
+            (result.notPassedDeadline.length / i.journies.length) * 100
+          );
+        }),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -337,7 +349,7 @@ const BySharedMonth = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Time of delivery by Shared Month
+        Meeting Deadline
       </Typography>
       <Grid xs={2}>
         <IconButton
@@ -348,47 +360,38 @@ const BySharedMonth = () => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Bar options={state.options} data={state.data} />
+      <Line options={state.options} data={state.data} />
       <form className="ComparisonOptions">
         <input
           type="checkbox"
-          id="clients-bySharedDate"
-          value={"Clients"}
-          name="clients-bySharedDate"
-          checked={state.comparisonBy === "Clients"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="clients-bySharedDate">Clients</label>
-        <input
-          type="checkbox"
-          id={"teams-bySharedDate"}
+          id={"teams-meetDeadline"}
           value={"Teams"}
-          name="teams-bySharedDate"
+          name="teams-meetDeadline"
           checked={state.comparisonBy === "Teams"}
           onChange={onHandleChange}
         />
-        <label htmlFor="teams-bySharedDate">Teams</label>
+        <label htmlFor="teams-meetDeadline">Teams</label>
         <input
-          id="pms-bySharedDate"
+          id="pms-meetDeadline"
           type="checkbox"
           value={"PMs"}
-          name="pms-bySharedDate"
+          name="pms-meetDeadline"
           checked={state.comparisonBy === "PMs"}
           onChange={onHandleChange}
         />
-        <label htmlFor="pms-bySharedDate">Project Managers</label>
+        <label htmlFor="pms-meetDeadline">Project Managers</label>
       </form>
-      <FilterBar
+      {/* <FilterBar
         options={{ clients, managers, categories, teams }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}
-      />
+      /> */}
     </Grid>
   );
 };
 
-export default BySharedMonth;
+export default MeetDeadline;
 
 const filterBtnStyle = {
   bgcolor: "#FAFAFB",

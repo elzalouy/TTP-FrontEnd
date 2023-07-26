@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import "./style.css";
+import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllCategories } from "src/models/Categories";

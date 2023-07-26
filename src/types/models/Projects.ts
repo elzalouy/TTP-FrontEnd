@@ -37,6 +37,7 @@ export interface TaskMovement {
   _id: string;
   status: string;
   movedAt: Date;
+  journeyDeadline?: string;
 }
 
 export interface IProjectsPage {
