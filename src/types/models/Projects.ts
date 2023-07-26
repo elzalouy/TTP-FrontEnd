@@ -9,13 +9,6 @@ export interface TaskFile {
   url: string;
   error?: boolean;
 }
-export interface deadlineChain {
-  userId: string;
-  name: string;
-  before: Date;
-  current: Date;
-  trelloMember: boolean;
-}
 export interface Task {
   _id: string;
   name: string;
@@ -39,12 +32,12 @@ export interface Task {
   projectName?: string;
   movements: TaskMovement[];
   assignedAt?: Date | number;
-  deadlineChain?: deadlineChain[];
 }
 export interface TaskMovement {
   _id: string;
   status: string;
   movedAt: Date;
+  journeyDeadline?: string;
 }
 
 export interface IProjectsPage {
