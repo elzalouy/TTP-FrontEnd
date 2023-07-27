@@ -10,7 +10,7 @@ export type Journey = {
   taskLeadTime?: number;
   teamId?: string;
   sharedAtMonth?: string;
-  journeyDeadline?: string;
+  journeyFinishedAt: string | null;
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {

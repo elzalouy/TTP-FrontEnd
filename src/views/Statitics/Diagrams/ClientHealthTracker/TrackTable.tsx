@@ -1,11 +1,10 @@
 import {
-  Box,
-  Checkbox,
+  Grid,
+  IconButton,
   Skeleton,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableFooter,
   TableHead,
   TablePagination,
@@ -16,7 +15,6 @@ import {
 import "../../../TasksListView/Read/TasksListView.css";
 import * as React from "react";
 import "src/App/App.css";
-import _, { orderBy } from "lodash";
 import { useHistory } from "react-router";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useAppSelector } from "src/models/hooks";
@@ -28,11 +26,15 @@ import { selectAllProjects } from "src/models/Projects";
 import TablePaginationActions from "src/coreUI/components/Tables/TablePaginationActions";
 import { getTaskJournies } from "src/helpers/generalUtils";
 import { getJourneyLeadTime, getMeetingDeadline } from "../../utils";
-import { Journies } from "src/types/views/Statistics";
+import { ITaskInfo, Journies } from "src/types/views/Statistics";
+import IMAGES from "src/assets/img/Images";
+import FiltersBar from "./FilterMenu";
+import _ from "lodash";
 
 interface HeadCell {
   id: string;
   label: string;
+  type: string;
 }
 enum Order {
   "asc",
@@ -44,71 +46,111 @@ const TeableHeaderCells: readonly HeadCell[] = [
   {
     id: "clientName",
     label: "Client Name",
+    type: "string",
   },
   {
     id: "lastBrief",
     label: "Last Brief",
+    type: "number",
   },
   {
     id: "_ofProjects",
     label: "# of Projects",
+    type: "number",
   },
   {
     id: "_OfJournies",
     label: "# of journies",
+    type: "number",
   },
   {
     id: "averageTOD",
     label: "Average TOD",
+    type: "number",
   },
   {
     id: "revision",
     label: "Revision %",
+    type: "number",
   },
   {
     id: "meetDeadline",
     label: "Meet Deadline",
+    type: "number",
   },
 ];
 
+type stateType = {
+  popup: boolean;
+  loading: boolean;
+  page: number;
+  rowsPerPage: number;
+  order: Order;
+  orderBy: string;
+  clients: Client[];
+  projects: Project[];
+  tasks: Task[];
+  journeys: { id: string; name: string; journies: Journies }[];
+  cells: {
+    clientId: string;
+    clientName: string;
+    lastBrief: number;
+    _ofProjects: number;
+    _OfJournies: number;
+    averageTOD: string;
+    revision: number;
+    meetDeadline: number;
+  }[];
+  filter: {
+    startDate: string;
+    endDate: string;
+  };
+};
 const TrackClientHealthTable = () => {
   const history = useHistory();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const categories = useAppSelector(selectAllCategories);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const clients = useAppSelector(selectAllClients);
 
-  const [state, setState] = React.useState<{
-    loading: boolean;
-    page: number;
-    rowsPerPage: number;
-    order: Order;
-    orderBy: string;
-    clients: Client[];
-    projects: Project[];
-    tasks: Task[];
-    cells: {
-      clientId: string;
-      clientName: string;
-      lastBrief: string;
-      _ofProjects: number;
-      _OfJournies: number;
-      averageTOD: string;
-      revision: number;
-      meetDeadline: number;
-    }[];
-  }>({
-    loading: false,
+  const [state, setState] = React.useState<stateType>({
+    popup: false,
+    loading: true,
     page: 0,
     rowsPerPage: 8,
     order: Order.asc,
-    orderBy: "name",
+    orderBy: "clientName",
     tasks: [],
     projects: [],
     clients: [],
     cells: [],
+    journeys: [],
+    filter: {
+      startDate: "",
+      endDate: "",
+    },
   });
+
+  React.useEffect(() => {
+    if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
+      let tasks: ITaskInfo[] = allTasks.map((i) => {
+        let p = projects.find((p) => p._id === i.projectId);
+        return {
+          ...i,
+          clientId: p?.clientId,
+          projectManager: p?.projectManager,
+        };
+      });
+      let journeys = allTasks.map((i) => getTaskJournies(i));
+      setState({
+        ...state,
+        clients: clients,
+        tasks: allTasks,
+        projects: projects,
+        journeys: journeys,
+      });
+    }
+  }, [allTasks, projects, clients]);
 
   React.useEffect(() => {
     let State = {
@@ -120,71 +162,59 @@ const TrackClientHealthTable = () => {
       projects: projects,
       clients: clients,
     };
-    State.cells = clients.map((item) => {
-      let {
-        lastBrief,
-        _ofProjects,
-        _OfJournies,
-        meetDeadline,
-        averageTOD,
-        revision,
-      } = getClientTrack(item._id);
-      let lastBriefDate = new Date(lastBrief);
-      let localLastBriefDate = lastBriefDate.toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-      let totalDays = Math.floor(averageTOD / 24);
-      let totalHours = Math.floor(averageTOD % 24);
-      return {
-        clientId: item._id ?? "",
-        clientName: item.clientName,
-        meetDeadline,
-        lastBrief: localLastBriefDate,
-        averageTOD: `${totalDays} Days, ${totalHours} Hours`,
-        _OfJournies,
-        _ofProjects,
-        revision,
-      };
-    });
-    setState(State);
-  }, [allTasks, projects, categories, clients]);
+    State.cells = _.orderBy(
+      clients.map((item) => {
+        let {
+          lastBrief,
+          _ofProjects,
+          _OfJournies,
+          meetDeadline,
+          averageTOD,
+          revision,
+        } = getClientTrack(item._id);
 
-  // React.useEffect(() => {
-  //   if (
-  //     state.cells.length === clients.length &&
-  //     state.cells[state.cells.length - 1]
-  //   )
-  //     setState({ ...state, loading: false });
-  // }, [state.cells]);
+        let totalDays = Math.floor(averageTOD / 24);
+        let totalHours = Math.floor(averageTOD % 24);
+        return {
+          clientId: item._id ?? "",
+          clientName: item.clientName,
+          meetDeadline,
+          lastBrief: lastBrief,
+          averageTOD: `${totalDays} Days, ${totalHours} Hours`,
+          _OfJournies,
+          _ofProjects,
+          revision,
+        };
+      }),
+      ["clientName"],
+      "asc"
+    );
+    State.loading = false;
+    setState(State);
+  }, [state.journeys]);
 
   const getClientTrack = (clientId: string) => {
     // setState({ ...state, loading: true });
     let projectIds: string[],
       tasks,
       orderedTasks,
-      journies: {
-        id: string;
-        name: string;
-        journies: Journies;
-      }[],
+      journies: { id: string; name: string; journies: Journies }[],
       clientJournies,
       tlts,
-      averageTOD,
+      averageTOD: number,
       revisionJournies,
       revision,
       meetDeadlineResult;
     projectIds = projects
       .filter((i: Project) => i.clientId === clientId)
       .map((i: Project) => i._id);
-    tasks = allTasks.filter((item: Task) =>
+    tasks = state.tasks.filter((item: Task) =>
       projectIds.includes(item.projectId)
     );
     orderedTasks = _.orderBy(tasks, "createdAt");
 
-    journies = tasks.map((i) => getTaskJournies(i));
-    clientJournies = _.flattenDeep(journies.map((i) => i.journies));
+    journies = state.journeys;
+    clientJournies = _.flattenDeep(journies.map((j) => j.journies));
     tlts = clientJournies.map((item) => getJourneyLeadTime(item));
     averageTOD =
       _.sum(tlts) > 0 ? Math.floor(_.sum(tlts) / journies.length) : 0;
@@ -198,7 +228,9 @@ const TrackClientHealthTable = () => {
     revision =
       Math.floor((revisionJournies.length / journies.length) * 100) ?? 0;
     return {
-      lastBrief: orderedTasks[orderedTasks.length - 1]?.createdAt,
+      lastBrief: new Date(
+        orderedTasks[orderedTasks.length - 1]?.createdAt
+      ).getTime(),
       _ofProjects: projectIds.length,
       _OfJournies: clientJournies.length,
       meetDeadline: meet,
@@ -229,25 +261,63 @@ const TrackClientHealthTable = () => {
     setState({ ...newState });
   };
 
-  const createSortHandler = (e: any, orderBy: string) => {
-    const isAsc = state.orderBy === orderBy && state.order === Order.asc;
-    const order = isAsc ? "desc" : "asc";
-    setState({
-      ...state,
-      orderBy: orderBy,
-      order: Order[order],
-      cells: _.orderBy(state.cells, [orderBy], order),
-    });
+  const createSortHandler = (orderBy: string, type: string) => {
+    const order =
+      state.orderBy !== orderBy
+        ? "asc"
+        : state.order === Order.asc
+        ? "desc"
+        : "asc";
+    let State = { ...state };
+    State.orderBy = orderBy;
+    State.order = Order[order];
+    State.cells = _.orderBy(State.cells, [orderBy], order);
+    setState(State);
+  };
+  const onSetFilter = (type: string, value: string) => {
+    let State = { ...state };
+    if (type === "startDate") {
+      State.filter.startDate = value;
+      // State.journeys = state.journeys.map(i => {
+      //   let journies=i.journies.filter(j=>j.)
+      // })
+    }
+    if (type === "endDate") {
+      State.filter.endDate = value;
+    }
+    setState(State);
   };
 
   return (
-    <TableContainer
-      sx={{ backgroundColor: "#FFFFFF", borderRadius: 2 }}
+    <Grid
       className="customScrollBar"
+      sx={{
+        display: "flex",
+        background: "white",
+        borderRadius: "5px",
+        margin: "8px",
+        pl: 1,
+        pr: 1,
+        pt: 1,
+        marginBottom: 2,
+        justifyContent: "space-between",
+      }}
+      container
     >
-      <Typography fontSize={18} mb={1} p={2} fontWeight={"600"}>
-        Client Health Tracker
-      </Typography>
+      <Grid xs={10}>
+        <Typography fontSize={18} mb={1} p={2} fontWeight={"600"}>
+          Client Health Tracker
+        </Typography>
+      </Grid>
+      <Grid xs={2}>
+        <IconButton
+          disableRipple
+          onClick={() => setState({ ...state, popup: true })}
+          sx={filterBtnStyle}
+        >
+          <img src={IMAGES.filtericon} alt="FILTER" />
+        </IconButton>
+      </Grid>
       <Table style={MD ? { width: "150%" } : { width: "100%" }}>
         <TableHead>
           <TableRow>
@@ -325,7 +395,9 @@ const TrackClientHealthTable = () => {
                           : "desc"
                         : "asc"
                     }
-                    onClick={(e) => createSortHandler(e, headCell.id)}
+                    onClick={(e) =>
+                      createSortHandler(headCell.id, headCell.type)
+                    }
                   >
                     {headCell.label}
                   </TableSortLabel>
@@ -336,24 +408,8 @@ const TrackClientHealthTable = () => {
         </TableHead>
         <TableBody>
           <>
-            {(state.rowsPerPage > 0
-              ? state.cells.slice(
-                  state.page * state.rowsPerPage,
-                  state.page * state.rowsPerPage + state.rowsPerPage
-                )
-              : state.cells
-            ).map((item, index) => {
-              const {
-                clientId,
-                clientName,
-                revision,
-                meetDeadline,
-                lastBrief,
-                averageTOD,
-                _OfJournies,
-                _ofProjects,
-              } = item;
-              return (
+            {state.loading ? (
+              [0, 1, 2].map((i) => (
                 <TableRow
                   sx={{
                     ":hover": {
@@ -368,7 +424,6 @@ const TrackClientHealthTable = () => {
                   hover
                   role="checkbox"
                   tabIndex={-1}
-                  key={clientId}
                 >
                   <TableCell
                     size="small"
@@ -380,15 +435,11 @@ const TrackClientHealthTable = () => {
                       height: "45px",
                     }}
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <div style={{ cursor: "pointer" }}>{clientName}</div>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -400,15 +451,11 @@ const TrackClientHealthTable = () => {
                       fontWeight: "500",
                     }}
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{lastBrief !== "Invalid Date" ? lastBrief : ""}</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -420,15 +467,11 @@ const TrackClientHealthTable = () => {
                     }}
                     align="left"
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{_ofProjects}</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -438,15 +481,11 @@ const TrackClientHealthTable = () => {
                       cursor: "pointer",
                     }}
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{_OfJournies}</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -457,15 +496,11 @@ const TrackClientHealthTable = () => {
                     }}
                     align="left"
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{averageTOD}</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -476,15 +511,11 @@ const TrackClientHealthTable = () => {
                     }}
                     align="left"
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{revision >= 0 ? revision : 0} %</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                   <TableCell
                     size="small"
@@ -495,19 +526,199 @@ const TrackClientHealthTable = () => {
                     }}
                     align="left"
                   >
-                    {state.loading === true ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={"100%"}
-                        height={20}
-                      />
-                    ) : (
-                      <>{meetDeadline >= 0 ? meetDeadline : 0} %</>
-                    )}
+                    <Skeleton
+                      variant="rectangular"
+                      width={"100%"}
+                      height={20}
+                    />
                   </TableCell>
                 </TableRow>
-              );
-            })}
+              ))
+            ) : (
+              <>
+                {(state.rowsPerPage > 0
+                  ? state.cells.slice(
+                      state.page * state.rowsPerPage,
+                      state.page * state.rowsPerPage + state.rowsPerPage
+                    )
+                  : state.cells
+                ).map((item, index) => {
+                  const {
+                    clientId,
+                    clientName,
+                    revision,
+                    meetDeadline,
+                    lastBrief,
+                    averageTOD,
+                    _OfJournies,
+                    _ofProjects,
+                  } = item;
+                  let lastBriefDate = new Date(lastBrief);
+                  let localLastBriefDate = lastBriefDate.toLocaleDateString(
+                    "en-US",
+                    {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  );
+                  return (
+                    <TableRow
+                      sx={{
+                        ":hover": {
+                          backgroundColor: "white !important",
+                          boxShadow: "0px 10px 20px #0000001A",
+                          transition: "all 0.5s ease-out !important",
+                          WebkitAppearance: "none",
+                          WebkitBoxShadow: "0px 10px 20px #0000001A",
+                          borderBottom: 0,
+                        },
+                      }}
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={clientId}
+                    >
+                      <TableCell
+                        size="small"
+                        align="left"
+                        style={{
+                          color: "#334D6E",
+                          textTransform: "capitalize",
+                          width: "130px",
+                          height: "45px",
+                        }}
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <div style={{ cursor: "pointer" }}>{clientName}</div>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        align="left"
+                        style={{
+                          cursor: "pointer",
+                          color: "#323C47",
+                          width: "200px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{lastBrief ? localLastBriefDate : ""}</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        style={{
+                          color: "#707683",
+                          width: "200px",
+                          textTransform: "capitalize",
+                          cursor: "pointer",
+                        }}
+                        align="left"
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{_ofProjects}</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        align="left"
+                        style={{
+                          color: "#707683",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{_OfJournies}</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        style={{
+                          color: "#707683",
+                          cursor: "pointer",
+                          textTransform: "capitalize",
+                        }}
+                        align="left"
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{averageTOD}</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        style={{
+                          color: "#707683",
+                          cursor: "pointer",
+                          textTransform: "capitalize",
+                        }}
+                        align="left"
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{revision >= 0 ? revision : 0} %</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        style={{
+                          color: "#707683",
+                          cursor: "pointer",
+                          textTransform: "capitalize",
+                        }}
+                        align="left"
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{meetDeadline >= 0 ? meetDeadline : 0} %</>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </>
+            )}
           </>
           <>
             {emptyRows > 0 && (
@@ -540,8 +751,25 @@ const TrackClientHealthTable = () => {
           </TableRow>
         </TableFooter>
       </Table>
-    </TableContainer>
+      <FiltersBar
+        start={state.filter.startDate}
+        end={state.filter.endDate}
+        onSetFilter={onSetFilter}
+        filterPopup={state.popup}
+        closeFilterPopup={() => setState({ ...state, popup: false })}
+      />
+    </Grid>
   );
 };
 
 export default TrackClientHealthTable;
+const filterBtnStyle = {
+  bgcolor: "#FAFAFB",
+  borderRadius: 3,
+  paddingTop: 1.2,
+  float: "right",
+  cursor: "pointer",
+  width: "38px",
+  height: "38px",
+  textAlign: "center",
+};

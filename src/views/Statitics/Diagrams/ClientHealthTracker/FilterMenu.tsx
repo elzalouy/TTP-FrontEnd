@@ -13,14 +13,27 @@ import { selectPMOptions } from "src/models/Managers";
 import { selectProjectOptions } from "src/models/Projects";
 import { useAppSelector } from "src/models/hooks";
 
-const FiltersBar = () => {
+type filterBarProps = {
+  filterPopup: boolean;
+  closeFilterPopup: any;
+  onSetFilter: any;
+  start: string;
+  end: string;
+};
+const FiltersBar = ({
+  filterPopup,
+  closeFilterPopup,
+  onSetFilter,
+  start,
+  end,
+}: filterBarProps) => {
   const clientsOptions = useAppSelector(selectClientOptions);
   const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
   const { control, reset, watch } = useForm();
   const [state, setState] = useState();
-  const onSetFilter = () => {};
+
   return (
     <Drawer
       anchor="right"
@@ -31,9 +44,9 @@ const FiltersBar = () => {
           transition: "all 0.5s ease !important",
         },
       }}
-      //   open={state.filter}
+      open={filterPopup}
       variant="temporary"
-      //   onClose={() => setState({ ...state, filter: false })}
+      onClose={closeFilterPopup}
     >
       <Grid
         container
@@ -43,17 +56,8 @@ const FiltersBar = () => {
       >
         <Grid item xs={12} justifyContent={"space-between"} container>
           <Typography mt={1} variant="h4">
-            Filter Tasks
+            Filter Journies
           </Typography>
-          <Box
-            mr={1}
-            style={{ height: "32px", width: "32px", padding: "0 10px" }}
-            className="filter-icon"
-          >
-            <IconButton disableRipple>
-              <img src={IMAGES.deleteicon} alt="sortout" />
-            </IconButton>
-          </Box>
         </Grid>
 
         <Grid paddingX={0.5} item sm={12} marginY={1}>
@@ -61,25 +65,26 @@ const FiltersBar = () => {
             <ControlledSelect
               name="date"
               control={control}
-              selected={watch().start}
-              label="Deadline :"
+              selected={start}
+              label="TimeFrame :"
               elementType="filter"
               optionsType="date-picker"
               options={[]}
-              onSelect={(value: RangeKeyDict) => {}}
+              onSelect={(value: RangeKeyDict) => {
+                onSetFilter(
+                  "startDate",
+                  value[0]?.startDate !== undefined
+                    ? value[0]?.startDate?.toDateString()
+                    : ""
+                );
+                onSetFilter(
+                  "endDate",
+                  value[0]?.endDate !== undefined
+                    ? value[0]?.endDate?.toDateString()
+                    : ""
+                );
+              }}
             />
-          </Box>
-        </Grid>
-
-        <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
-          <Box className="tasks-option">
-            <Button
-              size="x-small"
-              type="add"
-              style={{ textTransform: "lowercase" }}
-              label="Un Assigned Tasks"
-              //   onClick={() => onSetFilter("projectId", undefined)}
-            ></Button>
           </Box>
         </Grid>
       </Grid>

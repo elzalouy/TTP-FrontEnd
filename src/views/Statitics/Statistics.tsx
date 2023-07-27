@@ -53,9 +53,9 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <TrackClientHealthTable />
         </Grid>
-        {/* <Grid xs={12} height={"auto"}>
+        <Grid xs={12} height={"auto"}>
           <MeetDeadline />
-        </Grid> */}
+        </Grid>
       </Grid>
     </>
   );

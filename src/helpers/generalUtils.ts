@@ -316,6 +316,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       teamId: task.teamId,
       movements: [],
       sharedAtMonth: "",
+      journeyFinishedAt: null,
     };
 
   movements.forEach((item, index) => {
@@ -325,6 +326,17 @@ export const getTaskJournies = (task: ITaskInfo) => {
       movements[index + 1].status === "Tasks Board"
     ) {
       journey.movements.push(item);
+      if (item.journeyDeadline)
+        journey.journeyFinishedAt = new Date(
+          item.journeyDeadline
+        ).toLocaleString("en-us", {
+          month: "long",
+        });
+      else
+        journey.journeyFinishedAt = new Date(item.movedAt).toLocaleDateString(
+          "en-us",
+          { month: "long" }
+        );
       journies.push(journey);
       journey = {
         clientId: task.clientId,
@@ -335,6 +347,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
         teamId: task.teamId,
         movements: [],
         sharedAtMonth: "",
+        journeyFinishedAt: null,
       };
     } else {
       journey.movements.push(item);
@@ -349,6 +362,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           teamId: task.teamId,
           movements: [],
           sharedAtMonth: "",
+          journeyFinishedAt: null,
         };
       }
     }

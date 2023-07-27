@@ -98,18 +98,10 @@ const MeetDeadline = () => {
           item.movements,
           (move: TaskMovement) => move.status === "Shared"
         )?.movedAt;
-      let last =
-        item.movements[item.movements.length - 1]?.journeyDeadline &&
-        item.movements[item.movements.length - 1].journeyDeadline;
       return {
         ...item,
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
-          : undefined,
-        journeyDeadline: last
-          ? new Date(last).toLocaleString("en-us", {
-              month: "long",
-            })
           : undefined,
       };
     });
@@ -147,19 +139,16 @@ const MeetDeadline = () => {
           : onGetDatasetsByTeams(),
     };
     const options = {
-      //   plugins: {
-      //     tooltip: {
-      //       callbacks: {
-      //         label: function (context: any) {
-      //           const value: number = context.dataset.data[context.dataIndex];
-      //           let totalHours = value * 24;
-      //           let days = Math.floor(totalHours / 24);
-      //           const hours = Math.floor(totalHours % 24);
-      //           return `Days: ${days}, Hours: ${hours}`;
-      //         },
-      //       },
-      //     },
-      //   },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context: any) {
+              const value: number = context.dataset.data[context.dataIndex];
+              return ` ${value}% Meet the deadline`;
+            },
+          },
+        },
+      },
       scales: {
         x: {
           type: "category",
@@ -228,7 +217,7 @@ const MeetDeadline = () => {
         (i) => i.projectManager && i.projectManager === manager._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "journeyDeadline"),
+        ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -270,7 +259,7 @@ const MeetDeadline = () => {
         (i) => i.clientId && i.clientId === client._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "journeyDeadline"),
+        ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -312,7 +301,7 @@ const MeetDeadline = () => {
         (i) => i.teamId && i.teamId === team._id
       );
       let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "journeyDeadline"),
+        ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
@@ -327,12 +316,6 @@ const MeetDeadline = () => {
         label: team.name,
         data: datasetData.map((i) => {
           let result = getMeetingDeadline(i.journies);
-          console.log({
-            journies: i.journies.length,
-            meet: result.notPassedDeadline.length,
-            notmeet: result.passedDeadline.length,
-          });
-
           return Math.floor(
             (result.notPassedDeadline.length / i.journies.length) * 100
           );

@@ -17,25 +17,27 @@ export const getJourneyLeadTime = (journey: Journey) => {
 
 export const getMeetingDeadline = (journies: Journey[]) => {
   let passedDeadline = journies.filter((i) => {
-    let journeyDeadline = i.movements[i.movements.length - 1].journeyDeadline;
-    let movedAt = i.movements[i.movements.length - 1].journeyDeadline;
-    if (journeyDeadline && movedAt) {
-      let diff = getDifBetweenDates(
-        new Date(movedAt),
-        new Date(journeyDeadline)
-      );
-      if (diff.totalHours > 24) return i;
-    }
+    let lastMovement = i.movements[i.movements.length - 1];
+    let movedAt = new Date(lastMovement.movedAt);
+    let journeyDeadline = lastMovement.journeyDeadline
+      ? new Date(lastMovement.journeyDeadline)
+      : movedAt;
+    if (!lastMovement.journeyDeadline) return i;
+    let difference = getDifBetweenDates(movedAt, journeyDeadline);
+    if (difference.isLate && difference.totalHours > 24) return i;
   });
+
   let notPassedDeadline = journies.filter((i) => {
-    let journeyDeadline = i.movements[i.movements.length - 1].journeyDeadline;
-    let movedAt = i.movements[i.movements.length - 1].journeyDeadline;
-    if (journeyDeadline && movedAt) {
-      let diff = getDifBetweenDates(
-        new Date(movedAt),
-        new Date(journeyDeadline)
-      );
-      if (diff.totalHours < 24) return i;
+    let lastMovement = i.movements[i.movements.length - 1];
+    let movedAt = new Date(lastMovement.movedAt);
+    let journeyDeadline = lastMovement.journeyDeadline;
+    if (journeyDeadline) {
+      let difference = getDifBetweenDates(movedAt, new Date(journeyDeadline));
+      if (
+        difference.isLate === false ||
+        (difference.isLate && difference.totalHours <= 24)
+      )
+        return i;
     }
   });
   return { passedDeadline, notPassedDeadline };

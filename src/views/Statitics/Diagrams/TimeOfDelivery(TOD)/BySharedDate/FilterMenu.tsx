@@ -107,20 +107,6 @@ const FilterBar = ({
           <Typography mt={1} variant="h4">
             Filter Tasks
           </Typography>
-          <Box
-            mr={1}
-            style={{ height: "32px", width: "32px", padding: "0 10px" }}
-            className="filter-icon"
-          >
-            <IconButton
-              disableRipple
-              onClick={() => {
-                reset();
-              }}
-            >
-              <img src={IMAGES.deleteicon} alt="sortout" />
-            </IconButton>
-          </Box>
         </Grid>
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
