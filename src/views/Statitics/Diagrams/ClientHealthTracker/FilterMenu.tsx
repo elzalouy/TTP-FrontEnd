@@ -1,17 +1,7 @@
-import { AddBox } from "@mui/icons-material";
-import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Drawer, Grid, Typography } from "@mui/material";
 import { RangeKeyDict } from "react-date-range";
-import { Controller, useForm } from "react-hook-form";
-import IMAGES from "src/assets/img/Images";
-import Button from "src/coreUI/components/Buttons/Button";
-import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { useForm } from "react-hook-form";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import { selectCategoriesOptions } from "src/models/Categories";
-import { selectClientOptions } from "src/models/Clients";
-import { selectPMOptions } from "src/models/Managers";
-import { selectProjectOptions } from "src/models/Projects";
-import { useAppSelector } from "src/models/hooks";
 
 type filterBarProps = {
   filterPopup: boolean;
@@ -27,13 +17,7 @@ const FiltersBar = ({
   start,
   end,
 }: filterBarProps) => {
-  const clientsOptions = useAppSelector(selectClientOptions);
-  const projectOptions = useAppSelector(selectProjectOptions);
-  const PmsOptions = useAppSelector(selectPMOptions);
-  const categoriesOptions = useAppSelector(selectCategoriesOptions);
-  const { control, reset, watch } = useForm();
-  const [state, setState] = useState();
-
+  const { control } = useForm();
   return (
     <Drawer
       anchor="right"
@@ -93,35 +77,3 @@ const FiltersBar = ({
 };
 
 export default FiltersBar;
-
-const options = [
-  [
-    { id: "asc", text: "Ascending", value: "asc" },
-    { id: "desc", text: "Descending", value: "desc" },
-  ],
-  [
-    {
-      id: "Tasks Board",
-      value: "Tasks Board",
-      text: "Tasks Board",
-    },
-    {
-      id: "Not Clear",
-      value: "Not Clear",
-      text: "Not Clear",
-    },
-    {
-      id: "In Progress",
-      value: "In Progress",
-      text: "In Progress",
-    },
-    { id: "Review", value: "Review", text: "Review" },
-    { id: "Shared", value: "Shared", text: "Shared" },
-    {
-      id: "Done",
-      value: "Done",
-      text: "Done",
-    },
-    { id: "Cancled", value: "Cancled", text: "Cancled" },
-  ],
-];
