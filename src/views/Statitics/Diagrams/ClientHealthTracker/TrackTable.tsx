@@ -208,12 +208,12 @@ const TrackClientHealthTable = () => {
     projectIds = projects
       .filter((i: Project) => i.clientId === clientId)
       .map((i: Project) => i._id);
-    tasks = state.tasks.filter((item: Task) =>
+    tasks = allTasks.filter((item: Task) =>
       projectIds.includes(item.projectId)
     );
     orderedTasks = _.orderBy(tasks, "createdAt");
 
-    journies = state.journeys;
+    journies = tasks.map((i) => getTaskJournies(i));
     clientJournies = _.flattenDeep(journies.map((j) => j.journies));
     tlts = clientJournies.map((item) => getJourneyLeadTime(item));
     averageTOD =
