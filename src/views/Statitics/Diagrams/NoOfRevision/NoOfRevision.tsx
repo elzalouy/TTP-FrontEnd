@@ -48,7 +48,7 @@ interface ITaskInfo extends Task {
  * @param param0
  * @returns
  */
-const MeetDeadline = () => {
+const NoOfRevision = () => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
@@ -133,9 +133,7 @@ const MeetDeadline = () => {
     const data = {
       labels: months,
       datasets:
-        state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient()
-          : state.comparisonBy === "PMs"
+        state.comparisonBy === "PMs"
           ? onGetDataSetsByPM()
           : state.comparisonBy === "Teams"
           ? onGetDatasetsByTeams()
@@ -147,7 +145,7 @@ const MeetDeadline = () => {
           callbacks: {
             label: function (context: any) {
               const value: number = context.dataset.data[context.dataIndex];
-              return ` ${value}% Meet the deadline`;
+              return ` ${value}% Revision Journeys`;
             },
           },
         },
@@ -219,67 +217,28 @@ const MeetDeadline = () => {
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
-      let journiesOfManagerGroupedByMonth = {
+      let revision = journiesData.filter((i) => i.revision === true);
+      let revisionOfManagerByMonth = {
+        ..._.groupBy(revision, "journeyFinishedAt"),
+      };
+      let journiesOfManagerByMonth = {
         ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
       let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
+        let journies = journiesOfManagerByMonth[item.id];
+        let revision = revisionOfManagerByMonth[item.id];
         return {
           journies: journies ?? [],
           color,
           borderColor,
           comparisonId: manager._id,
+          revision: revision ?? [],
         };
       });
       return {
         label: manager.name,
         data: datasetData.map((i) => {
-          let result = getMeetingDeadline(i.journies);
-          return Math.floor(
-            (result.notPassedDeadline.length / i.journies.length) * 100
-          );
-        }),
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-  };
-
-  const onGetDataSetsByClient = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-    return clients.map((client) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
-      let journiesData = journies.filter(
-        (i) => i.clientId && i.clientId === client._id
-      );
-      let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "journeyFinishedAt"),
-      };
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: client._id,
-        };
-      });
-      return {
-        label: client.clientName,
-        data: datasetData.map((i) => {
-          let result = getMeetingDeadline(i.journies);
-          return Math.floor(
-            (result.notPassedDeadline.length / i.journies.length) * 100
-          );
+          return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -303,25 +262,29 @@ const MeetDeadline = () => {
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );
-      let journiesOfManagerGroupedByMonth = {
+      let revision = journiesData.filter((i) => i.revision === true);
+      let revisionOfManagerByMonth = {
+        ..._.groupBy(revision, "journeyFinishedAt"),
+      };
+      let journiesOfManagerByMonth = {
         ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
+      console.log({ journiesOfManagerByMonth, revisionOfManagerByMonth });
       let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
+        let journies = journiesOfManagerByMonth[item.id];
+        let revision = revisionOfManagerByMonth[item.id];
         return {
           journies: journies ?? [],
           color,
           borderColor,
           comparisonId: team._id,
+          revision: revision ?? [],
         };
       });
       return {
         label: team.name,
         data: datasetData.map((i) => {
-          let result = getMeetingDeadline(i.journies);
-          return Math.floor(
-            (result.notPassedDeadline.length / i.journies.length) * 100
-          );
+          return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -349,12 +312,16 @@ const MeetDeadline = () => {
       let journiesData = journies.filter(
         (item) => item.journeyFinishedAt === month.id
       );
+      let revisionData = journies.filter(
+        (i) => i.revision === true && i.journeyFinishedAt === month.id
+      );
       return {
         journies: journiesData ?? [],
         color,
         borderColor,
         comparisonId: month.id,
         name: month.name,
+        revision: revisionData,
       };
     });
 
@@ -362,10 +329,7 @@ const MeetDeadline = () => {
       {
         label: "",
         data: datasetData.map((i) => {
-          let result = getMeetingDeadline(i.journies);
-          return Math.floor(
-            (result.notPassedDeadline.length / i.journies.length) * 100
-          );
+          return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
         backgroundColor: datasetData.map((i) => i.color),
         borderColor: datasetData.map((i) => i.borderColor),
@@ -389,7 +353,7 @@ const MeetDeadline = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Meeting Deadline
+        Number of Revision
       </Typography>
       <Grid xs={2}>
         <IconButton
@@ -404,31 +368,31 @@ const MeetDeadline = () => {
       <form className="ComparisonOptions">
         <input
           type="checkbox"
-          id="all-meetDeadline"
-          value={"All-meetDeadline"}
-          name="all-meetDeadline"
-          checked={state.comparisonBy === "All-meetDeadline"}
+          id="all-NoOfRevision"
+          value={"All-NoOfRevision"}
+          name="all-NoOfRevision"
+          checked={state.comparisonBy === "All-NoOfRevision"}
           onChange={onHandleChange}
         />
-        <label htmlFor="all-meetDeadline">All</label>
+        <label htmlFor="all-NoOfRevision">All</label>
         <input
           type="checkbox"
-          id={"teams-meetDeadline"}
+          id={"teams-NoOfRevision"}
           value={"Teams"}
-          name="teams-meetDeadline"
+          name="teams-NoOfRevision"
           checked={state.comparisonBy === "Teams"}
           onChange={onHandleChange}
         />
-        <label htmlFor="teams-meetDeadline">Teams</label>
+        <label htmlFor="teams-NoOfRevision">Teams</label>
         <input
-          id="pms-meetDeadline"
+          id="pms-NoOfRevision"
           type="checkbox"
           value={"PMs"}
-          name="pms-meetDeadline"
+          name="pms-NoOfRevision"
           checked={state.comparisonBy === "PMs"}
           onChange={onHandleChange}
         />
-        <label htmlFor="pms-meetDeadline">Project Managers</label>
+        <label htmlFor="pms-NoOfRevision">Project Managers</label>
       </form>
       <FilterBar
         allOptions={{
@@ -446,7 +410,7 @@ const MeetDeadline = () => {
   );
 };
 
-export default MeetDeadline;
+export default NoOfRevision;
 
 const filterBtnStyle = {
   bgcolor: "#FAFAFB",

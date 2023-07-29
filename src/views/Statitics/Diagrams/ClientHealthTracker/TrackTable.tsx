@@ -106,6 +106,7 @@ type stateType = {
     endDate: string;
   };
 };
+
 const TrackClientHealthTable = () => {
   const history = useHistory();
   const theme = useTheme();

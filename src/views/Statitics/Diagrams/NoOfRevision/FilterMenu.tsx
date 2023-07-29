@@ -116,7 +116,6 @@ const FilterBar = ({
           : options.teams.map((t) => t._id ?? ""),
     });
   };
-
   return (
     <Drawer
       anchor="right"

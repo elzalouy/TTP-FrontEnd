@@ -352,7 +352,6 @@ export const moveTask = createAsyncThunk<any, any, any>(
   ) => {
     try {
       let { dep, newList, task, deadline, setDeadlineChange } = args;
-      console.log({ task, dep, newList });
       if (task && dep && newList) {
         let Data: any = {
           cardId: task.cardId,

@@ -5,6 +5,7 @@ import TodByCategory from "./Diagrams/TimeOfDelivery(TOD)/ByCategory";
 import BySharedMonth from "./Diagrams/TimeOfDelivery(TOD)/BySharedDate/BySharedDate";
 import TrackClientHealthTable from "./Diagrams/ClientHealthTracker/TrackTable";
 import MeetDeadline from "./Diagrams/MeetDeadline/MeetDeadline";
+import NoOfRevision from "./Diagrams/NoOfRevision/NoOfRevision";
 
 type time = {
   hours: number;
@@ -55,6 +56,9 @@ const Statistics = (props: any) => {
         </Grid>
         <Grid xs={12} height={"auto"}>
           <MeetDeadline />
+        </Grid>
+        <Grid xs={12} height={"auto"}>
+          <NoOfRevision />
         </Grid>
       </Grid>
     </>

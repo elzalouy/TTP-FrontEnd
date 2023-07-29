@@ -22,6 +22,8 @@ export type SelectComponentProps = {
   name: string;
   onSelect: any;
   onDiselect: (item: DialogOption) => void;
+  allOption: boolean;
+  onSelectAll: any;
 };
 
 export interface DialogProps {
@@ -31,6 +33,8 @@ export interface DialogProps {
   options: DialogOption[];
   onSelect: any;
   onDiselect: (item: DialogOption) => void;
+  onSelectedAll: (selectAll: boolean) => void;
+  allOption: boolean;
 }
 
 export const SimpleDialog = ({
@@ -40,8 +44,11 @@ export const SimpleDialog = ({
   onSelect,
   onClose,
   onDiselect,
+  onSelectedAll,
+  allOption,
 }: DialogProps) => {
   const theme = useTheme();
+  const [selectedAll, setSelectedAll] = React.useState(true);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [searchVal, setSearchVal] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
@@ -62,6 +69,10 @@ export const SimpleDialog = ({
     let index = selected ? selected.findIndex((i) => i.id === value.id) : -1;
     if (index >= 0) onDiselect(value);
     else onSelect(value);
+  };
+  const handleSelectAll = () => {
+    onSelectedAll(selectedAll ? false : true);
+    setSelectedAll(selectedAll ? false : true);
   };
   const onSearch = (e: any) => setSearchVal(e.target.value);
   return (
@@ -93,6 +104,26 @@ export const SimpleDialog = ({
             },
           }}
         >
+          {allOption && (
+            <ListItem
+              onClick={handleSelectAll}
+              sx={{
+                cursor: "pointer",
+                marginBottom: "3px",
+                borderRadius: "5px",
+                ":hover": {
+                  backgroundColor: "#fafafb",
+                },
+              }}
+            >
+              <ListItemText primary={"All"} sx={{ color: "gray" }} />
+              {selectedAll && (
+                <ListItemIcon>
+                  <CheckIcon htmlColor="#5fda71"></CheckIcon>
+                </ListItemIcon>
+              )}
+            </ListItem>
+          )}
           {(searchVal.length > 0 ? filteredOptions : options)?.map((item) => {
             const image: any = [
               "",
@@ -140,6 +171,11 @@ export const SimpleDialog = ({
                     <CheckIcon htmlColor="#5fda71"></CheckIcon>
                   </ListItemIcon>
                 )}
+                {selected?.length === options.length && item.id === "all" && (
+                  <ListItemIcon>
+                    <CheckIcon htmlColor="#5fda71"></CheckIcon>
+                  </ListItemIcon>
+                )}
               </ListItem>
             );
           })}
@@ -156,6 +192,8 @@ export const MulitSelectDialogComponent = ({
   name,
   onSelect,
   onDiselect,
+  allOption,
+  onSelectAll,
 }: SelectComponentProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -193,7 +231,7 @@ export const MulitSelectDialogComponent = ({
         >
           {label}
           <Typography color={"#303030"} fontWeight={"600"}>
-            {"  " + selected?.length + " selected"}
+            {"  " + selected?.length}
           </Typography>
         </Button>
         <img
@@ -210,6 +248,8 @@ export const MulitSelectDialogComponent = ({
         onClose={setOpen}
         onSelect={onSelect}
         onDiselect={onDiselect}
+        allOption={allOption}
+        onSelectedAll={onSelectAll}
       />
     </div>
   );

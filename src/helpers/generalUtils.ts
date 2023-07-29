@@ -317,9 +317,11 @@ export const getTaskJournies = (task: ITaskInfo) => {
       movements: [],
       sharedAtMonth: "",
       journeyFinishedAt: null,
+      revision: false,
     };
 
   movements.forEach((item, index) => {
+    if (journies.length >= 1) journey.revision = true;
     if (
       endOfJourney.includes(item.status) &&
       movements[index + 1] &&
@@ -348,6 +350,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
         movements: [],
         sharedAtMonth: "",
         journeyFinishedAt: null,
+        revision: false,
       };
     } else {
       journey.movements.push(item);
@@ -363,6 +366,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           movements: [],
           sharedAtMonth: "",
           journeyFinishedAt: null,
+          revision: false,
         };
       }
     }

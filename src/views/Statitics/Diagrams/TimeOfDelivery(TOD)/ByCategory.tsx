@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, ListItem, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
@@ -86,7 +86,9 @@ const TodByCategory = () => {
           ? onGetDataSetsByClient()
           : state.comparisonBy === "PMs"
           ? onGetDataSetsByPM()
-          : onGetDatasetsByTeams(),
+          : state.comparisonBy === "Teams"
+          ? onGetDatasetsByTeams()
+          : [onGetDatasetsByAll()],
     };
     const options = {
       plugins: {
@@ -120,6 +122,41 @@ const TodByCategory = () => {
     setState({ ...state, options, data });
   }, [categories, tasks, teams, state.comparisonBy]);
 
+  const onGetDatasetsByAll = () => {
+    let bgColors: string[] = [];
+    let borderColors: string[] = [];
+    let Categories = categories.map((item) => {
+      return { id: item._id, name: item.category };
+    });
+    let datasetData = Categories.map((category) => {
+      let { color, borderColor } = getRandomColor(bgColors);
+      bgColors.push(color);
+      borderColors.push(borderColor);
+      let journiesData = journies.filter(
+        (item) => item.categoryId === category.id
+      );
+      return {
+        journies: journiesData ?? [],
+        color,
+        borderColor,
+        comparisonId: category.id,
+        name: category.name,
+      };
+    });
+
+    return {
+      label: "",
+      data: datasetData.map(
+        (i) =>
+          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+      ),
+      backgroundColor: datasetData.map((i) => i.color),
+      borderColor: datasetData.map((i) => i.borderColor),
+      borderWidth: 3,
+      hoverBorderWidth: 4,
+      skipNull: true,
+    };
+  };
   const onGetDataSetsByPM = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
@@ -255,6 +292,15 @@ const TodByCategory = () => {
       </Typography>
       <Bar options={state.options} data={state.data} />
       <form className="ComparisonOptions">
+        <input
+          type="checkbox"
+          id="all"
+          value={"All"}
+          name="all"
+          checked={state.comparisonBy === "All"}
+          onChange={onHandleChange}
+        />
+        <label htmlFor="all">All</label>
         <input
           type="checkbox"
           id="clients"

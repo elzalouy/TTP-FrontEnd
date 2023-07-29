@@ -137,7 +137,9 @@ const BySharedMonth = () => {
           ? onGetDataSetsByClient()
           : state.comparisonBy === "PMs"
           ? onGetDataSetsByPM()
-          : onGetDatasetsByTeams(),
+          : state.comparisonBy === "Teams"
+          ? onGetDatasetsByTeams()
+          : [onGetDatasetsByAll()],
     };
     const options = {
       plugins: {
@@ -320,6 +322,42 @@ const BySharedMonth = () => {
     });
   };
 
+  const onGetDatasetsByAll = () => {
+    let bgColors: string[] = [];
+    let borderColors: string[] = [];
+    let months = Months.map((item) => {
+      return { id: item, name: item };
+    });
+    let datasetData = months.map((month) => {
+      let { color, borderColor } = getRandomColor(bgColors);
+      bgColors.push(color);
+      borderColors.push(borderColor);
+      let journiesData = journies.filter(
+        (item) => item.sharedAtMonth === month.id
+      );
+      return {
+        journies: journiesData ?? [],
+        color,
+        borderColor,
+        comparisonId: month.id,
+        name: month.name,
+      };
+    });
+
+    return {
+      label: "",
+      data: datasetData.map(
+        (i) =>
+          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+      ),
+      backgroundColor: datasetData.map((i) => i.color),
+      borderColor: datasetData.map((i) => i.borderColor),
+      borderWidth: 3,
+      hoverBorderWidth: 4,
+      skipNull: true,
+    };
+  };
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
@@ -352,6 +390,15 @@ const BySharedMonth = () => {
       <form className="ComparisonOptions">
         <input
           type="checkbox"
+          id="all-bySharedDate"
+          value={"All-bySharedDate"}
+          name="all-bySharedDate"
+          checked={state.comparisonBy === "All-bySharedDate"}
+          onChange={onHandleChange}
+        />
+        <label htmlFor="all-bySharedDate">All</label>
+        <input
+          type="checkbox"
           id="clients-bySharedDate"
           value={"Clients"}
           name="clients-bySharedDate"
@@ -379,6 +426,12 @@ const BySharedMonth = () => {
         <label htmlFor="pms-bySharedDate">Project Managers</label>
       </form>
       <FilterBar
+        allOptions={{
+          clients: allClients,
+          teams: allTeams,
+          managers: allManagers,
+          categories: allCategories,
+        }}
         options={{ clients, managers, categories, teams }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
