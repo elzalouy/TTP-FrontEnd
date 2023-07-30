@@ -318,6 +318,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
       sharedAtMonth: "",
       journeyFinishedAt: null,
       revision: false,
+      unique: false,
+      startedAt: "",
     };
 
   movements.forEach((item, index) => {
@@ -351,6 +353,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
         sharedAtMonth: "",
         journeyFinishedAt: null,
         revision: false,
+        startedAt: "",
+        unique: false,
       };
     } else {
       journey.movements.push(item);
@@ -367,10 +371,13 @@ export const getTaskJournies = (task: ITaskInfo) => {
           sharedAtMonth: "",
           journeyFinishedAt: null,
           revision: false,
+          startedAt: "",
+          unique: false,
         };
       }
     }
   });
+  if (journies.length === 1) journies[0].unique = true;
   return { id: task._id, name: task.name, journies };
 };
 

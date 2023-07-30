@@ -99,7 +99,7 @@ const TodByCategory = () => {
               let totalHours = value * 24;
               let days = Math.floor(totalHours / 24);
               const hours = Math.floor(totalHours % 24);
-              return `Days: ${days}, Hours: ${hours}`;
+              return `${context.dataset.label}: ${days} days, ${hours} hours`;
             },
           },
         },

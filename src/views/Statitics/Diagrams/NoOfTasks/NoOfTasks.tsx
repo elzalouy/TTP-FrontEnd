@@ -17,9 +17,9 @@ import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
 import { Manager, selectPMs } from "src/models/Managers";
-import { getMeetingDeadline } from "../../utils";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
+import { data } from "cypress/types/jquery";
 
 interface StateType {
   data: {
@@ -48,7 +48,7 @@ interface ITaskInfo extends Task {
  * @param param0
  * @returns
  */
-const NoOfRevision = () => {
+const NoOfTasks = () => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
@@ -104,6 +104,9 @@ const NoOfRevision = () => {
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
           : undefined,
+        startedAt: new Date(item.movements[0].movedAt).toLocaleString("en-us", {
+          month: "long",
+        }),
       };
     });
     setJournies(flattenedJournies);
@@ -129,15 +132,9 @@ const NoOfRevision = () => {
 
   useEffect(() => {
     let months = Months;
-
     const data = {
       labels: months,
-      datasets:
-        state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
-          : state.comparisonBy === "Teams"
-          ? onGetDatasetsByTeams()
-          : onGetDatasetsByAll(),
+      datasets: onGetDatasetsByAll(),
     };
     const options = {
       plugins: {
@@ -145,7 +142,7 @@ const NoOfRevision = () => {
           callbacks: {
             label: function (context: any) {
               const value: number = context.dataset.data[context.dataIndex];
-              return `${context.dataset.label}= ${value}% Revision Journeys`;
+              return `${context.dataset.label}= ${value} journeys`;
             },
           },
         },
@@ -160,16 +157,9 @@ const NoOfRevision = () => {
         },
         y: {
           min: 0,
-          max: 100,
-          ticks: {
-            callback: function (value: any, index: any, values: any) {
-              return value + "%";
-            },
-          },
         },
       },
     };
-
     setState({ ...state, options, data });
   }, [journies, state.comparisonBy]);
 
@@ -204,139 +194,82 @@ const NoOfRevision = () => {
     );
   };
 
-  const onGetDataSetsByPM = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-    return managers.map((manager) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
-      let journiesData = journies.filter(
-        (i) => i.projectManager && i.projectManager === manager._id
-      );
-      let revision = journiesData.filter((i) => i.revision === true);
-      let revisionOfManagerByMonth = {
-        ..._.groupBy(revision, "journeyFinishedAt"),
-      };
-      let journiesOfManagerByMonth = {
-        ..._.groupBy(journiesData, "journeyFinishedAt"),
-      };
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerByMonth[item.id];
-        let revision = revisionOfManagerByMonth[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: manager._id,
-          revision: revision ?? [],
-        };
-      });
-      return {
-        label: manager.name,
-        data: datasetData.map((i) => {
-          return Math.floor((i.revision.length / i.journies.length) * 100);
-        }),
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-  };
-
-  const onGetDatasetsByTeams = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-    return teams.map((team) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
-      let journiesData = journies.filter(
-        (i) => i.teamId && i.teamId === team._id
-      );
-      let revision = journiesData.filter((i) => i.revision === true);
-      let revisionOfManagerByMonth = {
-        ..._.groupBy(revision, "journeyFinishedAt"),
-      };
-      let journiesOfManagerByMonth = {
-        ..._.groupBy(journiesData, "journeyFinishedAt"),
-      };
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerByMonth[item.id];
-        let revision = revisionOfManagerByMonth[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: team._id,
-          revision: revision ?? [],
-        };
-      });
-      return {
-        label: team.name,
-        data: datasetData.map((i) => {
-          return Math.floor((i.revision.length / i.journies.length) * 100);
-        }),
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-  };
-
-  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, comparisonBy: e.target.value });
-  };
-
   const onGetDatasetsByAll = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-    let datasetData = months.map((month) => {
+    let months = Months;
+
+    let types = [
+      {
+        type: "total",
+        journies: journies,
+      },
+      {
+        type: "revised",
+        journies: _.flattenDeep(
+          allTasks
+            .map((i) => getTaskJournies(i))
+            .filter((j) => j.journies.length > 1)
+            .map((i) =>
+              i.journies.map((j) => {
+                return {
+                  ...j,
+                  startedAt: new Date(j.movements[0].movedAt).toLocaleString(
+                    "us-en",
+                    { month: "long" }
+                  ),
+                };
+              })
+            )
+        ),
+      },
+      {
+        type: "unique",
+        journies: _.flattenDeep(
+          allTasks
+            .map((i) => getTaskJournies(i))
+            .filter((j) => j.journies.length === 1)
+            .map((i) =>
+              i.journies.map((j) => {
+                return {
+                  ...j,
+                  startedAt: new Date(j.movements[0].movedAt).toLocaleString(
+                    "us-en",
+                    { month: "long" }
+                  ),
+                };
+              })
+            )
+        ),
+      },
+    ];
+    console.log({ types });
+    return types.map((type) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
-      let journiesData = journies.filter(
-        (item) => item.journeyFinishedAt === month.id
-      );
-      let revisionData = journies.filter(
-        (i) => i.revision === true && i.journeyFinishedAt === month.id
-      );
-      return {
-        journies: journiesData ?? [],
-        color,
-        borderColor,
-        comparisonId: month.id,
-        name: month.name,
-        revision: revisionData,
-      };
-    });
+      let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAt");
 
-    return [
-      {
-        label: "",
-        data: datasetData.map((i) => {
-          return Math.floor((i.revision.length / i.journies.length) * 100);
-        }),
-        backgroundColor: datasetData.map((i) => i.color),
-        borderColor: datasetData.map((i) => i.borderColor),
+      let dataset = months.map((month) => {
+        let data = jounriesGroupedByMonth[month];
+        return {
+          data: data ?? [],
+          color,
+          borderColor,
+          comparisonId: type.type,
+          name: type.type,
+        };
+      });
+      return {
+        label: type.type,
+        data: dataset.map((i) => i.data.length),
+        backgroundColor: dataset.map((i) => i.color),
+        borderColor: dataset.map((i) => i.borderColor),
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-      },
-    ];
+      };
+    });
   };
 
   return (
@@ -352,7 +285,7 @@ const NoOfRevision = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Number of Revision
+        Total Number of Tasks
       </Typography>
       <Grid xs={2}>
         <IconButton
@@ -364,35 +297,6 @@ const NoOfRevision = () => {
         </IconButton>
       </Grid>
       <Line options={state.options} data={state.data} />
-      <form className="ComparisonOptions">
-        <input
-          type="checkbox"
-          id="all-NoOfRevision"
-          value={"All-NoOfRevision"}
-          name="all-NoOfRevision"
-          checked={state.comparisonBy === "All-NoOfRevision"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="all-NoOfRevision">All</label>
-        <input
-          type="checkbox"
-          id={"teams-NoOfRevision"}
-          value={"Teams"}
-          name="teams-NoOfRevision"
-          checked={state.comparisonBy === "Teams"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="teams-NoOfRevision">Teams</label>
-        <input
-          id="pms-NoOfRevision"
-          type="checkbox"
-          value={"PMs"}
-          name="pms-NoOfRevision"
-          checked={state.comparisonBy === "PMs"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="pms-NoOfRevision">Project Managers</label>
-      </form>
       <FilterBar
         allOptions={{
           clients: allClients,
@@ -409,7 +313,7 @@ const NoOfRevision = () => {
   );
 };
 
-export default NoOfRevision;
+export default NoOfTasks;
 
 const filterBtnStyle = {
   bgcolor: "#FAFAFB",
