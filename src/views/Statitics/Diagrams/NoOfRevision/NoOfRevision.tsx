@@ -124,7 +124,7 @@ const NoOfRevision = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
 
   useEffect(() => {
@@ -157,6 +157,12 @@ const NoOfRevision = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "Started At Month",
+            poisition: "top",
+            align: "end",
+          },
         },
         y: {
           min: 0,
@@ -166,12 +172,25 @@ const NoOfRevision = () => {
               return value + "%";
             },
           },
+          title: {
+            display: true,
+            text: "Percentage of revision",
+            poisition: "bottom",
+            align: "end",
+          },
         },
       },
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [journies, state.comparisonBy, teams, clients]);
+
+  useEffect(() => {
+    if (state.comparisonBy === "Teams") setTeams(allTeams.slice(0, 4));
+    else setTeams(allTeams);
+    if (state.comparisonBy === "PMs") setManagers(allManagers.slice(0, 4));
+    else setManagers(allManagers);
+  }, [state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -363,7 +382,10 @@ const NoOfRevision = () => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Line options={state.options} data={state.data} />
+      <Grid xs={12}>
+        <Typography> TOD</Typography>
+        <Line options={state.options} data={state.data} />
+      </Grid>
       <form className="ComparisonOptions">
         <input
           type="checkbox"

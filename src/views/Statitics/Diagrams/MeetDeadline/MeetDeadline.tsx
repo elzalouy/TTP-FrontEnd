@@ -124,7 +124,7 @@ const MeetDeadline = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
 
   useEffect(() => {
@@ -159,6 +159,12 @@ const MeetDeadline = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "",
+            poisition: "top",
+            align: "end",
+          },
         },
         y: {
           min: 0,
@@ -168,12 +174,25 @@ const MeetDeadline = () => {
               return value + "%";
             },
           },
+          title: {
+            display: true,
+            text: "End of jounreys month",
+            poisition: "bottom",
+            align: "end",
+          },
         },
       },
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [journies, state.comparisonBy, teams, clients]);
+
+  useEffect(() => {
+    if (state.comparisonBy === "Teams") setTeams(allTeams.slice(0, 4));
+    else setTeams(allTeams);
+    if (state.comparisonBy === "PMs") setManagers(allManagers.slice(0, 4));
+    else setManagers(allManagers);
+  }, [state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];

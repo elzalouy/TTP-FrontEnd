@@ -167,6 +167,12 @@ const BySharedMonth = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "TOD (Days & Hours)",
+            poisition: "bottom",
+            align: "end",
+          },
         },
       },
     };
