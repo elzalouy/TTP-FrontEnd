@@ -124,7 +124,7 @@ const BySharedMonth = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
 
   useEffect(() => {
@@ -178,7 +178,16 @@ const BySharedMonth = () => {
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [journies, clients, managers, teams, state.comparisonBy]);
+
+  useEffect(() => {
+    if (state.comparisonBy === "Teams") setTeams(allTeams.slice(0, 4));
+    else setTeams(allTeams);
+    if (state.comparisonBy === "PMs") setManagers(allManagers.slice(0, 4));
+    else setManagers(allManagers);
+    if (state.comparisonBy === "Clinets") setClients(allClients.slice(0, 4));
+    else setClients(allClients);
+  }, [state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
