@@ -124,7 +124,7 @@ const MeetDeadline = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
   }, [departments]);
 
   useEffect(() => {
@@ -185,14 +185,7 @@ const MeetDeadline = () => {
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy, teams, clients]);
-
-  useEffect(() => {
-    if (state.comparisonBy === "Teams") setTeams(allTeams.slice(0, 4));
-    else setTeams(allTeams);
-    if (state.comparisonBy === "PMs") setManagers(allManagers.slice(0, 4));
-    else setManagers(allManagers);
-  }, [state.comparisonBy]);
+  }, [journies, state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -231,7 +224,7 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return managers.map((manager) => {
+    return managers.map((manager, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -263,6 +256,7 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -273,7 +267,7 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return clients.map((client) => {
+    return clients.map((client, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -305,6 +299,7 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -315,7 +310,7 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return teams.map((team) => {
+    return teams.map((team, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -347,6 +342,7 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };

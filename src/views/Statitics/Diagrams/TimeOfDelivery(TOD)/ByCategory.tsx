@@ -128,6 +128,8 @@ const TodByCategory = () => {
     setState({ ...state, options, data });
   }, [categories, tasks, teams, state.comparisonBy]);
 
+  useEffect(() => {}, [state.comparisonBy]);
+
   const onGetDatasetsByAll = () => {
     let bgColors: string[] = [];
     let borderColors: string[] = [];
@@ -169,7 +171,7 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    return managers.map((manager) => {
+    return managers.map((manager, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -199,6 +201,7 @@ const TodByCategory = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -209,7 +212,7 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    return clients.map((client) => {
+    return clients.map((client, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -239,6 +242,7 @@ const TodByCategory = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -248,7 +252,7 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    return teams.map((team) => {
+    return teams.map((team, index) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);
       borderColors.push(borderColor);
@@ -276,9 +280,11 @@ const TodByCategory = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        hidden: index >= 4 ? true : false,
       };
     });
   };
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
