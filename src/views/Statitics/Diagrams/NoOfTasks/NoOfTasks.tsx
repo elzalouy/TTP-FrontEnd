@@ -243,7 +243,6 @@ const NoOfTasks = () => {
         ),
       },
     ];
-    console.log({ types });
     return types.map((type) => {
       let { color, borderColor } = getRandomColor(bgColors);
       bgColors.push(color);

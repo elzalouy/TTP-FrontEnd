@@ -6,7 +6,7 @@ import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
-import { ITeam } from "src/types/models/Departments";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
   Months,
@@ -43,15 +43,17 @@ interface ITaskInfo extends Task {
   projectManager?: string;
 }
 
+type MeetDeadlineProps = {
+  departments: IDepartmentState[];
+};
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const MeetDeadline = () => {
+const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
-  const departments = useAppSelector(selectAllDepartments);
   const allManagers = useAppSelector(selectPMs);
   const allClients = useAppSelector(selectAllClients);
   const [allTeams, setAllTeams] = useState<ITeam[]>([]);
@@ -124,8 +126,16 @@ const MeetDeadline = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
+
+  useEffect(() => {
+    setManagers(
+      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    );
+
+    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+  }, [state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -143,6 +153,11 @@ const MeetDeadline = () => {
     };
     const options = {
       plugins: {
+        legend: {
+          display: false,
+          position: "right",
+          align: "start",
+        },
         tooltip: {
           callbacks: {
             label: function (context: any) {
@@ -161,9 +176,10 @@ const MeetDeadline = () => {
           },
           title: {
             display: true,
-            text: "",
-            poisition: "top",
+            text: "Month",
+            poisition: "bottom",
             align: "end",
+            color: "black",
           },
         },
         y: {
@@ -176,16 +192,17 @@ const MeetDeadline = () => {
           },
           title: {
             display: true,
-            text: "End of jounreys month",
-            poisition: "bottom",
+            text: "Meeting Deadline Percentage",
+            poisition: "top",
             align: "end",
+            color: "black",
           },
         },
       },
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [teams, clients, managers, journies]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -224,10 +241,10 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return managers.map((manager, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
@@ -256,7 +273,6 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -267,10 +283,10 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return clients.map((client, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
@@ -299,7 +315,6 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -310,10 +325,10 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return teams.map((team, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );
@@ -342,7 +357,6 @@ const MeetDeadline = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -357,10 +371,10 @@ const MeetDeadline = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     let datasetData = months.map((month) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (item) => item.journeyFinishedAt === month.id
       );

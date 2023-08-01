@@ -110,7 +110,7 @@ export const updateDepartmentsPriority = createAsyncThunk<any, any, any>(
     try {
       let response: ApiResponse<IDepartmentState[]> =
         await api.updateDepartmentsPriority(args);
-      if (response.ok) return response.data;
+      if (response.ok) return { data: response.data, ids: args };
       else rejectWithValue(response);
     } catch (error: any) {
       ToastError(error);

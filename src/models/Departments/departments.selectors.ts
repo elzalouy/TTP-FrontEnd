@@ -3,6 +3,8 @@ import { RootState } from "../store";
 
 export const selectAllDepartments = (state: RootState) =>
   state?.departments?.departments;
+export const selectAllTeams = (state: RootState) =>
+  _.flattenDeep(state.departments.departments.map((i) => i.teams));
 
 export const selectDepartmentOptions = (state: RootState) => {
   if (state.departments.departments) {

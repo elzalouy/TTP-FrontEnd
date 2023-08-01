@@ -6,7 +6,7 @@ import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
-import { ITeam } from "src/types/models/Departments";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
   Months,
@@ -43,15 +43,17 @@ interface ITaskInfo extends Task {
   projectManager?: string;
 }
 
+type BySharedMonthProps = {
+  departments: IDepartmentState[];
+};
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const BySharedMonth = () => {
+const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
-  const departments = useAppSelector(selectAllDepartments);
   const allManagers = useAppSelector(selectPMs);
   const allClients = useAppSelector(selectAllClients);
   const [allTeams, setAllTeams] = useState<ITeam[]>([]);
@@ -124,8 +126,20 @@ const BySharedMonth = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
+
+  useEffect(() => {
+    setClients(
+      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
+    );
+
+    setManagers(
+      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    );
+
+    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+  }, [state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -143,6 +157,12 @@ const BySharedMonth = () => {
     };
     const options = {
       plugins: {
+        legend: {
+          display: false,
+          position: "right",
+          align: "start",
+        },
+
         tooltip: {
           callbacks: {
             label: function (context: any) {
@@ -162,6 +182,13 @@ const BySharedMonth = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "Month",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
+          },
         },
         y: {
           ticks: {
@@ -170,15 +197,16 @@ const BySharedMonth = () => {
           title: {
             display: true,
             text: "TOD (Days & Hours)",
-            poisition: "bottom",
+            poisition: "top",
             align: "end",
+            color: "black",
           },
         },
       },
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [teams, clients, managers, journies]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -217,10 +245,10 @@ const BySharedMonth = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return managers.map((manager, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
@@ -246,7 +274,6 @@ const BySharedMonth = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -257,10 +284,10 @@ const BySharedMonth = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return clients.map((client, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
@@ -286,7 +313,6 @@ const BySharedMonth = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -297,10 +323,10 @@ const BySharedMonth = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return teams.map((team, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );
@@ -326,7 +352,6 @@ const BySharedMonth = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -337,10 +362,10 @@ const BySharedMonth = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     let datasetData = months.map((month) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (item) => item.sharedAtMonth === month.id
       );
@@ -384,7 +409,7 @@ const BySharedMonth = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Time of delivery by Shared Month
+        Time Of Delivery Diagram Trend Comparison
       </Typography>
       <Grid xs={2}>
         <IconButton

@@ -6,7 +6,7 @@ import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
-import { ITeam } from "src/types/models/Departments";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
   Months,
@@ -43,15 +43,17 @@ interface ITaskInfo extends Task {
   projectManager?: string;
 }
 
+type NoOfRevisionProps = {
+  departments: IDepartmentState[];
+};
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const NoOfRevision = () => {
+const NoOfRevision = ({ departments }: NoOfRevisionProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
-  const departments = useAppSelector(selectAllDepartments);
   const allManagers = useAppSelector(selectPMs);
   const allClients = useAppSelector(selectAllClients);
   const [allTeams, setAllTeams] = useState<ITeam[]>([]);
@@ -124,8 +126,16 @@ const NoOfRevision = () => {
 
   useEffect(() => {
     setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
   }, [departments]);
+
+  useEffect(() => {
+    setManagers(
+      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    );
+
+    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+  }, [state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -140,6 +150,12 @@ const NoOfRevision = () => {
     };
     const options = {
       plugins: {
+        legend: {
+          display: false,
+          position: "right",
+          align: "start",
+        },
+
         tooltip: {
           callbacks: {
             label: function (context: any) {
@@ -158,9 +174,10 @@ const NoOfRevision = () => {
           },
           title: {
             display: true,
-            text: "Started At Month",
+            text: "Month",
             poisition: "top",
             align: "end",
+            color: "black",
           },
         },
         y: {
@@ -173,16 +190,17 @@ const NoOfRevision = () => {
           },
           title: {
             display: true,
-            text: "Percentage of revision",
+            text: "Number Of Revision Percentage",
             poisition: "bottom",
             align: "end",
+            color: "black",
           },
         },
       },
     };
 
     setState({ ...state, options, data });
-  }, [journies, state.comparisonBy]);
+  }, [teams, clients, managers, journies]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -256,7 +274,6 @@ const NoOfRevision = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -302,7 +319,6 @@ const NoOfRevision = () => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -339,7 +355,7 @@ const NoOfRevision = () => {
 
     return [
       {
-        label: "",
+        label: "Organization",
         data: datasetData.map((i) => {
           return Math.floor((i.revision.length / i.journies.length) * 100);
         }),

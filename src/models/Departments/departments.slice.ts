@@ -71,19 +71,15 @@ const DepartmentsSlice: Slice<IDepartmentsSlice> = createSlice({
       oldData = oldData.filter((dep: IDepartmentState) => dep?._id !== payload);
       state.departments = oldData;
     });
-    builder.addCase(updateDepartmentsPriority.rejected, (state) => {
-      state.loading = false;
-    });
+    builder.addCase(updateDepartmentsPriority.rejected, (state) => {});
 
-    builder.addCase(updateDepartmentsPriority.pending, (state) => {
-      state.loading = true;
-    });
+    builder.addCase(updateDepartmentsPriority.pending, (state) => {});
 
     builder.addCase(
       updateDepartmentsPriority.fulfilled,
       (state, { payload }) => {
         state.loading = false;
-        state.departments = payload;
+        state.departments = payload.data;
       }
     );
   },

@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Grid, ListItem, Typography } from "@mui/material";
-import "../../style.css";
+import "../../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
-import { selectAllDepartments } from "src/models/Departments";
-import { ITeam } from "src/types/models/Departments";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import { getRandomColor, getTaskJournies } from "src/helpers/generalUtils";
-import { Task, TaskFile, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
 import { selectManagers, selectPMs } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
-import { getJourneyLeadTime } from "../../utils";
+import { getJourneyLeadTime } from "../../../utils";
 import { TooltipItem } from "chart.js";
 
 interface StateType {
@@ -31,15 +29,19 @@ interface StateType {
   options: any;
   comparisonBy: string;
 }
+type TodByCategoryProps = {
+  departments: IDepartmentState[];
+};
+
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const TodByCategory = () => {
+
+const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const categories = useAppSelector(selectAllCategories);
-  const departments = useAppSelector(selectAllDepartments);
   const managers = useAppSelector(selectPMs);
   const clients = useAppSelector(selectAllClients);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -92,6 +94,11 @@ const TodByCategory = () => {
     };
     const options = {
       plugins: {
+        legend: {
+          display: true,
+          position: "right",
+          align: "start",
+        },
         tooltip: {
           callbacks: {
             label: function (context: any) {
@@ -111,6 +118,13 @@ const TodByCategory = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "Category",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
+          },
         },
         y: {
           ticks: {
@@ -121,6 +135,7 @@ const TodByCategory = () => {
             text: "TOD (Days & Hours)",
             poisition: "bottom",
             align: "end",
+            color: "black",
           },
         },
       },
@@ -136,10 +151,10 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     let datasetData = Categories.map((category) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (item) => item.categoryId === category.id
       );
@@ -171,10 +186,10 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return managers.map((manager, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (item) => item.projectManager === manager._id
       );
@@ -212,10 +227,10 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return clients.map((client, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter(
         (item) => item.clientId === client._id
       );
@@ -252,10 +267,10 @@ const TodByCategory = () => {
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
+    let { color, borderColor } = getRandomColor(bgColors);
+    bgColors.push(color);
+    borderColors.push(borderColor);
     return teams.map((team, index) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
       let journiesData = journies.filter((item) => item.teamId === team._id);
       let journiesOfClientGroupedByCategory = {
         ..._.groupBy(journiesData, "categoryId"),
@@ -300,7 +315,7 @@ const TodByCategory = () => {
       }}
     >
       <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Time of delivery By Categories
+        Time Of Delivery Diagram Category Comparison
       </Typography>
       <Bar options={state.options} data={state.data} />
       <form className="ComparisonOptions">

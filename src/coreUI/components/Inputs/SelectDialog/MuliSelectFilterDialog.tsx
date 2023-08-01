@@ -48,7 +48,9 @@ export const SimpleDialog = ({
   allOption,
 }: DialogProps) => {
   const theme = useTheme();
-  const [selectedAll, setSelectedAll] = React.useState(true);
+  const [selectedAll, setSelectedAll] = React.useState(
+    options.length === selected?.length ? true : false
+  );
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [searchVal, setSearchVal] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
@@ -65,15 +67,17 @@ export const SimpleDialog = ({
     setFilteredOptions(filtered);
   }, [searchVal]);
 
-  const handleListItemClick = (e: any, value: DialogOption) => {
+  const handleListItemClick = (value: DialogOption) => {
     let index = selected ? selected.findIndex((i) => i.id === value.id) : -1;
     if (index >= 0) onDiselect(value);
     else onSelect(value);
   };
+
   const handleSelectAll = () => {
     onSelectedAll(selectedAll ? false : true);
     setSelectedAll(selectedAll ? false : true);
   };
+
   const onSearch = (e: any) => setSearchVal(e.target.value);
   return (
     <Dialog
@@ -138,7 +142,7 @@ export const SimpleDialog = ({
               : item.image;
             return (
               <ListItem
-                onClick={(e) => handleListItemClick(e, item)}
+                onClick={(e) => handleListItemClick(item)}
                 key={item.id}
                 id={item.id}
                 sx={{
