@@ -316,7 +316,6 @@ const TrackClientHealthTable = () => {
     setState(State);
   };
 
-  console.log({ state });
   return (
     <Grid
       className="customScrollBar"
