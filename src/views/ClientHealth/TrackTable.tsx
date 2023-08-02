@@ -32,7 +32,7 @@ import FiltersBar from "./FilterMenu";
 import _ from "lodash";
 
 interface HeadCell {
-  id: string;
+  id: any;
   label: string;
   type: string;
 }
@@ -187,7 +187,7 @@ const TrackClientHealthTable = () => {
           revision,
         };
       }),
-      ["clientName"],
+      (i) => i.clientName,
       "asc"
     );
     State.loading = false;
@@ -195,7 +195,6 @@ const TrackClientHealthTable = () => {
   }, [state.journeys]);
 
   const getClientTrack = (clientId: string) => {
-    // setState({ ...state, loading: true });
     let projectIds: string[],
       tasks,
       orderedTasks,
@@ -262,7 +261,16 @@ const TrackClientHealthTable = () => {
     setState({ ...newState });
   };
 
-  const createSortHandler = (orderBy: string, type: string) => {
+  const createSortHandler = (
+    orderBy:
+      | "lastBrief"
+      | "_ofProjects"
+      | "_OfJournies"
+      | "meetDeadline"
+      | "averageTOD"
+      | "revision",
+    type: string
+  ) => {
     const order =
       state.orderBy !== orderBy
         ? "asc"
@@ -272,16 +280,14 @@ const TrackClientHealthTable = () => {
     let State = { ...state };
     State.orderBy = orderBy;
     State.order = Order[order];
-    State.cells = _.orderBy(State.cells, [orderBy], order);
+    State.cells = _.orderBy(State.cells, (i) => i[orderBy], order);
     setState(State);
   };
+
   const onSetFilter = (type: string, value: string) => {
     let State = { ...state };
     if (type === "startDate") {
       State.filter.startDate = value;
-      // State.journeys = state.journeys.map(i => {
-      //   let journies=i.journies.filter(j=>j.)
-      // })
     }
     if (type === "endDate") {
       State.filter.endDate = value;
