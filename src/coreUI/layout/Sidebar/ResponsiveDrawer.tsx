@@ -106,6 +106,16 @@ const ResponsiveDrawer = (props: any) => {
               {...props}
               select={props.select}
               open={props.open}
+              key="9"
+              onClick={() => history.push("/clientHealth")}
+              path={"/clientHealth"}
+              Icon={() => <TaskIcon />}
+              text="Statistics"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={props.open}
               key="0"
               onClick={() => history.push("/Overview")}
               Icon={() => <Overviewicon />}

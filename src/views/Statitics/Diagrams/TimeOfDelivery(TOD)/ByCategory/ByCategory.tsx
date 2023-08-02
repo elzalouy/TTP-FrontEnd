@@ -146,14 +146,12 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   useEffect(() => {}, [state.comparisonBy]);
 
   const onGetDatasetsByAll = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
+
     let datasetData = Categories.map((category) => {
       let journiesData = journies.filter(
         (item) => item.categoryId === category.id
@@ -181,14 +179,11 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     };
   };
   const onGetDataSetsByPM = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return managers.map((manager, index) => {
       let journiesData = journies.filter(
         (item) => item.projectManager === manager._id
@@ -222,14 +217,12 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   };
 
   const onGetDataSetsByClient = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
+
     return clients.map((client, index) => {
       let journiesData = journies.filter(
         (item) => item.clientId === client._id
@@ -262,14 +255,12 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     });
   };
   const onGetDatasetsByTeams = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let Categories = categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return teams.map((team, index) => {
       let journiesData = journies.filter((item) => item.teamId === team._id);
       let journiesOfClientGroupedByCategory = {

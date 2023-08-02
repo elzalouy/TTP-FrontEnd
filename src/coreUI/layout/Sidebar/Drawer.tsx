@@ -131,6 +131,16 @@ const AppDrawer = (props: any) => {
               {...props}
               select={props.select}
               open={open}
+              key="9"
+              onClick={() => history.push("/clientHealth")}
+              path={"/clientHealth"}
+              Icon={() => <TaskIcon />}
+              text="Client Health"
+            />
+            <DrawerItem
+              {...props}
+              select={props.select}
+              open={open}
               key="0"
               onClick={() => history.push("/Overview")}
               path={"/Overview"}

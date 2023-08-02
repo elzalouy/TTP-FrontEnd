@@ -8,11 +8,7 @@ import { Line } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
-import {
-  Months,
-  getRandomColor,
-  getTaskJournies,
-} from "src/helpers/generalUtils";
+import { Months, getTaskJournies } from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
@@ -236,14 +232,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   };
 
   const onGetDataSetsByPM = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return managers.map((manager, index) => {
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
@@ -278,14 +271,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   };
 
   const onGetDataSetsByClient = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return clients.map((client, index) => {
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
@@ -320,14 +310,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   };
 
   const onGetDatasetsByTeams = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return teams.map((team, index) => {
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
@@ -366,14 +353,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   };
 
   const onGetDatasetsByAll = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     let datasetData = months.map((month) => {
       let journiesData = journies.filter(
         (item) => item.journeyFinishedAt === month.id

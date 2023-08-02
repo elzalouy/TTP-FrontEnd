@@ -19,6 +19,7 @@ import {
   UpdatePassword,
 } from "src/views";
 import AuthRedirection from "src/views/Auth/AuthRedirection/AuthRedirection";
+import CLientHealth from "src/views/ClientHealth";
 import Statistics from "src/views/Statitics/Statistics";
 interface RoutesProps {
   children?: any;
@@ -49,6 +50,24 @@ const Routes = (props: RoutesProps) => {
               return (
                 <MenuContainer paddingX {...props}>
                   <Statistics {...props} />
+                </MenuContainer>
+              );
+            else return <Redirect to="/notAuthed" />;
+          }}
+        />
+      ),
+    },
+    {
+      routeName: "/Cleint Health",
+      Route: (
+        <Route
+          path="/clientHealth"
+          key="/clientHealth"
+          render={(props) => {
+            if (isAuthedUser() && !isPM())
+              return (
+                <MenuContainer paddingX {...props}>
+                  <CLientHealth {...props} />
                 </MenuContainer>
               );
             else return <Redirect to="/notAuthed" />;

@@ -3,7 +3,6 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import TodByCategory from "./Diagrams/TimeOfDelivery(TOD)/ByCategory/ByCategory";
 import BySharedMonth from "./Diagrams/TimeOfDelivery(TOD)/BySharedDate/BySharedDate";
-import TrackClientHealthTable from "./Diagrams/ClientHealthTracker/TrackTable";
 import MeetDeadline from "./Diagrams/MeetDeadline/MeetDeadline";
 import NoOfRevision from "./Diagrams/NoOfRevision/NoOfRevision";
 import NoOfTasks from "./Diagrams/NoOfTasks/NoOfTasks";
@@ -145,9 +144,7 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <BySharedMonth departments={state.options.boards} />
         </Grid>
-        <Grid xs={12} height={"auto"}>
-          <TrackClientHealthTable />
-        </Grid>
+        sla{" "}
         <Grid xs={12} height={"auto"}>
           <MeetDeadline departments={state.options.boards} />
         </Grid>

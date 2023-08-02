@@ -240,14 +240,11 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   };
 
   const onGetDataSetsByPM = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return managers.map((manager, index) => {
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
@@ -279,14 +276,11 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   };
 
   const onGetDataSetsByClient = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
     return clients.map((client, index) => {
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
@@ -357,14 +351,13 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   };
 
   const onGetDatasetsByAll = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
+
+    let color = "rgb(255,207,36,0.2)";
+    let borderColor = "rgb(255,207,36)";
+
     let datasetData = months.map((month) => {
       let journiesData = journies.filter(
         (item) => item.sharedAtMonth === month.id

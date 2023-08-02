@@ -1,3 +1,7 @@
+import "src/views/TasksListView/Read/TasksListView.css";
+import * as React from "react";
+import "src/App/App.css";
+import { useHistory } from "react-router";
 import {
   Grid,
   IconButton,
@@ -11,21 +15,17 @@ import {
   TableRow,
   TableSortLabel,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import "../../../TasksListView/Read/TasksListView.css";
-import * as React from "react";
-import "src/App/App.css";
-import { useHistory } from "react-router";
-import { useMediaQuery, useTheme } from "@mui/material";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllCategories } from "src/models/Categories";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Project, Task } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { selectAllProjects } from "src/models/Projects";
 import TablePaginationActions from "src/coreUI/components/Tables/TablePaginationActions";
 import { getTaskJournies } from "src/helpers/generalUtils";
-import { getJourneyLeadTime, getMeetingDeadline } from "../../utils";
+import { getJourneyLeadTime, getMeetingDeadline } from "../Statitics/utils";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import IMAGES from "src/assets/img/Images";
 import FiltersBar from "./FilterMenu";

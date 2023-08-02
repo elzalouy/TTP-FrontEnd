@@ -244,9 +244,8 @@ const NoOfTasks = () => {
       },
     ];
     return types.map((type) => {
-      let { color, borderColor } = getRandomColor(bgColors);
-      bgColors.push(color);
-      borderColors.push(borderColor);
+      let color = "rgb(255,207,36,0.2)";
+      let borderColor = "rgb(255,207,36)";
       let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAt");
 
       let dataset = months.map((month) => {
