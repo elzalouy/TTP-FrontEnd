@@ -172,7 +172,7 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
           callbacks: {
             label: function (context: any) {
               const value: number = context.dataset.data[context.dataIndex];
-              return ` ${value}% Meet the deadline`;
+              return ` ${context.dataset.label} : ${value}% Meet the deadline`;
             },
           },
         },

@@ -7,8 +7,8 @@ type filterBarProps = {
   filterPopup: boolean;
   closeFilterPopup: any;
   onSetFilter: any;
-  start: string;
-  end: string;
+  start: string | null;
+  end: string | null;
 };
 const FiltersBar = ({
   filterPopup,
@@ -40,7 +40,7 @@ const FiltersBar = ({
       >
         <Grid item xs={12} justifyContent={"space-between"} container>
           <Typography mt={1} variant="h4">
-            Filter Journies
+            Filter By Projects
           </Typography>
         </Grid>
 

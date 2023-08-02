@@ -173,7 +173,9 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
       label: "",
       data: datasetData.map(
         (i) =>
-          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+          i.journies.length /
+          24
       ),
       backgroundColor: datasetData.map((i) => i.color),
       borderColor: datasetData.map((i) => i.borderColor),
@@ -247,7 +249,9 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
         label: client.clientName,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+            i.journies.length /
+            24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -283,7 +287,9 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
         label: team.name,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+            i.journies.length /
+            24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),

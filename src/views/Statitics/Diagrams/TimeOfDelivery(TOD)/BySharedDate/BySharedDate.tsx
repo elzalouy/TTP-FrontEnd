@@ -155,7 +155,6 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
 
   useEffect(() => {
     let months = Months;
-
     const data = {
       labels: months,
       datasets:
@@ -276,7 +275,10 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       return {
         label: manager.name,
         data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
+          (i) =>
+            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
+            i.journies.length /
+            24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -312,7 +314,10 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       return {
         label: client.clientName,
         data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
+          (i) =>
+            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
+            i.journies.length /
+            24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -351,7 +356,10 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       return {
         label: team.name,
         data: datasetData.map(
-          (i) => _.sum(i.journies.map((j) => getJourneyLeadTime(j))) / 24
+          (i) =>
+            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
+            i.journies.length /
+            24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -387,7 +395,9 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       label: "",
       data: datasetData.map(
         (i) =>
-          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+          i.journies.length /
+          24
       ),
       backgroundColor: datasetData.map((i) => i.color),
       borderColor: datasetData.map((i) => i.borderColor),

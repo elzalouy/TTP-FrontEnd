@@ -97,13 +97,13 @@ type stateType = {
     lastBrief: number;
     _ofProjects: number;
     _OfJournies: number;
-    averageTOD: string;
+    averageTOD: number;
     revision: number;
     meetDeadline: number;
   }[];
   filter: {
-    startDate: string;
-    endDate: string;
+    startDate: string | null;
+    endDate: string | null;
   };
 };
 
@@ -127,8 +127,8 @@ const TrackClientHealthTable = () => {
     cells: [],
     journeys: [],
     filter: {
-      startDate: "",
-      endDate: "",
+      startDate: null,
+      endDate: null,
     },
   });
 
@@ -142,7 +142,7 @@ const TrackClientHealthTable = () => {
           projectManager: p?.projectManager,
         };
       });
-      let journeys = allTasks.map((i) => getTaskJournies(i));
+      let journeys = tasks.map((i) => getTaskJournies(i));
       setState({
         ...state,
         clients: clients,
@@ -174,14 +174,12 @@ const TrackClientHealthTable = () => {
           revision,
         } = getClientTrack(item._id);
 
-        let totalDays = Math.floor(averageTOD / 24);
-        let totalHours = Math.floor(averageTOD % 24);
         return {
           clientId: item._id ?? "",
           clientName: item.clientName,
           meetDeadline,
           lastBrief: lastBrief,
-          averageTOD: `${totalDays} Days, ${totalHours} Hours`,
+          averageTOD: averageTOD,
           _OfJournies,
           _ofProjects,
           revision,
@@ -192,7 +190,32 @@ const TrackClientHealthTable = () => {
     );
     State.loading = false;
     setState(State);
-  }, [state.journeys]);
+  }, [state.journeys, state.projects, state.tasks]);
+
+  React.useEffect(() => {
+    let State = { ...state };
+    if (State.filter.startDate)
+      State.projects = projects.filter((i) => {
+        let startDate = new Date(i.startDate).getTime();
+        if (
+          State.filter.startDate &&
+          startDate >= new Date(State.filter.startDate).getTime()
+        )
+          return i;
+      });
+    if (State.filter.endDate)
+      State.projects = projects.filter((i) => {
+        let startDate = new Date(i.startDate);
+        if (
+          State.filter.endDate &&
+          startDate.getTime() <= new Date(State.filter.endDate).getTime()
+        )
+          return i;
+      });
+    let ids = State.projects.map((i) => i._id);
+    State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
+    State.journeys = State.tasks.map((i) => getTaskJournies(i));
+  }, [state.filter.startDate, state.filter.endDate]);
 
   const getClientTrack = (clientId: string) => {
     let projectIds: string[],
@@ -205,10 +228,10 @@ const TrackClientHealthTable = () => {
       revisionJournies,
       revision,
       meetDeadlineResult;
-    projectIds = projects
+    projectIds = state.projects
       .filter((i: Project) => i.clientId === clientId)
       .map((i: Project) => i._id);
-    tasks = allTasks.filter((item: Task) =>
+    tasks = state.tasks.filter((item: Task) =>
       projectIds.includes(item.projectId)
     );
     orderedTasks = _.orderBy(tasks, "createdAt");
@@ -233,9 +256,9 @@ const TrackClientHealthTable = () => {
       ).getTime(),
       _ofProjects: projectIds.length,
       _OfJournies: clientJournies.length,
-      meetDeadline: meet,
-      averageTOD,
-      revision,
+      meetDeadline: meet >= 0 ? meet : 0,
+      averageTOD: averageTOD >= 0 ? averageTOD : 0,
+      revision: revision >= 0 ? revision : 0,
     };
   };
 
@@ -286,15 +309,14 @@ const TrackClientHealthTable = () => {
 
   const onSetFilter = (type: string, value: string) => {
     let State = { ...state };
-    if (type === "startDate") {
-      State.filter.startDate = value;
-    }
-    if (type === "endDate") {
-      State.filter.endDate = value;
-    }
+    let start = type === "startDate" ? value : null;
+    let end = type === "endDate" ? value : null;
+    if (start) State.filter.startDate = start;
+    if (end) State.filter.endDate = end;
     setState(State);
   };
 
+  console.log({ state });
   return (
     <Grid
       className="customScrollBar"
@@ -569,6 +591,9 @@ const TrackClientHealthTable = () => {
                       year: "numeric",
                     }
                   );
+                  let totalDays = Math.floor(averageTOD / 24);
+                  let totalHours = Math.floor(averageTOD % 24);
+
                   return (
                     <TableRow
                       sx={{
@@ -680,7 +705,7 @@ const TrackClientHealthTable = () => {
                             height={20}
                           />
                         ) : (
-                          <>{averageTOD}</>
+                          <>{`${totalDays} Days, ${totalHours} Hours`}</>
                         )}
                       </TableCell>
                       <TableCell
@@ -699,7 +724,7 @@ const TrackClientHealthTable = () => {
                             height={20}
                           />
                         ) : (
-                          <>{revision >= 0 ? revision : 0} %</>
+                          <>{revision} %</>
                         )}
                       </TableCell>
                       <TableCell
