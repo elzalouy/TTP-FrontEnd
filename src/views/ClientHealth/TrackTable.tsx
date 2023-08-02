@@ -59,6 +59,11 @@ const TeableHeaderCells: readonly HeadCell[] = [
     type: "number",
   },
   {
+    id: "_OfTasks",
+    label: "# of Tasks",
+    type: "number",
+  },
+  {
     id: "_OfJournies",
     label: "# of journies",
     type: "number",
@@ -100,6 +105,7 @@ type stateType = {
     averageTOD: number;
     revision: number;
     meetDeadline: number;
+    _OfTasks: number;
   }[];
   filter: {
     startDate: string | null;
@@ -172,6 +178,7 @@ const TrackClientHealthTable = () => {
           meetDeadline,
           averageTOD,
           revision,
+          _OfTasks,
         } = getClientTrack(item._id);
 
         return {
@@ -183,6 +190,7 @@ const TrackClientHealthTable = () => {
           _OfJournies,
           _ofProjects,
           revision,
+          _OfTasks,
         };
       }),
       (i) => i.clientName,
@@ -254,6 +262,7 @@ const TrackClientHealthTable = () => {
       lastBrief: new Date(
         orderedTasks[orderedTasks.length - 1]?.createdAt
       ).getTime(),
+      _OfTasks: tasks.length,
       _ofProjects: projectIds.length,
       _OfJournies: clientJournies.length,
       meetDeadline: meet >= 0 ? meet : 0,
@@ -291,7 +300,8 @@ const TrackClientHealthTable = () => {
       | "_OfJournies"
       | "meetDeadline"
       | "averageTOD"
-      | "revision",
+      | "revision"
+      | "_OfTasks",
     type: string
   ) => {
     const order =
@@ -580,6 +590,7 @@ const TrackClientHealthTable = () => {
                     averageTOD,
                     _OfJournies,
                     _ofProjects,
+                    _OfTasks,
                   } = item;
                   let lastBriefDate = new Date(lastBrief);
                   let localLastBriefDate = lastBriefDate.toLocaleDateString(
@@ -668,6 +679,24 @@ const TrackClientHealthTable = () => {
                           />
                         ) : (
                           <>{_ofProjects}</>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        size="small"
+                        align="left"
+                        style={{
+                          color: "#707683",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {state.loading === true ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={20}
+                          />
+                        ) : (
+                          <>{_OfTasks}</>
                         )}
                       </TableCell>
                       <TableCell
