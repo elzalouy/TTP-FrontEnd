@@ -144,7 +144,6 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <BySharedMonth departments={state.options.boards} />
         </Grid>
-        sla{" "}
         <Grid xs={12} height={"auto"}>
           <MeetDeadline departments={state.options.boards} />
         </Grid>

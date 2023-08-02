@@ -125,8 +125,16 @@ const NoOfRevision = ({ departments }: NoOfRevisionProps) => {
   }, [allCategories]);
 
   useEffect(() => {
-    setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
+    setAllTeams(
+      _.flattenDeep(departments.map((item) => item.teams)).filter(
+        (t) => t.isDeleted === false
+      )
+    );
+    setTeams(
+      _.flattenDeep(departments.map((item) => item.teams))
+        .filter((t) => t.isDeleted === false)
+        .slice(0, 4)
+    );
   }, [departments]);
 
   useEffect(() => {
@@ -134,7 +142,11 @@ const NoOfRevision = ({ departments }: NoOfRevisionProps) => {
       state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
     );
 
-    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+    setTeams(
+      state.comparisonBy === "Teams"
+        ? allTeams.slice(0, 4).filter((t) => t.isDeleted === false)
+        : allTeams
+    );
   }, [state.comparisonBy]);
 
   useEffect(() => {

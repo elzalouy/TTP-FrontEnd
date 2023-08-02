@@ -126,8 +126,16 @@ const NoOfTasks = () => {
   }, [allCategories]);
 
   useEffect(() => {
-    setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setAllTeams(
+      _.flattenDeep(departments.map((item) => item.teams)).filter(
+        (i) => i.isDeleted === false
+      )
+    );
+    setTeams(
+      _.flattenDeep(departments.map((item) => item.teams)).filter(
+        (t) => t.isDeleted === false
+      )
+    );
   }, [departments]);
 
   useEffect(() => {
@@ -169,7 +177,11 @@ const NoOfTasks = () => {
     categories: string[];
     teams: string[];
   }) => {
-    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setTeams(
+      allTeams.filter(
+        (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
+      )
+    );
     setManagers(
       allManagers.filter((i) => i._id && filter.managers.includes(i._id))
     );

@@ -73,7 +73,11 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   }, [clients, projects, managers, allTasks]);
 
   useEffect(() => {
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)));
+    setTeams(
+      _.flattenDeep(departments.map((item) => item.teams)).filter(
+        (t) => t.isDeleted === false
+      )
+    );
   }, [departments]);
 
   useEffect(() => {

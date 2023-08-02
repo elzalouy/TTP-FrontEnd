@@ -125,8 +125,16 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   }, [allCategories]);
 
   useEffect(() => {
-    setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
+    setAllTeams(
+      _.flattenDeep(departments.map((item) => item.teams)).filter(
+        (t) => t.isDeleted === false
+      )
+    );
+    setTeams(
+      _.flattenDeep(departments.map((item) => item.teams))
+        .filter((t) => t.isDeleted === false)
+        .slice(0, 4)
+    );
   }, [departments]);
 
   useEffect(() => {
@@ -138,7 +146,11 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
     );
 
-    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+    setTeams(
+      state.comparisonBy === "Teams"
+        ? allTeams.slice(0, 4).filter((t) => t.isDeleted === false)
+        : allTeams.filter((i) => i.isDeleted === false)
+    );
   }, [state.comparisonBy]);
 
   useEffect(() => {

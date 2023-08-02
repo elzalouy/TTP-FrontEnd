@@ -121,8 +121,18 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   }, [allCategories]);
 
   useEffect(() => {
-    setAllTeams(_.flattenDeep(departments.map((item) => item.teams)));
-    setTeams(_.flattenDeep(departments.map((item) => item.teams)).slice(0, 4));
+    setAllTeams(
+      _.flattenDeep(
+        departments.map((item) =>
+          item.teams.filter((i) => i.isDeleted === false)
+        )
+      )
+    );
+    setTeams(
+      _.flattenDeep(departments.map((item) => item.teams))
+        .filter((t) => t.isDeleted === false)
+        .slice(0, 4)
+    );
   }, [departments]);
 
   useEffect(() => {
@@ -130,7 +140,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
       state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
     );
 
-    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+    setTeams(
+      state.comparisonBy === "Teams"
+        ? allTeams.filter((i) => i.isDeleted === false).slice(0, 4)
+        : allTeams.filter((i) => i.isDeleted === false)
+    );
   }, [state.comparisonBy]);
 
   useEffect(() => {
@@ -206,7 +220,11 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
     categories: string[];
     teams: string[];
   }) => {
-    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setTeams(
+      allTeams.filter(
+        (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
+      )
+    );
     setManagers(
       allManagers.filter((i) => i._id && filter.managers.includes(i._id))
     );
