@@ -49,6 +49,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
+  const [allJournies, setAllJournies] = useState<Journies>([]);
   const [filterState, setFilterState] = useState<{
     start: string | null;
     end: string | null;
@@ -77,6 +78,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
     setJournies(flattenedJournies);
+    setAllJournies(flattenedJournies);
   }, [clients, projects, managers, allTasks]);
 
   useEffect(() => {
@@ -153,8 +155,6 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     };
     setState({ ...state, options, data });
   }, [categories, tasks, teams, state.comparisonBy]);
-
-  useEffect(() => {}, [state.comparisonBy]);
 
   const onGetDatasetsByAll = () => {
     let Categories = categories.map((item) => {
@@ -311,6 +311,15 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
+
+  const onSetFilter = (type: string, value: string) => {
+    console.log({ type, value });
+    let FilterState = { ...filterState };
+    if (type === "startDate") FilterState.start = value;
+    if (type === "endDate") FilterState.end = value;
+    setFilterState(FilterState);
+  };
+
   return (
     <>
       <Grid
@@ -386,7 +395,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
       <FiltersBar
         start={filterState.start}
         end={filterState.end}
-        onSetFilter={() => {}}
+        onSetFilter={onSetFilter}
         closeFilterPopup={() =>
           setFilterState({ ...filterState, filter: false })
         }
