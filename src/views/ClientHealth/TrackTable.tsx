@@ -94,7 +94,7 @@ type stateType = {
   orderBy: string;
   clients: Client[];
   projects: Project[];
-  tasks: Task[];
+  tasks: ITaskInfo[];
   journeys: { id: string; name: string; journies: Journies }[];
   cells: {
     clientId: string;
@@ -139,8 +139,9 @@ const TrackClientHealthTable = () => {
   });
 
   React.useEffect(() => {
+    let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      let tasks: ITaskInfo[] = allTasks.map((i) => {
+      State.tasks = allTasks.map((i) => {
         let p = projects.find((p) => p._id === i.projectId);
         return {
           ...i,
@@ -148,128 +149,91 @@ const TrackClientHealthTable = () => {
           projectManager: p?.projectManager,
         };
       });
-      let journeys = tasks.map((i) => getTaskJournies(i));
-      setState({
-        ...state,
-        clients: clients,
-        tasks: allTasks,
-        projects: projects,
-        journeys: journeys,
-      });
+
+      State.clients = clients;
+      State.projects = projects;
+      if (State.filter.startDate) {
+        State.projects = State.projects.filter(
+          (t) =>
+            State.filter.startDate &&
+            new Date(t.startDate).getTime() >=
+              new Date(State.filter.startDate).getTime()
+        );
+        let ids = State.projects.map((i) => i._id);
+        State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
+      }
+      if (State.filter.endDate) {
+        State.projects = State.projects.filter(
+          (t) =>
+            State.filter.endDate &&
+            new Date(t.startDate).getTime() <=
+              new Date(State.filter.endDate).getTime()
+        );
+        let ids = State.projects.map((i) => i._id);
+        State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
+      }
+
+      let journeys = State.tasks.map((i) => getTaskJournies(i));
+      State.journeys = journeys;
+      State.cells = _.orderBy(
+        clients.map((client) => {
+          let clientProjects = State.projects.filter(
+            (i) => i.clientId === client._id
+          );
+          let clientTasks = State.tasks.filter(
+            (task) => task.clientId === client._id
+          );
+          let orderTasks = _.orderBy(clientTasks, "createdAt");
+          let clientJourniesPerTask = clientTasks.map((i) =>
+            getTaskJournies(i)
+          );
+          let clientJournies = _.flattenDeep(
+            clientJourniesPerTask.map((i) => i.journies)
+          );
+          let joiurniesLeadTime = clientJournies.map((j) =>
+            getJourneyLeadTime(j)
+          );
+          let averageLeadTime =
+            _.sum(joiurniesLeadTime) > 0
+              ? Math.floor(_.sum(joiurniesLeadTime) / clientJournies.length)
+              : 0;
+          let meetingDeadline = Math.floor(
+            (getMeetingDeadline(clientJournies).notPassedDeadline.length /
+              clientJournies.length) *
+              100
+          );
+          let revisionJournies = clientJourniesPerTask.filter(
+            (j) => j.journies.length > 1
+          );
+          let revisionPercentage =
+            Math.floor(
+              (revisionJournies.length / clientJournies.length) * 100
+            ) ?? 0;
+          return {
+            clientId: client._id,
+            clientName: client.clientName,
+            revision: revisionPercentage > 0 ? revisionPercentage : 0,
+            meetDeadline: meetingDeadline > 0 ? meetingDeadline : 0,
+            lastBrief: new Date(
+              orderTasks[orderTasks.length - 1]?.createdAt
+            ).getTime(),
+            averageTOD: averageLeadTime > 0 ? averageLeadTime : 0,
+            _OfTasks: clientTasks.length,
+            _ofProjects: clientProjects.length,
+            _OfJournies: clientJournies.length,
+          };
+        })
+      );
+      State.loading = false;
+      setState(State);
     }
-  }, [allTasks, projects, clients]);
-
-  React.useEffect(() => {
-    let State = {
-      ...state,
-      page: 0,
-      order: Order.asc,
-      orderBy: "clientName",
-      tasks: allTasks,
-      projects: projects,
-      clients: clients,
-    };
-    State.cells = _.orderBy(
-      clients.map((item) => {
-        let {
-          lastBrief,
-          _ofProjects,
-          _OfJournies,
-          meetDeadline,
-          averageTOD,
-          revision,
-          _OfTasks,
-        } = getClientTrack(item._id);
-
-        return {
-          clientId: item._id ?? "",
-          clientName: item.clientName,
-          meetDeadline,
-          lastBrief: lastBrief,
-          averageTOD: averageTOD,
-          _OfJournies,
-          _ofProjects,
-          revision,
-          _OfTasks,
-        };
-      }),
-      (i) => i.clientName,
-      "asc"
-    );
-    State.loading = false;
-    setState(State);
-  }, [state.journeys, state.projects, state.tasks]);
-
-  React.useEffect(() => {
-    let State = { ...state };
-    if (State.filter.startDate)
-      State.projects = projects.filter((i) => {
-        let startDate = new Date(i.startDate).getTime();
-        if (
-          State.filter.startDate &&
-          startDate >= new Date(State.filter.startDate).getTime()
-        )
-          return i;
-      });
-    if (State.filter.endDate)
-      State.projects = projects.filter((i) => {
-        let startDate = new Date(i.startDate);
-        if (
-          State.filter.endDate &&
-          startDate.getTime() <= new Date(State.filter.endDate).getTime()
-        )
-          return i;
-      });
-    let ids = State.projects.map((i) => i._id);
-    State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
-    State.journeys = State.tasks.map((i) => getTaskJournies(i));
-  }, [state.filter.startDate, state.filter.endDate]);
-
-  const getClientTrack = (clientId: string) => {
-    let projectIds: string[],
-      tasks,
-      orderedTasks,
-      journies: { id: string; name: string; journies: Journies }[],
-      clientJournies,
-      tlts,
-      averageTOD: number,
-      revisionJournies,
-      revision,
-      meetDeadlineResult;
-    projectIds = state.projects
-      .filter((i: Project) => i.clientId === clientId)
-      .map((i: Project) => i._id);
-    tasks = state.tasks.filter((item: Task) =>
-      projectIds.includes(item.projectId)
-    );
-    orderedTasks = _.orderBy(tasks, "createdAt");
-
-    journies = tasks.map((i) => getTaskJournies(i));
-    clientJournies = _.flattenDeep(journies.map((j) => j.journies));
-    tlts = clientJournies.map((item) => getJourneyLeadTime(item));
-    averageTOD =
-      _.sum(tlts) > 0 ? Math.floor(_.sum(tlts) / journies.length) : 0;
-
-    meetDeadlineResult = getMeetingDeadline(clientJournies);
-    const meet = Math.floor(
-      (meetDeadlineResult.notPassedDeadline.length / clientJournies.length) *
-        100
-    );
-    revisionJournies = journies.filter((i) => i.journies.length > 1);
-    revision =
-      Math.floor((revisionJournies.length / journies.length) * 100) ?? 0;
-    return {
-      lastBrief: new Date(
-        orderedTasks[orderedTasks.length - 1]?.createdAt
-      ).getTime(),
-      _OfTasks: tasks.length,
-      _ofProjects: projectIds.length,
-      _OfJournies: clientJournies.length,
-      meetDeadline: meet >= 0 ? meet : 0,
-      averageTOD: averageTOD >= 0 ? averageTOD : 0,
-      revision: revision >= 0 ? revision : 0,
-    };
-  };
+  }, [
+    allTasks,
+    projects,
+    clients,
+    state.filter.startDate,
+    state.filter.endDate,
+  ]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -319,10 +283,8 @@ const TrackClientHealthTable = () => {
 
   const onSetFilter = (type: string, value: string) => {
     let State = { ...state };
-    let start = type === "startDate" ? value : null;
-    let end = type === "endDate" ? value : null;
-    if (start) State.filter.startDate = start;
-    if (end) State.filter.endDate = end;
+    if (type === "startDate") State.filter.startDate = value;
+    if (type === "endDate") State.filter.endDate = value;
     setState(State);
   };
 
@@ -647,7 +609,7 @@ const TrackClientHealthTable = () => {
                         style={{
                           cursor: "pointer",
                           color: "#323C47",
-                          width: "200px",
+                          width: "130px",
                           fontWeight: "500",
                         }}
                       >
@@ -665,7 +627,7 @@ const TrackClientHealthTable = () => {
                         size="small"
                         style={{
                           color: "#707683",
-                          width: "200px",
+                          width: "130px",
                           textTransform: "capitalize",
                           cursor: "pointer",
                         }}

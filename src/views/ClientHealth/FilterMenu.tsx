@@ -59,13 +59,13 @@ const FiltersBar = ({
                   "startDate",
                   value[0]?.startDate !== undefined
                     ? value[0]?.startDate?.toDateString()
-                    : ""
+                    : null
                 );
                 onSetFilter(
                   "endDate",
                   value[0]?.endDate !== undefined
                     ? value[0]?.endDate?.toDateString()
-                    : ""
+                    : null
                 );
               }}
             />

@@ -329,15 +329,13 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   };
 
   const onGetDatasetsByTeams = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let { color, borderColor } = getRandomColor(bgColors);
-    bgColors.push(color);
-    borderColors.push(borderColor);
     return teams.map((team, index) => {
+      let color = "rgb(255,207,36,0.2)";
+      let borderColor = "rgb(255,207,36)";
+
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );

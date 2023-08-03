@@ -19,7 +19,7 @@ const DateInput = (props: { open: boolean; onClose: any }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [state, setState] = useState<DateRangeType[]>([
-    { startDate: new Date(), endDate: undefined, key: "selection" },
+    { startDate: undefined, endDate: undefined, key: "selection" },
   ]);
 
   const onChange = (item: RangeKeyDict) => {

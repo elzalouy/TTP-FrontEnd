@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, ListItem, Typography } from "@mui/material";
+import { Grid, IconButton, ListItem, Typography } from "@mui/material";
 import "../../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
-import _ from "lodash";
+import _, { filter } from "lodash";
 import { getRandomColor, getTaskJournies } from "src/helpers/generalUtils";
 import { Client, selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
@@ -14,6 +14,8 @@ import { selectManagers, selectPMs } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { getJourneyLeadTime } from "../../../utils";
 import { TooltipItem } from "chart.js";
+import FiltersBar from "./FilterMenu";
+import IMAGES from "src/assets/img/Images";
 
 interface StateType {
   data: {
@@ -47,6 +49,11 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
+  const [filterState, setFilterState] = useState<{
+    start: string | null;
+    end: string | null;
+    filter: boolean;
+  }>({ start: null, end: null, filter: false });
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -305,61 +312,98 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
   return (
-    <Grid
-      container
-      sx={{
-        background: "white",
-        borderRadius: "5px",
-        margin: "8px",
-        padding: 1,
-        marginBottom: 2,
-      }}
-    >
-      <Typography fontSize={18} mb={1} fontWeight={"600"}>
-        Time Of Delivery Diagram Category Comparison
-      </Typography>
-      <Bar options={state.options} data={state.data} />
-      <form className="ComparisonOptions">
-        <input
-          type="checkbox"
-          id="all"
-          value={"All"}
-          name="all"
-          checked={state.comparisonBy === "All"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="all">All</label>
-        <input
-          type="checkbox"
-          id="clients"
-          value={"Clients"}
-          name="clients"
-          checked={state.comparisonBy === "Clients"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="clients">Clients</label>
-        <input
-          type="checkbox"
-          id={"teams"}
-          value={"Teams"}
-          name="teams"
-          checked={state.comparisonBy === "Teams"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="teams">Teams</label>
+    <>
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          background: "white",
+          borderRadius: "5px",
+          margin: "8px",
+          pl: 1,
+          pr: 1,
+          pt: 1,
+          marginBottom: 2,
+          justifyContent: "space-between",
+        }}
+      >
+        <Grid xs={10}>
+          <Typography fontSize={18} mb={1} fontWeight={"600"}>
+            Time Of Delivery Diagram Category Comparison
+          </Typography>
+        </Grid>
+        <Grid xs={2}>
+          <IconButton
+            disableRipple
+            onClick={() => setFilterState({ ...filterState, filter: true })}
+            sx={filterBtnStyle}
+          >
+            <img src={IMAGES.filtericon} alt="FILTER" />
+          </IconButton>
+        </Grid>
 
-        <input
-          id="pms"
-          type="checkbox"
-          value={"PMs"}
-          name="pms"
-          checked={state.comparisonBy === "PMs"}
-          onChange={onHandleChange}
-        />
-        <label htmlFor="pms">Project Managers</label>
-      </form>
-    </Grid>
+        <Bar options={state.options} data={state.data} />
+        <form className="ComparisonOptions">
+          <input
+            type="checkbox"
+            id="all"
+            value={"All"}
+            name="all"
+            checked={state.comparisonBy === "All"}
+            onChange={onHandleChange}
+          />
+          <label htmlFor="all">All</label>
+          <input
+            type="checkbox"
+            id="clients"
+            value={"Clients"}
+            name="clients"
+            checked={state.comparisonBy === "Clients"}
+            onChange={onHandleChange}
+          />
+          <label htmlFor="clients">Clients</label>
+          <input
+            type="checkbox"
+            id={"teams"}
+            value={"Teams"}
+            name="teams"
+            checked={state.comparisonBy === "Teams"}
+            onChange={onHandleChange}
+          />
+          <label htmlFor="teams">Teams</label>
+
+          <input
+            id="pms"
+            type="checkbox"
+            value={"PMs"}
+            name="pms"
+            checked={state.comparisonBy === "PMs"}
+            onChange={onHandleChange}
+          />
+          <label htmlFor="pms">Project Managers</label>
+        </form>
+      </Grid>
+      <FiltersBar
+        start={filterState.start}
+        end={filterState.end}
+        onSetFilter={() => {}}
+        closeFilterPopup={() =>
+          setFilterState({ ...filterState, filter: false })
+        }
+        filterPopup={filterState.filter}
+      />
+    </>
   );
 };
 
 export default TodByCategory;
+const filterBtnStyle = {
+  bgcolor: "#FAFAFB",
+  borderRadius: 3,
+  paddingTop: 1.2,
+  float: "right",
+  cursor: "pointer",
+  width: "38px",
+  height: "38px",
+  textAlign: "center",
+};
