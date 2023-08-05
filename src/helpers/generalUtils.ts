@@ -319,6 +319,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       journeyFinishedAt: null,
       revision: false,
       unique: false,
+      sharedAt: "",
       startedAt: "",
     };
 
@@ -330,17 +331,19 @@ export const getTaskJournies = (task: ITaskInfo) => {
       movements[index + 1].status === "Tasks Board"
     ) {
       journey.movements.push(item);
-      if (item.journeyDeadline)
-        journey.journeyFinishedAt = new Date(
-          item.journeyDeadline
-        ).toLocaleString("en-us", {
-          month: "long",
-        });
-      else
-        journey.journeyFinishedAt = new Date(item.movedAt).toLocaleDateString(
-          "en-us",
-          { month: "long" }
-        );
+      if (item.journeyDeadline) {
+        journey.journeyFinishedAtDate = new Date(item.journeyDeadline);
+        journey.journeyFinishedAt =
+          journey.journeyFinishedAtDate.toLocaleString("en-us", {
+            month: "long",
+          });
+      } else {
+        journey.journeyFinishedAtDate = new Date(item.movedAt);
+        journey.journeyFinishedAt =
+          journey.journeyFinishedAtDate.toLocaleDateString("en-us", {
+            month: "long",
+          });
+      }
       journies.push(journey);
       journey = {
         clientId: task.clientId,

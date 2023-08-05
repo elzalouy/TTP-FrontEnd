@@ -16,8 +16,14 @@ import { getJourneyLeadTime } from "../../../utils";
 import { TooltipItem } from "chart.js";
 import FiltersBar from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
+import { Filter } from "@mui/icons-material";
 
 interface StateType {
+  filterPopup: boolean;
+  filter: {
+    start: string | null;
+    end: string | null;
+  };
   data: {
     labels: string[];
     datasets: {
@@ -50,12 +56,12 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
-  const [filterState, setFilterState] = useState<{
-    start: string | null;
-    end: string | null;
-    filter: boolean;
-  }>({ start: null, end: null, filter: false });
   const [state, setState] = useState<StateType>({
+    filterPopup: false,
+    filter: {
+      start: null,
+      end: null,
+    },
     data: {
       labels: [],
       datasets: [],
@@ -154,7 +160,32 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
       },
     };
     setState({ ...state, options, data });
-  }, [categories, tasks, teams, state.comparisonBy]);
+  }, [categories, tasks, teams, state.comparisonBy, journies]);
+
+  React.useEffect(() => {
+    let journiesData = [...allJournies];
+    if (state.filter.start)
+      journiesData = journiesData.filter(
+        (i) =>
+          i.journeyFinishedAtDate &&
+          state.filter.start &&
+          new Date(i.journeyFinishedAtDate).getTime() >=
+            new Date(state.filter.start).getTime()
+      );
+    if (state.filter.end)
+      journiesData = journiesData.filter(
+        (i) =>
+          i.journeyFinishedAtDate &&
+          state.filter.end &&
+          new Date(i.journeyFinishedAtDate).getTime() <=
+            new Date(state.filter.end).getTime()
+      );
+    setJournies(journiesData);
+    console.log({
+      journiesData: _.groupBy(journiesData, "journeyFinishedAt"),
+      filter: state.filter,
+    });
+  }, [state.filter.start, state.filter.end]);
 
   const onGetDatasetsByAll = () => {
     let Categories = categories.map((item) => {
@@ -313,12 +344,12 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   };
 
   const onSetFilter = (type: string, value: string) => {
-    console.log({ type, value });
-    let FilterState = { ...filterState };
-    if (type === "startDate") FilterState.start = value;
-    if (type === "endDate") FilterState.end = value;
-    setFilterState(FilterState);
+    let State = { ...state };
+    if (type === "startDate") State.filter.start = value;
+    if (type === "endDate") State.filter.end = value;
+    setState(State);
   };
+  console.log({ filter: state.filter });
 
   return (
     <>
@@ -344,7 +375,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
         <Grid xs={2}>
           <IconButton
             disableRipple
-            onClick={() => setFilterState({ ...filterState, filter: true })}
+            onClick={() => setState({ ...state, filterPopup: true })}
             sx={filterBtnStyle}
           >
             <img src={IMAGES.filtericon} alt="FILTER" />
@@ -393,13 +424,16 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
         </form>
       </Grid>
       <FiltersBar
-        start={filterState.start}
-        end={filterState.end}
+        start={state.filter.start}
+        end={state.filter.end}
         onSetFilter={onSetFilter}
         closeFilterPopup={() =>
-          setFilterState({ ...filterState, filter: false })
+          setState({
+            ...state,
+            filterPopup: false,
+          })
         }
-        filterPopup={filterState.filter}
+        filterPopup={state.filterPopup}
       />
     </>
   );

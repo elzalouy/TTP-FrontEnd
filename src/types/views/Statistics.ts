@@ -10,7 +10,9 @@ export type Journey = {
   taskLeadTime?: number;
   teamId?: string;
   sharedAtMonth?: string;
+  sharedAt?: string;
   journeyFinishedAt: string | null;
+  journeyFinishedAtDate?: Date | null;
   revision: boolean;
   startedAt?: Date | string;
   unique: boolean;

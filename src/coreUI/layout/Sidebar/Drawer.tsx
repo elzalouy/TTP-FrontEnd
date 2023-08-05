@@ -111,32 +111,36 @@ const AppDrawer = (props: any) => {
             </IconButton>
           </DrawerHeader>
           <List>
-            <DrawerItem
-              {...props}
-              select={props.select}
-              open={open}
-              key="9"
-              onClick={() => history.push("/Statistics")}
-              path={"/Statistics"}
-              Icon={() => (
-                <EqualizerIcon
-                  htmlColor={
-                    props.select.includes("Statistics") ? "#FFF" : "#808191"
-                  }
+            {role === "SM" && (
+              <>
+                <DrawerItem
+                  {...props}
+                  select={props.select}
+                  open={open}
+                  key="9"
+                  onClick={() => history.push("/Statistics")}
+                  path={"/Statistics"}
+                  Icon={() => (
+                    <EqualizerIcon
+                      htmlColor={
+                        props.select.includes("Statistics") ? "#FFF" : "#808191"
+                      }
+                    />
+                  )}
+                  text="Statistics"
                 />
-              )}
-              text="Statistics"
-            />
-            <DrawerItem
-              {...props}
-              select={props.select}
-              open={open}
-              key="9"
-              onClick={() => history.push("/clientHealth")}
-              path={"/clientHealth"}
-              Icon={() => <TaskIcon />}
-              text="Client Health"
-            />
+                <DrawerItem
+                  {...props}
+                  select={props.select}
+                  open={open}
+                  key="9"
+                  onClick={() => history.push("/clientHealth")}
+                  path={"/clientHealth"}
+                  Icon={() => <TaskIcon />}
+                  text="Client Health"
+                />
+              </>
+            )}
             <DrawerItem
               {...props}
               select={props.select}

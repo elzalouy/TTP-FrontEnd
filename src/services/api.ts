@@ -31,6 +31,13 @@ export const getUserTokenInfo = () => {
     return null;
   } catch (error) {}
 };
+export const isSM = () => {
+  let token = getUserTokenInfo();
+  if (token) {
+    if (token.role === "SM") return true;
+    else return false;
+  }
+};
 export const isPM = () => {
   let token = getUserTokenInfo();
   if (token) {

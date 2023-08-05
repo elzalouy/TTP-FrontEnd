@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router";
 import MenuContainer from "src/coreUI/layout/BarContainer";
-import { isAuthedUser, isPM } from "src/services/api";
+import { isAuthedUser, isPM, isSM } from "src/services/api";
 import {
   Categories,
   Clients,
@@ -46,7 +46,7 @@ const Routes = (props: RoutesProps) => {
           path="/Statistics"
           key="/Statistics"
           render={(props) => {
-            if (isAuthedUser() && !isPM())
+            if (isAuthedUser() && isSM())
               return (
                 <MenuContainer paddingX {...props}>
                   <Statistics {...props} />
@@ -64,7 +64,7 @@ const Routes = (props: RoutesProps) => {
           path="/clientHealth"
           key="/clientHealth"
           render={(props) => {
-            if (isAuthedUser() && !isPM())
+            if (isAuthedUser() && isSM())
               return (
                 <MenuContainer paddingX {...props}>
                   <CLientHealth {...props} />
