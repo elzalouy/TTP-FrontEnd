@@ -202,6 +202,7 @@ const Select = (props: IFilterProps) => {
         {props.optionsType === "date-picker" && (
           <DateRange
             onClose={onClose}
+            value={props.selected}
             open={typeof state.open === "boolean" ? state.open : false}
           />
         )}

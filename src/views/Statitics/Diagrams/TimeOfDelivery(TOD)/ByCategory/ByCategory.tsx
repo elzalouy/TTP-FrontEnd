@@ -7,8 +7,8 @@ import { selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _, { filter } from "lodash";
-import { getRandomColor, getTaskJournies } from "src/helpers/generalUtils";
-import { Client, selectAllClients } from "src/models/Clients";
+import { getTaskJournies } from "src/helpers/generalUtils";
+import { selectAllClients } from "src/models/Clients";
 import { User } from "src/types/models/user";
 import { selectManagers, selectPMs } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
@@ -125,7 +125,10 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
               let totalHours = value * 24;
               let days = Math.floor(totalHours / 24);
               const hours = Math.floor(totalHours % 24);
-              return `${context.dataset.label}: ${days} days, ${hours} hours`;
+              return [
+                `${context.dataset.label} :- `,
+                `(${days} days, ${hours} hours)`,
+              ];
             },
           },
         },
@@ -181,10 +184,6 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
             new Date(state.filter.end).getTime()
       );
     setJournies(journiesData);
-    console.log({
-      journiesData: _.groupBy(journiesData, "journeyFinishedAt"),
-      filter: state.filter,
-    });
   }, [state.filter.start, state.filter.end]);
 
   const onGetDatasetsByAll = () => {

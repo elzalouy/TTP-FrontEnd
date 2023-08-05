@@ -1,5 +1,5 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
-import { RangeKeyDict } from "react-date-range";
+import { Range, RangeKeyDict } from "react-date-range";
 import { useForm } from "react-hook-form";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 
@@ -54,19 +54,12 @@ const FiltersBar = ({
               elementType="filter"
               optionsType="date-picker"
               options={[]}
-              onSelect={(value: RangeKeyDict) => {
+              onSelect={(value: Range) => {
                 onSetFilter(
                   "startDate",
-                  value[0]?.startDate !== undefined
-                    ? value[0]?.startDate?.toDateString()
-                    : null
+                  value?.startDate?.toDateString() ?? null
                 );
-                onSetFilter(
-                  "endDate",
-                  value[0]?.endDate !== undefined
-                    ? value[0]?.endDate?.toDateString()
-                    : null
-                );
+                onSetFilter("endDate", value?.endDate?.toDateString() ?? null);
               }}
             />
           </Box>

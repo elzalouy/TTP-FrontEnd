@@ -1,6 +1,8 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
-import { RangeKeyDict } from "react-date-range";
+import { useEffect, useState } from "react";
+import { Range, RangeKeyDict } from "react-date-range";
 import { useForm } from "react-hook-form";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 
 type filterBarProps = {
@@ -17,7 +19,15 @@ const FiltersBar = ({
   start,
   end,
 }: filterBarProps) => {
-  const { control } = useForm();
+  const { control, watch, setValue } = useForm({
+    defaultValues: {
+      date: {
+        startDate: start ? new Date(start) : undefined,
+        endDate: end ? new Date(end) : undefined,
+      },
+    },
+  });
+
   return (
     <Drawer
       anchor="right"
@@ -48,25 +58,19 @@ const FiltersBar = ({
           <Box className="tasks-option">
             <ControlledSelect
               name="date"
-              control={control}
-              selected={start}
+              selected={watch("date")}
               label="TimeFrame :"
               elementType="filter"
               optionsType="date-picker"
+              control={control}
               options={[]}
-              onSelect={(value: RangeKeyDict) => {
-                onSetFilter(
-                  "startDate",
-                  value[0]?.startDate !== undefined
-                    ? value[0]?.startDate?.toDateString()
-                    : null
-                );
-                onSetFilter(
-                  "endDate",
-                  value[0]?.endDate !== undefined
-                    ? value[0]?.endDate?.toDateString()
-                    : null
-                );
+              onSelect={(value: Range) => {
+                setValue("date", {
+                  startDate: value.startDate,
+                  endDate: value.endDate,
+                });
+                onSetFilter("startDate", value.startDate);
+                onSetFilter("endDate", value.endDate);
               }}
             />
           </Box>

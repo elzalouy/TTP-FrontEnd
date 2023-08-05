@@ -81,7 +81,6 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
       let selectedProject = projects.projects.find(
         (item) => item._id === projectId
       );
-      console.log({ selectedProject });
       let data = watch();
       setState({ ...state, loading: true });
       let State = { ...state };

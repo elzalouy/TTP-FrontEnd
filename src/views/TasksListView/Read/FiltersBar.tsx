@@ -13,7 +13,7 @@ import { selectProjectOptions } from "src/models/Projects";
 import { Task } from "src/types/models/Projects";
 import { Options } from "src/types/views/Projects";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
-import { RangeKeyDict } from "react-date-range";
+import { Range, RangeKeyDict } from "react-date-range";
 import { Controller, UseFormWatch } from "react-hook-form";
 import { selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
@@ -182,19 +182,9 @@ const FiltersBar = ({
               elementType="filter"
               optionsType="date-picker"
               options={[]}
-              onSelect={(value: RangeKeyDict) => {
-                onSetFilter(
-                  "start",
-                  value[0]?.startDate !== undefined
-                    ? value[0]?.startDate?.toDateString()
-                    : ""
-                );
-                onSetFilter(
-                  "end",
-                  value[0]?.endDate !== undefined
-                    ? value[0]?.endDate?.toDateString()
-                    : ""
-                );
+              onSelect={(value: Range) => {
+                onSetFilter("start", value?.startDate?.toDateString() ?? "");
+                onSetFilter("end", value?.endDate?.toDateString() ?? "");
               }}
             />
           </Box>

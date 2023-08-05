@@ -20,8 +20,10 @@ export const selectDepartmentOptions = (state: RootState) => {
 };
 
 export const selectTeamsOptions = (state: RootState) => {
-  const teams = state.departments.departments.map((item) => item.teams);
+  let deps = state.departments.departments.filter((i) => i.priority === 1);
+  let teams = deps.map((item) => item.teams);
   let teamsOptions = _.flattenDeep(teams);
+  teamsOptions = teamsOptions.filter((i) => i.isDeleted === false);
   return teamsOptions.map((team) => {
     return {
       id: team._id,

@@ -224,7 +224,7 @@ const TrackClientHealthTable = () => {
           };
         })
       );
-      State.cells = State.cells.filter((i) => i.lastBrief !== 0);
+      State.cells = State.cells.filter((i) => i.lastBrief > 0);
       State.loading = false;
       setState(State);
     }
@@ -235,7 +235,6 @@ const TrackClientHealthTable = () => {
     state.filter.startDate,
     state.filter.endDate,
   ]);
-  console.log({ cells: state.cells });
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
