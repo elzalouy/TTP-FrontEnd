@@ -349,7 +349,6 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     if (type === "endDate") State.filter.end = value;
     setState(State);
   };
-  console.log({ filter: state.filter });
 
   return (
     <>

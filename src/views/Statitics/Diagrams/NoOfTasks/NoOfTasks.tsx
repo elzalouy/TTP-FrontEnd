@@ -162,9 +162,23 @@ const NoOfTasks = () => {
           ticks: {
             beginAtZero: true,
           },
+          title: {
+            display: true,
+            text: "Month",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
+          },
         },
         y: {
           min: 0,
+          title: {
+            display: true,
+            text: "Number of tasks",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
+          },
         },
       },
     };
