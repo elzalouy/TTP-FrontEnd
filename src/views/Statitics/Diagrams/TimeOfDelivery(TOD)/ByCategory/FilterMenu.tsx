@@ -1,7 +1,12 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
 import { Range, RangeKeyDict } from "react-date-range";
 import { useForm } from "react-hook-form";
+import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
+import { Client } from "src/models/Clients";
+import { Manager } from "src/models/Managers";
+import { DialogOption } from "src/types/components/SelectDialog";
+import { ITeam } from "src/types/models/Departments";
 
 type filterBarProps = {
   filterPopup: boolean;
@@ -9,6 +14,15 @@ type filterBarProps = {
   onSetFilter: any;
   start: string | null;
   end: string | null;
+  comparison: {
+    options: DialogOption[];
+    selected: DialogOption[];
+    onSelectAll: (selected: boolean) => void;
+    label: string;
+    name: string;
+    onSelect: (value: DialogOption) => void;
+    onDiselect: (value: DialogOption) => void;
+  };
 };
 const FiltersBar = ({
   filterPopup,
@@ -16,6 +30,7 @@ const FiltersBar = ({
   onSetFilter,
   start,
   end,
+  comparison,
 }: filterBarProps) => {
   const { control } = useForm();
   return (
@@ -61,6 +76,18 @@ const FiltersBar = ({
                 );
                 onSetFilter("endDate", value?.endDate?.toDateString() ?? null);
               }}
+            />
+          </Box>
+          <Box className="tasks-option">
+            <MulitSelectDialogComponent
+              allOption
+              onSelectAll={(value: boolean) => comparison.onSelectAll(value)}
+              label={comparison.label}
+              name={comparison.name}
+              options={comparison.options}
+              onSelect={comparison.onSelect}
+              onDiselect={comparison.onDiselect}
+              selected={comparison.selected}
             />
           </Box>
         </Grid>

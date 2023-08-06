@@ -8,15 +8,26 @@ import { Bar } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _, { filter } from "lodash";
 import { getTaskJournies } from "src/helpers/generalUtils";
-import { selectAllClients } from "src/models/Clients";
+import {
+  Client,
+  selectAllClients,
+  selectClientOptions,
+} from "src/models/Clients";
 import { User } from "src/types/models/user";
-import { selectManagers, selectPMs } from "src/models/Managers";
+import {
+  Manager,
+  selectManagers,
+  selectPMOptions,
+  selectPMs,
+} from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { getJourneyLeadTime } from "../../../utils";
 import { TooltipItem } from "chart.js";
 import FiltersBar from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
 import { Filter } from "@mui/icons-material";
+import { selectTeamsOptions } from "src/models/Departments";
+import { DialogOption } from "src/types/components/SelectDialog";
 
 interface StateType {
   filterPopup: boolean;
@@ -50,9 +61,15 @@ type TodByCategoryProps = {
 const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const categories = useAppSelector(selectAllCategories);
-  const managers = useAppSelector(selectPMs);
-  const clients = useAppSelector(selectAllClients);
+  const allManagers = useAppSelector(selectPMs);
+  const allClients = useAppSelector(selectAllClients);
+  const teamsOptions = useAppSelector(selectTeamsOptions);
+  const pmsOptions = useAppSelector(selectPMOptions);
+  const clientsOptions = useAppSelector(selectClientOptions);
   const [teams, setTeams] = useState<ITeam[]>([]);
+  const [managers, setManagers] = useState<Manager[]>([]);
+  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
@@ -69,6 +86,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     options: null,
     comparisonBy: "Teams",
   });
+
   useEffect(() => {
     let tasksData = [...allTasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
@@ -88,12 +106,31 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   }, [clients, projects, managers, allTasks]);
 
   useEffect(() => {
-    setTeams(
+    let teamsData = _.flattenDeep(departments.map((item) => item.teams)).filter(
+      (t) => t.isDeleted === false
+    );
+    setAllTeams(
       _.flattenDeep(departments.map((item) => item.teams)).filter(
         (t) => t.isDeleted === false
       )
     );
+
+    setTeams(
+      state.comparisonBy === "Teams" ? teamsData.slice(0, 4) : teamsData
+    );
   }, [departments]);
+
+  useEffect(() => {
+    setManagers(
+      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    );
+  }, [allManagers]);
+
+  useEffect(() => {
+    setClients(
+      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
+    );
+  }, [allClients]);
 
   useEffect(() => {
     let Categories = categories.map((item) => {
@@ -114,7 +151,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     const options = {
       plugins: {
         legend: {
-          display: true,
+          display: false,
           position: "right",
           align: "start",
         },
@@ -163,7 +200,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
       },
     };
     setState({ ...state, options, data });
-  }, [categories, tasks, teams, state.comparisonBy, journies]);
+  }, [categories, tasks, teams, state.comparisonBy, journies, teams, clients]);
 
   React.useEffect(() => {
     let journiesData = [...allJournies];
@@ -349,6 +386,43 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
     setState(State);
   };
 
+  const onSelect = (value: DialogOption) => {
+    if (state.comparisonBy === "Teams") {
+      let t = allTeams.find((i) => i._id && i._id === value.id);
+      if (t) setTeams([...teams, t]);
+    }
+    if (state.comparisonBy === "PMs") {
+      let pm = allManagers.find((p) => p._id === value.id);
+      if (pm) setManagers([...managers, pm]);
+    }
+    if (state.comparisonBy === "Clients") {
+      let client = allClients.find((c) => c._id === value.id);
+      if (client) setClients([...clients, client]);
+    }
+  };
+
+  const onDiselect = (value: DialogOption) => {
+    if (state.comparisonBy === "Teams") {
+      setTeams([...teams].filter((i) => i._id !== value.id));
+    }
+    if (state.comparisonBy === "PMs") {
+      setManagers([...managers].filter((i) => i._id !== value.id));
+    }
+    if (state.comparisonBy === "Clients") {
+      setClients([...clients].filter((i) => i._id !== value.id));
+    }
+  };
+  const onSelectAll = (select: boolean) => {
+    if (state.comparisonBy === "Teams") {
+      setTeams(select ? allTeams : []);
+    }
+    if (state.comparisonBy === "PMs") {
+      setManagers(select ? allManagers : []);
+    }
+    if (state.comparisonBy === "Clients") {
+      setClients(select ? allClients : []);
+    }
+  };
   return (
     <>
       <Grid
@@ -422,6 +496,41 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
         </form>
       </Grid>
       <FiltersBar
+        comparison={{
+          name: state.comparisonBy,
+          label: `${state.comparisonBy} : `,
+          options:
+            state.comparisonBy === "Teams"
+              ? teamsOptions.map((i) => {
+                  return { id: i.id ?? "", label: i.text ?? "" };
+                })
+              : state.comparisonBy === "PMs"
+              ? pmsOptions.map((i) => {
+                  return { id: i.id, label: i.text };
+                })
+              : state.comparisonBy === "Clients"
+              ? clientsOptions.map((i) => {
+                  return { id: i.id, label: i.text };
+                })
+              : [],
+          onSelect: onSelect,
+          onDiselect: onDiselect,
+          onSelectAll: onSelectAll,
+          selected:
+            state.comparisonBy === "Teams"
+              ? teams.map((i) => {
+                  return { id: i._id ?? "", label: i.name ?? "" };
+                })
+              : state.comparisonBy === "PMs"
+              ? managers.map((i) => {
+                  return { id: i._id ?? "", label: i.name ?? "" };
+                })
+              : state.comparisonBy === "Clients"
+              ? clients.map((i) => {
+                  return { id: i._id, label: i.clientName };
+                })
+              : [],
+        }}
         start={state.filter.start}
         end={state.filter.end}
         onSetFilter={onSetFilter}
