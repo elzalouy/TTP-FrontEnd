@@ -321,6 +321,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       unique: false,
       sharedAt: "",
       startedAt: "",
+      boardId: "",
     };
 
   movements.forEach((item, index) => {
@@ -358,6 +359,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
         revision: false,
         startedAt: "",
         unique: false,
+        boardId: task.boardId,
       };
     } else {
       journey.movements.push(item);
@@ -375,6 +377,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           journeyFinishedAt: null,
           revision: false,
           startedAt: "",
+          boardId: "",
           unique: false,
         };
       }

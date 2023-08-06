@@ -6,7 +6,7 @@ import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { selectAllDepartments } from "src/models/Departments";
-import { ITeam } from "src/types/models/Departments";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
   Months,
@@ -43,15 +43,17 @@ interface ITaskInfo extends Task {
   projectManager?: string;
 }
 
+interface NoOfTasksProps {
+  departments: IDepartmentState[];
+}
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const NoOfTasks = () => {
+const NoOfTasks = ({ departments }: NoOfTasksProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const allCategories = useAppSelector(selectAllCategories);
-  const departments = useAppSelector(selectAllDepartments);
   const allManagers = useAppSelector(selectPMs);
   const allClients = useAppSelector(selectAllClients);
   const [allTeams, setAllTeams] = useState<ITeam[]>([]);

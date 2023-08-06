@@ -23,6 +23,8 @@ import { DialogOption } from "src/types/components/SelectDialog";
 import { useDispatch } from "react-redux";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import IMAGES from "src/assets/img/Images";
+import ReviewTime from "./ReviewTime";
+import SchedulingTime from "./SchedulingTime";
 
 type time = {
   hours: number;
@@ -151,7 +153,13 @@ const Statistics = (props: any) => {
           <NoOfRevision departments={state.options.boards} />
         </Grid>
         <Grid xs={12} height={"auto"}>
-          <NoOfTasks />
+          <NoOfTasks departments={state.options.boards} />
+        </Grid>
+        <Grid xs={12} height={"auto"}>
+          <ReviewTime departments={state.options.boards} />
+        </Grid>
+        <Grid xs={12} height={"auto"}>
+          <SchedulingTime departments={state.options.boards} />
         </Grid>
       </Grid>
       <FilterMenu

@@ -26,7 +26,7 @@ import { TooltipItem } from "chart.js";
 import FiltersBar from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
 import { Filter } from "@mui/icons-material";
-import { selectTeamsOptions } from "src/models/Departments";
+import { selectAllTeams, selectTeamsOptions } from "src/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
 
 interface StateType {
@@ -66,9 +66,9 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
+  const allTeams = useAppSelector(selectAllTeams);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
-  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
@@ -106,19 +106,11 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   }, [clients, projects, managers, allTasks]);
 
   useEffect(() => {
-    let teamsData = _.flattenDeep(departments.map((item) => item.teams)).filter(
-      (t) => t.isDeleted === false
-    );
-    setAllTeams(
-      _.flattenDeep(departments.map((item) => item.teams)).filter(
-        (t) => t.isDeleted === false
-      )
-    );
-
+    let teamsData = allTeams;
     setTeams(
       state.comparisonBy === "Teams" ? teamsData.slice(0, 4) : teamsData
     );
-  }, [departments]);
+  }, [allTeams]);
 
   useEffect(() => {
     setManagers(

@@ -14,7 +14,30 @@ export const getJourneyLeadTime = (journey: Journey) => {
   } else return 0;
   return journeyLeadTime;
 };
+export const getJourneyReviewTime = (journey: Journey) => {
+  let journeyReviewTime = 0;
+  let reviewIndex = journey.movements.findIndex((i) => i.status === "Review");
+  let nextIndex = reviewIndex + 1;
+  let start = journey.movements[reviewIndex]?.movedAt;
+  let end = journey.movements[nextIndex]?.movedAt;
+  if (journey.movements[nextIndex] && reviewIndex && start && end) {
+    let diff = getDifBetweenDates(new Date(start), new Date(end));
+    journeyReviewTime = diff.totalHours;
+    return journeyReviewTime;
+  } else return journeyReviewTime;
+};
 
+export const getJourneySchedulingTime = (journey: Journey) => {
+  let inProgressMove = journey.movements[1];
+  if (inProgressMove && inProgressMove.status === "In Progress") {
+    let start = journey.movements[0]?.movedAt;
+    let end = inProgressMove?.movedAt;
+    if (start && end) {
+      let diff = getDifBetweenDates(new Date(start), new Date(end));
+      return diff.totalHours;
+    } else return 0;
+  } else return 0;
+};
 export const getMeetingDeadline = (journies: Journey[]) => {
   let passedDeadline = journies.filter((i) => {
     let lastMovement = i.movements[i.movements.length - 1];

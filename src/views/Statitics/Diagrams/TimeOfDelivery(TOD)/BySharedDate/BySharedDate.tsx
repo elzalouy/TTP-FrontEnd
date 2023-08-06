@@ -5,7 +5,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
-import { selectAllDepartments } from "src/models/Departments";
+import { selectAllDepartments, selectAllTeams } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
@@ -56,7 +56,7 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   const allCategories = useAppSelector(selectAllCategories);
   const allManagers = useAppSelector(selectPMs);
   const allClients = useAppSelector(selectAllClients);
-  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
+  const allTeams = useAppSelector(selectAllTeams);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -113,45 +113,24 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   }, [tasks]);
 
   useEffect(() => {
-    setClients(allClients);
-  }, [allClients]);
+    setClients(
+      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
+    );
+  }, [allClients, state.comparisonBy]);
 
   useEffect(() => {
-    setManagers(allManagers);
-  }, [allManagers]);
+    setManagers(
+      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    );
+  }, [allManagers, state.comparisonBy]);
 
   useEffect(() => {
     setCategories(allCategories);
   }, [allCategories]);
 
   useEffect(() => {
-    setAllTeams(
-      _.flattenDeep(departments.map((item) => item.teams)).filter(
-        (t) => t.isDeleted === false
-      )
-    );
-    setTeams(
-      _.flattenDeep(departments.map((item) => item.teams))
-        .filter((t) => t.isDeleted === false)
-        .slice(0, 4)
-    );
-  }, [departments]);
-
-  useEffect(() => {
-    setClients(
-      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
-    );
-
-    setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
-    );
-
-    setTeams(
-      state.comparisonBy === "Teams"
-        ? allTeams.slice(0, 4).filter((t) => t.isDeleted === false)
-        : allTeams.filter((i) => i.isDeleted === false)
-    );
-  }, [state.comparisonBy]);
+    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
+  }, [allTeams, state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -332,6 +311,7 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+
     return teams.map((team, index) => {
       let color = "rgb(255,207,36,0.2)";
       let borderColor = "rgb(255,207,36)";
