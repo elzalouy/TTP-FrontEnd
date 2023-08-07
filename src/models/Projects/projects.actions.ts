@@ -243,7 +243,7 @@ export const downloadTasks = createAsyncThunk<any, any, any>(
       }
       if (downloadResult.ok) {
         window.open(
-          `data:text/csv;charset=utf-8,${escape(downloadResult.data)}`,
+          `data:text/csv;charset=utf-8,${downloadResult.data}`,
           "_self"
         );
         ToastSuccess("Tasks downloaded to your pc right now.");
