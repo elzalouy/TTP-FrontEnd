@@ -150,6 +150,9 @@ const EditDepartment = ({ Show, setShow }: IEditDepartmentProps) => {
         show={editDepartmentPopup}
         minWidthSize="30vw"
         maxWidthSize="300px"
+        maxHeight="95vh"
+        height="95vh"
+        styles={{ overflowY: "scroll" }}
       >
         <div style={{ position: "relative" }}>
           <div className="closeIconContainer" onClick={onClose}>
