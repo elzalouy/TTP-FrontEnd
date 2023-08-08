@@ -13,10 +13,10 @@ import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { selectAllProjects } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Months, getTaskJournies } from "src/helpers/generalUtils";
-import { getJourneyLeadTime, getJourneyReviewTime } from "../utils";
+import { getJourneySchedulingTime } from "../../utils";
 import _ from "lodash";
 
-interface ReviewTimeProps {
+interface SchedulingTimeProps {
   departments: IDepartmentState[];
 }
 type StateType = {
@@ -34,7 +34,9 @@ type StateType = {
   options: any;
   comparisonBy: string;
 };
-const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
+const SchedulingTime: FC<SchedulingTimeProps> = ({
+  departments: allDepartments,
+}) => {
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     data: {
@@ -42,13 +44,14 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
       datasets: [],
     },
     options: null,
-    comparisonBy: "PMs",
+    comparisonBy: "Departments",
   });
   const allManagers = useAppSelector(selectManagers);
   const allTeams = useAppSelector(selectAllTeams);
   const allClients = useAppSelector(selectAllClients);
   const allCategories = useAppSelector(selectAllCategories);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const [departments, setDepartments] = useState<IDepartmentState[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
@@ -60,10 +63,16 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     setTeams(allTeams);
   }, [allTeams]);
   useEffect(() => {
-    setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+    setDepartments(
+      state.comparisonBy === "Departments"
+        ? allDepartments.slice(0, 4)
+        : allDepartments
     );
-  }, [allManagers, state.comparisonBy]);
+  }, [allDepartments, state.comparisonBy]);
+
+  useEffect(() => {
+    setManagers(allManagers);
+  }, [allManagers]);
 
   useEffect(() => {
     setCategories(allCategories);
@@ -91,16 +100,11 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
     flattenedJournies = flattenedJournies.map((item) => {
-      let review =
-        item.movements &&
-        _.findLast(
-          item.movements,
-          (move: TaskMovement) => move.status === "Review"
-        )?.movedAt;
+      let start = item.movements && item.movements[0]?.movedAt;
       return {
         ...item,
-        reviewAtMonth: review
-          ? new Date(review).toLocaleString("en-us", { month: "long" })
+        startedAtMonth: start
+          ? new Date(start).toLocaleString("en-us", { month: "long" })
           : undefined,
       };
     });
@@ -113,8 +117,8 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     const data = {
       labels: months,
       datasets:
-        state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
+        state.comparisonBy === "Departments"
+          ? onGetDataSetsByDepartments()
           : [onGetDatasetsByAll()],
     };
     const options = {
@@ -130,7 +134,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
               let days = Math.floor(totalHours / 24);
               const hours = Math.floor(totalHours % 24);
               return [
-                `${context.dataset.label} :`,
+                `${context.dataset.label} :-`,
                 `${days} days, ${hours} hours`,
               ];
             },
@@ -153,10 +157,10 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
           },
         },
         y: {
-          min: 0,
           ticks: {
             beginAtZero: true,
           },
+          min: 0,
           title: {
             display: true,
             text: "Review Time (Days & Hours)",
@@ -198,33 +202,35 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     );
   };
 
-  const onGetDataSetsByPM = () => {
+  const onGetDataSetsByDepartments = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
     let color = "rgb(255,207,36,0.2)";
     let borderColor = "rgb(255,207,36)";
-    return managers.map((manager, index) => {
+    return departments.map((department, index) => {
       let journiesData = journies.filter(
-        (i) => i.projectManager && i.projectManager === manager._id
+        (i) => i.boardId && i.boardId === department.boardId
       );
-      let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "reviewAtMonth"),
+      let journiesOfManagerGroupedByBoard = {
+        ..._.groupBy(journiesData, "startedAtMonth"),
       };
       let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
+        let journies = journiesOfManagerGroupedByBoard[item.id];
         return {
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: manager._id,
+          comparisonId: department.boardId,
         };
       });
       return {
-        label: manager.name,
+        label: department.name,
         data: datasetData.map((i) => {
           let val =
-            _.sum(i.journies.map((journey) => getJourneyReviewTime(journey))) /
+            _.sum(
+              i.journies.map((journey) => getJourneySchedulingTime(journey))
+            ) /
             i.journies.length /
             24;
           return val > 0 ? val : 0;
@@ -247,7 +253,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
 
     let datasetData = months.map((month) => {
       let journiesData = journies.filter(
-        (item) => item.reviewAtMonth === month.id
+        (item) => item.startedAtMonth === month.id
       );
       return {
         journies: journiesData ?? [],
@@ -257,15 +263,17 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
         name: month.name,
       };
     });
-    console.log({ state: state.data });
 
     return {
-      label: "Organization Review Time",
+      label: "",
       data: datasetData.map((i) => {
         let val =
-          _.sum(i.journies.map((journey) => getJourneyReviewTime(journey))) /
+          _.sum(
+            i.journies.map((journey) => getJourneySchedulingTime(journey))
+          ) /
           i.journies.length /
           24;
+
         return val > 0 ? val : 0;
       }),
       backgroundColor: datasetData.map((i) => i.color),
@@ -293,7 +301,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
       >
         <Grid xs={10}>
           <Typography fontSize={18} mb={1} fontWeight={"600"}>
-            Review Time
+            Scheduling Time
           </Typography>
         </Grid>
         <Grid xs={2}>
@@ -317,14 +325,14 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
           />
           <label htmlFor="all-review">All</label>
           <input
-            id="pms-review"
+            id="pms-departments"
             type="checkbox"
-            value={"PMs"}
-            name="pms-review"
-            checked={state.comparisonBy === "PMs"}
+            value={"Departments"}
+            name="pms-departments"
+            checked={state.comparisonBy === "Departments"}
             onChange={onHandleChange}
           />
-          <label htmlFor="pms-review">Project Managers</label>
+          <label htmlFor="pms-departments">Departments</label>
         </form>
       </Grid>
       <FilterBar
@@ -333,8 +341,9 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
           categories: allCategories,
           teams: allTeams,
           managers: allManagers,
+          departments: allDepartments,
         }}
-        options={{ clients, teams, categories, managers }}
+        options={{ clients, teams, categories, managers, departments }}
         filter={state.filterPopup}
         onCloseFilter={() => setState({ ...state, filterPopup: false })}
         onSetFilterResult={onSetFilterResult}
@@ -343,7 +352,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
   );
 };
 
-export default ReviewTime;
+export default SchedulingTime;
 const filterBtnStyle = {
   bgcolor: "#FAFAFB",
   borderRadius: 3,

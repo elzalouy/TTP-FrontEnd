@@ -32,6 +32,7 @@ export interface Task {
   projectName?: string;
   movements: TaskMovement[];
   assignedAt?: Date | number;
+  archivedCard?: boolean;
 }
 export interface TaskMovement {
   _id: string;

@@ -30,6 +30,7 @@ import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import IMAGES from "src/assets/img/Images";
 import FiltersBar from "./FilterMenu";
 import _ from "lodash";
+import TableLoading from "src/coreUI/components/Loading/TableLoading";
 
 interface HeadCell {
   id: any;
@@ -319,7 +320,7 @@ const TrackClientHealthTable = () => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Table style={MD ? { width: "150%" } : { width: "100%" }}>
+      <Table style={{ width: "100%", overflowX: "scroll" }}>
         <TableHead>
           <TableRow>
             {TeableHeaderCells.map((headCell) => {
@@ -410,131 +411,7 @@ const TrackClientHealthTable = () => {
         <TableBody>
           <>
             {state.loading ? (
-              [0, 1, 2].map((i) => (
-                <TableRow
-                  sx={{
-                    ":hover": {
-                      backgroundColor: "white !important",
-                      boxShadow: "0px 10px 20px #0000001A",
-                      transition: "all 0.5s ease-out !important",
-                      WebkitAppearance: "none",
-                      WebkitBoxShadow: "0px 10px 20px #0000001A",
-                      borderBottom: 0,
-                    },
-                  }}
-                  hover
-                  role="checkbox"
-                  tabIndex={-1}
-                >
-                  <TableCell
-                    size="small"
-                    align="left"
-                    style={{
-                      color: "#334D6E",
-                      textTransform: "capitalize",
-                      width: "130px",
-                      height: "45px",
-                    }}
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    align="left"
-                    style={{
-                      cursor: "pointer",
-                      color: "#323C47",
-                      width: "200px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    style={{
-                      color: "#707683",
-                      width: "200px",
-                      textTransform: "capitalize",
-                      cursor: "pointer",
-                    }}
-                    align="left"
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    align="left"
-                    style={{
-                      color: "#707683",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    style={{
-                      color: "#707683",
-                      cursor: "pointer",
-                      textTransform: "capitalize",
-                    }}
-                    align="left"
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    style={{
-                      color: "#707683",
-                      cursor: "pointer",
-                      textTransform: "capitalize",
-                    }}
-                    align="left"
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                  <TableCell
-                    size="small"
-                    style={{
-                      color: "#707683",
-                      cursor: "pointer",
-                      textTransform: "capitalize",
-                    }}
-                    align="left"
-                  >
-                    <Skeleton
-                      variant="rectangular"
-                      width={"100%"}
-                      height={20}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))
+              <TableLoading rows={3} columns={8} name="client-health-tracker" />
             ) : (
               <>
                 {(state.rowsPerPage > 0

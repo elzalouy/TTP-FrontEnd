@@ -88,9 +88,19 @@ export const selectLateProjects = (state: RootState) =>
 
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
-export const selectAllProjects = (state: RootState) => state?.projects;
+export const selectAllProjects = (state: RootState) => {
+  let tasks = [...state.projects.allTasks].filter(
+    (i) => i.archivedCard === false
+  );
+  let data = { ...state.projects };
+  data.allTasks = tasks;
+  return data;
+};
 export const selectEditTask = (state: RootState) =>
-  state.projects.allTasks.find((item) => item._id === state.projects.editTask);
+  state.projects.allTasks.find(
+    (item) =>
+      item._id === state.projects.editTask && item.archivedCard === false
+  );
 export const selectActiveProjects = (state: RootState) =>
   state.projects.projects
     .filter(
@@ -117,34 +127,36 @@ export const selectSortingValue = (state: RootState) => state.projects.sorting;
 // tasks
 export const selectInProgressTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "In Progress"
+    (item) => item.status === "In Progress" && item.archivedCard === false
   );
 export const selectDoneTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Done"
+    (item) => item.status === "Done" && item.archivedCard === false
   );
 export const selectReviewTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Review"
+    (item) => item.status === "Review" && item.archivedCard === false
   );
 export const selectNotClearTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Not Clear"
+    (item) => item.status === "Not Clear" && item.archivedCard === false
   );
 export const selectNotStartedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Tasks Board"
+    (item) => item.status === "Tasks Board" && item.archivedCard === false
   );
 export const selectCancledTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Cancled"
+    (item) => item.status === "Cancled" && item.archivedCard === false
   );
 export const selectSharedTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
-    (item) => item.status === "Shared"
+    (item) => item.status === "Shared" && item.archivedCard === false
   );
 
-export const selectTasks = (state: RootState) => state.projects.allTasks;
+export const selectTasks = (state: RootState) =>
+  state.projects.allTasks.filter((i) => i.archivedCard === false);
+
 export const selectEditTaskValues = (state: RootState) =>
   state.projects.editTask;
 export const selectedDeleteTaskId = (state: RootState) =>
