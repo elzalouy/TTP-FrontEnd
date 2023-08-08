@@ -162,9 +162,9 @@ const Statistics = (props: any) => {
         <Grid xs={12} height={"auto"}>
           <SchedulingTime departments={state.options.boards} />
         </Grid>
-        <Grid xs={12} height={"auto"}>
+        {/* <Grid xs={12} height={"auto"}>
           <ProjectsReport departments={state.options.boards} />
-        </Grid>
+        </Grid> */}
       </Grid>
       <FilterMenu
         onSetFilterResult={onSetFilterResult}
