@@ -174,10 +174,10 @@ export const TasksListView: React.FC<Props> = (props) => {
     reset();
     setState({ ...state, tasks: projects.allTasks });
   };
-  const onDeleteTasks = () => {
-    dispatch(deleteTasks({ data: { ids: selects } }));
-    setShow("none");
-  };
+  // const onDeleteTasks = () => {
+  //   dispatch(deleteTasks({ data: { ids: selects } }));
+  //   setShow("none");
+  // };
   const onDownloadTasksFile = () => {
     dispatch(
       downloadTasks(
@@ -237,12 +237,12 @@ export const TasksListView: React.FC<Props> = (props) => {
               />
             </Grid>
             <Grid item>
-              <DeleteTask
+              {/* <DeleteTask
                 task={selects}
                 Show={Show}
                 setShow={setShow}
                 onDelete={onDeleteTasks}
-              />
+              /> */}
             </Grid>
             <Grid item>
               {["OM", "SM", undefined].includes(role) && (
