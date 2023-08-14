@@ -52,6 +52,7 @@ const Statistics = (props: any) => {
   const allCategories = useAppSelector(selectAllCategories);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const [state, setState] = useState<{
+    loading: boolean;
     filter: boolean;
     options: {
       teams: ITeam[];
@@ -61,6 +62,7 @@ const Statistics = (props: any) => {
       boards: IDepartmentState[];
     };
   }>({
+    loading: true,
     filter: false,
     options: {
       teams: [],
@@ -113,6 +115,8 @@ const Statistics = (props: any) => {
     dispatch(updateDepartmentsPriority(filter.boards));
   };
 
+  const setLoading = (loading: boolean) => setState({ ...state, loading });
+
   return (
     <>
       <Grid
@@ -142,7 +146,10 @@ const Statistics = (props: any) => {
           </Grid>
         </Grid>
         <Grid xs={12} height={"auto"}>
-          <TodByCategory departments={state.options.boards} />
+          <TodByCategory
+            setLoading={setLoading}
+            departments={state.options.boards}
+          />
         </Grid>
         <Grid xs={12} height={"auto"}>
           <BySharedMonth departments={state.options.boards} />

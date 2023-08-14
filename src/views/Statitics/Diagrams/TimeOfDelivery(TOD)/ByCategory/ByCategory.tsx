@@ -50,6 +50,7 @@ interface StateType {
 }
 type TodByCategoryProps = {
   departments: IDepartmentState[];
+  setLoading: (loading: boolean) => void;
 };
 
 /**
@@ -58,7 +59,7 @@ type TodByCategoryProps = {
  * @returns
  */
 
-const TodByCategory = ({ departments }: TodByCategoryProps) => {
+const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const categories = useAppSelector(selectAllCategories);
   const allManagers = useAppSelector(selectPMs);
@@ -111,6 +112,7 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
       state.comparisonBy === "Teams" ? teamsData.slice(0, 4) : teamsData
     );
   }, [allTeams]);
+  console.log({ allTeams, journies });
 
   useEffect(() => {
     setManagers(
@@ -125,73 +127,76 @@ const TodByCategory = ({ departments }: TodByCategoryProps) => {
   }, [allClients]);
 
   useEffect(() => {
-    let Categories = categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
+    if (tasks.length > 0 && journies.length > 0) {
+      let Categories = categories.map((item) => {
+        return { id: item._id, name: item.category };
+      });
 
-    const data = {
-      labels: Categories.map((item) => item.name),
-      datasets:
-        state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient()
-          : state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
-          : state.comparisonBy === "Teams"
-          ? onGetDatasetsByTeams()
-          : [onGetDatasetsByAll()],
-    };
-    const options = {
-      plugins: {
-        legend: {
-          display: false,
-          position: "right",
-          align: "start",
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context: any) {
-              const value: number = context.dataset.data[context.dataIndex];
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return [
-                `${context.dataset.label} :- `,
-                `(${days} days, ${hours} hours)`,
-              ];
+      const data = {
+        labels: Categories.map((item) => item.name),
+        datasets:
+          state.comparisonBy === "Clients"
+            ? onGetDataSetsByClient()
+            : state.comparisonBy === "PMs"
+            ? onGetDataSetsByPM()
+            : state.comparisonBy === "Teams"
+            ? onGetDatasetsByTeams()
+            : [onGetDatasetsByAll()],
+      };
+      const options = {
+        plugins: {
+          legend: {
+            display: false,
+            position: "right",
+            align: "start",
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context: any) {
+                const value: number = context.dataset.data[context.dataIndex];
+                let totalHours = value * 24;
+                let days = Math.floor(totalHours / 24);
+                const hours = Math.floor(totalHours % 24);
+                return [
+                  `${context.dataset.label} :- `,
+                  `(${days} days, ${hours} hours)`,
+                ];
+              },
             },
           },
         },
-      },
-      scales: {
-        x: {
-          type: "category",
-          position: "bottom",
-          ticks: {
-            beginAtZero: true,
+        scales: {
+          x: {
+            type: "category",
+            position: "bottom",
+            ticks: {
+              beginAtZero: true,
+            },
+            title: {
+              display: true,
+              text: "Category",
+              poisition: "bottom",
+              align: "end",
+              color: "black",
+            },
           },
-          title: {
-            display: true,
-            text: "Category",
-            poisition: "bottom",
-            align: "end",
-            color: "black",
+          y: {
+            ticks: {
+              beginAtZero: true,
+            },
+            title: {
+              display: true,
+              text: "TOD (Days & Hours)",
+              poisition: "bottom",
+              align: "end",
+              color: "black",
+            },
           },
         },
-        y: {
-          ticks: {
-            beginAtZero: true,
-          },
-          title: {
-            display: true,
-            text: "TOD (Days & Hours)",
-            poisition: "bottom",
-            align: "end",
-            color: "black",
-          },
-        },
-      },
-    };
-    setState({ ...state, options, data });
+      };
+      setState({ ...state, options, data });
+      setLoading(false);
+    }
   }, [categories, tasks, teams, state.comparisonBy, journies, teams, clients]);
 
   React.useEffect(() => {
