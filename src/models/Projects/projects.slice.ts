@@ -498,6 +498,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.allTasks = [...state.allTasks];
     });
     builder.addCase(moveTask.fulfilled, (state, action) => {
+      console.log({ action: action.payload });
       let index = state.allTasks.findIndex(
         (item) => item._id === action.payload._id
       );

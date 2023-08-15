@@ -362,7 +362,6 @@ export const moveTask = createAsyncThunk<any, any, any>(
         if (deadline) Data.deadline = deadline;
 
         let moveResult: ApiResponse<any> = await api.moveTask(Data);
-        console.log({ moveResult });
         if (moveResult.ok) {
           dispatch(fireMoveTaskHook(""));
           let returnValue: Task = { ...task };

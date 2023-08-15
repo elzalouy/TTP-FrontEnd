@@ -112,7 +112,6 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
       state.comparisonBy === "Teams" ? teamsData.slice(0, 4) : teamsData
     );
   }, [allTeams]);
-  console.log({ allTeams, journies });
 
   useEffect(() => {
     setManagers(

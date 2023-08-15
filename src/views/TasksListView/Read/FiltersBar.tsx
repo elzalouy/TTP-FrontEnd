@@ -76,7 +76,7 @@ const FiltersBar = ({
       sx={{
         "& .MuiDrawer-paper": {
           background: "#FAFAFB",
-          width: "280px",
+          width: "400px",
           transition: "all 0.5s ease !important",
         },
       }}
@@ -177,7 +177,13 @@ const FiltersBar = ({
             <ControlledSelect
               name="date"
               control={control}
-              selected={watch().start}
+              selected={
+                `${
+                  watch().start ? new Date(watch().start).toDateString() : ""
+                }` +
+                `${watch().end ? " : " : " "}` +
+                `${watch().end ? new Date(watch().end).toDateString() : ""}`
+              }
               label="Deadline :"
               elementType="filter"
               optionsType="date-picker"

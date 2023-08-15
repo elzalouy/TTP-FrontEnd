@@ -34,7 +34,7 @@ const FiltersBar = ({
       sx={{
         "& .MuiDrawer-paper": {
           background: "#FAFAFB",
-          width: "280px",
+          width: "400px",
           transition: "all 0.5s ease !important",
         },
       }}
@@ -58,7 +58,11 @@ const FiltersBar = ({
           <Box className="tasks-option">
             <ControlledSelect
               name="date"
-              selected={watch("date")}
+              selected={
+                `${start ? new Date(start).toDateString() : ""}` +
+                `${end ? " : " : " "}` +
+                `${end ? new Date(end).toDateString() : ""}`
+              }
               label="TimeFrame :"
               elementType="filter"
               optionsType="date-picker"

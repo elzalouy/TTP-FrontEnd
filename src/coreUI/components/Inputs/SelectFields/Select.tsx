@@ -32,7 +32,9 @@ const Select = (props: IFilterProps) => {
         break;
       case "date-picker":
         State.selected =
-          props.selected !== "" && props.selected !== undefined ? "Range" : "";
+          props.selected !== "" && props.selected !== undefined
+            ? props.selected
+            : "";
         break;
       case "dialog":
         State.selected = props?.options
@@ -74,7 +76,7 @@ const Select = (props: IFilterProps) => {
     switch (props.optionsType) {
       case "date-picker":
         State = {
-          selected: value?.startDate !== undefined ? "Range" : "",
+          selected: props.selected,
           open: false,
         };
         setState({ ...State });

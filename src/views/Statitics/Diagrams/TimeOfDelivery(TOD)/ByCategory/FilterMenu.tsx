@@ -39,7 +39,7 @@ const FiltersBar = ({
       sx={{
         "& .MuiDrawer-paper": {
           background: "#FAFAFB",
-          width: "280px",
+          width: "400px",
           transition: "all 0.5s ease !important",
         },
       }}
@@ -64,7 +64,11 @@ const FiltersBar = ({
             <ControlledSelect
               name="date"
               control={control}
-              selected={start}
+              selected={
+                `${start ? new Date(start).toDateString() : ""}` +
+                `${end ? " : " : " "}` +
+                `${end ? new Date(end).toDateString() : ""}`
+              }
               label="TimeFrame :"
               elementType="filter"
               optionsType="date-picker"
@@ -72,9 +76,12 @@ const FiltersBar = ({
               onSelect={(value: Range) => {
                 onSetFilter(
                   "startDate",
-                  value?.startDate?.toDateString() ?? null
+                  value?.startDate?.toLocaleDateString() ?? null
                 );
-                onSetFilter("endDate", value?.endDate?.toDateString() ?? null);
+                onSetFilter(
+                  "endDate",
+                  value?.endDate?.toLocaleDateString() ?? null
+                );
               }}
             />
           </Box>
