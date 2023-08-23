@@ -14,6 +14,7 @@ export const getJourneyLeadTime = (journey: Journey) => {
   } else return 0;
   return journeyLeadTime;
 };
+
 export const getJourneyReviewTime = (journey: Journey) => {
   let journeyReviewTime = 0;
   let reviewIndex = journey.movements.findIndex((i) => i.status === "Review");

@@ -223,7 +223,8 @@ const TrackClientHealthTable = () => {
             _ofProjects: clientProjects.length,
             _OfJournies: clientJournies.length,
           };
-        })
+        }),
+        state.orderBy
       );
       State.cells = State.cells.filter((i) => i.lastBrief > 0);
       State.loading = false;
