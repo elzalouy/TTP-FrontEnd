@@ -125,7 +125,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         ? options.managers.slice(0, 4)
         : options.managers
     );
-  }, [options.managers]);
+  }, [options.managers, state.comparisonBy]);
 
   useEffect(() => {
     setCategories(options.categories);
@@ -135,7 +135,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     setTeams(
       state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
     );
-  }, [options.teams]);
+  }, [options.teams, state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -200,7 +200,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     };
 
     setState({ ...state, options, data });
-  }, [teams, clients, managers, journies]);
+  }, [teams, clients, managers, journies, state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -393,9 +393,9 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         <input
           type="checkbox"
           id="all-NoOfRevision"
-          value={"All-NoOfRevision"}
+          value={"All"}
           name="all-NoOfRevision"
-          checked={state.comparisonBy === "All-NoOfRevision"}
+          checked={state.comparisonBy === "All"}
           onChange={onHandleChange}
         />
         <label htmlFor="all-NoOfRevision">All</label>

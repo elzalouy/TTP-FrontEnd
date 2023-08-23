@@ -129,10 +129,10 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.teams, state.comparisonBy]);
 
-  console.log({
-    TOB_ByCategory_data: state.data,
-    TOD_By_Category_journies: journies,
-  });
+  // console.log({
+  //   TOB_ByCategory_data: state.data,
+  //   TOD_By_Category_journies: journies,
+  // });
   useEffect(() => {
     if (tasks.length > 0 && journies.length > 0) {
       let Categories = options.categories.map((item) => {

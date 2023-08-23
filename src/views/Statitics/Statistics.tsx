@@ -49,6 +49,7 @@ const Statistics = (props: any) => {
   const [state, setState] = useState<{
     filter: boolean;
     mounted: boolean;
+    boardIds: string[];
     options: {
       teams: ITeam[];
       clients: Client[];
@@ -60,6 +61,7 @@ const Statistics = (props: any) => {
   }>({
     filter: false,
     mounted: false,
+    boardIds: [],
     options: {
       teams: [],
       clients: [],
@@ -76,22 +78,22 @@ const Statistics = (props: any) => {
       allTasks.length > 0 &&
       allCategories.length > 0 &&
       allTeams &&
-      allDepartments &&
+      allDepartments.length > 0 &&
       state.mounted === false
     ) {
       let boardIds = allDepartments
-        .filter((dep) => dep.priority === 1)
+        .filter((i) => i.priority === 1)
         .map((i) => i.boardId);
-      console.log({ boardIds });
       let State = {
         ...state,
         mounted: true,
+        boardIds: boardIds,
         options: {
           managers: allManagers,
           clients: allClients,
           categories: allCategories,
           teams: allTeams,
-          boards: allDepartments.filter((d) => d.priority === 1),
+          boards: allDepartments.filter((i) => i.priority === 1),
           tasks: allTasks.filter((task) => boardIds.includes(task.boardId)),
         },
       };
@@ -108,6 +110,7 @@ const Statistics = (props: any) => {
   ]);
 
   const onSetFilterResult = (filter: { boards: string[] }) => {
+    console.log({ boards: filter.boards });
     dispatch(
       updateDepartmentsPriority({
         data: filter.boards,
@@ -115,6 +118,7 @@ const Statistics = (props: any) => {
       })
     );
   };
+  console.log({ state: state.boardIds });
 
   return (
     <>
