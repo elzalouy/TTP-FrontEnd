@@ -106,12 +106,14 @@ export const deleteDepartment = createAsyncThunk<any, any, any>(
 
 export const updateDepartmentsPriority = createAsyncThunk<any, any, any>(
   "departments/updateDepartments",
-  async (args: any, { dispatch, rejectWithValue }) => {
+  async ({ data, update }: any, { dispatch, rejectWithValue }) => {
     try {
       let response: ApiResponse<IDepartmentState[]> =
-        await api.updateDepartmentsPriority(args);
-      if (response.ok) return { data: response.data, ids: args };
-      else rejectWithValue(response);
+        await api.updateDepartmentsPriority(data);
+      if (response.ok) {
+        update();
+        return { data: response.data, ids: data };
+      } else rejectWithValue(response);
     } catch (error: any) {
       ToastError(error);
       return rejectWithValue(error);

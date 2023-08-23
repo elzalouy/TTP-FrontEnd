@@ -3,16 +3,12 @@ import { Grid, IconButton, ListItem, Typography } from "@mui/material";
 import "../../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { selectAllCategories } from "src/models/Categories";
+import { Category, selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _, { filter } from "lodash";
 import { getTaskJournies } from "src/helpers/generalUtils";
-import {
-  Client,
-  selectAllClients,
-  selectClientOptions,
-} from "src/models/Clients";
+import { Client, selectClientOptions } from "src/models/Clients";
 import { User } from "src/types/models/user";
 import {
   Manager,
@@ -28,6 +24,7 @@ import IMAGES from "src/assets/img/Images";
 import { Filter } from "@mui/icons-material";
 import { selectAllTeams, selectTeamsOptions } from "src/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
+import { Task } from "src/types/models/Projects";
 
 interface StateType {
   filterPopup: boolean;
@@ -49,8 +46,14 @@ interface StateType {
   comparisonBy: string;
 }
 type TodByCategoryProps = {
-  departments: IDepartmentState[];
-  setLoading: (loading: boolean) => void;
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 };
 
 /**
@@ -59,17 +62,13 @@ type TodByCategoryProps = {
  * @returns
  */
 
-const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const categories = useAppSelector(selectAllCategories);
-  const allManagers = useAppSelector(selectPMs);
-  const allClients = useAppSelector(selectAllClients);
+const TodByCategory = ({ options }: TodByCategoryProps) => {
+  const { projects } = useAppSelector(selectAllProjects);
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
-  const allTeams = useAppSelector(selectAllTeams);
-  const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
+  const [teams, setTeams] = useState<ITeam[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
@@ -89,8 +88,7 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
   });
 
   useEffect(() => {
-    let tasksData = [...allTasks];
-    let newTasks: ITaskInfo[] = tasksData.map((item) => {
+    let newTasks: ITaskInfo[] = tasks.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
         ...item,
@@ -99,35 +97,45 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
       };
       return newTask;
     });
-    setTasks([...newTasks]);
     let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
-  }, [clients, projects, managers, allTasks]);
+  }, [tasks, teams, managers, projects]);
 
   useEffect(() => {
-    let teamsData = allTeams;
-    setTeams(
-      state.comparisonBy === "Teams" ? teamsData.slice(0, 4) : teamsData
-    );
-  }, [allTeams]);
+    setTasks(options.tasks);
+  }, [options.tasks]);
 
   useEffect(() => {
     setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
     );
-  }, [allManagers]);
+  }, [options.managers, state.comparisonBy]);
 
   useEffect(() => {
     setClients(
-      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
+      state.comparisonBy === "Clients"
+        ? options.clients.slice(0, 4)
+        : options.clients
     );
-  }, [allClients]);
+  }, [options.clients, state.comparisonBy]);
 
   useEffect(() => {
+    setTeams(
+      state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
+    );
+  }, [options.teams, state.comparisonBy]);
+
+  console.log({
+    TOB_ByCategory_data: state.data,
+    TOD_By_Category_journies: journies,
+  });
+  useEffect(() => {
     if (tasks.length > 0 && journies.length > 0) {
-      let Categories = categories.map((item) => {
+      let Categories = options.categories.map((item) => {
         return { id: item._id, name: item.category };
       });
 
@@ -142,7 +150,7 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
             ? onGetDatasetsByTeams()
             : [onGetDatasetsByAll()],
       };
-      const options = {
+      const Options = {
         plugins: {
           legend: {
             display: false,
@@ -193,10 +201,9 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
           },
         },
       };
-      setState({ ...state, options, data });
-      setLoading(false);
+      setState({ ...state, options: Options, data });
     }
-  }, [categories, tasks, teams, state.comparisonBy, journies, teams, clients]);
+  }, [journies, tasks]);
 
   React.useEffect(() => {
     let journiesData = [...allJournies];
@@ -220,7 +227,7 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
   }, [state.filter.start, state.filter.end]);
 
   const onGetDatasetsByAll = () => {
-    let Categories = categories.map((item) => {
+    let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
     let color = "rgb(255,207,36,0.2)";
@@ -255,7 +262,7 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
     };
   };
   const onGetDataSetsByPM = () => {
-    let Categories = categories.map((item) => {
+    let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
     let color = "rgb(255,207,36,0.2)";
@@ -287,13 +294,12 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
 
   const onGetDataSetsByClient = () => {
-    let Categories = categories.map((item) => {
+    let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
     let color = "rgb(255,207,36,0.2)";
@@ -328,12 +334,11 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
   const onGetDatasetsByTeams = () => {
-    let Categories = categories.map((item) => {
+    let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
 
@@ -366,7 +371,6 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        hidden: index >= 4 ? true : false,
       };
     });
   };
@@ -377,22 +381,43 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
 
   const onSetFilter = (type: string, value: string) => {
     let State = { ...state };
-    if (type === "startDate") State.filter.start = value;
-    if (type === "endDate") State.filter.end = value;
+    let journies = [...allJournies];
+    if (type === "startDate") {
+      State.filter.start = value;
+      journies = journies.filter((i) => {
+        let date =
+          i?.journeyFinishedAtDate !== null && i.journeyFinishedAtDate
+            ? new Date(i.journeyFinishedAtDate).getTime()
+            : null;
+        let filterBy = new Date(value).getTime();
+        return date && filterBy < date;
+      });
+    }
+    if (type === "endDate") {
+      journies = journies.filter((i) => {
+        let date =
+          i?.journeyFinishedAtDate !== null && i.journeyFinishedAtDate
+            ? new Date(i.journeyFinishedAtDate).getTime()
+            : null;
+        let filterBy = new Date(value).getTime();
+        return date && filterBy > date;
+      });
+      State.filter.end = value;
+    }
     setState(State);
   };
 
   const onSelect = (value: DialogOption) => {
     if (state.comparisonBy === "Teams") {
-      let t = allTeams.find((i) => i._id && i._id === value.id);
+      let t = options.teams.find((i) => i._id && i._id === value.id);
       if (t) setTeams([...teams, t]);
     }
     if (state.comparisonBy === "PMs") {
-      let pm = allManagers.find((p) => p._id === value.id);
+      let pm = options.managers.find((p) => p._id === value.id);
       if (pm) setManagers([...managers, pm]);
     }
     if (state.comparisonBy === "Clients") {
-      let client = allClients.find((c) => c._id === value.id);
+      let client = options.clients.find((c) => c._id === value.id);
       if (client) setClients([...clients, client]);
     }
   };
@@ -410,13 +435,13 @@ const TodByCategory = ({ departments, setLoading }: TodByCategoryProps) => {
   };
   const onSelectAll = (select: boolean) => {
     if (state.comparisonBy === "Teams") {
-      setTeams(select ? allTeams : []);
+      setTeams(select ? options.teams : []);
     }
     if (state.comparisonBy === "PMs") {
-      setManagers(select ? allManagers : []);
+      setManagers(select ? options.managers : []);
     }
     if (state.comparisonBy === "Clients") {
-      setClients(select ? allClients : []);
+      setClients(select ? options.clients : []);
     }
   };
   return (

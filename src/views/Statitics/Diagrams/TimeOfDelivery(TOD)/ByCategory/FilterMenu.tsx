@@ -65,9 +65,11 @@ const FiltersBar = ({
               name="date"
               control={control}
               selected={
-                `${start ? new Date(start).toDateString() : ""}` +
-                `${end ? " : " : " "}` +
-                `${end ? new Date(end).toDateString() : ""}`
+                start && end
+                  ? `${start ? new Date(start).toDateString() : ""}` +
+                    `${end ? " : " : " "}` +
+                    `${end ? new Date(end).toDateString() : ""}`
+                  : "select range"
               }
               label="TimeFrame :"
               elementType="filter"

@@ -17,7 +17,14 @@ import { getJourneyLeadTime, getJourneyReviewTime } from "../../utils";
 import _ from "lodash";
 
 interface ReviewTimeProps {
-  departments: IDepartmentState[];
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 }
 type StateType = {
   filterPopup: boolean;
@@ -34,7 +41,7 @@ type StateType = {
   options: any;
   comparisonBy: string;
 };
-const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
+const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     data: {
@@ -44,11 +51,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     options: null,
     comparisonBy: "PMs",
   });
-  const allManagers = useAppSelector(selectManagers);
-  const allTeams = useAppSelector(selectAllTeams);
-  const allClients = useAppSelector(selectAllClients);
-  const allCategories = useAppSelector(selectAllCategories);
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectAllProjects);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
@@ -57,24 +60,26 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   useEffect(() => {
-    setTeams(allTeams);
-  }, [allTeams]);
+    setTeams(options.teams);
+  }, [options.teams]);
   useEffect(() => {
     setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
     );
-  }, [allManagers, state.comparisonBy]);
+  }, [options.managers, state.comparisonBy]);
 
   useEffect(() => {
-    setCategories(allCategories);
-  }, [allCategories]);
+    setCategories(options.categories);
+  }, [options.categories]);
 
   useEffect(() => {
-    setClients(allClients);
-  }, [allClients]);
+    setClients(options.clients);
+  }, [options.clients]);
 
   useEffect(() => {
-    let tasksData = [...allTasks];
+    let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -85,7 +90,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [projects, allTasks]);
+  }, [projects, options.tasks]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -178,12 +183,16 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
     categories: string[];
     teams: string[];
   }) => {
-    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setTeams(
+      options.teams.filter((i) => i._id && filter.teams.includes(i._id))
+    );
     setClients(
-      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+      options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
     setCategories(
-      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+      options.categories.filter(
+        (i) => i._id && filter.categories.includes(i._id)
+      )
     );
     setJournies(
       allJournies.filter(
@@ -329,10 +338,10 @@ const ReviewTime: FC<ReviewTimeProps> = ({ departments }) => {
       </Grid>
       <FilterBar
         allOptions={{
-          clients: allClients,
-          categories: allCategories,
-          teams: allTeams,
-          managers: allManagers,
+          clients: options.clients,
+          categories: options.categories,
+          teams: options.teams,
+          managers: options.managers,
         }}
         options={{ clients, teams, categories, managers }}
         filter={state.filterPopup}

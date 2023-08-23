@@ -304,10 +304,8 @@ export const setProjectManagerId = (name: any): string => {
 };
 
 export const getTaskJournies = (task: ITaskInfo) => {
-  let journies: Journies = [];
-  let movements = task.movements,
-    endOfJourney = ["Cancled", "Shared", "Done"],
-    journey: Journey = {
+  let getJourney = (): Journey => {
+    return {
       clientId: task.clientId,
       projectManager: task.projectManager,
       categoryId: task.categoryId,
@@ -317,15 +315,19 @@ export const getTaskJournies = (task: ITaskInfo) => {
       movements: [],
       sharedAtMonth: "",
       journeyFinishedAt: null,
-      revision: false,
+      revision: journies.length > 1,
       unique: false,
       sharedAt: "",
       startedAt: "",
-      boardId: "",
+      boardId: task.boardId,
     };
+  };
+  let journies: Journies = [];
+  let movements = task.movements,
+    endOfJourney = ["Cancled", "Shared", "Done"],
+    journey: Journey = getJourney();
 
   movements.forEach((item, index) => {
-    if (journies.length >= 1) journey.revision = true;
     if (
       endOfJourney.includes(item.status) &&
       movements[index + 1] &&
@@ -346,40 +348,12 @@ export const getTaskJournies = (task: ITaskInfo) => {
           });
       }
       journies.push(journey);
-      journey = {
-        clientId: task.clientId,
-        projectManager: task.projectManager,
-        categoryId: task.categoryId,
-        taskId: task._id,
-        index: journies.length,
-        teamId: task.teamId,
-        movements: [],
-        sharedAtMonth: "",
-        journeyFinishedAt: null,
-        revision: false,
-        startedAt: "",
-        unique: false,
-        boardId: task.boardId,
-      };
+      journey = getJourney();
     } else {
       journey.movements.push(item);
       if (index === movements.length - 1) {
         journies.push(journey);
-        journey = {
-          clientId: task.clientId,
-          projectManager: task.projectManager,
-          categoryId: task.categoryId,
-          taskId: task._id,
-          index: journies.length,
-          teamId: task.teamId,
-          movements: [],
-          sharedAtMonth: "",
-          journeyFinishedAt: null,
-          revision: false,
-          startedAt: "",
-          boardId: "",
-          unique: false,
-        };
+        journey = getJourney();
       }
     }
   });

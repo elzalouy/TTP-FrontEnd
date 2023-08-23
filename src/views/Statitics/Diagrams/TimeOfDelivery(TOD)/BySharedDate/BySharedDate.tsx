@@ -8,11 +8,7 @@ import { Bar } from "react-chartjs-2";
 import { selectAllDepartments, selectAllTeams } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
-import {
-  Months,
-  getRandomColor,
-  getTaskJournies,
-} from "src/helpers/generalUtils";
+import { Months, getTaskJournies } from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
@@ -44,19 +40,22 @@ interface ITaskInfo extends Task {
 }
 
 type BySharedMonthProps = {
-  departments: IDepartmentState[];
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 };
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const BySharedMonth = ({ departments }: BySharedMonthProps) => {
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const allCategories = useAppSelector(selectAllCategories);
-  const allManagers = useAppSelector(selectPMs);
-  const allClients = useAppSelector(selectAllClients);
-  const allTeams = useAppSelector(selectAllTeams);
+const BySharedMonth = ({ options }: BySharedMonthProps) => {
+  const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -78,7 +77,7 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
   });
 
   useEffect(() => {
-    let tasksData = [...allTasks];
+    let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -89,7 +88,7 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [projects, allTasks]);
+  }, [projects, options.tasks]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -114,23 +113,29 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
 
   useEffect(() => {
     setClients(
-      state.comparisonBy === "Clients" ? allClients.slice(0, 4) : allClients
+      state.comparisonBy === "Clients"
+        ? options.clients.slice(0, 4)
+        : options.clients
     );
-  }, [allClients, state.comparisonBy]);
+  }, [options.clients, state.comparisonBy]);
 
   useEffect(() => {
     setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
     );
-  }, [allManagers, state.comparisonBy]);
+  }, [options.managers, state.comparisonBy]);
 
   useEffect(() => {
-    setCategories(allCategories);
-  }, [allCategories]);
+    setCategories(options.categories);
+  }, [options.categories]);
 
   useEffect(() => {
-    setTeams(state.comparisonBy === "Teams" ? allTeams.slice(0, 4) : allTeams);
-  }, [allTeams, state.comparisonBy]);
+    setTeams(
+      state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
+    );
+  }, [options.teams, state.comparisonBy]);
 
   useEffect(() => {
     let months = Months;
@@ -204,15 +209,19 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
     categories: string[];
     teams: string[];
   }) => {
-    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setTeams(
+      options.teams.filter((i) => i._id && filter.teams.includes(i._id))
+    );
     setManagers(
-      allManagers.filter((i) => i._id && filter.managers.includes(i._id))
+      options.managers.filter((i) => i._id && filter.managers.includes(i._id))
     );
     setClients(
-      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+      options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
     setCategories(
-      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+      options.categories.filter(
+        (i) => i._id && filter.categories.includes(i._id)
+      )
     );
     setJournies(
       allJournies.filter(
@@ -454,10 +463,10 @@ const BySharedMonth = ({ departments }: BySharedMonthProps) => {
       </form>
       <FilterBar
         allOptions={{
-          clients: allClients,
-          teams: allTeams,
-          managers: allManagers,
-          categories: allCategories,
+          clients: options.clients,
+          teams: options.teams,
+          managers: options.managers,
+          categories: options.categories,
         }}
         options={{ clients, managers, categories, teams }}
         filter={filterPopup}

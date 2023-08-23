@@ -40,19 +40,22 @@ interface ITaskInfo extends Task {
 }
 
 type MeetDeadlineProps = {
-  departments: IDepartmentState[];
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 };
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const allCategories = useAppSelector(selectAllCategories);
-  const allManagers = useAppSelector(selectPMs);
-  const allClients = useAppSelector(selectAllClients);
-  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
+const MeetDeadline = ({ options }: MeetDeadlineProps) => {
+  const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -74,7 +77,7 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   });
 
   useEffect(() => {
-    let tasksData = [...allTasks];
+    let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -85,7 +88,7 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [projects, allTasks]);
+  }, [options.tasks]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -109,43 +112,38 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
   }, [tasks]);
 
   useEffect(() => {
-    setClients(allClients);
-  }, [allClients]);
-
-  useEffect(() => {
-    setManagers(allManagers);
-  }, [allManagers]);
-
-  useEffect(() => {
-    setCategories(allCategories);
-  }, [allCategories]);
-
-  useEffect(() => {
-    setAllTeams(
-      _.flattenDeep(
-        departments.map((item) =>
-          item.teams.filter((i) => i.isDeleted === false)
-        )
-      )
-    );
-    setTeams(
-      _.flattenDeep(departments.map((item) => item.teams))
-        .filter((t) => t.isDeleted === false)
-        .slice(0, 4)
-    );
-  }, [departments]);
+    setClients(options.clients);
+  }, [options.clients]);
 
   useEffect(() => {
     setManagers(
-      state.comparisonBy === "PMs" ? allManagers.slice(0, 4) : allManagers
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
+    );
+  }, [options.managers, state.comparisonBy]);
+
+  useEffect(() => {
+    setCategories(options.categories);
+  }, [options.categories]);
+
+  useEffect(() => {
+    setTeams(
+      state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
+    );
+  }, [options.teams, state.comparisonBy]);
+
+  useEffect(() => {
+    setManagers(
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
     );
 
     setTeams(
-      state.comparisonBy === "Teams"
-        ? allTeams.filter((i) => i.isDeleted === false).slice(0, 4)
-        : allTeams.filter((i) => i.isDeleted === false)
+      state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
     );
-  }, [state.comparisonBy]);
+  }, [state.comparisonBy, options.teams]);
 
   useEffect(() => {
     let months = Months;
@@ -221,18 +219,20 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
     teams: string[];
   }) => {
     setTeams(
-      allTeams.filter(
+      options.teams.filter(
         (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
       )
     );
     setManagers(
-      allManagers.filter((i) => i._id && filter.managers.includes(i._id))
+      options.managers.filter((i) => i._id && filter.managers.includes(i._id))
     );
     setClients(
-      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+      options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
     setCategories(
-      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+      options.categories.filter(
+        (i) => i._id && filter.categories.includes(i._id)
+      )
     );
     setJournies(
       allJournies.filter(
@@ -463,10 +463,10 @@ const MeetDeadline = ({ departments }: MeetDeadlineProps) => {
       </form>
       <FilterBar
         allOptions={{
-          clients: allClients,
-          managers: allManagers,
-          categories: allCategories,
-          teams: allTeams,
+          clients: options.clients,
+          managers: options.managers,
+          categories: options.categories,
+          teams: options.teams,
         }}
         options={{ clients, managers, categories, teams }}
         filter={filterPopup}

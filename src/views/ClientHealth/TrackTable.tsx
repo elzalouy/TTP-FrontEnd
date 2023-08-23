@@ -127,7 +127,7 @@ const TrackClientHealthTable = () => {
     page: 0,
     rowsPerPage: 8,
     order: Order.asc,
-    orderBy: "_OfJournies",
+    orderBy: "lastBrief",
     tasks: [],
     projects: [],
     clients: [],
@@ -206,9 +206,13 @@ const TrackClientHealthTable = () => {
           let revisionJournies = clientJourniesPerTask.filter(
             (j) => j.journies.length > 1
           );
+          let length = revisionJournies.length;
+          let flattenedRevisionJournies =
+            _.flattenDeep(revisionJournies.map((i) => i.journies)).length -
+            length;
           let revisionPercentage =
             Math.floor(
-              (revisionJournies.length / clientJournies.length) * 100
+              (flattenedRevisionJournies / clientJournies.length) * 100
             ) ?? 0;
           return {
             clientId: client._id,
@@ -227,6 +231,7 @@ const TrackClientHealthTable = () => {
         state.orderBy,
         "desc"
       );
+      State.order = Order.desc;
       State.cells = State.cells.filter((i) => i.lastBrief > 0);
       State.loading = false;
       setState(State);

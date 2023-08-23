@@ -17,7 +17,14 @@ import { getJourneySchedulingTime } from "../../utils";
 import _ from "lodash";
 
 interface SchedulingTimeProps {
-  departments: IDepartmentState[];
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 }
 type StateType = {
   filterPopup: boolean;
@@ -34,9 +41,7 @@ type StateType = {
   options: any;
   comparisonBy: string;
 };
-const SchedulingTime: FC<SchedulingTimeProps> = ({
-  departments: allDepartments,
-}) => {
+const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     data: {
@@ -46,11 +51,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({
     options: null,
     comparisonBy: "Departments",
   });
-  const allManagers = useAppSelector(selectManagers);
-  const allTeams = useAppSelector(selectAllTeams);
-  const allClients = useAppSelector(selectAllClients);
-  const allCategories = useAppSelector(selectAllCategories);
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectAllProjects);
   const [departments, setDepartments] = useState<IDepartmentState[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -60,30 +61,30 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   useEffect(() => {
-    setTeams(allTeams);
-  }, [allTeams]);
+    setTeams(options.teams);
+  }, [options.teams]);
   useEffect(() => {
     setDepartments(
       state.comparisonBy === "Departments"
-        ? allDepartments.slice(0, 4)
-        : allDepartments
+        ? options.boards.slice(0, 4)
+        : options.boards
     );
-  }, [allDepartments, state.comparisonBy]);
+  }, [options.boards, state.comparisonBy]);
 
   useEffect(() => {
-    setManagers(allManagers);
-  }, [allManagers]);
+    setManagers(options.managers);
+  }, [options.managers]);
 
   useEffect(() => {
-    setCategories(allCategories);
-  }, [allCategories]);
+    setCategories(options.categories);
+  }, [options.categories]);
 
   useEffect(() => {
-    setClients(allClients);
-  }, [allClients]);
+    setClients(options.clients);
+  }, [options.clients]);
 
   useEffect(() => {
-    let tasksData = [...allTasks];
+    let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -94,7 +95,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [projects, allTasks]);
+  }, [projects, options.tasks]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -182,12 +183,16 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({
     categories: string[];
     teams: string[];
   }) => {
-    setTeams(allTeams.filter((i) => i._id && filter.teams.includes(i._id)));
+    setTeams(
+      options.teams.filter((i) => i._id && filter.teams.includes(i._id))
+    );
     setClients(
-      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+      options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
     setCategories(
-      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+      options.categories.filter(
+        (i) => i._id && filter.categories.includes(i._id)
+      )
     );
     setJournies(
       allJournies.filter(
@@ -317,31 +322,31 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({
         <form className="ComparisonOptions">
           <input
             type="checkbox"
-            id="all-review"
+            id="all-scheduling"
             value={"All"}
-            name="all-review"
+            name="all-scheduling"
             checked={state.comparisonBy === "All"}
             onChange={onHandleChange}
           />
-          <label htmlFor="all-review">All</label>
+          <label htmlFor="all-scheduling">All</label>
           <input
-            id="pms-departments"
+            id="scheduling-departments"
             type="checkbox"
             value={"Departments"}
-            name="pms-departments"
+            name="scheduling-departments"
             checked={state.comparisonBy === "Departments"}
             onChange={onHandleChange}
           />
-          <label htmlFor="pms-departments">Departments</label>
+          <label htmlFor="scheduling-departments">Departments</label>
         </form>
       </Grid>
       <FilterBar
         allOptions={{
-          clients: allClients,
-          categories: allCategories,
-          teams: allTeams,
-          managers: allManagers,
-          departments: allDepartments,
+          clients: options.clients,
+          categories: options.categories,
+          teams: options.teams,
+          managers: options.managers,
+          departments: options.boards,
         }}
         options={{ clients, teams, categories, managers, departments }}
         filter={state.filterPopup}

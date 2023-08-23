@@ -38,11 +38,6 @@ type time = {
   totalTimesInAllTasks: number;
 };
 
-type stateType = {
-  filter: boolean;
-  loading: boolean;
-};
-
 const Statistics = (props: any) => {
   const dispatch = useDispatch();
   const allDepartments = useAppSelector(selectAllDepartments);
@@ -52,39 +47,56 @@ const Statistics = (props: any) => {
   const allCategories = useAppSelector(selectAllCategories);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const [state, setState] = useState<{
-    loading: boolean;
     filter: boolean;
+    mounted: boolean;
     options: {
       teams: ITeam[];
       clients: Client[];
       managers: Manager[];
       categories: Category[];
       boards: IDepartmentState[];
+      tasks: Task[];
     };
   }>({
-    loading: true,
     filter: false,
+    mounted: false,
     options: {
       teams: [],
       clients: [],
       managers: [],
       categories: [],
       boards: [],
+      tasks: [],
     },
   });
 
   useEffect(() => {
-    let State = {
-      ...state,
-      options: {
-        managers: allManagers,
-        clients: allClients,
-        categories: allCategories,
-        teams: allTeams,
-        boards: allDepartments.filter((d) => d.priority === 1),
-      },
-    };
-    setState(State);
+    if (
+      allClients.length > 0 &&
+      allTasks.length > 0 &&
+      allCategories.length > 0 &&
+      allTeams &&
+      allDepartments &&
+      state.mounted === false
+    ) {
+      let boardIds = allDepartments
+        .filter((dep) => dep.priority === 1)
+        .map((i) => i.boardId);
+      console.log({ boardIds });
+      let State = {
+        ...state,
+        mounted: true,
+        options: {
+          managers: allManagers,
+          clients: allClients,
+          categories: allCategories,
+          teams: allTeams,
+          boards: allDepartments.filter((d) => d.priority === 1),
+          tasks: allTasks.filter((task) => boardIds.includes(task.boardId)),
+        },
+      };
+      setState(State);
+    }
   }, [
     allClients,
     allCategories,
@@ -92,30 +104,17 @@ const Statistics = (props: any) => {
     allTeams,
     allDepartments,
     allManagers,
+    state.mounted,
   ]);
 
-  const onSetFilterResult = (filter: {
-    clients: string[];
-    managers: string[];
-    categories: string[];
-    teams: string[];
-    boards: string[];
-  }) => {
-    let State = { ...state };
-    State.options = {
-      managers: allManagers.filter((i) => filter.managers.includes(i._id)),
-      clients: allClients.filter((i) => filter.clients.includes(i._id)),
-      teams: allTeams.filter((i) => filter.teams.includes(i._id ?? "")),
-      categories: allCategories.filter((i) =>
-        filter.categories.includes(i._id)
-      ),
-      boards: allDepartments.filter((i) => filter.boards.includes(i._id)),
-    };
-    setState(State);
-    dispatch(updateDepartmentsPriority(filter.boards));
+  const onSetFilterResult = (filter: { boards: string[] }) => {
+    dispatch(
+      updateDepartmentsPriority({
+        data: filter.boards,
+        update: () => setState({ ...state, mounted: false }),
+      })
+    );
   };
-
-  const setLoading = (loading: boolean) => setState({ ...state, loading });
 
   return (
     <>
@@ -145,33 +144,33 @@ const Statistics = (props: any) => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid xs={12} height={"auto"}>
-          <TodByCategory
-            setLoading={setLoading}
-            departments={state.options.boards}
-          />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <BySharedMonth departments={state.options.boards} />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <MeetDeadline departments={state.options.boards} />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <NoOfRevision departments={state.options.boards} />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <NoOfTasks departments={state.options.boards} />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <ReviewTime departments={state.options.boards} />
-        </Grid>
-        <Grid xs={12} height={"auto"}>
-          <SchedulingTime departments={state.options.boards} />
-        </Grid>
-        {/* <Grid xs={12} height={"auto"}>
-          <ProjectsReport departments={state.options.boards} />
-        </Grid> */}
+        {state.mounted === true ? (
+          <>
+            <Grid xs={12} height={"auto"}>
+              <TodByCategory options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <BySharedMonth options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <MeetDeadline options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <NoOfRevision options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <NoOfTasks options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <ReviewTime options={{ ...state.options }} />
+            </Grid>
+            <Grid xs={12} height={"auto"}>
+              <SchedulingTime options={{ ...state.options }} />
+            </Grid>
+          </>
+        ) : (
+          <></>
+        )}
       </Grid>
       <FilterMenu
         onSetFilterResult={onSetFilterResult}

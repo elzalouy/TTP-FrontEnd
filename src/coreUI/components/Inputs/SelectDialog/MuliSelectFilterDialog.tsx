@@ -48,14 +48,13 @@ export const SimpleDialog = ({
   allOption,
 }: DialogProps) => {
   const theme = useTheme();
-  const [selectedAll, setSelectedAll] = React.useState(
-    options.length === selected?.length ? true : false
-  );
+  const [selectedAll, setSelectedAll] = React.useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [searchVal, setSearchVal] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
 
   React.useEffect(() => {
+    setSelectedAll(options.length === selected?.length);
     let filtered =
       searchVal.length > 0
         ? options.filter((item) =>
@@ -175,11 +174,13 @@ export const SimpleDialog = ({
                     <CheckIcon htmlColor="#5fda71"></CheckIcon>
                   </ListItemIcon>
                 )}
-                {selected?.length === options.length && item.id === "all" && (
-                  <ListItemIcon>
-                    <CheckIcon htmlColor="#5fda71"></CheckIcon>
-                  </ListItemIcon>
-                )}
+                {selected?.length === options.length &&
+                  options.length > 0 &&
+                  item.id === "all" && (
+                    <ListItemIcon>
+                      <CheckIcon htmlColor="#5fda71"></CheckIcon>
+                    </ListItemIcon>
+                  )}
               </ListItem>
             );
           })}

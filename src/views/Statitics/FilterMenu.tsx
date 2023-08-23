@@ -15,17 +15,12 @@ import { DialogOption } from "src/types/components/SelectDialog";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import { useDispatch } from "react-redux";
+import _ from "lodash";
 
 interface FilterBarProps {
   filter: boolean;
   onCloseFilter: any;
-  onSetFilterResult: (filter: {
-    clients: string[];
-    managers: string[];
-    categories: string[];
-    teams: string[];
-    boards: string[];
-  }) => void;
+  onSetFilterResult: (filter: { boards: string[] }) => void;
   options: {
     clients: Client[];
     managers: Manager[];
@@ -66,71 +61,24 @@ const FilterMenu = ({
     },
   });
 
-  const dispatch = useDispatch();
-  const clientsOptions = useAppSelector(selectClientOptions);
-  const PmsOptions = useAppSelector(selectPMOptions);
-  const categoriesOptions = useAppSelector(selectCategoriesOptions);
-  const projects: ProjectsInterface = useAppSelector(selectAllProjects);
-  const boardOptions = useAppSelector(selectBoardsOptions);
-  const departmentsOptions = useAppSelector(selectDepartmentOptions);
-  const teamOptions = useAppSelector(selectTeamsOptions);
-  const projectsOptions = useAppSelector(selectProjectOptions);
-
   const onSelectAll = (select: boolean, filter: string) => {
     onSetFilterResult({
-      clients:
-        filter === "Clients"
-          ? select
-            ? allOptions.clients.map((item) => item._id)
-            : []
-          : options.clients.map((i) => i._id),
-      managers:
-        filter === "Project Managers"
-          ? select
-            ? allOptions.managers.map((item) => item._id)
-            : []
-          : options.managers.map((m) => m._id),
-      categories:
-        filter === "Categories"
-          ? select
-            ? allOptions.categories.map((item) => item._id)
-            : []
-          : options.categories.map((i) => i._id),
-      teams:
-        filter === "Teams"
-          ? select
-            ? allOptions.teams.map((item) => item._id ?? "")
-            : []
-          : options.teams.map((t) => t._id ?? ""),
-      boards:
-        filter === "Boards"
-          ? select
-            ? allOptions.boards.map((i) => i._id)
-            : []
-          : options.boards.map((i) => i._id),
+      boards: select ? allOptions.boards.map((i) => i._id) : [],
     });
   };
 
   const onSelectBoard = (value: DialogOption) => {
     let values = {
-      clients: options.clients.map((item) => item._id),
-      managers: options.managers.map((item) => item._id),
-      categories: options.categories.map((item) => item._id),
-      teams: options.teams.map((i) => i._id ?? ""),
       boards:
         value.id === "all"
           ? allOptions.boards.map((item) => item._id)
-          : [...options.boards.map((item) => item._id), value.id],
+          : _.uniq([...options.boards.map((b) => b._id), value.id]),
     };
     onSetFilterResult(values);
   };
 
   const onDiselectBoard = (item: DialogOption) => {
     let values = {
-      clients: options.clients.map((item) => item._id),
-      managers: options.managers.map((item) => item._id),
-      categories: options.categories.map((item) => item._id),
-      teams: options.teams.map((item) => item._id ?? ""),
       boards: options.boards.map((i) => i._id),
     };
     values.boards =
@@ -175,12 +123,12 @@ const FilterMenu = ({
                   selected={options.boards.map((item) => {
                     return { id: item._id, label: item.name };
                   })}
-                  options={departmentsOptions.map((item) => {
-                    return { id: item.id, label: item.text };
+                  options={allOptions.boards.map((item) => {
+                    return { id: item._id, label: item.name };
                   })}
-                  onSelectAll={(select: boolean) =>
-                    onSelectAll(select, "Boards")
-                  }
+                  onSelectAll={(select: boolean) => {
+                    onSelectAll(select, "Boards");
+                  }}
                   label="Board: "
                   onSelect={onSelectBoard}
                   onDiselect={onDiselectBoard}

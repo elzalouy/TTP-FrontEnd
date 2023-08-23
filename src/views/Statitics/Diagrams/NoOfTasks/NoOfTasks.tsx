@@ -44,19 +44,22 @@ interface ITaskInfo extends Task {
 }
 
 interface NoOfTasksProps {
-  departments: IDepartmentState[];
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
 }
 /**
  * Time of delivery diagram by the Category
  * @param param0
  * @returns
  */
-const NoOfTasks = ({ departments }: NoOfTasksProps) => {
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const allCategories = useAppSelector(selectAllCategories);
-  const allManagers = useAppSelector(selectPMs);
-  const allClients = useAppSelector(selectAllClients);
-  const [allTeams, setAllTeams] = useState<ITeam[]>([]);
+const NoOfTasks = ({ options }: NoOfTasksProps) => {
+  const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -78,7 +81,7 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
   });
 
   useEffect(() => {
-    let tasksData = [...allTasks];
+    let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -89,7 +92,7 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
       return newTask;
     });
     setTasks([...newTasks]);
-  }, [projects, allTasks]);
+  }, [projects, options.tasks]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -116,29 +119,20 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
   }, [tasks]);
 
   useEffect(() => {
-    setClients(allClients);
-  }, [allClients]);
+    setClients(options.clients);
+  }, [options.clients]);
 
   useEffect(() => {
-    setManagers(allManagers);
-  }, [allManagers]);
+    setManagers(options.managers);
+  }, [options.managers]);
 
   useEffect(() => {
-    setCategories(allCategories);
-  }, [allCategories]);
+    setCategories(options.categories);
+  }, [options.categories]);
 
   useEffect(() => {
-    setAllTeams(
-      _.flattenDeep(departments.map((item) => item.teams)).filter(
-        (i) => i.isDeleted === false
-      )
-    );
-    setTeams(
-      _.flattenDeep(departments.map((item) => item.teams)).filter(
-        (t) => t.isDeleted === false
-      )
-    );
-  }, [departments]);
+    setTeams(options.teams);
+  }, [options.teams]);
 
   useEffect(() => {
     let months = Months;
@@ -194,18 +188,20 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
     teams: string[];
   }) => {
     setTeams(
-      allTeams.filter(
+      options.teams.filter(
         (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
       )
     );
     setManagers(
-      allManagers.filter((i) => i._id && filter.managers.includes(i._id))
+      options.managers.filter((i) => i._id && filter.managers.includes(i._id))
     );
     setClients(
-      allClients.filter((i) => i._id && filter.clients.includes(i._id))
+      options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
     setCategories(
-      allCategories.filter((i) => i._id && filter.categories.includes(i._id))
+      options.categories.filter(
+        (i) => i._id && filter.categories.includes(i._id)
+      )
     );
     setJournies(
       allJournies.filter(
@@ -235,7 +231,7 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
       {
         type: "revised",
         journies: _.flattenDeep(
-          allTasks
+          options.tasks
             .map((i) => getTaskJournies(i))
             .filter((j) => j.journies.length > 1)
             .map((i) =>
@@ -254,7 +250,7 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
       {
         type: "unique",
         journies: _.flattenDeep(
-          allTasks
+          options.tasks
             .map((i) => getTaskJournies(i))
             .filter((j) => j.journies.length === 1)
             .map((i) =>
@@ -325,10 +321,10 @@ const NoOfTasks = ({ departments }: NoOfTasksProps) => {
       <Line options={state.options} data={state.data} />
       <FilterBar
         allOptions={{
-          clients: allClients,
-          managers: allManagers,
-          categories: allCategories,
-          teams: allTeams,
+          clients: options.clients,
+          managers: options.managers,
+          categories: options.categories,
+          teams: options.teams,
         }}
         options={{ clients, managers, categories, teams }}
         filter={filterPopup}
