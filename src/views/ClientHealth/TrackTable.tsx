@@ -127,7 +127,7 @@ const TrackClientHealthTable = () => {
     page: 0,
     rowsPerPage: 8,
     order: Order.asc,
-    orderBy: "clientName",
+    orderBy: "_OfJournies",
     tasks: [],
     projects: [],
     clients: [],
@@ -224,7 +224,8 @@ const TrackClientHealthTable = () => {
             _OfJournies: clientJournies.length,
           };
         }),
-        state.orderBy
+        state.orderBy,
+        "desc"
       );
       State.cells = State.cells.filter((i) => i.lastBrief > 0);
       State.loading = false;
