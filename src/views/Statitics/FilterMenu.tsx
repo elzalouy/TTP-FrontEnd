@@ -69,10 +69,7 @@ const FilterMenu = ({
 
   const onSelectBoard = (value: DialogOption) => {
     let values = {
-      boards:
-        value.id === "all"
-          ? allOptions.boards.map((item) => item._id)
-          : _.uniq([...options.boards.map((b) => b._id), value.id]),
+      boards: _.uniq([...options.boards.map((b) => b._id), value.id]),
     };
     onSetFilterResult(values);
   };
@@ -81,8 +78,7 @@ const FilterMenu = ({
     let values = {
       boards: options.boards.map((i) => i._id),
     };
-    values.boards =
-      item.id === "all" ? [] : [...values.boards].filter((i) => i !== item.id);
+    values.boards = [...values.boards].filter((i) => i !== item.id);
     onSetFilterResult(values);
   };
 

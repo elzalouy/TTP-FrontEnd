@@ -71,9 +71,9 @@ const FilterBar: FC<FilterBarProps> = ({
       departments:
         filter === "Departments"
           ? select
-            ? allOptions.departments.map((item) => item._id)
+            ? allOptions.departments.map((item) => item.boardId)
             : []
-          : options.departments.map((m) => m._id),
+          : options.departments.map((m) => m.boardId),
     });
   };
 
@@ -128,7 +128,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
                         teams:
                           value.id === "all"
@@ -146,7 +146,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
 
                         teams: options.teams.map((item) => item._id ?? ""),
@@ -187,7 +187,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
 
                         categories:
@@ -207,7 +207,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
                       };
                       values.categories =
@@ -249,7 +249,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
 
                         clients:
@@ -268,7 +268,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         clients: options.clients.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
 
                         managers: options.managers.map((item) => item._id),
@@ -309,7 +309,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         categories: options.categories.map((item) => item._id),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
 
                         managers:
@@ -329,7 +329,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
                       };
                       values.managers =
@@ -353,10 +353,10 @@ const FilterBar: FC<FilterBarProps> = ({
                     name="department"
                     allOption
                     selected={options.departments.map((item) => {
-                      return { id: item._id ?? "", label: item.name ?? "" };
+                      return { id: item.boardId ?? "", label: item.name ?? "" };
                     })}
                     options={allOptions.departments.map((item) => {
-                      return { id: item?._id ?? "", label: item.name };
+                      return { id: item?.boardId ?? "", label: item.name };
                     })}
                     onSelectAll={(select: boolean) =>
                       onSelectAll(select, "Departments")
@@ -371,9 +371,11 @@ const FilterBar: FC<FilterBarProps> = ({
 
                         departments:
                           value.id === "all"
-                            ? allOptions.departments.map((i) => i._id)
+                            ? allOptions.departments.map((i) => i.boardId)
                             : [
-                                ...options.departments.map((item) => item._id),
+                                ...options.departments.map(
+                                  (item) => item.boardId
+                                ),
                                 value.id,
                               ],
                       };
@@ -386,7 +388,7 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         departments: options.departments.map(
-                          (item) => item._id
+                          (item) => item.boardId
                         ),
                       };
                       values.departments =

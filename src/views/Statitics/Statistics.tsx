@@ -110,15 +110,31 @@ const Statistics = (props: any) => {
   ]);
 
   const onSetFilterResult = (filter: { boards: string[] }) => {
-    console.log({ boards: filter.boards });
+    let boardIds = allDepartments
+      .filter((i) => filter.boards.includes(i._id))
+      .map((b) => b.boardId);
+    setState({
+      ...state,
+      options: {
+        ...state.options,
+        tasks: allTasks.filter((i) => boardIds.includes(i.boardId)),
+        teams: _.flattenDeep(
+          allDepartments
+            .filter((i) => boardIds.includes(i.boardId))
+            .map((i) => i.teams)
+        ),
+        boards: allDepartments.filter((item) =>
+          filter.boards.includes(item._id)
+        ),
+      },
+    });
     dispatch(
       updateDepartmentsPriority({
         data: filter.boards,
-        update: () => setState({ ...state, mounted: false }),
+        boardIds: boardIds,
       })
     );
   };
-  console.log({ state: state.boardIds });
 
   return (
     <>

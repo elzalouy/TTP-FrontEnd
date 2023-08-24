@@ -105,7 +105,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
 
   useEffect(() => {
     setTasks(options.tasks);
-  }, [options.tasks]);
+  }, [options.tasks, options.boards]);
 
   useEffect(() => {
     setManagers(
@@ -134,76 +134,75 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   //   TOD_By_Category_journies: journies,
   // });
   useEffect(() => {
-    if (tasks.length > 0 && journies.length > 0) {
-      let Categories = options.categories.map((item) => {
-        return { id: item._id, name: item.category };
-      });
+    let Categories = options.categories.map((item) => {
+      return { id: item._id, name: item.category };
+    });
 
-      const data = {
-        labels: Categories.map((item) => item.name),
-        datasets:
-          state.comparisonBy === "Clients"
-            ? onGetDataSetsByClient()
-            : state.comparisonBy === "PMs"
-            ? onGetDataSetsByPM()
-            : state.comparisonBy === "Teams"
-            ? onGetDatasetsByTeams()
-            : [onGetDatasetsByAll()],
-      };
-      const Options = {
-        plugins: {
-          legend: {
-            display: false,
-            position: "right",
-            align: "start",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context: any) {
-                const value: number = context.dataset.data[context.dataIndex];
-                let totalHours = value * 24;
-                let days = Math.floor(totalHours / 24);
-                const hours = Math.floor(totalHours % 24);
-                return [
-                  `${context.dataset.label} :- `,
-                  `(${days} days, ${hours} hours)`,
-                ];
-              },
+    const data = {
+      labels: Categories.map((item) => item.name),
+      datasets:
+        state.comparisonBy === "Clients"
+          ? onGetDataSetsByClient()
+          : state.comparisonBy === "PMs"
+          ? onGetDataSetsByPM()
+          : state.comparisonBy === "Teams"
+          ? onGetDatasetsByTeams()
+          : [onGetDatasetsByAll()],
+    };
+
+    const Options = {
+      plugins: {
+        legend: {
+          display: false,
+          position: "right",
+          align: "start",
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context: any) {
+              const value: number = context.dataset.data[context.dataIndex];
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return [
+                `${context.dataset.label} :- `,
+                `(${days} days, ${hours} hours)`,
+              ];
             },
           },
         },
-        scales: {
-          x: {
-            type: "category",
-            position: "bottom",
-            ticks: {
-              beginAtZero: true,
-            },
-            title: {
-              display: true,
-              text: "Category",
-              poisition: "bottom",
-              align: "end",
-              color: "black",
-            },
+      },
+      scales: {
+        x: {
+          type: "category",
+          position: "bottom",
+          ticks: {
+            beginAtZero: true,
           },
-          y: {
-            ticks: {
-              beginAtZero: true,
-            },
-            title: {
-              display: true,
-              text: "TOD (Days & Hours)",
-              poisition: "bottom",
-              align: "end",
-              color: "black",
-            },
+          title: {
+            display: true,
+            text: "Category",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
           },
         },
-      };
-      setState({ ...state, options: Options, data });
-    }
-  }, [journies, tasks]);
+        y: {
+          ticks: {
+            beginAtZero: true,
+          },
+          title: {
+            display: true,
+            text: "TOD (Days & Hours)",
+            poisition: "bottom",
+            align: "end",
+            color: "black",
+          },
+        },
+      },
+    };
+    setState({ ...state, options: Options, data });
+  }, [journies, tasks, options.tasks, state.comparisonBy, options.categories]);
 
   React.useEffect(() => {
     let journiesData = [...allJournies];

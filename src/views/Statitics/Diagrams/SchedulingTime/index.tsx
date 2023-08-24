@@ -53,23 +53,31 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   });
   const { projects } = useAppSelector(selectAllProjects);
   const [departments, setDepartments] = useState<IDepartmentState[]>([]);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
+
   useEffect(() => {
     setTeams(options.teams);
   }, [options.teams]);
+
   useEffect(() => {
-    setDepartments(
+    let boards =
       state.comparisonBy === "Departments"
         ? options.boards.slice(0, 4)
-        : options.boards
-    );
+        : options.boards;
+    setDepartments(boards);
+    setTeams(_.flattenDeep(boards.map((i) => i.teams)));
   }, [options.boards, state.comparisonBy]);
+
+  useEffect(() => {
+    let teams = _.flattenDeep(departments.map((i) => i.teams));
+    setTeams(teams);
+  }, [departments]);
 
   useEffect(() => {
     setManagers(options.managers);
@@ -85,17 +93,38 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
 
   useEffect(() => {
     let tasksData = [...options.tasks];
-    let newTasks: ITaskInfo[] = tasksData.map((item) => {
-      let project = projects.find((project) => project._id === item.projectId);
-      let newTask: ITaskInfo = {
-        ...item,
-        clientId: project?.clientId,
-        projectManager: project?.projectManager,
-      };
-      return newTask;
-    });
+    let boardIds = departments.map((i) => i.boardId);
+    let teamsIds = teams.map((i) => i._id);
+    let managersIds = managers.map((i) => i._id);
+    let clientIds = clients.map((i) => i._id);
+    let categoriesIds = categories.map((i) => i._id);
+    let newTasks: ITaskInfo[] = tasksData
+      .map((item) => {
+        let project = projects.find(
+          (project) => project._id === item.projectId
+        );
+        let newTask: ITaskInfo = {
+          ...item,
+          clientId: project?.clientId,
+          projectManager: project?.projectManager,
+        };
+        return newTask;
+      })
+      .filter(
+        (task) =>
+          task.clientId &&
+          clientIds.includes(task.clientId) &&
+          task.projectManager &&
+          managersIds.includes(task.projectManager) &&
+          task.teamId &&
+          teamsIds.includes(task.teamId) &&
+          task.boardId &&
+          boardIds.includes(task.boardId) &&
+          task.categoryId &&
+          categoriesIds.includes(task.categoryId)
+      );
     setTasks([...newTasks]);
-  }, [projects, options.tasks]);
+  }, [projects, options.tasks, departments, teams, managers, clients]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -109,8 +138,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           : undefined,
       };
     });
-    setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
+    setJournies(flattenedJournies);
   }, [tasks]);
 
   useEffect(() => {
@@ -173,37 +202,43 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       },
     };
     setState({ ...state, options, data });
-  }, [teams, managers, clients, categories, journies, state.comparisonBy]);
+  }, [journies]);
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
+
   const onSetFilterResult = (filter: {
     clients: string[];
     categories: string[];
     teams: string[];
+    departments: string[];
+    managers: string[];
   }) => {
-    setTeams(
-      options.teams.filter((i) => i._id && filter.teams.includes(i._id))
-    );
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
+
     setCategories(
       options.categories.filter(
         (i) => i._id && filter.categories.includes(i._id)
       )
     );
-    setJournies(
-      allJournies.filter(
-        (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId)
-      )
+
+    setDepartments(
+      options.boards.filter((i) => filter.departments.includes(i.boardId))
+    );
+
+    setManagers(
+      options.managers.filter((m) => filter.managers.includes(m._id))
+    );
+
+    setTeams(
+      _.flattenDeep(
+        options.boards
+          .filter((b) => filter.departments.includes(b.boardId))
+          .map((i) => i.teams)
+      ).filter((team) => filter.teams.includes(team._id ?? ""))
     );
   };
 
@@ -268,7 +303,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
         name: month.name,
       };
     });
-
     return {
       label: "",
       data: datasetData.map((i) => {
@@ -288,6 +322,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       skipNull: true,
     };
   };
+  console.log({ teams });
   return (
     <>
       <Grid
@@ -344,7 +379,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
         allOptions={{
           clients: options.clients,
           categories: options.categories,
-          teams: options.teams,
+          teams: _.flattenDeep(options.boards.map((i) => i.teams)),
           managers: options.managers,
           departments: options.boards,
         }}
