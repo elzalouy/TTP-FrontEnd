@@ -20,7 +20,6 @@ import { Manager, selectPMs } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
 import { data } from "cypress/types/jquery";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 interface StateType {
   data: {
     labels: string[];
@@ -331,11 +330,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Line
-        plugins={[ChartDataLabels]}
-        options={state.options}
-        data={state.data}
-      />
+      <Line options={state.options} data={state.data} />
       <FilterBar
         allOptions={{
           clients: options.clients,
