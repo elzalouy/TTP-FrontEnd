@@ -20,6 +20,7 @@ import { Manager, selectPMs } from "src/models/Managers";
 import { getMeetingDeadline } from "../../utils";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 interface StateType {
   data: {
@@ -150,6 +151,20 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     };
     const options = {
       plugins: {
+        datalabels: {
+          anchor: "end",
+          align: "top",
+          formatter: (value: any, context: any) => {
+            if (value > 0) {
+              return [context.dataset.label, `${value} revision`];
+            } else return null;
+          },
+          font: {
+            weight: "bold",
+            size: "10px",
+          },
+        },
+
         legend: {
           display: false,
           position: "right",
@@ -388,7 +403,11 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Line options={state.options} data={state.data} />
+      <Line
+        plugins={[ChartDataLabels]}
+        options={state.options}
+        data={state.data}
+      />
       <form className="ComparisonOptions">
         <input
           type="checkbox"

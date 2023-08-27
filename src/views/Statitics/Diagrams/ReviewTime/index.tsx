@@ -15,7 +15,7 @@ import { Task, TaskMovement } from "src/types/models/Projects";
 import { Months, getTaskJournies } from "src/helpers/generalUtils";
 import { getJourneyLeadTime, getJourneyReviewTime } from "../../utils";
 import _ from "lodash";
-
+import ChartDataLabels from "chartjs-plugin-datalabels";
 interface ReviewTimeProps {
   options: {
     teams: ITeam[];
@@ -124,6 +124,22 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     };
     const options = {
       plugins: {
+        datalabels: {
+          anchor: "end",
+          align: "top",
+          formatter: (value: any, context: any) => {
+            if (value > 0) {
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return [context.dataset.label, `(${days} days, ${hours} hours)`];
+            } else return null;
+          },
+          font: {
+            weight: "bold",
+            size: "10px",
+          },
+        },
         legend: {
           display: false,
         },
@@ -266,7 +282,6 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         name: month.name,
       };
     });
-    console.log({ state: state.data });
 
     return {
       label: "Organization Review Time",
@@ -314,7 +329,11 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
             <img src={IMAGES.filtericon} alt="FILTER" />
           </IconButton>
         </Grid>
-        <Line options={state.options} data={state.data} />
+        <Line
+          plugins={[ChartDataLabels]}
+          options={state.options}
+          data={state.data}
+        />
         <form className="ComparisonOptions">
           <input
             type="checkbox"

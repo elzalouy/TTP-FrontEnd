@@ -18,13 +18,14 @@ import {
 } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { getJourneyLeadTime } from "../../../utils";
-import { TooltipItem } from "chart.js";
+import { LabelItem } from "chart.js";
 import FiltersBar from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
 import { Filter } from "@mui/icons-material";
 import { selectAllTeams, selectTeamsOptions } from "src/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { Task } from "src/types/models/Projects";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 interface StateType {
   filterPopup: boolean;
@@ -152,6 +153,23 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
 
     const Options = {
       plugins: {
+        datalabels: {
+          anchor: "end",
+          align: "top",
+          formatter: (value: any, context: any) => {
+            const label = context.chart.data.labels[context.dataIndex];
+            if (value > 0) {
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return [label, `(${days} days, ${hours} hours)`];
+            } else return null;
+          },
+          font: {
+            weight: "bold",
+            size: "10px",
+          },
+        },
         legend: {
           display: false,
           position: "right",
@@ -432,6 +450,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       setClients([...clients].filter((i) => i._id !== value.id));
     }
   };
+
   const onSelectAll = (select: boolean) => {
     if (state.comparisonBy === "Teams") {
       setTeams(select ? options.teams : []);
@@ -443,6 +462,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       setClients(select ? options.clients : []);
     }
   };
+
   return (
     <>
       <Grid
@@ -474,7 +494,11 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           </IconButton>
         </Grid>
 
-        <Bar options={state.options} data={state.data} />
+        <Bar
+          plugins={[ChartDataLabels]}
+          options={state.options}
+          data={state.data}
+        />
         <form className="ComparisonOptions">
           <input
             type="checkbox"

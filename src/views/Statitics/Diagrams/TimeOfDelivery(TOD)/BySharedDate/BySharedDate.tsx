@@ -15,6 +15,7 @@ import { Journies } from "src/types/views/Statistics";
 import { Manager, selectPMs } from "src/models/Managers";
 import { getJourneyLeadTime } from "../../../utils";
 import IMAGES from "src/assets/img/Images";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import FilterBar from "./FilterMenu";
 
 interface StateType {
@@ -152,6 +153,23 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     };
     const options = {
       plugins: {
+        datalabels: {
+          anchor: "end",
+          align: "top",
+          formatter: (value: any, context: any) => {
+            const label = context.chart.data.labels[context.dataIndex];
+            if (value > 0) {
+              let totalHours = value * 24;
+              let days = Math.floor(totalHours / 24);
+              const hours = Math.floor(totalHours % 24);
+              return [label, `(${days} days, ${hours} hours)`];
+            } else return null;
+          },
+          font: {
+            weight: "bold",
+            size: "10px",
+          },
+        },
         legend: {
           display: false,
           position: "right",
@@ -422,7 +440,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
       </Grid>
-      <Bar options={state.options} data={state.data} />
+      <Bar
+        plugins={[ChartDataLabels]}
+        options={state.options}
+        data={state.data}
+      />
       <form className="ComparisonOptions">
         <input
           type="checkbox"
