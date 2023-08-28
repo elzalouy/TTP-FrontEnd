@@ -29,7 +29,7 @@ import { getJourneyLeadTime, getMeetingDeadline } from "../Statitics/utils";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import IMAGES from "src/assets/img/Images";
 import FiltersBar from "./FilterMenu";
-import _ from "lodash";
+import _, { flatten, isNaN } from "lodash";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
 
 interface HeadCell {
@@ -65,8 +65,8 @@ const TeableHeaderCells: readonly HeadCell[] = [
     type: "number",
   },
   {
-    id: "_OfJournies",
-    label: "# of journies",
+    id: "_OfRevision",
+    label: "# of Revision",
     type: "number",
   },
   {
@@ -75,8 +75,8 @@ const TeableHeaderCells: readonly HeadCell[] = [
     type: "number",
   },
   {
-    id: "revision",
-    label: "Revision %",
+    id: "_OfActive",
+    label: "# of Active",
     type: "number",
   },
   {
@@ -102,12 +102,23 @@ type stateType = {
     clientName: string;
     lastBrief: number;
     _ofProjects: number;
-    _OfJournies: number;
     averageTOD: number;
-    revision: number;
+    _OfRevision: number;
     meetDeadline: number;
     _OfTasks: number;
+    _OfActive: number;
+    jounries: number;
   }[];
+  organization: {
+    lastBrief: number;
+    _ofProjects: number;
+    averageTOD: number;
+    _OfRevision: number;
+    meetDeadline: number;
+    _OfTasks: number;
+    _OfActive: number;
+    jounries: number;
+  };
   filter: {
     startDate: string | null;
     endDate: string | null;
@@ -133,6 +144,16 @@ const TrackClientHealthTable = () => {
     clients: [],
     cells: [],
     journeys: [],
+    organization: {
+      lastBrief: 0,
+      _ofProjects: 0,
+      averageTOD: 0,
+      _OfRevision: 0,
+      meetDeadline: 0,
+      _OfTasks: 0,
+      _OfActive: 0,
+      jounries: 0,
+    },
     filter: {
       startDate: null,
       endDate: null,
@@ -142,49 +163,68 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      State.tasks = allTasks.map((i) => {
-        let p = projects.find((p) => p._id === i.projectId);
-        return {
-          ...i,
-          clientId: p?.clientId,
-          projectManager: p?.projectManager,
-        };
-      });
+      let allTasksInfo = _.orderBy(
+        allTasks.map((i) => {
+          let p = projects.find((p) => p._id === i.projectId);
+          return {
+            ...i,
+            clientId: p?.clientId,
+            projectManager: p?.projectManager,
+          };
+        }),
+        "start",
+        "asc"
+      );
 
+      State.tasks = allTasksInfo;
       State.clients = clients;
       State.projects = projects;
-      if (State.filter.startDate) {
+
+      if (State.filter.startDate && State.filter.endDate) {
         State.projects = State.projects.filter(
           (t) =>
             State.filter.startDate &&
-            new Date(t.startDate).getTime() >=
-              new Date(State.filter.startDate).getTime()
-        );
-        let ids = State.projects.map((i) => i._id);
-        State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
-      }
-      if (State.filter.endDate) {
-        State.projects = State.projects.filter(
-          (t) =>
             State.filter.endDate &&
+            new Date(t.startDate).getTime() >=
+              new Date(State.filter.startDate).getTime() &&
             new Date(t.startDate).getTime() <=
               new Date(State.filter.endDate).getTime()
         );
-        let ids = State.projects.map((i) => i._id);
-        State.tasks = State.tasks.filter((i) => ids.includes(i.projectId));
+        State.tasks = state.tasks.filter(
+          (i) =>
+            i.createdAt &&
+            State.filter.startDate &&
+            State.filter.endDate &&
+            new Date(i.createdAt).getTime() >=
+              new Date(State.filter.startDate).getTime() &&
+            new Date(i.createdAt).getTime() <=
+              new Date(State.filter.endDate).getTime()
+        );
       }
 
       let journeys = State.tasks.map((i) => getTaskJournies(i));
       State.journeys = journeys;
+      let flattened = _.flattenDeep(journeys.map((i) => i.journies));
+      State.organization._OfActive = flattened.filter(
+        (i) =>
+          !["Shared", "Done", "Cancled"].includes(
+            i.movements[i.movements.length - 1].status
+          )
+      ).length;
+      // State.organization._OfRevision=flatten
       State.cells = _.orderBy(
         clients.map((client) => {
+          let notFilteredClientTasks = _.orderBy(
+            allTasksInfo.filter((t: ITaskInfo) => t.clientId === client._id),
+            "createdAt",
+            "asc"
+          );
           let clientProjects = State.projects.filter(
             (i) => i.clientId === client._id
           );
           let clientTasks = State.tasks.filter(
             (task) => task.clientId === client._id
           );
-          let orderTasks = _.orderBy(clientTasks, "createdAt");
           let clientJourniesPerTask = clientTasks.map((i) =>
             getTaskJournies(i)
           );
@@ -194,6 +234,7 @@ const TrackClientHealthTable = () => {
           let joiurniesLeadTime = clientJournies.map((j) =>
             getJourneyLeadTime(j)
           );
+
           let averageLeadTime =
             _.sum(joiurniesLeadTime) > 0
               ? Math.floor(_.sum(joiurniesLeadTime) / clientJournies.length)
@@ -210,29 +251,33 @@ const TrackClientHealthTable = () => {
           let flattenedRevisionJournies =
             _.flattenDeep(revisionJournies.map((i) => i.journies)).length -
             length;
-          let revisionPercentage =
-            Math.floor(
-              (flattenedRevisionJournies / clientJournies.length) * 100
-            ) ?? 0;
+          let lastBrief = new Date(
+            notFilteredClientTasks[notFilteredClientTasks.length - 1]?.createdAt
+          ).getTime();
+          lastBrief = _.isNaN(lastBrief) ? 0 : lastBrief;
+          let _OfActive = clientJournies.filter(
+            (i) =>
+              !["Done", "Cancled", "Shared"].includes(
+                i.movements[i.movements.length - 1].status
+              )
+          ).length;
           return {
-            clientId: client._id,
             clientName: client.clientName,
-            revision: revisionPercentage > 0 ? revisionPercentage : 0,
-            meetDeadline: meetingDeadline > 0 ? meetingDeadline : 0,
-            lastBrief: new Date(
-              orderTasks[orderTasks.length - 1]?.createdAt
-            ).getTime(),
-            averageTOD: averageLeadTime > 0 ? averageLeadTime : 0,
+            meetDeadline: !_.isNaN(meetingDeadline) ? meetingDeadline : 0,
+            _OfRevision: flattenedRevisionJournies,
+            lastBrief: lastBrief,
+            averageTOD: averageLeadTime ?? 0,
             _OfTasks: clientTasks.length,
             _ofProjects: clientProjects.length,
-            _OfJournies: clientJournies.length,
+            clientId: client._id,
+            _OfActive,
+            jounries: clientJournies.length,
           };
         }),
         state.orderBy,
         "desc"
       );
       State.order = Order.desc;
-      State.cells = State.cells.filter((i) => i.lastBrief > 0);
       State.loading = false;
       setState(State);
     }
@@ -268,13 +313,14 @@ const TrackClientHealthTable = () => {
 
   const createSortHandler = (
     orderBy:
+      | "clientName"
       | "lastBrief"
       | "_ofProjects"
-      | "_OfJournies"
       | "meetDeadline"
       | "averageTOD"
-      | "revision"
-      | "_OfTasks",
+      | "_OfTasks"
+      | "_OfActive"
+      | "_OfRevision",
     type: string
   ) => {
     const order =
@@ -431,13 +477,14 @@ const TrackClientHealthTable = () => {
                   const {
                     clientId,
                     clientName,
-                    revision,
+                    _OfActive,
                     meetDeadline,
                     lastBrief,
                     averageTOD,
-                    _OfJournies,
+                    _OfRevision,
                     _ofProjects,
                     _OfTasks,
+                    jounries,
                   } = item;
                   let lastBriefDate = new Date(lastBrief);
                   let localLastBriefDate = lastBriefDate.toLocaleDateString(
@@ -561,7 +608,9 @@ const TrackClientHealthTable = () => {
                             height={20}
                           />
                         ) : (
-                          <>{_OfJournies}</>
+                          <>
+                            {_OfRevision} / {jounries}
+                          </>
                         )}
                       </TableCell>
                       <TableCell
@@ -599,7 +648,7 @@ const TrackClientHealthTable = () => {
                             height={20}
                           />
                         ) : (
-                          <>{revision} %</>
+                          <>{_OfActive}</>
                         )}
                       </TableCell>
                       <TableCell
