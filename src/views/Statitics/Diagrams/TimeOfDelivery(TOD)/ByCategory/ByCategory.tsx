@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, IconButton, ListItem, Typography } from "@mui/material";
+import { Grid, IconButton, ListItem, Typography, colors } from "@mui/material";
 import "../../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
@@ -7,7 +7,7 @@ import { Category, selectAllCategories } from "src/models/Categories";
 import { Bar } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _, { filter } from "lodash";
-import { getTaskJournies } from "src/helpers/generalUtils";
+import { getTaskJournies, randomColors } from "src/helpers/generalUtils";
 import { Client, selectClientOptions } from "src/models/Clients";
 import { User } from "src/types/models/user";
 import {
@@ -56,7 +56,6 @@ type TodByCategoryProps = {
     tasks: Task[];
   };
 };
-
 /**
  * Time of delivery diagram by the Category
  * @param param0
@@ -247,10 +246,10 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
 
-    let datasetData = Categories.map((category) => {
+    let datasetData = Categories.map((category, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
       let journiesData = journies.filter(
         (item) => item.categoryId === category.id
       );
@@ -282,9 +281,9 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
     return managers.map((manager, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
       let journiesData = journies.filter(
         (item) => item.projectManager === manager._id
       );
@@ -319,10 +318,11 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
 
     return clients.map((client, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
       let journiesData = journies.filter(
         (item) => item.clientId === client._id
       );
@@ -359,9 +359,10 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       return { id: item._id, name: item.category };
     });
 
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
     return teams.map((team, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
       let journiesData = journies.filter((item) => item.teamId === team._id);
       let journiesOfClientGroupedByCategory = {
         ..._.groupBy(journiesData, "categoryId"),

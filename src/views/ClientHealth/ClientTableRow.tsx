@@ -107,7 +107,7 @@ const ClientTableRow = ({
           <Skeleton variant="rectangular" width={"100%"} height={20} />
         ) : (
           <>
-            {_OfRevision} / {journies}
+            {_OfRevision} ( {journies}% )
           </>
         )}
       </TableCell>

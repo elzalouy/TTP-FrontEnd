@@ -12,7 +12,11 @@ import { Category, selectAllCategories } from "src/models/Categories";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import { selectAllProjects } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
-import { Months, getTaskJournies } from "src/helpers/generalUtils";
+import {
+  Months,
+  getTaskJournies,
+  randomColors,
+} from "src/helpers/generalUtils";
 import { getJourneySchedulingTime } from "../../utils";
 import _ from "lodash";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -264,9 +268,10 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
     return departments.map((department, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
       let journiesData = journies.filter(
         (i) => i.boardId && i.boardId === department.boardId
       );
@@ -306,10 +311,10 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       return { id: item, name: item };
     });
 
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
+    let datasetData = months.map((month, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
-    let datasetData = months.map((month) => {
       let journiesData = journies.filter(
         (item) => item.startedAtMonth === month.id
       );
@@ -340,7 +345,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       skipNull: true,
     };
   };
-  console.log({ teams });
   return (
     <>
       <Grid

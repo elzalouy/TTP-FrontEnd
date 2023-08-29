@@ -198,14 +198,18 @@ const TrackClientHealthTable = () => {
       _.sum(journeysLeadTime) > 0
         ? Math.floor(_.sum(journeysLeadTime) / journeys.length) * 100
         : 0;
-    State.organization.jounries = flattened.length;
     State.organization.lastBrief = new Date(
       sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.createdAt
     ).getTime();
-    let meetDeadline = getMeetingDeadline(flattened).notPassedDeadline.length;
-    console.log({ meetDeadline, journeys: journeys.length });
-    State.organization.meetDeadline =
-      Math.floor(meetDeadline / journeys.length) * 100;
+    let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
+    let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
+    State.organization.jounries = Math.floor(
+      (State.organization._OfRevision / flattened.length) * 100
+    );
+    console.log({ hasDeadline, meetDeadline });
+    State.organization.meetDeadline = Math.floor(
+      (meetDeadline / hasDeadline.length) * 100
+    );
   }, [allTasks, projects]);
 
   React.useEffect(() => {
@@ -227,7 +231,6 @@ const TrackClientHealthTable = () => {
       State.tasks = allTasksInfo;
       State.clients = clients;
       State.projects = projects;
-
       if (State.filter.startDate && State.filter.endDate) {
         State.projects = State.projects.filter(
           (t) =>
@@ -279,11 +282,15 @@ const TrackClientHealthTable = () => {
             _.sum(joiurniesLeadTime) > 0
               ? Math.floor(_.sum(joiurniesLeadTime) / clientJournies.length)
               : 0;
+          let hasDeadline = clientJournies.filter(
+            (i) => i.journeyDeadline !== null
+          );
           let meetingDeadline = Math.floor(
-            (getMeetingDeadline(clientJournies).notPassedDeadline.length /
-              clientJournies.length) *
+            (getMeetingDeadline(hasDeadline).notPassedDeadline.length /
+              hasDeadline.length) *
               100
           );
+
           let revisionJournies = clientJourniesPerTask.filter(
             (j) => j.journies.length > 1
           );
@@ -311,12 +318,14 @@ const TrackClientHealthTable = () => {
             _ofProjects: clientProjects.length,
             clientId: client._id,
             _OfActive,
-            jounries: clientJournies.length,
+            jounries: Math.floor(
+              (flattenedRevisionJournies / clientJournies.length) * 100
+            ),
           };
         }),
         state.orderBy,
         "desc"
-      );
+      ).filter((i) => i._OfTasks > 0 && i._ofProjects > 0);
       State.order = Order.desc;
       State.loading = false;
       setState(State);

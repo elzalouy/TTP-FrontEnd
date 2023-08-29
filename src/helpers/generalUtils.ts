@@ -320,6 +320,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       sharedAt: "",
       startedAt: "",
       boardId: task.boardId,
+      journeyDeadline: null,
     };
   };
   let journies: Journies = [];
@@ -328,25 +329,22 @@ export const getTaskJournies = (task: ITaskInfo) => {
     journey: Journey = getJourney();
 
   movements.forEach((item, index) => {
+    journey.journeyDeadline = item.journeyDeadline
+      ? new Date(item.journeyDeadline)
+      : null;
     if (
       endOfJourney.includes(item.status) &&
       movements[index + 1] &&
       movements[index + 1].status === "Tasks Board"
     ) {
       journey.movements.push(item);
-      if (item.journeyDeadline) {
-        journey.journeyFinishedAtDate = new Date(item.journeyDeadline);
-        journey.journeyFinishedAt =
-          journey.journeyFinishedAtDate.toLocaleString("en-us", {
-            month: "long",
-          });
-      } else {
-        journey.journeyFinishedAtDate = new Date(item.movedAt);
-        journey.journeyFinishedAt =
-          journey.journeyFinishedAtDate.toLocaleDateString("en-us", {
-            month: "long",
-          });
-      }
+      journey.journeyFinishedAtDate = new Date(item.movedAt);
+      journey.journeyFinishedAt = journey.journeyFinishedAtDate.toLocaleString(
+        "en-us",
+        {
+          month: "long",
+        }
+      );
       journies.push(journey);
       journey = getJourney();
     } else {
@@ -415,4 +413,105 @@ export const Months = [
   "October",
   "November",
   "December",
+];
+export const randomColors = [
+  [255, 87, 51],
+  [66, 165, 245],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
+  [139, 195, 74],
+  [103, 58, 183],
+  [255, 152, 0],
+  [63, 81, 181],
+  [205, 220, 57],
+  [96, 125, 139],
+  [255, 64, 129],
+  [0, 188, 212],
+  [255, 235, 59],
+  [76, 175, 80],
+  [156, 39, 176],
+  [255, 193, 7],
+  [233, 30, 99],
+  [33, 150, 243],
+  [255, 87, 34],
 ];

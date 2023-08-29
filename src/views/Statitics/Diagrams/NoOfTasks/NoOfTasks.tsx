@@ -12,6 +12,7 @@ import {
   Months,
   getRandomColor,
   getTaskJournies,
+  randomColors,
 } from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
@@ -280,11 +281,12 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       },
     ];
     return types.map((type) => {
-      let color = "rgb(255,207,36,0.2)";
-      let borderColor = "rgb(255,207,36)";
       let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAt");
 
-      let dataset = months.map((month) => {
+      let dataset = months.map((month, index) => {
+        let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+        let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
         let data = jounriesGroupedByMonth[month];
         return {
           data: data ?? [],

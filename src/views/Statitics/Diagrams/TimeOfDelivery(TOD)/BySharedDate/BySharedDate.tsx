@@ -8,7 +8,11 @@ import { Bar } from "react-chartjs-2";
 import { selectAllDepartments, selectAllTeams } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
-import { Months, getTaskJournies } from "src/helpers/generalUtils";
+import {
+  Months,
+  getTaskJournies,
+  randomColors,
+} from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Journies } from "src/types/views/Statistics";
@@ -260,9 +264,10 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
     return managers.map((manager, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
@@ -299,9 +304,10 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
     return clients.map((client, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
@@ -340,8 +346,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     });
 
     return teams.map((team, index) => {
-      let color = "rgb(255,207,36,0.2)";
-      let borderColor = "rgb(255,207,36)";
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
@@ -380,10 +386,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       return { id: item, name: item };
     });
 
-    let color = "rgb(255,207,36,0.2)";
-    let borderColor = "rgb(255,207,36)";
-
-    let datasetData = months.map((month) => {
+    let datasetData = months.map((month, index) => {
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
       let journiesData = journies.filter(
         (item) => item.sharedAtMonth === month.id
       );
