@@ -19,7 +19,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useAppSelector } from "src/models/hooks";
-import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import { ArrowDownward, ArrowUpward, Mediation } from "@mui/icons-material";
 import { Project, Task } from "src/types/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { selectAllProjects } from "src/models/Projects";
@@ -31,6 +31,7 @@ import IMAGES from "src/assets/img/Images";
 import FiltersBar from "./FilterMenu";
 import _, { flatten, isNaN } from "lodash";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
+import ClientTableRow from "./ClientTableRow";
 
 interface HeadCell {
   id: any;
@@ -162,6 +163,53 @@ const TrackClientHealthTable = () => {
 
   React.useEffect(() => {
     let State = { ...state };
+    let tasks = _.orderBy(
+      allTasks.map((i) => {
+        let p = projects.find((p) => p._id === i.projectId);
+        return {
+          ...i,
+          clientId: p?.clientId,
+          projectManager: p?.projectManager,
+        };
+      }),
+      "start",
+      "asc"
+    );
+    let journeys = tasks.map((item) => getTaskJournies(item));
+    let flattened = _.flattenDeep(journeys.map((i) => i.journies));
+    State.organization._OfActive = flattened.filter(
+      (i) =>
+        !["Shared", "Done", "Cancled"].includes(
+          i.movements[i.movements.length - 1].status
+        )
+    ).length;
+    let revisedTasks = journeys.filter((i) => i.journies.length > 1);
+    let journeysLeadTime = flattened.map((j) => {
+      return getJourneyLeadTime(j);
+    });
+    let sortedByCreateAtTasks = _.orderBy(tasks, "createdAt", "asc");
+
+    State.organization._OfRevision =
+      _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
+      revisedTasks.length;
+    State.organization._OfTasks = tasks.length;
+    State.organization._ofProjects = projects.length;
+    State.organization.averageTOD =
+      _.sum(journeysLeadTime) > 0
+        ? Math.floor(_.sum(journeysLeadTime) / journeys.length) * 100
+        : 0;
+    State.organization.jounries = flattened.length;
+    State.organization.lastBrief = new Date(
+      sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.createdAt
+    ).getTime();
+    let meetDeadline = getMeetingDeadline(flattened).notPassedDeadline.length;
+    console.log({ meetDeadline, journeys: journeys.length });
+    State.organization.meetDeadline =
+      Math.floor(meetDeadline / journeys.length) * 100;
+  }, [allTasks, projects]);
+
+  React.useEffect(() => {
+    let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
       let allTasksInfo = _.orderBy(
         allTasks.map((i) => {
@@ -204,14 +252,6 @@ const TrackClientHealthTable = () => {
 
       let journeys = State.tasks.map((i) => getTaskJournies(i));
       State.journeys = journeys;
-      let flattened = _.flattenDeep(journeys.map((i) => i.journies));
-      State.organization._OfActive = flattened.filter(
-        (i) =>
-          !["Shared", "Done", "Cancled"].includes(
-            i.movements[i.movements.length - 1].status
-          )
-      ).length;
-      // State.organization._OfRevision=flatten
       State.cells = _.orderBy(
         clients.map((client) => {
           let notFilteredClientTasks = _.orderBy(
@@ -342,6 +382,43 @@ const TrackClientHealthTable = () => {
     if (type === "endDate") State.filter.endDate = value;
     setState(State);
   };
+  const OrganizationRow = () => {
+    let {
+      lastBrief,
+      meetDeadline,
+      jounries,
+      averageTOD,
+      _ofProjects,
+      _OfTasks,
+      _OfRevision,
+      _OfActive,
+    } = state.organization;
+    let lastBriefDate = new Date(lastBrief);
+    let localLastBriefDate = lastBriefDate.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    let totalDays = Math.floor(averageTOD / 24);
+    let totalHours = Math.floor(averageTOD % 24);
+    return (
+      <ClientTableRow
+        clientId={"organization"}
+        loading={state.loading}
+        clientName={"TTP Organization"}
+        lastBrief={lastBrief}
+        localLastBriefDate={localLastBriefDate}
+        _ofProjects={_ofProjects}
+        _OfActive={_OfActive}
+        _OfTasks={_OfTasks}
+        _OfRevision={_OfRevision}
+        journies={jounries}
+        totalDays={totalDays}
+        totalHours={totalHours}
+        meetDeadline={meetDeadline}
+      />
+    );
+  };
 
   return (
     <Grid
@@ -463,6 +540,7 @@ const TrackClientHealthTable = () => {
         </TableHead>
         <TableBody>
           <>
+            <OrganizationRow />
             {state.loading ? (
               <TableLoading rows={3} columns={8} name="client-health-tracker" />
             ) : (
@@ -499,178 +577,21 @@ const TrackClientHealthTable = () => {
                   let totalHours = Math.floor(averageTOD % 24);
 
                   return (
-                    <TableRow
-                      sx={{
-                        ":hover": {
-                          backgroundColor: "white !important",
-                          boxShadow: "0px 10px 20px #0000001A",
-                          transition: "all 0.5s ease-out !important",
-                          WebkitAppearance: "none",
-                          WebkitBoxShadow: "0px 10px 20px #0000001A",
-                          borderBottom: 0,
-                        },
-                      }}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={clientId}
-                    >
-                      <TableCell
-                        size="small"
-                        align="left"
-                        style={{
-                          color: "#334D6E",
-                          textTransform: "capitalize",
-                          width: "130px",
-                          height: "45px",
-                        }}
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <div style={{ cursor: "pointer" }}>{clientName}</div>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        align="left"
-                        style={{
-                          cursor: "pointer",
-                          color: "#323C47",
-                          width: "130px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{lastBrief ? localLastBriefDate : ""}</>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        style={{
-                          color: "#707683",
-                          width: "130px",
-                          textTransform: "capitalize",
-                          cursor: "pointer",
-                        }}
-                        align="left"
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{_ofProjects}</>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        align="left"
-                        style={{
-                          color: "#707683",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{_OfTasks}</>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        align="left"
-                        style={{
-                          color: "#707683",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>
-                            {_OfRevision} / {jounries}
-                          </>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        style={{
-                          color: "#707683",
-                          cursor: "pointer",
-                          textTransform: "capitalize",
-                        }}
-                        align="left"
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{`${totalDays} Days, ${totalHours} Hours`}</>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        style={{
-                          color: "#707683",
-                          cursor: "pointer",
-                          textTransform: "capitalize",
-                        }}
-                        align="left"
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{_OfActive}</>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        size="small"
-                        style={{
-                          color: "#707683",
-                          cursor: "pointer",
-                          textTransform: "capitalize",
-                        }}
-                        align="left"
-                      >
-                        {state.loading === true ? (
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={20}
-                          />
-                        ) : (
-                          <>{meetDeadline >= 0 ? meetDeadline : 0} %</>
-                        )}
-                      </TableCell>
-                    </TableRow>
+                    <ClientTableRow
+                      clientId={clientId}
+                      loading={state.loading}
+                      clientName={clientName}
+                      lastBrief={lastBrief}
+                      localLastBriefDate={localLastBriefDate}
+                      _ofProjects={_ofProjects}
+                      _OfActive={_OfActive}
+                      _OfTasks={_OfTasks}
+                      _OfRevision={_OfRevision}
+                      journies={jounries}
+                      totalDays={totalDays}
+                      totalHours={totalHours}
+                      meetDeadline={meetDeadline}
+                    />
                   );
                 })}
               </>
