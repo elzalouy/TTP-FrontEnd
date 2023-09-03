@@ -93,6 +93,12 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       };
       return newTask;
     });
+    newTasks = newTasks.filter(
+      (i) =>
+        i.cardCreatedAt &&
+        new Date(Date.now()).getFullYear() ===
+          new Date(i.cardCreatedAt).getFullYear()
+    );
     setTasks([...newTasks]);
   }, [options.tasks]);
 

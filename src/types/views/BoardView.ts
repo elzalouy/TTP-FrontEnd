@@ -88,6 +88,7 @@ export const initialEditState: CRUDTaskState = {
     boardId: "",
     createdAt: "",
     movements: [],
+    cardCreatedAt: "",
   },
   error: {
     error: undefined,
@@ -119,6 +120,7 @@ export const initialCreateState: CRUDTaskState = {
     boardId: "",
     movements: [],
     createdAt: "",
+    cardCreatedAt: "",
   },
   error: {
     error: undefined,

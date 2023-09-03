@@ -321,8 +321,10 @@ export const getTaskJournies = (task: ITaskInfo) => {
       startedAt: "",
       boardId: task.boardId,
       journeyDeadline: null,
+      cardCreatedAt: task.cardCreatedAt,
     };
   };
+
   let journies: Journies = [];
   let movements = task.movements,
     endOfJourney = ["Cancled", "Shared", "Done"],
@@ -345,6 +347,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           month: "long",
         }
       );
+      journey.startedAt = journey.movements[0].movedAt ?? task.cardCreatedAt;
       journies.push(journey);
       journey = getJourney();
     } else {

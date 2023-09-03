@@ -120,7 +120,7 @@ const List: FC<IList> = ({ notifiData }) => {
                         marginRight: 2,
                       }}
                     >
-                      {moment(item?.createdAt).fromNow(true)}
+                      {moment(item?.cardCreatedAt).fromNow(true)}
                     </Typography>
                   </Grid>
                   {item?.adminUserID?.name && (

@@ -52,6 +52,7 @@ const Tasks: React.FC<TasksProps> = ({ setCurrentStep, setShow }) => {
     description: "",
     movements: [],
     createdAt: "",
+    cardCreatedAt: new Date(),
   });
   const dispatch = useDispatch();
 

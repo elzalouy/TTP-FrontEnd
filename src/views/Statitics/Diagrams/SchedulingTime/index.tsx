@@ -135,7 +135,9 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
     flattenedJournies = flattenedJournies.map((item) => {
-      let start = item.movements && item.movements[0]?.movedAt;
+      let start = item.movements
+        ? item.movements[0]?.movedAt
+        : item.cardCreatedAt;
       return {
         ...item,
         startedAtMonth: start
@@ -156,6 +158,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           ? onGetDataSetsByDepartments()
           : [onGetDatasetsByAll()],
     };
+
     const options = {
       plugins: {
         datalabels: {
@@ -174,7 +177,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
             size: "10px",
           },
         },
-
         legend: {
           display: false,
         },
@@ -240,21 +242,17 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
-
     setCategories(
       options.categories.filter(
         (i) => i._id && filter.categories.includes(i._id)
       )
     );
-
     setDepartments(
       options.boards.filter((i) => filter.departments.includes(i.boardId))
     );
-
     setManagers(
       options.managers.filter((m) => filter.managers.includes(m._id))
     );
-
     setTeams(
       _.flattenDeep(
         options.boards
@@ -306,6 +304,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       };
     });
   };
+
   const onGetDatasetsByAll = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };

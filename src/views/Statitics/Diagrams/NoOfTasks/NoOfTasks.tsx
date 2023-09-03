@@ -91,6 +91,12 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       };
       return newTask;
     });
+    newTasks = newTasks.filter(
+      (i) =>
+        i.cardCreatedAt &&
+        new Date(Date.now()).getFullYear() ===
+          new Date(i.cardCreatedAt).getFullYear()
+    );
     setTasks([...newTasks]);
   }, [projects, options.tasks]);
 
@@ -109,7 +115,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
           : undefined,
-        startedAt: new Date(item.movements[0].movedAt).toLocaleString("en-us", {
+        startedAt: new Date(
+          item.movements[0].movedAt ?? item.cardCreatedAt
+        ).toLocaleString("en-us", {
           month: "long",
         }),
       };
@@ -251,10 +259,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
               i.journies.map((j) => {
                 return {
                   ...j,
-                  startedAt: new Date(j.movements[0].movedAt).toLocaleString(
-                    "us-en",
-                    { month: "long" }
-                  ),
+                  startedAt: new Date(j.startedAt).toLocaleString("us-en", {
+                    month: "long",
+                  }),
                 };
               })
             )
@@ -270,10 +277,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
               i.journies.map((j) => {
                 return {
                   ...j,
-                  startedAt: new Date(j.movements[0].movedAt).toLocaleString(
-                    "us-en",
-                    { month: "long" }
-                  ),
+                  startedAt: new Date(j.startedAt).toLocaleString("us-en", {
+                    month: "long",
+                  }),
                 };
               })
             )

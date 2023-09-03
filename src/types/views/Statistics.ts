@@ -16,11 +16,12 @@ export type Journey = {
   journeyFinishedAt: string | null;
   journeyFinishedAtDate?: Date | null;
   revision: boolean;
-  startedAt?: Date | string;
+  startedAt: Date | string;
   startedAtMonth?: Date | string;
   unique: boolean;
   boardId: string;
   journeyDeadline: Date | null;
+  cardCreatedAt: Date | string;
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {

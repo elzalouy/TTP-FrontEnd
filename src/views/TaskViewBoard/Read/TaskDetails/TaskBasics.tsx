@@ -87,10 +87,10 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
 
   const TaskLeadTime = () => {
     let end = _.findLast(movements, (item) => item.status === "Shared");
-    let start = task.createdAt;
+    let start = task.cardCreatedAt;
     if (end && start)
       return getDifBetweenDates(
-        new Date(task.createdAt),
+        new Date(task.cardCreatedAt),
         new Date(end.movedAt)
       );
     else return initialDifferenceBetweenDates;
@@ -126,9 +126,9 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     let inProgressMove = movements?.find(
       (item) => item.status === "In Progress"
     );
-    return inProgressMove && task.createdAt
+    return inProgressMove && task.cardCreatedAt
       ? getDifBetweenDates(
-          new Date(task.createdAt),
+          new Date(task.cardCreatedAt),
           new Date(inProgressMove.movedAt)
         )
       : null;

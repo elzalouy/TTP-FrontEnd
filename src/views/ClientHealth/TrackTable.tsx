@@ -199,7 +199,7 @@ const TrackClientHealthTable = () => {
         ? Math.floor(_.sum(journeysLeadTime) / journeys.length) * 100
         : 0;
     State.organization.lastBrief = new Date(
-      sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.createdAt
+      sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.cardCreatedAt
     ).getTime();
     let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
     let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
@@ -243,12 +243,12 @@ const TrackClientHealthTable = () => {
         );
         State.tasks = state.tasks.filter(
           (i) =>
-            i.createdAt &&
+            i.cardCreatedAt &&
             State.filter.startDate &&
             State.filter.endDate &&
-            new Date(i.createdAt).getTime() >=
+            new Date(i.cardCreatedAt).getTime() >=
               new Date(State.filter.startDate).getTime() &&
-            new Date(i.createdAt).getTime() <=
+            new Date(i.cardCreatedAt).getTime() <=
               new Date(State.filter.endDate).getTime()
         );
       }
@@ -299,7 +299,9 @@ const TrackClientHealthTable = () => {
             _.flattenDeep(revisionJournies.map((i) => i.journies)).length -
             length;
           let lastBrief = new Date(
-            notFilteredClientTasks[notFilteredClientTasks.length - 1]?.createdAt
+            notFilteredClientTasks[
+              notFilteredClientTasks.length - 1
+            ].cardCreatedAt
           ).getTime();
           lastBrief = _.isNaN(lastBrief) ? 0 : lastBrief;
           let _OfActive = clientJournies.filter(
