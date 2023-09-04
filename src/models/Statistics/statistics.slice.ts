@@ -15,6 +15,13 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,
   reducers: {
+    setStatisticsFilterDefaults: (
+      state: StatisticsInterface,
+      action: PayloadAction<{ boards: string[]; date: Date }>
+    ) => {
+      state.statisticsFilter.date = action.payload.date ?? state.statisticsFilter.date;
+      state.statisticsFilter.boards = action.payload.boards;
+    },
     setProjectsStatistics: (
       state: StatisticsInterface,
       action: PayloadAction<any>
@@ -142,5 +149,6 @@ export const {
   setTasksStatistics,
   setStatisticsEmpty,
   setStatisticsLoading,
+  setStatisticsFilterDefaults,
 } = StatisticsSlice.actions;
 export default StatisticsSlice.reducer;

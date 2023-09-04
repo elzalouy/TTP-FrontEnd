@@ -30,7 +30,7 @@ export interface IFilterProps {
   error?: string;
   message?: string;
   dataTestId?: string;
-  optionsType?: "list" | "dialog" | "date-picker";
+  optionsType?: "list" | "dialog" | "date-picker" | "date";
   removeAllOption?: boolean;
 }
 

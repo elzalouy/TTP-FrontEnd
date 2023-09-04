@@ -88,12 +88,12 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       };
       return newTask;
     });
-    newTasks = newTasks.filter(
-      (i) =>
-        i.cardCreatedAt &&
-        new Date(Date.now()).getFullYear() ===
-          new Date(i.cardCreatedAt).getFullYear()
-    );
+    // newTasks = newTasks.filter(
+    //   (i) =>
+    //     i.cardCreatedAt &&
+    //     new Date(Date.now()).getFullYear() ===
+    //       new Date(i.cardCreatedAt).getFullYear()
+    // );
     setTasks([...newTasks]);
   }, [options.tasks]);
 
@@ -154,7 +154,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
 
   useEffect(() => {
     let months = Months;
-
     const data = {
       labels: months,
       datasets:
@@ -307,7 +306,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       };
     });
   };
-
   const onGetDataSetsByClient = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };

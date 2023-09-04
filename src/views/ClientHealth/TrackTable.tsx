@@ -32,6 +32,7 @@ import FiltersBar from "./FilterMenu";
 import _, { flatten, isNaN } from "lodash";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
 import ClientTableRow from "./ClientTableRow";
+import { selectStatisticsFilterDefaults } from "src/models/Statistics";
 
 interface HeadCell {
   id: any;
@@ -132,7 +133,7 @@ const TrackClientHealthTable = () => {
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const clients = useAppSelector(selectAllClients);
-
+  const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const [state, setState] = React.useState<stateType>({
     popup: false,
     loading: true,
@@ -164,17 +165,24 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     let State = { ...state };
     let tasks = _.orderBy(
-      allTasks.map((i) => {
-        let p = projects.find((p) => p._id === i.projectId);
-        return {
-          ...i,
-          clientId: p?.clientId,
-          projectManager: p?.projectManager,
-        };
-      }),
-      "start",
+      allTasks
+        .map((i) => {
+          let p = projects.find((p) => p._id === i.projectId);
+          return {
+            ...i,
+            clientId: p?.clientId,
+            projectManager: p?.projectManager,
+          };
+        })
+        .filter(
+          (task) =>
+            boards.includes(task.boardId) &&
+            new Date(task.createdAt).getTime() >= date.getTime()
+        ),
+      "createdAt",
       "asc"
     );
+    console.log({ tasks, boards, date });
     let journeys = tasks.map((item) => getTaskJournies(item));
     let flattened = _.flattenDeep(journeys.map((i) => i.journies));
     State.organization._OfActive = flattened.filter(
@@ -206,25 +214,30 @@ const TrackClientHealthTable = () => {
     State.organization.jounries = Math.floor(
       (State.organization._OfRevision / flattened.length) * 100
     );
-    console.log({ hasDeadline, meetDeadline });
     State.organization.meetDeadline = Math.floor(
       (meetDeadline / hasDeadline.length) * 100
     );
-  }, [allTasks, projects]);
+  }, [allTasks, projects, date, boards]);
 
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
       let allTasksInfo = _.orderBy(
-        allTasks.map((i) => {
-          let p = projects.find((p) => p._id === i.projectId);
-          return {
-            ...i,
-            clientId: p?.clientId,
-            projectManager: p?.projectManager,
-          };
-        }),
-        "start",
+        allTasks
+          .map((i) => {
+            let p = projects.find((p) => p._id === i.projectId);
+            return {
+              ...i,
+              clientId: p?.clientId,
+              projectManager: p?.projectManager,
+            };
+          })
+          .filter(
+            (task) =>
+              boards.includes(task.boardId) &&
+              new Date(task.createdAt).getTime() >= date.getTime()
+          ),
+        "createdAt",
         "asc"
       );
 
@@ -299,9 +312,10 @@ const TrackClientHealthTable = () => {
             _.flattenDeep(revisionJournies.map((i) => i.journies)).length -
             length;
           let lastBrief = new Date(
-            notFilteredClientTasks[
-              notFilteredClientTasks.length - 1
-            ].cardCreatedAt
+            notFilteredClientTasks[notFilteredClientTasks.length - 1]
+              ?.cardCreatedAt ??
+              notFilteredClientTasks[notFilteredClientTasks.length - 1]
+                ?.createdAt
           ).getTime();
           lastBrief = _.isNaN(lastBrief) ? 0 : lastBrief;
           let _OfActive = clientJournies.filter(

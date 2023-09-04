@@ -1,26 +1,24 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
 import { useAppSelector } from "src/models/hooks";
-import { Client, selectClientOptions } from "src/models/Clients";
-import { selectAllProjects, selectProjectOptions } from "src/models/Projects";
-import { ProjectsInterface } from "src/types/models/Projects";
+import { Client } from "src/models/Clients";
 import { Controller, useForm } from "react-hook-form";
 import { Manager, selectPMOptions } from "src/models/Managers";
 import { Category, selectCategoriesOptions } from "src/models/Categories";
-import {
-  selectBoardsOptions,
-  selectDepartmentOptions,
-  selectTeamsOptions,
-} from "src/models/Departments";
+import { getAllDepartments } from "src/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import { useState } from "react";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { selectStatisticsFilterDefaults } from "src/models/Statistics";
 
 interface FilterBarProps {
   filter: boolean;
   onCloseFilter: any;
-  onSetFilterResult: (filter: { boards: string[] }) => void;
+  onSetFilterResult: (filter: { boards: string[]; date: Date }) => void;
   options: {
     clients: Client[];
     managers: Manager[];
@@ -44,6 +42,8 @@ const FilterMenu = ({
   options,
   allOptions,
 }: FilterBarProps) => {
+  const { boards, date } = useAppSelector(selectStatisticsFilterDefaults);
+  console.log({ boards, date });
   const { control, watch, setValue, reset } = useForm<{
     clientId: string;
     projectManager: string;
@@ -63,20 +63,23 @@ const FilterMenu = ({
 
   const onSelectAll = (select: boolean, filter: string) => {
     onSetFilterResult({
-      boards: select ? allOptions.boards.map((i) => i._id) : [],
+      boards: select ? allOptions.boards.map((i) => i.boardId) : [],
+      date: date,
     });
   };
 
   const onSelectBoard = (value: DialogOption) => {
     let values = {
-      boards: _.uniq([...options.boards.map((b) => b._id), value.id]),
+      boards: _.uniq([...options.boards.map((b) => b.boardId), value.id]),
+      date,
     };
     onSetFilterResult(values);
   };
 
   const onDiselectBoard = (item: DialogOption) => {
     let values = {
-      boards: options.boards.map((i) => i._id),
+      boards: options.boards.map((i) => i.boardId),
+      date,
     };
     values.boards = [...values.boards].filter((i) => i !== item.id);
     onSetFilterResult(values);
@@ -117,10 +120,10 @@ const FilterMenu = ({
                   allOption
                   name="boardId"
                   selected={options.boards.map((item) => {
-                    return { id: item._id, label: item.name };
+                    return { id: item.boardId, label: item.name };
                   })}
                   options={allOptions.boards.map((item) => {
-                    return { id: item._id, label: item.name };
+                    return { id: item.boardId, label: item.name };
                   })}
                   onSelectAll={(select: boolean) => {
                     onSelectAll(select, "Boards");
@@ -130,6 +133,22 @@ const FilterMenu = ({
                   onDiselect={onDiselectBoard}
                 />
               )}
+            />
+          </Box>
+          <Box className="tasks-option">
+            <Select
+              onSelect={(value: any) => {
+                onSetFilterResult({
+                  boards,
+                  date: value,
+                });
+              }}
+              optionsType="date"
+              selected={date}
+              options={[]}
+              name="statistics-filterByDate"
+              elementType="filter"
+              label="Sort By:"
             />
           </Box>
         </Grid>

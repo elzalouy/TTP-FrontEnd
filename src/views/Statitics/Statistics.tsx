@@ -26,6 +26,10 @@ import IMAGES from "src/assets/img/Images";
 import ReviewTime from "./Diagrams/ReviewTime";
 import SchedulingTime from "./Diagrams/SchedulingTime";
 import ProjectsReport from "./Diagrams/ProjectsReport";
+import {
+  selectStatisticsFilterDefaults,
+  setStatisticsFilterDefaults,
+} from "src/models/Statistics";
 
 type time = {
   hours: number;
@@ -39,6 +43,7 @@ type time = {
 };
 
 const Statistics = (props: any) => {
+  // Global State
   const dispatch = useDispatch();
   const allDepartments = useAppSelector(selectAllDepartments);
   const allTeams = useAppSelector(selectAllTeams);
@@ -46,6 +51,8 @@ const Statistics = (props: any) => {
   const allClients = useAppSelector(selectAllClients);
   const allCategories = useAppSelector(selectAllCategories);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
+  // Component State
   const [state, setState] = useState<{
     filter: boolean;
     mounted: boolean;
@@ -67,7 +74,7 @@ const Statistics = (props: any) => {
       clients: [],
       managers: [],
       categories: [],
-      boards: [],
+      boards: allDepartments.filter((p) => p.priority === 1),
       tasks: [],
     },
   });
@@ -94,7 +101,20 @@ const Statistics = (props: any) => {
           categories: allCategories,
           teams: allTeams,
           boards: allDepartments.filter((i) => i.priority === 1),
-          tasks: allTasks.filter((task) => boardIds.includes(task.boardId)),
+          tasks: allTasks.filter((task) => {
+            if (boardIds.includes(task.boardId)) {
+              if (
+                task.cardCreatedAt &&
+                new Date(task.cardCreatedAt).getTime() >= date.getTime()
+              ) {
+                return task;
+              } else if (
+                task.createdAt &&
+                new Date(task.createdAt).getTime() >= date.getTime()
+              )
+                return task;
+            }
+          }),
         },
       };
       setState(State);
@@ -109,28 +129,49 @@ const Statistics = (props: any) => {
     state.mounted,
   ]);
 
-  const onSetFilterResult = (filter: { boards: string[] }) => {
+  const onSetFilterResult = (filter: { boards: string[]; date: Date }) => {
     let boardIds = allDepartments
-      .filter((i) => filter.boards.includes(i._id))
+      .filter((i) => filter.boards.includes(i.boardId))
       .map((b) => b.boardId);
+    let depIds = allDepartments
+      .filter((i) => boardIds.includes(i.boardId))
+      .map((i) => i._id);
     setState({
       ...state,
       options: {
         ...state.options,
-        tasks: allTasks.filter((i) => boardIds.includes(i.boardId)),
+        tasks: allTasks.filter((task) => {
+          if (boardIds.includes(task.boardId)) {
+            if (
+              task.cardCreatedAt &&
+              new Date(task.cardCreatedAt).getTime() >=
+                new Date(filter.date).getTime()
+            ) {
+              return task;
+            } else if (
+              task.createdAt &&
+              new Date(task.createdAt).getTime() >=
+                new Date(filter.date).getTime()
+            )
+              return task;
+          }
+        }),
         teams: _.flattenDeep(
           allDepartments
             .filter((i) => boardIds.includes(i.boardId))
             .map((i) => i.teams)
         ),
         boards: allDepartments.filter((item) =>
-          filter.boards.includes(item._id)
+          boardIds.includes(item.boardId)
         ),
       },
     });
     dispatch(
+      setStatisticsFilterDefaults({ boards: boardIds, date: filter.date })
+    );
+    dispatch(
       updateDepartmentsPriority({
-        data: filter.boards,
+        data: depIds,
         boardIds: boardIds,
       })
     );

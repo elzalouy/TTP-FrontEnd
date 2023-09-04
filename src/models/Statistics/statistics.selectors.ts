@@ -5,3 +5,5 @@ export const selectOMSatistics = (state: RootState) => state.Statistics.OM;
 export const selectManagersatistics = (state: RootState) => state.Statistics.PM;
 export const selectStatisticsLoading = (state: RootState) =>
   state.Statistics.loading;
+export const selectStatisticsFilterDefaults = (state: RootState) =>
+  state.Statistics.statisticsFilter;

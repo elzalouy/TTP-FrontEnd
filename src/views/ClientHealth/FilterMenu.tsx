@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Range, RangeKeyDict } from "react-date-range";
 import { useForm } from "react-hook-form";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import Input from "src/coreUI/components/Inputs/Textfield/Input";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 
 type filterBarProps = {
@@ -12,6 +13,7 @@ type filterBarProps = {
   start: string | null;
   end: string | null;
 };
+
 const FiltersBar = ({
   filterPopup,
   closeFilterPopup,

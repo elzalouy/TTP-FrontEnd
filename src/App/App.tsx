@@ -20,7 +20,10 @@ import "swiper/css";
 import { useDispatch } from "react-redux";
 import { selectAppLoading, setAppLoading } from "src/models/Ui";
 import { useAppSelector } from "src/models/hooks";
-import { selectSatistics } from "src/models/Statistics";
+import {
+  selectSatistics,
+  setStatisticsFilterDefaults,
+} from "src/models/Statistics";
 
 import {
   AuthActions,
@@ -29,7 +32,10 @@ import {
   selectUserState,
 } from "src/models/Auth";
 import { getUserTokenInfo, isAuthedUser } from "src/services/api";
-import { getAllDepartments } from "src/models/Departments";
+import {
+  getAllDepartments,
+  selectAllDepartments,
+} from "src/models/Departments";
 import { getAllCategories } from "src/models/Categories";
 import { getAllClients } from "src/models/Clients";
 import { getManagers } from "src/models/Managers";
@@ -40,6 +46,7 @@ const App: React.FC = (props) => {
   const location = useLocation<any>();
   const history = useHistory<any>();
   const match = useRouteMatch<any>();
+  const departments = useAppSelector(selectAllDepartments);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(setAppLoading(true));
@@ -49,6 +56,7 @@ const App: React.FC = (props) => {
   }, []);
 
   const [mounted, setMounted] = React.useState(false);
+  const [filtermounted, setFilterMounted] = React.useState(false);
   const userState = useAppSelector(selectUserState);
   const [tokenInfo, setTokenInfo] = React.useState(getUserTokenInfo());
   React.useEffect(() => {
@@ -77,6 +85,19 @@ const App: React.FC = (props) => {
     };
   }, [userState.authed, dispatch]);
 
+  React.useEffect(() => {
+    if (mounted === true && filtermounted === false && departments.length > 0) {
+      dispatch(
+        setStatisticsFilterDefaults({
+          boards: departments
+            .filter((i) => i.priority === 1)
+            .map((i) => i.boardId),
+        })
+      );
+      console.log("hapenned");
+      setFilterMounted(true);
+    }
+  }, [departments]);
   return (
     <Box height={"100%"} bgcolor="#FAFAFB !important">
       <AppHooks>

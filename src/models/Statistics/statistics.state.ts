@@ -24,6 +24,10 @@ export interface StatisticsInterface {
     projectsCloseToDeadlines: Project[] | null;
     projects: Project[] | null;
   };
+  statisticsFilter: {
+    date: Date;
+    boards: string[];
+  };
 }
 
 const StatisticsState: StatisticsInterface = {
@@ -50,6 +54,10 @@ const StatisticsState: StatisticsInterface = {
     tasksCloseToDeadline: null,
     projectsCloseToDeadlines: null,
   },
+  statisticsFilter: {
+    date: new Date("Fri Sep 01 2023"),
+    boards: [],
+  },
 };
 export const initialStatisticsState: StatisticsInterface = {
   loading: false,
@@ -74,6 +82,10 @@ export const initialStatisticsState: StatisticsInterface = {
     reviewLength: 0,
     tasksCloseToDeadline: [],
     projectsCloseToDeadlines: [],
+  },
+  statisticsFilter: {
+    date: new Date("Fri Sep 01 2023"),
+    boards: [],
   },
 };
 export default StatisticsState;

@@ -29,7 +29,7 @@ export const isCloseToDeadline = (
 };
 export const setTasksToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
-    let date = new Date(item?.cardCreatedAt);
+    let date = new Date(item?.createdAt);
     return new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -44,7 +44,7 @@ export const setTasksToArrays = (tasks: Task[]) => {
       let month = item?.getMonth();
       let year = item?.getFullYear();
       return tasks.filter((item) => {
-        let date = new Date(item?.cardCreatedAt);
+        let date = new Date(item?.createdAt);
         return (
           date.getDate() === day &&
           date.getMonth() == month &&
@@ -58,8 +58,8 @@ export const setTasksToArrays = (tasks: Task[]) => {
 };
 export const setTasksBoardToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
-    if (item?.cardCreatedAt) {
-      let date = new Date(item.card?.cardCreatedAt);
+    if (item?.createdAt) {
+      let date = new Date(item.createdAt);
       return new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -75,8 +75,8 @@ export const setTasksBoardToArrays = (tasks: Task[]) => {
       let month = item?.getMonth();
       let year = item?.getFullYear();
       return tasks.filter((item) => {
-        if (item?.cardCreatedAt) {
-          let date = new Date(item.card?.cardCreatedAt);
+        if (item?.createdAt) {
+          let date = new Date(item.createdAt);
           return (
             date.getDate() === day &&
             date.getMonth() == month &&
@@ -101,7 +101,7 @@ export const getTaskNotificationsDate = (tasks: Task[]) => {
     month = 0,
     currentDay = "";
 
-  let date = new Date(tasks[0].card?.cardCreatedAt);
+  let date = new Date(tasks[0].createdAt);
   day = date?.getDate().toString();
   month = date?.getMonth();
   year = date?.getFullYear().toString();

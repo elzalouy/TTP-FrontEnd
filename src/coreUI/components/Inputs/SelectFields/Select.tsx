@@ -8,6 +8,7 @@ import { SimpleDialog } from "../SelectDialog/SelectDialog";
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-date-range/dist/styles.css"; // main style file
 import "./Select.css";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 const Select = (props: IFilterProps) => {
   const selectRef: React.MutableRefObject<HTMLFieldSetElement | null> =
@@ -36,6 +37,13 @@ const Select = (props: IFilterProps) => {
             ? props.selected
             : "";
         break;
+      case "date":
+        State.selected =
+          props.selected !== "" && props.selected !== undefined
+            ? props.selected
+            : "";
+        break;
+
       case "dialog":
         State.selected = props?.options
           ? props?.options?.find((item: any) => item?.id === props.selected)
@@ -60,6 +68,10 @@ const Select = (props: IFilterProps) => {
         setState(State);
 
         break;
+      case "date":
+        State.open = true;
+        setState(State);
+        break;
       case "dialog":
         State.open = true;
         setState(State);
@@ -77,6 +89,14 @@ const Select = (props: IFilterProps) => {
       case "date-picker":
         State = {
           selected: props.selected,
+          open: false,
+        };
+        setState({ ...State });
+        props.onSelect(value);
+        break;
+      case "date":
+        State = {
+          selected: value.toString(),
           open: false,
         };
         setState({ ...State });
@@ -137,7 +157,7 @@ const Select = (props: IFilterProps) => {
             {props.elementType === "filter" ? (
               <>
                 {state.selected && state.selected !== ""
-                  ? state.selected
+                  ? state.selected.toString()
                   : "All"}
               </>
             ) : (
@@ -199,6 +219,17 @@ const Select = (props: IFilterProps) => {
               (item: any) => item?.id !== props?.selected
             )}
             dataTestId={props.dataTestId}
+          />
+        )}
+        {props.optionsType === "date" && (
+          <MobileDatePicker
+            value={props.selected}
+            onChange={(value) => onClose(new Date(value))}
+            renderInput={() => {
+              return <></>;
+            }}
+            onOpen={onOpen}
+            open={typeof state.open === "boolean" ? state.open : false}
           />
         )}
         {props.optionsType === "date-picker" && (
