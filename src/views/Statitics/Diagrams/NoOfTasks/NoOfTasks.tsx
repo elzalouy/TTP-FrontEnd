@@ -91,12 +91,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       };
       return newTask;
     });
-    newTasks = newTasks.filter(
-      (i) =>
-        i.cardCreatedAt &&
-        new Date(Date.now()).getFullYear() ===
-          new Date(i.cardCreatedAt).getFullYear()
-    );
+
     setTasks([...newTasks]);
   }, [projects, options.tasks]);
 
