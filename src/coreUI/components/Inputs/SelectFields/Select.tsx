@@ -11,10 +11,8 @@ import "./Select.css";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 
 const Select = (props: IFilterProps) => {
-  const selectRef: React.MutableRefObject<HTMLFieldSetElement | null> =
-    React.useRef(null);
-  const optionsRef: React.MutableRefObject<HTMLUListElement | null> =
-    React.useRef(null);
+  const selectRef: React.MutableRefObject<any> = React.useRef(null);
+  const optionsRef: React.MutableRefObject<any> = React.useRef(null);
   useSelect(selectRef, optionsRef);
 
   const [state, setState] = React.useState({
@@ -223,12 +221,15 @@ const Select = (props: IFilterProps) => {
         )}
         {props.optionsType === "date" && (
           <MobileDatePicker
+            ref={optionsRef}
+            onClose={() => setState({ ...state, open: false })}
             value={props.selected}
             onChange={(value) => onClose(new Date(value))}
             renderInput={() => {
               return <></>;
             }}
             onOpen={onOpen}
+            closeOnSelect
             open={typeof state.open === "boolean" ? state.open : false}
           />
         )}
