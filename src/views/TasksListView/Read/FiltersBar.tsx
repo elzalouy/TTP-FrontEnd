@@ -29,7 +29,8 @@ type filterTypes =
   | "status"
   | "start"
   | "end"
-  | "category";
+  | "category"
+  | "createdAt";
 
 interface IState {
   filter: boolean;
@@ -53,6 +54,7 @@ interface FiltersBarProps {
     start: string;
     end: string;
     category: string;
+    createdAt: string;
   }>;
   setAllSelected: any;
   clearFilters: any;
@@ -214,17 +216,31 @@ const FiltersBar = ({
             />
           </Box>
         </Grid>
-        <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
+        <Grid paddingX={0.5} item sm={12} marginY={1}>
           <Box className="tasks-option">
-            <Button
-              size="x-small"
-              type="add"
-              style={{ textTransform: "lowercase" }}
-              label="Un Assigned Tasks"
-              onClick={() => onSetFilter("projectId", undefined)}
-            ></Button>
+            <ControlledSelect
+              optionsType="date"
+              selected={watch().createdAt}
+              options={[]}
+              control={control}
+              name="statistics-filterByDate"
+              elementType="filter"
+              label="Sort By:"
+              onSelect={(value: any) => onSetFilter("createdAt", value)}
+            />
           </Box>
         </Grid>
+      </Grid>
+      <Grid paddingX={0.5} item sm={12} mt={5} marginY={1}>
+        <Box className="tasks-option">
+          <Button
+            size="x-small"
+            type="add"
+            style={{ textTransform: "lowercase" }}
+            label="Un Assigned Tasks"
+            onClick={() => onSetFilter("projectId", undefined)}
+          ></Button>
+        </Box>
       </Grid>
     </Drawer>
   );

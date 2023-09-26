@@ -42,7 +42,8 @@ type filterTypes =
   | "status"
   | "start"
   | "end"
-  | "category";
+  | "category"
+  | "createdAt";
 
 interface IState {
   filter: boolean;
@@ -62,6 +63,7 @@ type filterType = {
   start: string;
   end: string;
   category: string;
+  createdAt: string;
 };
 
 const defaultValues: filterType = {
@@ -73,7 +75,9 @@ const defaultValues: filterType = {
   start: "",
   end: "",
   category: "",
+  createdAt: "",
 };
+
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
@@ -166,6 +170,13 @@ export const TasksListView: React.FC<Props> = (props) => {
         [null, "", undefined].includes(item.projectId)
       );
     }
+    if (filter.createdAt !== "") {
+      tasks = tasks.filter(
+        (item) =>
+          new Date(item.cardCreatedAt).getTime() >=
+          new Date(filter.createdAt).getTime()
+      );
+    }
     State.tasks = tasks;
     setState(State);
   };
@@ -174,10 +185,12 @@ export const TasksListView: React.FC<Props> = (props) => {
     reset();
     setState({ ...state, tasks: projects.allTasks });
   };
+
   // const onDeleteTasks = () => {
   //   dispatch(deleteTasks({ data: { ids: selects } }));
   //   setShow("none");
   // };
+
   const onDownloadTasksFile = () => {
     dispatch(
       downloadTasks(
