@@ -225,7 +225,7 @@ const FiltersBar = ({
               control={control}
               name="statistics-filterByDate"
               elementType="filter"
-              label="Sort By:"
+              label="Start Date:"
               onSelect={(value: any) => onSetFilter("createdAt", value)}
             />
           </Box>
