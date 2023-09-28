@@ -91,6 +91,13 @@ const Statistics = (props: any) => {
       let boardIds = allDepartments
         .filter((i) => i.priority === 1)
         .map((i) => i.boardId);
+      let boards = allDepartments.filter((i) => i.priority === 1);
+
+      console.log({ boards });
+      let teams = _.flattenDeep(boards.map((i) => i.teams)).filter(
+        (team) => team.isDeleted === false
+      );
+
       let State = {
         ...state,
         mounted: true,
@@ -99,7 +106,7 @@ const Statistics = (props: any) => {
           managers: allManagers,
           clients: allClients,
           categories: allCategories,
-          teams: allTeams,
+          teams: teams,
           boards: allDepartments.filter((i) => i.priority === 1),
           tasks: allTasks.filter((task) => {
             if (boardIds.includes(task.boardId)) {
