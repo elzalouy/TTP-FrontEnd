@@ -7,7 +7,7 @@ export type Journey = {
   taskId: string;
   index: number;
   movements: TaskMovement[];
-  taskLeadTime?: number;
+  leadTime?: number;
   teamId?: string;
   sharedAtMonth?: string;
   sharedAt?: string;

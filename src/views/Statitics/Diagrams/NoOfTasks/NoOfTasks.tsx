@@ -82,6 +82,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
 
   useEffect(() => {
     let tasksData = [...options.tasks];
+    console.log({ tasksDate: options.tasks.length });
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -240,12 +241,12 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     const revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
     const uniqueTasks = tasksJournies.filter((i) => i.journies.length === 1);
 
-    console.log({
-      revisedTasks,
-      uniqueTasks,
-      tasksJournies,
-      tasks: tasks.filter((i) => i.clientId),
-    });
+    // console.log({
+    //   revisedTasks,
+    //   uniqueTasks,
+    //   tasksJournies,
+    //   tasks: tasks.filter((i) => i.clientId),
+    // });
     const types = [
       {
         type: "total",

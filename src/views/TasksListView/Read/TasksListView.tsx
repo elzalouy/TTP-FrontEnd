@@ -43,7 +43,8 @@ type filterTypes =
   | "start"
   | "end"
   | "category"
-  | "createdAt";
+  | "createdAt"
+  | "boardId";
 
 interface IState {
   filter: boolean;
@@ -64,6 +65,7 @@ type filterType = {
   end: string;
   category: string;
   createdAt: string;
+  boardId: string;
 };
 
 const defaultValues: filterType = {
@@ -76,6 +78,7 @@ const defaultValues: filterType = {
   end: "",
   category: "",
   createdAt: "",
+  boardId: "",
 };
 
 export const TasksListView: React.FC<Props> = (props) => {
@@ -170,12 +173,24 @@ export const TasksListView: React.FC<Props> = (props) => {
         [null, "", undefined].includes(item.projectId)
       );
     }
+    if (filter.boardId !== "") {
+      tasks = tasks.filter((i) => i.boardId === filter.boardId);
+    }
     if (filter.createdAt !== "") {
-      tasks = tasks.filter(
-        (item) =>
-          new Date(item.cardCreatedAt).getTime() >=
-          new Date(filter.createdAt).getTime()
-      );
+      tasks = tasks.filter((task) => {
+        if (
+          task.cardCreatedAt &&
+          new Date(task.cardCreatedAt).getTime() >=
+            new Date(filter.createdAt).getTime()
+        ) {
+          return task;
+        } else if (
+          task.createdAt &&
+          new Date(task.createdAt).getTime() >=
+            new Date(filter.createdAt).getTime()
+        )
+          return task;
+      });
     }
     State.tasks = tasks;
     setState(State);

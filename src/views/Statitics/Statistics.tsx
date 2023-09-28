@@ -173,7 +173,10 @@ const Statistics = (props: any) => {
       },
     });
     dispatch(
-      setStatisticsFilterDefaults({ boards: boardIds, date: filter.date })
+      setStatisticsFilterDefaults({
+        boards: boardIds,
+        date: new Date(filter.date),
+      })
     );
     dispatch(
       updateDepartmentsPriority({

@@ -68,6 +68,11 @@ const TeableHeaderCells: readonly HeadCell[] = [
     type: "number",
   },
   {
+    id: "journies",
+    label: "# of Journies",
+    type: "number",
+  },
+  {
     id: "_OfRevision",
     label: "# of Revision",
     type: "number",
@@ -110,7 +115,7 @@ type stateType = {
     meetDeadline: number;
     _OfTasks: number;
     _OfActive: number;
-    jounries: number;
+    journies: number;
   }[];
   organization: {
     lastBrief: number;
@@ -120,7 +125,7 @@ type stateType = {
     meetDeadline: number;
     _OfTasks: number;
     _OfActive: number;
-    jounries: number;
+    journies: number;
   };
   filter: {
     startDate: string | null;
@@ -156,7 +161,7 @@ const TrackClientHealthTable = () => {
       meetDeadline: 0,
       _OfTasks: 0,
       _OfActive: 0,
-      jounries: 0,
+      journies: 0,
     },
     filter: {
       startDate: null,
@@ -166,7 +171,7 @@ const TrackClientHealthTable = () => {
 
   React.useEffect(() => {
     let State = { ...state };
-    let tasks = allTasks.filter((task) => {
+    let tasksInfo = allTasks.filter((task) => {
       if (boards.includes(task.boardId)) {
         if (
           task.cardCreatedAt &&
@@ -180,35 +185,29 @@ const TrackClientHealthTable = () => {
           return task;
       }
     });
-    setTasks(tasks);
-    tasks = _.orderBy(
-      tasks
-        .map((i) => {
-          let p = projects.find((p) => p._id === i.projectId);
-          return {
-            ...i,
-            clientId: p?.clientId,
-            projectManager: p?.projectManager,
-          };
-        })
-        .filter(
-          (task) =>
-            boards.includes(task.boardId) &&
-            new Date(task.createdAt).getTime() >= date.getTime()
-        ),
+    tasksInfo = _.orderBy(
+      tasksInfo.map((i) => {
+        let p = projects.find((p) => p._id === i.projectId);
+        return {
+          ...i,
+          clientId: p?.clientId,
+          projectManager: p?.projectManager,
+        };
+      }),
       "createdAt",
       "asc"
     );
-    setTasks(tasks);
-    let journeys = tasks.map((item) => getTaskJournies(item));
-    let flattened = _.flattenDeep(journeys.map((i) => i.journies));
+    setTasks(tasksInfo);
+    let tasksJournies = tasksInfo.map((item) => getTaskJournies(item));
+    console.log({ tasksJournies });
+    let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
     State.organization._OfActive = flattened.filter(
       (i) =>
         !["Shared", "Done", "Cancled"].includes(
           i.movements[i.movements.length - 1].status
         )
     ).length;
-    let revisedTasks = journeys.filter((i) => i.journies.length > 1);
+    let revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
     let journeysLeadTime = flattened.map((j) => {
       return getJourneyLeadTime(j);
     });
@@ -217,20 +216,15 @@ const TrackClientHealthTable = () => {
     State.organization._OfRevision =
       _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
       revisedTasks.length;
-    State.organization._OfTasks = tasks.length;
+    State.organization._OfTasks = tasksInfo.length;
     State.organization._ofProjects = projects.length;
-    State.organization.averageTOD =
-      _.sum(journeysLeadTime) > 0
-        ? Math.floor(_.sum(journeysLeadTime) / journeys.length) * 100
-        : 0;
+    State.organization.averageTOD = _.sum(journeysLeadTime);
     State.organization.lastBrief = new Date(
       sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.cardCreatedAt
     ).getTime();
     let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
     let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
-    State.organization.jounries = Math.floor(
-      (State.organization._OfRevision / flattened.length) * 100
-    );
+    State.organization.journies = flattened.length;
     State.organization.meetDeadline = Math.floor(
       (meetDeadline / hasDeadline.length) * 100
     );
@@ -304,14 +298,13 @@ const TrackClientHealthTable = () => {
           let clientJournies = _.flattenDeep(
             clientJourniesPerTask.map((i) => i.journies)
           );
-          let joiurniesLeadTime = clientJournies.map((j) =>
-            getJourneyLeadTime(j)
-          );
-
-          let averageLeadTime =
-            _.sum(joiurniesLeadTime) > 0
-              ? Math.floor(_.sum(joiurniesLeadTime) / clientJournies.length)
-              : 0;
+          clientJournies = clientJournies.map((j) => {
+            return {
+              ...j,
+              leadTime: getJourneyLeadTime(j),
+            };
+          });
+          let averageLeadTime = _.sum(clientJournies.map((i) => i.leadTime));
           let hasDeadline = clientJournies.filter(
             (i) => i.journeyDeadline !== null
           );
@@ -320,7 +313,6 @@ const TrackClientHealthTable = () => {
               hasDeadline.length) *
               100
           );
-
           let revisionJournies = clientJourniesPerTask.filter(
             (j) => j.journies.length > 1
           );
@@ -351,9 +343,7 @@ const TrackClientHealthTable = () => {
             _ofProjects: clientProjects.length,
             clientId: client._id,
             _OfActive,
-            jounries: Math.floor(
-              (flattenedRevisionJournies / clientJournies.length) * 100
-            ),
+            journies: clientJournies.length,
           };
         }),
         state.orderBy,
@@ -428,7 +418,7 @@ const TrackClientHealthTable = () => {
     let {
       lastBrief,
       meetDeadline,
-      jounries,
+      journies,
       averageTOD,
       _ofProjects,
       _OfTasks,
@@ -441,8 +431,8 @@ const TrackClientHealthTable = () => {
       month: "long",
       year: "numeric",
     });
-    let totalDays = Math.floor(averageTOD / 24);
-    let totalHours = Math.floor(averageTOD % 24);
+    let totalDays = Math.floor(averageTOD / journies / 24);
+    let totalHours = Math.floor((averageTOD / journies) % 24);
     return (
       <ClientTableRow
         clientId={"organization"}
@@ -454,7 +444,7 @@ const TrackClientHealthTable = () => {
         _OfActive={_OfActive}
         _OfTasks={_OfTasks}
         _OfRevision={_OfRevision}
-        journies={jounries}
+        journies={journies}
         totalDays={totalDays}
         totalHours={totalHours}
         meetDeadline={meetDeadline}
@@ -604,7 +594,7 @@ const TrackClientHealthTable = () => {
                     _OfRevision,
                     _ofProjects,
                     _OfTasks,
-                    jounries,
+                    journies,
                   } = item;
                   let lastBriefDate = new Date(lastBrief);
                   let localLastBriefDate = lastBriefDate.toLocaleDateString(
@@ -615,8 +605,13 @@ const TrackClientHealthTable = () => {
                       year: "numeric",
                     }
                   );
-                  let totalDays = Math.floor(averageTOD / 24);
-                  let totalHours = Math.floor(averageTOD % 24);
+                  let average = Math.floor(averageTOD / journies);
+                  let totalDays =
+                    averageTOD > 0 ? Math.floor(averageTOD / journies / 24) : 0;
+                  let totalHours =
+                    averageTOD > 0
+                      ? Math.floor((averageTOD / journies) % 24)
+                      : 0;
 
                   return (
                     <ClientTableRow
@@ -629,10 +624,10 @@ const TrackClientHealthTable = () => {
                       _OfActive={_OfActive}
                       _OfTasks={_OfTasks}
                       _OfRevision={_OfRevision}
-                      journies={jounries}
                       totalDays={totalDays}
                       totalHours={totalHours}
                       meetDeadline={meetDeadline}
+                      journies={journies}
                     />
                   );
                 })}

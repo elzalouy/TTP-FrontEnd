@@ -12,6 +12,7 @@ import { selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import { selectCategoriesOptions } from "src/models/Categories";
 import Button from "src/coreUI/components/Buttons/Button";
+import { selectBoardsOptions } from "src/models/Departments";
 
 type filterTypes =
   | "name"
@@ -23,7 +24,8 @@ type filterTypes =
   | "start"
   | "end"
   | "category"
-  | "createdAt";
+  | "createdAt"
+  | "boardId";
 
 interface IState {
   filter: boolean;
@@ -48,6 +50,7 @@ interface FiltersBarProps {
     end: string;
     category: string;
     createdAt: string;
+    boardId: string;
   }>;
   setAllSelected: any;
   clearFilters: any;
@@ -65,6 +68,7 @@ const FiltersBar = ({
   const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
+  const boardOptions = useAppSelector(selectBoardsOptions);
   return (
     <Drawer
       anchor="right"
@@ -117,6 +121,25 @@ const FiltersBar = ({
             />
           </Box>
         </Grid>
+        <Grid paddingX={0.5} item sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <ControlledSelect
+              name="boardId"
+              selected={watch().boardId}
+              optionsType="dialog"
+              control={control}
+              label="Board: "
+              elementType="filter"
+              textTruncate={10}
+              onSelect={(value: any) => onSetFilter("boardId", value?.id)}
+              options={[
+                { id: "", value: "", text: "All", image: "avatar" },
+                ...boardOptions,
+              ]}
+            />
+          </Box>
+        </Grid>
+
         <Grid paddingX={0.5} item sm={12} marginY={1} flex={1}>
           <Controller
             name="projectManager"

@@ -11,10 +11,10 @@ const ClientTableRow = ({
   _OfActive,
   _OfTasks,
   _OfRevision,
-  journies,
   totalDays,
   totalHours,
   meetDeadline,
+  journies,
 }: any) => {
   return (
     <TableRow
@@ -106,9 +106,22 @@ const ClientTableRow = ({
         {loading === true ? (
           <Skeleton variant="rectangular" width={"100%"} height={20} />
         ) : (
-          <>
-            {_OfRevision} ( {journies}% )
-          </>
+          <>{journies}</>
+        )}
+      </TableCell>
+
+      <TableCell
+        size="small"
+        align="left"
+        style={{
+          color: "#707683",
+          cursor: "pointer",
+        }}
+      >
+        {loading === true ? (
+          <Skeleton variant="rectangular" width={"100%"} height={20} />
+        ) : (
+          <>{_OfRevision}</>
         )}
       </TableCell>
       <TableCell
