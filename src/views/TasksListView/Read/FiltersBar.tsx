@@ -1,11 +1,4 @@
-import {
-  Badge,
-  Box,
-  Drawer,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { useAppSelector } from "src/models/hooks";
 import { selectClientOptions } from "src/models/Clients";

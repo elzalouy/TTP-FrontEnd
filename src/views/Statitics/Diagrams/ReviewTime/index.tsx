@@ -202,6 +202,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     clients: string[];
     categories: string[];
     teams: string[];
+    managers: string[];
   }) => {
     setTeams(
       options.teams.filter((i) => i._id && filter.teams.includes(i._id))
@@ -214,6 +215,9 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         (i) => i._id && filter.categories.includes(i._id)
       )
     );
+    setManagers(
+      options.managers.filter((i) => i._id && filter.managers.includes(i._id))
+    );
     setJournies(
       allJournies.filter(
         (j) =>
@@ -222,7 +226,9 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           j.categoryId &&
           filter.categories.includes(j.categoryId) &&
           j.clientId &&
-          filter.clients.includes(j.clientId)
+          filter.clients.includes(j.clientId) &&
+          j.projectManager &&
+          filter.managers.includes(j.projectManager)
       )
     );
   };

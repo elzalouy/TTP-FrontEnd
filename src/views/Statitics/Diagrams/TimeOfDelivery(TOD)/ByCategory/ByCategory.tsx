@@ -156,7 +156,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           anchor: "end",
           align: "top",
           formatter: (value: any, context: any) => {
-            const label = context.chart.data.labels[context.dataIndex];
+            const label = context.dataset.label;
             if (value > 0) {
               let totalHours = value * 24;
               let days = Math.floor(totalHours / 24);
@@ -219,7 +219,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       },
     };
     setState({ ...state, options: Options, data });
-  }, [journies, tasks, options.tasks, state.comparisonBy, options.categories]);
+  }, [journies, tasks, state.comparisonBy, clients, managers, teams]);
 
   React.useEffect(() => {
     let journiesData = [...allJournies];
@@ -277,6 +277,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       skipNull: true,
     };
   };
+
   const onGetDataSetsByPM = () => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
@@ -354,6 +355,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       };
     });
   };
+
   const onGetDatasetsByTeams = () => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
@@ -494,7 +496,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             <img src={IMAGES.filtericon} alt="FILTER" />
           </IconButton>
         </Grid>
-
         <Bar
           plugins={[ChartDataLabels]}
           options={state.options}
@@ -528,7 +529,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             onChange={onHandleChange}
           />
           <label htmlFor="teams">Teams</label>
-
           <input
             id="pms"
             type="checkbox"

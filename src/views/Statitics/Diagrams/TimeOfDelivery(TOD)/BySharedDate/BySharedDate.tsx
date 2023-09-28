@@ -161,7 +161,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           anchor: "end",
           align: "top",
           formatter: (value: any, context: any) => {
-            const label = context.chart.data.labels[context.dataIndex];
+            const label = context.dataset.label;
             if (value > 0) {
               let totalHours = value * 24;
               let days = Math.floor(totalHours / 24);

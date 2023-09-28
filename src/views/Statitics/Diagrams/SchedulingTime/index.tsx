@@ -80,9 +80,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   }, [options.boards, state.comparisonBy]);
 
   useEffect(() => {
-    let teams = _.flattenDeep(departments.map((i) => i.teams));
-    setTeams(teams);
-  }, [departments]);
+    setTeams(options.teams);
+  }, [options.teams]);
 
   useEffect(() => {
     setManagers(options.managers);
@@ -158,7 +157,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           ? onGetDataSetsByDepartments()
           : [onGetDatasetsByAll()],
     };
-
+    let maxArray = data.datasets.map((item) => Math.max(...item.data));
+    let max = Math.max(...maxArray);
     const options = {
       plugins: {
         datalabels: {
@@ -215,6 +215,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
             beginAtZero: true,
           },
           min: 0,
+          max: max + max / 2,
           title: {
             display: true,
             text: "Review Time (Days & Hours)",
@@ -404,7 +405,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
         allOptions={{
           clients: options.clients,
           categories: options.categories,
-          teams: _.flattenDeep(options.boards.map((i) => i.teams)),
+          teams: options.teams,
           managers: options.managers,
           departments: options.boards,
         }}
