@@ -33,6 +33,7 @@ import _, { flatten, isNaN } from "lodash";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
 import ClientTableRow from "./ClientTableRow";
 import { selectStatisticsFilterDefaults } from "src/models/Statistics";
+import TaskInfo from "../TaskViewBoard/Read/Card/TaskInfo";
 
 interface HeadCell {
   id: any;
@@ -132,6 +133,7 @@ const TrackClientHealthTable = () => {
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
   const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const [tasks, setTasks] = React.useState<ITaskInfo[]>([]);
   const clients = useAppSelector(selectAllClients);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const [state, setState] = React.useState<stateType>({
@@ -164,8 +166,23 @@ const TrackClientHealthTable = () => {
 
   React.useEffect(() => {
     let State = { ...state };
-    let tasks = _.orderBy(
-      allTasks
+    let tasks = allTasks.filter((task) => {
+      if (boards.includes(task.boardId)) {
+        if (
+          task.cardCreatedAt &&
+          new Date(task.cardCreatedAt).getTime() >= date.getTime()
+        ) {
+          return task;
+        } else if (
+          task.createdAt &&
+          new Date(task.createdAt).getTime() >= date.getTime()
+        )
+          return task;
+      }
+    });
+    setTasks(tasks);
+    tasks = _.orderBy(
+      tasks
         .map((i) => {
           let p = projects.find((p) => p._id === i.projectId);
           return {
@@ -182,7 +199,7 @@ const TrackClientHealthTable = () => {
       "createdAt",
       "asc"
     );
-    console.log({ tasks, boards, date });
+    setTasks(tasks);
     let journeys = tasks.map((item) => getTaskJournies(item));
     let flattened = _.flattenDeep(journeys.map((i) => i.journies));
     State.organization._OfActive = flattened.filter(

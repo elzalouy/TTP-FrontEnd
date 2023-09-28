@@ -93,7 +93,6 @@ const Statistics = (props: any) => {
         .map((i) => i.boardId);
       let boards = allDepartments.filter((i) => i.priority === 1);
 
-      console.log({ boards });
       let teams = _.flattenDeep(boards.map((i) => i.teams)).filter(
         (team) => team.isDeleted === false
       );
@@ -220,12 +219,12 @@ const Statistics = (props: any) => {
             <Grid xs={12} height={"auto"}>
               <BySharedMonth options={{ ...state.options }} />
             </Grid>
-            <Grid xs={12} height={"auto"}>
+            {/* <Grid xs={12} height={"auto"}>
               <MeetDeadline options={{ ...state.options }} />
-            </Grid>
-            <Grid xs={12} height={"auto"}>
+            </Grid> */}
+            {/* <Grid xs={12} height={"auto"}>
               <NoOfRevision options={{ ...state.options }} />
-            </Grid>
+            </Grid> */}
             <Grid xs={12} height={"auto"}>
               <NoOfTasks options={{ ...state.options }} />
             </Grid>

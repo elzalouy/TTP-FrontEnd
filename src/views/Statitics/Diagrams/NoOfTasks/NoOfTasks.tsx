@@ -235,11 +235,18 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   };
 
   const onGetDatasetsByAll = () => {
-    let bgColors: string[] = [];
-    let borderColors: string[] = [];
-    let months = Months;
+    const months = Months;
+    const tasksJournies = tasks.map((i) => getTaskJournies(i));
+    const revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
+    const uniqueTasks = tasksJournies.filter((i) => i.journies.length === 1);
 
-    let types = [
+    console.log({
+      revisedTasks,
+      uniqueTasks,
+      tasksJournies,
+      tasks: tasks.filter((i) => i.clientId),
+    });
+    const types = [
       {
         type: "total",
         journies: journies,
@@ -247,9 +254,16 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       {
         type: "revised",
         journies: _.flattenDeep(
-          options.tasks
-            .map((i) => getTaskJournies(i))
+          tasksJournies
             .filter((j) => j.journies.length > 1)
+            .map((i) => {
+              let revised_journies = [...i.journies];
+              delete revised_journies[0];
+              return {
+                ...i,
+                journies: revised_journies,
+              };
+            })
             .map((i) =>
               i.journies.map((j) => {
                 return {
@@ -265,22 +279,21 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       {
         type: "unique",
         journies: _.flattenDeep(
-          options.tasks
-            .map((i) => getTaskJournies(i))
-            .filter((j) => j.journies.length === 1)
-            .map((i) =>
-              i.journies.map((j) => {
-                return {
-                  ...j,
-                  startedAt: new Date(j.startedAt).toLocaleString("us-en", {
-                    month: "long",
-                  }),
-                };
-              })
-            )
+          tasksJournies
+            .filter((i) => i.journies.length === 1)
+            .map((i) => i.journies[0])
+            .map((j) => {
+              return {
+                ...j,
+                startedAt: new Date(j.startedAt).toLocaleString("us-en", {
+                  month: "long",
+                }),
+              };
+            })
         ),
       },
     ];
+
     return types.map((type) => {
       let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAt");
 

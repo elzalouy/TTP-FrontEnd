@@ -43,7 +43,6 @@ const FilterMenu = ({
   allOptions,
 }: FilterBarProps) => {
   const { boards, date } = useAppSelector(selectStatisticsFilterDefaults);
-  console.log({ boards, date });
   const { control, watch, setValue, reset } = useForm<{
     clientId: string;
     projectManager: string;

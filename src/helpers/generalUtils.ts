@@ -348,6 +348,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
         }
       );
       journey.startedAt = journey.movements[0].movedAt ?? task.cardCreatedAt;
+      journey.revision = journies.length > 1;
+      journey.unique = !(journies.length > 1);
       journies.push(journey);
       journey = getJourney();
     } else {
