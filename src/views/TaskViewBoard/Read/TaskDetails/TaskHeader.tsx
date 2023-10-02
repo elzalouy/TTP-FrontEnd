@@ -89,6 +89,8 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
             <EventIcon htmlColor="#9ea1a7" sx={{ fontSize: "12px", mr: 1 }} />
             {task.cardCreatedAt
               ? format(new Date(task.cardCreatedAt), "dd MMMM yyyy")
+              : task.createdAt
+              ? format(new Date(task.createdAt), "dd MMMM yyyy")
               : "Not Set"}
           </Typography>
         </Box>

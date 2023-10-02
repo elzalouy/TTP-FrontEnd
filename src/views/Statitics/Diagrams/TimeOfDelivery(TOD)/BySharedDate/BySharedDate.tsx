@@ -264,13 +264,16 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return managers.map((manager, index) => {
+    const result = managers.map((manager, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
       let journiesData = journies.filter(
         (i) => i.projectManager && i.projectManager === manager._id
       );
+      journiesData = journiesData.map((item) => {
+        return { ...item, leadTime: getJourneyLeadTime(item) };
+      });
       let journiesOfManagerGroupedByMonth = {
         ..._.groupBy(journiesData, "sharedAtMonth"),
       };
@@ -287,9 +290,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         label: manager.name,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
-            i.journies.length /
-            24
+            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -298,19 +299,24 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         skipNull: true,
       };
     });
+    console.log({ resultByPMs: result });
+    return result;
   };
 
   const onGetDataSetsByClient = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return clients.map((client, index) => {
+    const result = clients.map((client, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
+      journiesData = journiesData.map((item) => {
+        return { ...item, leadTime: getJourneyLeadTime(item) };
+      });
       let journiesOfManagerGroupedByMonth = {
         ..._.groupBy(journiesData, "sharedAtMonth"),
       };
@@ -327,10 +333,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         label: client.clientName,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
-            i.journies.length /
-            24
+            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
+        datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -338,6 +343,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         skipNull: true,
       };
     });
+    console.log({ resultByClient: result });
+    return result;
   };
 
   const onGetDatasetsByTeams = () => {
@@ -352,6 +359,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );
+      journiesData = journiesData.map((item) => {
+        return { ...item, leadTime: getJourneyLeadTime(item) };
+      });
       let journiesOfManagerGroupedByMonth = {
         ..._.groupBy(journiesData, "sharedAtMonth"),
       };
@@ -368,10 +378,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         label: team.name,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((j) => getJourneyLeadTime(j))) /
-            i.journies.length /
-            24
+            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
+        datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,

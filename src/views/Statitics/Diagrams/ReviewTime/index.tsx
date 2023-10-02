@@ -113,6 +113,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           : undefined,
       };
     });
+    console.log({ flattenedJournies });
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
   }, [tasks]);
@@ -237,7 +238,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-    return managers.map((manager, index) => {
+    const result = managers.map((manager, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
@@ -270,9 +271,13 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        datasetData,
       };
     });
+    console.log({ reviewTime_ByPMs: result });
+    return result;
   };
+
   const onGetDatasetsByAll = () => {
     let months = Months.map((item) => {
       return { id: item, name: item };
@@ -294,7 +299,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
       };
     });
 
-    return {
+    const result = {
       label: "Organization Review Time",
       data: datasetData.map((i) => {
         let val =
@@ -308,7 +313,10 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
       borderWidth: 3,
       hoverBorderWidth: 4,
       skipNull: true,
+      datasetData,
     };
+    console.log({ reviewTime_ByAll: result });
+    return result;
   };
 
   return (

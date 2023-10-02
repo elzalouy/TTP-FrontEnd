@@ -66,8 +66,20 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
-  const [allJournies, setAllJournies] = useState<Journies>([]);
-  const [journies, setJournies] = useState<Journies>([]);
+  const [allJournies, setAllJournies] = useState<
+    {
+      id: string;
+      name: string;
+      journies: Journies;
+    }[]
+  >([]);
+  const [journies, setJournies] = useState<
+    {
+      id: string;
+      name: string;
+      journies: Journies;
+    }[]
+  >([]);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -82,7 +94,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
 
   useEffect(() => {
     let tasksData = [...options.tasks];
-    console.log({ tasksDate: options.tasks.length });
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
       let newTask: ITaskInfo = {
@@ -97,29 +108,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   }, [projects, options.tasks]);
 
   useEffect(() => {
-    let journiesData = tasks.map((item) => getTaskJournies(item).journies);
-    let flattenedJournies = _.flatten(journiesData);
-    flattenedJournies = flattenedJournies.map((item) => {
-      let shared =
-        item.movements &&
-        _.findLast(
-          item.movements,
-          (move: TaskMovement) => move.status === "Shared"
-        )?.movedAt;
-      return {
-        ...item,
-        sharedAtMonth: shared
-          ? new Date(shared).toLocaleString("en-us", { month: "long" })
-          : undefined,
-        startedAt: new Date(
-          item.movements[0].movedAt ?? item.cardCreatedAt
-        ).toLocaleString("en-us", {
-          month: "long",
-        }),
-      };
-    });
-    setJournies(flattenedJournies);
-    setAllJournies(flattenedJournies);
+    let journiesData = tasks.map((item) => getTaskJournies(item));
+    setJournies(journiesData);
+    setAllJournies(journiesData);
   }, [tasks]);
 
   useEffect(() => {
@@ -223,85 +214,93 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     setJournies(
       allJournies.filter(
         (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.projectManager &&
-          filter.managers.includes(j.projectManager) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId)
+          j.journies[0].teamId &&
+          filter.teams.includes(j.journies[0].teamId) &&
+          j.journies[0].projectManager &&
+          filter.managers.includes(j.journies[0].projectManager) &&
+          j.journies[0].categoryId &&
+          filter.categories.includes(j.journies[0].categoryId) &&
+          j.journies[0].clientId &&
+          filter.clients.includes(j.journies[0].clientId)
       )
     );
   };
 
   const onGetDatasetsByAll = () => {
     const months = Months;
-    const tasksJournies = tasks.map((i) => getTaskJournies(i));
-    const revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
-    const uniqueTasks = tasksJournies.filter((i) => i.journies.length === 1);
+    let totalJournies = _.flattenDeep(
+      [...journies].map((item) => item.journies)
+    );
+    totalJournies = totalJournies.map((journey) => {
+      return {
+        ...journey,
+        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
+          "en-us",
+          {
+            month: "long",
+          }
+        ),
+      };
+    });
+    let revised = _.flattenDeep(
+      journies.map((item) => {
+        let journies = item.journies.slice(1, item.journies.length);
+        return journies;
+      })
+    );
+    revised = revised.map((journey) => {
+      return {
+        ...journey,
+        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
+          "en-us",
+          {
+            month: "long",
+          }
+        ),
+      };
+    });
 
-    // console.log({
-    //   revisedTasks,
-    //   uniqueTasks,
-    //   tasksJournies,
-    //   tasks: tasks.filter((i) => i.clientId),
-    // });
+    console.log({ totalNoOfTasks_totalJournies: totalJournies });
+    console.log({ totalNoOfTasks_totalRevised: revised });
+    let unique = _.flattenDeep(
+      journies.map((item) => {
+        let journies = item.journies.slice(0, 1);
+        return journies;
+      })
+    );
+    unique = unique.map((journey) => {
+      return {
+        ...journey,
+        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
+          "en-us",
+          {
+            month: "long",
+          }
+        ),
+      };
+    });
+
+    console.log({ totalNoOfTasks_totalUnique: unique });
     const types = [
       {
         type: "total",
-        journies: journies,
+        journies: totalJournies,
       },
       {
         type: "revised",
-        journies: _.flattenDeep(
-          tasksJournies
-            .filter((j) => j.journies.length > 1)
-            .map((i) => {
-              let revised_journies = [...i.journies];
-              delete revised_journies[0];
-              return {
-                ...i,
-                journies: revised_journies,
-              };
-            })
-            .map((i) =>
-              i.journies.map((j) => {
-                return {
-                  ...j,
-                  startedAt: new Date(j.startedAt).toLocaleString("us-en", {
-                    month: "long",
-                  }),
-                };
-              })
-            )
-        ),
+        journies: revised,
       },
       {
         type: "unique",
-        journies: _.flattenDeep(
-          tasksJournies
-            .filter((i) => i.journies.length === 1)
-            .map((i) => i.journies[0])
-            .map((j) => {
-              return {
-                ...j,
-                startedAt: new Date(j.startedAt).toLocaleString("us-en", {
-                  month: "long",
-                }),
-              };
-            })
-        ),
+        journies: unique,
       },
     ];
 
-    return types.map((type) => {
-      let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAt");
-
+    const result = types.map((type) => {
+      let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAtMonth");
       let dataset = months.map((month, index) => {
         let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
         let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
         let data = jounriesGroupedByMonth[month];
         return {
           data: data ?? [],
@@ -314,6 +313,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       return {
         label: type.type,
         data: dataset.map((i) => i.data.length),
+        dataset,
         backgroundColor: dataset.map((i) => i.color),
         borderColor: dataset.map((i) => i.borderColor),
         borderWidth: 3,
@@ -321,6 +321,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         skipNull: true,
       };
     });
+    return result;
   };
 
   return (

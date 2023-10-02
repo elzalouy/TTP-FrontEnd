@@ -88,14 +88,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       };
       return newTask;
     });
-    // newTasks = newTasks.filter(
-    //   (i) =>
-    //     i.cardCreatedAt &&
-    //     new Date(Date.now()).getFullYear() ===
-    //       new Date(i.cardCreatedAt).getFullYear()
-    // );
     setTasks([...newTasks]);
-  }, [options.tasks]);
+  }, [options.tasks, projects]);
 
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
@@ -150,7 +144,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     setTeams(
       state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
     );
-  }, [state.comparisonBy, options.teams]);
+  }, [state.comparisonBy, options]);
 
   useEffect(() => {
     let months = Months;
@@ -172,7 +166,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           align: "top",
           formatter: (value: any, context: any) => {
             if (value > 0) {
-              return [context.dataset.label, `${value} revision`];
+              return [context.dataset.label, `${value}%`];
             } else return null;
           },
           font: {
@@ -341,6 +335,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        datasetData,
       };
     });
   };
@@ -380,6 +375,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        datasetData,
       };
     });
   };
@@ -394,6 +390,12 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     });
     let color = "rgb(255,207,36,0.2)";
     let borderColor = "rgb(255,207,36)";
+    let allJourniesGroupedbyMonth = {
+      ..._.groupBy(journies, "journeyFinishedAt"),
+    };
+    console.log({
+      MeetDeadline_allJourniesGroupedbyMonth: allJourniesGroupedbyMonth,
+    });
     let datasetData = months.map((month) => {
       let journiesData = journies.filter(
         (item) => item.journeyFinishedAt === month.id
@@ -406,8 +408,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         name: month.name,
       };
     });
-
-    return [
+    const result = [
       {
         label: "",
         data: datasetData.map((i) => {
@@ -416,6 +417,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
             (result.notPassedDeadline.length / i.journies.length) * 100
           );
         }),
+        datasetData,
         backgroundColor: datasetData.map((i) => i.color),
         borderColor: datasetData.map((i) => i.borderColor),
         borderWidth: 3,
@@ -423,6 +425,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         skipNull: true,
       },
     ];
+    console.log({ meetingDeadlineResultByAll: result });
+    return result;
   };
 
   return (

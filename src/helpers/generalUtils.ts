@@ -335,9 +335,10 @@ export const getTaskJournies = (task: ITaskInfo) => {
       ? new Date(item.journeyDeadline)
       : null;
     if (
-      endOfJourney.includes(item.status) &&
-      movements[index + 1] &&
-      movements[index + 1].status === "Tasks Board"
+      (endOfJourney.includes(item.status) &&
+        movements[index + 1] &&
+        movements[index + 1].status === "Tasks Board") ||
+      (endOfJourney.includes(item.status) && index === movements.length - 1)
     ) {
       journey.movements.push(item);
       journey.journeyFinishedAtDate = new Date(item.movedAt);
@@ -347,7 +348,6 @@ export const getTaskJournies = (task: ITaskInfo) => {
           month: "long",
         }
       );
-      journey.startedAt = journey.movements[0].movedAt ?? task.cardCreatedAt;
       journey.revision = journies.length > 1;
       journey.unique = !(journies.length > 1);
       journies.push(journey);
@@ -359,6 +359,18 @@ export const getTaskJournies = (task: ITaskInfo) => {
         journey = getJourney();
       }
     }
+  });
+  journies = journies.map((journey) => {
+    return {
+      ...journey,
+      startedAt: journey.movements[0].movedAt,
+      startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
+        "en-us",
+        {
+          month: "long",
+        }
+      ),
+    };
   });
   if (journies.length === 1) journies[0].unique = true;
   return { id: task._id, name: task.name, journies };

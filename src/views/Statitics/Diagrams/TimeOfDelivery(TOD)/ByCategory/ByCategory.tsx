@@ -17,7 +17,7 @@ import {
   selectPMs,
 } from "src/models/Managers";
 import { ITaskInfo, Journies } from "src/types/views/Statistics";
-import { getJourneyLeadTime } from "../../../utils";
+import { getJourneyLeadTime, getJourneyReviewTime } from "../../../utils";
 import { LabelItem } from "chart.js";
 import FiltersBar from "./FilterMenu";
 import IMAGES from "src/assets/img/Images";
@@ -129,10 +129,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.teams, state.comparisonBy]);
 
-  // console.log({
-  //   TOB_ByCategory_data: state.data,
-  //   TOD_By_Category_journies: journies,
-  // });
   useEffect(() => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
@@ -282,12 +278,16 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
-    return managers.map((manager, index) => {
+    const result = managers.map((manager, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
       let journiesData = journies.filter(
         (item) => item.projectManager === manager._id
       );
+      journiesData = journiesData.map((journey) => {
+        let lead = getJourneyLeadTime(journey);
+        return { ...journey, leadTime: lead };
+      });
       let journiesOfClientGroupedByCategory = {
         ..._.groupBy(journiesData, "categoryId"),
       };
@@ -304,8 +304,11 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         label: manager.name,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) / 24
+            _.sum(i.journies.map((journey) => journey.leadTime)) /
+            i.journies.length /
+            24
         ),
+        datasetData: datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -313,6 +316,8 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
+    console.log({ resultByPMs: result });
+    return result;
   };
 
   const onGetDataSetsByClient = () => {
@@ -320,16 +325,23 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       return { id: item._id, name: item.category };
     });
 
-    return clients.map((client, index) => {
+    let result = clients.map((client, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
       let journiesData = journies.filter(
         (item) => item.clientId === client._id
       );
+
+      journiesData = journiesData.map((journey) => {
+        let lead = getJourneyLeadTime(journey);
+        return { ...journey, leadTime: lead };
+      });
+
       let journiesOfClientGroupedByCategory = {
         ..._.groupBy(journiesData, "categoryId"),
       };
+
       let datasetData = Categories.map((item) => {
         let journies = journiesOfClientGroupedByCategory[item.id];
         return {
@@ -339,14 +351,16 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           comparisonId: client._id,
         };
       });
+
       return {
         label: client.clientName,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+            _.sum(i.journies.map((journey) => journey.leadTime)) /
             i.journies.length /
             24
         ),
+        datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -354,6 +368,8 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
+    console.log({ resultByClients: result });
+    return result;
   };
 
   const onGetDatasetsByTeams = () => {
@@ -361,14 +377,19 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       return { id: item._id, name: item.category };
     });
 
-    return teams.map((team, index) => {
+    const result = teams.map((team, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
       let journiesData = journies.filter((item) => item.teamId === team._id);
+      journiesData = journiesData.map((item) => {
+        return { ...item, leadTime: getJourneyLeadTime(item) };
+      });
+
       let journiesOfClientGroupedByCategory = {
         ..._.groupBy(journiesData, "categoryId"),
       };
+
       let datasetData = Categories.map((item) => {
         let journies = journiesOfClientGroupedByCategory[item.id];
         return {
@@ -378,14 +399,17 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           comparisonId: team._id,
         };
       });
+
       return {
         label: team.name,
         data: datasetData.map(
           (i) =>
-            _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
+            _.sum(i.journies.map((journey) => journey.leadTime)) /
             i.journies.length /
             24
         ),
+        datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -393,6 +417,8 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
+    console.log({ TimeOfDeliveryByCategoory_resultByTeams: result });
+    return result;
   };
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

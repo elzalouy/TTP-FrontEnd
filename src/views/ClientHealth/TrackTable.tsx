@@ -199,7 +199,15 @@ const TrackClientHealthTable = () => {
     );
     setTasks(tasksInfo);
     let tasksJournies = tasksInfo.map((item) => getTaskJournies(item));
-    console.log({ tasksJournies });
+    tasksJournies = tasksJournies.map((item) => {
+      item.journies = item.journies.map((journey) => {
+        let leadTimeInHours = getJourneyLeadTime(journey);
+        journey.leadTime = leadTimeInHours;
+        return journey;
+      });
+      return item;
+    });
+
     let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
     State.organization._OfActive = flattened.filter(
       (i) =>
@@ -209,9 +217,9 @@ const TrackClientHealthTable = () => {
     ).length;
     let revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
     let journeysLeadTime = flattened.map((j) => {
-      return getJourneyLeadTime(j);
+      return j.leadTime;
     });
-    let sortedByCreateAtTasks = _.orderBy(tasks, "createdAt", "asc");
+    let sortedByCreatedAtTasks = _.orderBy(tasks, "createdAt", "asc");
 
     State.organization._OfRevision =
       _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
@@ -220,7 +228,7 @@ const TrackClientHealthTable = () => {
     State.organization._ofProjects = projects.length;
     State.organization.averageTOD = _.sum(journeysLeadTime);
     State.organization.lastBrief = new Date(
-      sortedByCreateAtTasks[sortedByCreateAtTasks.length - 1]?.cardCreatedAt
+      sortedByCreatedAtTasks[sortedByCreatedAtTasks.length - 1]?.cardCreatedAt
     ).getTime();
     let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
     let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
