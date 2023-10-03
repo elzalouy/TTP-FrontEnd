@@ -26,6 +26,7 @@ import { selectAllTeams, selectTeamsOptions } from "src/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { Task } from "src/types/models/Projects";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import categories from "src/services/endpoints/categories";
 
 interface StateType {
   filterPopup: boolean;
@@ -145,7 +146,9 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           ? onGetDatasetsByTeams()
           : [onGetDatasetsByAll()],
     };
-
+    let maxArray = data.datasets.map((item) => _.max(item.data));
+    let max = _.max(maxArray);
+    let maxN = max ? max : 100;
     const Options = {
       plugins: {
         datalabels: {
@@ -203,7 +206,10 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         y: {
           ticks: {
             beginAtZero: true,
+            stepSize: 5,
           },
+          min: 0,
+          max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
           title: {
             display: true,
             text: "TOD (Days & Hours)",
@@ -266,6 +272,8 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           i.journies.length /
           24
       ),
+      datasetData,
+      journies,
       backgroundColor: datasetData.map((i) => i.color),
       borderColor: datasetData.map((i) => i.borderColor),
       borderWidth: 3,
@@ -309,6 +317,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             24
         ),
         datasetData: datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -316,7 +325,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
-    console.log({ resultByPMs: result });
     return result;
   };
 
@@ -361,6 +369,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             24
         ),
         datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -368,7 +377,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
-    console.log({ resultByClients: result });
     return result;
   };
 
@@ -417,7 +425,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         skipNull: true,
       };
     });
-    console.log({ TimeOfDeliveryByCategoory_resultByTeams: result });
     return result;
   };
 
@@ -508,7 +515,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           justifyContent: "space-between",
         }}
       >
-        <Grid xs={10}>
+        <Grid xs={10} mb={1}>
           <Typography fontSize={18} mb={1} fontWeight={"600"}>
             Time Of Delivery Diagram Category Comparison
           </Typography>

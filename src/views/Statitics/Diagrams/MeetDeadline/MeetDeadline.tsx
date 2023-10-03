@@ -159,6 +159,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           ? onGetDatasetsByTeams()
           : onGetDatasetsByAll(),
     };
+    let maxArray = data.datasets.map((item) => Math.max(...item.data));
+    let max = Math.max(...maxArray);
     const options = {
       plugins: {
         datalabels: {
@@ -393,9 +395,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     let allJourniesGroupedbyMonth = {
       ..._.groupBy(journies, "journeyFinishedAt"),
     };
-    console.log({
-      MeetDeadline_allJourniesGroupedbyMonth: allJourniesGroupedbyMonth,
-    });
     let datasetData = months.map((month) => {
       let journiesData = journies.filter(
         (item) => item.journeyFinishedAt === month.id
@@ -425,7 +424,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         skipNull: true,
       },
     ];
-    console.log({ meetingDeadlineResultByAll: result });
     return result;
   };
 

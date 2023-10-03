@@ -302,7 +302,6 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         skipNull: true,
       };
     });
-    console.log({ NoOfRevision_ByPMs: result });
     return result;
   };
 
@@ -362,7 +361,6 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         datasetData,
       };
     });
-    console.log({ noOfRevision_ByTeams: result });
     return result;
   };
 
@@ -420,7 +418,6 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         journies,
       },
     ];
-    console.log({ OrganizationResult });
     return OrganizationResult;
   };
 

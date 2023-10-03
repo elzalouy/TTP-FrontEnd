@@ -215,7 +215,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
             beginAtZero: true,
           },
           min: 0,
-          max: max + max / 2,
+          max: max * 2,
           title: {
             display: true,
             text: "Review Time (Days & Hours)",

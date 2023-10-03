@@ -113,7 +113,6 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           : undefined,
       };
     });
-    console.log({ flattenedJournies });
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
   }, [tasks]);
@@ -127,6 +126,9 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           ? onGetDataSetsByPM()
           : [onGetDatasetsByAll()],
     };
+    let maxArray = data.datasets.map((item) => _.max(item.data));
+    let max = _.max(maxArray);
+    let maxN = max ? max : 100;
     const options = {
       plugins: {
         datalabels: {
@@ -180,6 +182,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         },
         y: {
           min: 0,
+          max: maxN * 2,
           ticks: {
             beginAtZero: true,
           },
@@ -274,7 +277,6 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         datasetData,
       };
     });
-    console.log({ reviewTime_ByPMs: result });
     return result;
   };
 
@@ -315,7 +317,6 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
       skipNull: true,
       datasetData,
     };
-    console.log({ reviewTime_ByAll: result });
     return result;
   };
 

@@ -135,6 +135,10 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       labels: months,
       datasets: onGetDatasetsByAll(),
     };
+    let maxArray = data.datasets.map((item) => _.max(item.data));
+    let max = _.max(maxArray);
+    let maxN = max ? max : 100;
+
     const options = {
       plugins: {
         datalabels: {
@@ -165,6 +169,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           position: "bottom",
           ticks: {
             beginAtZero: true,
+            stepSize: 5,
           },
           title: {
             display: true,
@@ -176,6 +181,10 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         },
         y: {
           min: 0,
+          max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
+          ticks: {
+            stepSize: 5,
+          },
           title: {
             display: true,
             text: "Number of tasks",
@@ -260,8 +269,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       };
     });
 
-    console.log({ totalNoOfTasks_totalJournies: totalJournies });
-    console.log({ totalNoOfTasks_totalRevised: revised });
     let unique = _.flattenDeep(
       journies.map((item) => {
         let journies = item.journies.slice(0, 1);
@@ -280,7 +287,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       };
     });
 
-    console.log({ totalNoOfTasks_totalUnique: unique });
     const types = [
       {
         type: "total",
@@ -296,11 +302,11 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       },
     ];
 
-    const result = types.map((type) => {
+    const result = types.map((type, index) => {
       let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAtMonth");
+      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
+      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
       let dataset = months.map((month, index) => {
-        let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-        let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
         let data = jounriesGroupedByMonth[month];
         return {
           data: data ?? [],

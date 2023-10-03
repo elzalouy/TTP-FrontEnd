@@ -155,6 +155,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           ? onGetDatasetsByTeams()
           : [onGetDatasetsByAll()],
     };
+
+    let maxArray = data.datasets.map((item) => _.max(item.data));
+    let max = _.max(maxArray);
+    let maxN = max ? max : 100;
+
     const options = {
       plugins: {
         datalabels: {
@@ -208,8 +213,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           },
         },
         y: {
+          min: 0,
+          max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
           ticks: {
             beginAtZero: true,
+            stepSize: 5,
           },
           title: {
             display: true,
@@ -299,7 +307,6 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         skipNull: true,
       };
     });
-    console.log({ resultByPMs: result });
     return result;
   };
 
@@ -343,7 +350,6 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         skipNull: true,
       };
     });
-    console.log({ resultByClient: result });
     return result;
   };
 
