@@ -21,6 +21,7 @@ import { getAllMembers } from "../../models/TechMember";
 import { getNotifications, getUnNotified } from "../../models/Notifications";
 import { ToastSuccess } from "../components/Typos/Alert";
 import {
+  selectStatisticsFilterDefaults,
   setProjectsStatistics,
   setTasksStatistics,
 } from "src/models/Statistics";
@@ -38,6 +39,7 @@ const AppHooks: React.FC<Props> = (props) => {
     setProjectsStatisticsHook,
     loading,
   } = useAppSelector(selectAllProjects);
+  const { boards, date } = useAppSelector(selectStatisticsFilterDefaults);
   const tasks = useAppSelector(selectTasks);
   const [updateTaskData, setUpdateTaskData] = React.useState<any>(null);
   const [createTaskData, setCreateTaskData] = React.useState<any>(null);
@@ -221,7 +223,7 @@ const AppHooks: React.FC<Props> = (props) => {
         })
       );
     }
-  }, [setTasksStatisticsHook]);
+  }, [setTasksStatisticsHook, boards, date]);
 
   React.useEffect(() => {
     if (user?._id) {
