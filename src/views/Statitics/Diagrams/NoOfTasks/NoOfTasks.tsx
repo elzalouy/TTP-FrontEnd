@@ -158,6 +158,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           callbacks: {
             label: function (context: any) {
               const value: number = context.dataset.data[context.dataIndex];
+              console.log({ label: context.dataset.label });
               return `${context.dataset.label}= ${value} journeys`;
             },
           },

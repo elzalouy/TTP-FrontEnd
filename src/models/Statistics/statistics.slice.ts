@@ -19,7 +19,8 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       state: StatisticsInterface,
       action: PayloadAction<{ boards: string[]; date: Date }>
     ) => {
-      state.statisticsFilter.date = action.payload.date ?? state.statisticsFilter.date;
+      state.statisticsFilter.date =
+        action.payload.date ?? state.statisticsFilter.date;
       state.statisticsFilter.boards = action.payload.boards;
     },
     setProjectsStatistics: (
@@ -56,7 +57,17 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
     ) => {
       let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
-      let tasks: Task[] = action.payload.tasks;
+      let tasks: Task[] = [...action.payload.tasks];
+      if (state.statisticsFilter.boards)
+        tasks = tasks.filter((i) =>
+          state.statisticsFilter.boards.includes(i.boardId)
+        );
+      if (state.statisticsFilter.date)
+        tasks = tasks.filter(
+          (i) =>
+            new Date(i.createdAt).getTime() >=
+            new Date(state.statisticsFilter.date).getTime()
+        );
       if (user.role !== "PM") {
         let inprogress = tasks.filter((item) => item.status === "In Progress");
         let taskBoard = tasks.filter((item) => item.status === "Tasks Board");
