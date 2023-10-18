@@ -407,14 +407,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
           (item) => item._id !== action.payload.id
         );
         state.deleteProject = "";
-        state.allTasks = [
-          ...state.allTasks.filter((i) => i.projectId !== action.payload.id),
-        ];
-        state.filteredTasks = [
-          ...state.filteredTasks.filter(
-            (item) => item.projectId !== action.payload.id
-          ),
-        ];
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
         state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       }

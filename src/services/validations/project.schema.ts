@@ -26,20 +26,12 @@ const createProjectSchema = Joi.object({
     "string.min": "Project Manager Name length should be Min 2 chars",
     "string.required": "Project Manager is required",
   }),
-  projectDeadline: Joi.date()
-    .optional()
-    .label("project deadline")
-    .allow(null, "")
-    .messages({
-      "any.required": "Project Deadline is required",
-    }),
-  startDate: Joi.date()
-    .label("start date")
-    .optional()
-    .allow(null, "")
-    .messages({
-      "any.required": "Project Start Date is required",
-    }),
+  startDate: Joi.date().label("start date").required().messages({
+    "any.required": "Project Start Date is required",
+  }),
+  projectDeadline: Joi.date().required().label("project deadline").messages({
+    "any.required": "Project Deadline is required",
+  }),
   clientId: Joi.string().required().min(2).max(50).messages({
     "any.required": "Client is required",
     "string.base": "Client should be string",
@@ -84,20 +76,12 @@ const editProjectSchema = Joi.object({
     "string.min": "Project Manager Name length should be Min 2 chars",
     "string.required": "Project Manager is required",
   }),
-  projectDeadline: Joi.date()
-    .optional()
-    .label("project deadline")
-    .allow(null, "")
-    .messages({
-      "any.required": "Project Deadline is required",
-    }),
-  startDate: Joi.date()
-    .label("start date")
-    .optional()
-    .allow(null, "")
-    .messages({
-      "any.required": "Project Start Date is required",
-    }),
+  startDate: Joi.date().label("start date").required().messages({
+    "any.required": "Project Start Date is required",
+  }),
+  projectDeadline: Joi.date().required().label("project deadline").messages({
+    "any.required": "Project Deadline is required",
+  }),
   clientId: Joi.string().required().min(2).max(50).messages({
     "any.required": "Client is required",
     "string.base": "Client should be string",
