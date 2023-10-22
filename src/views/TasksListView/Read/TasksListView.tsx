@@ -10,6 +10,7 @@ import Loading from "../../../coreUI/components/Loading/Loading";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
 import {
+  ProjectsActions,
   deleteTasks,
   downloadTasks,
   selectAllProjects,
@@ -26,6 +27,7 @@ import Button from "src/coreUI/components/Buttons/Button";
 import EditTasks from "../Edit/EditTasks";
 import { selectRole, selectUser } from "src/models/Auth";
 import DownloadIcon from "@mui/icons-material/Download";
+import { toggleViewTaskPopup } from "src/models/Ui";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];

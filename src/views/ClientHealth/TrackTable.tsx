@@ -341,6 +341,8 @@ const TrackClientHealthTable = () => {
                 i.movements[i.movements.length - 1].status
               )
           ).length;
+          if (client.clientName === "Quality Of Life Program")
+            console.log({ clientJournies, averageLeadTime });
           return {
             clientName: client.clientName,
             meetDeadline: !_.isNaN(meetingDeadline) ? meetingDeadline : 0,

@@ -87,7 +87,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
 
   const TaskLeadTime = () => {
     let end = _.findLast(movements, (item) => item.status === "Shared");
-    let start = task.cardCreatedAt;
+    let start = task.cardCreatedAt ?? task.createdAt ?? task.start;
     if (end && start)
       return getDifBetweenDates(
         new Date(task.cardCreatedAt),
@@ -154,29 +154,31 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   };
 
   const turnAroundTime = () => {
-    let taskMovements = movements;
-    if (movements?.length > 0) {
-      let turnAroundMovements = taskMovements?.filter(
-        (item, index) =>
-          item.status === "Not Clear" &&
-          taskMovements[index + 1] &&
-          taskMovements[index + 1].status === "In Progress"
-      );
-      if (turnAroundMovements?.length > 0) {
-        let indexedMovements = turnAroundMovements.map((item) => {
-          let index = taskMovements?.findIndex((m) => m._id === item._id);
-          return { item, index };
-        });
-        let diffs = indexedMovements.map((item) => {
-          return getDifBetweenDates(
-            new Date(item.item.movedAt),
-            new Date(taskMovements[item.index + 1].movedAt)
-          ).totalHours;
-        });
-        return { hours: _.sum(diffs), times: turnAroundMovements?.length };
-      }
-    }
-    return { times: 0, hours: 0 };
+    /**
+     * the time this task took from “Not Clear” to “In Progress”
+     * (from the first “Not Clear”to last “In Progress”   before any movement from “shared” or "Done” or “Cancelled” to “Task board“ because after it is counted a new journey) directly or not
+     */
+    let notClearMovements: TaskMovement[],
+      firstNotClear: TaskMovement | null,
+      inProgressMovements: TaskMovement[],
+      lastInProgressMove: TaskMovement;
+    notClearMovements = movements.filter((i) => i.status === "Not Clear");
+    firstNotClear =
+      notClearMovements.length > 0
+        ? notClearMovements[notClearMovements.length - 1]
+        : null;
+    inProgressMovements = movements.filter((i) => i.status === "In Progress");
+    lastInProgressMove = inProgressMovements[inProgressMovements.length - 1];
+    if (firstNotClear && lastInProgressMove) {
+      let dif = getDifBetweenDates(
+        new Date(firstNotClear.movedAt),
+        new Date(lastInProgressMove.movedAt)
+      ).totalHours;
+      return {
+        hours: dif,
+        times: notClearMovements.length,
+      };
+    } else return { hours: 0, times: 0 };
   };
 
   const TaskState = () => {

@@ -24,6 +24,9 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllCategories } from "src/models/Categories";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Task } from "src/types/models/Projects";
+import { ProjectsActions, selectAllProjects } from "src/models/Projects";
+import { toggleViewTaskPopup } from "src/models/Ui";
+import { useDispatch } from "react-redux";
 
 interface HeadCell {
   id: string;
@@ -66,6 +69,8 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   selects,
   setAllSelected,
 }) => {
+  const { openTaskDetails: task } = useAppSelector(selectAllProjects);
+  const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
@@ -103,6 +108,11 @@ const TasksTable: React.FC<ITasksTableProps> = ({
       }),
     });
   }, [tasks, projects, categories]);
+
+  const onViewTaskDetails = async (item: Task) => {
+    dispatch(ProjectsActions.onOpenTask(item));
+    dispatch(toggleViewTaskPopup("flex"));
+  };
 
   const setSingleSelect = (val: string, checked: boolean) => {
     let selected = [...selects];
@@ -306,7 +316,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   </TableCell>
                   <TableCell
                     size="small"
-                    onClick={() => openProject(projectId)}
+                    onClick={() => onViewTaskDetails(item)}
                     align="left"
                     style={{
                       color: "#334D6E",
@@ -333,12 +343,12 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                       }
                       style={{ cursor: "pointer" }}
                     >
-                      {status === "In Progress" ? "In Progress" : status}
+                      {status}
                     </div>
                   </TableCell>
                   <TableCell
                     size="small"
-                    onClick={() => openProject(projectId)}
+                    onClick={() => onViewTaskDetails(item)}
                     align="left"
                     style={{
                       cursor: "pointer",
@@ -373,7 +383,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   </TableCell>
                   <TableCell
                     size="small"
-                    onClick={() => openProject(projectId)}
+                    onClick={() => onViewTaskDetails(item)}
                     align="left"
                     style={{
                       color: "#707683",
@@ -384,7 +394,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                   </TableCell>
                   <TableCell
                     size="small"
-                    onClick={() => openProject(projectId)}
+                    onClick={() => onViewTaskDetails(item)}
                     style={{
                       color: "#707683",
                       cursor: "pointer",

@@ -132,7 +132,7 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
       }
     };
 
-    const onViewTask = async () => {
+    const onViewTaskDetails = async () => {
       dispatch(ProjectsActions.onOpenTask(item));
       dispatch(toggleViewTaskPopup("flex"));
     };
@@ -175,13 +175,13 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
                     textTransform: "capitalize",
                     width: "90%",
                   }}
-                  onClick={onViewTask}
+                  onClick={onViewTaskDetails}
                 >
                   {name}
                 </Typography>
                 <TasksPopover item={item} />
               </Stack>
-              <Box onClick={onViewTask} sx={{ cursor: "pointer" }}>
+              <Box onClick={onViewTaskDetails} sx={{ cursor: "pointer" }}>
                 <Typography color={"#696974"}>
                   {project?.projectManager?.name}
                 </Typography>
