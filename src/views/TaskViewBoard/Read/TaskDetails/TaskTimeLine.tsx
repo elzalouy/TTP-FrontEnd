@@ -279,15 +279,12 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                 let nextMove = props.allMovementsOfTask[nextMoveIndex];
                 let prevMove = props.allMovementsOfTask[prevMoveIndex];
                 let due = undefined;
-                due = nextMove
+                due = prevMove
                   ? getDifBetweenDates(
-                      new Date(nextMove?.movedAt),
+                      new Date(prevMove?.movedAt),
                       new Date(item?.movedAt)
                     )
-                  : getDifBetweenDates(
-                      new Date(new Date(Date.now())),
-                      new Date(item?.movedAt)
-                    );
+                  : null;
 
                 return (
                   <TimelineItem key={item._id} sx={itemStyle}>
@@ -360,11 +357,10 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                               htmlColor="#444452"
                               sx={{ fontSize: "8px", mr: 1 }}
                             />
-                            <Typography
-                              color={"#94989b"}
-                              fontWeight={"bold"}
-                              fontSize={"10px"}
-                            >
+                            <Typography color={"#94989b"} pr={1} fontSize={12}>
+                              Moved after: &nbsp;
+                            </Typography>
+                            <Typography fontWeight={"bold"} fontSize={"10px"}>
                               {due?.difference?.days ?? 0} Days{",  "}
                               {due?.difference?.hours ?? 0} Hours{", "}
                               {due?.difference?.mins ?? 0} mins{" "}
