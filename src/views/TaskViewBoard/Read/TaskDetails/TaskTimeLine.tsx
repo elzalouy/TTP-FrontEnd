@@ -79,28 +79,31 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   }, [props.movements]);
 
   React.useEffect(() => {
+    let firstMoveIndex = props.allMovementsOfTask.findIndex(
+      (i, index) => props.movements[0] && i._id === props.movements[0]._id
+    );
+    let prevMove =
+      firstMoveIndex > 0 ? props.allMovementsOfTask[firstMoveIndex - 1] : null;
     let movementsData = [...props.movements].map((i, index) => {
       return { ...i, index };
     });
     console.log({ movementsData });
-    if (from !== "" && to === "") {
-      console.log("from");
-      movementsData = movementsData.filter(
-        (i) => i.index > 0 && props.movements[i.index - 1].status === from
-      );
-    } else if (from === "" && to !== "") {
-      console.log("to");
-      movementsData = movementsData.filter((i) => i.status === to);
-    } else if (from !== "" && to !== "") {
-      console.log("to and from");
+    if (from !== "" && to === "")
       movementsData = movementsData.filter(
         (i) =>
-          i.status === to &&
-          i.index > 0 &&
-          props.movements[i.index - 1].status === from
+          (i.index > 0 && props.movements[i.index - 1].status === from) ||
+          (i.index === 0 && prevMove?.status === from)
       );
-    }
-    console.log({ movementsDataAfter: movementsData });
+    else if (from === "" && to !== "")
+      movementsData = movementsData.filter((i) => i.status === to);
+    else if (from !== "" && to !== "")
+      movementsData = movementsData.filter(
+        (i) =>
+          (i.status === to &&
+            i.index > 0 &&
+            props.movements[i.index - 1].status === from) ||
+          (i.index === 0 && prevMove?.status === from && i.status === to)
+      );
     setMovements(movementsData);
   }, [from, to]);
 
