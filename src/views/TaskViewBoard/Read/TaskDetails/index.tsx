@@ -11,6 +11,7 @@ import { selectSideMenuToggle } from "src/models/Ui";
 import { getTaskJournies } from "src/helpers/generalUtils";
 import { TaskMovement } from "src/types/models/Projects";
 import _ from "lodash";
+import { Journies } from "src/types/views/Statistics";
 
 interface TaskDetailsProps {
   show: string;
@@ -24,27 +25,32 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
   const isOpen = useAppSelector(selectSideMenuToggle);
 
   const [state, setState] = useState<{
-    journies: TaskJournies;
+    journies: { id: string; name: string; journies: Journies };
+    journiesMovements: TaskMovement[][];
     selected?: TaskMovement[];
     selectedIndex?: number;
   }>({
-    journies: [],
+    journies: { id: "", name: "", journies: [] },
+    journiesMovements: [],
   });
   // build a use effect to calculate the journies once the component is rendered once.
 
   React.useEffect(() => {
     let State = { ...state };
-    let journies = getTaskJournies(task).journies.map((item) => item.movements);
+    let journies = getTaskJournies(task);
+    let journiesMovements = journies.journies.map((item) => item.movements);
     State.journies = journies;
-    State.selected = State.journies[0];
+    State.journiesMovements = journiesMovements;
+    State.selected = State.journiesMovements[0];
     State.selectedIndex = 0;
+    console.log({ journies });
     setState(State);
   }, [task]);
 
   const onSelectJourney = (value: number) => {
     setState({
       ...state,
-      selected: state.journies[value - 1],
+      selected: state.journiesMovements[value - 1],
       selectedIndex: value - 1,
     });
   };
@@ -80,7 +86,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
         overflow={"hidden"}
         position={"relative"}
       >
-        <TaskHeader setShow={setShow} task={task} />
+        <TaskHeader setShow={setShow} task={task} movements={state.selected} />
         <Grid
           xs={12}
           sm={12}
@@ -95,7 +101,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
         >
           <TaskBasics
             journeyIndex={state.selectedIndex ?? 0}
-            journiesLength={state.journies.length}
+            journiesLength={state.journiesMovements.length}
             task={task}
             movements={state.selected ?? []}
           />
@@ -118,7 +124,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
         >
           <TaskTimeLine
             journeyIndex={state.selectedIndex ?? 0}
-            journiesLength={state.journies.length}
+            journiesLength={state.journiesMovements.length}
             movements={state.selected ?? []}
             allMovementsOfTask={task.movements}
           />
@@ -139,7 +145,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           item
         >
           <TaskFooter
-            journies={state.journies.length}
+            journies={state.journiesMovements.length}
             onSelectJourney={onSelectJourney}
           />
         </Grid>

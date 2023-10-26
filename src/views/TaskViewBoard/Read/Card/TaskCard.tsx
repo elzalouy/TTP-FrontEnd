@@ -80,36 +80,30 @@ const TaskCard: React.FC<TaskCartProps> = React.memo(
     }, [item, departments]);
 
     useEffect(() => {
-      if (status !== "Not Started") {
-        if (deadline === null || deadline === "") {
-          setRemaningDays("Deadline is required");
-          setDaysBgColor("#F1CBCC");
-          setDaysColor("#FF0000");
-        } else {
-          const floatDays =
-            (new Date(deadline).getTime() - new Date().getTime()) /
-            (1000 * 60 * 60 * 24);
-          const remainingDays = Math.round(floatDays + 1);
-          setRemaningDays(remainingDays);
-          const daysColor =
-            remainingDays <= 2
-              ? "#FF0000"
-              : remainingDays > 2 && remainingDays <= 5
-              ? "#FF974A"
-              : "#0079BF";
-          setDaysColor(daysColor);
-          const daysBgColor =
-            remainingDays <= 2
-              ? "#F1CBCC"
-              : remainingDays > 2 && remainingDays <= 5
-              ? "#FF974A1A"
-              : "#DAE6EF";
-          setDaysBgColor(daysBgColor);
-        }
-      } else {
+      if (deadline === null || deadline === "") {
         setRemaningDays("Deadline is required");
-        setDaysBgColor("#E4DADC");
-        setDaysColor("#2C2C2C");
+        setDaysBgColor("#F1CBCC");
+        setDaysColor("#FF0000");
+      } else {
+        const floatDays =
+          (new Date(deadline).getTime() - new Date().getTime()) /
+          (1000 * 60 * 60 * 24);
+        const remainingDays = Math.round(floatDays + 1);
+        setRemaningDays(remainingDays);
+        const daysColor =
+          remainingDays <= 2
+            ? "#FF0000"
+            : remainingDays > 2 && remainingDays <= 5
+            ? "#FF974A"
+            : "#0079BF";
+        setDaysColor(daysColor);
+        const daysBgColor =
+          remainingDays <= 2
+            ? "#F1CBCC"
+            : remainingDays > 2 && remainingDays <= 5
+            ? "#FF974A1A"
+            : "#DAE6EF";
+        setDaysBgColor(daysBgColor);
       }
       let newData = { ...data };
       let dep = departments.find((item) => item.boardId === boardId);

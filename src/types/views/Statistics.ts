@@ -22,6 +22,7 @@ export type Journey = {
   boardId: string;
   journeyDeadline: Date | null;
   cardCreatedAt: Date | string;
+  journeyDeadlines: (Date | string)[];
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {

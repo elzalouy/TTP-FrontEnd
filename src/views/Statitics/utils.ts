@@ -3,11 +3,20 @@ import { getDifBetweenDates, getTaskJournies } from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Journey } from "src/types/views/Statistics";
 
+/**
+ * Get the time this journey is taking from creating this task till it lands in Shared (last shared)
+ * @param journey Journey movements
+ * @returns journeyLeadTime : number
+ */
 export const getJourneyLeadTime = (journey: Journey) => {
   let journeyLeadTime = 0;
-  let sharedIndex = journey.movements.findIndex((i) => i.status === "Shared");
-  let start = journey.movements[0].movedAt;
-  let end = sharedIndex >= 0 ? journey.movements[sharedIndex].movedAt : null;
+  let sharedMovements = journey.movements.filter((i) => i.status === "Shared");
+  let lastSharedMovement =
+    sharedMovements.length > 0
+      ? sharedMovements[sharedMovements.length - 1]
+      : null;
+  let start = journey.movements[0].movedAt ?? null;
+  let end = lastSharedMovement?.movedAt ?? null;
   if (end && start) {
     let diff = getDifBetweenDates(new Date(start), new Date(end));
     journeyLeadTime = diff.totalHours;
@@ -29,8 +38,10 @@ export const getJourneyReviewTime = (journey: Journey) => {
 };
 
 export const getJourneySchedulingTime = (journey: Journey) => {
-  let inProgressMove = journey.movements[1];
-  if (inProgressMove && inProgressMove.status === "In Progress") {
+  let inProgressMove = journey.movements.find(
+    (i) => i.status === "In Progress"
+  );
+  if (inProgressMove) {
     let start = journey.movements[0]?.movedAt;
     let end = inProgressMove?.movedAt;
     if (start && end) {
@@ -39,6 +50,7 @@ export const getJourneySchedulingTime = (journey: Journey) => {
     } else return 0;
   } else return 0;
 };
+
 export const getMeetingDeadline = (journies: Journey[]) => {
   let passedDeadline = journies.filter((i) => {
     let lastMovement = i.movements[i.movements.length - 1];

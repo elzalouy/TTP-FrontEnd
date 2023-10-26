@@ -20,16 +20,60 @@ type TaskStatusTimlineProps = {
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
+const getDiff = (start: string, end: string, movements: TaskMovement[]) => {
+  let lastMoves = movements?.filter((item) => item.status === end);
+  let firstMove = movements?.find((item) => item.status === start);
+  let lMove = lastMoves[lastMoves?.length - 1];
+  if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
+    return getDifBetweenDates(
+      new Date(firstMove.movedAt),
+      new Date(lMove.movedAt)
+    );
+  } else
+    return {
+      isLate: false,
+      difference: {
+        years: 0,
+        months: 0,
+        days: 0,
+        mins: 0,
+        hours: 0,
+      },
+      remainingDays: 0,
+      totalHours: 0,
+    };
+};
+
+const JourneyDuration = (
+  start: string,
+  end: string,
+  movements: TaskMovement[]
+) => {
+  let {
+    difference: { hours, days, mins },
+  } = getDiff(start, end, movements);
+  return (
+    <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
+      {days} d, {hours} h,
+      {mins} mins,
+    </Typography>
+  );
+};
+
 const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [filter, setFilter] = React.useState("");
   const [cancelType, setCancelType] = React.useState<string[]>([]);
+  const [journeyDeadline, setJourneyDeadline] = React.useState<
+    string | undefined
+  >(undefined);
 
   React.useEffect(() => {
     setMovements(props?.movements);
     getCancelationType();
+    getJourneyDeadline();
   }, [props.movements]);
 
   React.useEffect(() => {
@@ -37,6 +81,18 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       setMovements(props?.movements?.filter((item) => item.status === filter));
     else setMovements(props?.movements);
   }, [filter]);
+
+  const getJourneyDeadline = () => {
+    if (movements) {
+      let deadlineMoves = movements.filter((i) => i.journeyDeadline);
+      let journeyDeadline =
+        deadlineMoves?.length > 0 &&
+        deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          : undefined;
+      setJourneyDeadline(journeyDeadline);
+    }
+  };
 
   const getCancelationType = () => {
     let cMoves = props?.movements.map((item, index) => {
@@ -71,30 +127,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
         props.movements[item.index + 1]?.status === "Tasks Board"
     );
     return moves.length;
-  };
-
-  const getDiff = (start: string, end: string) => {
-    let lastMoves = props?.movements?.filter((item) => item.status === end);
-    let firstMove = props.movements?.find((item) => item.status === start);
-    let lMove = lastMoves[lastMoves?.length - 1];
-    if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
-      return getDifBetweenDates(
-        new Date(firstMove.movedAt),
-        new Date(lMove.movedAt)
-      );
-    } else
-      return {
-        isLate: false,
-        difference: {
-          years: 0,
-          months: 0,
-          days: 0,
-          mins: 0,
-          hours: 0,
-        },
-        remainingDays: 0,
-        totalHours: 0,
-      };
   };
 
   return (
@@ -435,34 +467,22 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           }}
           textAlign={"center"}
         >
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
+          <Typography fontSize={"12px"} fontWeight={"700"} color="black">
             Fullfillment : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
-            {getDiff("In Progress", "Review")?.difference?.days ?? 0} d,{" "}
-            {getDiff("In Progress", "Review")?.difference?.hours ?? 0} h,
-            {getDiff("In Progress", "Review")?.difference?.mins ?? 0} mins,
-          </Typography>
+          {JourneyDuration("In Progress", "Review", props.movements)}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Delivery : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
-            {getDiff("Review", "Shared")?.difference?.days ?? 0} d,{" "}
-            {getDiff("Review", "Shared")?.difference?.hours ?? 0} h,
-            {getDiff("Review", "Shared")?.difference?.mins ?? 0} mins,
-          </Typography>
+          {JourneyDuration("Review", "Shared", props.movements)}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Closing : &nbsp;
           </Typography>
-          <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
-            {getDiff("Shared", "Done")?.difference?.days ?? 0} d,{" "}
-            {getDiff("Shared", "Done")?.difference?.hours ?? 0} h,
-            {getDiff("Shared", "Done")?.difference?.mins ?? 0} mins,
-          </Typography>
+          {JourneyDuration("Shared", "Done", props.movements)}
         </Box>
       </Grid>
     </div>

@@ -86,14 +86,12 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   }, [task, movements]);
 
   const TaskLeadTime = () => {
-    let end = _.findLast(movements, (item) => item.status === "Shared");
-    let start = task.cardCreatedAt ?? task.createdAt ?? task.start;
-    if (end && start)
-      return getDifBetweenDates(
-        new Date(task.cardCreatedAt),
-        new Date(end.movedAt)
-      );
-    else return initialDifferenceBetweenDates;
+    let sharedMovemens = movements.filter((item) => item.status === "Shared");
+    let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
+    let start = movements.length > 0 ? movements[0]?.movedAt : null;
+    if (end && start) {
+      return getDifBetweenDates(new Date(start), new Date(end));
+    } else return initialDifferenceBetweenDates;
   };
 
   /**
@@ -112,7 +110,6 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     let sharedMove = _.findLast(movements, (item: TaskMovement) => {
       return item.status === "Shared";
     });
-
     if (inProgress) {
       return getDifBetweenDates(
         new Date(inProgress.movedAt),
@@ -126,12 +123,16 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     let inProgressMove = movements?.find(
       (item) => item.status === "In Progress"
     );
-    return inProgressMove && task.cardCreatedAt
-      ? getDifBetweenDates(
-          new Date(task.cardCreatedAt),
-          new Date(inProgressMove.movedAt)
-        )
-      : null;
+    let taskBoardMoveDate =
+      movements.length > 0 && movements[0].status === "Tasks Board"
+        ? movements[0].movedAt
+        : null;
+    if (inProgressMove && taskBoardMoveDate) {
+      return getDifBetweenDates(
+        new Date(taskBoardMoveDate),
+        new Date(inProgressMove.movedAt)
+      );
+    } else return null;
   };
 
   const unClearTime = () => {
@@ -153,20 +154,21 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     return { times, ...total };
   };
 
+  /**
+   * turnArountTime()
+   *
+   *
+   * the time this task took from “Not Clear” to “In Progress”
+   * (from the first “Not Clear”to last “In Progress”   before any movement from “shared” or "Done” or “Cancelled” to “Task board“ because after it is counted a new journey) directly or not
+   * @returns {} hours, times
+   */
   const turnAroundTime = () => {
-    /**
-     * the time this task took from “Not Clear” to “In Progress”
-     * (from the first “Not Clear”to last “In Progress”   before any movement from “shared” or "Done” or “Cancelled” to “Task board“ because after it is counted a new journey) directly or not
-     */
     let notClearMovements: TaskMovement[],
       firstNotClear: TaskMovement | null,
       inProgressMovements: TaskMovement[],
       lastInProgressMove: TaskMovement;
     notClearMovements = movements.filter((i) => i.status === "Not Clear");
-    firstNotClear =
-      notClearMovements.length > 0
-        ? notClearMovements[notClearMovements.length - 1]
-        : null;
+    firstNotClear = notClearMovements.length > 0 ? notClearMovements[0] : null;
     inProgressMovements = movements.filter((i) => i.status === "In Progress");
     lastInProgressMove = inProgressMovements[inProgressMovements.length - 1];
     if (firstNotClear && lastInProgressMove) {

@@ -321,7 +321,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
       startedAt: "",
       boardId: task.boardId,
       journeyDeadline: null,
-      cardCreatedAt: task.cardCreatedAt,
+      journeyDeadlines: [],
+      cardCreatedAt: task.cardCreatedAt ?? task.createdAt ?? null,
     };
   };
 
@@ -333,7 +334,9 @@ export const getTaskJournies = (task: ITaskInfo) => {
   movements.forEach((item, index) => {
     journey.journeyDeadline = item.journeyDeadline
       ? new Date(item.journeyDeadline)
-      : null;
+      : journey.journeyDeadline;
+    if (item.journeyDeadline)
+      journey.journeyDeadlines?.push(item.journeyDeadline);
     if (
       (endOfJourney.includes(item.status) &&
         movements[index + 1] &&
@@ -360,6 +363,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       }
     }
   });
+
   journies = journies.map((journey) => {
     return {
       ...journey,

@@ -1,27 +1,43 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
 import CloseIcon from "@mui/icons-material/Close";
-import { Task } from "src/types/models/Projects";
+import { Task, TaskMovement } from "src/types/models/Projects";
 import { selectManagers } from "src/models/Managers";
 import { useAppSelector } from "src/models/hooks";
+import { getDifBetweenDates } from "src/helpers/generalUtils";
 
 interface TaskHeaderProps {
   task: Task;
   setShow: any;
+  movements?: TaskMovement[];
 }
 
-const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
-  const users = useAppSelector(selectManagers);
+const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
+  const [journeyDeadline, setJourneyDeadline] = useState<string | undefined>(
+    undefined
+  );
+  const [isMissedDelivery, setIsMissedDelivery] = useState(false);
 
-  const isMissedDelivery = () => {
-    const remainingDaysFloated =
-      (new Date(task.deadline).getTime() - new Date().getTime()) /
-      (1000 * 60 * 60 * 24);
-    const remainingDays = Math.round(remainingDaysFloated + 1);
-    return remainingDays < 0;
-  };
+  useEffect(() => {
+    if (movements) {
+      let deadlineMoves = movements.filter((i) => i.journeyDeadline);
+      let journeyDeadline =
+        deadlineMoves?.length > 0 &&
+        deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          : undefined;
+      if (journeyDeadline) {
+        setJourneyDeadline(journeyDeadline);
+        let dif = getDifBetweenDates(
+          new Date(Date.now()),
+          new Date(journeyDeadline)
+        );
+        setIsMissedDelivery(dif.isLate && dif.totalHours > 6);
+      } else setIsMissedDelivery(false);
+    }
+  }, [movements]);
 
   return (
     <Grid
@@ -33,31 +49,20 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
       justifyContent={"space-between"}
       display={"inline-flex"}
     >
-      <Grid item display={"inline-flex"} xs={11} sx={{ overflowX: "scroll" }}>
+      <Grid item display={"inline-flex"} xs={11.5} sx={{ overflowX: "scroll" }}>
         <Box
           sx={{
             display: "inline-flex",
             background: "#f6f6f6",
             border: "1px solid #eaeaea",
-            minWidth: 170,
             height: 35,
             borderRadius: 2,
-            pl: 1.5,
+            px: 1.5,
+            minWidth: 150,
             alignItems: "center",
           }}
         >
           <Typography fontSize={"16px"}>{task.status}</Typography>
-          <Typography
-            width={20}
-            height={20}
-            textAlign={"center"}
-            bgcolor={"#ffc500"}
-            color="white"
-            borderRadius={"100%"}
-            ml={1}
-          >
-            {task?.movements?.length}
-          </Typography>
         </Box>
         <Divider
           orientation="vertical"
@@ -67,7 +72,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
         />
         <Box
           sx={{
-            minWidth: 170,
+            minWidth: 150,
             alignItems: "flex-start",
             textAlign: "left",
           }}
@@ -102,7 +107,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
         />
         <Box
           sx={{
-            minWidth: 170,
+            minWidth: 150,
             alignItems: "flex-start",
             textAlign: "left",
           }}
@@ -133,34 +138,48 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
           flexItem
           sx={{ mx: 2 }}
         />
-        <Box
-          sx={{
-            minWidth: 170,
-            alignItems: "flex-start",
-            textAlign: "left",
-          }}
-        >
-          <Typography
-            color="#9ea1a7"
-            mb={0.5}
-            fontWeight={"600"}
-            fontSize={"12px"}
-          >
-            Due date:
-          </Typography>
-          <Typography
-            color="black"
-            alignItems={"center"}
-            display={"inline-flex"}
-            fontSize={"12px"}
-          >
-            <EventIcon htmlColor="#9ea1a7" sx={{ fontSize: "12px", mr: 1 }} />
-            {task.deadline
-              ? format(new Date(task.deadline), "dd MMMM yyyy")
-              : "Not Set"}
-          </Typography>
-        </Box>
-        {isMissedDelivery() && (
+        {journeyDeadline && (
+          <>
+            <Divider
+              orientation="vertical"
+              variant="inset"
+              flexItem
+              sx={{ mx: 2 }}
+            />
+            <Box
+              sx={{
+                minWidth: 150,
+                alignItems: "flex-start",
+                textAlign: "left",
+              }}
+            >
+              <Typography
+                color="#9ea1a7"
+                mb={0.5}
+                fontWeight={"600"}
+                fontSize={"12px"}
+              >
+                Journey Due Date:
+              </Typography>
+              <Typography
+                color="black"
+                alignItems={"center"}
+                display={"inline-flex"}
+                fontSize={"12px"}
+              >
+                <EventIcon
+                  htmlColor="#9ea1a7"
+                  sx={{ fontSize: "12px", mr: 1 }}
+                />
+                {journeyDeadline
+                  ? format(new Date(journeyDeadline), "dd MMMM yyyy")
+                  : "Not Set"}
+              </Typography>
+            </Box>
+          </>
+        )}
+
+        {isMissedDelivery && (
           <>
             <Divider
               orientation="vertical"
@@ -192,7 +211,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow }) => {
           </>
         )}
       </Grid>
-      <Grid item xs={1} display={"flex"} justifyContent={"flex-end"}>
+      <Grid item xs={0.5} xl={0.5} display={"flex"} justifyContent={"flex-end"}>
         <Box
           width={35}
           height={35}
