@@ -447,7 +447,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                   >
                     {item}
                   </Typography>
-                  {item === to && from !== "" && (
+                  {item === to && (
                     <Typography
                       textAlign={"center"}
                       bgcolor={"#9ea1a7"}
