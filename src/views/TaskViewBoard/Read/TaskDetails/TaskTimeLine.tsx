@@ -64,35 +64,39 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   props: TaskStatusTimlineProps
 ) => {
   const [movements, setMovements] = React.useState<TaskMovement[]>();
-  const [filter, setFilter] = React.useState("");
+  const [from, setFrom] = React.useState("");
+  const [to, setTo] = React.useState("");
+
   const [cancelType, setCancelType] = React.useState<string[]>([]);
-  const [journeyDeadline, setJourneyDeadline] = React.useState<
-    string | undefined
-  >(undefined);
 
   React.useEffect(() => {
     setMovements(props?.movements);
     getCancelationType();
-    getJourneyDeadline();
   }, [props.movements]);
 
   React.useEffect(() => {
-    if (filter !== "")
-      setMovements(props?.movements?.filter((item) => item.status === filter));
-    else setMovements(props?.movements);
-  }, [filter]);
-
-  const getJourneyDeadline = () => {
-    if (movements) {
-      let deadlineMoves = movements.filter((i) => i.journeyDeadline);
-      let journeyDeadline =
-        deadlineMoves?.length > 0 &&
-        deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-          ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-          : undefined;
-      setJourneyDeadline(journeyDeadline);
-    }
-  };
+    let movementsData = [...props.movements];
+    movementsData = movementsData?.filter((item, index) => {
+      if (from !== "" && to !== "") {
+        if (item.status === to && index === 0) return item;
+        else if (
+          item.status === to &&
+          index > 0 &&
+          props.movements[index - 1].status === from
+        )
+          return item;
+      } else if (from === "" && to !== "" && item.status === to) return item;
+      else if (
+        to === "" &&
+        from !== "" &&
+        index > 0 &&
+        props.movements[index - 1].status === from
+      )
+        return item;
+      else if (from === "" && to === "") return item;
+    });
+    setMovements(movementsData);
+  }, [from, to]);
 
   const getCancelationType = () => {
     let cMoves = props?.movements.map((item, index) => {
@@ -137,23 +141,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Task Journey
           </Typography>
         </Box>
-        {filter !== "" && (
-          <Box sx={{ float: "left", m: 0.5 }}>
-            <Typography
-              sx={{
-                background: "#9EA19B",
-                color: "black",
-                p: 0.5,
-                borderRadius: "5px",
-                fontWeight: 500,
-                fontSize: 12,
-                height: "24px",
-              }}
-            >
-              {movements?.length}
-            </Typography>
-          </Box>
-        )}
         {props?.movements?.filter((item) => item?.status === "Not Clear")
           ?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
@@ -386,6 +373,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           </Timeline>
         </Grid>
         <Grid item xs={2} height={"87%"}>
+          <Typography fontWeight={"bold"} fontSize={12}>
+            From
+          </Typography>
           <List>
             {[
               "Tasks Board",
@@ -396,15 +386,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               "Done",
               "Cancled",
             ].map((item) => {
-              let count =
-                filter !== "" && props.movements
-                  ? props?.movements?.filter(
-                      (move, index) =>
-                        props.movements[index + 1] &&
-                        props.movements[index + 1]?.status === filter &&
-                        move.status === item
-                    )?.length
-                  : 0;
               return (
                 <ListItem
                   key={item}
@@ -414,17 +395,53 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                     cursor: "pointer",
                     justifyContent: "space-between",
                   }}
-                  onClick={() =>
-                    filter !== item ? setFilter(item) : setFilter("")
-                  }
+                  onClick={() => (from !== item ? setFrom(item) : setFrom(""))}
                 >
                   <Typography
                     fontSize="10px"
-                    color={filter === item ? "#ffc500" : "#7c828c"}
+                    color={from === item ? "#ffc500" : "#7c828c"}
                   >
                     {item}
                   </Typography>
-                  {count !== 0 && (
+                </ListItem>
+              );
+            })}
+          </List>
+
+          <Typography fontWeight={"bold"} fontSize={12}>
+            To
+          </Typography>
+
+          <List>
+            {[
+              "Tasks Board",
+              "Not Clear",
+              "In Progress",
+              "Review",
+              "Shared",
+              "Done",
+              "Cancled",
+            ].map((item) => {
+              let count = movements && item === to ? movements?.length : 0;
+
+              return (
+                <ListItem
+                  key={item}
+                  sx={{
+                    px: 1,
+                    py: 0.5,
+                    cursor: "pointer",
+                    justifyContent: "space-between",
+                  }}
+                  onClick={() => (to !== item ? setTo(item) : setTo(""))}
+                >
+                  <Typography
+                    fontSize="10px"
+                    color={to === item ? "#ffc500" : "#7c828c"}
+                  >
+                    {item}
+                  </Typography>
+                  {item === to && (
                     <Typography
                       textAlign={"center"}
                       bgcolor={"#9ea1a7"}
