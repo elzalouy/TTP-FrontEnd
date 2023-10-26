@@ -70,6 +70,10 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   const [cancelType, setCancelType] = React.useState<string[]>([]);
 
   React.useEffect(() => {
+    setFrom("");
+    setTo("");
+  }, [props.movements, props.journeyIndex]);
+  React.useEffect(() => {
     setMovements(props?.movements);
     getCancelationType();
   }, [props.movements]);
