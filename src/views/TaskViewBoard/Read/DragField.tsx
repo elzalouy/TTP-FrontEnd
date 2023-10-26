@@ -226,6 +226,7 @@ const DragField = (props: DragFieldProps) => {
                   droppableId={columnId}
                   key={columnId}
                   direction="horizontal"
+                  ignoreContainerClipping
                 >
                   {(provided, snapshot) => {
                     let CreateTask: React.FC = column.NewTask
