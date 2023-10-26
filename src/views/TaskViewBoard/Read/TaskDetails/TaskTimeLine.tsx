@@ -96,8 +96,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       movementsData = movementsData.filter(
         (i) =>
           i.status === to &&
-          ((i.index > 0 && props.movements[i.index - 1].status === from) ||
-            i.index === 0)
+          i.index > 0 &&
+          props.movements[i.index - 1].status === from
       );
     }
     console.log({ movementsDataAfter: movementsData });
