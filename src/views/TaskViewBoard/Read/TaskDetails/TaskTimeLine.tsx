@@ -79,26 +79,28 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   }, [props.movements]);
 
   React.useEffect(() => {
-    let movementsData = [...props.movements];
-    movementsData = movementsData?.filter((item, index) => {
-      if (from !== "" && to !== "") {
-        if (item.status === to && index === 0) return item;
-        else if (
-          item.status === to &&
-          index > 0 &&
-          props.movements[index - 1].status === from
-        )
-          return item;
-      } else if (from === "" && to !== "" && item.status === to) return item;
-      else if (
-        to === "" &&
-        from !== "" &&
-        index > 0 &&
-        props.movements[index - 1].status === from
-      )
-        return item;
-      else if (from === "" && to === "") return item;
+    let movementsData = [...props.movements].map((i, index) => {
+      return { ...i, index };
     });
+    console.log({ movementsData });
+    if (from !== "" && to === "") {
+      console.log("from");
+      movementsData = movementsData.filter(
+        (i) => i.index > 0 && props.movements[i.index - 1].status === from
+      );
+    } else if (from === "" && to !== "") {
+      console.log("to");
+      movementsData = movementsData.filter((i) => i.status === to);
+    } else if (from !== "" && to !== "") {
+      console.log("to and from");
+      movementsData = movementsData.filter(
+        (i) =>
+          i.status === to &&
+          ((i.index > 0 && props.movements[i.index - 1].status === from) ||
+            i.index === 0)
+      );
+    }
+    console.log({ movementsDataAfter: movementsData });
     setMovements(movementsData);
   }, [from, to]);
 
@@ -445,7 +447,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                   >
                     {item}
                   </Typography>
-                  {item === to && (
+                  {item === to && from !== "" && (
                     <Typography
                       textAlign={"center"}
                       bgcolor={"#9ea1a7"}
