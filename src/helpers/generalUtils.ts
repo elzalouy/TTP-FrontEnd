@@ -380,6 +380,34 @@ export const getTaskJournies = (task: ITaskInfo) => {
   return { id: task._id, name: task.name, journies };
 };
 
+export const getDiff = (
+  start: string,
+  end: string,
+  movements: TaskMovement[]
+) => {
+  let lastMoves = movements?.filter((item) => item.status === end);
+  let firstMove = movements?.find((item) => item.status === start);
+  let lMove = lastMoves[lastMoves?.length - 1];
+  if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
+    return getDifBetweenDates(
+      new Date(firstMove.movedAt),
+      new Date(lMove.movedAt)
+    );
+  } else
+    return {
+      isLate: false,
+      difference: {
+        years: 0,
+        months: 0,
+        days: 0,
+        mins: 0,
+        hours: 0,
+      },
+      remainingDays: 0,
+      totalHours: 0,
+    };
+};
+
 export function getRandomColor(colors: string[]): {
   color: string;
   borderColor: string;

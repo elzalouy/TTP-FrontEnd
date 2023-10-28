@@ -147,6 +147,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           <TaskFooter
             journies={state.journiesMovements.length}
             onSelectJourney={onSelectJourney}
+            movements={task.movements}
           />
         </Grid>
       </Grid>

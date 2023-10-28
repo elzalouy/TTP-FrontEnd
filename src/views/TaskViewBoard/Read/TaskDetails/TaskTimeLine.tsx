@@ -9,7 +9,7 @@ import { timelineOppositeContentClasses } from "@mui/lab/TimelineOppositeContent
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { TaskMovement } from "src/types/models/Projects";
 import { format } from "date-fns";
-import { getDifBetweenDates } from "src/helpers/generalUtils";
+import { getDifBetweenDates, getDiff } from "src/helpers/generalUtils";
 import CircleIcon from "@mui/icons-material/Circle";
 
 type TaskStatusTimlineProps = {
@@ -19,30 +19,6 @@ type TaskStatusTimlineProps = {
   allMovementsOfTask: TaskMovement[];
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
-
-const getDiff = (start: string, end: string, movements: TaskMovement[]) => {
-  let lastMoves = movements?.filter((item) => item.status === end);
-  let firstMove = movements?.find((item) => item.status === start);
-  let lMove = lastMoves[lastMoves?.length - 1];
-  if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
-    return getDifBetweenDates(
-      new Date(firstMove.movedAt),
-      new Date(lMove.movedAt)
-    );
-  } else
-    return {
-      isLate: false,
-      difference: {
-        years: 0,
-        months: 0,
-        days: 0,
-        mins: 0,
-        hours: 0,
-      },
-      remainingDays: 0,
-      totalHours: 0,
-    };
-};
 
 const JourneyDuration = (
   start: string,
@@ -68,6 +44,25 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   const [to, setTo] = React.useState("");
 
   const [cancelType, setCancelType] = React.useState<string[]>([]);
+  const [isMissedDelivery, setIsMissedDelivery] = React.useState(false);
+
+  React.useEffect(() => {
+    if (movements) {
+      let deadlineMoves = movements.filter((i) => i.journeyDeadline);
+      let journeyDeadline =
+        deadlineMoves?.length > 0 &&
+        deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+          : undefined;
+      if (journeyDeadline) {
+        let dif = getDifBetweenDates(
+          new Date(Date.now()),
+          new Date(journeyDeadline)
+        );
+        setIsMissedDelivery(dif.isLate && dif.totalHours > 6);
+      } else setIsMissedDelivery(false);
+    }
+  }, [props.movements]);
 
   React.useEffect(() => {
     setFrom("");
@@ -87,7 +82,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
     let movementsData = [...props.movements].map((i, index) => {
       return { ...i, index };
     });
-    console.log({ movementsData });
     if (from !== "" && to === "")
       movementsData = movementsData.filter(
         (i) =>
@@ -131,32 +125,16 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   const isNasty = () => {
     const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
-    let moves = props.movements;
-    if (moves.length > 0 && props.allMovementsOfTask) {
-      let prevMoveIndex = props.allMovementsOfTask.findIndex(
-        (i) => i._id === moves[0]._id
-      );
-      let nextMoveIndex = props.allMovementsOfTask.findIndex(
-        (i) => i._id === moves[moves.length - 1]._id
-      );
-      let prevMove =
-        prevMoveIndex - 1 ? props.allMovementsOfTask[prevMoveIndex] : null;
-      let nextMove =
-        nextMoveIndex + 1 < props.allMovementsOfTask.length
-          ? props.allMovementsOfTask[nextMoveIndex + 1]
-          : null;
-      moves = prevMove ? [prevMove, ...moves] : moves;
-      moves = nextMove ? [...moves, nextMove] : moves;
-      let Moves = moves.map((i, index) => {
-        return { ...i, index: index };
-      });
-      moves = Moves.filter(
-        (item) =>
-          status.includes(item?.status) &&
-          props.movements[item.index + 1]?.status === "Tasks Board"
-      );
-      return moves.length;
-    } else return 0;
+    let moves = props.allMovementsOfTask;
+    let Moves = moves.map((i, index) => {
+      return { ...i, index: index };
+    });
+    moves = Moves.filter(
+      (item) =>
+        status.includes(item?.status) &&
+        props.movements[item.index + 1]?.status === "Tasks Board"
+    );
+    return moves.length;
   };
 
   return (
@@ -228,6 +206,22 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               }}
             >
               Disturbed
+            </Typography>
+          </Box>
+        )}
+        {isMissedDelivery && (
+          <Box sx={{ float: "left", m: 0.5 }}>
+            <Typography
+              sx={{
+                background: "#f1cbcc",
+                borderRadius: "5px",
+                color: "black",
+                fontWeight: 500,
+                fontSize: "12px",
+                p: "4px",
+              }}
+            >
+              Missed Delivery
             </Typography>
           </Box>
         )}

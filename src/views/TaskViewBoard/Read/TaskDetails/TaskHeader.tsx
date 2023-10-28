@@ -4,8 +4,6 @@ import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
 import CloseIcon from "@mui/icons-material/Close";
 import { Task, TaskMovement } from "src/types/models/Projects";
-import { selectManagers } from "src/models/Managers";
-import { useAppSelector } from "src/models/hooks";
 import { getDifBetweenDates } from "src/helpers/generalUtils";
 
 interface TaskHeaderProps {
@@ -18,7 +16,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
   const [journeyDeadline, setJourneyDeadline] = useState<string | undefined>(
     undefined
   );
-  const [isMissedDelivery, setIsMissedDelivery] = useState(false);
+  const [isNastyTask, setIsNastyTask] = useState(false);
 
   useEffect(() => {
     if (movements) {
@@ -34,10 +32,29 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
           new Date(Date.now()),
           new Date(journeyDeadline)
         );
-        setIsMissedDelivery(dif.isLate && dif.totalHours > 6);
-      } else setIsMissedDelivery(false);
+      }
     }
   }, [movements]);
+
+  useEffect(() => {
+    if (movements) {
+      isNasty();
+    }
+  }, [task, task.movements]);
+
+  const isNasty = () => {
+    const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
+    let moves = task.movements;
+    let Moves = moves.map((i, index) => {
+      return { ...i, index: index };
+    });
+    moves = Moves.filter(
+      (item) =>
+        status.includes(item?.status) &&
+        task.movements[item.index + 1]?.status === "Tasks Board"
+    );
+    return moves.length;
+  };
 
   return (
     <Grid
@@ -179,7 +196,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
           </>
         )}
 
-        {isMissedDelivery && (
+        {isNastyTask && (
           <>
             <Divider
               orientation="vertical"
@@ -205,7 +222,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
                   height: "auto",
                 }}
               >
-                Missed Delivery
+                Nasty Task
               </Typography>
             </Box>
           </>

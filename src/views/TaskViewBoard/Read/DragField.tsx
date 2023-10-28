@@ -219,14 +219,13 @@ const DragField = (props: DragFieldProps) => {
         ref={containerRef}
       >
         <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-          <Box sx={{ display: "flex", width: "100%" }}>
+          <Box sx={{ display: "flex", width: "calc(100% + 20px)" }}>
             {Object.entries(columns).map(([columnId, column], index) => {
               return (
                 <Droppable
                   droppableId={columnId}
                   key={columnId}
                   direction="horizontal"
-                  ignoreContainerClipping
                 >
                   {(provided, snapshot) => {
                     let CreateTask: React.FC = column.NewTask
@@ -239,7 +238,6 @@ const DragField = (props: DragFieldProps) => {
                         ref={provided.innerRef}
                         className={column?.body}
                         key={columnId}
-                        xs
                         minWidth={"312px"}
                         height="auto"
                         data-test-id="task-card-container"
