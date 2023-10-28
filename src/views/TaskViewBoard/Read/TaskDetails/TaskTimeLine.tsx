@@ -131,15 +131,32 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   const isNasty = () => {
     const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
-    let moves = props.movements.map((item, index) => {
-      return { ...item, index };
-    });
-    moves = moves.filter(
-      (item) =>
-        status.includes(item?.status) &&
-        props.movements[item.index + 1]?.status === "Tasks Board"
-    );
-    return moves.length;
+    let moves = props.movements;
+    if (moves.length > 0 && props.allMovementsOfTask) {
+      let prevMoveIndex = props.allMovementsOfTask.findIndex(
+        (i) => i._id === moves[0]._id
+      );
+      let nextMoveIndex = props.allMovementsOfTask.findIndex(
+        (i) => i._id === moves[moves.length - 1]._id
+      );
+      let prevMove =
+        prevMoveIndex - 1 ? props.allMovementsOfTask[prevMoveIndex] : null;
+      let nextMove =
+        nextMoveIndex + 1 < props.allMovementsOfTask.length
+          ? props.allMovementsOfTask[nextMoveIndex + 1]
+          : null;
+      moves = prevMove ? [prevMove, ...moves] : moves;
+      moves = nextMove ? [...moves, nextMove] : moves;
+      let Moves = moves.map((i, index) => {
+        return { ...i, index: index };
+      });
+      moves = Moves.filter(
+        (item) =>
+          status.includes(item?.status) &&
+          props.movements[item.index + 1]?.status === "Tasks Board"
+      );
+      return moves.length;
+    } else return 0;
   };
 
   return (
@@ -230,7 +247,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {isNasty() > 0 && (
+        {isNasty() >= 2 && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
