@@ -1,6 +1,6 @@
 {
-  "API_BASE_URL": "https://ttp-beta.herokuapp.com/api/",
-  "SOCKET_BASE_URL": "https://ttp-beta.herokuapp.com",
-  "API_DEV_URL": "https://ttp-back-v1.herokuapp.com/api/",
-  "SOCKET_DEV_URL": "https://ttp-back-v1.herokuapp.com/"
+  "API_BASE_URL": "https://ttp-back-v1.herokuapp.com/api/",
+  "SOCKET_BASE_URL": "https://ttp-back-v1.herokuapp.com",
+  "API_DEV_URL": "http://localhost:5000/api/",
+  "SOCKET_DEV_URL": "http://localhost:5000/"
 }
