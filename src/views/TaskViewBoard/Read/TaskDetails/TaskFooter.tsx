@@ -19,9 +19,47 @@ const TaskFooter: FC<TaskFooterProps> = ({
     setPage(value);
     onSelectJourney(value);
   };
+  const [fulfillment, setFulfillment] = useState(0);
+  const [revisiting, setRevisiting] = useState(0);
+  const [comments, setComments] = useState(0);
+  const [revived, setRevived] = useState(0);
 
   useEffect(() => {
     setPage(1);
+    let fulfillmentTimes = movements.filter((i, index) => {
+      if (
+        i.status === "Review" &&
+        movements[index + 1] &&
+        movements[index + 1].status === "Tasks Board"
+      )
+        return i;
+    });
+    let commentsTimes = movements.filter((i, index) => {
+      if (
+        i.status === "Shared" &&
+        movements[index + 1] &&
+        movements[index + 1].status === "Tasks Board"
+      )
+        return i;
+    });
+    let revisitingTimes = movements.filter(
+      (i, index) =>
+        i.status === "Done" &&
+        movements[index + 1] &&
+        movements[index + 1].status === "Tasks Board"
+    );
+    let revivedTimes = movements.filter((i, index) => {
+      if (
+        i.status === "Cancled" &&
+        movements[index + 1] &&
+        movements[index + 1].status === "Tasks Board"
+      )
+        return i;
+    });
+    setFulfillment(fulfillmentTimes.length);
+    setRevisiting(revisitingTimes.length);
+    setComments(commentsTimes.length);
+    setRevived(revivedTimes.length);
   }, [movements]);
 
   return (
@@ -37,7 +75,7 @@ const TaskFooter: FC<TaskFooterProps> = ({
           Wrong/Missing Fulfillment times :{" "}
           <Typography color="black" fontSize={"10px"}>
             {" "}
-            0
+            {fulfillment}
           </Typography>
         </Typography>
       </Box>
@@ -53,7 +91,7 @@ const TaskFooter: FC<TaskFooterProps> = ({
           Comments & changes times :{" "}
           <Typography color="black" fontSize={"10px"}>
             {" "}
-            0
+            {comments}
           </Typography>
         </Typography>
       </Box>
@@ -69,7 +107,7 @@ const TaskFooter: FC<TaskFooterProps> = ({
           Revisiting times :{" "}
           <Typography color="black" fontSize={"10px"}>
             {" "}
-            0
+            {revisiting}
           </Typography>
         </Typography>
       </Box>
@@ -85,7 +123,7 @@ const TaskFooter: FC<TaskFooterProps> = ({
           Revived times :{" "}
           <Typography color="black" fontSize={"10px"}>
             {" "}
-            0
+            {revived}
           </Typography>
         </Typography>
       </Box>

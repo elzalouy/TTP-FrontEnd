@@ -43,7 +43,6 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
     State.journiesMovements = journiesMovements;
     State.selected = State.journiesMovements[0];
     State.selectedIndex = 0;
-    console.log({ journies });
     setState(State);
   }, [task]);
 

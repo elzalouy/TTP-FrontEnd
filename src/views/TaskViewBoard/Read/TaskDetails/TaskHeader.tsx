@@ -38,7 +38,8 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
 
   useEffect(() => {
     if (movements) {
-      isNasty();
+      let numberOfNastyActions = isNasty();
+      setIsNastyTask(numberOfNastyActions >= 2 ? true : false);
     }
   }, [task, task.movements]);
 
@@ -149,12 +150,6 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
               : "Not Set"}
           </Typography>
         </Box>
-        <Divider
-          orientation="vertical"
-          variant="inset"
-          flexItem
-          sx={{ mx: 2 }}
-        />
         {journeyDeadline && (
           <>
             <Divider
@@ -195,7 +190,6 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
             </Box>
           </>
         )}
-
         {isNastyTask && (
           <>
             <Divider

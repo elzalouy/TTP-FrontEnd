@@ -47,27 +47,30 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   const [isMissedDelivery, setIsMissedDelivery] = React.useState(false);
 
   React.useEffect(() => {
-    if (movements) {
+    if (movements && movements.length > 0) {
       let deadlineMoves = movements.filter((i) => i.journeyDeadline);
       let journeyDeadline =
         deadlineMoves?.length > 0 &&
         deadlineMoves[deadlineMoves.length - 1].journeyDeadline
           ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
           : undefined;
-      if (journeyDeadline) {
+      let lastMovementAt = new Date(movements[movements.length - 1]?.movedAt);
+
+      if (journeyDeadline && lastMovementAt) {
         let dif = getDifBetweenDates(
-          new Date(Date.now()),
-          new Date(journeyDeadline)
+          new Date(lastMovementAt),
+          new Date(new Date(journeyDeadline))
         );
-        setIsMissedDelivery(dif.isLate && dif.totalHours > 6);
+        setIsMissedDelivery(dif.isLate);
       } else setIsMissedDelivery(false);
     }
-  }, [props.movements]);
+  }, [movements]);
 
   React.useEffect(() => {
     setFrom("");
     setTo("");
   }, [props.movements, props.journeyIndex]);
+
   React.useEffect(() => {
     setMovements(props?.movements);
     getCancelationType();
