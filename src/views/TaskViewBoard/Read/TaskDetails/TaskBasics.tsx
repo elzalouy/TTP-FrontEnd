@@ -6,7 +6,14 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
 import UpdateIcon from "@mui/icons-material/Update";
-import { getDifBetweenDates } from "src/helpers/generalUtils";
+import {
+  getTaskLeadtTime,
+  getDifBetweenDates,
+  taskProcessingTime,
+  taskSchedulingTime,
+  turnAroundTime,
+  totalUnClearTime,
+} from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
@@ -15,13 +22,6 @@ import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import _ from "lodash";
 import { Task, TaskMovement } from "src/types/models/Projects";
 
-let initialDifferenceBetweenDates = {
-  isLate: false,
-  difference: { days: 0, hours: 0, mins: 0 },
-  remainingDays: 0,
-  totalMins: 0,
-  totalHours: 0,
-};
 interface TaskBasicsProps {
   task: Task;
   movements: TaskMovement[];
@@ -76,147 +76,14 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
       taskMovements,
       taskBoard,
       statitics: {
-        taskLeadTime: TaskLeadTime(),
-        taskProcessingTime: taskProcessingTime(),
-        turnAroundTime: turnAroundTime(),
-        unClearTime: unClearTime(),
-        taskSchedulingTime: taskSchedulingTime(),
+        taskLeadTime: getTaskLeadtTime(movements),
+        taskProcessingTime: taskProcessingTime(movements),
+        turnAroundTime: turnAroundTime(movements),
+        unClearTime: totalUnClearTime(movements),
+        taskSchedulingTime: taskSchedulingTime(movements),
       },
     });
   }, [task, movements]);
-
-  const TaskLeadTime = () => {
-    let sharedMovemens = movements.filter((item) => item.status === "Shared");
-    let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
-    let start = movements.length > 0 ? movements[0]?.movedAt : null;
-    if (end && start) {
-      return getDifBetweenDates(new Date(start), new Date(end));
-    } else return initialDifferenceBetweenDates;
-  };
-
-  /**
-   * taskProcessingTime
-   * 
-    * It is necessary to move the task to the "inProgress" stage at least once.
-      The processing time of the task can be calculated regardless of whether it has been moved to the "Shared" stage or not.
-      However, when calculating the total processing time, only the last time the task was moved to the "Shared" stage should be taken into account
- * @returns  number
- */
-
-  const taskProcessingTime = () => {
-    let inProgress = movements?.find(
-      (item: TaskMovement) => item.status === "In Progress"
-    );
-    let sharedMove = _.findLast(movements, (item: TaskMovement) => {
-      return item.status === "Shared";
-    });
-    if (inProgress) {
-      return getDifBetweenDates(
-        new Date(inProgress.movedAt),
-        sharedMove ? new Date(sharedMove.movedAt) : new Date(Date.now())
-      );
-    }
-    return null;
-  };
-
-  const taskSchedulingTime = () => {
-    let inProgressMove = movements?.find(
-      (item) => item.status === "In Progress"
-    );
-    let taskBoardMoveDate =
-      movements.length > 0 && movements[0].status === "Tasks Board"
-        ? movements[0].movedAt
-        : null;
-    if (inProgressMove && taskBoardMoveDate) {
-      return getDifBetweenDates(
-        new Date(taskBoardMoveDate),
-        new Date(inProgressMove.movedAt)
-      );
-    } else return null;
-  };
-
-  const unClearTime = () => {
-    // how many times task moved to notClear
-    let times = movements?.filter(
-      (item) => item.status === "Not Clear"
-    )?.length;
-    let total = { hours: 0 };
-    movements.forEach((item, index) => {
-      if (item.status === "Not Clear") {
-        let nextMove = movements[index + 1];
-        let dif = getDifBetweenDates(
-          new Date(item.movedAt),
-          nextMove ? new Date(nextMove.movedAt) : new Date(Date.now())
-        );
-        total.hours += dif.totalHours;
-      }
-    });
-    return { times, ...total };
-  };
-
-  /**
-   * turnArountTime()
-   *
-   *
-   * the time this task took from “Not Clear” to “In Progress”
-   * (from the first “Not Clear”to last “In Progress”   before any movement from “shared” or "Done” or “Cancelled” to “Task board“ because after it is counted a new journey) directly or not
-   * @returns {} hours, times
-   */
-  const turnAroundTime = () => {
-    let notClearMovements: TaskMovement[],
-      firstNotClear: TaskMovement | null,
-      inProgressMovements: TaskMovement[],
-      lastInProgressMove: TaskMovement;
-    notClearMovements = movements.filter((i) => i.status === "Not Clear");
-    firstNotClear = notClearMovements.length > 0 ? notClearMovements[0] : null;
-    inProgressMovements = movements.filter((i) => i.status === "In Progress");
-    lastInProgressMove = inProgressMovements[inProgressMovements.length - 1];
-    if (firstNotClear && lastInProgressMove) {
-      let dif = getDifBetweenDates(
-        new Date(firstNotClear.movedAt),
-        new Date(lastInProgressMove.movedAt)
-      ).totalHours;
-      return {
-        hours: dif,
-        times: notClearMovements.length,
-      };
-    } else return { hours: 0, times: 0 };
-  };
-
-  const TaskState = () => {
-    return (
-      <>
-        {["Done", "Cancled", "Shared"].includes(task.status) ? (
-          <Typography
-            sx={{
-              width: "35px",
-              fontSize: "12px",
-              borderRadius: 10,
-              background: "#ffc500",
-              color: "white",
-              fontWeight: "700",
-              textAlign: "center",
-              mb: 0.5,
-              ml: 1,
-            }}
-          >
-            100%
-          </Typography>
-        ) : (
-          <NorthIcon
-            htmlColor="#fc164f"
-            sx={{
-              fontSize: "0.8rem",
-              mb: 1,
-              width: "1em",
-              ml: "10px",
-              fontWeight: "600",
-            }}
-          />
-        )}
-      </>
-    );
-  };
 
   return (
     <Grid sx={{ height: "100%", p: 3, overflowY: "scroll" }}>
@@ -633,7 +500,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
                     color: "#FF0000",
                   }}
                 >
-                  {turnAroundTime().times} times
+                  {state.statitics.turnAroundTime.times} times
                 </Typography>
               ) : (
                 <></>

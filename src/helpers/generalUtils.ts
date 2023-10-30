@@ -409,6 +409,106 @@ export const getDiff = (
     };
 };
 
+export const getTaskLeadtTime = (movements: TaskMovement[]) => {
+  let sharedMovemens = movements.filter((item) => item.status === "Shared");
+  let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
+  let start = movements.length > 0 ? movements[0]?.movedAt : null;
+  if (end && start) {
+    return getDifBetweenDates(new Date(start), new Date(end));
+  } else return initialDifferenceBetweenDates;
+};
+
+export const taskSchedulingTime = (movements: TaskMovement[]) => {
+  let inProgressMove = movements?.find((item) => item.status === "In Progress");
+  let taskBoardMoveDate =
+    movements.length > 0 && movements[0].status === "Tasks Board"
+      ? movements[0].movedAt
+      : null;
+  if (inProgressMove && taskBoardMoveDate) {
+    return getDifBetweenDates(
+      new Date(taskBoardMoveDate),
+      new Date(inProgressMove.movedAt)
+    );
+  } else return initialDifferenceBetweenDates;
+};
+
+export const totalUnClearTime = (movements: TaskMovement[]) => {
+  // how many times task moved to notClear
+  let times = movements?.filter((item) => item.status === "Not Clear")?.length;
+  let total = { hours: 0, difference: { days: 0, hours: 0, mins: 0 } };
+  movements.forEach((item, index) => {
+    if (item.status === "Not Clear") {
+      let nextMove = movements[index + 1];
+      let dif = getDifBetweenDates(
+        new Date(item.movedAt),
+        nextMove ? new Date(nextMove.movedAt) : new Date(Date.now())
+      );
+      total.hours += dif.totalHours;
+      total.difference = dif.difference;
+    }
+  });
+  return { times, ...total };
+};
+
+/**
+ * turnArountTime()
+ *
+ *
+ * the time this task took from “Not Clear” to “In Progress”
+ * (from the first “Not Clear”to last “In Progress”   before any movement from “shared” or "Done” or “Cancelled” to “Task board“ because after it is counted a new journey) directly or not
+ * @returns {} hours, times
+ */
+export const turnAroundTime = (movements: TaskMovement[]) => {
+  let notClearMovements: TaskMovement[],
+    firstNotClear: TaskMovement | null,
+    inProgressMovements: TaskMovement[],
+    lastInProgressMove: TaskMovement;
+  notClearMovements = movements.filter((i) => i.status === "Not Clear");
+  firstNotClear = notClearMovements.length > 0 ? notClearMovements[0] : null;
+  inProgressMovements = movements.filter((i) => i.status === "In Progress");
+  lastInProgressMove = inProgressMovements[inProgressMovements.length - 1];
+  if (firstNotClear && lastInProgressMove) {
+    let dif = getDifBetweenDates(
+      new Date(firstNotClear.movedAt),
+      new Date(lastInProgressMove.movedAt)
+    );
+    return {
+      hours: dif.totalHours,
+      difference: dif.difference,
+      times: notClearMovements.length,
+    };
+  } else
+    return {
+      hours: 0,
+      difference: initialDifferenceBetweenDates.difference,
+      times: 0,
+    };
+};
+
+/**
+   * taskProcessingTime
+   * 
+    * It is necessary to move the task to the "inProgress" stage at least once.
+      The processing time of the task can be calculated regardless of whether it has been moved to the "Shared" stage or not.
+      However, when calculating the total processing time, only the last time the task was moved to the "Shared" stage should be taken into account
+ * @returns  number
+ */
+
+export const taskProcessingTime = (movements: TaskMovement[]) => {
+  let inProgress = movements?.find(
+    (item: TaskMovement) => item.status === "In Progress"
+  );
+  let sharedMove = _.findLast(movements, (item: TaskMovement) => {
+    return item.status === "Shared";
+  });
+  if (inProgress) {
+    return getDifBetweenDates(
+      new Date(inProgress.movedAt),
+      sharedMove ? new Date(sharedMove.movedAt) : new Date(Date.now())
+    );
+  } else return initialDifferenceBetweenDates;
+};
+
 export function getRandomColor(colors: string[]): {
   color: string;
   borderColor: string;
@@ -450,6 +550,15 @@ function hslToRgb(h: number, s: number, l: number): number[] {
 
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+export function convertToCSV(data: any[]) {
+  const columns = Object.keys(data[0]);
+  const rows = data.map((obj) => columns.map((column) => obj[column]));
+  const header = columns.join(",");
+  const csvRows = rows.map((row) => row.join(","));
+  return [header, ...csvRows].join("\n");
+}
+
 export const Months = [
   "January",
   "February",
@@ -565,3 +674,11 @@ export const randomColors = [
   [33, 150, 243],
   [255, 87, 34],
 ];
+
+export let initialDifferenceBetweenDates = {
+  isLate: false,
+  difference: { days: 0, hours: 0, mins: 0 },
+  remainingDays: 0,
+  totalMins: 0,
+  totalHours: 0,
+};

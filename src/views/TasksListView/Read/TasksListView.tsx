@@ -16,9 +16,13 @@ import {
   selectAllProjects,
   selectProjectOptions,
 } from "../../../models/Projects";
-import { ProjectsInterface, Task } from "../../../types/models/Projects";
+import {
+  Project,
+  ProjectsInterface,
+  Task,
+} from "../../../types/models/Projects";
 import "./TasksListView.css";
-import { selectPMOptions } from "src/models/Managers";
+import { Manager, selectManagers, selectPMOptions } from "src/models/Managers";
 import { Options } from "src/types/views/Projects";
 import FiltersBar from "./FiltersBar";
 import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
@@ -28,6 +32,23 @@ import EditTasks from "../Edit/EditTasks";
 import { selectRole, selectUser } from "src/models/Auth";
 import DownloadIcon from "@mui/icons-material/Download";
 import { toggleViewTaskPopup } from "src/models/Ui";
+import {
+  convertToCSV,
+  getTaskJournies,
+  getTaskLeadtTime,
+  taskProcessingTime,
+  taskSchedulingTime,
+  totalUnClearTime,
+  turnAroundTime,
+} from "src/helpers/generalUtils";
+import { ITaskInfo } from "src/types/views/Statistics";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
+import { Client, selectAllClients } from "src/models/Clients";
+import _ from "lodash";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
@@ -82,16 +103,40 @@ const defaultValues: filterType = {
   createdAt: "",
   boardId: "",
 };
+type TaskJourniesDetails = {
+  id: string;
+  name: string;
+  journeyIndex: number;
+  projectName: string;
+  clientName: string;
+  categoryName: string;
+  status: string;
+  projectManager: string;
+  startDate: string;
+  dueDate: string;
+  movementsCount: number;
+  journeyLeadTime: string;
+  journeyProcessingTime: string;
+  journeySchedulingTime: string;
+  journeyUnClearCounts: number;
+  journeyUnClearTime: string;
+  journeyTurnAroundTime: string;
+};
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const clients = useAppSelector(selectAllClients);
+  const managers = useAppSelector(selectManagers);
+  const categories = useAppSelector(selectAllCategories);
   const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
-
+  const [tasksJourniesDetails, setTasksJourniesDetails] = React.useState<
+    TaskJourniesDetails[]
+  >([]);
   const { watch, control, setValue, reset } = useForm({
     defaultValues: defaultValues,
   });
@@ -106,6 +151,75 @@ export const TasksListView: React.FC<Props> = (props) => {
   });
   const [Show, setShow] = React.useState("none");
 
+  React.useEffect(() => {
+    if (selects && selects.length > 0) {
+      let task: Task | undefined,
+        project: Project | undefined,
+        category: Category | undefined,
+        subCategory: SubCategory | undefined,
+        client: Client | undefined,
+        projectManager: Manager | undefined;
+      let tasksJourniesDetails = _.flattenDeep(
+        selects.map((id) => {
+          task = state.tasks.find((task) => task._id === id);
+          if (task) {
+            project = projects.projects.find(
+              (project) => project._id === task?.projectId
+            );
+            category = categories.find(
+              (category) => category._id === task?.categoryId
+            );
+            subCategory = category?.selectedSubCategory.find(
+              (sub) => sub._id === task?.subCategoryId
+            );
+            client = clients.find((client) => client._id === project?.clientId);
+            projectManager = managers.find(
+              (pm) => pm._id === project?.projectManager
+            );
+            let taskInfo: ITaskInfo = {
+              ...task,
+              clientId: client?._id,
+              projectManager: projectManager?._id,
+            };
+            let journies = getTaskJournies(taskInfo).journies;
+            let taskJourniesDetails = journies.map((journey, index) => {
+              let leadTime = getTaskLeadtTime(journey.movements);
+              let schedulingTime = taskSchedulingTime(journey.movements);
+              let processingTime = taskProcessingTime(journey.movements);
+              let unClear = totalUnClearTime(journey.movements);
+              let turnAround = turnAroundTime(journey.movements);
+
+              let journeyDetails: TaskJourniesDetails = {
+                id: taskInfo._id,
+                name: taskInfo.name,
+                journeyIndex: index + 1,
+                projectName: project?.name ?? "",
+                clientName: client?.clientName ?? "",
+                categoryName: category?.category ?? "",
+                status: taskInfo.status ?? "",
+                projectManager: projectManager?.name ?? "",
+                startDate: taskInfo.start ?? "",
+                dueDate: journey.journeyDeadline
+                  ? new Date(journey.journeyDeadline).toLocaleDateString()
+                  : "",
+                movementsCount: journey.movements.length,
+                journeyLeadTime: `${leadTime.difference.days}D / ${leadTime.difference.hours}H / ${leadTime.difference.mins}M`,
+                journeyProcessingTime: `${processingTime.difference.days}D / ${processingTime.difference.hours}H / ${processingTime.difference.mins}M`,
+                journeySchedulingTime: `${schedulingTime.difference.days}D / ${schedulingTime.difference.hours}H / ${schedulingTime.difference.mins}M`,
+                journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
+                journeyUnClearCounts: unClear.times,
+                journeyTurnAroundTime: `${turnAround.difference.days}D / ${turnAround.difference.hours}H / ${turnAround.difference.hours}H / ${turnAround.difference.mins}`,
+              };
+              return journeyDetails;
+            });
+            return taskJourniesDetails;
+          } else return [];
+        })
+      );
+      setTasksJourniesDetails(tasksJourniesDetails);
+      console.log({ tasksJourniesDetails });
+    }
+  }, [selects]);
   React.useEffect(() => {
     let id = props.match.params?.projectId;
     setValue("projectId", id ?? "");
@@ -209,11 +323,8 @@ export const TasksListView: React.FC<Props> = (props) => {
   // };
 
   const onDownloadTasksFile = () => {
-    dispatch(
-      downloadTasks(
-        selects.length > 0 ? selects : state.tasks.map((item) => item._id)
-      )
-    );
+    let data = convertToCSV([...tasksJourniesDetails]);
+    window.open(`data:text/csv;charset=utf-8,${data}`, "_self");
   };
 
   return (

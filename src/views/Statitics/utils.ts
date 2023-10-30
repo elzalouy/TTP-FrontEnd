@@ -24,6 +24,11 @@ export const getJourneyLeadTime = (journey: Journey) => {
   return journeyLeadTime;
 };
 
+/**
+ * Get Journey review time,
+ * @param journey Journey
+ * @returns number
+ */
 export const getJourneyReviewTime = (journey: Journey) => {
   let journeyReviewTime = 0;
   let reviewIndex = journey.movements.findIndex((i) => i.status === "Review");
