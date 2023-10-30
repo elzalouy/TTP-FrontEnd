@@ -34,8 +34,12 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { toggleViewTaskPopup } from "src/models/Ui";
 import {
   convertToCSV,
+  getCancelationType,
+  getDiff,
   getTaskJournies,
   getTaskLeadtTime,
+  initialDifferenceBetweenDates,
+  isMissedDelivery,
   taskProcessingTime,
   taskSchedulingTime,
   totalUnClearTime,
@@ -121,6 +125,14 @@ type TaskJourniesDetails = {
   journeyUnClearCounts: number;
   journeyUnClearTime: string;
   journeyTurnAroundTime: string;
+  journeyFullfilment: string;
+  journeyDelivery: string;
+  journeyClosing: string;
+  journeyCanceled: boolean;
+  journeyDisturbed: boolean;
+  journeyFlagged: boolean;
+  journeyLateScheduling: boolean;
+  missedDelivery: boolean;
 };
 
 export const TasksListView: React.FC<Props> = (props) => {
@@ -188,6 +200,16 @@ export const TasksListView: React.FC<Props> = (props) => {
               let processingTime = taskProcessingTime(journey.movements);
               let unClear = totalUnClearTime(journey.movements);
               let turnAround = turnAroundTime(journey.movements);
+              let fulfillment = getDiff(
+                "In Progress",
+                "Review",
+                journey.movements
+              );
+
+              let delivery = getDiff("Review", "Shared", journey.movements);
+              let closing = getDiff("Shared", "Done", journey.movements);
+              let cancelMoves = getCancelationType(journey.movements);
+              let missedDelivery = isMissedDelivery(journey.movements);
 
               let journeyDetails: TaskJourniesDetails = {
                 id: taskInfo._id,
@@ -209,6 +231,15 @@ export const TasksListView: React.FC<Props> = (props) => {
                 journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
                 journeyUnClearCounts: unClear.times,
                 journeyTurnAroundTime: `${turnAround.difference.days}D / ${turnAround.difference.hours}H / ${turnAround.difference.hours}H / ${turnAround.difference.mins}`,
+                journeyFullfilment: `${fulfillment.difference.days}D / ${fulfillment.difference.hours}H / ${fulfillment.difference.hours}H / ${fulfillment.difference.mins}`,
+                journeyDelivery: `${delivery.difference.days}D / ${delivery.difference.hours}H / ${delivery.difference.hours}H / ${delivery.difference.mins}`,
+                journeyClosing: `${closing.difference.days}D / ${closing.difference.hours}H / ${closing.difference.hours}H / ${closing.difference.mins}`,
+                journeyCanceled: cancelMoves.includes("Canceled"),
+                journeyDisturbed: cancelMoves.includes("Disturbed"),
+                journeyFlagged: cancelMoves.includes("Flagged"),
+                journeyLateScheduling:
+                  schedulingTime.difference.days > 0 ? true : false,
+                missedDelivery: missedDelivery,
               };
               return journeyDetails;
             });

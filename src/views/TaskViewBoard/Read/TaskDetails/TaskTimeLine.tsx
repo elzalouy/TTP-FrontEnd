@@ -9,7 +9,11 @@ import { timelineOppositeContentClasses } from "@mui/lab/TimelineOppositeContent
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { TaskMovement } from "src/types/models/Projects";
 import { format } from "date-fns";
-import { getDifBetweenDates, getDiff } from "src/helpers/generalUtils";
+import {
+  getCancelationType,
+  getDifBetweenDates,
+  getDiff,
+} from "src/helpers/generalUtils";
 import CircleIcon from "@mui/icons-material/Circle";
 
 type TaskStatusTimlineProps = {
@@ -73,7 +77,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
 
   React.useEffect(() => {
     setMovements(props?.movements);
-    getCancelationType();
+    let result = getCancelationType(props.movements);
+    setCancelType(result);
   }, [props.movements]);
 
   React.useEffect(() => {
@@ -103,28 +108,6 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       );
     setMovements(movementsData);
   }, [from, to]);
-
-  const getCancelationType = () => {
-    let cMoves = props?.movements.map((item, index) => {
-      if (
-        item.status === "Cancled" &&
-        props?.movements[index - 1].status === "Tasks Board"
-      )
-        return "Canceled";
-      else if (
-        item.status === "Cancled" &&
-        props?.movements[index - 1].status === "In Progress"
-      )
-        return "Disturbed";
-      else if (
-        item.status === "Cancled" &&
-        ["Review", "Shared"].includes(props?.movements[index - 1]?.status)
-      )
-        return "Flagged";
-      else return "";
-    });
-    setCancelType(cMoves);
-  };
 
   const isNasty = () => {
     const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];

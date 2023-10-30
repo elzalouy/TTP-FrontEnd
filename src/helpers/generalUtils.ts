@@ -59,6 +59,7 @@ export const getDifBetweenDates = (start: Date, end: Date) => {
   const totalHours = diffInDays * 24 + diffInHours;
   const totalMins = Math.floor(diffInMs / 60000);
   return {
+    nullable: false,
     isLate: d2 > d1 ? false : true,
     difference: { days: diffInDays, hours: diffInHours, mins: diffInMinutes },
     remainingDays,
@@ -381,6 +382,28 @@ export const getTaskJournies = (task: ITaskInfo) => {
   return { id: task._id, name: task.name, journies };
 };
 
+export const getCancelationType = (movements: TaskMovement[]) => {
+  let cMoves = movements.map((item, index) => {
+    if (
+      item.status === "Cancled" &&
+      movements[index - 1].status === "Tasks Board"
+    )
+      return "Canceled";
+    else if (
+      item.status === "Cancled" &&
+      movements[index - 1].status === "In Progress"
+    )
+      return "Disturbed";
+    else if (
+      item.status === "Cancled" &&
+      ["Review", "Shared"].includes(movements[index - 1]?.status)
+    )
+      return "Flagged";
+    else return "";
+  });
+  return cMoves;
+};
+
 export const getDiff = (
   start: string,
   end: string,
@@ -396,6 +419,7 @@ export const getDiff = (
     );
   } else
     return {
+      nullable: true,
       isLate: false,
       difference: {
         years: 0,
@@ -408,7 +432,25 @@ export const getDiff = (
       totalHours: 0,
     };
 };
+export const isMissedDelivery = (movements: TaskMovement[]) => {
+  if (movements && movements.length > 0) {
+    let deadlineMoves = movements.filter((i) => i.journeyDeadline);
+    let journeyDeadline =
+      deadlineMoves?.length > 0 &&
+      deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+        ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
+        : undefined;
+    let lastMovementAt = new Date(movements[movements.length - 1]?.movedAt);
 
+    if (journeyDeadline && lastMovementAt) {
+      let dif = getDifBetweenDates(
+        new Date(lastMovementAt),
+        new Date(new Date(journeyDeadline))
+      );
+      return dif.isLate && dif.totalHours > 24;
+    } else return false;
+  } else return false;
+};
 export const getTaskLeadtTime = (movements: TaskMovement[]) => {
   let sharedMovemens = movements.filter((item) => item.status === "Shared");
   let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
