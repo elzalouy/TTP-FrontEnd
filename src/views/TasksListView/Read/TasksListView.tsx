@@ -53,6 +53,7 @@ import {
 } from "src/models/Categories";
 import { Client, selectAllClients } from "src/models/Clients";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
@@ -354,8 +355,10 @@ export const TasksListView: React.FC<Props> = (props) => {
   // };
 
   const onDownloadTasksFile = () => {
-    let data = convertToCSV([...tasksJourniesDetails]);
-    window.open(`data:text/csv;charset=utf-8,${data}`, "_self");
+    if (tasksJourniesDetails.length > 0) {
+      let data = convertToCSV([...tasksJourniesDetails]);
+      return `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`;
+    } else return "";
   };
 
   return (
@@ -419,20 +422,21 @@ export const TasksListView: React.FC<Props> = (props) => {
             <Grid item>
               {["OM", "SM", undefined].includes(role) && (
                 <Grid item>
-                  <IconButton
-                    sx={{
-                      bgcolor: state.filter ? "black" : "white",
-                      borderRadius: 3,
-                      float: "right",
-                      cursor: "pointer",
-                      width: "38px",
-                      height: "38px",
-                    }}
-                    disableRipple
-                    onClick={onDownloadTasksFile}
-                  >
-                    <DownloadIcon htmlColor="black"></DownloadIcon>
-                  </IconButton>
+                  <a href={onDownloadTasksFile()}>
+                    <IconButton
+                      sx={{
+                        bgcolor: state.filter ? "black" : "white",
+                        borderRadius: 3,
+                        float: "right",
+                        cursor: "pointer",
+                        width: "38px",
+                        height: "38px",
+                      }}
+                      disableRipple
+                    >
+                      <DownloadIcon htmlColor="black"></DownloadIcon>
+                    </IconButton>
+                  </a>
                 </Grid>
               )}
             </Grid>
