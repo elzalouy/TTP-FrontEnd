@@ -432,6 +432,7 @@ export const getDiff = (
       totalHours: 0,
     };
 };
+
 export const isMissedDelivery = (movements: TaskMovement[]) => {
   if (movements && movements.length > 0) {
     let deadlineMoves = movements.filter((i) => i.journeyDeadline);
@@ -451,6 +452,7 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
     } else return false;
   } else return false;
 };
+
 export const getTaskLeadtTime = (movements: TaskMovement[]) => {
   let sharedMovemens = movements.filter((item) => item.status === "Shared");
   let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;

@@ -115,6 +115,7 @@ type TaskJourniesDetails = {
   projectName: string;
   clientName: string;
   categoryName: string;
+  subCategoryName: string;
   status: string;
   projectManager: string;
   startDate: string;
@@ -126,18 +127,26 @@ type TaskJourniesDetails = {
   journeyUnClearCounts: number;
   journeyUnClearTime: string;
   journeyTurnAroundTime: string;
-  journeyFullfilment: string;
-  journeyDelivery: string;
-  journeyClosing: string;
+  journeyFullfilmentTime: string;
+  journeyDeliveryTime: string;
+  journeyClosingTime: string;
   journeyCanceled: boolean;
   journeyDisturbed: boolean;
   journeyFlagged: boolean;
   journeyLateScheduling: boolean;
   missedDelivery: boolean;
+  journeyVerified: boolean;
+  journeyUnHealthy: boolean;
+  journeyClearBackTime: string;
+  wrongOrMissingFulfillmentTime: string;
+  commentsOrChangesTime: string;
+  revisitingTime: string;
+  revivedTime: string;
 };
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
+  const formRef = React.useRef<HTMLFormElement>(null);
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
   const projects: ProjectsInterface = useAppSelector(selectAllProjects);
@@ -209,8 +218,33 @@ export const TasksListView: React.FC<Props> = (props) => {
 
               let delivery = getDiff("Review", "Shared", journey.movements);
               let closing = getDiff("Shared", "Done", journey.movements);
+              let clearBack = getDiff(
+                "Not Clear",
+                "Tasks Board",
+                journey.movements
+              );
               let cancelMoves = getCancelationType(journey.movements);
               let missedDelivery = isMissedDelivery(journey.movements);
+              let wrongOrMissingFulfillment = getDiff(
+                "Review",
+                "Tasks Board",
+                journey.movements
+              );
+              let commentsTime = getDiff(
+                "Shared",
+                "Tasks Board",
+                journey.movements
+              );
+              let revisitingTime = getDiff(
+                "Done",
+                "Tasks Board",
+                journey.movements
+              );
+              let revivedTime = getDiff(
+                "Cancled",
+                "Tasks Board",
+                journey.movements
+              );
 
               let journeyDetails: TaskJourniesDetails = {
                 id: taskInfo._id,
@@ -219,6 +253,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 projectName: project?.name ?? "",
                 clientName: client?.clientName ?? "",
                 categoryName: category?.category ?? "",
+                subCategoryName: subCategory?.subCategory ?? "",
                 status: taskInfo.status ?? "",
                 projectManager: projectManager?.name ?? "",
                 startDate: taskInfo.start ?? "",
@@ -232,15 +267,22 @@ export const TasksListView: React.FC<Props> = (props) => {
                 journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
                 journeyUnClearCounts: unClear.times,
                 journeyTurnAroundTime: `${turnAround.difference.days}D / ${turnAround.difference.hours}H / ${turnAround.difference.hours}H / ${turnAround.difference.mins}`,
-                journeyFullfilment: `${fulfillment.difference.days}D / ${fulfillment.difference.hours}H / ${fulfillment.difference.hours}H / ${fulfillment.difference.mins}`,
-                journeyDelivery: `${delivery.difference.days}D / ${delivery.difference.hours}H / ${delivery.difference.hours}H / ${delivery.difference.mins}`,
-                journeyClosing: `${closing.difference.days}D / ${closing.difference.hours}H / ${closing.difference.hours}H / ${closing.difference.mins}`,
+                journeyFullfilmentTime: `${fulfillment.difference.days}D / ${fulfillment.difference.hours}H / ${fulfillment.difference.hours}H / ${fulfillment.difference.mins}`,
+                journeyDeliveryTime: `${delivery.difference.days}D / ${delivery.difference.hours}H / ${delivery.difference.hours}H / ${delivery.difference.mins}`,
+                journeyClosingTime: `${closing.difference.days}D / ${closing.difference.hours}H / ${closing.difference.hours}H / ${closing.difference.mins}`,
                 journeyCanceled: cancelMoves.includes("Canceled"),
                 journeyDisturbed: cancelMoves.includes("Disturbed"),
                 journeyFlagged: cancelMoves.includes("Flagged"),
                 journeyLateScheduling:
                   schedulingTime.difference.days > 0 ? true : false,
                 missedDelivery: missedDelivery,
+                journeyVerified: unClear.times === 0 && turnAround.times === 0,
+                journeyUnHealthy: unClear.times > 0 && turnAround.times > 0,
+                journeyClearBackTime: `${clearBack.difference.days}D / ${clearBack.difference.hours}H / ${clearBack.difference.hours}H / ${clearBack.difference.mins}`,
+                wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.difference.days}D / ${wrongOrMissingFulfillment.difference.hours}H / ${wrongOrMissingFulfillment.difference.hours}H / ${wrongOrMissingFulfillment.difference.mins}`,
+                commentsOrChangesTime: `${commentsTime.difference.days}D / ${commentsTime.difference.hours}H / ${commentsTime.difference.hours}H / ${commentsTime.difference.mins}`,
+                revisitingTime: `${revisitingTime.difference.days}D / ${revisitingTime.difference.hours}H / ${revisitingTime.difference.hours}H / ${revisitingTime.difference.mins}`,
+                revivedTime: `${revivedTime.difference.days}D / ${revivedTime.difference.hours}H / ${revivedTime.difference.hours}H / ${revivedTime.difference.mins}`,
               };
               return journeyDetails;
             });
@@ -355,10 +397,19 @@ export const TasksListView: React.FC<Props> = (props) => {
   // };
 
   const onDownloadTasksFile = () => {
-    if (tasksJourniesDetails.length > 0) {
+    if (tasksJourniesDetails.length > 0 && formRef.current) {
       let data = convertToCSV([...tasksJourniesDetails]);
-      return `data:text/csv;charset=utf-8,${encodeURIComponent(data)}`;
-    } else return "";
+      const csvContent = `data:text/csv;charset=utf-8,${encodeURIComponent(
+        data
+      )}`;
+      const link = document.createElement("a");
+      link.href = csvContent;
+      link.download = "tasks statistics";
+      link.style.display = "none";
+      formRef.current.appendChild(link);
+      link.click();
+      formRef.current.removeChild(link);
+    }
   };
 
   return (
@@ -422,8 +473,9 @@ export const TasksListView: React.FC<Props> = (props) => {
             <Grid item>
               {["OM", "SM", undefined].includes(role) && (
                 <Grid item>
-                  <a href={onDownloadTasksFile()}>
+                  <form ref={formRef} onSubmit={onDownloadTasksFile}>
                     <IconButton
+                      type="submit"
                       sx={{
                         bgcolor: state.filter ? "black" : "white",
                         borderRadius: 3,
@@ -436,7 +488,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                     >
                       <DownloadIcon htmlColor="black"></DownloadIcon>
                     </IconButton>
-                  </a>
+                  </form>
                 </Grid>
               )}
             </Grid>
