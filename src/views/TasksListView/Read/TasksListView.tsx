@@ -473,9 +473,10 @@ export const TasksListView: React.FC<Props> = (props) => {
             <Grid item>
               {["OM", "SM", undefined].includes(role) && (
                 <Grid item>
-                  <form ref={formRef} onSubmit={onDownloadTasksFile}>
+                  <form ref={formRef}>
                     <IconButton
-                      type="submit"
+                      type="button"
+                      onClick={onDownloadTasksFile}
                       sx={{
                         bgcolor: state.filter ? "black" : "white",
                         borderRadius: 3,
