@@ -29,3 +29,44 @@ export interface ITaskInfo extends Task {
   clientId?: string;
   projectManager?: string;
 }
+
+export type TaskJourniesDetails = {
+  id: string;
+  name: string;
+  journeyIndex: number;
+  projectName: string;
+  clientName: string;
+  categoryName: string;
+  subCategoryName: string;
+  status: string;
+  projectManager: string;
+  startDate: string;
+  dueDate: string;
+  movementsCount: number;
+  journeyLeadTime: string;
+  journeyProcessingTime: string;
+  journeySchedulingTime: string;
+  journeyUnClearCounts: number;
+  journeyUnClearTime: string;
+  journeyTurnAroundTime: string;
+  journeyFullfilmentTime: string;
+  journeyDeliveryTime: string;
+  journeyClosingTime: string;
+  journeyCanceled: boolean;
+  journeyDisturbed: boolean;
+  journeyFlagged: boolean;
+  journeyLateScheduling: boolean;
+  missedDelivery: boolean;
+  journeyVerified: boolean;
+  journeyUnHealthy: boolean;
+  journeyClearBackTime: string;
+  wrongOrMissingFulfillmentTimes: string;
+  wrongOrMissingFulfillmentTime: string;
+  commentsOrChangesTime: string;
+  commentsOrChangesTimes: string;
+  revisitingTime: string;
+  revisitingTimes: string;
+  revivedTime: string;
+  revivedTimes: string;
+  deliveryStatus: string;
+};

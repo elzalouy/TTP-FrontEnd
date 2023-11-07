@@ -1,10 +1,35 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
 import CloseIcon from "@mui/icons-material/Close";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { getDifBetweenDates } from "src/helpers/generalUtils";
+import {
+  Project,
+  ProjectsInterface,
+  Task,
+  TaskMovement,
+} from "src/types/models/Projects";
+import {
+  convertToCSV,
+  getCancelationType,
+  getDifBetweenDates,
+  getDiffFromTo,
+  getTaskJournies,
+  getTaskLeadtTime,
+  isMissedDelivery,
+  totalUnClearTime,
+} from "src/helpers/generalUtils";
+import DownloadIcon from "@mui/icons-material/Download";
+import { useAppSelector } from "src/models/hooks";
+import { selectAllProjects, selectProjectOptions } from "src/models/Projects";
+import { Client, selectAllClients } from "src/models/Clients";
+import { Manager, selectManagers, selectPMOptions } from "src/models/Managers";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
+import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
 
 interface TaskHeaderProps {
   task: Task;
@@ -16,6 +41,13 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
   const [journeyDeadline, setJourneyDeadline] = useState<string | undefined>(
     undefined
   );
+  const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const clients = useAppSelector(selectAllClients);
+  const managers = useAppSelector(selectManagers);
+  const categories = useAppSelector(selectAllCategories);
+  const projectOptions = useAppSelector(selectProjectOptions);
+  const PmsOptions = useAppSelector(selectPMOptions);
+
   const [isNastyTask, setIsNastyTask] = useState(false);
 
   useEffect(() => {
@@ -55,6 +87,142 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
         task.movements[item.index + 1]?.status === "Tasks Board"
     );
     return moves.length;
+  };
+  const onDownloadTaskFile = () => {
+    let project: Project | undefined,
+      category: Category | undefined,
+      subCategory: SubCategory | undefined,
+      client: Client | undefined,
+      projectManager: Manager | undefined;
+
+    project = projects.projects.find(
+      (project) => project._id === task?.projectId
+    );
+    category = categories.find((category) => category._id === task?.categoryId);
+    subCategory = category?.selectedSubCategory.find(
+      (sub) => sub._id === task?.subCategoryId
+    );
+    client = clients.find((client) => client._id === project?.clientId);
+    projectManager = managers.find((pm) => pm._id === project?.projectManager);
+
+    let taskInfo: ITaskInfo = {
+      ...task,
+      clientId: client?._id,
+      projectManager: projectManager?._id,
+    };
+
+    let journies = getTaskJournies(taskInfo).journies;
+    let taskJourniesDetails = journies.map((journey, index) => {
+      let leadTime = getTaskLeadtTime(journey.movements);
+      let schedulingTime = getDiffFromTo(
+        "Tasks Board",
+        "In Progress",
+        journey.movements
+      );
+      let processingTime = getDiffFromTo(
+        "In Progress",
+        "Shared",
+        journey.movements
+      );
+      let unClear = totalUnClearTime(journey.movements);
+      let turnAround = getDiffFromTo(
+        "Not Clear",
+        "In Progress",
+        journey.movements
+      );
+      let fulfillment = getDiffFromTo(
+        "In Progress",
+        "Review",
+        journey.movements
+      );
+      let delivery = getDiffFromTo("Review", "Shared", journey.movements);
+      let closing = getDiffFromTo("Shared", "Done", journey.movements);
+      let clearBack = getDiffFromTo(
+        "Not Clear",
+        "Tasks Board",
+        journey.movements
+      );
+      let cancelMoves = getCancelationType(journey.movements);
+      let missedDelivery = isMissedDelivery(journey.movements);
+      let wrongOrMissingFulfillment = getDiffFromTo(
+        "Review",
+        "Tasks Board",
+        journey.movements
+      );
+      let commentsTime = getDiffFromTo(
+        "Shared",
+        "Tasks Board",
+        journey.movements
+      );
+      let revisitingTime = getDiffFromTo(
+        "Done",
+        "Tasks Board",
+        journey.movements
+      );
+      let revivedTime = getDiffFromTo(
+        "Cancled",
+        "Tasks Board",
+        journey.movements
+      );
+
+      let journeyDetails: TaskJourniesDetails = {
+        id: taskInfo._id,
+        name: taskInfo.name,
+        journeyIndex: index + 1,
+        projectName: project?.name ?? "",
+        clientName: client?.clientName ?? "",
+        categoryName: category?.category ?? "",
+        subCategoryName: subCategory?.subCategory ?? "",
+        status: taskInfo.status ?? "",
+        projectManager: projectManager?.name ?? "",
+        startDate: taskInfo.start
+          ? format(new Date(taskInfo.start), "dd MMMM yyyy HH:SS")
+          : "",
+        dueDate: journey.journeyDeadline
+          ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:SS")
+          : "",
+        deliveryStatus: missedDelivery ? "Missed" : "On Time",
+        movementsCount: journey.movements.length,
+        journeyLeadTime: `${leadTime.difference.days}D / ${leadTime.difference.hours}H / ${leadTime.difference.mins}M`,
+        journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
+        journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,
+        journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
+        journeyUnClearCounts: unClear.times,
+        journeyTurnAroundTime: `${turnAround.dif.difference.days}D / ${turnAround.dif.difference.hours}H /  ${turnAround.dif.difference.mins}M`,
+        journeyFullfilmentTime: `${fulfillment.dif.difference.days}D / ${fulfillment.dif.difference.hours} / ${fulfillment.dif.difference.mins}M`,
+        journeyDeliveryTime: `${delivery.dif.difference.days}D / ${delivery.dif.difference.hours}H / ${delivery.dif.difference.mins}M`,
+        journeyClosingTime: `${closing.dif.difference.days}D / ${closing.dif.difference.hours}H /  ${closing.dif.difference.mins}M`,
+        journeyCanceled: cancelMoves.includes("Canceled"),
+        journeyDisturbed: cancelMoves.includes("Disturbed"),
+        journeyFlagged: cancelMoves.includes("Flagged"),
+        journeyLateScheduling:
+          schedulingTime.dif.difference.days > 0 ? true : false,
+        missedDelivery: missedDelivery,
+        journeyVerified: unClear.times === 0 && turnAround.times === 0,
+        journeyUnHealthy: unClear.times > 0 && turnAround.times > 0,
+        journeyClearBackTime: `${clearBack.dif.difference.days}D / ${clearBack.dif.difference.hours}H  / ${clearBack.dif.difference.mins}M`,
+        wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.dif.difference.days}D  / ${wrongOrMissingFulfillment.dif.difference.hours}H / ${wrongOrMissingFulfillment.dif.difference.mins}M`,
+        commentsOrChangesTime: `${commentsTime.dif.difference.days}D / ${commentsTime.dif.difference.hours}H  / ${commentsTime.dif.difference.mins}M`,
+        revisitingTime: `${revisitingTime.dif.difference.days}D / ${revisitingTime.dif.difference.hours}H  / ${revisitingTime.dif.difference.mins}M`,
+        revivedTime: `${revivedTime.dif.difference.days}D / ${revivedTime.dif.difference.hours}H / ${revivedTime.dif.difference.mins}M`,
+        wrongOrMissingFulfillmentTimes:
+          wrongOrMissingFulfillment.times.toString(),
+        commentsOrChangesTimes: commentsTime.times.toString(),
+        revisitingTimes: revisitingTime.times.toString(),
+        revivedTimes: revivedTime.times.toString(),
+      };
+      return journeyDetails;
+    });
+    let data = convertToCSV([...taskJourniesDetails]);
+    let dataBlob = new Blob([data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.style.display = "none";
+    link.download = "Task Master Report";
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -221,6 +389,21 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
             </Box>
           </>
         )}
+        <IconButton
+          type="button"
+          onClick={onDownloadTaskFile}
+          sx={{
+            bgcolor: "#f6f6f6",
+            borderRadius: 3,
+            float: "right",
+            cursor: "pointer",
+            width: "38px",
+            height: "38px",
+          }}
+          disableRipple
+        >
+          <DownloadIcon htmlColor="black"></DownloadIcon>
+        </IconButton>
       </Grid>
       <Grid item xs={0.5} xl={0.5} display={"flex"} justifyContent={"flex-end"}>
         <Box

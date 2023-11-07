@@ -13,6 +13,7 @@ import {
   taskSchedulingTime,
   turnAroundTime,
   totalUnClearTime,
+  getDiffFromTo,
 } from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
@@ -56,6 +57,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
+  
   useEffect(() => {
     const taskBoard = departments?.find(
       (item) => item.boardId === task.boardId
@@ -69,6 +71,12 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     const sharedMovements =
       taskMovements &&
       taskMovements?.filter((item) => item.status === "Shared");
+    let schedulingTimeDiff = getDiffFromTo(
+      "Tasks Board",
+      "In Progress",
+      movements
+    );
+    let processingTime = getDiffFromTo("In Progress", "Shared", movements);
     setState({
       sharedMovements,
       taskTeam,
@@ -77,10 +85,10 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
       taskBoard,
       statitics: {
         taskLeadTime: getTaskLeadtTime(movements),
-        taskProcessingTime: taskProcessingTime(movements),
+        taskProcessingTime: processingTime,
         turnAroundTime: turnAroundTime(movements),
         unClearTime: totalUnClearTime(movements),
-        taskSchedulingTime: taskSchedulingTime(movements),
+        taskSchedulingTime: schedulingTimeDiff.dif,
       },
     });
   }, [task, movements]);

@@ -404,6 +404,35 @@ export const getCancelationType = (movements: TaskMovement[]) => {
   return cMoves;
 };
 
+export const getDiffFromTo = (
+  from: string,
+  to: string,
+  movements: TaskMovement[]
+) => {
+  let totalDif = initialDifferenceBetweenDates;
+  let dif = [initialDifferenceBetweenDates];
+  dif = movements.map((move, index) => {
+    if (
+      move.status === from &&
+      movements[index + 1] &&
+      movements[index + 1].status === to
+    ) {
+      let difference = getDifBetweenDates(
+        new Date(move.movedAt),
+        new Date(movements[index + 1].movedAt)
+      );
+      return difference;
+    } else return initialDifferenceBetweenDates;
+  });
+  totalDif.difference.days += _.sum(dif.map((i) => i.difference.days));
+  totalDif.difference.hours += _.sum(dif.map((i) => i.difference.hours));
+  totalDif.difference.mins += _.sum(dif.map((i) => i.difference.mins));
+  totalDif.totalHours += _.sum(dif.map((i) => i.totalHours));
+  totalDif.totalMins += _.sum(dif.map((i) => i.totalMins));
+  console.log({ times: dif.length, totalDif });
+  return { times: dif.length, dif: totalDif };
+};
+
 export const getDiff = (
   start: string,
   end: string,

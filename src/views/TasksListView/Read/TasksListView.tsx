@@ -25,27 +25,21 @@ import "./TasksListView.css";
 import { Manager, selectManagers, selectPMOptions } from "src/models/Managers";
 import { Options } from "src/types/views/Projects";
 import FiltersBar from "./FiltersBar";
-import DeleteTask from "../Delete/DeleteTaskFromTaskTable";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import EditTasks from "../Edit/EditTasks";
 import { selectRole, selectUser } from "src/models/Auth";
 import DownloadIcon from "@mui/icons-material/Download";
-import { toggleViewTaskPopup } from "src/models/Ui";
 import {
   convertToCSV,
   getCancelationType,
-  getDiff,
+  getDiffFromTo,
   getTaskJournies,
   getTaskLeadtTime,
-  initialDifferenceBetweenDates,
   isMissedDelivery,
-  taskProcessingTime,
-  taskSchedulingTime,
   totalUnClearTime,
-  turnAroundTime,
 } from "src/helpers/generalUtils";
-import { ITaskInfo } from "src/types/views/Statistics";
+import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
 import {
   Category,
   SubCategory,
@@ -54,6 +48,7 @@ import {
 import { Client, selectAllClients } from "src/models/Clients";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 interface Props {
   projectId?: string;
   history: RouteComponentProps["history"];
@@ -108,41 +103,6 @@ const defaultValues: filterType = {
   createdAt: "",
   boardId: "",
 };
-type TaskJourniesDetails = {
-  id: string;
-  name: string;
-  journeyIndex: number;
-  projectName: string;
-  clientName: string;
-  categoryName: string;
-  subCategoryName: string;
-  status: string;
-  projectManager: string;
-  startDate: string;
-  dueDate: string;
-  movementsCount: number;
-  journeyLeadTime: string;
-  journeyProcessingTime: string;
-  journeySchedulingTime: string;
-  journeyUnClearCounts: number;
-  journeyUnClearTime: string;
-  journeyTurnAroundTime: string;
-  journeyFullfilmentTime: string;
-  journeyDeliveryTime: string;
-  journeyClosingTime: string;
-  journeyCanceled: boolean;
-  journeyDisturbed: boolean;
-  journeyFlagged: boolean;
-  journeyLateScheduling: boolean;
-  missedDelivery: boolean;
-  journeyVerified: boolean;
-  journeyUnHealthy: boolean;
-  journeyClearBackTime: string;
-  wrongOrMissingFulfillmentTime: string;
-  commentsOrChangesTime: string;
-  revisitingTime: string;
-  revivedTime: string;
-};
 
 export const TasksListView: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
@@ -171,7 +131,6 @@ export const TasksListView: React.FC<Props> = (props) => {
     projectManagersOptions: PmsOptions,
     openFilter: false,
   });
-  const [Show, setShow] = React.useState("none");
 
   React.useEffect(() => {
     if (selects && selects.length > 0) {
@@ -198,49 +157,66 @@ export const TasksListView: React.FC<Props> = (props) => {
             projectManager = managers.find(
               (pm) => pm._id === project?.projectManager
             );
+
             let taskInfo: ITaskInfo = {
               ...task,
               clientId: client?._id,
               projectManager: projectManager?._id,
             };
+
             let journies = getTaskJournies(taskInfo).journies;
             let taskJourniesDetails = journies.map((journey, index) => {
               let leadTime = getTaskLeadtTime(journey.movements);
-              let schedulingTime = taskSchedulingTime(journey.movements);
-              let processingTime = taskProcessingTime(journey.movements);
+              let schedulingTime = getDiffFromTo(
+                "Tasks Board",
+                "In Progress",
+                journey.movements
+              );
+              let processingTime = getDiffFromTo(
+                "In Progress",
+                "Shared",
+                journey.movements
+              );
               let unClear = totalUnClearTime(journey.movements);
-              let turnAround = turnAroundTime(journey.movements);
-              let fulfillment = getDiff(
+              let turnAround = getDiffFromTo(
+                "Not Clear",
+                "In Progress",
+                journey.movements
+              );
+              let fulfillment = getDiffFromTo(
                 "In Progress",
                 "Review",
                 journey.movements
               );
-
-              let delivery = getDiff("Review", "Shared", journey.movements);
-              let closing = getDiff("Shared", "Done", journey.movements);
-              let clearBack = getDiff(
+              let delivery = getDiffFromTo(
+                "Review",
+                "Shared",
+                journey.movements
+              );
+              let closing = getDiffFromTo("Shared", "Done", journey.movements);
+              let clearBack = getDiffFromTo(
                 "Not Clear",
                 "Tasks Board",
                 journey.movements
               );
               let cancelMoves = getCancelationType(journey.movements);
               let missedDelivery = isMissedDelivery(journey.movements);
-              let wrongOrMissingFulfillment = getDiff(
+              let wrongOrMissingFulfillment = getDiffFromTo(
                 "Review",
                 "Tasks Board",
                 journey.movements
               );
-              let commentsTime = getDiff(
+              let commentsTime = getDiffFromTo(
                 "Shared",
                 "Tasks Board",
                 journey.movements
               );
-              let revisitingTime = getDiff(
+              let revisitingTime = getDiffFromTo(
                 "Done",
                 "Tasks Board",
                 journey.movements
               );
-              let revivedTime = getDiff(
+              let revivedTime = getDiffFromTo(
                 "Cancled",
                 "Tasks Board",
                 journey.movements
@@ -256,33 +232,44 @@ export const TasksListView: React.FC<Props> = (props) => {
                 subCategoryName: subCategory?.subCategory ?? "",
                 status: taskInfo.status ?? "",
                 projectManager: projectManager?.name ?? "",
-                startDate: taskInfo.start ?? "",
-                dueDate: journey.journeyDeadline
-                  ? new Date(journey.journeyDeadline).toLocaleDateString()
+                startDate: taskInfo.start
+                  ? format(new Date(taskInfo.start), "dd MMMM yyyy HH:SS")
                   : "",
+                dueDate: journey.journeyDeadline
+                  ? format(
+                      new Date(journey.journeyDeadline),
+                      "dd MMMM yyyy HH:SS"
+                    )
+                  : "",
+                deliveryStatus: missedDelivery ? "Missed" : "On Time",
                 movementsCount: journey.movements.length,
                 journeyLeadTime: `${leadTime.difference.days}D / ${leadTime.difference.hours}H / ${leadTime.difference.mins}M`,
-                journeyProcessingTime: `${processingTime.difference.days}D / ${processingTime.difference.hours}H / ${processingTime.difference.mins}M`,
-                journeySchedulingTime: `${schedulingTime.difference.days}D / ${schedulingTime.difference.hours}H / ${schedulingTime.difference.mins}M`,
+                journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
+                journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,
                 journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
                 journeyUnClearCounts: unClear.times,
-                journeyTurnAroundTime: `${turnAround.difference.days}D / ${turnAround.difference.hours}H / ${turnAround.difference.hours}H / ${turnAround.difference.mins}`,
-                journeyFullfilmentTime: `${fulfillment.difference.days}D / ${fulfillment.difference.hours}H / ${fulfillment.difference.hours}H / ${fulfillment.difference.mins}`,
-                journeyDeliveryTime: `${delivery.difference.days}D / ${delivery.difference.hours}H / ${delivery.difference.hours}H / ${delivery.difference.mins}`,
-                journeyClosingTime: `${closing.difference.days}D / ${closing.difference.hours}H / ${closing.difference.hours}H / ${closing.difference.mins}`,
+                journeyTurnAroundTime: `${turnAround.dif.difference.days}D / ${turnAround.dif.difference.hours}H /  ${turnAround.dif.difference.mins}M`,
+                journeyFullfilmentTime: `${fulfillment.dif.difference.days}D / ${fulfillment.dif.difference.hours} / ${fulfillment.dif.difference.mins}M`,
+                journeyDeliveryTime: `${delivery.dif.difference.days}D / ${delivery.dif.difference.hours}H / ${delivery.dif.difference.mins}M`,
+                journeyClosingTime: `${closing.dif.difference.days}D / ${closing.dif.difference.hours}H /  ${closing.dif.difference.mins}M`,
                 journeyCanceled: cancelMoves.includes("Canceled"),
                 journeyDisturbed: cancelMoves.includes("Disturbed"),
                 journeyFlagged: cancelMoves.includes("Flagged"),
                 journeyLateScheduling:
-                  schedulingTime.difference.days > 0 ? true : false,
+                  schedulingTime.dif.difference.days > 0 ? true : false,
                 missedDelivery: missedDelivery,
                 journeyVerified: unClear.times === 0 && turnAround.times === 0,
                 journeyUnHealthy: unClear.times > 0 && turnAround.times > 0,
-                journeyClearBackTime: `${clearBack.difference.days}D / ${clearBack.difference.hours}H / ${clearBack.difference.hours}H / ${clearBack.difference.mins}`,
-                wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.difference.days}D / ${wrongOrMissingFulfillment.difference.hours}H / ${wrongOrMissingFulfillment.difference.hours}H / ${wrongOrMissingFulfillment.difference.mins}`,
-                commentsOrChangesTime: `${commentsTime.difference.days}D / ${commentsTime.difference.hours}H / ${commentsTime.difference.hours}H / ${commentsTime.difference.mins}`,
-                revisitingTime: `${revisitingTime.difference.days}D / ${revisitingTime.difference.hours}H / ${revisitingTime.difference.hours}H / ${revisitingTime.difference.mins}`,
-                revivedTime: `${revivedTime.difference.days}D / ${revivedTime.difference.hours}H / ${revivedTime.difference.hours}H / ${revivedTime.difference.mins}`,
+                journeyClearBackTime: `${clearBack.dif.difference.days}D / ${clearBack.dif.difference.hours}H  / ${clearBack.dif.difference.mins}M`,
+                wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.dif.difference.days}D  / ${wrongOrMissingFulfillment.dif.difference.hours}H / ${wrongOrMissingFulfillment.dif.difference.mins}M`,
+                commentsOrChangesTime: `${commentsTime.dif.difference.days}D / ${commentsTime.dif.difference.hours}H  / ${commentsTime.dif.difference.mins}M`,
+                revisitingTime: `${revisitingTime.dif.difference.days}D / ${revisitingTime.dif.difference.hours}H  / ${revisitingTime.dif.difference.mins}M`,
+                revivedTime: `${revivedTime.dif.difference.days}D / ${revivedTime.dif.difference.hours}H / ${revivedTime.dif.difference.mins}M`,
+                wrongOrMissingFulfillmentTimes:
+                  wrongOrMissingFulfillment.times.toString(),
+                commentsOrChangesTimes: commentsTime.times.toString(),
+                revisitingTimes: revisitingTime.times.toString(),
+                revivedTimes: revivedTime.times.toString(),
               };
               return journeyDetails;
             });
