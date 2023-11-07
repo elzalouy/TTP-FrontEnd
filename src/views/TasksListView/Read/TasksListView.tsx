@@ -399,16 +399,15 @@ export const TasksListView: React.FC<Props> = (props) => {
   const onDownloadTasksFile = () => {
     if (tasksJourniesDetails.length > 0 && formRef.current) {
       let data = convertToCSV([...tasksJourniesDetails]);
-      const csvContent = `data:text/csv;charset=utf-8,${encodeURIComponent(
-        data
-      )}`;
+      let dataBlob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
       const link = document.createElement("a");
-      link.href = csvContent;
-      link.download = "tasks statistics";
+      link.href = url;
       link.style.display = "none";
-      formRef.current.appendChild(link);
+      link.download = "Task Master Report";
+      document.body.appendChild(link);
       link.click();
-      formRef.current.removeChild(link);
+      window.URL.revokeObjectURL(url);
     }
   };
 
