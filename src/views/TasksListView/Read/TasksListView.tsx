@@ -278,7 +278,6 @@ export const TasksListView: React.FC<Props> = (props) => {
         })
       );
       setTasksJourniesDetails(tasksJourniesDetails);
-      console.log({ tasksJourniesDetails });
     }
   }, [selects]);
   React.useEffect(() => {

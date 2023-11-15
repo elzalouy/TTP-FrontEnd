@@ -4,7 +4,6 @@ import {
   Step,
   StepConnector,
   stepConnectorClasses,
-  StepIconProps,
   StepLabel,
   Stepper,
   Typography,
@@ -12,7 +11,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import IMAGES from "src/assets/img/Images";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
 import { useAppSelector } from "src/models/hooks";
@@ -29,18 +27,20 @@ interface NewProjectPopUpProps {
 }
 
 const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
+  // switcher values for the forms
   const steps = ["Project", "Tasks"];
-  const dispatch = useDispatch();
-  // const newProject = useAppSelector(selectNewProject);
-  const { createProjectPopup } = useAppSelector(selectUi);
   const [currentStep, setcurrentStep] = useState(0);
-  const [clearErr, setClearErr] = useState<boolean>(false);
   const [backTrigger, setBackTrigger] = useState<boolean>(false);
-  const history = useHistory();
+
+  // global state / show/hide create popup
+  const dispatch = useDispatch();
+  const { createProjectPopup } = useAppSelector(selectUi);
+
   useEffect(() => {
     setcurrentStep(0);
   }, [createProjectPopup]);
 
+  // style bof the Stepper
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 12,
@@ -66,16 +66,15 @@ const NewProjectPopUp: FC<NewProjectPopUpProps> = ({ setShow }) => {
     },
   }));
 
+  //
   const onClose = () => {
     if (currentStep === 1) {
-      dispatch(UiActions.fireNewProjectHook(""));
-      setClearErr(false);
+      // dispatch(UiActions.fireNewProjectHook(""));
       setBackTrigger(false);
     }
     setBackTrigger(false);
     setcurrentStep(0);
     setShow("none");
-    setClearErr(true);
   };
 
   const onStepProjectForm = () => {

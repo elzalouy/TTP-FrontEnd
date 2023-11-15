@@ -43,7 +43,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       name: "",
       projectManager: "",
       deadline: null,
-      startDate: null,
       clientId: "",
       associateProjectManager: "",
     },
@@ -66,7 +65,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       );
       setValue("clientId", newProject.project.clientId);
       setValue("deadline", newProject.project.projectDeadline);
-      setValue("startDate", newProject.project.startDate);
       if (newProject.project.associateProjectManager)
         setValue(
           "associateProjectManager",
@@ -97,9 +95,6 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     newProjectData.clientId = data.clientId;
     newProjectData.projectManager = setProjectManagerId(data.projectManager);
     newProjectData.projectDeadline = data.deadline;
-    newProjectData.startDate = data.startDate;
-    newProjectData.projectStatus =
-      data.startDate !== null ? "In Progress" : "Not Started";
     newProjectData.associateProjectManager =
       data.associateProjectManager.length > 0
         ? data.associateProjectManager
@@ -124,14 +119,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           data?.deadline !== "" && data?.deadline !== null
             ? moment(data?.deadline).toDate()
             : null,
-        startDate:
-          data?.startDate !== "" && data.startDate !== null
-            ? moment(data?.startDate).toDate()
-            : null,
         clientId: data?.clientId,
         numberOfFinishedTasks: 0,
         numberOfTasks: 0,
-        projectStatus: data.startDate !== null ? "In Progress" : "Not Started",
         completedDate: null,
         adminId: token?.id,
         associateProjectManager:
@@ -217,7 +207,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
+        {/* <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
           <DateInput
             label={"Start date"}
             name="startDate"
@@ -230,7 +220,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
               "startDate"
             )}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={12} lg={6} md={6} paddingTop={1} paddingX={1.8}>
           <DateInput
             label={"Deadline"}

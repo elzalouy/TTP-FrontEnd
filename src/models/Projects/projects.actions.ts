@@ -317,6 +317,10 @@ export const deleteTask = createAsyncThunk<any, any, any>(
   }
 );
 
+/**
+ * Edit Project Action
+ * An async action that calls an API and update a specific project , then updating the global state of the projects.
+ */
 export const editProject = createAsyncThunk<any, any, any>(
   "projects/editProject",
   async (args, { rejectWithValue, dispatch }) => {

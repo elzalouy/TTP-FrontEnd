@@ -429,7 +429,6 @@ export const getDiffFromTo = (
   totalDif.difference.mins += _.sum(dif.map((i) => i.difference.mins));
   totalDif.totalHours += _.sum(dif.map((i) => i.totalHours));
   totalDif.totalMins += _.sum(dif.map((i) => i.totalMins));
-  console.log({ times: dif.length, totalDif });
   return { times: dif.length, dif: totalDif };
 };
 

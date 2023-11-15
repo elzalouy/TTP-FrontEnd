@@ -10,7 +10,7 @@ const TableContainer: React.FC<ITableContainerProps> = (props) => {
   const theme = useTheme();
   const styles = tableContainerStyles(props.bgColor, props.outTitled)();
   const onExpand = () => {
-    props.setExpanded(props.expanded ? false : true);
+    props.setExpanded();
   };
 
   return (

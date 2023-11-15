@@ -13,7 +13,10 @@ import PopUp from "../../../coreUI/components/Popovers/Popup/PopUp";
 import { selectClientDialogData } from "../../../models/Clients";
 import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions } from "../../../models/Managers";
-import { editProject as editProjectAction } from "../../../models/Projects";
+import {
+  editProject as editProjectAction,
+  selectAllProjects,
+} from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
 import { DoneStatusList, Project } from "src/types/models/Projects";
@@ -33,7 +36,6 @@ type FormState = {
   projectDeadline: any;
   name: string;
   projectStatus: string;
-  startDate: any;
   associateProjectManager: string;
 };
 const EditProjectStatus = ["Not Started", "In Progress", "Done"];
@@ -57,18 +59,20 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientDialogData);
   const managers = useAppSelector(selectPMOptions);
+  const projects = useAppSelector(selectAllProjects);
+
   const { control, register, watch, setValue, reset } = useForm<FormState>();
+
   const [state, setState] = useState({
     status: EditProjectStatus.map((item) => {
       return { id: item, text: item, value: item };
     }),
     AssociatePMs: managers,
-    alertPopupDiplay: "none",
+    alertPopupDisplay: "none",
     formData: {
       name: "",
       associateProjectManager: "",
       projectStatus: "",
-      startDate: "",
       projectManager: "",
       projectDeadline: "",
       clientId: "",
@@ -77,6 +81,16 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
     loading: false,
   });
 
+  // Set the associate managers except the one who is managing the project
+  useEffect(() => {
+    let State = { ...state };
+    State.AssociatePMs = managers?.filter(
+      (item) => project && item.id !== project?.projectManager?._id
+    );
+    setState(State);
+  }, [managers, project]);
+
+  // Set the default project values and only display the status options available for the current state of project
   useEffect(() => {
     let defaultStatus: {
         id: string;
@@ -94,9 +108,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
           : project.projectStatus === "In Progress"
           ? [defaultStatus[2]]
           : [defaultStatus[1]];
-      State.AssociatePMs = managers?.filter(
-        (item) => item.id !== project.projectManager?._id
-      );
+
       setState(State);
       reset({
         name: project?.name,
@@ -106,7 +118,6 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         projectStatus: DoneStatusList.includes(project?.projectStatus)
           ? "Done"
           : project?.projectStatus,
-        startDate: project?.startDate ? new Date(project?.startDate) : "",
         projectManager: project?.projectManager,
         projectDeadline: project.projectDeadline
           ? new Date(project.projectDeadline)
@@ -114,13 +125,17 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         clientId: project?.clientId,
       });
     }
-  }, [project, managers]);
+  }, [project]);
 
   const onSubmit = () => {
     let data = watch();
+    let tasks = projects.allTasks.filter((i) => i.projectId === project?._id);
+    // get difference between today and the deadline date.
     let deadline = new Date(data?.projectDeadline);
     const today = new Date();
     const diff = getDifBetweenDates(today, deadline);
+
+    // create a new object with the updated data to be ready for validation and saving.
     let editData = {
       ...data,
       _id: project?._id,
@@ -133,9 +148,10 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       associateProjectManager: data?.associateProjectManager
         ? data.associateProjectManager
         : "",
-
+      projectStatus: data.projectStatus,
       deliveryDate: data.projectStatus === "Done" ? new Date(Date.now()) : null,
     };
+    // set the status of the project if the user selected "Done"
     if (data.projectStatus === "Done") {
       if (diff.difference.days === 0 && diff.isLate)
         editData.projectStatus = "delivered on time";
@@ -143,16 +159,14 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         editData.projectStatus = "delivered after deadline";
       else editData.projectStatus = "delivered before deadline";
     } else editData.projectStatus = data.projectStatus;
-    editData.startDate =
-      data.startDate !== "" ? new Date(data.startDate).toDateString() : null;
-    if (editData.startDate === null && editData.projectStatus !== "Not Started")
-      return ToastWarning(
-        "Start date should be a value, so you can move the project"
-      );
-    if (editData.startDate === null) editData.projectStatus = "Not Started";
-    const validate = validateEditProject(editData);
+
+    // Validate the new object of the project
+    const validate = validateEditProject(editData, tasks);
+
+    // check if  the validation is correct
     if (!validate.error) {
       setState({ ...state, formData: editData });
+      // Set rule which is moving project to done needs the project deadline first.
       if (
         editData?.projectStatus &&
         !isDate(data.projectDeadline) &&
@@ -161,6 +175,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         return ToastError(
           "Project Deadline should be selected to move project to Done."
         );
+      // Displaying an alert if the project status changes to Done.
       if (
         editData?.projectStatus &&
         DoneStatusList.includes(editData?.projectStatus)
@@ -168,10 +183,11 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         return setState({
           ...state,
           loading: true,
-          alertPopupDiplay: "flex",
+          alertPopupDisplay: "flex",
           formData: { ...editData },
         });
       } else {
+        // Any another change without changing the project status to done, will be saved directly without an alert.
         setState({ ...state, loading: true, formData: { ...editData } });
         return dispatch(
           editProjectAction({
@@ -190,13 +206,13 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
     <>
       <DoneProjectConfirm
         ok={true}
-        show={state.alertPopupDiplay}
+        show={state.alertPopupDisplay}
         setShow={(value: string) =>
-          setState({ ...state, alertPopupDiplay: value })
+          setState({ ...state, alertPopupDisplay: value })
         }
         onOk={() => {
           dispatch(editProjectAction({ data: state.formData, setShow }));
-          setState({ ...state, loading: false, alertPopupDiplay: "none" });
+          setState({ ...state, loading: false, alertPopupDisplay: "none" });
         }}
         okText={"End"}
         cancel={true}
@@ -254,18 +270,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
-            <DateInput
-              dataTestId="edit-project-date-input"
-              label={"Start date"}
-              name="startDate"
-              control={control}
-              placeholder="Start date"
-              register={register}
-              setValue={setValue}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} lg={3} md={3} paddingX={1.8}>
+          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
             <DateInput
               dataTestId="edit-project-due-date-input"
               label={"Deadline"}

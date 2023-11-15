@@ -14,24 +14,22 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import TasksCheckIcon from "../../../assets/icons/TasksCheck";
 import { useAppSelector } from "../../../models/hooks";
-import { selectRole } from "../../../models/Auth";
 import { getStatus } from "../../../helpers/generalUtils";
 import { Project } from "../../../types/models/Projects";
-import { selectTasks } from "src/models/Projects";
 import { IProjectsTableProps } from "src/types/components/Table";
 import "src/App/App.css";
 import { selectManagers } from "src/models/Managers";
-import { selectAllClients } from "src/models/Clients";
 import { useHistory } from "react-router";
+import { selectAllProjects } from "src/models/Projects";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
+  const { allTasks } = useAppSelector(selectAllProjects);
   const history = useHistory();
   const classes = projectsTableStyle(props.status)();
   const theme = useTheme();
   const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const allTasks = useAppSelector(selectTasks);
   const PMs = useAppSelector(selectManagers);
-  const clients = useAppSelector(selectAllClients);
+
   const setBorder = (project: Project) => {
     let date = new Date(project.projectDeadline);
     if (
@@ -41,7 +39,10 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
     )
       return "#FF2E35 !important";
     if (project.projectStatus === "In Progress") {
-      if (project.NoOfTasks === project.NoOfFinishedTasks)
+      if (
+        project.NoOfTasks === project.NoOfFinishedTasks &&
+        project.NoOfTasks > 0
+      )
         return "#00ACBA !important";
       else return "";
     }
@@ -106,7 +107,8 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
             let NoOfFinished = allTasks.filter(
               (item) => item.projectId === project._id && item.status === "Done"
             ).length;
-
+            project.NoOfFinishedTasks = NoOfFinished;
+            project.NoOfTasks = NoOfTasks;
             return (
               <TableRow
                 className={classes.tbody}
@@ -167,7 +169,7 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
                   >
                     {project.startDate === null ? (
                       <span style={{ color: "red" }}>
-                        Please add a Starting date
+                        Please add a task first
                       </span>
                     ) : (
                       new Date(project.startDate).toLocaleDateString("en-US", {

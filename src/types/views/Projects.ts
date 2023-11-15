@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { Project } from "../models/Projects";
 
 export interface IProjectFormProps {
   setcurrentStep: any;
@@ -21,3 +22,14 @@ export type Options = {
   value: string;
   image?: string;
 }[];
+
+export type ProjectsPageState = {
+  inProgressProjects: Project[];
+  doneProjects: Project[];
+  filteredProjects: Project[];
+  projects: Project[];
+  notStarted: Project[];
+  inProgressShow: boolean;
+  doneShow: boolean;
+  notStartedShow: boolean;
+};

@@ -15,17 +15,14 @@ import {
 } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
 import { selectAllProjects } from "src/models/Projects";
-import { Project, Task } from "src/types/models/Projects";
-import { User } from "src/types/models/user";
+import { Task } from "src/types/models/Projects";
 import { Manager, selectManagers } from "src/models/Managers";
 import { Category, selectAllCategories } from "src/models/Categories";
-import { DialogOption } from "src/types/components/SelectDialog";
 import { useDispatch } from "react-redux";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import IMAGES from "src/assets/img/Images";
 import ReviewTime from "./Diagrams/ReviewTime";
 import SchedulingTime from "./Diagrams/SchedulingTime";
-import ProjectsReport from "./Diagrams/ProjectsReport";
 import {
   selectStatisticsFilterDefaults,
   setStatisticsFilterDefaults,

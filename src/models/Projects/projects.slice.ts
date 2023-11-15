@@ -188,6 +188,22 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.allTasks = [...allTasks];
         state.filteredTasks = filteredTasks;
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+        if (action.payload.projectId) {
+          let projectIndex = state.projects.findIndex(
+            (i) => i._id === action.payload.projectId
+          );
+          if (projectIndex) {
+            state.projects[projectIndex].NoOfTasks = state.allTasks.filter(
+              (i) => i.projectId === action.payload.projectId
+            ).length;
+            state.projects[projectIndex].NoOfFinishedTasks =
+              state.allTasks.filter(
+                (i) =>
+                  i.projectId === action.payload.projectId &&
+                  i.status === "Done"
+              ).length;
+          }
+        }
       }
     },
 
@@ -277,7 +293,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
     });
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
-      state.loading = false;
       state.projects = action?.payload;
       state.filteredProjects = action?.payload;
       state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
@@ -311,23 +326,31 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
       }
     );
+
     builder.addCase(filterProjects.rejected, (state) => {
       state.loading = false;
     });
+
     builder.addCase(filterProjects.pending, (state) => {
       // state.loading = true;
     });
+
     builder.addCase(filterProjects.fulfilled, (state, action) => {
       state.loading = false;
       state.filteredProjects = action.payload;
     });
+
     builder.addCase(getTasks.rejected, (state) => {});
     builder.addCase(getTasks.pending, (state) => {});
     builder.addCase(getTasks.fulfilled, (state, action) => {});
 
     builder.addCase(getProject.rejected, (state) => {});
-    builder.addCase(getProject.pending, (state) => {});
-    builder.addCase(getProject.fulfilled, (state, action) => {});
+    builder.addCase(getProject.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getProject.fulfilled, (state, action) => {
+      state.loading = false;
+    });
     builder.addCase(getAllTasks.rejected, (state) => {
       state.loading = false;
       state.allTasks = [];
@@ -455,7 +478,7 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(editProject.pending, (state, action) => {
-      // state.loading = true;
+      state.loading = true;
     });
     builder.addCase(deleteTasks.fulfilled, (state, action) => {
       state.loading = false;
@@ -465,8 +488,6 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.allTasks = [...state.allTasks].filter(
         (item) => item._id !== action.payload?._id
       );
-      let all = [...state.allTasks];
-      all = _(all).keyBy("id").at(action.payload).filter().value();
       state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
     });
     builder.addCase(deleteTasks.rejected, (state) => {
@@ -495,6 +516,21 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       );
       state.allTasks[index] = action.payload;
       state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+      if (action.payload.projectId) {
+        let projectIndex = state.projects.findIndex(
+          (i) => i._id === action.payload.projectId
+        );
+        if (projectIndex) {
+          state.projects[projectIndex].NoOfTasks = state.allTasks.filter(
+            (i) => i.projectId === action.payload.projectId
+          ).length;
+          state.projects[projectIndex].NoOfFinishedTasks =
+            state.allTasks.filter(
+              (i) =>
+                i.projectId === action.payload.projectId && i.status === "Done"
+            ).length;
+        }
+      }
     });
   },
 });
