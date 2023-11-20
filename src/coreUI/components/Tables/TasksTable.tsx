@@ -69,7 +69,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   selects,
   setAllSelected,
 }) => {
-  const { openTaskDetails: task } = useAppSelector(selectAllProjects);
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
@@ -177,7 +176,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 width: "20px",
               }}
             >
-              <Checkbox
+              {/* <Checkbox
                 onChange={(e, checked) => {
                   setSelected(checked);
                   if (checked) setAllSelected(tasks?.map((item) => item._id));
@@ -185,7 +184,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
                 }}
                 className="col-grey"
                 color="primary"
-              />
+              /> */}
             </TableCell>
             {TeableHeaderCells.map((headCell) => {
               return (

@@ -6,7 +6,7 @@ import { Journey } from "src/types/views/Statistics";
 /**
  * Get the time this journey is taking from creating this task till it lands in Shared (last shared)
  * @param journey Journey movements
- * @returns journeyLeadTime : number
+ * @returns journeyLeadTime : number (hours)
  */
 export const getJourneyLeadTime = (journey: Journey) => {
   let journeyLeadTime = 0;

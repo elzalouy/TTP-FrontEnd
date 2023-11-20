@@ -308,6 +308,7 @@ export const setProjectManagerId = (name: any): string => {
 export const getTaskJournies = (task: ITaskInfo) => {
   let getJourney = (): Journey => {
     return {
+      name: task.name,
       clientId: task.clientId,
       projectManager: task.projectManager,
       categoryId: task.categoryId,
@@ -630,7 +631,12 @@ export function convertToCSV(data: any[]) {
   const csvRows = rows.map((row) => row.join(","));
   return [header, ...csvRows].join("\n");
 }
-
+export const daysAndHours = (totalHours: number) => {
+  let days = Math.floor(totalHours / 24) > 0 ? Math.floor(totalHours / 24) : 0;
+  const hours =
+    Math.floor(totalHours % 24) > 0 ? Math.floor(totalHours % 24) : 0;
+  return { days, hours };
+};
 export const Months = [
   "January",
   "February",

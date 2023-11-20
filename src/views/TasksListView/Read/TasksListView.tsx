@@ -10,9 +10,6 @@ import Loading from "../../../coreUI/components/Loading/Loading";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
 import {
-  ProjectsActions,
-  deleteTasks,
-  downloadTasks,
   selectAllProjects,
   selectProjectOptions,
 } from "../../../models/Projects";
@@ -25,7 +22,6 @@ import "./TasksListView.css";
 import { Manager, selectManagers, selectPMOptions } from "src/models/Managers";
 import { Options } from "src/types/views/Projects";
 import FiltersBar from "./FiltersBar";
-import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import EditTasks from "../Edit/EditTasks";
 import { selectRole, selectUser } from "src/models/Auth";
@@ -105,7 +101,6 @@ const defaultValues: filterType = {
 };
 
 export const TasksListView: React.FC<Props> = (props) => {
-  const dispatch = useDispatch();
   const formRef = React.useRef<HTMLFormElement>(null);
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);

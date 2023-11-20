@@ -1,62 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Grid, IconButton, ListItem, Typography, colors } from "@mui/material";
 import "../../../style.css";
+import _ from "lodash";
+import IMAGES from "src/assets/img/Images";
+import FiltersBar from "./FilterMenu";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+  TodByCategoryProps,
+} from "src/types/views/Statistics";
+import { Bar } from "react-chartjs-2";
+import { ITeam } from "src/types/models/Departments";
+import { DialogOption } from "src/types/components/SelectDialog";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category, selectAllCategories } from "src/models/Categories";
-import { Bar } from "react-chartjs-2";
-import { IDepartmentState, ITeam } from "src/types/models/Departments";
-import _, { filter } from "lodash";
-import { getTaskJournies, randomColors } from "src/helpers/generalUtils";
+import { selectTeamsOptions } from "src/models/Departments";
+import { Manager, selectPMOptions } from "src/models/Managers";
+import React, { useEffect, useState } from "react";
 import { Client, selectClientOptions } from "src/models/Clients";
-import { User } from "src/types/models/user";
+import { Grid, IconButton, Typography } from "@mui/material";
+import { convertToCSV, getTaskJournies } from "src/helpers/generalUtils";
+import { Download as DownloadIcon } from "@mui/icons-material";
 import {
-  Manager,
-  selectManagers,
-  selectPMOptions,
-  selectPMs,
-} from "src/models/Managers";
-import { ITaskInfo, Journies } from "src/types/views/Statistics";
-import { getJourneyLeadTime, getJourneyReviewTime } from "../../../utils";
-import { LabelItem } from "chart.js";
-import FiltersBar from "./FilterMenu";
-import IMAGES from "src/assets/img/Images";
-import { Filter } from "@mui/icons-material";
-import { selectAllTeams, selectTeamsOptions } from "src/models/Departments";
-import { DialogOption } from "src/types/components/SelectDialog";
-import { Task } from "src/types/models/Projects";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import categories from "src/services/endpoints/categories";
+  chartOptions,
+  getCsvFile,
+  onGetDataSetsByClient,
+  onGetDataSetsByPM,
+  onGetDatasetsByAll,
+  onGetDatasetsByTeams,
+} from "./utils";
 
-interface StateType {
-  filterPopup: boolean;
-  filter: {
-    start: string | null;
-    end: string | null;
-  };
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-}
-type TodByCategoryProps = {
-  options: {
-    teams: ITeam[];
-    clients: Client[];
-    managers: Manager[];
-    categories: Category[];
-    boards: IDepartmentState[];
-    tasks: Task[];
-  };
-};
 /**
  * Time of delivery diagram by the Category
  * @param param0
@@ -64,16 +38,25 @@ type TodByCategoryProps = {
  */
 
 const TodByCategory = ({ options }: TodByCategoryProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
+  // Global state used in Filteration
   const { projects } = useAppSelector(selectAllProjects);
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
+
+  // Component State : Managers, teams, clients are the selected ones for the filteration
   const [managers, setManagers] = useState<Manager[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+
+  // Component State : Tasks after updating it and setting the project, the client, and the manager information.
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
+
+  // Journies of all tasks concatinated together.
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
+  // the filter values, and the data of the diagram sepereted by  the labels provided and by the datasets.
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     filter: {
@@ -88,6 +71,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     comparisonBy: "Teams",
   });
 
+  // Getting every needed information of each task like Project manager, client, etc.
   useEffect(() => {
     let newTasks: ITaskInfo[] = tasks.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
@@ -104,10 +88,12 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     setAllJournies(flattenedJournies);
   }, [tasks, teams, managers, projects]);
 
+  // Once the tasks and boards options from the component props are ready update their state.
   useEffect(() => {
     setTasks(options.tasks);
   }, [options.tasks, options.boards]);
 
+  // Once the Managers data from the component props is ready, update the state.
   useEffect(() => {
     setManagers(
       state.comparisonBy === "PMs"
@@ -116,6 +102,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.managers, state.comparisonBy]);
 
+  // Once the Clients data from the component props is ready, update the state.
   useEffect(() => {
     setClients(
       state.comparisonBy === "Clients"
@@ -124,105 +111,35 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.clients, state.comparisonBy]);
 
+  // Once the Teams data from the component props is ready, update the state.
   useEffect(() => {
     setTeams(
       state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
     );
   }, [options.teams, state.comparisonBy]);
 
+  // Prepare the datasets and render the diagram with the new values.
   useEffect(() => {
     let Categories = options.categories.map((item) => {
       return { id: item._id, name: item.category };
     });
 
-    const data = {
+    const data: DatasetType = {
       labels: Categories.map((item) => item.name),
       datasets:
         state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient()
+          ? onGetDataSetsByClient(options.categories, clients, journies)
           : state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
+          ? onGetDataSetsByPM(options.categories, managers, journies)
           : state.comparisonBy === "Teams"
-          ? onGetDatasetsByTeams()
-          : [onGetDatasetsByAll()],
+          ? onGetDatasetsByTeams(options.categories, teams, journies)
+          : [onGetDatasetsByAll(options.categories, journies)],
     };
-    let maxArray = data.datasets.map((item) => _.max(item.data));
-    let max = _.max(maxArray);
-    let maxN = max ? max : 100;
-    const Options = {
-      plugins: {
-        datalabels: {
-          anchor: "end",
-          align: "top",
-          formatter: (value: any, context: any) => {
-            const label = context.dataset.label;
-            if (value > 0) {
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return [label, `(${days} days, ${hours} hours)`];
-            } else return null;
-          },
-          font: {
-            weight: "bold",
-            size: "10px",
-          },
-        },
-        legend: {
-          display: false,
-          position: "right",
-          align: "start",
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context: any) {
-              const value: number = context.dataset.data[context.dataIndex];
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return [
-                `${context.dataset.label} :- `,
-                `(${days} days, ${hours} hours)`,
-              ];
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          type: "category",
-          position: "bottom",
-          ticks: {
-            beginAtZero: true,
-          },
-          title: {
-            display: true,
-            text: "Category",
-            poisition: "bottom",
-            align: "end",
-            color: "black",
-          },
-        },
-        y: {
-          ticks: {
-            beginAtZero: true,
-            stepSize: 5,
-          },
-          min: 0,
-          max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
-          title: {
-            display: true,
-            text: "TOD (Days & Hours)",
-            poisition: "bottom",
-            align: "end",
-            color: "black",
-          },
-        },
-      },
-    };
+    let Options = chartOptions(data);
     setState({ ...state, options: Options, data });
   }, [journies, tasks, state.comparisonBy, clients, managers, teams]);
 
+  // Filteration at anytime the filter state changes.
   React.useEffect(() => {
     let journiesData = [...allJournies];
     if (state.filter.start)
@@ -243,190 +160,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       );
     setJournies(journiesData);
   }, [state.filter.start, state.filter.end]);
-
-  const onGetDatasetsByAll = () => {
-    let Categories = options.categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-
-    let datasetData = Categories.map((category, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-      let journiesData = journies.filter(
-        (item) => item.categoryId === category.id
-      );
-      return {
-        journies: journiesData ?? [],
-        color,
-        borderColor,
-        comparisonId: category.id,
-        name: category.name,
-      };
-    });
-
-    return {
-      label: "",
-      data: datasetData.map(
-        (i) =>
-          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
-          i.journies.length /
-          24
-      ),
-      datasetData,
-      journies,
-      backgroundColor: datasetData.map((i) => i.color),
-      borderColor: datasetData.map((i) => i.borderColor),
-      borderWidth: 3,
-      hoverBorderWidth: 4,
-      skipNull: true,
-    };
-  };
-
-  const onGetDataSetsByPM = () => {
-    let Categories = options.categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-    const result = managers.map((manager, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-      let journiesData = journies.filter(
-        (item) => item.projectManager === manager._id
-      );
-      journiesData = journiesData.map((journey) => {
-        let lead = getJourneyLeadTime(journey);
-        return { ...journey, leadTime: lead };
-      });
-      let journiesOfClientGroupedByCategory = {
-        ..._.groupBy(journiesData, "categoryId"),
-      };
-      let datasetData = Categories.map((item) => {
-        let journies = journiesOfClientGroupedByCategory[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: manager._id,
-        };
-      });
-      return {
-        label: manager.name,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((journey) => journey.leadTime)) /
-            i.journies.length /
-            24
-        ),
-        datasetData: datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-    return result;
-  };
-
-  const onGetDataSetsByClient = () => {
-    let Categories = options.categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-
-    let result = clients.map((client, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
-      let journiesData = journies.filter(
-        (item) => item.clientId === client._id
-      );
-
-      journiesData = journiesData.map((journey) => {
-        let lead = getJourneyLeadTime(journey);
-        return { ...journey, leadTime: lead };
-      });
-
-      let journiesOfClientGroupedByCategory = {
-        ..._.groupBy(journiesData, "categoryId"),
-      };
-
-      let datasetData = Categories.map((item) => {
-        let journies = journiesOfClientGroupedByCategory[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: client._id,
-        };
-      });
-
-      return {
-        label: client.clientName,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((journey) => journey.leadTime)) /
-            i.journies.length /
-            24
-        ),
-        datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-    return result;
-  };
-
-  const onGetDatasetsByTeams = () => {
-    let Categories = options.categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-
-    const result = teams.map((team, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
-      let journiesData = journies.filter((item) => item.teamId === team._id);
-      journiesData = journiesData.map((item) => {
-        return { ...item, leadTime: getJourneyLeadTime(item) };
-      });
-
-      let journiesOfClientGroupedByCategory = {
-        ..._.groupBy(journiesData, "categoryId"),
-      };
-
-      let datasetData = Categories.map((item) => {
-        let journies = journiesOfClientGroupedByCategory[item.id];
-        return {
-          journies: journies ?? [],
-          color,
-          borderColor,
-          comparisonId: team._id,
-        };
-      });
-
-      return {
-        label: team.name,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((journey) => journey.leadTime)) /
-            i.journies.length /
-            24
-        ),
-        datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-    return result;
-  };
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
@@ -499,6 +232,36 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     }
   };
 
+  const onDownload = () => {
+    let { bars, comparisons } = getCsvFile(state.data);
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download =
+        "Time Of Delivery Diagram Category Comparison (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download =
+        "Time Of Delivery Diagram Category Comparison (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+  };
+
   return (
     <>
       <Grid
@@ -528,6 +291,24 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           >
             <img src={IMAGES.filtericon} alt="FILTER" />
           </IconButton>
+          {/* Download csv button */}
+          <form ref={formRef}>
+            <IconButton
+              type="button"
+              onClick={onDownload}
+              sx={{
+                bgcolor: "white",
+                borderRadius: 3,
+                float: "right",
+                cursor: "pointer",
+                width: "38px",
+                height: "38px",
+              }}
+              disableRipple
+            >
+              <DownloadIcon htmlColor="black"></DownloadIcon>
+            </IconButton>
+          </form>
         </Grid>
         <Bar
           plugins={[ChartDataLabels]}
@@ -625,6 +406,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
 };
 
 export default TodByCategory;
+
 const filterBtnStyle = {
   bgcolor: "#FAFAFB",
   borderRadius: 3,

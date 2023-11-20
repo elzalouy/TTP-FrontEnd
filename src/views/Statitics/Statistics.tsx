@@ -28,17 +28,6 @@ import {
   setStatisticsFilterDefaults,
 } from "src/models/Statistics";
 
-type time = {
-  hours: number;
-  mins: number;
-  totalDurationsAndTimes: {
-    taskId: string;
-    times: number;
-    movesTimesMins: number;
-  }[];
-  totalTimesInAllTasks: number;
-};
-
 const Statistics = (props: any) => {
   // Global State
   const dispatch = useDispatch();
@@ -47,8 +36,8 @@ const Statistics = (props: any) => {
   const allManagers = useAppSelector(selectManagers);
   const allClients = useAppSelector(selectAllClients);
   const allCategories = useAppSelector(selectAllCategories);
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
+  const { allTasks } = useAppSelector(selectAllProjects);
+  const { date } = useAppSelector(selectStatisticsFilterDefaults);
   // Component State
   const [state, setState] = useState<{
     filter: boolean;
@@ -89,7 +78,6 @@ const Statistics = (props: any) => {
         .filter((i) => i.priority === 1)
         .map((i) => i.boardId);
       let boards = allDepartments.filter((i) => i.priority === 1);
-
       let teams = _.flattenDeep(boards.map((i) => i.teams)).filter(
         (team) => team.isDeleted === false
       );

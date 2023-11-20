@@ -1,6 +1,11 @@
+import { Client } from "src/models/Clients";
+import { Manager } from "src/models/Managers";
+import { Category } from "src/models/Categories";
 import { Task, TaskMovement } from "../models/Projects";
+import { IDepartmentState, ITeam } from "../models/Departments";
 
 export type Journey = {
+  name?: string;
   clientId?: string;
   projectManager?: string;
   categoryId: string;
@@ -69,4 +74,45 @@ export type TaskJourniesDetails = {
   revivedTime: string;
   revivedTimes: string;
   deliveryStatus: string;
+};
+export interface StateType {
+  filterPopup: boolean;
+  filter: {
+    start: string | null;
+    end: string | null;
+  };
+  data: DatasetType;
+  options: any;
+  comparisonBy: string;
+}
+export type TodByCategoryProps = {
+  options: {
+    teams: ITeam[];
+    clients: Client[];
+    managers: Manager[];
+    categories: Category[];
+    boards: IDepartmentState[];
+    tasks: Task[];
+  };
+};
+
+export type DatasetType = {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    datasetData: {
+      journies: Journey[];
+      color: string;
+      borderColor: string;
+      comparisonId?: string;
+      comparisonName?: string;
+    }[];
+    journies: Journies;
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+    hoverBorderWidth: number;
+    skipNull: boolean;
+  }[];
 };

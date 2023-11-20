@@ -185,6 +185,7 @@ const TrackClientHealthTable = () => {
           return task;
       }
     });
+    console.log({ tasksInfo });
     tasksInfo = _.orderBy(
       tasksInfo.map((i) => {
         let p = projects.find((p) => p._id === i.projectId);
@@ -194,7 +195,7 @@ const TrackClientHealthTable = () => {
           projectManager: p?.projectManager,
         };
       }),
-      "createdAt",
+      "cardCreatedAt",
       "asc"
     );
     setTasks(tasksInfo);
@@ -219,7 +220,7 @@ const TrackClientHealthTable = () => {
     let journeysLeadTime = flattened.map((j) => {
       return j.leadTime;
     });
-    let sortedByCreatedAtTasks = _.orderBy(tasks, "createdAt", "asc");
+    let sortedByCreatedAtTasks = _.orderBy(tasks, "cardCreatedAt", "asc");
 
     State.organization._OfRevision =
       _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
@@ -241,6 +242,7 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
+      // getting tasks information of the project details. Sorting
       let allTasksInfo = _.orderBy(
         allTasks
           .map((i) => {
@@ -253,16 +255,19 @@ const TrackClientHealthTable = () => {
           })
           .filter(
             (task) =>
+              task.cardCreatedAt &&
               boards.includes(task.boardId) &&
-              new Date(task.createdAt).getTime() >= date.getTime()
+              new Date(task.cardCreatedAt).getTime() >= date.getTime()
           ),
-        "createdAt",
+        "cardCreatedAt",
         "asc"
       );
 
       State.tasks = allTasksInfo;
       State.clients = clients;
       State.projects = projects;
+
+      // Filtering using the start and end date
       if (State.filter.startDate && State.filter.endDate) {
         State.projects = State.projects.filter(
           (t) =>
@@ -273,6 +278,11 @@ const TrackClientHealthTable = () => {
             new Date(t.startDate).getTime() <=
               new Date(State.filter.endDate).getTime()
         );
+        console.log({
+          startdate: State.filter.startDate,
+          endDate: State.filter.endDate,
+        });
+        // Filtering the tasks
         State.tasks = state.tasks.filter(
           (i) =>
             i.cardCreatedAt &&
@@ -281,7 +291,7 @@ const TrackClientHealthTable = () => {
             new Date(i.cardCreatedAt).getTime() >=
               new Date(State.filter.startDate).getTime() &&
             new Date(i.cardCreatedAt).getTime() <=
-              new Date(State.filter.endDate).getTime()
+              new Date(State.filter.endDate).getTime() + 86400000
         );
       }
 

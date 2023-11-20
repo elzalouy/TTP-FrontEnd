@@ -321,12 +321,15 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       let journiesData = journies.filter(
         (i) => i.clientId && i.clientId === client._id
       );
+
       journiesData = journiesData.map((item) => {
         return { ...item, leadTime: getJourneyLeadTime(item) };
       });
+
       let journiesOfManagerGroupedByMonth = {
         ..._.groupBy(journiesData, "sharedAtMonth"),
       };
+
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
@@ -336,6 +339,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           comparisonId: client._id,
         };
       });
+
       return {
         label: client.clientName,
         data: datasetData.map(
