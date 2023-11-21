@@ -1,43 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Grid, IconButton, Typography } from "@mui/material";
 import "../../../style.css";
+import _ from "lodash";
+import IMAGES from "src/assets/img/Images";
+import FilterBar from "./FilterMenu";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Bar } from "react-chartjs-2";
+import { Client } from "src/models/Clients";
+import { Manager } from "src/models/Managers";
+import { Category } from "src/models/Categories";
+import { getCsvFile } from "../ByCategory/utils";
+import { setOptions } from "./utils";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category, selectAllCategories } from "src/models/Categories";
-import { Bar } from "react-chartjs-2";
-import { selectAllDepartments, selectAllTeams } from "src/models/Departments";
+import { Task, TaskMovement } from "src/types/models/Projects";
+import { getJourneyLeadTime } from "../../../utils";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
-import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { Grid, IconButton, Typography } from "@mui/material";
+import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import { Download as DownloadIcon } from "@mui/icons-material";
 import {
   Months,
+  convertToCSV,
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
-import { Journies } from "src/types/views/Statistics";
-import { Manager, selectPMs } from "src/models/Managers";
-import { getJourneyLeadTime } from "../../../utils";
-import IMAGES from "src/assets/img/Images";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import FilterBar from "./FilterMenu";
-
-interface StateType {
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-  year: number;
-  quarter?: number;
-}
 
 interface ITaskInfo extends Task {
   clientId?: string;
@@ -60,6 +46,7 @@ type BySharedMonthProps = {
  * @returns
  */
 const BySharedMonth = ({ options }: BySharedMonthProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -75,6 +62,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       labels: [],
       datasets: [],
     },
+    filter: { start: null, end: null },
+    filterPopup: false,
     options: null,
     comparisonBy: "Teams",
     year: new Date(Date.now()).getFullYear(),
@@ -144,7 +133,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "Clients"
@@ -156,79 +145,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           : [onGetDatasetsByAll()],
     };
 
-    let maxArray = data.datasets.map((item) => _.max(item.data));
-    let max = _.max(maxArray);
-    let maxN = max ? max : 100;
-
-    const options = {
-      plugins: {
-        datalabels: {
-          anchor: "end",
-          align: "top",
-          formatter: (value: any, context: any) => {
-            const label = context.dataset.label;
-            if (value > 0) {
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return [label, `(${days} days, ${hours} hours)`];
-            } else return null;
-          },
-          font: {
-            weight: "bold",
-            size: "10px",
-          },
-        },
-        legend: {
-          display: false,
-          position: "right",
-          align: "start",
-        },
-
-        tooltip: {
-          callbacks: {
-            label: function (context: any) {
-              const value: number = context.dataset.data[context.dataIndex];
-              let totalHours = value * 24;
-              let days = Math.floor(totalHours / 24);
-              const hours = Math.floor(totalHours % 24);
-              return `${context.dataset.label}:${days} days, ${hours} hours`;
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          type: "category",
-          position: "bottom",
-          ticks: {
-            beginAtZero: true,
-          },
-          title: {
-            display: true,
-            text: "Month",
-            poisition: "bottom",
-            align: "end",
-            color: "black",
-          },
-        },
-        y: {
-          min: 0,
-          max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
-          ticks: {
-            beginAtZero: true,
-            stepSize: 5,
-          },
-          title: {
-            display: true,
-            text: "TOD (Days & Hours)",
-            poisition: "top",
-            align: "end",
-            color: "black",
-          },
-        },
-      },
-    };
+    const options = setOptions(data);
 
     setState({ ...state, options, data });
   }, [teams, clients, managers, journies]);
@@ -300,6 +217,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           (i) =>
             _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
+        datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -314,6 +233,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
+
     const result = clients.map((client, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
@@ -347,6 +267,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
             _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
         datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -391,6 +312,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
             _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
         ),
         datasetData,
+        journies,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -433,11 +355,42 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       borderWidth: 3,
       hoverBorderWidth: 4,
       skipNull: true,
+      datasetData,
+      journies,
     };
   };
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
+  };
+
+  const onDownload = () => {
+    let { bars, comparisons } = getCsvFile(state.data);
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download =
+        "Time Of Delivery Diagram Trend Comparison (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Time Of Delivery Diagram Trend Comparison (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -463,6 +416,24 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         >
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
+        {/* Download csv button */}
+        {/* <form ref={formRef}>
+          <IconButton
+            type="button"
+            onClick={onDownload}
+            sx={{
+              bgcolor: "white",
+              borderRadius: 3,
+              float: "right",
+              cursor: "pointer",
+              width: "38px",
+              height: "38px",
+            }}
+            disableRipple
+          >
+            <DownloadIcon htmlColor="black"></DownloadIcon>
+          </IconButton>
+        </form> */}
       </Grid>
       <Bar
         plugins={[ChartDataLabels]}

@@ -242,7 +242,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       link.href = url;
       link.style.display = "none";
       link.download =
-        "Time Of Delivery Diagram Category Comparison (Bars data)";
+        "Time Of Delivery Diagram Category Comparison (Journies data)";
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
@@ -255,7 +255,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
       link.href = url;
       link.style.display = "none";
       link.download =
-        "Time Of Delivery Diagram Category Comparison (Journies data)";
+        "Time Of Delivery Diagram Category Comparison (Bars data)";
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
