@@ -107,8 +107,6 @@ const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
             let NoOfFinished = allTasks.filter(
               (item) => item.projectId === project._id && item.status === "Done"
             ).length;
-            project.NoOfFinishedTasks = NoOfFinished;
-            project.NoOfTasks = NoOfTasks;
             return (
               <TableRow
                 className={classes.tbody}

@@ -3,7 +3,11 @@ import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ProjectsFilter from "./Filter";
-import { IProjectsPage, Project } from "src/types/models/Projects";
+import {
+  DoneStatusList,
+  IProjectsPage,
+  Project,
+} from "src/types/models/Projects";
 import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { useAppSelector } from "../../../models/hooks";
@@ -36,7 +40,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     doneProjects: [],
     projects: [],
     notStarted: [],
-    inProgressShow: false,
+    inProgressShow: true,
     doneShow: false,
     notStartedShow: false,
   });
@@ -71,7 +75,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     details: string;
   }>({ edit: "none", delete: "none", details: "none" });
 
-  // user, or projects changes will affect the filteration and only show the projects belongs to this PM
+  //
   useEffect(() => {
     if (
       projects.projects.length > 0 &&
@@ -79,51 +83,61 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
       projects.allTasks
     ) {
       let projectsData = [...projects.projects];
-      let update: Project[] = projectsData.map((item) => {
-        let updateItem = { ...item };
-        let projectTasks = [
-          ...projects.allTasks
-            .filter((task) => task.projectId === updateItem._id)
-            .sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()
-            ),
-        ];
+      // let update: Project[] = projectsData.map((item) => {
+      //   let updateItem = { ...item };
+      //   let projectTasks = [
+      //     ...projects.allTasks
+      //       .filter((task) => task.projectId === updateItem._id)
+      //       .sort(
+      //         (a, b) =>
+      //           new Date(a.createdAt).getTime() -
+      //           new Date(b.createdAt).getTime()
+      //       ),
+      //   ];
 
-        let isDone =
-          projectTasks.length > 0 &&
-          projectTasks.filter((i) => i.status === "Done").length ===
-            projectTasks.length;
-        let firstTaskCreatedAt =
-          projectTasks.length > 0 ? new Date(projectTasks[0]?.createdAt) : null;
-        let projectStartDate = updateItem.startDate
-          ? new Date(updateItem.startDate)
-          : null;
-        if (firstTaskCreatedAt || projectStartDate) {
-          updateItem.projectStatus = "In Progress";
-          updateItem.startDate = projectStartDate ?? firstTaskCreatedAt;
-        }
-        if (isDone) {
-          updateItem.projectStatus = "Done";
-        }
+      //   let isDone =
+      //     projectTasks.length > 0 &&
+      //     projectTasks.filter((i) => i.status === "Done").length ===
+      //       projectTasks.length &&
+      //     [
+      //       "delivered on time",
+      //       "delivered before deadline",
+      //       "delivered after deadline",
+      //       "Done",
+      //     ].includes(item.projectStatus);
+      //   let firstTaskCreatedAt =
+      //     projectTasks.length > 0 ? new Date(projectTasks[0]?.createdAt) : null;
+      //   let projectStartDate = updateItem.startDate
+      //     ? new Date(updateItem.startDate)
+      //     : null;
 
-        if (!firstTaskCreatedAt && !projectStartDate) {
-          updateItem.startDate = null;
-          updateItem.projectStatus = "Not Started";
-        }
-        return { ...updateItem };
-      });
+      //   if (!isDone) {
+      //     if (firstTaskCreatedAt || projectStartDate) {
+      //       updateItem.projectStatus = "In Progress";
+      //       updateItem.startDate = projectStartDate ?? firstTaskCreatedAt;
+      //     } else {
+      //       updateItem.startDate = null;
+      //       updateItem.projectStatus = "Not Started";
+      //     }
+      //   }
+      //   return { ...updateItem };
+      // });
 
       setState({
         ...state,
-        projects: update,
-        filteredProjects: update,
-        notStarted: update.filter((i) => i.projectStatus === "Not Started"),
-        inProgressProjects: update.filter(
-          (i) => i.projectStatus === "In Progress"
+        projects: projects.projects,
+        filteredProjects: projects.projects,
+        notStarted: projectsData.filter(
+          (i) => i.projectStatus === "Not Started" && i.NoOfTasks > 0
         ),
-        doneProjects: update.filter((i) => i.projectStatus === "Done"),
+        inProgressProjects: projectsData.filter(
+          (i) =>
+            i.projectStatus === "In Progress" ||
+            (i.projectStatus === "Not Started" && i.NoOfTasks > 0)
+        ),
+        doneProjects: projectsData.filter((i) =>
+          DoneStatusList.includes(i.projectStatus)
+        ),
       });
     }
   }, [projects.loading, projects.projects, projects.allTasks]);
@@ -131,12 +145,13 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   // Filter function
   const onSetFilter = () => {
     let filter = watch();
-    let allProjects = [...state.projects];
-    if (filter.name !== "") {
+    console.log({ filter });
+    let allProjects = [...projects.projects];
+    if (filter.name !== "" && filter.name.length > 0) {
       allProjects = allProjects.filter((item) =>
         item.name.toLowerCase().includes(filter.name?.toString().toLowerCase())
       );
-    }
+    } else allProjects = [...projects.projects];
 
     if (filter.clientId !== "") {
       allProjects = allProjects.filter(
@@ -146,18 +161,24 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
 
     if (filter.projectManager !== "")
       allProjects = allProjects.filter(
-        (item) =>
-          item.projectManager === filter.projectManager ||
-          item.associateProjectManager === filter.projectManager
+        (item) => item.projectManager === filter.projectManager
+        // item.associateProjectManager === filter.projectManager
       );
     if (filter.projectStatus !== "")
       allProjects = allProjects.filter(
         (item) => item.projectStatus === filter.projectStatus
       );
-
+    console.log({ allProjects });
     setState({
       ...state,
       projects: allProjects,
+      doneProjects: allProjects.filter((i) =>
+        DoneStatusList.includes(i.projectStatus)
+      ),
+      inProgressProjects: allProjects.filter(
+        (i) => i.projectStatus === "In Progress"
+      ),
+      notStarted: allProjects.filter((i) => i.projectStatus === "Not Started"),
     });
   };
 

@@ -20,7 +20,7 @@ type Props = {
 };
 
 const CreateNewProject: React.FC<Props> = (props) => {
-  const [expanded, setExpanded] = useState<boolean>(true);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const style = CreateProjectContainerStyles(props);
   const dispatch = useDispatch();
   const PMs = useAppSelector(selectManagers);
@@ -33,7 +33,7 @@ const CreateNewProject: React.FC<Props> = (props) => {
       title={"Not Started"}
       outTitled={false}
       expanded={expanded}
-      setExpanded={setExpanded}
+      setExpanded={() => setExpanded(!expanded)}
       bgColor={"#F1F1F4"}
     >
       <Box id="project-container" sx={style.notStartedContainer}>
