@@ -77,63 +77,23 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
 
   //
   useEffect(() => {
+    console.log({ projects: projects.projects });
     if (
       projects.projects.length > 0 &&
       projects.loading === false &&
       projects.allTasks
     ) {
       let projectsData = [...projects.projects];
-      // let update: Project[] = projectsData.map((item) => {
-      //   let updateItem = { ...item };
-      //   let projectTasks = [
-      //     ...projects.allTasks
-      //       .filter((task) => task.projectId === updateItem._id)
-      //       .sort(
-      //         (a, b) =>
-      //           new Date(a.createdAt).getTime() -
-      //           new Date(b.createdAt).getTime()
-      //       ),
-      //   ];
-
-      //   let isDone =
-      //     projectTasks.length > 0 &&
-      //     projectTasks.filter((i) => i.status === "Done").length ===
-      //       projectTasks.length &&
-      //     [
-      //       "delivered on time",
-      //       "delivered before deadline",
-      //       "delivered after deadline",
-      //       "Done",
-      //     ].includes(item.projectStatus);
-      //   let firstTaskCreatedAt =
-      //     projectTasks.length > 0 ? new Date(projectTasks[0]?.createdAt) : null;
-      //   let projectStartDate = updateItem.startDate
-      //     ? new Date(updateItem.startDate)
-      //     : null;
-
-      //   if (!isDone) {
-      //     if (firstTaskCreatedAt || projectStartDate) {
-      //       updateItem.projectStatus = "In Progress";
-      //       updateItem.startDate = projectStartDate ?? firstTaskCreatedAt;
-      //     } else {
-      //       updateItem.startDate = null;
-      //       updateItem.projectStatus = "Not Started";
-      //     }
-      //   }
-      //   return { ...updateItem };
-      // });
-
+      console.log({ projectsData });
       setState({
         ...state,
         projects: projects.projects,
         filteredProjects: projects.projects,
         notStarted: projectsData.filter(
-          (i) => i.projectStatus === "Not Started" && i.NoOfTasks > 0
+          (i) => i.projectStatus === "Not Started"
         ),
         inProgressProjects: projectsData.filter(
-          (i) =>
-            i.projectStatus === "In Progress" ||
-            (i.projectStatus === "Not Started" && i.NoOfTasks > 0)
+          (i) => i.projectStatus === "In Progress"
         ),
         doneProjects: projectsData.filter((i) =>
           DoneStatusList.includes(i.projectStatus)

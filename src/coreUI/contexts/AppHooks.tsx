@@ -174,6 +174,8 @@ const AppHooks: React.FC<Props> = (props) => {
       }
     })();
   }, [updateTaskData]);
+
+  // create task hook fired
   React.useEffect(() => {
     if (createTaskData !== null) {
       dispatch(ProjectsActions.onCreateTaskData(createTaskData));

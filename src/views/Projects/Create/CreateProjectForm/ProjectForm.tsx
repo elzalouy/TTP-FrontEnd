@@ -122,6 +122,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         clientId: data?.clientId,
         numberOfFinishedTasks: 0,
         numberOfTasks: 0,
+        projectStatus: "Not Started",
         completedDate: null,
         adminId: token?.id,
         associateProjectManager:
