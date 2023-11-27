@@ -3,40 +3,24 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category, selectAllCategories } from "src/models/Categories";
+import { Category } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
-import { selectAllDepartments } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import {
   Months,
-  getRandomColor,
+  convertToCSV,
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
-import { Journies } from "src/types/views/Statistics";
-import { Manager, selectPMs } from "src/models/Managers";
+import { Task } from "src/types/models/Projects";
+import { Client } from "src/models/Clients";
+import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import { Manager } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
-import { data } from "cypress/types/jquery";
-interface StateType {
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-  year: number;
-  quarter?: number;
-}
+import { getCsvFile } from "../../utils";
+import { Download as DownloadIcon } from "@mui/icons-material";
 
 interface ITaskInfo extends Task {
   clientId?: string;
@@ -59,6 +43,7 @@ interface NoOfTasksProps {
  * @returns
  */
 const NoOfTasks = ({ options }: NoOfTasksProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -86,6 +71,8 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       labels: [],
       datasets: [],
     },
+    filter: { start: "", end: "" },
+    filterPopup: false,
     options: null,
     comparisonBy: "Teams",
     year: new Date(Date.now()).getFullYear(),
@@ -131,7 +118,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets: onGetDatasetsByAll(),
     };
@@ -306,28 +293,62 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
       let jounriesGroupedByMonth = _.groupBy(type.journies, "startedAtMonth");
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-      let dataset = months.map((month, index) => {
+      let datasetData = months.map((month, index) => {
         let data = jounriesGroupedByMonth[month];
         return {
-          data: data ?? [],
+          journies: data ?? [],
           color,
           borderColor,
           comparisonId: type.type,
-          name: type.type,
+          comparisonName: type.type,
         };
       });
       return {
         label: type.type,
-        data: dataset.map((i) => i.data.length),
-        dataset,
-        backgroundColor: dataset.map((i) => i.color),
-        borderColor: dataset.map((i) => i.borderColor),
+        data: datasetData.map((i) => i.journies.length),
+        datasetData,
+        journies: type.journies,
+        backgroundColor: datasetData.map((i) => i.color),
+        borderColor: datasetData.map((i) => i.borderColor),
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
       };
     });
     return result;
+  };
+
+  const onDownload = () => {
+    let data = [...state.data.datasets];
+    data = data.filter((i) => i.label !== "total");
+    let { bars, comparisons } = getCsvFile({
+      labels: [...state.data.labels],
+      datasets: data,
+    });
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Number of Journies (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Number of journies (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -353,6 +374,24 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         >
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
+        {/* Download csv button */}
+        <form ref={formRef}>
+          <IconButton
+            type="button"
+            onClick={onDownload}
+            sx={{
+              bgcolor: "white",
+              borderRadius: 3,
+              float: "right",
+              cursor: "pointer",
+              width: "38px",
+              height: "38px",
+            }}
+            disableRipple
+          >
+            <DownloadIcon htmlColor="black"></DownloadIcon>
+          </IconButton>
+        </form>
       </Grid>
       <Line options={state.options} data={state.data} />
       <FilterBar

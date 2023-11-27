@@ -8,18 +8,26 @@ import { useAppSelector } from "src/models/hooks";
 import { Manager, selectManagers } from "src/models/Managers";
 import { selectAllTeams } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
+import { Download as DownloadIcon } from "@mui/icons-material";
 import { Category, selectAllCategories } from "src/models/Categories";
-import { ITaskInfo, Journies } from "src/types/views/Statistics";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
 import { selectAllProjects } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import {
   Months,
+  convertToCSV,
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
 import { getJourneyLeadTime, getJourneyReviewTime } from "../../utils";
 import _ from "lodash";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { getCsvFile } from "../../utils";
 interface ReviewTimeProps {
   options: {
     teams: ITeam[];
@@ -30,31 +38,20 @@ interface ReviewTimeProps {
     tasks: Task[];
   };
 }
-type StateType = {
-  filterPopup: boolean;
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-};
+
 const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     data: {
       labels: [],
       datasets: [],
     },
+    filter: { start: "", end: "" },
     options: null,
     comparisonBy: "PMs",
   });
+
   const { projects } = useAppSelector(selectAllProjects);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -63,6 +60,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
+
   useEffect(() => {
     setTeams(options.teams);
   }, [options.teams]);
@@ -119,7 +117,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "PMs"
@@ -174,7 +172,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           },
           title: {
             display: true,
-            text: "Month",
+            text: "(Reviewed At) Month",
             poisition: "bottom",
             align: "end",
             color: "black",
@@ -258,6 +256,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           color,
           borderColor,
           comparisonId: manager._id,
+          comparisonName: manager.name,
         };
       });
       return {
@@ -269,12 +268,13 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
             24;
           return val > 0 ? val : 0;
         }),
+        journies: journiesData,
+        datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
-        datasetData,
       };
     });
     return result;
@@ -297,6 +297,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
         color,
         borderColor,
         comparisonId: month.id,
+        comparisonName: month.name,
         name: month.name,
       };
     });
@@ -316,8 +317,40 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
       hoverBorderWidth: 4,
       skipNull: true,
       datasetData,
+      journies,
     };
     return result;
+  };
+  const onDownload = () => {
+    let data = [...state.data.datasets];
+    let { bars, comparisons } = getCsvFile({
+      labels: [...state.data.labels],
+      datasets: data,
+    });
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Review Time (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Review Time (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -349,6 +382,24 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           >
             <img src={IMAGES.filtericon} alt="FILTER" />
           </IconButton>
+          {/* Download csv button */}
+          <form ref={formRef}>
+            <IconButton
+              type="button"
+              onClick={onDownload}
+              sx={{
+                bgcolor: "white",
+                borderRadius: 3,
+                float: "right",
+                cursor: "pointer",
+                width: "38px",
+                height: "38px",
+              }}
+              disableRipple
+            >
+              <DownloadIcon htmlColor="black"></DownloadIcon>
+            </IconButton>
+          </form>
         </Grid>
         <Line
           plugins={[ChartDataLabels]}

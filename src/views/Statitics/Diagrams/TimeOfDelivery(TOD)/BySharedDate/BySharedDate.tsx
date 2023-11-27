@@ -7,7 +7,7 @@ import { Bar } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { Category } from "src/models/Categories";
-import { getCsvFile } from "../ByCategory/utils";
+import { getCsvFile } from "../../../utils";
 import { setOptions } from "./utils";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
@@ -96,6 +96,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         )?.movedAt;
       return {
         ...item,
+        sharedAt: shared,
         sharedAtMonth: shared
           ? new Date(shared).toLocaleString("en-us", { month: "long" })
           : undefined,
@@ -205,10 +206,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
+          comparisonId: manager._id,
+          comparisonName: manager.name,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: manager._id,
         };
       });
       return {
@@ -253,10 +255,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
+          comparisonId: client._id,
+          comparisonName: client.clientName,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: client._id,
         };
       });
 
@@ -299,10 +302,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
+          comparisonName: team.name,
+          comparisonId: team._id,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: team._id,
         };
       });
       return {
@@ -334,11 +338,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         (item) => item.sharedAtMonth === month.id
       );
       return {
+        comparisonId: month.id,
+        comparisonName: month.name,
         journies: journiesData ?? [],
         color,
         borderColor,
-        comparisonId: month.id,
-        name: month.name,
       };
     });
 
@@ -417,7 +421,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
         {/* Download csv button */}
-        {/* <form ref={formRef}>
+        <form ref={formRef}>
           <IconButton
             type="button"
             onClick={onDownload}
@@ -433,7 +437,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           >
             <DownloadIcon htmlColor="black"></DownloadIcon>
           </IconButton>
-        </form> */}
+        </form>
       </Grid>
       <Bar
         plugins={[ChartDataLabels]}

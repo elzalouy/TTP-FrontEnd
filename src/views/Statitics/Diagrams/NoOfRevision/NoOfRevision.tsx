@@ -3,42 +3,25 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category, selectAllCategories } from "src/models/Categories";
+import { Category } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
-import { selectAllDepartments } from "src/models/Departments";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
+import { Download as DownloadIcon } from "@mui/icons-material";
 import _ from "lodash";
 import {
   Months,
-  getRandomColor,
+  convertToCSV,
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
-import { Journey, Journies } from "src/types/views/Statistics";
-import { Manager, selectPMs } from "src/models/Managers";
-import { getMeetingDeadline } from "../../utils";
+import { Task } from "src/types/models/Projects";
+import { Client } from "src/models/Clients";
+import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import { Manager } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-
-interface StateType {
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-  year: number;
-  quarter?: number;
-}
+import { getCsvFile } from "../../utils";
 
 interface ITaskInfo extends Task {
   clientId?: string;
@@ -61,6 +44,7 @@ type NoOfRevisionProps = {
  * @returns
  */
 const NoOfRevision = ({ options }: NoOfRevisionProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -88,6 +72,8 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       labels: [],
       datasets: [],
     },
+    filter: { start: "", end: "" },
+    filterPopup: false,
     options: null,
     comparisonBy: "Teams",
     year: new Date(Date.now()).getFullYear(),
@@ -138,7 +124,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "PMs"
@@ -274,6 +260,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       let revisionOfManagerByMonth = {
         ..._.groupBy(revised, "startedAtMonth"),
       };
+
       let journiesOfManagerByMonth = {
         ..._.groupBy(journiesData, "startedAtMonth"),
       };
@@ -281,10 +268,11 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         let journies = journiesOfManagerByMonth[item.id];
         let revision = revisionOfManagerByMonth[item.id];
         return {
+          comparisonId: manager._id,
+          comparisonName: manager.name,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: manager._id,
           revision: revision ?? [],
         };
       });
@@ -293,8 +281,8 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         data: datasetData.map((i) => {
           return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
+        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
         datasetData,
-
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -340,10 +328,11 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         let journies = journiesOfManagerByMonth[item.id];
         let revision = revisionOfManagerByMonth[item.id];
         return {
+          comparisonId: team._id,
+          comparisonName: team.name,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: team._id,
           revision: revision ?? [],
         };
       });
@@ -353,6 +342,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         data: datasetData.map((i) => {
           return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
+        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -398,7 +388,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         color,
         borderColor,
         comparisonId: month.id,
-        name: month.name,
+        comparisonName: month.name,
         revision: revisionOfMonth ?? [],
       };
     });
@@ -415,10 +405,38 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         hoverBorderWidth: 4,
         skipNull: true,
         datasetData,
-        journies,
+        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
       },
     ];
     return OrganizationResult;
+  };
+
+  const onDownload = () => {
+    let { bars, comparisons } = getCsvFile(state.data);
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Number of revision (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Number of revision (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -444,6 +462,24 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         >
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
+        {/* Download csv button */}
+        <form ref={formRef}>
+          <IconButton
+            type="button"
+            onClick={onDownload}
+            sx={{
+              bgcolor: "white",
+              borderRadius: 3,
+              float: "right",
+              cursor: "pointer",
+              width: "38px",
+              height: "38px",
+            }}
+            disableRipple
+          >
+            <DownloadIcon htmlColor="black"></DownloadIcon>
+          </IconButton>
+        </form>
       </Grid>
       <Line
         plugins={[ChartDataLabels]}

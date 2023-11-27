@@ -228,12 +228,12 @@ export const TasksListView: React.FC<Props> = (props) => {
                 status: taskInfo.status ?? "",
                 projectManager: projectManager?.name ?? "",
                 startDate: taskInfo.start
-                  ? format(new Date(taskInfo.start), "dd MMMM yyyy HH:SS")
+                  ? format(new Date(taskInfo.start), "dd MMMM yyyy HH:MM")
                   : "",
                 dueDate: journey.journeyDeadline
                   ? format(
                       new Date(journey.journeyDeadline),
-                      "dd MMMM yyyy HH:SS"
+                      "dd MMMM yyyy HH:MM"
                     )
                   : "",
                 deliveryStatus: missedDelivery ? "Missed" : "On Time",

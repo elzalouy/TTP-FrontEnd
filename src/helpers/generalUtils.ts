@@ -320,7 +320,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       journeyFinishedAt: null,
       revision: journies.length > 1,
       unique: false,
-      sharedAt: "",
+      sharedAt: undefined,
       startedAt: "",
       boardId: task.boardId,
       journeyDeadline: null,
@@ -334,10 +334,26 @@ export const getTaskJournies = (task: ITaskInfo) => {
     endOfJourney = ["Cancled", "Shared", "Done"],
     journey: Journey = getJourney();
 
+  let isScheduled = movements.find((i) => i.status === "In Progress")?.movedAt;
+  if (isScheduled) journey.scheduledAt = new Date(isScheduled);
   movements.forEach((item, index) => {
     journey.journeyDeadline = item.journeyDeadline
       ? new Date(item.journeyDeadline)
       : journey.journeyDeadline;
+    let isShared = item.status === "Shared";
+    if (isShared) {
+      journey.sharedAt = item.movedAt;
+      journey.sharedAtMonth = new Date(item.movedAt).toLocaleString("en-us", {
+        month: "long",
+      });
+    }
+    let isReview = item.status === "Review";
+    if (isReview) {
+      journey.reviewAt = item.movedAt.toString();
+      journey.reviewAtMonth = new Date(item.movedAt).toLocaleString("en-us", {
+        month: "long",
+      });
+    }
     if (item.journeyDeadline)
       journey.journeyDeadlines?.push(item.journeyDeadline);
     if (

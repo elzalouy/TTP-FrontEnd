@@ -24,12 +24,13 @@ import { convertToCSV, getTaskJournies } from "src/helpers/generalUtils";
 import { Download as DownloadIcon } from "@mui/icons-material";
 import {
   chartOptions,
-  getCsvFile,
   onGetDataSetsByClient,
   onGetDataSetsByPM,
   onGetDatasetsByAll,
   onGetDatasetsByTeams,
 } from "./utils";
+import { getCsvFile } from "../../../utils";
+import { TaskMovement } from "src/types/models/Projects";
 
 /**
  * Time of delivery diagram by the Category
@@ -84,6 +85,22 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     });
     let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
+    flattenedJournies = flattenedJournies.map((item) => {
+      let shared =
+        item.movements &&
+        _.findLast(
+          item.movements,
+          (move: TaskMovement) => move.status === "Shared"
+        )?.movedAt;
+
+      return {
+        ...item,
+        sharedAt: shared,
+        sharedAtMonth: shared
+          ? new Date(shared).toLocaleString("en-us", { month: "long" })
+          : undefined,
+      };
+    });
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
   }, [tasks, teams, managers, projects]);

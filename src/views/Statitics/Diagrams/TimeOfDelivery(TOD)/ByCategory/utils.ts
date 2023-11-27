@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import _ from "lodash";
 import { daysAndHours, randomColors } from "src/helpers/generalUtils";
 import { Category } from "src/models/Categories";
@@ -207,56 +208,6 @@ export const onGetDatasetsByAll = (
     skipNull: true,
   };
 };
-
-export const getCsvFile = (data: DatasetType) => {
-  let bars = _.flattenDeep(
-    data.datasets.map((item) => {
-      // get the bars by the x axis (Categories)
-      return item.datasetData.map((categoryData, index) => {
-        let totalHours = item.data[index];
-        let { days, hours } = daysAndHours(totalHours);
-        return {
-          categoryName: data.labels[index],
-          comparisonName: categoryData.comparisonName,
-          journies: categoryData.journies.length,
-          timeOfDelivery: `${days}D - ${hours}H`,
-        };
-      });
-    })
-  );
-  let comparisons = _.flattenDeep(
-    data.datasets.map((item) => {
-      // get the journies of each bar by the x axis and its value on y axis
-      let comparisonValues = _.flattenDeep(
-        item.datasetData.map((categoryData, index) => {
-          let totalHours = item.data[index];
-          let { days, hours } = daysAndHours(totalHours);
-          return categoryData.journies.map((journey, index) => {
-            let totalHours = journey.leadTime;
-            let { days: journeyDays, hours: journeyHours } = daysAndHours(
-              totalHours ?? 0
-            );
-            return {
-              comparisonName: categoryData.comparisonName,
-              categoryName: data.labels[index],
-              taskName: journey.name,
-              taskId: journey.taskId,
-              journeyindex: index,
-              journeyMovementsCount: journey.movements.length,
-              journeyStartedAt: journey.startedAt,
-              journeyFinishedAt: journey.journeyFinishedAtDate,
-              journeyLeadTime: `${journeyDays}D - ${journeyHours}H`,
-              datasetTOD: `${days}D - ${hours}`,
-            };
-          });
-        })
-      );
-      return comparisonValues;
-    })
-  );
-  return { comparisons, bars };
-};
-
 export const chartOptions = (data: DatasetType) => {
   let maxArray = data.datasets.map((item) => _.max(item.data));
   let max = _.max(maxArray);

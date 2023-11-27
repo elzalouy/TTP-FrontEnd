@@ -15,13 +15,14 @@ export type Journey = {
   leadTime?: number;
   teamId?: string;
   sharedAtMonth?: string;
-  sharedAt?: string;
+  sharedAt?: Date;
   reviewAt?: string;
   reviewAtMonth?: string;
   journeyFinishedAt: string | null;
   journeyFinishedAtDate?: Date | null;
   revision: boolean;
   startedAt: Date | string;
+  scheduledAt?: Date | string;
   startedAtMonth?: Date | string;
   unique: boolean;
   boardId: string;

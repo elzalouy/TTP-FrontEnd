@@ -9,15 +9,23 @@ import { Manager, selectManagers } from "src/models/Managers";
 import { selectAllTeams } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Category, selectAllCategories } from "src/models/Categories";
-import { ITaskInfo, Journies } from "src/types/views/Statistics";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
 import { selectAllProjects } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
+import { Download as DownloadIcon } from "@mui/icons-material";
+
 import {
   Months,
+  convertToCSV,
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
-import { getJourneySchedulingTime } from "../../utils";
+import { getCsvFile, getJourneySchedulingTime } from "../../utils";
 import _ from "lodash";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
@@ -31,28 +39,15 @@ interface SchedulingTimeProps {
     tasks: Task[];
   };
 }
-type StateType = {
-  filterPopup: boolean;
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-};
 const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const [state, setState] = useState<StateType>({
     filterPopup: false,
     data: {
       labels: [],
       datasets: [],
     },
+    filter: { start: "", end: "" },
     options: null,
     comparisonBy: "Departments",
   });
@@ -150,7 +145,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "Departments"
@@ -204,7 +199,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           },
           title: {
             display: true,
-            text: "Month",
+            text: "Month (Started At)",
             poisition: "bottom",
             align: "end",
             color: "black",
@@ -284,6 +279,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           color,
           borderColor,
           comparisonId: department.boardId,
+          comparisonName: department.name,
         };
       });
       return {
@@ -302,6 +298,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        journies: journiesData,
+        datasetData,
       };
     });
   };
@@ -310,7 +308,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     let months = Months.map((item) => {
       return { id: item, name: item };
     });
-
     let datasetData = months.map((month, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
@@ -323,6 +320,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
         color,
         borderColor,
         comparisonId: month.id,
+        comparisonName: month.name,
         name: month.name,
       };
     });
@@ -343,8 +341,42 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       borderWidth: 3,
       hoverBorderWidth: 4,
       skipNull: true,
+      datasetData,
+      journies: journies,
     };
   };
+  const onDownload = () => {
+    let data = [...state.data.datasets];
+    let { bars, comparisons } = getCsvFile({
+      labels: [...state.data.labels],
+      datasets: data,
+    });
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Review Time (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Review Time (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+  };
+
   return (
     <>
       <Grid
@@ -365,6 +397,13 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           <Typography fontSize={18} mb={1} fontWeight={"600"}>
             Scheduling Time
           </Typography>
+          <Typography fontSize={10} fontWeight={"400"} color={"#808191"}>
+            Limiting the scope to tasks within a specific project, assigned to a
+            designated team, and categorized of them. This enables the
+            identification of scheduling times for individual tasks,
+            facilitating their distribution across boards and allowing for
+            effective filtering based on these criteria.{" "}
+          </Typography>
         </Grid>
         <Grid xs={2}>
           <IconButton
@@ -374,6 +413,24 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           >
             <img src={IMAGES.filtericon} alt="FILTER" />
           </IconButton>
+          {/* Download csv button */}
+          <form ref={formRef}>
+            <IconButton
+              type="button"
+              onClick={onDownload}
+              sx={{
+                bgcolor: "white",
+                borderRadius: 3,
+                float: "right",
+                cursor: "pointer",
+                width: "38px",
+                height: "38px",
+              }}
+              disableRipple
+            >
+              <DownloadIcon htmlColor="black"></DownloadIcon>
+            </IconButton>
+          </form>
         </Grid>
         <Line
           plugins={[ChartDataLabels]}

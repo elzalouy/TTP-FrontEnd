@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
-import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
-import { Category, selectAllCategories } from "src/models/Categories";
-import { Line } from "react-chartjs-2";
-import { selectAllDepartments } from "src/models/Departments";
-import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
-import { Months, getTaskJournies } from "src/helpers/generalUtils";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
-import { Journies } from "src/types/views/Statistics";
-import { Manager, selectPMs } from "src/models/Managers";
-import { getMeetingDeadline } from "../../utils";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-
-interface StateType {
-  data: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  options: any;
-  comparisonBy: string;
-  year: number;
-  quarter?: number;
-}
+import { Line } from "react-chartjs-2";
+import { Client } from "src/models/Clients";
+import { Manager } from "src/models/Managers";
+import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import { Category } from "src/models/Categories";
+import { getCsvFile } from "../../utils";
+import { useAppSelector } from "src/models/hooks";
+import { selectAllProjects } from "src/models/Projects";
+import { Task, TaskMovement } from "src/types/models/Projects";
+import { getMeetingDeadline } from "../../utils";
+import { IDepartmentState, ITeam } from "src/types/models/Departments";
+import { Download as DownloadIcon } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { Grid, IconButton, Typography } from "@mui/material";
+import {
+  Months,
+  convertToCSV,
+  getTaskJournies,
+} from "src/helpers/generalUtils";
 
 interface ITaskInfo extends Task {
   clientId?: string;
@@ -56,6 +44,7 @@ type MeetDeadlineProps = {
  * @returns
  */
 const MeetDeadline = ({ options }: MeetDeadlineProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -71,6 +60,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       labels: [],
       datasets: [],
     },
+    filter: { start: "", end: "" },
+    filterPopup: false,
     options: null,
     comparisonBy: "Teams",
     year: new Date(Date.now()).getFullYear(),
@@ -148,7 +139,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
 
   useEffect(() => {
     let months = Months;
-    const data = {
+    const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "Clients"
@@ -159,8 +150,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           ? onGetDatasetsByTeams()
           : onGetDatasetsByAll(),
     };
-    let maxArray = data.datasets.map((item) => Math.max(...item.data));
-    let max = Math.max(...maxArray);
     const options = {
       plugins: {
         datalabels: {
@@ -280,10 +269,11 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
+          comparisonId: manager._id,
+          comparisonName: manager.name,
           journies: journies ?? [],
           color,
           borderColor,
-          comparisonId: manager._id,
         };
       });
       return {
@@ -299,6 +289,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         borderWidth: 3,
         hoverBorderWidth: 4,
         skipNull: true,
+        datasetData,
+        journies,
       };
     });
   };
@@ -322,6 +314,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           color,
           borderColor,
           comparisonId: client._id,
+          comparisonName: client.clientName,
         };
       });
       return {
@@ -338,6 +331,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         hoverBorderWidth: 4,
         skipNull: true,
         datasetData,
+        journies,
       };
     });
   };
@@ -352,9 +346,11 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       let journiesData = journies.filter(
         (i) => i.teamId && i.teamId === team._id
       );
+
       let journiesOfManagerGroupedByMonth = {
         ..._.groupBy(journiesData, "journeyFinishedAt"),
       };
+
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerGroupedByMonth[item.id];
         return {
@@ -362,8 +358,10 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           color,
           borderColor,
           comparisonId: team._id,
+          comparisonName: team.name,
         };
       });
+
       return {
         label: team.name,
         data: datasetData.map((i) => {
@@ -378,6 +376,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         hoverBorderWidth: 4,
         skipNull: true,
         datasetData,
+        journies,
       };
     });
   };
@@ -417,6 +416,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           );
         }),
         datasetData,
+        journies,
         backgroundColor: datasetData.map((i) => i.color),
         borderColor: datasetData.map((i) => i.borderColor),
         borderWidth: 3,
@@ -425,6 +425,34 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
       },
     ];
     return result;
+  };
+
+  const onDownload = () => {
+    let { bars, comparisons } = getCsvFile(state.data);
+    if (comparisons.length > 0) {
+      let csvData = convertToCSV(comparisons);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Meeting Deadline (Journies data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
+    if (bars.length > 0) {
+      let csvData = convertToCSV(bars);
+      let dataBlob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Meeting Deadline (Bars data)";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -450,6 +478,24 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         >
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
+        {/* Download csv button */}
+        <form ref={formRef}>
+          <IconButton
+            type="button"
+            onClick={onDownload}
+            sx={{
+              bgcolor: "white",
+              borderRadius: 3,
+              float: "right",
+              cursor: "pointer",
+              width: "38px",
+              height: "38px",
+            }}
+            disableRipple
+          >
+            <DownloadIcon htmlColor="black"></DownloadIcon>
+          </IconButton>
+        </form>
       </Grid>
       <Line
         plugins={[ChartDataLabels]}

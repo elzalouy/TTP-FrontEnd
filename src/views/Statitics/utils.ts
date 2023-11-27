@@ -1,7 +1,12 @@
+import { format } from "date-fns";
 import _ from "lodash";
-import { getDifBetweenDates, getTaskJournies } from "src/helpers/generalUtils";
+import {
+  daysAndHours,
+  getDifBetweenDates,
+  getTaskJournies,
+} from "src/helpers/generalUtils";
 import { Task, TaskMovement } from "src/types/models/Projects";
-import { Journey } from "src/types/views/Statistics";
+import { DatasetType, Journey } from "src/types/views/Statistics";
 
 /**
  * Get the time this journey is taking from creating this task till it lands in Shared (last shared)
@@ -82,4 +87,81 @@ export const getMeetingDeadline = (journies: Journey[]) => {
     }
   });
   return { passedDeadline, notPassedDeadline };
+};
+
+export const getCsvFile = (data: DatasetType) => {
+  let bars = _.flattenDeep(
+    data.datasets.map((item) => {
+      // get the bars by the x axis (Categories)
+      return item.datasetData.map((categoryData, index) => {
+        let totalHours = item.data[index];
+        let { days, hours } = daysAndHours(totalHours);
+        return {
+          barName: data.labels[index],
+          comparison: categoryData.comparisonName,
+          journies: categoryData.journies.length,
+          timeOfDelivery: `${days}D - ${hours}H`,
+        };
+      });
+    })
+  );
+  // every dataset has a label for the comparison and array of values with this label for all x axis ditribution.
+  let comparisons = _.flattenDeep(
+    // Each dataset has an array of its values and the particibated .
+    data.datasets.map((item) => {
+      let comparisonValues = _.flattenDeep(
+        // every dataset has journies.
+        item.datasetData.map((categoryData, index) => {
+          let totalHours = item.data[index];
+          let { days, hours } = daysAndHours(totalHours);
+          return categoryData.journies.map((journey) => {
+            console.log({ categoryBarName: data.labels[index], index });
+            let totalHours = journey.leadTime;
+            let { days: journeyDays, hours: journeyHours } = daysAndHours(
+              totalHours ?? 0
+            );
+            return {
+              barName: data.labels[index],
+              comparison: item.label,
+              taskName: journey.name,
+              taskId: journey.taskId,
+              journeyMovementsCount: journey.movements.length,
+              journeyStartedAt: journey.startedAt
+                ? format(new Date(journey.startedAt), "dd MMMM yyyy hh:mm")
+                : "",
+              journeyScheduledAt: journey.scheduledAt
+                ? format(new Date(journey.scheduledAt), "dd MMMM yyyy hh:mm")
+                : "",
+              journeyReviewAt: journey.reviewAt
+                ? format(new Date(journey.reviewAt), "dd MMMM yyyy hh:mm")
+                : "",
+              journeySharedAt: journey.sharedAt
+                ? format(new Date(journey.sharedAt), "dd MMMM yyyy hh:mm")
+                : "",
+              journeyFinishedAt:
+                journey.journeyFinishedAtDate && journey.journeyFinishedAtDate
+                  ? format(
+                      new Date(journey.journeyFinishedAtDate),
+                      "dd MMMM yyyy hh:mm"
+                    )
+                  : "",
+              journeyDeadline: journey.journeyDeadline
+                ? format(
+                    new Date(journey.journeyDeadline),
+                    "dd MMMM yyyy hh:mm"
+                  )
+                : "",
+
+              journeyLeadTime: `${journeyDays}D - ${journeyHours}H`,
+              datasetTOD: `${days}D - ${hours}H`,
+            };
+          });
+        })
+      );
+      return comparisonValues;
+    })
+  );
+  comparisons = _.orderBy(comparisons, "barName");
+  bars = _.orderBy(bars, "barName");
+  return { comparisons, bars };
 };
