@@ -122,4 +122,5 @@ export const DoneStatusList = [
   "delivered on time",
   "delivered before deadline",
   "delivered after deadline",
+  "Done",
 ];

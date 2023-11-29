@@ -3,7 +3,11 @@ import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ProjectsFilter from "./Filter";
-import { IProjectsPage, Project } from "src/types/models/Projects";
+import {
+  DoneStatusList,
+  IProjectsPage,
+  Project,
+} from "src/types/models/Projects";
 import TableBox from "../../../coreUI/components/Containers/Table/TableContainer";
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { useAppSelector } from "../../../models/hooks";
@@ -78,52 +82,19 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
       projects.loading === false &&
       projects.allTasks
     ) {
-      let projectsData = [...projects.projects];
-      let update: Project[] = projectsData.map((item) => {
-        let updateItem = { ...item };
-        let projectTasks = [
-          ...projects.allTasks
-            .filter((task) => task.projectId === updateItem._id)
-            .sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()
-            ),
-        ];
-
-        let isDone =
-          projectTasks.length > 0 &&
-          projectTasks.filter((i) => i.status === "Done").length ===
-            projectTasks.length;
-        let firstTaskCreatedAt =
-          projectTasks.length > 0 ? new Date(projectTasks[0]?.createdAt) : null;
-        let projectStartDate = updateItem.startDate
-          ? new Date(updateItem.startDate)
-          : null;
-        if (firstTaskCreatedAt || projectStartDate) {
-          updateItem.projectStatus = "In Progress";
-          updateItem.startDate = projectStartDate ?? firstTaskCreatedAt;
-        }
-        if (isDone) {
-          updateItem.projectStatus = "Done";
-        }
-
-        if (!firstTaskCreatedAt && !projectStartDate) {
-          updateItem.startDate = null;
-          updateItem.projectStatus = "Not Started";
-        }
-        return { ...updateItem };
-      });
-
       setState({
         ...state,
-        projects: update,
-        filteredProjects: update,
-        notStarted: update.filter((i) => i.projectStatus === "Not Started"),
-        inProgressProjects: update.filter(
+        projects: projects.projects,
+        filteredProjects: projects.projects,
+        notStarted: projects.projects.filter(
+          (i) => i.projectStatus === "Not Started"
+        ),
+        inProgressProjects: projects.projects.filter(
           (i) => i.projectStatus === "In Progress"
         ),
-        doneProjects: update.filter((i) => i.projectStatus === "Done"),
+        doneProjects: projects.projects.filter((i) =>
+          DoneStatusList.includes(i.projectStatus)
+        ),
       });
     }
   }, [projects.loading, projects.projects, projects.allTasks]);
