@@ -83,19 +83,17 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
       projects.loading === false &&
       projects.allTasks
     ) {
-      let projectsData = [...projects.projects];
-      console.log({ projectsData });
       setState({
         ...state,
         projects: projects.projects,
         filteredProjects: projects.projects,
-        notStarted: projectsData.filter(
+        notStarted: projects.projects.filter(
           (i) => i.projectStatus === "Not Started"
         ),
-        inProgressProjects: projectsData.filter(
+        inProgressProjects: projects.projects.filter(
           (i) => i.projectStatus === "In Progress"
         ),
-        doneProjects: projectsData.filter((i) =>
+        doneProjects: projects.projects.filter((i) =>
           DoneStatusList.includes(i.projectStatus)
         ),
       });

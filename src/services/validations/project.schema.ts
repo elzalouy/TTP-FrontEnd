@@ -146,7 +146,9 @@ const editProjectSchema = (tasks: Task[], startDate: any) =>
     listId: Joi.any(),
     cardId: Joi.any(),
   }).concat(
-    Joi.object({ projectStatus: validateProjectStatusSchema(tasks, startDate) })
+    Joi.object({
+      projectStatus: () => validateProjectStatusSchema(tasks, startDate),
+    })
   );
 
 export const validateDate = (date: any, msg: any, greater: any) => {

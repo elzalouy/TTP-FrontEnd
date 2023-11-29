@@ -102,6 +102,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
       defaultStatus = EditProjectStatus.map((item) => {
         return { id: item, text: item, value: item };
       });
+
       State.status =
         project.projectStatus === "Not Started"
           ? [defaultStatus[1]]
@@ -159,7 +160,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
         editData.projectStatus = "delivered after deadline";
       else editData.projectStatus = "delivered before deadline";
     } else editData.projectStatus = data.projectStatus;
-
+    console.log({ editData, tasks });
     // Validate the new object of the project
     const validate = validateEditProject(editData, tasks);
 
