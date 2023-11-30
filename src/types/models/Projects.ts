@@ -69,7 +69,7 @@ export interface Project {
 }
 export interface TasksStatistics {
   numberOfTasks: number | null;
-  numberOfFinishedTasks: number | null;
+  NoOfFinishedTasks: number | null;
   progress: number | null;
 }
 export interface ProjectsInterface {

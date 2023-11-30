@@ -120,8 +120,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             ? moment(data?.deadline).toDate()
             : null,
         clientId: data?.clientId,
-        numberOfFinishedTasks: 0,
-        numberOfTasks: 0,
+        NoOfFinishedTasks: 0,
+        NoOfTasks: 0,
         projectStatus: "Not Started",
         completedDate: null,
         adminId: token?.id,
