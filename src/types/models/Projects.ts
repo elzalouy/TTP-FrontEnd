@@ -68,7 +68,7 @@ export interface Project {
   listId?: string;
 }
 export interface TasksStatistics {
-  numberOfTasks: number | null;
+  NoOfTasks: number | null;
   NoOfFinishedTasks: number | null;
   progress: number | null;
 }

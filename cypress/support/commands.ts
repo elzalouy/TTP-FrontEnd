@@ -122,7 +122,7 @@ Cypress.Commands.add("createAutomatedProject", () => {
           projectManagerName: pms[0].name,
           clientId: clients.body[0]._id,
           NoOfFinishedTasks: 0,
-          numberOfTasks: 0,
+          NoOfTasks: 0,
           projectStatus: "Not Started",
           completedDate: null,
           adminId: localStorage.getItem("id"),

@@ -37,7 +37,7 @@ const createProjectSchema = Joi.object({
     "string.min": "Client length should be Min 2 chars",
   }),
   NoOfFinishedTasks: Joi.number().optional().allow(null, 0),
-  numberOfTasks: Joi.number().optional().allow(null, 0),
+  NoOfTasks: Joi.number().optional().allow(null, 0),
   projectStatus: Joi.string()
     .optional()
     .allow("", null)
