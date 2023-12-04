@@ -93,7 +93,6 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     });
   }, [task, movements]);
 
-  // console.log({ state: state?.statitics });
   return (
     <Grid sx={{ height: "100%", p: 3, overflowY: "scroll" }}>
       {state?.taskCategory && (

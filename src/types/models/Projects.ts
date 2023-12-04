@@ -40,6 +40,9 @@ export interface TaskMovement {
   status: string;
   movedAt: Date;
   journeyDeadline?: string;
+  listId?: string;
+  listType?: string;
+  actionId?: string;
 }
 
 export interface IProjectsPage {

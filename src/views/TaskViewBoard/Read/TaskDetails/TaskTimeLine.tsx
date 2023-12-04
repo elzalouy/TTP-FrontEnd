@@ -318,7 +318,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                             moved to: &nbsp;
                           </Typography>
                           <Typography fontSize={11} fontWeight={"600"}>
-                            {item?.status} &nbsp;
+                            {item.listType==='list'? item?.status : `${item.status} (${item.listType})`} &nbsp;
                           </Typography>
                         </Box>
                         <Box alignItems={"flex-start"} display={"inline-flex"}>
