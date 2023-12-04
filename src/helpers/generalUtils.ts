@@ -426,8 +426,8 @@ export const getDiffFromTo = (
   to: string,
   movements: TaskMovement[]
 ) => {
-  let totalDif = initialDifferenceBetweenDates;
-  let dif = [initialDifferenceBetweenDates];
+  let totalDif = initialDifferenceBetweenDates();
+  let dif = [initialDifferenceBetweenDates()];
   dif = movements.map((move, index) => {
     if (
       move.status === from &&
@@ -439,7 +439,7 @@ export const getDiffFromTo = (
         new Date(movements[index + 1].movedAt)
       );
       return difference;
-    } else return initialDifferenceBetweenDates;
+    } else return initialDifferenceBetweenDates();
   });
   totalDif.difference.days += _.sum(dif.map((i) => i.difference.days));
   totalDif.difference.hours += _.sum(dif.map((i) => i.difference.hours));
@@ -500,11 +500,16 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
 
 export const getTaskLeadtTime = (movements: TaskMovement[]) => {
   let sharedMovemens = movements.filter((item) => item.status === "Shared");
-  let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
-  let start = movements.length > 0 ? movements[0]?.movedAt : null;
-  if (end && start) {
-    return getDifBetweenDates(new Date(start), new Date(end));
-  } else return initialDifferenceBetweenDates;
+  // console.log({ sharedMovemens });
+  if (sharedMovemens.length > 0) {
+    console.log("selecting start and end date");
+    let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
+    let start = movements.length > 0 ? movements[0]?.movedAt : null;
+    if (end && start) {
+      console.log("calculating difference between start and end date");
+      return getDifBetweenDates(new Date(start), new Date(end));
+    } else return initialDifferenceBetweenDates();
+  } else return initialDifferenceBetweenDates();
 };
 
 export const taskSchedulingTime = (movements: TaskMovement[]) => {
@@ -518,7 +523,7 @@ export const taskSchedulingTime = (movements: TaskMovement[]) => {
       new Date(taskBoardMoveDate),
       new Date(inProgressMove.movedAt)
     );
-  } else return initialDifferenceBetweenDates;
+  } else return initialDifferenceBetweenDates();
 };
 
 export const totalUnClearTime = (movements: TaskMovement[]) => {
@@ -569,7 +574,7 @@ export const turnAroundTime = (movements: TaskMovement[]) => {
   } else
     return {
       hours: 0,
-      difference: initialDifferenceBetweenDates.difference,
+      difference: initialDifferenceBetweenDates().difference,
       times: 0,
     };
 };
@@ -595,7 +600,7 @@ export const taskProcessingTime = (movements: TaskMovement[]) => {
       new Date(inProgress.movedAt),
       sharedMove ? new Date(sharedMove.movedAt) : new Date(Date.now())
     );
-  } else return initialDifferenceBetweenDates;
+  } else return initialDifferenceBetweenDates();
 };
 
 export function getRandomColor(colors: string[]): {
@@ -769,10 +774,12 @@ export const randomColors = [
   [255, 87, 34],
 ];
 
-export let initialDifferenceBetweenDates = {
-  isLate: false,
-  difference: { days: 0, hours: 0, mins: 0 },
-  remainingDays: 0,
-  totalMins: 0,
-  totalHours: 0,
+export const initialDifferenceBetweenDates = () => {
+  return {
+    isLate: false,
+    difference: { days: 0, hours: 0, mins: 0 },
+    remainingDays: 0,
+    totalMins: 0,
+    totalHours: 0,
+  };
 };

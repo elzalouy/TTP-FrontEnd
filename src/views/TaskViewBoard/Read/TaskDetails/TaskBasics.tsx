@@ -57,7 +57,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
-  
+
   useEffect(() => {
     const taskBoard = departments?.find(
       (item) => item.boardId === task.boardId
@@ -93,6 +93,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     });
   }, [task, movements]);
 
+  // console.log({ state: state?.statitics });
   return (
     <Grid sx={{ height: "100%", p: 3, overflowY: "scroll" }}>
       {state?.taskCategory && (

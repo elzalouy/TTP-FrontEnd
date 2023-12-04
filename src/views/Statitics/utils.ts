@@ -115,7 +115,6 @@ export const getCsvFile = (data: DatasetType) => {
           let totalHours = item.data[index];
           let { days, hours } = daysAndHours(totalHours);
           return categoryData.journies.map((journey) => {
-            console.log({ categoryBarName: data.labels[index], index });
             let totalHours = journey.leadTime;
             let { days: journeyDays, hours: journeyHours } = daysAndHours(
               totalHours ?? 0

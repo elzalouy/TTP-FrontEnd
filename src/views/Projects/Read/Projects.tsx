@@ -77,7 +77,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
 
   //
   useEffect(() => {
-    console.log({ projects: projects.projects });
     if (
       projects.projects.length > 0 &&
       projects.loading === false &&
@@ -103,7 +102,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   // Filter function
   const onSetFilter = () => {
     let filter = watch();
-    console.log({ filter });
     let allProjects = [...projects.projects];
     if (filter.name !== "" && filter.name.length > 0) {
       allProjects = allProjects.filter((item) =>
@@ -126,7 +124,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
       allProjects = allProjects.filter(
         (item) => item.projectStatus === filter.projectStatus
       );
-    console.log({ allProjects });
     setState({
       ...state,
       projects: allProjects,

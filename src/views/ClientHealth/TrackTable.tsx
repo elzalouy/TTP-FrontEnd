@@ -185,7 +185,6 @@ const TrackClientHealthTable = () => {
           return task;
       }
     });
-    console.log({ tasksInfo });
     tasksInfo = _.orderBy(
       tasksInfo.map((i) => {
         let p = projects.find((p) => p._id === i.projectId);
@@ -278,10 +277,6 @@ const TrackClientHealthTable = () => {
             new Date(t.startDate).getTime() <=
               new Date(State.filter.endDate).getTime()
         );
-        console.log({
-          startdate: State.filter.startDate,
-          endDate: State.filter.endDate,
-        });
         // Filtering the tasks
         State.tasks = state.tasks.filter(
           (i) =>
