@@ -85,7 +85,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
       taskBoard,
       statitics: {
         taskLeadTime: getTaskLeadtTime(movements),
-        taskProcessingTime: processingTime,
+        taskProcessingTime: taskProcessingTime(movements),
         turnAroundTime: turnAroundTime(movements),
         unClearTime: totalUnClearTime(movements),
         taskSchedulingTime: schedulingTimeDiff.dif,
