@@ -76,7 +76,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
       "In Progress",
       movements
     );
-    let processingTime = getDiffFromTo("In Progress", "Shared", movements);
+
     setState({
       sharedMovements,
       taskTeam,

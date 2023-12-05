@@ -43,6 +43,7 @@ export interface TaskMovement {
   listId?: string;
   listType?: string;
   actionId?: string;
+  listName?: string;
 }
 
 export interface IProjectsPage {

@@ -315,12 +315,30 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                       >
                         <Box alignItems={"flex-start"} display={"inline-flex"}>
                           <Typography color={"#94989b"} fontSize={12}>
-                            moved to: &nbsp;
+                            Status: &nbsp;
                           </Typography>
                           <Typography fontSize={11} fontWeight={"600"}>
-                            {item.listType==='list'? item?.status : `${item.status} (${item.listType})`} &nbsp;
+                            {item.status}
+                            &nbsp;
                           </Typography>
                         </Box>
+                        {item.listType !== "list" && (
+                          <Box
+                            alignItems={"flex-start"}
+                            display={"inline-flex"}
+                          >
+                            <Typography color={"#94989b"} fontSize={12}>
+                              Moved to: &nbsp;
+                            </Typography>
+                            <Typography fontSize={11} fontWeight={"600"}>
+                              {item.listName}
+                              {item.listType === "team"
+                                ? ` (Team List)`
+                                : "(Tasks Board List)"}
+                              &nbsp;
+                            </Typography>
+                          </Box>
+                        )}
                         <Box alignItems={"flex-start"} display={"inline-flex"}>
                           <Typography color={"#94989b"} fontSize={12}>
                             Moved at: &nbsp;
