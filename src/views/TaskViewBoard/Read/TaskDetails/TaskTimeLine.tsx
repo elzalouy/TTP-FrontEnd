@@ -346,7 +346,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                           <Typography fontSize={11} fontWeight={"600"}>
                             {item.movedAt
                               ? format(new Date(item.movedAt), "dd MMMM yyyy")
-                              : "Not defined"}{" "}
+                              : "Not defined"}
                             &nbsp;
                           </Typography>
                         </Box>
