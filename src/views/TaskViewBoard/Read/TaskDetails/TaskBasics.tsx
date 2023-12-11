@@ -13,7 +13,7 @@ import {
   taskSchedulingTime,
   turnAroundTime,
   totalUnClearTime,
-  getDiffFromTo,
+  getTotalDifferenceFromTo,
 } from "src/helpers/generalUtils";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import NorthIcon from "@mui/icons-material/North";
@@ -54,6 +54,7 @@ type state = {
 };
 
 const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
+  console.log({ movements });
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
@@ -71,7 +72,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
     const sharedMovements =
       taskMovements &&
       taskMovements?.filter((item) => item.status === "Shared");
-    let schedulingTimeDiff = getDiffFromTo(
+    let schedulingTimeDiff = getTotalDifferenceFromTo(
       "Tasks Board",
       "In Progress",
       movements

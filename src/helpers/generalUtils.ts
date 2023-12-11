@@ -420,8 +420,15 @@ export const getCancelationType = (movements: TaskMovement[]) => {
   });
   return cMoves;
 };
-
-export const getDiffFromTo = (
+/**
+ * Calculate the time it take to move from a status to another status sequential. it will see all movements from the start
+ * to the end without any bridge between them and then adding the differences to get the total differences for this action.
+ * @param start the status moved from
+ * @param end the status moved to
+ * @param movements all movements of task or journey
+ * @returns Difference in days,months,years,hours, and mins.
+ */
+export const getTotalDifferenceFromTo = (
   from: string,
   to: string,
   movements: TaskMovement[]
@@ -447,35 +454,6 @@ export const getDiffFromTo = (
   totalDif.totalHours += _.sum(dif.map((i) => i.totalHours));
   totalDif.totalMins += _.sum(dif.map((i) => i.totalMins));
   return { times: dif.length, dif: totalDif };
-};
-
-export const getDiff = (
-  start: string,
-  end: string,
-  movements: TaskMovement[]
-) => {
-  let lastMoves = movements?.filter((item) => item.status === end);
-  let firstMove = movements?.find((item) => item.status === start);
-  let lMove = lastMoves[lastMoves?.length - 1];
-  if (firstMove && firstMove.movedAt && lMove && lMove.movedAt) {
-    return getDifBetweenDates(
-      new Date(firstMove.movedAt),
-      new Date(lMove.movedAt)
-    );
-  } else
-    return {
-      nullable: true,
-      isLate: false,
-      difference: {
-        years: 0,
-        months: 0,
-        days: 0,
-        mins: 0,
-        hours: 0,
-      },
-      remainingDays: 0,
-      totalHours: 0,
-    };
 };
 
 export const isMissedDelivery = (movements: TaskMovement[]) => {
@@ -595,10 +573,10 @@ export const taskProcessingTime = (movements: TaskMovement[]) => {
   let sharedMove = _.findLast(movements, (item: TaskMovement) => {
     return item.status === "Shared";
   });
-  if (inProgress) {
+  if (inProgress && sharedMove) {
     return getDifBetweenDates(
       new Date(inProgress.movedAt),
-      sharedMove ? new Date(sharedMove.movedAt) : new Date(Date.now())
+      new Date(sharedMove.movedAt)
     );
   } else return initialDifferenceBetweenDates();
 };

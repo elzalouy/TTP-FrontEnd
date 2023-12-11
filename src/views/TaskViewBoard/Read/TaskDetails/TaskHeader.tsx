@@ -13,7 +13,7 @@ import {
   convertToCSV,
   getCancelationType,
   getDifBetweenDates,
-  getDiffFromTo,
+  getTotalDifferenceFromTo,
   getTaskJournies,
   getTaskLeadtTime,
   isMissedDelivery,
@@ -114,52 +114,60 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
     let journies = getTaskJournies(taskInfo).journies;
     let taskJourniesDetails = journies.map((journey, index) => {
       let leadTime = getTaskLeadtTime(journey.movements);
-      let schedulingTime = getDiffFromTo(
+      let schedulingTime = getTotalDifferenceFromTo(
         "Tasks Board",
         "In Progress",
         journey.movements
       );
-      let processingTime = getDiffFromTo(
+      let processingTime = getTotalDifferenceFromTo(
         "In Progress",
         "Shared",
         journey.movements
       );
       let unClear = totalUnClearTime(journey.movements);
-      let turnAround = getDiffFromTo(
+      let turnAround = getTotalDifferenceFromTo(
         "Not Clear",
         "In Progress",
         journey.movements
       );
-      let fulfillment = getDiffFromTo(
+      let fulfillment = getTotalDifferenceFromTo(
         "In Progress",
         "Review",
         journey.movements
       );
-      let delivery = getDiffFromTo("Review", "Shared", journey.movements);
-      let closing = getDiffFromTo("Shared", "Done", journey.movements);
-      let clearBack = getDiffFromTo(
+      let delivery = getTotalDifferenceFromTo(
+        "Review",
+        "Shared",
+        journey.movements
+      );
+      let closing = getTotalDifferenceFromTo(
+        "Shared",
+        "Done",
+        journey.movements
+      );
+      let clearBack = getTotalDifferenceFromTo(
         "Not Clear",
         "Tasks Board",
         journey.movements
       );
       let cancelMoves = getCancelationType(journey.movements);
       let missedDelivery = isMissedDelivery(journey.movements);
-      let wrongOrMissingFulfillment = getDiffFromTo(
+      let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
         "Review",
         "Tasks Board",
         journey.movements
       );
-      let commentsTime = getDiffFromTo(
+      let commentsTime = getTotalDifferenceFromTo(
         "Shared",
         "Tasks Board",
         journey.movements
       );
-      let revisitingTime = getDiffFromTo(
+      let revisitingTime = getTotalDifferenceFromTo(
         "Done",
         "Tasks Board",
         journey.movements
       );
-      let revivedTime = getDiffFromTo(
+      let revivedTime = getTotalDifferenceFromTo(
         "Cancled",
         "Tasks Board",
         journey.movements

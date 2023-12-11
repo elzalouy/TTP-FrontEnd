@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import {
   getCancelationType,
   getDifBetweenDates,
-  getDiff,
+  getTotalDifferenceFromTo,
 } from "src/helpers/generalUtils";
 import CircleIcon from "@mui/icons-material/Circle";
 
@@ -29,13 +29,11 @@ const JourneyDuration = (
   end: string,
   movements: TaskMovement[]
 ) => {
-  let {
-    difference: { hours, days, mins },
-  } = getDiff(start, end, movements);
+  let diff = getTotalDifferenceFromTo(start, end, movements);
   return (
     <Typography fontSize={"12px"} fontWeight={"700"} color={"#7c828c"}>
-      {days} d, {hours} h,
-      {mins} mins,
+      {diff.dif.difference.days} d, {diff.dif.difference.hours} h,
+      {diff.dif.difference.mins} mins,
     </Typography>
   );
 };

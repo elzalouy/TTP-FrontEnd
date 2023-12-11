@@ -30,7 +30,7 @@ export const getJourneyLeadTime = (journey: Journey) => {
 };
 
 /**
- * Get Journey review time,
+ *
  * @param journey Journey
  * @returns number
  */

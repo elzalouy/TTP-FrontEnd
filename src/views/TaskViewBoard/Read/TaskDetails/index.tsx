@@ -18,11 +18,8 @@ interface TaskDetailsProps {
   setShow: any;
 }
 
-type TaskJournies = TaskMovement[][];
-
 const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
   const { openTaskDetails: task } = useAppSelector(selectAllProjects);
-  const isOpen = useAppSelector(selectSideMenuToggle);
 
   const [state, setState] = useState<{
     journies: { id: string; name: string; journies: Journies };
