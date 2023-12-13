@@ -281,24 +281,26 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
               setValue={setValue}
             />
           </Grid>
-          <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
-            <ControlledSelect
-              name="projectStatus"
-              dataTestId="edit-project-status-input"
-              control={control}
-              optionsType="list"
-              formLabel="Project Status"
-              elementType="select"
-              options={state.status}
-              onSelect={(e: any) => {
-                setValue("projectStatus", e.target.id);
-              }}
-              selected={
-                state.status.find((item) => item.id === watch().projectStatus)
-                  ?.id
-              }
-            />
-          </Grid>
+          {project?.projectStatus !== "Not Started" && (
+            <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
+              <ControlledSelect
+                name="projectStatus"
+                dataTestId="edit-project-status-input"
+                control={control}
+                optionsType="list"
+                formLabel="Project Status"
+                elementType="select"
+                options={state.status}
+                onSelect={(e: any) => {
+                  setValue("projectStatus", e.target.id);
+                }}
+                selected={
+                  state.status.find((item) => item.id === watch().projectStatus)
+                    ?.id
+                }
+              />
+            </Grid>
+          )}
           <Grid item xs={12} sm={12} lg={6} md={6} paddingX={1.8}>
             <ControlledSelect
               name="projectManager"
