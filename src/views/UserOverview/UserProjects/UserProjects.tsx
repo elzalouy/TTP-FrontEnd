@@ -9,6 +9,7 @@ import { Project } from "src/types/models/Projects";
 import Empty from "./Empty";
 import EditProject from "src/views/Projects/Edit/EditProject";
 import DeleteProject from "src/views/Projects/Delete/DeleteProject";
+import ProjectDetails from "src/views/Projects/Read/Details/ProjectDetails";
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
@@ -75,6 +76,11 @@ const UserProjects: React.FC<Props> = (props) => {
         id={forms.project?._id}
         show={forms.delete}
         setShow={onDeleteProject}
+      />
+      <ProjectDetails
+        show={forms.details}
+        project={forms.project}
+        setShow={onOpenProjectDetails}
       />
     </>
   );
