@@ -16,8 +16,7 @@ import { IOverview } from "src/types/views/Overview";
 export const OverView: FC<IOverview> = (props) => {
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
-  const statistics = useAppSelector(selectSatistics);
-
+  const { OM, PM, loading } = useAppSelector(selectSatistics);
   return (
     <>
       <Grid
@@ -34,7 +33,7 @@ export const OverView: FC<IOverview> = (props) => {
               display: "inline-flex",
             }}
           >
-            <UserName loading={statistics.loading} name={user?.name} />
+            <UserName loading={loading} name={user?.name} />
           </Box>
           <Typography
             color="#171725"
@@ -64,7 +63,7 @@ export const OverView: FC<IOverview> = (props) => {
               {role === "PM" ? (
                 <>
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#ECFDF1"
                     Icon={() => (
@@ -72,31 +71,31 @@ export const OverView: FC<IOverview> = (props) => {
                     )}
                     pt={1.7}
                     title={"Number of projects"}
-                    count={statistics.PM.projects?.length.toString()}
+                    count={PM.projects?.toString()}
                   />
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#EFEFFF"
                     Icon={() => <img src={IMAGES.overviewTasksIcon} alt="3" />}
                     pt={1.6}
                     title="Shared Tasks"
-                    count={statistics.PM.sharedLength.toString()}
+                    count={PM.sharedLength.toString()}
                   />
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#FFF3EF"
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     pt={1.5}
                     title="Review Tasks"
-                    count={statistics.PM.reviewLength.toString()}
+                    count={PM.reviewLength.toString()}
                   />
                 </>
               ) : (
                 <>
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#ECFDF1"
                     Icon={() => (
@@ -104,24 +103,24 @@ export const OverView: FC<IOverview> = (props) => {
                     )}
                     pt={1.6}
                     title={"Task Board tasks"}
-                    count={statistics.OM.taskBoardLength.toString()}
+                    count={OM.taskBoardLength.toString()}
                   />
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#FBF5E2"
                     Icon={() => <img alt="2" src={IMAGES.overviewProjects} />}
                     title="In Progress Tasks"
                     pt={1.9}
-                    count={statistics.OM.inProgressLength.toString()}
+                    count={OM.inProgressLength.toString()}
                   />
                   <UserStatus
-                    loading={statistics.loading}
+                    loading={loading}
                     user={role}
                     IconBgColor="#FFF3EF"
                     Icon={() => <img src={IMAGES.overViewDeadline} alt="3" />}
                     title="Review Tasks"
-                    count={statistics.OM.reviewLength.toString()}
+                    count={OM.reviewLength.toString()}
                     pt={1.8}
                     pb={5}
                   />
@@ -147,9 +146,7 @@ export const OverView: FC<IOverview> = (props) => {
           </Grid>
           <UserTasks
             pr={3}
-            tasks={
-              role === "PM" ? statistics.PM.shared : statistics.OM.inProgress
-            }
+            tasks={role === "PM" ? PM.shared : OM.inProgress}
             title={role === "PM" ? "Shared Tasks" : "Tasks In Progress"}
             img={IMAGES.OverviewInProgressTasksEmpty}
             caption="Stay focused & organized"
@@ -157,9 +154,7 @@ export const OverView: FC<IOverview> = (props) => {
           <UserTasks
             pl={3}
             tasks={
-              role === "PM"
-                ? statistics.PM.tasksCloseToDeadline
-                : statistics.OM.tasksCloseToDeadline
+              role === "PM" ? PM.tasksCloseToDeadline : OM.tasksCloseToDeadline
             }
             title={"Tasks Close to Deadline"}
             img={IMAGES.OverviewCloseToDeadlineEmpty}
@@ -168,8 +163,8 @@ export const OverView: FC<IOverview> = (props) => {
           <UserProjects
             projects={
               role === "PM"
-                ? statistics.PM.projectsCloseToDeadlines
-                : statistics.OM.projectsCloseToDeadlines
+                ? PM.projectsCloseToDeadlines
+                : OM.projectsCloseToDeadlines
             }
             {...props}
           />

@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { selectAppLoading, setAppLoading } from "src/models/Ui";
 import { useAppSelector } from "src/models/hooks";
 import {
-  selectSatistics,
+  setProjectsStatistics,
   setStatisticsFilterDefaults,
 } from "src/models/Statistics";
 
@@ -39,7 +39,11 @@ import {
 import { getAllCategories } from "src/models/Categories";
 import { getAllClients } from "src/models/Clients";
 import { getManagers } from "src/models/Managers";
-import { getAllProjects, getAllTasks } from "src/models/Projects";
+import {
+  ProjectsActions,
+  getAllProjects,
+  getAllTasks,
+} from "src/models/Projects";
 import { getNotifications, getUnNotified } from "src/models/Notifications";
 
 const App: React.FC = (props) => {
@@ -87,6 +91,7 @@ const App: React.FC = (props) => {
 
   React.useEffect(() => {
     if (mounted === true && filtermounted === false && departments.length > 0) {
+      dispatch(ProjectsActions.fireSetStatisticsHook(null));
       dispatch(
         setStatisticsFilterDefaults({
           boards: departments
@@ -94,7 +99,6 @@ const App: React.FC = (props) => {
             .map((i) => i.boardId),
         })
       );
-      console.log("hapenned");
       setFilterMounted(true);
     }
   }, [departments]);

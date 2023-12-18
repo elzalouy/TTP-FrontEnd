@@ -478,13 +478,10 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
 
 export const getTaskLeadtTime = (movements: TaskMovement[]) => {
   let sharedMovemens = movements.filter((item) => item.status === "Shared");
-  // console.log({ sharedMovemens });
   if (sharedMovemens.length > 0) {
-    console.log("selecting start and end date");
     let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
     let start = movements.length > 0 ? movements[0]?.movedAt : null;
     if (end && start) {
-      console.log("calculating difference between start and end date");
       return getDifBetweenDates(new Date(start), new Date(end));
     } else return initialDifferenceBetweenDates();
   } else return initialDifferenceBetweenDates();

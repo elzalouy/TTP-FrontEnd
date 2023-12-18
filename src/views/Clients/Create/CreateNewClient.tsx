@@ -23,7 +23,9 @@ const CreateNewClient: React.FC = () => {
   const [Show, setShow] = useState("none");
   const allClients = useAppSelector(selectAllClients);
   const loadingClient = useAppSelector(selectLoadingClient);
+
   const [error, setError] = useState<boolean>(false);
+
   const [clientData, setClientData] = useState<IClientState>({
     image: null,
     clientName: "",
@@ -39,6 +41,7 @@ const CreateNewClient: React.FC = () => {
       clientName: "",
     });
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();

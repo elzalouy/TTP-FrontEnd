@@ -61,7 +61,6 @@ const DragField = (props: DragFieldProps) => {
     changed: boolean;
   }>({ showPopup: "none", value: "", loading: false, changed: false });
   useEffect(() => {
-    console.log("changed");
     let projectTasks = allTasks.filter((item) => item.projectId === projectId);
     setTasks(projectTasks);
     setColumns({

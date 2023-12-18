@@ -268,8 +268,10 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     },
 
     fireSetStatisticsHook: (state: ProjectsInterface) => {
-      state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
-      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+      state.setProjectsStatisticsHook =
+        state.setProjectsStatisticsHook === true ? false : true;
+      state.setTasksStatisticsHook =
+        state.setTasksStatisticsHook === true ? false : true;
     },
   },
 

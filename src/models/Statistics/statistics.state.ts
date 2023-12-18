@@ -13,6 +13,7 @@ export interface StatisticsInterface {
     inProgressLength: number;
     tasksCloseToDeadline: Task[] | null;
     projectsCloseToDeadlines: Project[] | null;
+    projects: number;
   };
   PM: {
     inProgress: Task[][] | null;
@@ -22,7 +23,7 @@ export interface StatisticsInterface {
     shared: Task[] | null;
     tasksCloseToDeadline: Task[] | null;
     projectsCloseToDeadlines: Project[] | null;
-    projects: Project[] | null;
+    projects: number;
   };
   statisticsFilter: {
     date: Date;
@@ -43,9 +44,10 @@ const StatisticsState: StatisticsInterface = {
     projectsCloseToDeadlines: null,
     tasksCloseToDeadline: null,
     inProgressLength: 0,
+    projects: 0,
   },
   PM: {
-    projects: null,
+    projects: 0,
     inProgress: null,
     sharedLength: 0,
     shared: null,
@@ -72,9 +74,10 @@ export const initialStatisticsState: StatisticsInterface = {
     projectsCloseToDeadlines: [],
     tasksCloseToDeadline: [],
     inProgressLength: 0,
+    projects: 0,
   },
   PM: {
-    projects: [],
+    projects: 0,
     inProgress: [],
     sharedLength: 0,
     shared: [],

@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import _ from "lodash";
-import StatisticsState, {
-  initialStatisticsState,
-  StatisticsInterface,
-} from "./statistics.state";
+import StatisticsState, { StatisticsInterface } from "./statistics.state";
 import {
   isCloseToDeadline,
   setTasksBoardToArrays,
@@ -11,6 +8,7 @@ import {
 } from "../../helpers/equations";
 import { Project, Task } from "../../types/models/Projects";
 import { User } from "../../types/models/user";
+
 const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
   name: "projects",
   initialState: StatisticsState,
@@ -30,8 +28,8 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
       let userProjects: Project[] = action.payload.projects;
       let user: User = action.payload.user;
       if (user.role !== "PM") {
-        state.OM.projectsCloseToDeadlines = userProjects.filter(
-          (item) =>
+        state.OM.projectsCloseToDeadlines = userProjects.filter((item) => {
+          if (
             item.projectStatus &&
             ![
               "delivered on time",
@@ -39,15 +37,25 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
               "delivered after deadline",
             ].includes(item?.projectStatus) &&
             item.projectDeadline &&
-            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
-        );
+            isCloseToDeadline(item.projectDeadline, item.startDate, 0.65)
+          )
+            return item;
+        });
       } else {
-        state.PM.projects = userProjects;
-        state.PM.projectsCloseToDeadlines = userProjects?.filter(
-          (item) =>
-            item?.projectDeadline &&
-            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
-        );
+        state.PM.projects = userProjects.length;
+        state.PM.projectsCloseToDeadlines = userProjects.filter((item) => {
+          if (
+            item.projectStatus &&
+            ![
+              "delivered on time",
+              "delivered before deadline",
+              "delivered after deadline",
+            ].includes(item?.projectStatus) &&
+            item.projectDeadline &&
+            isCloseToDeadline(item.projectDeadline, item.startDate, 0.65)
+          )
+            return item;
+        });
       }
     },
 
@@ -80,12 +88,21 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.OM.taskboard = setTasksBoardToArrays(taskBoard);
         state.OM.review = setTasksToArrays(review);
         state.OM.shared = setTasksToArrays(shared);
-        state.OM.tasksCloseToDeadline = tasks.filter(
-          (item) =>
+        state.OM.tasksCloseToDeadline = tasks.filter((item) => {
+          let isClose = isCloseToDeadline(
+            item.deadline,
+            item.cardCreatedAt.toString(),
+            0.75
+          );
+          console.log({ isClose, item: item.name });
+
+          if (
             item.deadline &&
-            isCloseToDeadline(item.deadline, item.start, 25) &&
+            isClose &&
             !["Done", "Cancled"].includes(item.status)
-        );
+          )
+            return item;
+        });
         state.OM.inProgress = inprogress;
       } else {
         let ids = userProjects.flatMap((item: Project) => item._id);
@@ -99,22 +116,26 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
           (item) =>
             ids.includes(item.projectId) && item.status === "In Progress"
         );
+        state.PM.projects = userProjects.length;
         state.PM.shared = shared;
         state.PM.reviewLength = review.length;
         state.PM.sharedLength = shared.length;
         state.PM.inProgress = setTasksToArrays(inprogress);
         state.PM.review = setTasksToArrays(review);
-        state.PM.tasksCloseToDeadline = tasks.filter(
-          (item) =>
-            ids.includes(item.projectId) &&
+        state.PM.tasksCloseToDeadline = tasks.filter((item) => {
+          let isClose = isCloseToDeadline(
+            item.deadline,
+            item.cardCreatedAt.toString(),
+            0.75
+          );
+          console.log({ isClose });
+          if (
             item.deadline &&
-            isCloseToDeadline(item.deadline, item.start, 25)
-        );
-        state.PM.projectsCloseToDeadlines = userProjects?.filter(
-          (item) =>
-            item?.projectDeadline &&
-            isCloseToDeadline(item.projectDeadline, item.startDate, 35)
-        );
+            isClose &&
+            !["Done", "Cancled"].includes(item.status)
+          )
+            return item;
+        });
       }
       state.loading = false;
     },
@@ -135,9 +156,10 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         projectsCloseToDeadlines: [],
         tasksCloseToDeadline: [],
         inProgressLength: 0,
+        projects: 0,
       };
       state.PM = {
-        projects: [],
+        projects: 0,
         inProgress: [],
         sharedLength: 0,
         shared: [],

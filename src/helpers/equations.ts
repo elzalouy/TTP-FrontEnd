@@ -7,27 +7,22 @@ export const isCloseToDeadline = (
   start: string,
   percent: number
 ) => {
-  if (deadline.length > 0) {
-    let startDate = new Date(start);
-    let deadlineDate = new Date(deadline);
-    let totalDays = Math.floor(
-      deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
-        startDate.getTime() / (1000 * 60 * 60 * 24)
-    );
-    if (totalDays > 0) {
-      let remained = Math.floor(
-        deadlineDate.getTime() / (1000 * 60 * 60 * 24) -
-          new Date().getTime() / (1000 * 60 * 60 * 24)
-      );
-      if (remained <= 0) return true;
-      else if (remained > 0 && (remained / totalDays) * 100 > percent)
-        return false;
-      else return true;
-    } else return true;
-  } else {
-    return false;
+  let startDate = new Date(start);
+  let endDate = new Date(deadline);
+  // if deadline passed it should be closed it's passed the deadline already.
+  if (new Date().getTime() > endDate.getTime()) return false;
+  else {
+    // the total duration from the start to end
+    let totalDuration = endDate.getTime() - startDate.getTime();
+    // the total duration should be spent to insure the closing of end date.
+    let precentageDuration = totalDuration * percent;
+    // getting the current date that if it was less than perecentageDuration
+    let currentDate = new Date();
+    let elapsedTime = currentDate.getTime() - startDate.getTime();
+    return elapsedTime > precentageDuration;
   }
 };
+
 export const setTasksToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
     let date = new Date(item?.createdAt);
@@ -48,7 +43,7 @@ export const setTasksToArrays = (tasks: Task[]) => {
         let date = new Date(item?.createdAt);
         return (
           date.getDate() === day &&
-          date.getMonth() == month &&
+          date.getMonth() === month &&
           date.getFullYear() === year &&
           item
         );
@@ -57,6 +52,7 @@ export const setTasksToArrays = (tasks: Task[]) => {
   });
   return sortedTasks;
 };
+
 export const setTasksBoardToArrays = (tasks: Task[]) => {
   let dates = tasks?.flatMap((item) => {
     if (item?.createdAt) {

@@ -63,7 +63,6 @@ const AppHooks: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (createProjectHook !== undefined) {
-      console.log("create project hook fired");
       dispatch(getAllProjects(null));
       dispatch(getAllTasks(null));
     }
@@ -72,7 +71,6 @@ const AppHooks: React.FC<Props> = (props) => {
   React.useEffect(() => {
     // create category hook
     if (createCategoryHook !== undefined) {
-      console.log("create category hook fired");
       dispatch(getAllCategories(null));
       dispatch(getAllDepartments(null));
       dispatch(getAllMembers(null));
@@ -82,7 +80,6 @@ const AppHooks: React.FC<Props> = (props) => {
   React.useEffect(() => {
     // delete team hook
     if (deleteTeamHook !== undefined) {
-      console.log("delete team hook fired");
       dispatch(getAllDepartments(null));
       dispatch(getAllMembers(null));
     }
@@ -91,7 +88,6 @@ const AppHooks: React.FC<Props> = (props) => {
   React.useEffect(() => {
     // delete category hook
     if (deleteCategoryHook !== undefined) {
-      console.log("delete category hook fired");
       dispatch(getAllCategories(null));
       dispatch(getAllDepartments(null));
     }
@@ -100,7 +96,6 @@ const AppHooks: React.FC<Props> = (props) => {
   React.useEffect(() => {
     // new project hook
     if (newProjectHook !== undefined) {
-      console.log("new project hook fired");
       dispatch(getAllClients(null));
       dispatch(getAllTasks(null));
       dispatch(getAllProjects(null));
@@ -110,7 +105,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // update project hook
   React.useEffect(() => {
     if (updateProjectHook !== undefined) {
-      console.log("update project hook fired.");
       dispatch(getAllClients(null));
       dispatch(getAllProjects(null));
     }
@@ -119,7 +113,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // Delete task hook
   React.useEffect(() => {
     if (deleteTasksHook !== undefined) {
-      console.log("delete tasks hook fired.");
       dispatch(getAllTasks(null));
     }
   }, [deleteTasksHook]);
@@ -127,7 +120,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // Delete project hook
   React.useEffect(() => {
     if (deleteProjectHook !== undefined) {
-      console.log("delete project hook fired.");
       dispatch(getAllProjects(null));
       dispatch(getAllClients(null));
     }
@@ -136,7 +128,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // new Tech member to department
   React.useEffect(() => {
     if (createTeamHook !== undefined) {
-      console.log("new member hook fired.");
       dispatch(getAllDepartments(null));
     }
   }, [createTeamHook]);
@@ -144,7 +135,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // update Depertment
   React.useEffect(() => {
     if (updateDepartmentHook !== undefined) {
-      console.log("update department hook fired.");
       dispatch(getAllDepartments(null));
     }
   }, [updateDepartmentHook]);
@@ -152,7 +142,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // create department hook
   React.useEffect(() => {
     if (createDepartmentHook !== undefined) {
-      console.log("create department hook fired.");
       dispatch(getAllDepartments(null));
     }
   }, [createDepartmentHook]);
@@ -160,7 +149,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // delete Department hook
   React.useEffect(() => {
     if (deleteDepartmentHook !== undefined) {
-      console.log("delete department hook fired.");
       dispatch(getAllDepartments(null));
       dispatch(getAllTasks(null));
     }
@@ -193,7 +181,6 @@ const AppHooks: React.FC<Props> = (props) => {
   // new department
   React.useEffect(() => {
     if (newDepartment?._id) {
-      console.log("new department socket fired");
       dispatch(departmentsActions.replaceDepartment(newDepartment));
     }
   }, [newDepartment]);
@@ -208,7 +195,7 @@ const AppHooks: React.FC<Props> = (props) => {
         setProjectsStatistics({ user: user, projects: userProjects, tasks })
       );
     }
-  }, [setProjectsStatisticsHook]);
+  }, [setProjectsStatisticsHook, loading]);
 
   // set statistics hook
   React.useEffect(() => {
@@ -225,21 +212,18 @@ const AppHooks: React.FC<Props> = (props) => {
         })
       );
     }
-  }, [setTasksStatisticsHook, boards, date]);
+  }, [setTasksStatisticsHook, boards, date, loading]);
 
   React.useEffect(() => {
     if (user?._id) {
       let socket = openConnection(user);
       socket.on("create-task", (data: any) => {
-        console.log(" create task socket fired.", data);
         setCreateTaskData(data);
       });
       socket.on("update-task", (data: any) => {
-        console.log(" update task socket fired.", data);
         setUpdateTaskData(data);
       });
       socket.on("delete-task", (data: any) => {
-        console.log(" delete task socket fired.", data);
         setDeleteTaskData(data);
       });
       // it should delete the department from the store
@@ -252,7 +236,6 @@ const AppHooks: React.FC<Props> = (props) => {
         dispatch(getNotifications(`/0/10`));
       });
       socket.on("create-client", (client) => {
-        console.log("create client socket event fired", client);
         ToastSuccess("New Client created");
         dispatch(clientsActions.createClient(client));
       });

@@ -54,7 +54,6 @@ type state = {
 };
 
 const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
-  console.log({ movements });
   const [state, setState] = useState<state>();
   const categories = useAppSelector(selectAllCategories);
   const departments = useAppSelector(selectAllDepartments);
