@@ -38,6 +38,7 @@ interface TaskHeaderProps {
 }
 
 const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const [journeyDeadline, setJourneyDeadline] = useState<string | undefined>(
     undefined
   );
@@ -45,8 +46,6 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
   const clients = useAppSelector(selectAllClients);
   const managers = useAppSelector(selectManagers);
   const categories = useAppSelector(selectAllCategories);
-  const projectOptions = useAppSelector(selectProjectOptions);
-  const PmsOptions = useAppSelector(selectPMOptions);
 
   const [isNastyTask, setIsNastyTask] = useState(false);
 
@@ -221,16 +220,18 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
       };
       return journeyDetails;
     });
-    let data = convertToCSV([...taskJourniesDetails]);
-    let dataBlob = new Blob([data], { type: "text/csv" });
-    const url = window.URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.style.display = "none";
-    link.download = "Task Master Report";
-    document.body.appendChild(link);
-    link.click();
-    window.URL.revokeObjectURL(url);
+    if (taskJourniesDetails && taskJourniesDetails.length > 0 && formRef.current) {
+      let data = convertToCSV([...taskJourniesDetails]);
+      let dataBlob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.style.display = "none";
+      link.download = "Task Details Report";
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -397,21 +398,23 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
             </Box>
           </>
         )}
-        <IconButton
-          type="button"
-          onClick={onDownloadTaskFile}
-          sx={{
-            bgcolor: "#f6f6f6",
-            borderRadius: 3,
-            float: "right",
-            cursor: "pointer",
-            width: "38px",
-            height: "38px",
-          }}
-          disableRipple
-        >
-          <DownloadIcon htmlColor="black"></DownloadIcon>
-        </IconButton>
+        <form ref={formRef}>
+          <IconButton
+            type="button"
+            onClick={onDownloadTaskFile}
+            sx={{
+              bgcolor: "#f6f6f6",
+              borderRadius: 3,
+              float: "right",
+              cursor: "pointer",
+              width: "38px",
+              height: "38px",
+            }}
+            disableRipple
+          >
+            <DownloadIcon htmlColor="black"></DownloadIcon>
+          </IconButton>
+        </form>
       </Grid>
       <Grid item xs={0.5} xl={0.5} display={"flex"} justifyContent={"flex-end"}>
         <Box

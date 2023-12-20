@@ -10,12 +10,14 @@ import Empty from "./Empty";
 import EditProject from "src/views/Projects/Edit/EditProject";
 import DeleteProject from "src/views/Projects/Delete/DeleteProject";
 import ProjectDetails from "src/views/Projects/Read/Details/ProjectDetails";
+
 interface Props {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   match: RouteComponentProps["match"];
   projects?: Project[] | null;
 }
+
 const UserProjects: React.FC<Props> = (props) => {
   const PMs = useAppSelector(selectManagers);
   const [forms, openForm] = React.useState<{

@@ -351,7 +351,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       labels: [...state.data.labels],
       datasets: data,
     });
-    if (comparisons.length > 0) {
+    if (comparisons.length > 0 && formRef.current) {
       let csvData = convertToCSV(comparisons);
       let dataBlob = new Blob([csvData], { type: "text/csv" });
       const url = window.URL.createObjectURL(dataBlob);
@@ -363,7 +363,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       link.click();
       window.URL.revokeObjectURL(url);
     }
-    if (bars.length > 0) {
+    if (bars.length > 0 && formRef.current) {
       let csvData = convertToCSV(bars);
       let dataBlob = new Blob([csvData], { type: "text/csv" });
       const url = window.URL.createObjectURL(dataBlob);

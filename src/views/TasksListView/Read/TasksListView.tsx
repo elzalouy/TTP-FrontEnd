@@ -389,7 +389,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       const link = document.createElement("a");
       link.href = url;
       link.style.display = "none";
-      link.download = "Task Master Report";
+      link.download = "Tasks Master Report";
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
