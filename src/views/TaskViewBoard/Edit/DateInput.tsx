@@ -25,8 +25,6 @@ const DateInput: React.FC<IDateInputProps> = ({
     ? state.error.error?.details[0].path.includes(name)
     : tempError;
 
-  /* TODO : The error here will be removed , and replaced with props boolean error  */
-
   return (
     <>
       <div>
@@ -44,7 +42,6 @@ const DateInput: React.FC<IDateInputProps> = ({
                 onChange={(e: any) => {
                   props.field.onChange(moment(e).toDate());
                 }}
-                leftArrowButtonText="arrow"
                 renderInput={(
                   params: JSX.IntrinsicAttributes & TextFieldProps
                 ) => (

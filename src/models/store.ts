@@ -29,6 +29,7 @@ const store = configureStore({
   middleware: [reduxThunk],
   devTools: process.env.NODE_ENV === "development" ? true : false,
 });
+
 export const myReducer = store.getState();
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

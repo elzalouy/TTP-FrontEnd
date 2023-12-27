@@ -1,4 +1,3 @@
-import { RootState } from "../store";
 import {
   createProject,
   createProjectTask,
@@ -21,7 +20,8 @@ import {
 import projectsState from "./projects.state";
 import _ from "lodash";
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { Project, ProjectsInterface, Task } from "../../types/models/Projects";
+import { Project, ProjectsInterface } from "../../types/models/Projects";
+
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
   initialState: projectsState,
@@ -291,9 +291,11 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
     builder.addCase(getAllProjects.rejected, (state) => {
       state.loading = false;
     });
+
     builder.addCase(getAllProjects.pending, (state) => {
       state.loading = true;
     });
+
     builder.addCase(getAllProjects.fulfilled, (state, action) => {
       state.projects = action?.payload;
       state.filteredProjects = action?.payload;

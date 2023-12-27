@@ -128,7 +128,6 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
             item.cardCreatedAt.toString(),
             0.75
           );
-          console.log({ isClose });
           if (
             item.deadline &&
             isClose &&

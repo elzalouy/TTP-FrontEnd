@@ -42,7 +42,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     defaultValues: {
       name: "",
       projectManager: "",
-      deadline: null,
+      deadline: "",
       clientId: "",
       associateProjectManager: "",
     },
@@ -118,7 +118,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         projectDeadline:
           data?.deadline !== "" && data?.deadline !== null
             ? moment(data?.deadline).toDate()
-            : null,
+            : "",
         clientId: data?.clientId,
         NoOfFinishedTasks: 0,
         NoOfTasks: 0,
