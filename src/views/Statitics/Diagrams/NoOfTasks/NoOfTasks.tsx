@@ -3,7 +3,7 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category } from "src/models/Categories";
+import { Category, SubCategory } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
@@ -51,6 +51,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [allJournies, setAllJournies] = useState<
     {
       id: string;
@@ -110,6 +111,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
 
   useEffect(() => {
     setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+    );
   }, [options.categories]);
 
   useEffect(() => {
@@ -188,8 +192,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const onSetFilterResult = (filter: {
     clients: string[];
     managers: string[];
-    categories: string[];
+    subCategories: string[];
     teams: string[];
+    categories: string[];
   }) => {
     setTeams(
       options.teams.filter(
@@ -202,9 +207,13 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
-    setCategories(
-      options.categories.filter(
-        (i) => i._id && filter.categories.includes(i._id)
+    let categories = options.categories.filter(
+      (i) => i._id && filter.categories.includes(i._id)
+    );
+    setCategories(categories);
+    setSubCategories(
+      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
+        (sub) => filter.subCategories.includes(sub._id)
       )
     );
     setJournies(
@@ -216,6 +225,8 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           filter.managers.includes(j.journies[0].projectManager) &&
           j.journies[0].categoryId &&
           filter.categories.includes(j.journies[0].categoryId) &&
+          j.journies[0].subCategoryId &&
+          filter.subCategories.includes(j.journies[0].subCategoryId) &&
           j.journies[0].clientId &&
           filter.clients.includes(j.journies[0].clientId)
       )
@@ -400,8 +411,11 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           managers: options.managers,
           categories: options.categories,
           teams: options.teams,
+          subCategories: _.flattenDeep(
+            categories.map((item) => item.selectedSubCategory)
+          ),
         }}
-        options={{ clients, managers, categories, teams }}
+        options={{ clients, managers, categories, teams, subCategories }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

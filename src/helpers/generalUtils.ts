@@ -312,6 +312,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       clientId: task.clientId,
       projectManager: task.projectManager,
       categoryId: task.categoryId,
+      subCategoryId: task.subCategoryId,
       taskId: task._id,
       index: journies.length,
       teamId: task.teamId,

@@ -110,7 +110,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     setTasks(options.tasks);
   }, [options.tasks, options.boards]);
 
-  // Once the Managers data from the component props is ready, update the state.
+  // Once the Managers from the component props are ready, update the state.
   useEffect(() => {
     setManagers(
       state.comparisonBy === "PMs"

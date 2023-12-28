@@ -9,6 +9,7 @@ export type Journey = {
   clientId?: string;
   projectManager?: string;
   categoryId: string;
+  subCategoryId: string;
   taskId: string;
   index: number;
   movements: TaskMovement[];

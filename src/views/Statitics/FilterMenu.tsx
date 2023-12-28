@@ -110,7 +110,7 @@ const FilterMenu = ({
           </Typography>
         </Grid>
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
-          <Box className="tasks-option">
+          <Box className="tasks-option" mb={0.5}>
             <Controller
               name="boardId"
               control={control}

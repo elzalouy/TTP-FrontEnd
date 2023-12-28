@@ -7,7 +7,7 @@ import { Line } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
-import { Category } from "src/models/Categories";
+import { Category, SubCategory } from "src/models/Categories";
 import { getCsvFile } from "../../utils";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
@@ -54,6 +54,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
+
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -117,6 +119,9 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
 
   useEffect(() => {
     setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+    );
   }, [options.categories]);
 
   useEffect(() => {
@@ -537,8 +542,11 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
           managers: options.managers,
           categories: options.categories,
           teams: options.teams,
+          subCategories: _.flattenDeep(
+            categories.map((item) => item.selectedSubCategory)
+          ),
         }}
-        options={{ clients, managers, categories, teams }}
+        options={{ clients, managers, categories, teams, subCategories }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

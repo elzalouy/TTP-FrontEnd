@@ -6,7 +6,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
-import { Category } from "src/models/Categories";
+import { Category, SubCategory } from "src/models/Categories";
 import { getCsvFile } from "../../../utils";
 import { setOptions } from "./utils";
 import { useAppSelector } from "src/models/hooks";
@@ -51,6 +51,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
@@ -124,6 +125,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
 
   useEffect(() => {
     setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+    );
   }, [options.categories]);
 
   useEffect(() => {
@@ -156,6 +160,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     managers: string[];
     categories: string[];
     teams: string[];
+    subCategories: string[];
   }) => {
     setTeams(
       options.teams.filter((i) => i._id && filter.teams.includes(i._id))
@@ -166,9 +171,13 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
-    setCategories(
-      options.categories.filter(
-        (i) => i._id && filter.categories.includes(i._id)
+    let categories = options.categories.filter(
+      (i) => i._id && filter.categories.includes(i._id)
+    );
+    setCategories(categories);
+    setSubCategories(
+      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
+        (sub) => filter.subCategories.includes(sub._id)
       )
     );
     setJournies(
@@ -180,6 +189,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           filter.managers.includes(j.projectManager) &&
           j.categoryId &&
           filter.categories.includes(j.categoryId) &&
+          j.subCategoryId &&
+          filter.subCategories.includes(j.subCategoryId) &&
           j.clientId &&
           filter.clients.includes(j.clientId)
       )
@@ -488,8 +499,11 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           teams: options.teams,
           managers: options.managers,
           categories: options.categories,
+          subCategories: _.flattenDeep(
+            categories.map((item) => item.selectedSubCategory)
+          ),
         }}
-        options={{ clients, managers, categories, teams }}
+        options={{ clients, managers, categories, teams, subCategories }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

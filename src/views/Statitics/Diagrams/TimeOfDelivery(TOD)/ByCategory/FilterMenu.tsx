@@ -58,7 +58,6 @@ const FiltersBar = ({
             Filter By Projects
           </Typography>
         </Grid>
-
         <Grid paddingX={0.5} item sm={12} marginY={1}>
           <Box className="tasks-option">
             <ControlledSelect

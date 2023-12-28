@@ -8,7 +8,7 @@ import { Options } from "src/types/views/Projects";
 import { Controller, useForm } from "react-hook-form";
 import { Manager, selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
-import { Category, selectCategoriesOptions } from "src/models/Categories";
+import { Category, SubCategory, selectCategoriesOptions } from "src/models/Categories";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import {
   selectAllDepartments,
@@ -47,18 +47,21 @@ interface FilterBarProps {
     managers: string[];
     categories: string[];
     teams: string[];
+    subCategories: string[];
   }) => void;
   options: {
     clients: Client[];
     managers: Manager[];
     categories: Category[];
     teams: ITeam[];
+    subCategories: SubCategory[];
   };
   allOptions: {
     clients: Client[];
     managers: Manager[];
     categories: Category[];
     teams: ITeam[];
+    subCategories: SubCategory[];
   };
 }
 
@@ -78,6 +81,7 @@ const FilterBar = ({
     projectManager: string;
     categoryId: string;
     teamId: string;
+    subCategoryId: string;
   }>({
     defaultValues: {
       clientId: "",
@@ -114,6 +118,12 @@ const FilterBar = ({
             ? allOptions.teams.map((item) => item._id ?? "")
             : []
           : options.teams.map((t) => t._id ?? ""),
+      subCategories:
+        filter === "SubCategories"
+          ? select
+            ? allOptions.subCategories.map((i) => i._id)
+            : []
+          : options.subCategories.map((i) => i._id),
     });
   };
 
@@ -173,6 +183,9 @@ const FilterBar = ({
                               ...options.teams.map((item) => item._id ?? ""),
                               value.id,
                             ],
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     onSetFilterResult(values);
                   }}
@@ -182,6 +195,9 @@ const FilterBar = ({
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.teams =
                       item.id === "all"
@@ -218,6 +234,10 @@ const FilterBar = ({
                       clients: options.clients.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+
                       managers:
                         value.id === "all"
                           ? allOptions.managers.map((i) => i._id)
@@ -234,6 +254,9 @@ const FilterBar = ({
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.managers =
                       item.id === "all"
@@ -270,6 +293,10 @@ const FilterBar = ({
                       clients: options.clients.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+
                       categories:
                         value.id === "all"
                           ? allOptions.categories.map((i) => i._id)
@@ -286,11 +313,73 @@ const FilterBar = ({
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.categories =
                       item.id === "all"
                         ? []
                         : values.categories.filter((i) => i !== item.id);
+                    onSetFilterResult(values);
+                  }}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <Controller
+              name="subCategoryId"
+              control={control}
+              render={(props) => (
+                <MulitSelectDialogComponent
+                  name="subCategoryId"
+                  selected={options.subCategories.map((item) => {
+                    return {
+                      id: item._id ?? "",
+                      label: item.subCategory ?? "",
+                    };
+                  })}
+                  onSelectAll={(select: boolean) =>
+                    onSelectAll(select, "SubCategories")
+                  }
+                  options={allOptions.subCategories.map((item) => {
+                    return { id: item?._id ?? "", label: item.subCategory };
+                  })}
+                  allOption
+                  label="Sub Categories : "
+                  onSelect={(value: DialogOption) => {
+                    let values = {
+                      clients: options.clients.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      categories:
+                        value.id === "all"
+                          ? allOptions.subCategories.map((i) => i._id)
+                          : [
+                              ...options.subCategories.map((item) => item._id),
+                              value.id,
+                            ],
+                      subCategories: options.categories.map((item) => item._id),
+                    };
+                    onSetFilterResult(values);
+                  }}
+                  onDiselect={(item: DialogOption) => {
+                    let values = {
+                      clients: options.clients.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+                    };
+                    values.subCategories =
+                      item.id === "all"
+                        ? []
+                        : values.subCategories.filter((i) => i !== item.id);
                     onSetFilterResult(values);
                   }}
                 />
@@ -322,6 +411,10 @@ const FilterBar = ({
                       categories: options.categories.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+
                       clients:
                         value.id === "all"
                           ? allOptions.clients.map((i) => i._id)
@@ -338,6 +431,9 @@ const FilterBar = ({
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
                       clients: options.clients.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.clients =
                       item.id === "all"

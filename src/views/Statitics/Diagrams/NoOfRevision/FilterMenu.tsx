@@ -8,7 +8,11 @@ import { Options } from "src/types/views/Projects";
 import { Controller, useForm } from "react-hook-form";
 import { Manager, selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
-import { Category, selectCategoriesOptions } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectCategoriesOptions,
+} from "src/models/Categories";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import {
   selectAllDepartments,
@@ -22,14 +26,6 @@ import { useDispatch } from "react-redux";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import { ITeam } from "src/types/models/Departments";
-
-type filterTypes =
-  | "clientId"
-  | "projectManager"
-  | "category"
-  | "boardId"
-  | "teamId"
-  | "projectId";
 
 interface IState {
   filter: boolean;
@@ -47,18 +43,21 @@ interface FilterBarProps {
     managers: string[];
     categories: string[];
     teams: string[];
+    subCategories: string[];
   }) => void;
   options: {
     clients: Client[];
     managers: Manager[];
     categories: Category[];
     teams: ITeam[];
+    subCategories: SubCategory[];
   };
   allOptions: {
     clients: Client[];
     managers: Manager[];
     categories: Category[];
     teams: ITeam[];
+    subCategories: SubCategory[];
   };
 }
 
@@ -78,16 +77,19 @@ const FilterBar = ({
     projectManager: string;
     categoryId: string;
     teamId: string;
+    subCategoryId: string;
   }>({
     defaultValues: {
       clientId: "",
       projectManager: "",
       categoryId: "",
       teamId: "",
+      subCategoryId: "",
     },
   });
 
   const dispatch = useDispatch();
+
   const onSelectAll = (select: boolean, filter: string) => {
     onSetFilterResult({
       clients:
@@ -114,6 +116,12 @@ const FilterBar = ({
             ? allOptions.teams.map((item) => item._id ?? "")
             : []
           : options.teams.map((t) => t._id ?? ""),
+      subCategories:
+        filter === "SubCategories"
+          ? select
+            ? allOptions.subCategories.map((i) => i._id)
+            : []
+          : options.subCategories.map((i) => i._id),
     });
   };
   return (
@@ -165,6 +173,9 @@ const FilterBar = ({
                       clients: options.clients.map((item) => item._id),
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                       teams:
                         value.id === "all"
                           ? allOptions.teams.map((item) => item._id ?? "")
@@ -181,6 +192,9 @@ const FilterBar = ({
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.teams =
                       item.id === "all"
@@ -216,6 +230,9 @@ const FilterBar = ({
                     let values = {
                       clients: options.clients.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                       categories: options.categories.map((item) => item._id),
                       managers:
                         value.id === "all"
@@ -232,6 +249,9 @@ const FilterBar = ({
                       clients: options.clients.map((item) => item._id),
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                       teams: options.teams.map((item) => item._id ?? ""),
                     };
                     values.managers =
@@ -276,6 +296,9 @@ const FilterBar = ({
                               ...options.categories.map((item) => item._id),
                               value.id,
                             ],
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     onSetFilterResult(values);
                   }}
@@ -285,6 +308,9 @@ const FilterBar = ({
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                     };
                     values.categories =
                       item.id === "all"
@@ -297,6 +323,66 @@ const FilterBar = ({
             />
           </Box>
         </Grid>
+        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <Controller
+              name="subCategoryId"
+              control={control}
+              render={(props) => (
+                <MulitSelectDialogComponent
+                  name="subCategoryId"
+                  selected={options.subCategories.map((item) => {
+                    return {
+                      id: item._id ?? "",
+                      label: item.subCategory ?? "",
+                    };
+                  })}
+                  onSelectAll={(select: boolean) =>
+                    onSelectAll(select, "SubCategories")
+                  }
+                  options={allOptions.subCategories.map((item) => {
+                    return { id: item?._id ?? "", label: item.subCategory };
+                  })}
+                  allOption
+                  label="Sub Categories : "
+                  onSelect={(value: DialogOption) => {
+                    let values = {
+                      clients: options.clients.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      subCategories:
+                        value.id === "all"
+                          ? allOptions.subCategories.map((i) => i._id)
+                          : [
+                              ...options.subCategories.map((item) => item._id),
+                              value.id,
+                            ],
+                      categories: options.categories.map((item) => item._id),
+                    };
+                    onSetFilterResult(values);
+                  }}
+                  onDiselect={(item: DialogOption) => {
+                    let values = {
+                      clients: options.clients.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+                    };
+                    values.subCategories =
+                      item.id === "all"
+                        ? []
+                        : values.subCategories.filter((i) => i !== item.id);
+                    onSetFilterResult(values);
+                  }}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+
         <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
           <Box className="tasks-option">
             <Controller
@@ -319,6 +405,9 @@ const FilterBar = ({
                   onSelect={(value: DialogOption) => {
                     let values = {
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
                       clients:
@@ -334,6 +423,9 @@ const FilterBar = ({
                   onDiselect={(item: DialogOption) => {
                     let values = {
                       categories: options.categories.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
                       clients: options.clients.map((item) => item._id),
