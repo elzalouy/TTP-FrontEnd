@@ -127,9 +127,16 @@ const editProjectSchema = (tasks: Task[], startDate: any) =>
       "string.min": "Project Manager Name length should be Min 2 chars",
       "string.required": "Project Manager is required",
     }),
-    projectDeadline: Joi.date().required().label("project deadline").messages({
-      "any.required": "Project Deadline is required",
-    }),
+    projectDeadline: Joi.date()
+      .required()
+      .invalid(null)
+      .label("project deadline")
+      .messages({
+        "any.required": "Deadline is required",
+        "string.base": "Deadline is required",
+        "date.base": "Deadline should a valid date.",
+        "any.invalid": "Null values are not allowed for the deadline",
+      }),
     clientId: Joi.string().required().min(2).max(50).messages({
       "any.required": "Client is required",
       "string.base": "Client should be string",

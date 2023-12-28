@@ -344,11 +344,19 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.filteredProjects = action.payload;
     });
 
-    builder.addCase(getTasks.rejected, (state) => {});
-    builder.addCase(getTasks.pending, (state) => {});
-    builder.addCase(getTasks.fulfilled, (state, action) => {});
+    builder.addCase(getTasks.rejected, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(getTasks.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getTasks.fulfilled, (state, action) => {
+      state.loading = false;
+    });
 
-    builder.addCase(getProject.rejected, (state) => {});
+    builder.addCase(getProject.rejected, (state) => {
+      state.loading = false;
+    });
     builder.addCase(getProject.pending, (state) => {
       state.loading = true;
     });
@@ -428,8 +436,8 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = false;
     });
     builder.addCase(deleteProject.fulfilled, (state, action) => {
+      state.deleteProjectLoading = false;
       if (action.payload.isDeleted) {
-        state.deleteProjectLoading = false;
         state.projects = [...state.projects].filter(
           (item) => item._id !== action.payload.id
         );
@@ -441,12 +449,15 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
         state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
         state.setProjectsStatisticsHook = !state.setProjectsStatisticsHook;
       }
+      state.loading = false;
     });
     builder.addCase(deleteProject.pending, (state, action) => {
       state.deleteProjectLoading = true;
+      state.loading = true;
     });
     builder.addCase(deleteProject.rejected, (state, action) => {
       state.deleteProjectLoading = false;
+      state.loading = false;
     });
     builder.addCase(deleteTask.rejected, (state, action) => {
       state.deleteTaskLoading = false;

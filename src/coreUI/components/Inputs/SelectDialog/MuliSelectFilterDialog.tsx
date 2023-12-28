@@ -20,8 +20,8 @@ export type SelectComponentProps = {
   selected?: DialogOption[];
   label: string;
   name: string;
-  onSelect: any;
-  onDiselect: (item: DialogOption) => void;
+  onSelect: (item: DialogOption) => any;
+  onDiselect: (item: DialogOption) => any;
   allOption: boolean;
   onSelectAll: any;
 };
@@ -65,6 +65,12 @@ export const SimpleDialog = ({
         : options;
     setFilteredOptions(filtered);
   }, [searchVal]);
+
+  React.useEffect(() => {
+    if (selected?.length === 0 || selected?.length !== options.length)
+      setSelectedAll(false);
+    else setSelectedAll(true);
+  }, [selected]);
 
   const handleListItemClick = (value: DialogOption) => {
     let index = selected ? selected.findIndex((i) => i.id === value.id) : -1;

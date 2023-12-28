@@ -3,6 +3,15 @@ import { RootState } from "../store";
 export const selectAllCategories = (state: RootState) =>
   state?.categories?.categories;
 
+export const selectCategoriesDialogOptions = (state: RootState) => {
+  let options = state.categories.categories.map((item) => {
+    return {
+      id: item._id ? item._id : "",
+      label: item._id ? item.category : "",
+    };
+  });
+  return options;
+};
 export const selectCategoriesOptions = (state: RootState) => {
   let options = state.categories.categories.map((item) => {
     return {

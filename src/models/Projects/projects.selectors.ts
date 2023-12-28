@@ -88,19 +88,23 @@ export const selectLateProjects = (state: RootState) =>
 
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
+
 export const selectAllProjects = (state: RootState) => {
   let tasks = [...state.projects.allTasks].filter(
     (i) => i.archivedCard === false
   );
   let data = { ...state.projects };
   data.allTasks = tasks;
+  data.loading = false;
   return data;
 };
+
 export const selectEditTask = (state: RootState) =>
   state.projects.allTasks.find(
     (item) =>
       item._id === state.projects.editTask && item.archivedCard === false
   );
+
 export const selectActiveProjects = (state: RootState) =>
   state.projects.projects
     .filter(
@@ -116,12 +120,16 @@ export const selectActiveProjects = (state: RootState) =>
     .map((item) => {
       return { id: item._id, label: item.name };
     });
+
 export const selectSelectedProject = (state: RootState) =>
   state?.projects.selectedProject;
+
 export const selectDeleteProjectId = (state: RootState) =>
   state?.projects.deleteProject;
+
 export const selectEditProject = (state: RootState) =>
   state.projects.editProject;
+
 export const selectSortingValue = (state: RootState) => state.projects.sorting;
 
 // tasks
@@ -129,10 +137,12 @@ export const selectInProgressTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "In Progress" && item.archivedCard === false
   );
+
 export const selectDoneTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "Done" && item.archivedCard === false
   );
+
 export const selectReviewTasks = (state: RootState) =>
   state.projects.selectedProject.tasks?.filter(
     (item) => item.status === "Review" && item.archivedCard === false

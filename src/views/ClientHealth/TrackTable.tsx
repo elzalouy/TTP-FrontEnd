@@ -34,6 +34,8 @@ import TableLoading from "src/coreUI/components/Loading/TableLoading";
 import ClientTableRow from "./ClientTableRow";
 import { selectStatisticsFilterDefaults } from "src/models/Statistics";
 import TaskInfo from "../TaskViewBoard/Read/Card/TaskInfo";
+import { DialogOption } from "src/types/components/SelectDialog";
+import { selectCategoriesDialogOptions } from "src/models/Categories";
 
 interface HeadCell {
   id: any;
@@ -130,13 +132,13 @@ type stateType = {
   filter: {
     startDate: string | null;
     endDate: string | null;
+    categories: DialogOption[];
+    subCategories: DialogOption[];
   };
 };
 
 const TrackClientHealthTable = () => {
-  const history = useHistory();
   const theme = useTheme();
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const [tasks, setTasks] = React.useState<ITaskInfo[]>([]);
   const clients = useAppSelector(selectAllClients);
@@ -166,6 +168,8 @@ const TrackClientHealthTable = () => {
     filter: {
       startDate: null,
       endDate: null,
+      categories: [],
+      subCategories: [],
     },
   });
 
@@ -238,10 +242,11 @@ const TrackClientHealthTable = () => {
     );
   }, [allTasks, projects, date, boards]);
 
+  // get all projects and its tasks and filter them by the start, and end date
+  // then building the tasks journies for the filtered tasks
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      // getting tasks information of the project details. Sorting
       let allTasksInfo = _.orderBy(
         allTasks
           .map((i) => {
@@ -287,6 +292,23 @@ const TrackClientHealthTable = () => {
               new Date(State.filter.startDate).getTime() &&
             new Date(i.cardCreatedAt).getTime() <=
               new Date(State.filter.endDate).getTime() + 86400000
+        );
+      }
+      console.log({ tasks: State.tasks });
+
+      // 652e5678d79cbf23c4d678b5
+      if (State.filter.categories) {
+        let catsIds = State.filter.categories.map((i) => i.id);
+        State.tasks = State.tasks.filter(
+          (item) =>
+            catsIds.includes(item.categoryId) || item.categoryId === null
+        );
+      }
+      if (State.filter.subCategories) {
+        let subsIds = State.filter.subCategories.map((i) => i.id);
+        State.tasks = State.tasks.filter(
+          (item) =>
+            subsIds.includes(item.subCategoryId) || item.subCategoryId === null
         );
       }
 
@@ -372,6 +394,8 @@ const TrackClientHealthTable = () => {
     clients,
     state.filter.startDate,
     state.filter.endDate,
+    state.filter.categories,
+    state.filter.subCategories,
   ]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -421,12 +445,15 @@ const TrackClientHealthTable = () => {
     setState(State);
   };
 
-  const onSetFilter = (type: string, value: string) => {
+  const onSetFilter = (type: string, value: any) => {
     let State = { ...state };
     if (type === "startDate") State.filter.startDate = value;
     if (type === "endDate") State.filter.endDate = value;
+    if (type === "categories") State.filter.categories = value;
+    if (type === "subCategories") State.filter.subCategories = value;
     setState(State);
   };
+
   const OrganizationRow = () => {
     let {
       lastBrief,
