@@ -140,7 +140,6 @@ type stateType = {
 const TrackClientHealthTable = () => {
   const theme = useTheme();
   const { allTasks, projects } = useAppSelector(selectAllProjects);
-  const [tasks, setTasks] = React.useState<ITaskInfo[]>([]);
   const clients = useAppSelector(selectAllClients);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const [state, setState] = React.useState<stateType>({
@@ -175,6 +174,8 @@ const TrackClientHealthTable = () => {
 
   React.useEffect(() => {
     let State = { ...state };
+    // getting all tasks created after the global Date filteration.
+    //  when the tasks is getting ready
     let tasksInfo = allTasks.filter((task) => {
       if (boards.includes(task.boardId)) {
         if (
@@ -189,6 +190,8 @@ const TrackClientHealthTable = () => {
           return task;
       }
     });
+    // Building the tasks information array
+    // when the projects, project managers, tasks getting ready.
     tasksInfo = _.orderBy(
       tasksInfo.map((i) => {
         let p = projects.find((p) => p._id === i.projectId);
@@ -201,8 +204,15 @@ const TrackClientHealthTable = () => {
       "cardCreatedAt",
       "asc"
     );
-    setTasks(tasksInfo);
-    let tasksJournies = tasksInfo.map((item) => getTaskJournies(item));
+    // setting the tasks info.
+    setState({ ...State, tasks: tasksInfo });
+  }, [allTasks, projects, date, boards]);
+
+  React.useEffect(() => {
+    let State = { ...state };
+    // setting the journies of tasks
+    // when the tasks state get ready
+    let tasksJournies = State.tasks.map((item) => getTaskJournies(item));
     tasksJournies = tasksJournies.map((item) => {
       item.journies = item.journies.map((journey) => {
         let leadTimeInHours = getJourneyLeadTime(journey);
@@ -212,6 +222,7 @@ const TrackClientHealthTable = () => {
       return item;
     });
 
+    // flattening the journies in one array, for getting journeyLeadTime, _OfActive, hasDeadline,and journies length values.
     let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
     State.organization._OfActive = flattened.filter(
       (i) =>
@@ -223,12 +234,12 @@ const TrackClientHealthTable = () => {
     let journeysLeadTime = flattened.map((j) => {
       return j.leadTime;
     });
-    let sortedByCreatedAtTasks = _.orderBy(tasks, "cardCreatedAt", "asc");
+    let sortedByCreatedAtTasks = _.orderBy(State.tasks, "cardCreatedAt", "asc");
 
     State.organization._OfRevision =
       _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
       revisedTasks.length;
-    State.organization._OfTasks = tasksInfo.length;
+    State.organization._OfTasks = State.tasks.length;
     State.organization._ofProjects = projects.length;
     State.organization.averageTOD = _.sum(journeysLeadTime);
     State.organization.lastBrief = new Date(
@@ -240,7 +251,8 @@ const TrackClientHealthTable = () => {
     State.organization.meetDeadline = Math.floor(
       (meetDeadline / hasDeadline.length) * 100
     );
-  }, [allTasks, projects, date, boards]);
+    setState({ ...State });
+  }, [state.tasks]);
 
   // get all projects and its tasks and filter them by the start, and end date
   // then building the tasks journies for the filtered tasks
@@ -294,9 +306,7 @@ const TrackClientHealthTable = () => {
               new Date(State.filter.endDate).getTime() + 86400000
         );
       }
-      console.log({ tasks: State.tasks });
 
-      // 652e5678d79cbf23c4d678b5
       if (State.filter.categories) {
         let catsIds = State.filter.categories.map((i) => i.id);
         State.tasks = State.tasks.filter(
