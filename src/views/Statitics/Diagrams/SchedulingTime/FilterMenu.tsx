@@ -2,7 +2,7 @@ import { Box, Drawer, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
-import { Category } from "src/models/Categories";
+import { Category, SubCategory } from "src/models/Categories";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { DialogOption } from "src/types/components/SelectDialog";
@@ -14,6 +14,7 @@ interface FilterBarProps {
   onSetFilterResult: (filter: {
     clients: string[];
     categories: string[];
+    subCategories: string[];
     teams: string[];
     managers: string[];
     departments: string[];
@@ -24,6 +25,7 @@ interface FilterBarProps {
     teams: ITeam[];
     managers: Manager[];
     departments: IDepartmentState[];
+    subCategories: SubCategory[];
   };
   allOptions: {
     clients: Client[];
@@ -31,6 +33,7 @@ interface FilterBarProps {
     teams: ITeam[];
     managers: Manager[];
     departments: IDepartmentState[];
+    subCategories: SubCategory[];
   };
 }
 
@@ -74,6 +77,12 @@ const FilterBar: FC<FilterBarProps> = ({
             ? allOptions.departments.map((item) => item.boardId)
             : []
           : options.departments.map((m) => m.boardId),
+      subCategories:
+        filter === "SubCategories"
+          ? select
+            ? allOptions.subCategories.map((i) => i._id)
+            : []
+          : options.subCategories.map((i) => i._id),
     });
   };
 
@@ -130,6 +139,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         departments: options.departments.map(
                           (item) => item.boardId
                         ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                         teams:
                           value.id === "all"
                             ? allOptions.teams.map((item) => item._id ?? "")
@@ -147,6 +159,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         managers: options.managers.map((item) => item._id),
                         departments: options.departments.map(
                           (item) => item.boardId
+                        ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
                         ),
 
                         teams: options.teams.map((item) => item._id ?? ""),
@@ -189,6 +204,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         departments: options.departments.map(
                           (item) => item.boardId
                         ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
 
                         categories:
                           value.id === "all"
@@ -209,11 +227,82 @@ const FilterBar: FC<FilterBarProps> = ({
                         departments: options.departments.map(
                           (item) => item.boardId
                         ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                       };
                       values.categories =
                         item.id === "all"
                           ? []
                           : values.categories.filter((i) => i !== item.id);
+                      onSetFilterResult(values);
+                    }}
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+            <Box className="tasks-option">
+              <Controller
+                name="subCategoryId"
+                control={control}
+                render={(props) => (
+                  <MulitSelectDialogComponent
+                    name="subCategoryId"
+                    selected={options.subCategories.map((item) => {
+                      return {
+                        id: item._id ?? "",
+                        label: item.subCategory ?? "",
+                      };
+                    })}
+                    onSelectAll={(select: boolean) =>
+                      onSelectAll(select, "SubCategories")
+                    }
+                    options={allOptions.subCategories.map((item) => {
+                      return { id: item?._id ?? "", label: item.subCategory };
+                    })}
+                    allOption
+                    label="Sub Categories : "
+                    onSelect={(value: DialogOption) => {
+                      let values = {
+                        clients: options.clients.map((item) => item._id),
+                        teams: options.teams.map((item) => item._id ?? ""),
+                        managers: options.managers.map((item) => item._id),
+                        departments: options.departments.map(
+                          (item) => item.boardId
+                        ),
+
+                        subCategories:
+                          value.id === "all"
+                            ? allOptions.subCategories.map((i) => i._id)
+                            : [
+                                ...options.subCategories.map(
+                                  (item) => item._id
+                                ),
+                                value.id,
+                              ],
+                        categories: options.categories.map((item) => item._id),
+                      };
+                      onSetFilterResult(values);
+                    }}
+                    onDiselect={(item: DialogOption) => {
+                      let values = {
+                        clients: options.clients.map((item) => item._id),
+                        teams: options.teams.map((item) => item._id ?? ""),
+                        managers: options.managers.map((item) => item._id),
+                        categories: options.categories.map((item) => item._id),
+                        departments: options.departments.map(
+                          (item) => item.boardId
+                        ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
+                      };
+                      values.subCategories =
+                        item.id === "all"
+                          ? []
+                          : values.subCategories.filter((i) => i !== item.id);
                       onSetFilterResult(values);
                     }}
                   />
@@ -251,6 +340,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         departments: options.departments.map(
                           (item) => item.boardId
                         ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
 
                         clients:
                           value.id === "all"
@@ -269,6 +361,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         clients: options.clients.map((item) => item._id),
                         departments: options.departments.map(
                           (item) => item.boardId
+                        ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
                         ),
 
                         managers: options.managers.map((item) => item._id),
@@ -311,6 +406,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         departments: options.departments.map(
                           (item) => item.boardId
                         ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
 
                         managers:
                           value.id === "all"
@@ -330,6 +428,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         departments: options.departments.map(
                           (item) => item.boardId
+                        ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
                         ),
                       };
                       values.managers =
@@ -368,7 +469,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
-
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                         departments:
                           value.id === "all"
                             ? allOptions.departments.map((i) => i.boardId)
@@ -389,6 +492,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         departments: options.departments.map(
                           (item) => item.boardId
+                        ),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
                         ),
                       };
                       values.departments =

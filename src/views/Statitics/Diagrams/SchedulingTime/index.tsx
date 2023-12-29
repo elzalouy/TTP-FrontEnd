@@ -8,7 +8,11 @@ import { useAppSelector } from "src/models/hooks";
 import { Manager, selectManagers } from "src/models/Managers";
 import { selectAllTeams } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
-import { Category, selectAllCategories } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 import {
   DatasetType,
   ITaskInfo,
@@ -60,6 +64,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
 
   useEffect(() => {
     setTeams(options.teams);
@@ -84,6 +89,9 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
 
   useEffect(() => {
     setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+    );
   }, [options.categories]);
 
   useEffect(() => {
@@ -234,14 +242,10 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     teams: string[];
     departments: string[];
     managers: string[];
+    subCategories: string[];
   }) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
-    );
-    setCategories(
-      options.categories.filter(
-        (i) => i._id && filter.categories.includes(i._id)
-      )
     );
     setDepartments(
       options.boards.filter((i) => filter.departments.includes(i.boardId))
@@ -255,6 +259,30 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           .filter((b) => filter.departments.includes(b.boardId))
           .map((i) => i.teams)
       ).filter((team) => filter.teams.includes(team._id ?? ""))
+    );
+    let categories = options.categories.filter(
+      (i) => i._id && filter.categories.includes(i._id)
+    );
+    setCategories(categories);
+    setSubCategories(
+      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
+        (sub) => filter.subCategories.includes(sub._id)
+      )
+    );
+    setJournies(
+      allJournies.filter(
+        (j) =>
+          j.teamId &&
+          filter.teams.includes(j.teamId) &&
+          j.categoryId &&
+          filter.categories.includes(j.categoryId) &&
+          j.subCategoryId &&
+          filter.subCategories.includes(j.subCategoryId) &&
+          j.clientId &&
+          filter.clients.includes(j.clientId) &&
+          j.projectManager &&
+          filter.managers.includes(j.projectManager)
+      )
     );
   };
 
@@ -465,8 +493,18 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           teams: options.teams,
           managers: options.managers,
           departments: options.boards,
+          subCategories: _.flattenDeep(
+            categories.map((item) => item.selectedSubCategory)
+          ),
         }}
-        options={{ clients, teams, categories, managers, departments }}
+        options={{
+          clients,
+          teams,
+          categories,
+          managers,
+          departments,
+          subCategories,
+        }}
         filter={state.filterPopup}
         onCloseFilter={() => setState({ ...state, filterPopup: false })}
         onSetFilterResult={onSetFilterResult}

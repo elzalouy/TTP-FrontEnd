@@ -9,7 +9,11 @@ import { Manager, selectManagers } from "src/models/Managers";
 import { selectAllTeams } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Download as DownloadIcon } from "@mui/icons-material";
-import { Category, selectAllCategories } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 import {
   DatasetType,
   ITaskInfo,
@@ -59,6 +63,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [journies, setJournies] = useState<Journies>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
 
   useEffect(() => {
@@ -74,6 +79,9 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
 
   useEffect(() => {
     setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+    );
   }, [options.categories]);
 
   useEffect(() => {
@@ -205,6 +213,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     categories: string[];
     teams: string[];
     managers: string[];
+    subCategories: string[];
   }) => {
     setTeams(
       options.teams.filter((i) => i._id && filter.teams.includes(i._id))
@@ -212,9 +221,13 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
-    setCategories(
-      options.categories.filter(
-        (i) => i._id && filter.categories.includes(i._id)
+    let categories = options.categories.filter(
+      (i) => i._id && filter.categories.includes(i._id)
+    );
+    setCategories(categories);
+    setSubCategories(
+      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
+        (sub) => filter.subCategories.includes(sub._id)
       )
     );
     setManagers(
@@ -227,6 +240,8 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           filter.teams.includes(j.teamId) &&
           j.categoryId &&
           filter.categories.includes(j.categoryId) &&
+          j.subCategoryId &&
+          filter.subCategories.includes(j.subCategoryId) &&
           j.clientId &&
           filter.clients.includes(j.clientId) &&
           j.projectManager &&
@@ -433,8 +448,11 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           categories: options.categories,
           teams: options.teams,
           managers: options.managers,
+          subCategories: _.flattenDeep(
+            categories.map((item) => item.selectedSubCategory)
+          ),
         }}
-        options={{ clients, teams, categories, managers }}
+        options={{ clients, teams, categories, managers, subCategories }}
         filter={state.filterPopup}
         onCloseFilter={() => setState({ ...state, filterPopup: false })}
         onSetFilterResult={onSetFilterResult}

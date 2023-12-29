@@ -2,7 +2,7 @@ import { Box, Drawer, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
-import { Category } from "src/models/Categories";
+import { Category, SubCategory } from "src/models/Categories";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { DialogOption } from "src/types/components/SelectDialog";
@@ -13,21 +13,24 @@ interface FilterBarProps {
   onCloseFilter: any;
   onSetFilterResult: (filter: {
     clients: string[];
+    managers: string[];
     categories: string[];
     teams: string[];
-    managers: string[];
+    subCategories: string[];
   }) => void;
   options: {
     clients: Client[];
+    managers: Manager[];
     categories: Category[];
     teams: ITeam[];
-    managers: Manager[];
+    subCategories: SubCategory[];
   };
   allOptions: {
     clients: Client[];
+    managers: Manager[];
     categories: Category[];
     teams: ITeam[];
-    managers: Manager[];
+    subCategories: SubCategory[];
   };
 }
 
@@ -65,6 +68,12 @@ const FilterBar: FC<FilterBarProps> = ({
             ? allOptions.managers.map((item) => item._id)
             : []
           : options.managers.map((m) => m._id),
+      subCategories:
+        filter === "SubCategories"
+          ? select
+            ? allOptions.subCategories.map((i) => i._id)
+            : []
+          : options.subCategories.map((i) => i._id),
     });
   };
 
@@ -118,6 +127,10 @@ const FilterBar: FC<FilterBarProps> = ({
                         clients: options.clients.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
+
                         teams:
                           value.id === "all"
                             ? allOptions.teams.map((item) => item._id ?? "")
@@ -133,7 +146,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         clients: options.clients.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
-
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                         teams: options.teams.map((item) => item._id ?? ""),
                       };
                       values.teams =
@@ -171,7 +186,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
-
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                         categories:
                           value.id === "all"
                             ? allOptions.categories.map((i) => i._id)
@@ -188,11 +205,75 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                       };
                       values.categories =
                         item.id === "all"
                           ? []
                           : values.categories.filter((i) => i !== item.id);
+                      onSetFilterResult(values);
+                    }}
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+            <Box className="tasks-option">
+              <Controller
+                name="subCategoryId"
+                control={control}
+                render={(props) => (
+                  <MulitSelectDialogComponent
+                    name="subCategoryId"
+                    selected={options.subCategories.map((item) => {
+                      return {
+                        id: item._id ?? "",
+                        label: item.subCategory ?? "",
+                      };
+                    })}
+                    onSelectAll={(select: boolean) =>
+                      onSelectAll(select, "SubCategories")
+                    }
+                    options={allOptions.subCategories.map((item) => {
+                      return { id: item?._id ?? "", label: item.subCategory };
+                    })}
+                    allOption
+                    label="Sub Categories : "
+                    onSelect={(value: DialogOption) => {
+                      let values = {
+                        clients: options.clients.map((item) => item._id),
+                        teams: options.teams.map((item) => item._id ?? ""),
+                        managers: options.managers.map((item) => item._id),
+                        subCategories:
+                          value.id === "all"
+                            ? allOptions.subCategories.map((i) => i._id)
+                            : [
+                                ...options.subCategories.map(
+                                  (item) => item._id
+                                ),
+                                value.id,
+                              ],
+                        categories: options.categories.map((item) => item._id),
+                      };
+                      onSetFilterResult(values);
+                    }}
+                    onDiselect={(item: DialogOption) => {
+                      let values = {
+                        clients: options.clients.map((item) => item._id),
+                        teams: options.teams.map((item) => item._id ?? ""),
+                        managers: options.managers.map((item) => item._id),
+                        categories: options.categories.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
+                      };
+                      values.subCategories =
+                        item.id === "all"
+                          ? []
+                          : values.subCategories.filter((i) => i !== item.id);
                       onSetFilterResult(values);
                     }}
                   />
@@ -227,7 +308,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
-
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                         clients:
                           value.id === "all"
                             ? allOptions.clients.map((i) => i._id)
@@ -244,6 +327,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         teams: options.teams.map((item) => item._id ?? ""),
                         clients: options.clients.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                       };
                       values.clients =
                         item.id === "all"
@@ -280,6 +366,10 @@ const FilterBar: FC<FilterBarProps> = ({
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         categories: options.categories.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
+
                         managers:
                           value.id === "all"
                             ? allOptions.managers.map((i) => i._id)
@@ -296,6 +386,9 @@ const FilterBar: FC<FilterBarProps> = ({
                         managers: options.managers.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
                       };
                       values.managers =
                         item.id === "all"
