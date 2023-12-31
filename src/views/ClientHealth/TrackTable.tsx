@@ -261,6 +261,7 @@ const TrackClientHealthTable = () => {
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
       let allTasksInfo = _.orderBy(
         allTasks
+          .filter((i) => i.projectId)
           .map((i) => {
             let p = projects.find((p) => p._id === i.projectId);
             return {
@@ -279,10 +280,15 @@ const TrackClientHealthTable = () => {
         "asc"
       );
 
-      State.tasks = allTasksInfo;
+      State.tasks = [...allTasksInfo];
       State.clients = clients;
       State.projects = projects;
-
+      console.log({
+        dates: State.tasks.map((i) => i.cardCreatedAt),
+        tasksBefore: State.tasks.length,
+        start: State.filter.startDate,
+        end: State.filter.endDate,
+      });
       // Filtering using the start and end date
       if (State.filter.startDate && State.filter.endDate) {
         State.projects = State.projects.filter(
@@ -290,18 +296,18 @@ const TrackClientHealthTable = () => {
             State.filter.startDate &&
             State.filter.endDate &&
             new Date(t.startDate).getTime() >=
-              new Date(State.filter.startDate).getTime() &&
+              new Date(State.filter.startDate).getTime() - 86400000 &&
             new Date(t.startDate).getTime() <=
-              new Date(State.filter.endDate).getTime()
+              new Date(State.filter.endDate).getTime() + 86400000
         );
         // Filtering the tasks
-        State.tasks = state.tasks.filter(
+        State.tasks = State.tasks.filter(
           (i) =>
             i.cardCreatedAt &&
             State.filter.startDate &&
             State.filter.endDate &&
             new Date(i.cardCreatedAt).getTime() >=
-              new Date(State.filter.startDate).getTime() &&
+              new Date(State.filter.startDate).getTime() - 86400000 &&
             new Date(i.cardCreatedAt).getTime() <=
               new Date(State.filter.endDate).getTime() + 86400000
         );
@@ -327,7 +333,7 @@ const TrackClientHealthTable = () => {
       State.cells = _.orderBy(
         clients.map((client) => {
           let notFilteredClientTasks = _.orderBy(
-            allTasksInfo.filter((t: ITaskInfo) => t.clientId === client._id),
+            State.tasks.filter((t: ITaskInfo) => t.clientId === client._id),
             "createdAt",
             "asc"
           );
