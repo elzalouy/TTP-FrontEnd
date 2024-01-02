@@ -6,22 +6,14 @@
 
 .all-clients {
   margin: 20px 0;
-  /*   display: grid; */
-  /* width: 100%; */
   padding: 15px;
-  /*  grid-template-columns: repeat(auto-fill, 380px);
-  grid-gap: 20px; */
   border: 1px solid;
   border-radius: 16px;
   border-color: #e2e2ea;
-  overflow: hidden;
+  overflow: scroll;
   padding-bottom: 50px;
-}
-
-@media (max-width:600px) {
-  .all-clients{
-    padding-bottom: 42px;
-  }
+  width: 100%;
+  height: 100%;
 }
 
 .client-card {
@@ -32,7 +24,7 @@
 }
 
 .client-card:hover {
-  box-shadow: 0px 6px 20px #0000001A;
+  box-shadow: 0px 6px 20px #0000001a;
 }
 
 .cl-card-header {
@@ -116,19 +108,12 @@
   justify-content: flex-start;
 }
 
-.project-counter-wrapper:not(:last-child)::after {
-  /*   display: block;
-  content: '';
-  background: gray; */
-}
-
-
 .task-number-card {
   display: flex;
   /* box-shadow: 0px 3px 20px #0000000D; */
   width: 160px;
   border-radius: 5px;
-  background-color: #F1F1F5;
+  background-color: #f1f1f5;
   justify-content: space-around;
   align-items: center;
   height: 30px;
@@ -141,7 +126,7 @@
 .task-number {
   font-size: 18px;
   font-weight: bolder;
-  color: #783DBD;
+  color: #783dbd;
 }
 
 .bounce {
@@ -164,10 +149,8 @@
 
   to {
     transform: translateX(0%);
-    ;
   }
 }
-
 
 .clientScrollbar {
   padding-bottom: 10px;

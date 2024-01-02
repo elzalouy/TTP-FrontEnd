@@ -127,8 +127,12 @@ export const TasksListView: React.FC<Props> = (props) => {
     openFilter: false,
   });
 
-  React.useEffect(() => {
-    if (selects && selects.length > 0) {
+  const onSetTasksJourniesData = () => {
+    let selectsData = [...selects];
+    console.log({ selectsData });
+    if (selectsData.length <= 0)
+      selectsData = projects.allTasks.map((i) => i._id);
+    if (selectsData.length > 0) {
       let task: Task | undefined,
         project: Project | undefined,
         category: Category | undefined,
@@ -136,7 +140,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         client: Client | undefined,
         projectManager: Manager | undefined;
       let tasksJourniesDetails = _.flattenDeep(
-        selects.map((id) => {
+        selectsData.map((id) => {
           task = state.tasks.find((task) => task._id === id);
           if (task) {
             project = projects.projects.find(
@@ -276,9 +280,10 @@ export const TasksListView: React.FC<Props> = (props) => {
           } else return [];
         })
       );
-      setTasksJourniesDetails(tasksJourniesDetails);
+      return tasksJourniesDetails;
     }
-  }, [selects]);
+  };
+
   React.useEffect(() => {
     let id = props.match.params?.projectId;
     setValue("projectId", id ?? "");
@@ -382,7 +387,13 @@ export const TasksListView: React.FC<Props> = (props) => {
   // };
 
   const onDownloadTasksFile = () => {
-    if (tasksJourniesDetails.length > 0 && formRef.current) {
+    let tasksJourniesDetails = onSetTasksJourniesData();
+    console.log({ tasksJourniesDetails: tasksJourniesDetails?.length });
+    if (
+      tasksJourniesDetails &&
+      tasksJourniesDetails.length > 0 &&
+      formRef.current
+    ) {
       let data = convertToCSV([...tasksJourniesDetails]);
       let dataBlob = new Blob([data], { type: "text/csv" });
       const url = window.URL.createObjectURL(dataBlob);

@@ -240,7 +240,7 @@ const TrackClientHealthTable = () => {
       _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
       revisedTasks.length;
     State.organization._OfTasks = State.tasks.length;
-    State.organization._ofProjects = projects.length;
+    State.organization._ofProjects = state.projects.length;
     State.organization.averageTOD = _.sum(journeysLeadTime);
     State.organization.lastBrief = new Date(
       sortedByCreatedAtTasks[sortedByCreatedAtTasks.length - 1]?.cardCreatedAt
@@ -252,7 +252,7 @@ const TrackClientHealthTable = () => {
       (meetDeadline / hasDeadline.length) * 100
     );
     setState({ ...State });
-  }, [state.tasks]);
+  }, [state.tasks, state.projects]);
 
   // get all projects and its tasks and filter them by the start, and end date
   // then building the tasks journies for the filtered tasks
@@ -283,12 +283,6 @@ const TrackClientHealthTable = () => {
       State.tasks = [...allTasksInfo];
       State.clients = clients;
       State.projects = projects;
-      console.log({
-        dates: State.tasks.map((i) => i.cardCreatedAt),
-        tasksBefore: State.tasks.length,
-        start: State.filter.startDate,
-        end: State.filter.endDate,
-      });
       // Filtering using the start and end date
       if (State.filter.startDate && State.filter.endDate) {
         State.projects = State.projects.filter(

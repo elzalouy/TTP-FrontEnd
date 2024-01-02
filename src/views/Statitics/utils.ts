@@ -113,6 +113,7 @@ export const getCsvFile = (data: DatasetType) => {
         // every dataset has journies.
         item.datasetData.map((categoryData, index) => {
           let totalHours = item.data[index];
+          console.log({ totalHours });
           let { days, hours } = daysAndHours(totalHours);
           return categoryData.journies.map((journey) => {
             let totalHours = journey.leadTime;

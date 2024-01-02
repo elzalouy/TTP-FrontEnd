@@ -629,9 +629,8 @@ export function convertToCSV(data: any[]) {
   return [header, ...csvRows].join("\n");
 }
 export const daysAndHours = (totalHours: number) => {
-  let days = Math.floor(totalHours / 24) > 0 ? Math.floor(totalHours / 24) : 0;
-  const hours =
-    Math.floor(totalHours % 24) > 0 ? Math.floor(totalHours % 24) : 0;
+  let days = Math.floor(totalHours / 24);
+  const hours = Math.floor(totalHours % 24);
   return { days, hours };
 };
 export const Months = [

@@ -5,17 +5,15 @@ import { Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Button from "src/coreUI/components/Buttons/Button";
 import Input from "src/coreUI/components/Inputs/Textfield/Input";
-import { IClient } from "src/types/views/Client";
 import { useAppSelector } from "../../../models/hooks";
 import {
   selectAllClients,
   selectEditClient,
-  selectLoadingClient,
   updateClient,
   UpdateClientInterface,
 } from "src/models/Clients";
-import { toast } from "react-toastify";
-import { generateID } from "src/helpers/IdGenerator";
+import { EditCleintSchema } from "src/services/validations/clients.schema";
+import { ToastError } from "src/coreUI/components/Typos/Alert";
 
 interface Props {
   show: string;
@@ -25,54 +23,69 @@ interface Props {
 const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const editClient: UpdateClientInterface = useAppSelector(selectEditClient);
   const allClients = useAppSelector(selectAllClients);
-  const loadingClient = useAppSelector(selectLoadingClient);
   const dispatch = useDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState<boolean>(false);
-  const [clientData, setClientData] = useState<IClient>({
-    image: null,
-    clientName: "",
+
+  const [state, setState] = useState<{
+    clientData: {
+      clientName: string;
+      _id: string;
+      image: any;
+      createdAt: string;
+    };
+    loading: boolean;
+    errorAt: string;
+  }>({
+    clientData: {
+      _id: "",
+      image: null,
+      createdAt: "",
+      clientName: "",
+    },
+    loading: false,
+    errorAt: "",
   });
-  let checkName = allClients.find((client) => {
-    if (editClient.clientName === clientData.clientName) return;
-    return client.clientName === clientData.clientName;
-  });
+
   const [ImageView, setImageView] = useState<string | null>(null);
 
   useEffect(() => {
+    let State = { ...state };
     if (editClient.image.name && editClient.image.size) {
       let image = setImageView(URL.createObjectURL(editClient.image));
-      setClientData({ ...editClient, image: image });
+      setState({ ...state, clientData: { ...editClient, image: image } });
     } else {
-      setClientData(editClient);
+      setState({ ...state, clientData: editClient });
     }
   }, [dispatch, editClient]);
 
   const handleSubmit = async (e: any) => {
-    if (!checkName) {
-      try {
-        e.preventDefault();
-        dispatch(updateClient(clientData));
-        setClientData({
-          _id: "",
-          clientName: "",
-          createdAt: "",
-          image: "",
+    try {
+      e.preventDefault();
+      setState({ ...state, loading: true });
+      let names = allClients.map((i) => i.clientName);
+      let validationResult = EditCleintSchema(names).validate(state.clientData);
+      if (validationResult.error) {
+        console.log({ error: validationResult.error });
+        setState({ ...state, loading: false });
+        ToastError(validationResult.error.message);
+      } else {
+        console.log({ client: state.clientData });
+        dispatch(updateClient(state.clientData));
+        setState({
+          ...state,
+          clientData: {
+            _id: "",
+            clientName: "",
+            createdAt: "",
+            image: "",
+          },
         });
         setImageView(null);
+        setState({ ...state, loading: false });
         setShow("none");
-      } catch (error: any) {}
-    } else {
-      toast.error("Client name already exist", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        toastId: generateID(),
-      });
+      }
+    } catch (error: any) {
+      console.log({ error: error });
     }
   };
 
@@ -81,27 +94,21 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var data: any = { ...clientData };
+    var data: any = { ...state.clientData };
     if (e.target.name === "image") {
       let file: any = e.target.files;
       data.image = file[0];
       setImageView(URL.createObjectURL(file[0]));
     } else {
       data[e.target.name] = e.target.value;
-      if (e.target.value.length > 0) {
-        setError(false);
-      } else {
-        setError(true);
-      }
     }
-    setClientData(data);
+    setState({ ...state, clientData: data });
   };
 
   const handleClose = () => {
     setImageView(null);
-    setClientData(editClient);
+    setState({ ...state, clientData: editClient });
     setShow("none");
-    setError(false);
   };
 
   return (
@@ -138,10 +145,10 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
             />
             <img
               src={
-                clientData?.image === "null"
+                state.clientData?.image === "null"
                   ? IMAGES.imgupload
                   : !ImageView
-                  ? clientData?.image
+                  ? state.clientData?.image
                   : ImageView
               }
               style={{
@@ -156,23 +163,20 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
             placeholder="Ex : Ahmed Ali"
             inputName="clientName"
             dataTestId="edit-client-name"
-            value={clientData.clientName}
+            value={state.clientData.clientName}
             type="text"
             onChange={(e: any) => {
               onChange(e);
             }}
-            error={error ? "true" : undefined}
+            // error={}
           />
-          {error && (
-            <p className="popup-error">Please enter a name for the client</p>
-          )}
           <Box className="controllers">
             <Button
               type="main"
               size="large"
               label="done"
               onClick={handleSubmit}
-              loading={loadingClient}
+              // loading={}
               dataTestId="edit-client-submit-button"
             />
           </Box>
