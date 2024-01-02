@@ -263,7 +263,9 @@ const TrackClientHealthTable = () => {
         allTasks
           .filter((i) => i.projectId)
           .map((i) => {
-            let p = projects.find((p) => p._id === i.projectId);
+            let p = projects.find(
+              (p) => p._id.toString() === i.projectId.toString()
+            );
             return {
               ...i,
               clientId: p?.clientId,
@@ -295,8 +297,8 @@ const TrackClientHealthTable = () => {
               new Date(State.filter.endDate).getTime() + 86400000
         );
         // Filtering the tasks
-        State.tasks = State.tasks.filter(
-          (i) =>
+        State.tasks = State.tasks.filter((i) => {
+          if (
             i.cardCreatedAt &&
             State.filter.startDate &&
             State.filter.endDate &&
@@ -304,23 +306,30 @@ const TrackClientHealthTable = () => {
               new Date(State.filter.startDate).getTime() - 86400000 &&
             new Date(i.cardCreatedAt).getTime() <=
               new Date(State.filter.endDate).getTime() + 86400000
-        );
+          )
+            return i;
+        });
       }
-
+      console.log({
+        task: State.tasks.filter(
+          (i) => i.clientId === "64a4370bbbed47c8a1502cf7"
+        ),
+      });
       if (State.filter.categories) {
         let catsIds = State.filter.categories.map((i) => i.id);
         State.tasks = State.tasks.filter(
-          (item) =>
-            catsIds.includes(item.categoryId) || item.categoryId === null
+          (item) => catsIds.includes(item.categoryId) || !item.categoryId
         );
       }
-      if (State.filter.subCategories) {
-        let subsIds = State.filter.subCategories.map((i) => i.id);
-        State.tasks = State.tasks.filter(
-          (item) =>
-            subsIds.includes(item.subCategoryId) || item.subCategoryId === null
-        );
-      }
+
+      // if (State.filter.subCategories) {
+      //   let subsIds = State.filter.subCategories.map((i) => i.id);
+      //   State.tasks = State.tasks.filter((item) => {
+      //     if (item.subCategoryId && subsIds.includes(item.subCategoryId))
+      //       return item;
+      //     if (!item.subCategoryId || item.subCategoryId === null) return item;
+      //   });
+      // }
 
       let journeys = State.tasks.map((i) => getTaskJournies(i));
       State.journeys = journeys;
@@ -393,7 +402,7 @@ const TrackClientHealthTable = () => {
         }),
         state.orderBy,
         "desc"
-      ).filter((i) => i._OfTasks > 0 && i._ofProjects > 0);
+      ).filter((i) => i._ofProjects > 0);
       State.order = Order.desc;
       State.loading = false;
       setState(State);

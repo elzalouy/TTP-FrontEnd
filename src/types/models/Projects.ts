@@ -70,6 +70,7 @@ export interface Project {
   cardId?: string;
   boardId?: string;
   listId?: string;
+  createdAt?: Date | any;
 }
 export interface TasksStatistics {
   NoOfTasks: number | null;

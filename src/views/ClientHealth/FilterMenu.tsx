@@ -61,9 +61,11 @@ const FiltersBar = ({
     setValue("categories", categoriesOptions);
     let subs = _.flattenDeep(
       categories.map((item) =>
-        item.selectedSubCategory.map((sub) => {
-          return { id: sub._id, label: sub.subCategory };
-        })
+        item.subCategoriesId
+          ? item?.subCategoriesId?.map((sub) => {
+              return { id: sub._id, label: sub.subCategory };
+            })
+          : []
       )
     );
     setSubCategoriesOptions(subs);
@@ -77,7 +79,7 @@ const FiltersBar = ({
     let catsIds = watch().categories.map((i) => i.id);
     let selectedCategories = categories.filter((i) => catsIds.includes(i._id));
     let subCategories = _.flattenDeep(
-      selectedCategories.map((i) => i.selectedSubCategory)
+      selectedCategories.map((i) => i.subCategoriesId)
     );
     let subCategoriesOptions = subCategories.map((i) => {
       return { id: i._id, label: i.subCategory };
@@ -95,8 +97,7 @@ const FiltersBar = ({
       let subCategories = _.flattenDeep(
         selectedCategories.map(
           (i) =>
-            categories.find((sub) => sub._id === i.id)?.selectedSubCategory ??
-            []
+            categories.find((sub) => sub._id === i.id)?.subCategoriesId ?? []
         )
       );
       let subOptions = subCategories.map((item) => {

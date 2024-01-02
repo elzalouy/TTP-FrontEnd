@@ -6,7 +6,7 @@ export interface Category {
   _id: string;
   category: string;
   subCategories?: string[];
-  subCategoriesId?: SubCategory[];
+  subCategoriesId: SubCategory[];
   selectedSubCategory: SubCategory[];
   isDeleted?: boolean;
 }
