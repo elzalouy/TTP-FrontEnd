@@ -126,7 +126,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   useEffect(() => {
     setCategories(options.categories);
     setSubCategories(
-      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
   }, [options.categories]);
 
@@ -176,8 +176,8 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     );
     setCategories(categories);
     setSubCategories(
-      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
-        (sub) => filter.subCategories.includes(sub._id)
+      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
+        filter.subCategories.includes(sub._id)
       )
     );
     setJournies(
@@ -500,7 +500,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
           managers: options.managers,
           categories: options.categories,
           subCategories: _.flattenDeep(
-            categories.map((item) => item.selectedSubCategory)
+            categories.map((item) => item.subCategoriesId)
           ),
         }}
         options={{ clients, managers, categories, teams, subCategories }}

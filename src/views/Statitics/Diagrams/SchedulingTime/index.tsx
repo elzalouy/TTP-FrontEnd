@@ -90,7 +90,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   useEffect(() => {
     setCategories(options.categories);
     setSubCategories(
-      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
   }, [options.categories]);
 
@@ -265,8 +265,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     );
     setCategories(categories);
     setSubCategories(
-      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
-        (sub) => filter.subCategories.includes(sub._id)
+      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
+        filter.subCategories.includes(sub._id)
       )
     );
     setJournies(
@@ -494,7 +494,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           managers: options.managers,
           departments: options.boards,
           subCategories: _.flattenDeep(
-            categories.map((item) => item.selectedSubCategory)
+            categories.map((item) => item.subCategoriesId)
           ),
         }}
         options={{

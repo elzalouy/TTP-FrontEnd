@@ -120,7 +120,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   useEffect(() => {
     setCategories(options.categories);
     setSubCategories(
-      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
   }, [options.categories]);
 
@@ -226,6 +226,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     managers: string[];
     categories: string[];
     teams: string[];
+    subCategories: string[];
   }) => {
     setTeams(
       options.teams.filter(
@@ -238,9 +239,13 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
-    setCategories(
-      options.categories.filter(
-        (i) => i._id && filter.categories.includes(i._id)
+    let categories = options.categories.filter(
+      (i) => i._id && filter.categories.includes(i._id)
+    );
+    setCategories(categories);
+    setSubCategories(
+      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
+        filter.subCategories.includes(sub._id)
       )
     );
     setJournies(

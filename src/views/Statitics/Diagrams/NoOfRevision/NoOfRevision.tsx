@@ -116,7 +116,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   useEffect(() => {
     setCategories(options.categories);
     setSubCategories(
-      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
   }, [options.categories]);
 
@@ -226,8 +226,8 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     );
     setCategories(categories);
     setSubCategories(
-      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
-        (sub) => filter.subCategories.includes(sub._id)
+      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
+        filter.subCategories.includes(sub._id)
       )
     );
 
@@ -534,7 +534,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
           categories: options.categories,
           teams: options.teams,
           subCategories: _.flattenDeep(
-            categories.map((item) => item.selectedSubCategory)
+            categories.map((item) => item.subCategoriesId)
           ),
         }}
         options={{ clients, managers, categories, teams, subCategories }}

@@ -80,7 +80,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
   useEffect(() => {
     setCategories(options.categories);
     setSubCategories(
-      _.flattenDeep(options.categories.map((item) => item.selectedSubCategory))
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
   }, [options.categories]);
 
@@ -226,8 +226,8 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     );
     setCategories(categories);
     setSubCategories(
-      _.flattenDeep(categories.map((i) => i.selectedSubCategory)).filter(
-        (sub) => filter.subCategories.includes(sub._id)
+      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
+        filter.subCategories.includes(sub._id)
       )
     );
     setManagers(
@@ -449,7 +449,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
           teams: options.teams,
           managers: options.managers,
           subCategories: _.flattenDeep(
-            categories.map((item) => item.selectedSubCategory)
+            categories.map((item) => item.subCategoriesId)
           ),
         }}
         options={{ clients, teams, categories, managers, subCategories }}
