@@ -35,7 +35,11 @@ import ClientTableRow from "./ClientTableRow";
 import { selectStatisticsFilterDefaults } from "src/models/Statistics";
 import TaskInfo from "../TaskViewBoard/Read/Card/TaskInfo";
 import { DialogOption } from "src/types/components/SelectDialog";
-import { selectCategoriesDialogOptions } from "src/models/Categories";
+import {
+  selectAllCategories,
+  selectCategoriesDialogOptions,
+  selectSubCategories,
+} from "src/models/Categories";
 
 interface HeadCell {
   id: any;
@@ -140,6 +144,8 @@ type stateType = {
 const TrackClientHealthTable = () => {
   const theme = useTheme();
   const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const subCategories = useAppSelector(selectSubCategories);
+  const categories = useAppSelector(selectAllCategories);
   const clients = useAppSelector(selectAllClients);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const [state, setState] = React.useState<stateType>({
@@ -310,11 +316,9 @@ const TrackClientHealthTable = () => {
             return i;
         });
       }
-      console.log({
-        task: State.tasks.filter(
-          (i) => i.clientId === "64a4370bbbed47c8a1502cf7"
-        ),
-      });
+
+      let allCategoriesIds = categories.map((i) => i._id);
+      let allSubCategoriesIds = subCategories.map((i) => i._id);
       if (State.filter.categories) {
         let catsIds = State.filter.categories.map((i) => i.id);
         State.tasks = State.tasks.filter(
@@ -322,14 +326,14 @@ const TrackClientHealthTable = () => {
         );
       }
 
-      // if (State.filter.subCategories) {
-      //   let subsIds = State.filter.subCategories.map((i) => i.id);
-      //   State.tasks = State.tasks.filter((item) => {
-      //     if (item.subCategoryId && subsIds.includes(item.subCategoryId))
-      //       return item;
-      //     if (!item.subCategoryId || item.subCategoryId === null) return item;
-      //   });
-      // }
+      if (State.filter.subCategories) {
+        let subsIds = State.filter.subCategories.map((i) => i.id);
+        State.tasks = State.tasks.filter((item) => {
+          if (item.subCategoryId && subsIds.includes(item.subCategoryId))
+            return item;
+          if (!allSubCategoriesIds.includes(item.subCategoryId)) return item;
+        });
+      }
 
       let journeys = State.tasks.map((i) => getTaskJournies(i));
       State.journeys = journeys;

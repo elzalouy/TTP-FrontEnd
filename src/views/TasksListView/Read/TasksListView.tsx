@@ -129,7 +129,6 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   const onSetTasksJourniesData = () => {
     let selectsData = [...selects];
-    console.log({ selectsData });
     if (selectsData.length <= 0)
       selectsData = projects.allTasks.map((i) => i._id);
     if (selectsData.length > 0) {
@@ -362,12 +361,6 @@ export const TasksListView: React.FC<Props> = (props) => {
           task.cardCreatedAt &&
           new Date(task.cardCreatedAt).getTime() >=
             new Date(filter.createdAt).getTime()
-        ) {
-          return task;
-        } else if (
-          task.createdAt &&
-          new Date(task.createdAt).getTime() >=
-            new Date(filter.createdAt).getTime()
         )
           return task;
       });
@@ -388,7 +381,6 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   const onDownloadTasksFile = () => {
     let tasksJourniesDetails = onSetTasksJourniesData();
-    console.log({ tasksJourniesDetails: tasksJourniesDetails?.length });
     if (
       tasksJourniesDetails &&
       tasksJourniesDetails.length > 0 &&

@@ -242,7 +242,9 @@ const FiltersBar = ({
               name="statistics-filterByDate"
               elementType="filter"
               label="Start Date :"
-              onSelect={(value: any) => onSetFilter("createdAt", value)}
+              onSelect={(value: any) =>
+                onSetFilter("createdAt", new Date(value).toDateString())
+              }
             />
           </Box>
         </Grid>
