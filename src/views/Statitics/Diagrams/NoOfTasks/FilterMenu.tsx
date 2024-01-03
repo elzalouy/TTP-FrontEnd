@@ -62,7 +62,6 @@ const FilterBar = ({
 }: FilterBarProps) => {
   const teamOptions = useAppSelector(selectTeamsOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
-  const managersOptions = useAppSelector(selectPMOptions);
   const categoriesOptions = useAppSelector(selectCategoriesOptions);
   const { control } = useForm<{
     clientId: string;
@@ -115,6 +114,7 @@ const FilterBar = ({
           : options.subCategories.map((i) => i._id),
     });
   };
+
   return (
     <Drawer
       anchor="right"
@@ -211,8 +211,8 @@ const FilterBar = ({
                   selected={options.managers.map((item) => {
                     return { id: item._id ?? "", label: item.name ?? "" };
                   })}
-                  options={managersOptions.map((item) => {
-                    return { id: item?.id ?? "", label: item.text };
+                  options={allOptions.managers.map((item) => {
+                    return { id: item?._id ?? "", label: item.name };
                   })}
                   onSelectAll={(select: boolean) =>
                     onSelectAll(select, "Project Managers")

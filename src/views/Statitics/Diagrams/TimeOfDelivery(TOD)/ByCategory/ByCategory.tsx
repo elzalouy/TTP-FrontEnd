@@ -250,7 +250,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   };
 
   const onDownload = () => {
-    let { bars, comparisons } = getCsvFile(state.data);
+    let { bars, comparisons } = getCsvFile(state.data, "decimal");
     if (comparisons.length > 0 && formRef.current) {
       let csvData = convertToCSV(comparisons);
       let dataBlob = new Blob([csvData], { type: "text/csv" });

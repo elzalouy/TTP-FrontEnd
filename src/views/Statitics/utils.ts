@@ -89,12 +89,15 @@ export const getMeetingDeadline = (journies: Journey[]) => {
   return { passedDeadline, notPassedDeadline };
 };
 
-export const getCsvFile = (data: DatasetType) => {
+type dataType = "hours" | "decimal";
+
+export const getCsvFile = (data: DatasetType, type?: dataType) => {
   let bars = _.flattenDeep(
     data.datasets.map((item) => {
       // get the bars by the x axis (Categories)
       return item.datasetData.map((categoryData, index) => {
-        let totalHours = item.data[index];
+        let totalHours =
+          type === "decimal" ? item.data[index] * 24 : item.data[index];
         let { days, hours } = daysAndHours(totalHours);
         return {
           barName: data.labels[index],
@@ -112,8 +115,8 @@ export const getCsvFile = (data: DatasetType) => {
       let comparisonValues = _.flattenDeep(
         // every dataset has journies.
         item.datasetData.map((categoryData, index) => {
-          let totalHours = item.data[index];
-          console.log({ totalHours });
+          let totalHours =
+            type === "decimal" ? item.data[index] * 24 : item.data[index];
           let { days, hours } = daysAndHours(totalHours);
           return categoryData.journies.map((journey) => {
             let totalHours = journey.leadTime;

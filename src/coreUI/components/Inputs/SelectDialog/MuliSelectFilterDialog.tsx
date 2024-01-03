@@ -230,6 +230,7 @@ export const MulitSelectDialogComponent = ({
       backgroundColor: "white",
     },
   };
+
   return (
     <div>
       <Box width={"100%"} display={"inline-flex"}>

@@ -87,7 +87,7 @@ const Statistics = (props: any) => {
         mounted: true,
         boardIds: boardIds,
         options: {
-          managers: allManagers,
+          managers: allManagers.filter((i) => i.role === "PM"),
           clients: allClients,
           categories: allCategories,
           teams: teams,
