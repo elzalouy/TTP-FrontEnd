@@ -6,7 +6,11 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
-import { Category, SubCategory } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 import { getCsvFile } from "../../../utils";
 import { setOptions } from "./utils";
 import { useAppSelector } from "src/models/hooks";
@@ -47,6 +51,7 @@ type BySharedMonthProps = {
  */
 const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
+  const allCategories = useAppSelector(selectAllCategories);
   const { projects } = useAppSelector(selectAllProjects);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -180,21 +185,32 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
-    setJournies(
-      allJournies.filter(
-        (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.projectManager &&
-          filter.managers.includes(j.projectManager) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.subCategoryId &&
-          filter.subCategories.includes(j.subCategoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId)
-      )
+
+    let journiesData: Journies = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
+
+    let allSubs = _.flattenDeep(
+      allCategories
+        .filter((i) => filter.categories.includes(i._id))
+        .map((i) => i.subCategoriesId.map((i) => i._id))
+    );
+
+    journiesData = journiesData.filter(
+      (i) =>
+        filter.subCategories.includes(i.subCategoryId) ||
+        i.subCategoryId === null ||
+        (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
+    );
+    setJournies(journiesData);
   };
 
   const onGetDataSetsByPM = () => {

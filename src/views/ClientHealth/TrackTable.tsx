@@ -317,7 +317,6 @@ const TrackClientHealthTable = () => {
         });
       }
 
-      let allCategoriesIds = categories.map((i) => i._id);
       let allSubCategoriesIds = subCategories.map((i) => i._id);
       if (State.filter.categories) {
         let catsIds = State.filter.categories.map((i) => i.id);
@@ -326,7 +325,7 @@ const TrackClientHealthTable = () => {
         );
       }
 
-      if (State.filter.subCategories) {
+      if (State.filter.subCategories && State.filter.subCategories.length > 0) {
         let subsIds = State.filter.subCategories.map((i) => i.id);
         State.tasks = State.tasks.filter((item) => {
           if (item.subCategoryId && subsIds.includes(item.subCategoryId))
@@ -406,7 +405,7 @@ const TrackClientHealthTable = () => {
         }),
         state.orderBy,
         "desc"
-      ).filter((i) => i._ofProjects > 0);
+      ).filter((i) => i._ofProjects > 0 || i._OfTasks > 0);
       State.order = Order.desc;
       State.loading = false;
       setState(State);

@@ -8,7 +8,11 @@ import { Options } from "src/types/views/Projects";
 import { Controller, useForm } from "react-hook-form";
 import { Manager, selectPMOptions } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
-import { Category, SubCategory, selectCategoriesOptions } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectCategoriesOptions,
+} from "src/models/Categories";
 import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 import {
   selectAllDepartments,
@@ -22,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import { ITeam } from "src/types/models/Departments";
+import _ from "lodash";
 
 type filterTypes =
   | "clientId"
@@ -91,7 +96,6 @@ const FilterBar = ({
     },
   });
 
-  const dispatch = useDispatch();
   const onSelectAll = (select: boolean, filter: string) => {
     onSetFilterResult({
       clients:
@@ -121,9 +125,15 @@ const FilterBar = ({
       subCategories:
         filter === "SubCategories"
           ? select
-            ? allOptions.subCategories.map((i) => i._id)
+            ? _.flattenDeep(
+                options.categories.map((i) =>
+                  i.subCategoriesId.map((j) => j._id)
+                )
+              )
             : []
-          : options.subCategories.map((i) => i._id),
+          : _.flattenDeep(
+              options.categories.map((c) => c.subCategoriesId.map((i) => i._id))
+            ),
     });
   };
 
@@ -293,34 +303,54 @@ const FilterBar = ({
                       clients: options.clients.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
-                      subCategories: options.subCategories.map(
-                        (item) => item._id
-                      ),
-
-                      categories:
-                        value.id === "all"
-                          ? allOptions.categories.map((i) => i._id)
-                          : [
-                              ...options.categories.map((item) => item._id),
-                              value.id,
-                            ],
+                      categories: [""],
+                      subCategories: [""],
                     };
+                    if (value.id === "all") {
+                      values.categories = _.flattenDeep(
+                        allOptions.categories.map((i) => i._id)
+                      );
+                      values.subCategories = _.flattenDeep(
+                        allOptions.categories.map((i) =>
+                          i.subCategoriesId.map((s) => s._id)
+                        )
+                      );
+                    } else {
+                      let cat = allOptions.categories.find(
+                        (i) => i._id === value.id
+                      );
+                      if (cat) {
+                        let cats = [...options.categories, cat];
+                        let subs = _.flattenDeep(
+                          cats.map((i) => i.subCategoriesId)
+                        );
+                        values.categories = cats.map((i) => i._id);
+                        values.subCategories = subs.map((i) => i._id);
+                      }
+                    }
                     onSetFilterResult(values);
                   }}
-                  onDiselect={(item: DialogOption) => {
+                  onDiselect={(value: DialogOption) => {
                     let values = {
                       clients: options.clients.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
-                      categories: options.categories.map((item) => item._id),
-                      subCategories: options.subCategories.map(
-                        (item) => item._id
-                      ),
+                      categories: [""],
+                      subCategories: [""],
                     };
-                    values.categories =
-                      item.id === "all"
-                        ? []
-                        : values.categories.filter((i) => i !== item.id);
+                    if (value.id === "all") {
+                      values.categories = [];
+                      values.subCategories = [];
+                    } else {
+                      let cats = options.categories.filter(
+                        (i) => i._id !== value.id
+                      );
+                      let subs = _.flattenDeep(
+                        cats.map((i) => i.subCategoriesId)
+                      );
+                      values.categories = cats.map((i) => i._id);
+                      values.subCategories = subs.map((i) => i._id);
+                    }
                     onSetFilterResult(values);
                   }}
                 />

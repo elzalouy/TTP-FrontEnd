@@ -244,6 +244,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     managers: string[];
     subCategories: string[];
   }) => {
+    console.log({ cats: filter.categories, subs: filter.subCategories });
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
@@ -264,26 +265,28 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       (i) => i._id && filter.categories.includes(i._id)
     );
     setCategories(categories);
-    setSubCategories(
-      _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
-        filter.subCategories.includes(sub._id)
-      )
+    let selectedSubs = _.flattenDeep(
+      categories.map((i) => i.subCategoriesId)
+    ).filter((sub) => filter.subCategories.includes(sub._id));
+
+    setSubCategories(selectedSubs);
+    let journiesData: Journies = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
-    setJournies(
-      allJournies.filter(
-        (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.subCategoryId &&
-          filter.subCategories.includes(j.subCategoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId) &&
-          j.projectManager &&
-          filter.managers.includes(j.projectManager)
-      )
+    journiesData = journiesData.filter(
+      (i) =>
+        filter.subCategories.includes(i.subCategoryId) ||
+        i.subCategoryId === null
     );
+    setJournies(journiesData);
   };
 
   const onGetDataSetsByDepartments = () => {

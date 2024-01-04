@@ -228,6 +228,7 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     teams: string[];
     subCategories: string[];
   }) => {
+    console.log({ cats: filter.categories, subs: filter.subCategories });
     setTeams(
       options.teams.filter(
         (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
@@ -248,19 +249,24 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
-    setJournies(
-      allJournies.filter(
-        (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.projectManager &&
-          filter.managers.includes(j.projectManager) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId)
-      )
+    let journiesData: Journies = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
+
+    journiesData = journiesData.filter(
+      (i) =>
+        filter.subCategories.includes(i.subCategoryId) ||
+        i.subCategoryId === null
+    );
+    setJournies(journiesData);
   };
 
   const onGetDataSetsByPM = () => {

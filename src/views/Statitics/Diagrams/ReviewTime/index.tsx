@@ -233,21 +233,24 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     setManagers(
       options.managers.filter((i) => i._id && filter.managers.includes(i._id))
     );
-    setJournies(
-      allJournies.filter(
-        (j) =>
-          j.teamId &&
-          filter.teams.includes(j.teamId) &&
-          j.categoryId &&
-          filter.categories.includes(j.categoryId) &&
-          j.subCategoryId &&
-          filter.subCategories.includes(j.subCategoryId) &&
-          j.clientId &&
-          filter.clients.includes(j.clientId) &&
-          j.projectManager &&
-          filter.managers.includes(j.projectManager)
-      )
+    let journiesData: Journies = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
+
+    journiesData = journiesData.filter(
+      (i) =>
+        filter.subCategories.includes(i.subCategoryId) ||
+        i.subCategoryId === null
+    );
+    setJournies(journiesData);
   };
 
   const onGetDataSetsByPM = () => {

@@ -231,20 +231,24 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       )
     );
 
-    const filteredJournies = [...allJournies].filter(
+    let journiesData = allJournies.filter(
       (j) =>
-        j?.journies[0]?.teamId &&
-        filter.teams.includes(j?.journies[0]?.teamId) &&
-        j?.journies[0]?.projectManager &&
-        filter.managers.includes(j?.journies[0]?.projectManager) &&
+        j.journies[0].teamId &&
+        filter.teams.includes(j.journies[0].teamId) &&
+        j.journies[0].projectManager &&
+        filter.managers.includes(j.journies[0].projectManager) &&
         j.journies[0].categoryId &&
-        filter.categories.includes(j?.journies[0]?.categoryId) &&
-        j.journies[0].subCategoryId &&
-        filter.subCategories.includes(j.journies[0].subCategoryId) &&
+        filter.categories.includes(j.journies[0].categoryId) &&
         j.journies[0].clientId &&
         filter.clients.includes(j.journies[0].clientId)
     );
-    setJournies(filteredJournies);
+    journiesData = journiesData.filter(
+      (j) =>
+        (j.journies[0].subCategoryId &&
+          filter.subCategories.includes(j.journies[0].subCategoryId)) ||
+        j.journies[0].subCategoryId === null
+    );
+    setJournies(journiesData);
   };
 
   const onGetDataSetsByPM = () => {
