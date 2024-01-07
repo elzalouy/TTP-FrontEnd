@@ -1,2 +1,3 @@
-TODO Remove edit tasks (text) (Done)
-TODO Build Start Date and End Date filter on the tasks list view
+TODO Check if there is a task array and projects array for inside the client health page main component
+TODO Build utils.ts for the client health page
+TODO Build the function of preparing the csv files.

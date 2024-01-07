@@ -15,7 +15,7 @@ import {
   getDifBetweenDates,
   getTotalDifferenceFromTo,
   getTaskJournies,
-  getTaskLeadtTime,
+  getTaskLeadTime,
   isMissedDelivery,
   totalUnClearTime,
 } from "src/helpers/generalUtils";
@@ -112,7 +112,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
 
     let journies = getTaskJournies(taskInfo).journies;
     let taskJourniesDetails = journies.map((journey, index) => {
-      let leadTime = getTaskLeadtTime(journey.movements);
+      let leadTime = getTaskLeadTime(journey.movements);
       let schedulingTime = getTotalDifferenceFromTo(
         "Tasks Board",
         "In Progress",
@@ -220,7 +220,11 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
       };
       return journeyDetails;
     });
-    if (taskJourniesDetails && taskJourniesDetails.length > 0 && formRef.current) {
+    if (
+      taskJourniesDetails &&
+      taskJourniesDetails.length > 0 &&
+      formRef.current
+    ) {
       let data = convertToCSV([...taskJourniesDetails]);
       let dataBlob = new Blob([data], { type: "text/csv" });
       const url = window.URL.createObjectURL(dataBlob);

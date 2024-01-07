@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import _ from "lodash";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import IMAGES from "src/assets/img/Images";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
 import { Client } from "src/models/Clients";

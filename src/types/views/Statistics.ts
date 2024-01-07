@@ -6,10 +6,15 @@ import { IDepartmentState, ITeam } from "../models/Departments";
 
 export type Journey = {
   name?: string;
+  projectId?: string;
+  projectName?: string;
   clientId?: string;
   projectManager?: string;
+  projectManagerName?: string;
   categoryId: string;
+  categoryName?: string;
   subCategoryId: string;
+  subCategoryName?: string;
   taskId: string;
   index: number;
   movements: TaskMovement[];
@@ -33,8 +38,13 @@ export type Journey = {
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {
+  projectName?: string;
   clientId?: string;
+  clientName?: string;
   projectManager?: string;
+  projectMangerName?: string;
+  categoryName?: string;
+  subCategoryName?: string;
 }
 
 export type TaskJourniesDetails = {

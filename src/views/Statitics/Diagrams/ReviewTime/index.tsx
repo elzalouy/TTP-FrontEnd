@@ -28,7 +28,7 @@ import {
   getTaskJournies,
   randomColors,
 } from "src/helpers/generalUtils";
-import { getJourneyLeadTime, getJourneyReviewTime } from "../../utils";
+import { getJourneyReviewTime } from "../../utils";
 import _ from "lodash";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getCsvFile } from "../../utils";

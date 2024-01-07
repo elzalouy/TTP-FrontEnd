@@ -1,11 +1,9 @@
 import "src/views/TasksListView/Read/TasksListView.css";
 import * as React from "react";
 import "src/App/App.css";
-import { useHistory } from "react-router";
 import {
   Grid,
   IconButton,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -15,139 +13,45 @@ import {
   TableRow,
   TableSortLabel,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+
 import { useAppSelector } from "src/models/hooks";
-import { ArrowDownward, ArrowUpward, Mediation } from "@mui/icons-material";
-import { Project, Task } from "src/types/models/Projects";
-import { Client, selectAllClients } from "src/models/Clients";
+import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import { selectAllClients } from "src/models/Clients";
 import { selectAllProjects } from "src/models/Projects";
 import TablePaginationActions from "src/coreUI/components/Tables/TablePaginationActions";
 import { getTaskJournies } from "src/helpers/generalUtils";
-import { getJourneyLeadTime, getMeetingDeadline } from "../Statitics/utils";
-import { ITaskInfo, Journies } from "src/types/views/Statistics";
 import IMAGES from "src/assets/img/Images";
 import FiltersBar from "./FilterMenu";
-import _, { flatten, isNaN } from "lodash";
+import _ from "lodash";
 import TableLoading from "src/coreUI/components/Loading/TableLoading";
 import ClientTableRow from "./ClientTableRow";
 import { selectStatisticsFilterDefaults } from "src/models/Statistics";
-import TaskInfo from "../TaskViewBoard/Read/Card/TaskInfo";
-import { DialogOption } from "src/types/components/SelectDialog";
 import {
   selectAllCategories,
-  selectCategoriesDialogOptions,
   selectSubCategories,
 } from "src/models/Categories";
-
-interface HeadCell {
-  id: any;
-  label: string;
-  type: string;
-}
-enum Order {
-  "asc",
-  "desc",
-  false,
-}
-
-const TeableHeaderCells: readonly HeadCell[] = [
-  {
-    id: "clientName",
-    label: "Client Name",
-    type: "string",
-  },
-  {
-    id: "lastBrief",
-    label: "Last Brief",
-    type: "number",
-  },
-  {
-    id: "_ofProjects",
-    label: "# of Projects",
-    type: "number",
-  },
-  {
-    id: "_OfTasks",
-    label: "# of Tasks",
-    type: "number",
-  },
-  {
-    id: "journies",
-    label: "# of Journies",
-    type: "number",
-  },
-  {
-    id: "_OfRevision",
-    label: "# of Revision",
-    type: "number",
-  },
-  {
-    id: "averageTOD",
-    label: "Average TOD",
-    type: "number",
-  },
-  {
-    id: "_OfActive",
-    label: "# of Active",
-    type: "number",
-  },
-  {
-    id: "meetDeadline",
-    label: "Meet Deadline",
-    type: "number",
-  },
-];
-
-type stateType = {
-  popup: boolean;
-  loading: boolean;
-  page: number;
-  rowsPerPage: number;
-  order: Order;
-  orderBy: string;
-  clients: Client[];
-  projects: Project[];
-  tasks: ITaskInfo[];
-  journeys: { id: string; name: string; journies: Journies }[];
-  cells: {
-    clientId: string;
-    clientName: string;
-    lastBrief: number;
-    _ofProjects: number;
-    averageTOD: number;
-    _OfRevision: number;
-    meetDeadline: number;
-    _OfTasks: number;
-    _OfActive: number;
-    journies: number;
-  }[];
-  organization: {
-    lastBrief: number;
-    _ofProjects: number;
-    averageTOD: number;
-    _OfRevision: number;
-    meetDeadline: number;
-    _OfTasks: number;
-    _OfActive: number;
-    journies: number;
-  };
-  filter: {
-    startDate: string | null;
-    endDate: string | null;
-    categories: DialogOption[];
-    subCategories: DialogOption[];
-  };
-};
+import {
+  Order,
+  TeableHeaderCells,
+  stateType,
+} from "src/types/views/ClientHealth";
+import OrganizationRow from "./Organization";
+import { onDownloadTasksFile, setFilter, setJournies } from "./utils";
+import { selectPMs } from "src/models/Managers";
+import { selectRole } from "src/models/Auth";
+import { ITaskInfo } from "src/types/views/Statistics";
 
 const TrackClientHealthTable = () => {
-  const theme = useTheme();
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { allTasks, projects } = useAppSelector(selectAllProjects);
   const subCategories = useAppSelector(selectSubCategories);
   const categories = useAppSelector(selectAllCategories);
   const clients = useAppSelector(selectAllClients);
+  const managers = useAppSelector(selectPMs);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
+  const role = useAppSelector(selectRole);
   const [state, setState] = React.useState<stateType>({
     popup: false,
     loading: true,
@@ -156,10 +60,12 @@ const TrackClientHealthTable = () => {
     order: Order.asc,
     orderBy: "lastBrief",
     tasks: [],
+    allTasks: [],
     projects: [],
     clients: [],
     cells: [],
-    journeys: [],
+    allJournies: [],
+    journies: [],
     organization: {
       lastBrief: 0,
       _ofProjects: 0,
@@ -182,7 +88,7 @@ const TrackClientHealthTable = () => {
     let State = { ...state };
     // getting all tasks created after the global Date filteration.
     //  when the tasks is getting ready
-    let tasksInfo = allTasks.filter((task) => {
+    let tasks = allTasks.filter((task) => {
       if (boards.includes(task.boardId)) {
         if (
           task.cardCreatedAt &&
@@ -196,67 +102,46 @@ const TrackClientHealthTable = () => {
           return task;
       }
     });
+
     // Building the tasks information array
     // when the projects, project managers, tasks getting ready.
-    tasksInfo = _.orderBy(
-      tasksInfo.map((i) => {
+    let tasksInfo: ITaskInfo[] = _.orderBy(
+      tasks.map((i) => {
         let p = projects.find((p) => p._id === i.projectId);
         return {
           ...i,
           clientId: p?.clientId,
+          clientName: clients.find((i) => i._id === p?.clientId)?.clientName,
           projectManager: p?.projectManager,
+          projectManagerName: managers.find(
+            (pm) => pm._id === p?.projectManager
+          ),
+          categoryName: categories.find((c) => c._id === i.categoryId)
+            ?.category,
+          projectName: p?.name,
+          subCategoryName: subCategories.find((s) => s._id === i.subCategoryId)
+            ?.subCategory,
         };
       }),
       "cardCreatedAt",
       "asc"
     );
+    let journies = tasksInfo.map((i) => getTaskJournies(i));
     // setting the tasks info.
-    setState({ ...State, tasks: tasksInfo });
+    setState({
+      ...State,
+      tasks: tasksInfo,
+      allTasks: tasksInfo,
+      allJournies: journies,
+      journies: journies,
+    });
   }, [allTasks, projects, date, boards]);
 
   React.useEffect(() => {
     let State = { ...state };
     // setting the journies of tasks
     // when the tasks state get ready
-    let tasksJournies = State.tasks.map((item) => getTaskJournies(item));
-    tasksJournies = tasksJournies.map((item) => {
-      item.journies = item.journies.map((journey) => {
-        let leadTimeInHours = getJourneyLeadTime(journey);
-        journey.leadTime = leadTimeInHours;
-        return journey;
-      });
-      return item;
-    });
-
-    // flattening the journies in one array, for getting journeyLeadTime, _OfActive, hasDeadline,and journies length values.
-    let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
-    State.organization._OfActive = flattened.filter(
-      (i) =>
-        !["Shared", "Done", "Cancled"].includes(
-          i.movements[i.movements.length - 1].status
-        )
-    ).length;
-    let revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
-    let journeysLeadTime = flattened.map((j) => {
-      return j.leadTime;
-    });
-    let sortedByCreatedAtTasks = _.orderBy(State.tasks, "cardCreatedAt", "asc");
-
-    State.organization._OfRevision =
-      _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
-      revisedTasks.length;
-    State.organization._OfTasks = State.tasks.length;
-    State.organization._ofProjects = state.projects.length;
-    State.organization.averageTOD = _.sum(journeysLeadTime);
-    State.organization.lastBrief = new Date(
-      sortedByCreatedAtTasks[sortedByCreatedAtTasks.length - 1]?.cardCreatedAt
-    ).getTime();
-    let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
-    let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
-    State.organization.journies = flattened.length;
-    State.organization.meetDeadline = Math.floor(
-      (meetDeadline / hasDeadline.length) * 100
-    );
+    State = { ...setJournies(State) };
     setState({ ...State });
   }, [state.tasks, state.projects]);
 
@@ -265,155 +150,18 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      let allTasksInfo = _.orderBy(
-        allTasks
-          .filter((i) => i.projectId)
-          .map((i) => {
-            let p = projects.find(
-              (p) => p._id.toString() === i.projectId.toString()
-            );
-            return {
-              ...i,
-              clientId: p?.clientId,
-              projectManager: p?.projectManager,
-            };
-          })
-          .filter(
-            (task) =>
-              task.cardCreatedAt &&
-              boards.includes(task.boardId) &&
-              new Date(task.cardCreatedAt).getTime() >= date.getTime()
-          ),
-        "cardCreatedAt",
-        "asc"
+      State = setFilter(
+        State,
+        allTasks,
+        projects,
+        boards,
+        date,
+        clients,
+        subCategories
       );
-
-      State.tasks = [...allTasksInfo];
-      State.clients = clients;
-      State.projects = projects;
-      // Filtering using the start and end date
-      if (State.filter.startDate && State.filter.endDate) {
-        State.projects = State.projects.filter(
-          (t) =>
-            State.filter.startDate &&
-            State.filter.endDate &&
-            new Date(t.startDate).getTime() >=
-              new Date(State.filter.startDate).getTime() - 86400000 &&
-            new Date(t.startDate).getTime() <=
-              new Date(State.filter.endDate).getTime() + 86400000
-        );
-        // Filtering the tasks
-        State.tasks = State.tasks.filter((i) => {
-          if (
-            i.cardCreatedAt &&
-            State.filter.startDate &&
-            State.filter.endDate &&
-            new Date(i.cardCreatedAt).getTime() >=
-              new Date(State.filter.startDate).getTime() - 86400000 &&
-            new Date(i.cardCreatedAt).getTime() <=
-              new Date(State.filter.endDate).getTime() + 86400000
-          )
-            return i;
-        });
-      }
-
-      let allSubCategoriesIds = subCategories.map((i) => i._id);
-      if (State.filter.categories) {
-        let catsIds = State.filter.categories.map((i) => i.id);
-        State.tasks = State.tasks.filter(
-          (item) => catsIds.includes(item.categoryId) || !item.categoryId
-        );
-      }
-
-      if (State.filter.subCategories && State.filter.subCategories.length > 0) {
-        let subsIds = State.filter.subCategories.map((i) => i.id);
-        State.tasks = State.tasks.filter((item) => {
-          if (item.subCategoryId && subsIds.includes(item.subCategoryId))
-            return item;
-          if (!allSubCategoriesIds.includes(item.subCategoryId)) return item;
-        });
-      }
-
-      let journeys = State.tasks.map((i) => getTaskJournies(i));
-      State.journeys = journeys;
-      State.cells = _.orderBy(
-        clients.map((client) => {
-          let notFilteredClientTasks = _.orderBy(
-            State.tasks.filter((t: ITaskInfo) => t.clientId === client._id),
-            "createdAt",
-            "asc"
-          );
-          let clientProjects = State.projects.filter(
-            (i) => i.clientId === client._id
-          );
-          let clientTasks = State.tasks.filter(
-            (task) => task.clientId === client._id
-          );
-          let clientJourniesPerTask = clientTasks.map((i) =>
-            getTaskJournies(i)
-          );
-          let clientJournies = _.flattenDeep(
-            clientJourniesPerTask.map((i) => i.journies)
-          );
-          clientJournies = clientJournies.map((j) => {
-            return {
-              ...j,
-              leadTime: getJourneyLeadTime(j),
-            };
-          });
-          let averageLeadTime = _.sum(clientJournies.map((i) => i.leadTime));
-          let hasDeadline = clientJournies.filter(
-            (i) => i.journeyDeadline !== null
-          );
-          let meetingDeadline = Math.floor(
-            (getMeetingDeadline(hasDeadline).notPassedDeadline.length /
-              hasDeadline.length) *
-              100
-          );
-          let revisionJournies = clientJourniesPerTask.filter(
-            (j) => j.journies.length > 1
-          );
-          let length = revisionJournies.length;
-          let flattenedRevisionJournies =
-            _.flattenDeep(revisionJournies.map((i) => i.journies)).length -
-            length;
-          let lastBrief = new Date(
-            notFilteredClientTasks[notFilteredClientTasks.length - 1]
-              ?.cardCreatedAt ??
-              notFilteredClientTasks[notFilteredClientTasks.length - 1]
-                ?.createdAt
-          ).getTime();
-          lastBrief = _.isNaN(lastBrief) ? 0 : lastBrief;
-          let _OfActive = clientJournies.filter(
-            (i) =>
-              !["Done", "Cancled", "Shared"].includes(
-                i.movements[i.movements.length - 1].status
-              )
-          ).length;
-          return {
-            clientName: client.clientName,
-            meetDeadline: !_.isNaN(meetingDeadline) ? meetingDeadline : 0,
-            _OfRevision: flattenedRevisionJournies,
-            lastBrief: lastBrief,
-            averageTOD: averageLeadTime ?? 0,
-            _OfTasks: clientTasks.length,
-            _ofProjects: clientProjects.length,
-            clientId: client._id,
-            _OfActive,
-            journies: clientJournies.length,
-          };
-        }),
-        state.orderBy,
-        "desc"
-      ).filter((i) => i._ofProjects > 0 || i._OfTasks > 0);
-      State.order = Order.desc;
-      State.loading = false;
       setState(State);
     }
   }, [
-    allTasks,
-    projects,
-    clients,
     state.filter.startDate,
     state.filter.endDate,
     state.filter.categories,
@@ -476,44 +224,6 @@ const TrackClientHealthTable = () => {
     setState(State);
   };
 
-  const OrganizationRow = () => {
-    let {
-      lastBrief,
-      meetDeadline,
-      journies,
-      averageTOD,
-      _ofProjects,
-      _OfTasks,
-      _OfRevision,
-      _OfActive,
-    } = state.organization;
-    let lastBriefDate = new Date(lastBrief);
-    let localLastBriefDate = lastBriefDate.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    let totalDays = Math.floor(averageTOD / journies / 24);
-    let totalHours = Math.floor((averageTOD / journies) % 24);
-    return (
-      <ClientTableRow
-        clientId={"organization"}
-        loading={state.loading}
-        clientName={"TTP Organization"}
-        lastBrief={lastBrief}
-        localLastBriefDate={localLastBriefDate}
-        _ofProjects={_ofProjects}
-        _OfActive={_OfActive}
-        _OfTasks={_OfTasks}
-        _OfRevision={_OfRevision}
-        journies={journies}
-        totalDays={totalDays}
-        totalHours={totalHours}
-        meetDeadline={meetDeadline}
-      />
-    );
-  };
-
   return (
     <Grid
       className="customScrollBar"
@@ -530,7 +240,7 @@ const TrackClientHealthTable = () => {
       }}
       container
     >
-      <Grid xs={10}>
+      <Grid xs={8}>
         <Typography fontSize={18} mb={1} p={2} fontWeight={"600"}>
           Client Health Tracker
         </Typography>
@@ -543,6 +253,27 @@ const TrackClientHealthTable = () => {
         >
           <img src={IMAGES.filtericon} alt="FILTER" />
         </IconButton>
+        {["OM", "SM", undefined].includes(role) && (
+          <Grid item>
+            <form ref={formRef}>
+              <IconButton
+                type="button"
+                onClick={() => onDownloadTasksFile(state.tasks, formRef)}
+                sx={{
+                  bgcolor: "#fafafb",
+                  borderRadius: 3,
+                  float: "right",
+                  cursor: "pointer",
+                  width: "38px",
+                  height: "38px",
+                }}
+                disableRipple
+              >
+                <DownloadIcon htmlColor="black"></DownloadIcon>
+              </IconButton>
+            </form>
+          </Grid>
+        )}
       </Grid>
       <Table style={{ width: "100%", overflowX: "scroll" }}>
         <TableHead>
@@ -634,7 +365,10 @@ const TrackClientHealthTable = () => {
         </TableHead>
         <TableBody>
           <>
-            <OrganizationRow />
+            <OrganizationRow
+              organization={state.organization}
+              loading={state.loading}
+            />
             {state.loading ? (
               <TableLoading rows={3} columns={8} name="client-health-tracker" />
             ) : (
@@ -667,7 +401,6 @@ const TrackClientHealthTable = () => {
                       year: "numeric",
                     }
                   );
-                  let average = Math.floor(averageTOD / journies);
                   let totalDays =
                     averageTOD > 0 ? Math.floor(averageTOD / journies / 24) : 0;
                   let totalHours =
@@ -748,4 +481,5 @@ const filterBtnStyle = {
   width: "38px",
   height: "38px",
   textAlign: "center",
+  marginX: 1,
 };

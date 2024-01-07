@@ -9,6 +9,7 @@ import {
   TaskMovement,
 } from "../types/models/Projects";
 import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
+import { getJourneyLeadTime } from "src/views/Statitics/utils";
 
 interface options {
   id?: string;
@@ -313,6 +314,11 @@ export const getTaskJournies = (task: ITaskInfo) => {
       projectManager: task.projectManager,
       categoryId: task.categoryId,
       subCategoryId: task.subCategoryId,
+      categoryName: task.categoryName,
+      subCategoryName: task.subCategoryName,
+      projectName: task.projectName,
+      projectManagerName: task.projectMangerName,
+      projectId: task.projectId,
       taskId: task._id,
       index: journies.length,
       teamId: task.teamId,
@@ -373,6 +379,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       );
       journey.revision = journies.length > 1;
       journey.unique = !(journies.length > 1);
+      journey.leadTime = getJourneyLeadTime(journey);
       journies.push(journey);
       journey = getJourney();
     } else {
@@ -477,7 +484,7 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
   } else return false;
 };
 
-export const getTaskLeadtTime = (movements: TaskMovement[]) => {
+export const getTaskLeadTime = (movements: TaskMovement[]) => {
   let sharedMovemens = movements.filter((item) => item.status === "Shared");
   if (sharedMovemens.length > 0) {
     let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;

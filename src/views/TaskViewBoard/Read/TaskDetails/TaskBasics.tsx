@@ -7,7 +7,7 @@ import { selectAllProjects } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
 import UpdateIcon from "@mui/icons-material/Update";
 import {
-  getTaskLeadtTime,
+  getTaskLeadTime,
   getDifBetweenDates,
   taskProcessingTime,
   taskSchedulingTime,
@@ -84,7 +84,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({ movements, task }) => {
       taskMovements,
       taskBoard,
       statitics: {
-        taskLeadTime: getTaskLeadtTime(movements),
+        taskLeadTime: getTaskLeadTime(movements),
         taskProcessingTime: taskProcessingTime(movements),
         turnAroundTime: turnAroundTime(movements),
         unClearTime: totalUnClearTime(movements),

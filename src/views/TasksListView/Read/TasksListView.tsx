@@ -31,7 +31,7 @@ import {
   getCancelationType,
   getTotalDifferenceFromTo,
   getTaskJournies,
-  getTaskLeadtTime,
+  getTaskLeadTime,
   isMissedDelivery,
   totalUnClearTime,
 } from "src/helpers/generalUtils";
@@ -164,7 +164,7 @@ export const TasksListView: React.FC<Props> = (props) => {
 
             let journies = getTaskJournies(taskInfo).journies;
             let taskJourniesDetails = journies.map((journey, index) => {
-              let leadTime = getTaskLeadtTime(journey.movements);
+              let leadTime = getTaskLeadTime(journey.movements);
               let schedulingTime = getTotalDifferenceFromTo(
                 "Tasks Board",
                 "In Progress",
