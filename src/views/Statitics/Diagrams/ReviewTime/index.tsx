@@ -134,7 +134,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     };
     let maxArray = data.datasets.map((item) => _.max(item.data));
     let max = _.max(maxArray);
-    let maxN = max ? max : 100;
+    let maxN = max && max > 50 ? max : 50;
     const options = {
       plugins: {
         datalabels: {

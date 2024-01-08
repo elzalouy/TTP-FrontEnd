@@ -76,7 +76,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     filterPopup: false,
     options: null,
     comparisonBy: "Teams",
-    year: new Date(Date.now()).getFullYear(),
+    // year: new Date(Date.now()).getFullYear(),
     quarter: 1,
   });
 
@@ -128,8 +128,8 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     };
     let maxArray = data.datasets.map((item) => _.max(item.data));
     let max = _.max(maxArray);
-    let maxN = max ? max : 100;
-
+    let maxN = max && max > 50 ? max : 50;
+    console.log({ max, maxN });
     const options = {
       plugins: {
         datalabels: {
@@ -160,7 +160,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           position: "bottom",
           ticks: {
             beginAtZero: true,
-            stepSize: 5,
           },
           title: {
             display: true,
@@ -174,7 +173,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           min: 0,
           max: Math.floor(maxN - (maxN % 5) + (maxN - (maxN % 5))),
           ticks: {
-            stepSize: 5,
+            beginAtZero: true,
           },
           title: {
             display: true,
@@ -233,7 +232,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
           filter.subCategories.includes(j.journies[0].subCategoryId)) ||
         j.journies[0].subCategoryId === null
     );
-
     setJournies(journiesData);
   };
 
@@ -366,6 +364,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     }
   };
 
+  console.log({ dataset: state.data.datasets });
   return (
     <Grid
       container
