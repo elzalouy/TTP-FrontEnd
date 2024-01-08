@@ -38,10 +38,15 @@ import {
   stateType,
 } from "src/types/views/ClientHealth";
 import OrganizationRow from "./Organization";
-import { onDownloadTasksFile, setFilter, setJournies } from "./utils";
+import {
+  onDownloadTasksFile,
+  setTableRows,
+  setTableOrganizationRow,
+} from "./utils";
 import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
+import { useLocation } from "react-router";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -52,6 +57,18 @@ const TrackClientHealthTable = () => {
   const managers = useAppSelector(selectPMs);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const role = useAppSelector(selectRole);
+  const location = useLocation();
+
+  /**
+   * First DOM changing (in case of loading allTasks, projects, clients, managers)
+   * 1. Getting all clients data
+   * 2. Getting all Tasks data
+   * 3. Building the journies based on movements
+   * 4. Calculating the other columns (revision, tod, no_of_active, meeting_deadline)
+   * Second DOM changing (in case of filteration by any filter input,)
+   * 1. Change the state (allTasks, allJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
+   * 2. Step 4 in first DOM changing.
+   */
   const [state, setState] = React.useState<stateType>({
     popup: false,
     loading: true,
@@ -86,84 +103,69 @@ const TrackClientHealthTable = () => {
   });
 
   React.useEffect(() => {
-    let State = { ...state };
-    // getting all tasks created after the global Date filteration.
-    //  when the tasks is getting ready
-    let tasks = allTasks.filter((task) => {
-      if (boards.includes(task.boardId)) {
-        if (
-          task.cardCreatedAt &&
-          new Date(task.cardCreatedAt).getTime() >= date.getTime()
-        ) {
-          return task;
-        } else if (
-          task.createdAt &&
-          new Date(task.createdAt).getTime() >= date.getTime()
-        )
-          return task;
-      }
-    });
-
-    // Building the tasks information array
-    // when the projects, project managers, tasks getting ready.
-    let tasksInfo: ITaskInfo[] = _.orderBy(
-      tasks.map((i) => {
-        let p = projects.find((p) => p._id === i.projectId);
-        return {
-          ...i,
-          clientId: p?.clientId,
-          clientName: clients.find((i) => i._id === p?.clientId)?.clientName,
-          projectManager: p?.projectManager,
-          projectManagerName: managers.find(
-            (pm) => pm._id === p?.projectManager
-          ),
-          categoryName: categories.find((c) => c._id === i.categoryId)
-            ?.category,
-          projectName: p?.name,
-          subCategoryName: subCategories.find((s) => s._id === i.subCategoryId)
-            ?.subCategory,
-        };
-      }),
-      "cardCreatedAt",
-      "asc"
-    );
-    let journies = tasksInfo.map((i) => getTaskJournies(i));
-    // setting the tasks info.
-    setState({
-      ...State,
-      allProjects: [...projects],
-      projects: [...projects],
-      tasks: tasksInfo,
-      allTasks: tasksInfo,
-      allJournies: journies,
-      journies: journies,
-    });
-  }, [allTasks, projects, date, boards]);
+    if (allTasks.length > 0 && projects.length > 0) {
+      let State = { ...state };
+      let tasks = allTasks.filter((task) => {
+        if (boards.includes(task.boardId)) {
+          if (
+            task.cardCreatedAt &&
+            new Date(task.cardCreatedAt).getTime() >= date.getTime()
+          ) {
+            return task;
+          } else if (
+            task.createdAt &&
+            new Date(task.createdAt).getTime() >= date.getTime()
+          )
+            return task;
+        }
+      });
+      let tasksInfo: ITaskInfo[] = _.orderBy(
+        tasks.map((i) => {
+          let p = projects.find((p) => p._id === i.projectId);
+          return {
+            ...i,
+            clientId: p?.clientId,
+            clientName: clients.find((i) => i._id === p?.clientId)?.clientName,
+            projectManager: p?.projectManager,
+            projectManagerName: managers.find(
+              (pm) => pm._id === p?.projectManager
+            ),
+            categoryName: categories.find((c) => c._id === i.categoryId)
+              ?.category,
+            projectName: p?.name,
+            subCategoryName: subCategories.find(
+              (s) => s._id === i.subCategoryId
+            )?.subCategory,
+          };
+        }),
+        "cardCreatedAt",
+        "asc"
+      );
+      let journies = tasksInfo.map((i) => getTaskJournies(i));
+      // setting the tasks info.
+      State.projects = State.allProjects = [...projects];
+      State.tasks = State.allTasks = tasksInfo;
+      State.journies = State.allJournies = journies;
+      State = setTableOrganizationRow(State);
+      State = setTableRows(State, clients, subCategories);
+      setState(State);
+    }
+  }, [allTasks, projects, date, boards, clients]);
 
   React.useEffect(() => {
-    let State = { ...state };
-    // setting the journies of tasks
-    // when the tasks state get ready
-    State = { ...setJournies(State) };
-    setState({ ...State });
-  }, [state.tasks, state.projects]);
-
-  // get all projects and its tasks and filter them by the start, and end date
-  // then building the tasks journies for the filtered tasks
-  React.useEffect(() => {
-    let State = { ...state };
-    if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      State = setFilter(State, clients, subCategories);
+    if (state.allTasks.length > 0 && state.allProjects.length > 0) {
+      let State = { ...state };
+      State = setTableOrganizationRow(State);
+      State = setTableRows(State, clients, subCategories);
       setState(State);
     }
   }, [
-    state.filter.startDate,
-    state.filter.endDate,
     state.filter.categories,
     state.filter.subCategories,
+    state.filter.startDate,
+    state.filter.endDate,
   ]);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     state.page > 0
       ? Math.max(0, (1 + state.page) * state.rowsPerPage - state.cells.length)

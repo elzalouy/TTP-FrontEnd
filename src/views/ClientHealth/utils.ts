@@ -16,7 +16,7 @@ import { Category, SubCategory } from "src/models/Categories";
 import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
 import { format } from "date-fns";
 
-export const setJournies = (State: stateType) => {
+export const setTableOrganizationRow = (State: stateType) => {
   let tasksJournies = State.journies.map((item) => {
     item.journies = item.journies.map((journey) => {
       let leadTimeInHours = getJourneyLeadTime(journey);
@@ -58,7 +58,7 @@ export const setJournies = (State: stateType) => {
   return State;
 };
 
-export const setFilter = (
+export const setTableRows = (
   State: stateType,
   clients: Client[],
   subCategories: SubCategory[]
