@@ -70,6 +70,7 @@ export type stateType = {
   order: Order;
   orderBy: string;
   clients: Client[];
+  allProjects: Project[];
   projects: Project[];
   allTasks: ITaskInfo[];
   tasks: ITaskInfo[];

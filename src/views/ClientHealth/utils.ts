@@ -14,12 +14,10 @@ import { Project, Task } from "src/types/models/Projects";
 import { Client } from "src/models/Clients";
 import { Category, SubCategory } from "src/models/Categories";
 import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
-import { Manager } from "src/models/Managers";
 import { format } from "date-fns";
 
 export const setJournies = (State: stateType) => {
-  let tasksJournies = State.tasks.map((item) => getTaskJournies(item));
-  tasksJournies = tasksJournies.map((item) => {
+  let tasksJournies = State.journies.map((item) => {
     item.journies = item.journies.map((journey) => {
       let leadTimeInHours = getJourneyLeadTime(journey);
       journey.leadTime = leadTimeInHours;
@@ -59,18 +57,16 @@ export const setJournies = (State: stateType) => {
   );
   return State;
 };
+
 export const setFilter = (
   State: stateType,
-  allTasks: Task[],
-  projects: Project[],
-  boards: string[],
-  date: Date,
   clients: Client[],
   subCategories: SubCategory[]
 ) => {
+  State.tasks = State.allTasks;
   // Filtering using the start and end date
   if (State.filter.startDate && State.filter.endDate) {
-    State.projects = projects.filter(
+    State.projects = State.allProjects.filter(
       (t) =>
         State.filter.startDate &&
         State.filter.endDate &&
@@ -80,7 +76,7 @@ export const setFilter = (
           new Date(State.filter.endDate).getTime() + 86400000
     );
     // Filtering the tasks
-    State.tasks = State.allTasks.filter((i) => {
+    State.tasks = State.tasks.filter((i) => {
       if (
         i.cardCreatedAt &&
         State.filter.startDate &&
@@ -102,7 +98,7 @@ export const setFilter = (
     );
   }
 
-  if (State.filter.subCategories && State.filter.subCategories.length > 0) {
+  if (State.filter.subCategories) {
     let subsIds = State.filter.subCategories.map((i) => i.id);
     State.tasks = State.tasks.filter((item) => {
       if (item.subCategoryId && subsIds.includes(item.subCategoryId))

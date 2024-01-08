@@ -60,6 +60,7 @@ const TrackClientHealthTable = () => {
     order: Order.asc,
     orderBy: "lastBrief",
     tasks: [],
+    allProjects: [],
     allTasks: [],
     projects: [],
     clients: [],
@@ -130,6 +131,8 @@ const TrackClientHealthTable = () => {
     // setting the tasks info.
     setState({
       ...State,
+      allProjects: [...projects],
+      projects: [...projects],
       tasks: tasksInfo,
       allTasks: tasksInfo,
       allJournies: journies,
@@ -150,15 +153,7 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     let State = { ...state };
     if (projects.length > 0 && clients.length > 0 && allTasks.length > 0) {
-      State = setFilter(
-        State,
-        allTasks,
-        projects,
-        boards,
-        date,
-        clients,
-        subCategories
-      );
+      State = setFilter(State, clients, subCategories);
       setState(State);
     }
   }, [
