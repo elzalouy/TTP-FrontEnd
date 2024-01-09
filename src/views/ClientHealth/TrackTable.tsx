@@ -57,7 +57,6 @@ const TrackClientHealthTable = () => {
   const managers = useAppSelector(selectPMs);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const role = useAppSelector(selectRole);
-  const location = useLocation();
 
   /**
    * First DOM changing (in case of loading allTasks, projects, clients, managers)
@@ -66,7 +65,7 @@ const TrackClientHealthTable = () => {
    * 3. Building the journies based on movements
    * 4. Calculating the other columns (revision, tod, no_of_active, meeting_deadline)
    * Second DOM changing (in case of filteration by any filter input,)
-   * 1. Change the state (allTasks, allJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
+   * 1. Change the state (allTasks, allTasksJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
    * 2. Step 4 in first DOM changing.
    */
   const [state, setState] = React.useState<stateType>({
@@ -76,14 +75,16 @@ const TrackClientHealthTable = () => {
     rowsPerPage: 8,
     order: Order.asc,
     orderBy: "lastBrief",
-    tasks: [],
     allProjects: [],
     allTasks: [],
     projects: [],
-    clients: [],
-    cells: [],
+    tasks: [],
+    allTasksJournies: [],
+    tasksJournies: [],
     allJournies: [],
     journies: [],
+    clients: [],
+    cells: [],
     organization: {
       lastBrief: 0,
       _ofProjects: 0,
@@ -145,7 +146,9 @@ const TrackClientHealthTable = () => {
       // setting the tasks info.
       State.projects = State.allProjects = [...projects];
       State.tasks = State.allTasks = tasksInfo;
-      State.journies = State.allJournies = journies;
+      State.tasksJournies = State.allTasksJournies = journies;
+      State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
+      State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = setTableOrganizationRow(State);
       State = setTableRows(State, clients, subCategories);
       setState(State);

@@ -129,7 +129,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     let maxArray = data.datasets.map((item) => _.max(item.data));
     let max = _.max(maxArray);
     let maxN = max && max > 50 ? max : 50;
-    console.log({ max, maxN });
     const options = {
       plugins: {
         datalabels: {
@@ -215,6 +214,10 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
+
+    let subsIds = _.flattenDeep(
+      categories.map((i) => i.subCategoriesId.map((s) => s._id))
+    );
     let journiesData = allJournies.filter(
       (j) =>
         j.journies[0].teamId &&
@@ -226,11 +229,13 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         j.journies[0].clientId &&
         filter.clients.includes(j.journies[0].clientId)
     );
+
     journiesData = journiesData.filter(
       (j) =>
         (j.journies[0].subCategoryId &&
           filter.subCategories.includes(j.journies[0].subCategoryId)) ||
-        j.journies[0].subCategoryId === null
+        j.journies[0].subCategoryId === null ||
+        !subsIds.includes(j.journies[0].subCategoryId)
     );
     setJournies(journiesData);
   };

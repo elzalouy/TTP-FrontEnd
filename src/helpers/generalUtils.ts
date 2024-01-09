@@ -1,9 +1,7 @@
 import { isAfter, isSameDay, isBefore, format, parse } from "date-fns";
-import _, { words } from "lodash";
-import { Manager } from "src/models/Managers";
+import _ from "lodash";
 import { Status } from "src/types/views/BoardView";
 import {
-  Project,
   ProjectsInterface,
   Task,
   TaskMovement,
@@ -341,12 +339,16 @@ export const getTaskJournies = (task: ITaskInfo) => {
     endOfJourney = ["Cancled", "Shared", "Done"],
     journey: Journey = getJourney();
 
+  // check if the journey scheduled and set the time of scheduling.
   let isScheduled = movements.find((i) => i.status === "In Progress")?.movedAt;
   if (isScheduled) journey.scheduledAt = new Date(isScheduled);
+  // loop over all movements and record all journies of task.
   movements.forEach((item, index) => {
+    // if there is a journeyDeadline for the move record it and if not keep the old one.
     journey.journeyDeadline = item.journeyDeadline
       ? new Date(item.journeyDeadline)
       : journey.journeyDeadline;
+    // if the status is Shared , set the time of sharing for the newest one.
     let isShared = item.status === "Shared";
     if (isShared) {
       journey.sharedAt = item.movedAt;
@@ -354,6 +356,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
         month: "long",
       });
     }
+
+    // if the status is Review , set the time of Reviewing for the newest one.
     let isReview = item.status === "Review";
     if (isReview) {
       journey.reviewAt = item.movedAt.toString();
@@ -361,13 +365,16 @@ export const getTaskJournies = (task: ITaskInfo) => {
         month: "long",
       });
     }
+    // if there is a journey deadline push it to the array of deadlines.
     if (item.journeyDeadline)
       journey.journeyDeadlines?.push(item.journeyDeadline);
+
+    // if the journey closed, save the depended values and push the recored journey to the array of journies and start new one.
     if (
       (endOfJourney.includes(item.status) &&
         movements[index + 1] &&
         movements[index + 1].status === "Tasks Board") ||
-      (endOfJourney.includes(item.status) && index === movements.length - 1)
+      index === movements.length - 1
     ) {
       journey.movements.push(item);
       journey.journeyFinishedAtDate = new Date(item.movedAt);
@@ -377,33 +384,31 @@ export const getTaskJournies = (task: ITaskInfo) => {
           month: "long",
         }
       );
-      journey.revision = journies.length > 1;
-      journey.unique = !(journies.length > 1);
-      journey.leadTime = getJourneyLeadTime(journey);
+      journey.leadTime = getDurationFromTo(
+        "Tasks Board",
+        "Shared",
+        journey.movements
+      )?.totalHours;
       journies.push(journey);
       journey = getJourney();
     } else {
       journey.movements.push(item);
-      if (index === movements.length - 1) {
-        journies.push(journey);
-        journey = getJourney();
-      }
+      journey.startedAt = journey.movements[0].movedAt;
+      journey.startedAtMonth = new Date(
+        journey.movements[0].movedAt
+      ).toLocaleString("en-us", {
+        month: "long",
+      });
     }
   });
 
-  journies = journies.map((journey) => {
+  journies = journies.map((i, index) => {
     return {
-      ...journey,
-      startedAt: journey.movements[0].movedAt,
-      startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
-        "en-us",
-        {
-          month: "long",
-        }
-      ),
+      ...i,
+      unique: index === 0 ? true : false,
+      revision: index === 0 ? false : true,
     };
   });
-  if (journies.length === 1) journies[0].unique = true;
   return { id: task._id, name: task.name, journies };
 };
 
@@ -431,6 +436,10 @@ export const getCancelationType = (movements: TaskMovement[]) => {
 /**
  * Calculate the time it take to move from a status to another status sequential. it will see all movements from the start
  * to the end without any bridge between them and then adding the differences to get the total differences for this action.
+ *
+ * @example Let's say we have 10 times the task moved from Shared to Done directly
+ * Then it will make an addition for all durations for the 10 times.
+ * But if it's moved directly it will not be calculated.
  * @param start the status moved from
  * @param end the status moved to
  * @param movements all movements of task or journey
@@ -464,6 +473,36 @@ export const getTotalDifferenceFromTo = (
   return { times: dif.length, dif: totalDif };
 };
 
+/**
+ * Calculate the time it take to move from a status to another status directly or not directly. it will see all movements from the start
+ * to the end and then adding the durations for this action.
+ *
+ * From the first movement happened to the last one happened with any other movement between them.
+ * @param start the status moved from
+ * @param end the status moved to
+ * @param movements all movements of task or journey
+ * @returns Difference in days,months,years,hours, and mins.
+ */
+export const getDurationFromTo = (
+  from: Status,
+  to: Status,
+  movements: TaskMovement[]
+) => {
+  try {
+    let firstIndex = _.findIndex(movements, (move) => move.status === from);
+    let lastIndex = _.findLastIndex(movements, (move) => move.status === to);
+    if (firstIndex >= 0 && lastIndex >= 0 && firstIndex < lastIndex) {
+      let duration = getDifBetweenDates(
+        new Date(movements[firstIndex].movedAt),
+        new Date(movements[lastIndex].movedAt)
+      );
+      if (duration.totalHours) return duration;
+    }
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
 export const isMissedDelivery = (movements: TaskMovement[]) => {
   if (movements && movements.length > 0) {
     let deadlineMoves = movements.filter((i) => i.journeyDeadline);
@@ -473,7 +512,6 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
         ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
         : undefined;
     let lastMovementAt = new Date(movements[movements.length - 1]?.movedAt);
-
     if (journeyDeadline && lastMovementAt) {
       let dif = getDifBetweenDates(
         new Date(lastMovementAt),

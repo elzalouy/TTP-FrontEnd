@@ -1,6 +1,7 @@
 import {
   convertToCSV,
   getCancelationType,
+  getDurationFromTo,
   getTaskJournies,
   getTaskLeadTime,
   getTotalDifferenceFromTo,
@@ -10,22 +11,13 @@ import {
 import { Order, stateType } from "src/types/views/ClientHealth";
 import { getJourneyLeadTime, getMeetingDeadline } from "../Statitics/utils";
 import _ from "lodash";
-import { Project, Task } from "src/types/models/Projects";
 import { Client } from "src/models/Clients";
-import { Category, SubCategory } from "src/models/Categories";
+import { SubCategory } from "src/models/Categories";
 import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
 import { format } from "date-fns";
 
 export const setTableOrganizationRow = (State: stateType) => {
-  let tasksJournies = State.journies.map((item) => {
-    item.journies = item.journies.map((journey) => {
-      let leadTimeInHours = getJourneyLeadTime(journey);
-      journey.leadTime = leadTimeInHours;
-      return journey;
-    });
-    return item;
-  });
-
+  let tasksJournies = State.tasksJournies;
   // flattening the journies in one array, for getting journeyLeadTime, _OfActive, hasDeadline,and journies length values.
   let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
   State.organization._OfActive = flattened.filter(
@@ -64,9 +56,12 @@ export const setTableRows = (
   subCategories: SubCategory[]
 ) => {
   State.tasks = State.allTasks;
+  State.journies = State.allJournies;
+  State.tasksJournies = State.allTasksJournies;
+  State.projects = State.allProjects;
   // Filtering using the start and end date
   if (State.filter.startDate && State.filter.endDate) {
-    State.projects = State.allProjects.filter(
+    State.projects = State.projects.filter(
       (t) =>
         State.filter.startDate &&
         State.filter.endDate &&
@@ -75,79 +70,75 @@ export const setTableRows = (
         new Date(t.startDate).getTime() <=
           new Date(State.filter.endDate).getTime() + 86400000
     );
-    // Filtering the tasks
-    State.tasks = State.tasks.filter((i) => {
+    // Filtering the journies
+    State.journies = State.journies.filter((i) => {
       if (
-        i.cardCreatedAt &&
+        i.movements &&
+        i.movements[0].movedAt &&
         State.filter.startDate &&
         State.filter.endDate &&
-        new Date(i.cardCreatedAt).getTime() >=
+        new Date(i.startedAt).getTime() >=
           new Date(State.filter.startDate).getTime() - 86400000 &&
-        new Date(i.cardCreatedAt).getTime() <=
+        new Date(i.startedAt).getTime() <=
           new Date(State.filter.endDate).getTime() + 86400000
       )
         return i;
     });
   }
 
-  let allSubCategoriesIds = subCategories.map((i) => i._id);
-  if (State.filter.categories) {
+  if (State.filter.categories.length > 0) {
     let catsIds = State.filter.categories.map((i) => i.id);
-    State.tasks = State.tasks.filter(
+    State.journies = State.journies.filter(
       (item) => catsIds.includes(item.categoryId) || !item.categoryId
     );
-  }
+  } else
+    State.journies = State.journies.filter(
+      (i) => i.categoryId === null || !i.categoryId
+    );
 
-  if (State.filter.subCategories) {
+  let allSubCategoriesIds = subCategories.map((i) => i._id);
+  if (State.filter.subCategories.length > 0) {
     let subsIds = State.filter.subCategories.map((i) => i.id);
-    State.tasks = State.tasks.filter((item) => {
+    State.journies = State.journies.filter((item) => {
       if (item.subCategoryId && subsIds.includes(item.subCategoryId))
         return item;
       if (!allSubCategoriesIds.includes(item.subCategoryId)) return item;
     });
-  }
+  } else
+    State.journies = State.journies.filter(
+      (i) => !i.subCategoryId || i.subCategoryId === null
+    );
 
-  let tasksIds = State.tasks.map((i) => i._id);
-  let journies = State.allJournies.filter((i) => tasksIds.includes(i.id));
-  State.journies = journies;
+  let ids = _.uniq(State.journies.map((i) => i.taskId));
+  State.tasks = State.tasks.filter((i) => ids.includes(i._id));
+  State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
   State.cells = _.orderBy(
     clients.map((client) => {
       let notFilteredClientTasks = _.orderBy(
-        State.tasks.filter((t: ITaskInfo) => t.clientId === client._id),
+        State.tasks.filter((t) => t.clientId === client._id),
         "createdAt",
         "asc"
       );
       let clientProjects = State.projects.filter(
         (i) => i.clientId === client._id
       );
-      let clientTasks = State.tasks.filter(
-        (task) => task.clientId === client._id
+      let clientJournies = State.journies.filter(
+        (i) => i.clientId === client._id
       );
-      let clientJourniesPerTask = clientTasks.map((i) => getTaskJournies(i));
-      let clientJournies = _.flattenDeep(
-        clientJourniesPerTask.map((i) => i.journies)
-      );
-      clientJournies = clientJournies.map((j) => {
-        return {
-          ...j,
-          leadTime: getJourneyLeadTime(j),
-        };
-      });
+      // Average Lead time (Avg TOD)
       let averageLeadTime = _.sum(clientJournies.map((i) => i.leadTime));
-      let hasDeadline = clientJournies.filter(
+      // all journies that Has a deadline
+      let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
+
       let meetingDeadline = Math.floor(
-        (getMeetingDeadline(hasDeadline).notPassedDeadline.length /
-          hasDeadline.length) *
+        (getMeetingDeadline(estimatedJournies).notPassedDeadline.length /
+          estimatedJournies.length) *
           100
       );
-      let revisionJournies = clientJourniesPerTask.filter(
-        (j) => j.journies.length > 1
-      );
-      let length = revisionJournies.length;
-      let flattenedRevisionJournies =
-        _.flattenDeep(revisionJournies.map((i) => i.journies)).length - length;
+
+      let revisionJournies = clientJournies.filter((j) => j.revision === true);
       let lastBrief = new Date(
         notFilteredClientTasks[notFilteredClientTasks.length - 1]
           ?.cardCreatedAt ??
@@ -163,10 +154,10 @@ export const setTableRows = (
       return {
         clientName: client.clientName,
         meetDeadline: !_.isNaN(meetingDeadline) ? meetingDeadline : 0,
-        _OfRevision: flattenedRevisionJournies,
+        _OfRevision: revisionJournies.length,
         lastBrief: lastBrief,
         averageTOD: averageLeadTime ?? 0,
-        _OfTasks: clientTasks.length,
+        _OfTasks: notFilteredClientTasks.length,
         _ofProjects: clientProjects.length,
         clientId: client._id,
         _OfActive,

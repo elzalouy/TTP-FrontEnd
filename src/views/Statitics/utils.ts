@@ -3,9 +3,7 @@ import _ from "lodash";
 import {
   daysAndHours,
   getDifBetweenDates,
-  getTaskJournies,
 } from "src/helpers/generalUtils";
-import { Task, TaskMovement } from "src/types/models/Projects";
 import { DatasetType, Journey } from "src/types/views/Statistics";
 
 /**

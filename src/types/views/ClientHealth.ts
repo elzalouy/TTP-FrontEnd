@@ -74,8 +74,10 @@ export type stateType = {
   projects: Project[];
   allTasks: ITaskInfo[];
   tasks: ITaskInfo[];
-  allJournies: { id: string; name: string; journies: Journies }[];
-  journies: { id: string; name: string; journies: Journies }[];
+  allTasksJournies: { id: string; name: string; journies: Journies }[];
+  tasksJournies: { id: string; name: string; journies: Journies }[];
+  allJournies: Journies;
+  journies: Journies;
   cells: {
     clientId: string;
     clientName: string;
