@@ -61,15 +61,6 @@ export const setTableRows = (
   State.projects = State.allProjects;
   // Filtering using the start and end date
   if (State.filter.startDate && State.filter.endDate) {
-    State.projects = State.projects.filter(
-      (t) =>
-        State.filter.startDate &&
-        State.filter.endDate &&
-        new Date(t.startDate).getTime() >=
-          new Date(State.filter.startDate).getTime() - 86400000 &&
-        new Date(t.startDate).getTime() <=
-          new Date(State.filter.endDate).getTime() + 86400000
-    );
     // Filtering the journies
     State.journies = State.journies.filter((i) => {
       if (
@@ -106,10 +97,15 @@ export const setTableRows = (
     });
   } else
     State.journies = State.journies.filter(
-      (i) => !i.subCategoryId || i.subCategoryId === null
+      (i) =>
+        !i.subCategoryId ||
+        i.subCategoryId === null ||
+        !allSubCategoriesIds.includes(i.subCategoryId)
     );
 
   let ids = _.uniq(State.journies.map((i) => i.taskId));
+  let projectsIds = _.uniq(State.journies.map((i) => i.projectId));
+  State.projects = State.allProjects.filter((i) => projectsIds.includes(i._id));
   State.tasks = State.tasks.filter((i) => ids.includes(i._id));
   State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
   State.cells = _.orderBy(

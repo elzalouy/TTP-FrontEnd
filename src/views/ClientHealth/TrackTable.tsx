@@ -149,25 +149,11 @@ const TrackClientHealthTable = () => {
       State.tasksJournies = State.allTasksJournies = journies;
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
-      State = setTableOrganizationRow(State);
       State = setTableRows(State, clients, subCategories);
+      State = setTableOrganizationRow(State);
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients]);
-
-  React.useEffect(() => {
-    if (state.allTasks.length > 0 && state.allProjects.length > 0) {
-      let State = { ...state };
-      State = setTableOrganizationRow(State);
-      State = setTableRows(State, clients, subCategories);
-      setState(State);
-    }
-  }, [
-    state.filter.categories,
-    state.filter.subCategories,
-    state.filter.startDate,
-    state.filter.endDate,
-  ]);
 
   const emptyRows =
     state.page > 0
@@ -221,6 +207,8 @@ const TrackClientHealthTable = () => {
     if (type === "endDate") State.filter.endDate = value;
     if (type === "categories") State.filter.categories = value;
     if (type === "subCategories") State.filter.subCategories = value;
+    State = setTableRows(State, clients, subCategories);
+    State = setTableOrganizationRow(State);
     setState(State);
   };
 
