@@ -147,7 +147,7 @@ const FilterMenu = ({
               options={[]}
               name="statistics-filterByDate"
               elementType="filter"
-              label="Sort By:"
+              label="Started at:"
             />
           </Box>
         </Grid>

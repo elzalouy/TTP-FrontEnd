@@ -1,9 +1,6 @@
 import { format } from "date-fns";
 import _ from "lodash";
-import {
-  daysAndHours,
-  getDifBetweenDates,
-} from "src/helpers/generalUtils";
+import { daysAndHours, getDifBetweenDates } from "src/helpers/generalUtils";
 import { DatasetType, Journey } from "src/types/views/Statistics";
 
 /**
@@ -89,7 +86,11 @@ export const getMeetingDeadline = (journies: Journey[]) => {
 
 type dataType = "hours" | "decimal";
 
-export const getCsvFile = (data: DatasetType, type?: dataType) => {
+export const getCsvFile = (
+  data: DatasetType,
+  type?: dataType,
+  comparisonName?: string
+) => {
   let bars = _.flattenDeep(
     data.datasets.map((item) => {
       // get the bars by the x axis (Categories)
@@ -97,6 +98,8 @@ export const getCsvFile = (data: DatasetType, type?: dataType) => {
         let totalHours =
           type === "decimal" ? item.data[index] * 24 : item.data[index];
         let { days, hours } = daysAndHours(totalHours);
+        days = days ?? 0;
+        hours = hours ?? 0;
         return {
           barName: data.labels[index],
           comparison: categoryData.comparisonName,
@@ -121,11 +124,17 @@ export const getCsvFile = (data: DatasetType, type?: dataType) => {
             let { days: journeyDays, hours: journeyHours } = daysAndHours(
               totalHours ?? 0
             );
+            journeyDays = journeyDays ?? 0;
+            journeyHours = journeyHours ?? 0;
             return {
               barName: data.labels[index],
-              comparison: item.label,
+              comparison: `${item.label} (${comparisonName})`,
               taskName: journey.name,
               taskId: journey.taskId,
+              managerName: journey.projectManagerName ?? "",
+              clientName: journey.clientName ?? "",
+              categoryName: journey.categoryName ?? "",
+              subCategoryName: journey.subCategoryName ?? "",
               journeyMovementsCount: journey.movements.length,
               journeyStartedAt: journey.startedAt
                 ? format(new Date(journey.startedAt), "dd MMMM yyyy hh:mm")
@@ -152,7 +161,6 @@ export const getCsvFile = (data: DatasetType, type?: dataType) => {
                     "dd MMMM yyyy hh:mm"
                   )
                 : "",
-
               journeyLeadTime: `${journeyDays}D - ${journeyHours}H`,
               datasetTOD: `${days}D - ${hours}H`,
             };

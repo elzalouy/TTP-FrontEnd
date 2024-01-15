@@ -11,28 +11,29 @@ import {
   SubCategory,
   selectAllCategories,
 } from "src/models/Categories";
-import { getCsvFile } from "../../../utils";
-import { setOptions } from "./utils";
+import {
+  onDownload,
+  onGetDataSetsByClient,
+  onGetDataSetsByPM,
+  onGetDatasetsByAll,
+  onGetDatasetsByTeams,
+  setOptions,
+} from "./utils";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Task, TaskMovement } from "src/types/models/Projects";
-import { getJourneyLeadTime } from "../../../utils";
+import { Task } from "src/types/models/Projects";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import React, { useEffect, useState } from "react";
 import { Grid, IconButton, Typography } from "@mui/material";
-import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
-import { Download as DownloadIcon } from "@mui/icons-material";
 import {
-  Months,
-  convertToCSV,
-  getTaskJournies,
-  randomColors,
-} from "src/helpers/generalUtils";
-
-interface ITaskInfo extends Task {
-  clientId?: string;
-  projectManager?: string;
-}
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
+import { Download as DownloadIcon } from "@mui/icons-material";
+import { Months, getTaskJournies } from "src/helpers/generalUtils";
+import { useLocation } from "react-router";
 
 type BySharedMonthProps = {
   options: {
@@ -50,6 +51,7 @@ type BySharedMonthProps = {
  * @returns
  */
 const BySharedMonth = ({ options }: BySharedMonthProps) => {
+  const [mounted, setMounted] = useState(false);
   const formRef = React.useRef<HTMLFormElement>(null);
   const allCategories = useAppSelector(selectAllCategories);
   const { projects } = useAppSelector(selectAllProjects);
@@ -80,10 +82,24 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let category = allCategories.find((i) => i._id === item.categoryId);
+      let subCategory = item.subCategoryId
+        ? category?.subCategoriesId.find((s) => s._id === item.subCategoryId)
+            ?.subCategory
+        : "";
+      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let manager = managers.find(
+        (i) => i._id === project?.projectManager
+      )?.name;
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: subCategory,
+        clientName: client,
+        projectMangerName: manager,
       };
       return newTask;
     });
@@ -93,23 +109,9 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   useEffect(() => {
     let journiesData = tasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
-    flattenedJournies = flattenedJournies.map((item) => {
-      let shared =
-        item.movements &&
-        _.findLast(
-          item.movements,
-          (move: TaskMovement) => move.status === "Shared"
-        )?.movedAt;
-      return {
-        ...item,
-        sharedAt: shared,
-        sharedAtMonth: shared
-          ? new Date(shared).toLocaleString("en-us", { month: "long" })
-          : undefined,
-      };
-    });
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
+    setMounted(!mounted);
   }, [tasks]);
 
   useEffect(() => {
@@ -133,7 +135,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     setSubCategories(
       _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
-  }, [options.categories]);
+  }, [options.categories, state.comparisonBy]);
 
   useEffect(() => {
     setTeams(
@@ -142,23 +144,52 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   }, [options.teams, state.comparisonBy]);
 
   useEffect(() => {
+    let teamsIds = teams.map((i) => i._id);
+    let managersIds = managers.map((i) => i._id);
+    let categoriesIds = categories.map((i) => i._id);
+    let subCategoriesIds = subCategories.map((i) => i._id);
+    let clientsIds = clients.map((i) => i._id);
+    let journiesData: Journies = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        teamsIds.includes(j.teamId) &&
+        j.projectManager &&
+        managersIds.includes(j.projectManager) &&
+        j.categoryId &&
+        categoriesIds.includes(j.categoryId) &&
+        j.clientId &&
+        clientsIds.includes(j.clientId)
+    );
+
+    let allSubs = _.flattenDeep(
+      allCategories.map((i) => i.subCategoriesId.map((i) => i._id))
+    );
+
+    journiesData = journiesData.filter(
+      (i) =>
+        subCategoriesIds.includes(i.subCategoryId) ||
+        i.subCategoryId === null ||
+        (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
+    );
+    setJournies(journiesData);
+  }, [teams, clients, managers, categories, subCategories, mounted]);
+
+  useEffect(() => {
     let months = Months;
     const data: DatasetType = {
       labels: months,
       datasets:
         state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient()
+          ? onGetDataSetsByClient(clients, journies)
           : state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM()
+          ? onGetDataSetsByPM(managers, journies)
           : state.comparisonBy === "Teams"
-          ? onGetDatasetsByTeams()
-          : [onGetDatasetsByAll()],
+          ? onGetDatasetsByTeams(teams, journies)
+          : [onGetDatasetsByAll(journies)],
     };
-
     const options = setOptions(data);
-
     setState({ ...state, options, data });
-  }, [teams, clients, managers, journies]);
+  }, [journies, state.comparisonBy]);
 
   const onSetFilterResult = (filter: {
     clients: string[];
@@ -185,243 +216,10 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
-
-    let journiesData: Journies = allJournies.filter(
-      (j) =>
-        j.teamId &&
-        filter.teams.includes(j.teamId) &&
-        j.projectManager &&
-        filter.managers.includes(j.projectManager) &&
-        j.categoryId &&
-        filter.categories.includes(j.categoryId) &&
-        j.clientId &&
-        filter.clients.includes(j.clientId)
-    );
-
-    let allSubs = _.flattenDeep(
-      allCategories
-        .filter((i) => filter.categories.includes(i._id))
-        .map((i) => i.subCategoriesId.map((i) => i._id))
-    );
-
-    journiesData = journiesData.filter(
-      (i) =>
-        filter.subCategories.includes(i.subCategoryId) ||
-        i.subCategoryId === null ||
-        (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
-    );
-    setJournies(journiesData);
-  };
-
-  const onGetDataSetsByPM = () => {
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-    const result = managers.map((manager, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
-      let journiesData = journies.filter(
-        (i) => i.projectManager && i.projectManager === manager._id
-      );
-      journiesData = journiesData.map((item) => {
-        return { ...item, leadTime: getJourneyLeadTime(item) };
-      });
-      let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
-      };
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
-        return {
-          comparisonId: manager._id,
-          comparisonName: manager.name,
-          journies: journies ?? [],
-          color,
-          borderColor,
-        };
-      });
-      return {
-        label: manager.name,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
-        ),
-        datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-    return result;
-  };
-
-  const onGetDataSetsByClient = () => {
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-
-    const result = clients.map((client, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
-      let journiesData = journies.filter(
-        (i) => i.clientId && i.clientId === client._id
-      );
-
-      journiesData = journiesData.map((item) => {
-        return { ...item, leadTime: getJourneyLeadTime(item) };
-      });
-
-      let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
-      };
-
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
-        return {
-          comparisonId: client._id,
-          comparisonName: client.clientName,
-          journies: journies ?? [],
-          color,
-          borderColor,
-        };
-      });
-
-      return {
-        label: client.clientName,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
-        ),
-        datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-    return result;
-  };
-
-  const onGetDatasetsByTeams = () => {
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-
-    return teams.map((team, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-
-      let journiesData = journies.filter(
-        (i) => i.teamId && i.teamId === team._id
-      );
-      journiesData = journiesData.map((item) => {
-        return { ...item, leadTime: getJourneyLeadTime(item) };
-      });
-      let journiesOfManagerGroupedByMonth = {
-        ..._.groupBy(journiesData, "sharedAtMonth"),
-      };
-      let datasetData = months.map((item) => {
-        let journies = journiesOfManagerGroupedByMonth[item.id];
-        return {
-          comparisonName: team.name,
-          comparisonId: team._id,
-          journies: journies ?? [],
-          color,
-          borderColor,
-        };
-      });
-      return {
-        label: team.name,
-        data: datasetData.map(
-          (i) =>
-            _.sum(i.journies.map((j) => j.leadTime)) / i.journies.length / 24
-        ),
-        datasetData,
-        journies,
-        backgroundColor: datasetData.map((items) => items.color),
-        borderColor: datasetData.map((items) => items.borderColor),
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        skipNull: true,
-      };
-    });
-  };
-
-  const onGetDatasetsByAll = () => {
-    let months = Months.map((item) => {
-      return { id: item, name: item };
-    });
-
-    let datasetData = months.map((month, index) => {
-      let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-      let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-      let journiesData = journies.filter(
-        (item) => item.sharedAtMonth === month.id
-      );
-      return {
-        comparisonId: month.id,
-        comparisonName: month.name,
-        journies: journiesData ?? [],
-        color,
-        borderColor,
-      };
-    });
-
-    return {
-      label: "",
-      data: datasetData.map(
-        (i) =>
-          _.sum(i.journies.map((journey) => getJourneyLeadTime(journey))) /
-          i.journies.length /
-          24
-      ),
-      backgroundColor: datasetData.map((i) => i.color),
-      borderColor: datasetData.map((i) => i.borderColor),
-      borderWidth: 3,
-      hoverBorderWidth: 4,
-      skipNull: true,
-      datasetData,
-      journies,
-    };
   };
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
-  };
-
-  const onDownload = () => {
-    let { bars, comparisons } = getCsvFile(state.data);
-    if (comparisons.length > 0) {
-      let csvData = convertToCSV(comparisons);
-      let dataBlob = new Blob([csvData], { type: "text/csv" });
-      const url = window.URL.createObjectURL(dataBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.style.display = "none";
-      link.download =
-        "Time Of Delivery Diagram Trend Comparison (Journies data)";
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-    }
-    if (bars.length > 0) {
-      let csvData = convertToCSV(bars);
-      let dataBlob = new Blob([csvData], { type: "text/csv" });
-      const url = window.URL.createObjectURL(dataBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.style.display = "none";
-      link.download = "Time Of Delivery Diagram Trend Comparison (Bars data)";
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-    }
   };
 
   return (
@@ -451,7 +249,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         <form ref={formRef}>
           <IconButton
             type="button"
-            onClick={onDownload}
+            onClick={() => onDownload(state.data, formRef, state.comparisonBy)}
             sx={{
               bgcolor: "white",
               borderRadius: 3,

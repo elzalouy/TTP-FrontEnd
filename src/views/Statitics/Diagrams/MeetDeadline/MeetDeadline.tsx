@@ -7,7 +7,11 @@ import { Line } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
-import { Category, SubCategory } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 import { getCsvFile } from "../../utils";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
@@ -46,6 +50,7 @@ type MeetDeadlineProps = {
 const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
+  const allCategories = useAppSelector(selectAllCategories);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -54,7 +59,6 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
-
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
 
   const [state, setState] = useState<StateType>({
@@ -228,27 +232,35 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     teams: string[];
     subCategories: string[];
   }) => {
-    console.log({ cats: filter.categories, subs: filter.subCategories });
     setTeams(
       options.teams.filter(
         (i) => i._id && filter.teams.includes(i._id) && i.isDeleted === false
       )
     );
+
     setManagers(
       options.managers.filter((i) => i._id && filter.managers.includes(i._id))
     );
+
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
+
     let categories = options.categories.filter(
       (i) => i._id && filter.categories.includes(i._id)
     );
+
     setCategories(categories);
+    let allSubs = _.flattenDeep(
+      allCategories.map((i) => i.subCategoriesId.map((s) => s._id))
+    );
+
     setSubCategories(
       _.flattenDeep(categories.map((i) => i.subCategoriesId)).filter((sub) =>
         filter.subCategories.includes(sub._id)
       )
     );
+
     let journiesData: Journies = allJournies.filter(
       (j) =>
         j.teamId &&
@@ -264,7 +276,8 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     journiesData = journiesData.filter(
       (i) =>
         filter.subCategories.includes(i.subCategoryId) ||
-        i.subCategoryId === null
+        i.subCategoryId === null ||
+        !allSubs.includes(i.subCategoryId)
     );
     setJournies(journiesData);
   };

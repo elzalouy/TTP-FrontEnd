@@ -24,6 +24,7 @@ import { convertToCSV, getTaskJournies } from "src/helpers/generalUtils";
 import { Download as DownloadIcon } from "@mui/icons-material";
 import {
   chartOptions,
+  onDownload,
   onGetDataSetsByClient,
   onGetDataSetsByPM,
   onGetDatasetsByAll,
@@ -31,6 +32,7 @@ import {
 } from "./utils";
 import { getCsvFile } from "../../../utils";
 import { TaskMovement } from "src/types/models/Projects";
+import { selectAllCategories } from "src/models/Categories";
 
 /**
  * Time of delivery diagram by the Category
@@ -40,12 +42,12 @@ import { TaskMovement } from "src/types/models/Projects";
 
 const TodByCategory = ({ options }: TodByCategoryProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
+
   // Global state used in Filteration
   const { projects } = useAppSelector(selectAllProjects);
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
-
   // Component State : Managers, teams, clients are the selected ones for the filteration
   const [managers, setManagers] = useState<Manager[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -57,6 +59,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   // Journies of all tasks concatinated together.
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
+
   // the filter values, and the data of the diagram sepereted by  the labels provided and by the datasets.
   const [state, setState] = useState<StateType>({
     filterPopup: false,
@@ -85,22 +88,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     });
     let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
     let flattenedJournies = _.flatten(journiesData);
-    flattenedJournies = flattenedJournies.map((item) => {
-      let shared =
-        item.movements &&
-        _.findLast(
-          item.movements,
-          (move: TaskMovement) => move.status === "Shared"
-        )?.movedAt;
-
-      return {
-        ...item,
-        sharedAt: shared,
-        sharedAtMonth: shared
-          ? new Date(shared).toLocaleString("en-us", { month: "long" })
-          : undefined,
-      };
-    });
     setJournies(flattenedJournies);
     setAllJournies(flattenedJournies);
   }, [tasks, teams, managers, projects]);
@@ -119,7 +106,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.managers, state.comparisonBy]);
 
-  // Once the Clients data from the component props is ready, update the state.
+  // Any change
   useEffect(() => {
     setClients(
       state.comparisonBy === "Clients"
@@ -156,57 +143,34 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     setState({ ...state, options: Options, data });
   }, [journies, tasks, state.comparisonBy, clients, managers, teams]);
 
-  // Filteration at anytime the filter state changes.
-  React.useEffect(() => {
-    let journiesData = [...allJournies];
-    if (state.filter.start)
-      journiesData = journiesData.filter(
-        (i) =>
-          i.journeyFinishedAtDate &&
-          state.filter.start &&
-          new Date(i.journeyFinishedAtDate).getTime() >=
-            new Date(state.filter.start).getTime()
-      );
-    if (state.filter.end)
-      journiesData = journiesData.filter(
-        (i) =>
-          i.journeyFinishedAtDate &&
-          state.filter.end &&
-          new Date(i.journeyFinishedAtDate).getTime() <=
-            new Date(state.filter.end).getTime()
-      );
-    setJournies(journiesData);
-  }, [state.filter.start, state.filter.end]);
-
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
 
+  // Filter by the Shared date.
   const onSetFilter = (type: string, value: string) => {
     let State = { ...state };
     let journies = [...allJournies];
+    console.log({ value: new Date(value), type });
     if (type === "startDate") {
       State.filter.start = value;
-      journies = journies.filter((i) => {
-        let date =
-          i?.journeyFinishedAtDate !== null && i.journeyFinishedAtDate
-            ? new Date(i.journeyFinishedAtDate).getTime()
-            : null;
-        let filterBy = new Date(value).getTime();
-        return date && filterBy < date;
-      });
+      journies = journies.filter(
+        (i) =>
+          i.startedAt &&
+          value &&
+          new Date(i.startedAt).getTime() >= new Date(value).getTime()
+      );
     }
     if (type === "endDate") {
-      journies = journies.filter((i) => {
-        let date =
-          i?.journeyFinishedAtDate !== null && i.journeyFinishedAtDate
-            ? new Date(i.journeyFinishedAtDate).getTime()
-            : null;
-        let filterBy = new Date(value).getTime();
-        return date && filterBy > date;
-      });
       State.filter.end = value;
+      journies = journies.filter(
+        (i) =>
+          i.startedAt &&
+          value &&
+          new Date(i.startedAt).getTime() <= new Date(value).getTime()
+      );
     }
+    setJournies(journies);
     setState(State);
   };
 
@@ -249,36 +213,6 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     }
   };
 
-  const onDownload = () => {
-    let { bars, comparisons } = getCsvFile(state.data, "decimal");
-    if (comparisons.length > 0 && formRef.current) {
-      let csvData = convertToCSV(comparisons);
-      let dataBlob = new Blob([csvData], { type: "text/csv" });
-      const url = window.URL.createObjectURL(dataBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.style.display = "none";
-      link.download =
-        "Time Of Delivery Diagram Category Comparison (Journies data)";
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-    }
-    if (bars.length > 0 && formRef.current) {
-      let csvData = convertToCSV(bars);
-      let dataBlob = new Blob([csvData], { type: "text/csv" });
-      const url = window.URL.createObjectURL(dataBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.style.display = "none";
-      link.download =
-        "Time Of Delivery Diagram Category Comparison (Bars data)";
-      document.body.appendChild(link);
-      link.click();
-      window.URL.revokeObjectURL(url);
-    }
-  };
-
   return (
     <>
       <Grid
@@ -312,7 +246,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           <form ref={formRef}>
             <IconButton
               type="button"
-              onClick={onDownload}
+              onClick={() => onDownload(state.data, formRef)}
               sx={{
                 bgcolor: "white",
                 borderRadius: 3,

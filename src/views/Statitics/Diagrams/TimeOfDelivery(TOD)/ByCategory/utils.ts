@@ -1,13 +1,18 @@
-import { format } from "date-fns";
 import _ from "lodash";
-import { daysAndHours, randomColors } from "src/helpers/generalUtils";
+import { convertToCSV, randomColors } from "src/helpers/generalUtils";
 import { Category } from "src/models/Categories";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
 import { ITeam } from "src/types/models/Departments";
 import { DatasetType, Journies } from "src/types/views/Statistics";
-import { getJourneyLeadTime } from "src/views/Statitics/utils";
+import { getCsvFile } from "src/views/Statitics/utils";
 
+const getColors = (index: number) => {
+  return {
+    color: `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`,
+    border: `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`,
+  };
+};
 export const onGetDataSetsByClient = (
   categories: Category[],
   clients: Client[],
@@ -18,15 +23,10 @@ export const onGetDataSetsByClient = (
   });
 
   let result = clients.map((client, index) => {
-    let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
-    let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
+    let color = getColors(index).color;
+    let borderColor = getColors(index).border;
 
     let journiesData = journies.filter((item) => item.clientId === client._id);
-
-    journiesData = journiesData.map((journey) => {
-      let lead = getJourneyLeadTime(journey);
-      return { ...journey, leadTime: lead };
-    });
 
     let journiesOfClientGroupedByCategory = {
       ..._.groupBy(journiesData, "categoryId"),
@@ -52,7 +52,6 @@ export const onGetDataSetsByClient = (
           24
       ),
       datasetData,
-      journies,
       backgroundColor: datasetData.map((items) => items.color),
       borderColor: datasetData.map((items) => items.borderColor),
       borderWidth: 3,
@@ -68,6 +67,7 @@ export const onGetDataSetsByPM = (
   managers: Manager[],
   journies: Journies
 ) => {
+  console.log("pms is ready");
   let Categories = categories.map((item) => {
     return { id: item._id, name: item.category };
   });
@@ -77,10 +77,6 @@ export const onGetDataSetsByPM = (
     let journiesData = journies.filter(
       (item) => item.projectManager === manager._id
     );
-    journiesData = journiesData.map((journey) => {
-      let lead = getJourneyLeadTime(journey);
-      return { ...journey, leadTime: lead };
-    });
     let journiesOfClientGroupedByCategory = {
       ..._.groupBy(journiesData, "categoryId"),
     };
@@ -103,7 +99,6 @@ export const onGetDataSetsByPM = (
           24
       ),
       datasetData: datasetData,
-      journies,
       backgroundColor: datasetData.map((items) => items.color),
       borderColor: datasetData.map((items) => items.borderColor),
       borderWidth: 3,
@@ -128,10 +123,6 @@ export const onGetDatasetsByTeams = (
     let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
     let journiesData = journies.filter((item) => item.teamId === team._id);
-    journiesData = journiesData.map((item) => {
-      return { ...item, leadTime: getJourneyLeadTime(item) };
-    });
-
     let journiesOfClientGroupedByCategory = {
       ..._.groupBy(journiesData, "categoryId"),
     };
@@ -156,7 +147,6 @@ export const onGetDatasetsByTeams = (
           24
       ),
       datasetData,
-      journies,
       backgroundColor: datasetData.map((items) => items.color),
       borderColor: datasetData.map((items) => items.borderColor),
       borderWidth: 3,
@@ -181,9 +171,6 @@ export const onGetDatasetsByAll = (
     let journiesData = journies.filter(
       (item) => item.categoryId === category.id
     );
-    journiesData = journiesData.map((item) => {
-      return { ...item, leadTime: getJourneyLeadTime(item) };
-    });
     return {
       journies: journiesData ?? [],
       color,
@@ -200,7 +187,6 @@ export const onGetDatasetsByAll = (
         _.sum(i.journies.map((item) => item.leadTime)) / i.journies.length / 24
     ),
     datasetData,
-    journies,
     backgroundColor: datasetData.map((i) => i.color),
     borderColor: datasetData.map((i) => i.borderColor),
     borderWidth: 3,
@@ -284,4 +270,35 @@ export const chartOptions = (data: DatasetType) => {
       },
     },
   };
+};
+export const onDownload = (
+  data: DatasetType,
+  formRef: React.RefObject<HTMLFormElement>
+) => {
+  let { bars, comparisons } = getCsvFile(data, "decimal");
+  if (comparisons.length > 0 && formRef.current) {
+    let csvData = convertToCSV(comparisons);
+    let dataBlob = new Blob([csvData], { type: "text/csv" });
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.style.display = "none";
+    link.download =
+      "Time Of Delivery Diagram Category Comparison (Journies data)";
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+  if (bars.length > 0 && formRef.current) {
+    let csvData = convertToCSV(bars);
+    let dataBlob = new Blob([csvData], { type: "text/csv" });
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.style.display = "none";
+    link.download = "Time Of Delivery Diagram Category Comparison (Bars data)";
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
 };

@@ -369,7 +369,6 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     }
   };
 
-  console.log({ dataset: state.data.datasets });
   return (
     <Grid
       container

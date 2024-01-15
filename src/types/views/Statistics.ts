@@ -35,6 +35,7 @@ export type Journey = {
   journeyDeadline: Date | null;
   cardCreatedAt: Date | string;
   journeyDeadlines: (Date | string)[];
+  clientName?: string;
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {
@@ -122,7 +123,6 @@ export type DatasetType = {
       comparisonId?: string;
       comparisonName?: string;
     }[];
-    journies: Journies;
     backgroundColor: string[];
     borderColor: string[];
     borderWidth: number;

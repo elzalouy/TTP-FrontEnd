@@ -7,7 +7,6 @@ import {
   TaskMovement,
 } from "../types/models/Projects";
 import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
-import { getJourneyLeadTime } from "src/views/Statitics/utils";
 
 interface options {
   id?: string;
@@ -309,6 +308,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
     return {
       name: task.name,
       clientId: task.clientId,
+      clientName: task.clientName,
       projectManager: task.projectManager,
       categoryId: task.categoryId,
       subCategoryId: task.subCategoryId,

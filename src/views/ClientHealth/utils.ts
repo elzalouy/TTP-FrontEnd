@@ -9,7 +9,7 @@ import {
   totalUnClearTime,
 } from "src/helpers/generalUtils";
 import { Order, stateType } from "src/types/views/ClientHealth";
-import { getJourneyLeadTime, getMeetingDeadline } from "../Statitics/utils";
+import { getMeetingDeadline } from "../Statitics/utils";
 import _ from "lodash";
 import { Client } from "src/models/Clients";
 import { SubCategory } from "src/models/Categories";
