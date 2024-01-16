@@ -3,7 +3,11 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectAllProjects } from "src/models/Projects";
-import { Category, SubCategory } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import _ from "lodash";
@@ -15,17 +19,17 @@ import {
 } from "src/helpers/generalUtils";
 import { Task } from "src/types/models/Projects";
 import { Client } from "src/models/Clients";
-import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
 import { Manager } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
 import { getCsvFile } from "../../utils";
 import { Download as DownloadIcon } from "@mui/icons-material";
-
-interface ITaskInfo extends Task {
-  clientId?: string;
-  projectManager?: string;
-}
 
 interface NoOfTasksProps {
   options: {
@@ -45,6 +49,7 @@ interface NoOfTasksProps {
 const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectAllProjects);
+  const allCategories = useAppSelector(selectAllCategories);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -84,10 +89,27 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let manager = managers.find(
+        (i) => i._id === project?.projectManager
+      )?._id;
+      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let category = allCategories.find((i) => i._id === item.categoryId);
+      let team = options.boards
+        .find((i) => i._id === item.boardId)
+        ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
+
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
+        projectManagerName: manager,
+        clientName: client,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: category?.subCategoriesId.find(
+          (i) => i._id === item.subCategoryId
+        )?.subCategory,
+        teamName: team?.name,
       };
       return newTask;
     });

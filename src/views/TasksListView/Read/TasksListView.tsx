@@ -111,9 +111,6 @@ export const TasksListView: React.FC<Props> = (props) => {
   const projectOptions = useAppSelector(selectProjectOptions);
   const PmsOptions = useAppSelector(selectPMOptions);
   const [selects, setAllSelected] = React.useState<string[]>([]);
-  const [tasksJourniesDetails, setTasksJourniesDetails] = React.useState<
-    TaskJourniesDetails[]
-  >([]);
   const { watch, control, setValue, reset } = useForm({
     defaultValues: defaultValues,
   });
@@ -126,6 +123,9 @@ export const TasksListView: React.FC<Props> = (props) => {
     projectManagersOptions: PmsOptions,
     openFilter: false,
   });
+  // React.useEffect(() => {
+  //   onSetFilter();
+  // }, [watch()]);
 
   const onSetTasksJourniesData = () => {
     let selectsData = [...selects];
@@ -292,11 +292,10 @@ export const TasksListView: React.FC<Props> = (props) => {
         ? projects.allTasks.filter((item) => item.projectId === id) ?? []
         : projects.allTasks ?? [],
     });
-    if (user?.role === "PM") onSetFilter("projectManager", user._id);
+    if (user?.role === "PM") setValue("projectManager", user._id);
   }, [props.match.params, projects]);
 
-  const onSetFilter = (name: filterTypes, value: string | undefined) => {
-    setValue(name, value);
+  const onSetFilter = () => {
     let State = { ...state };
     let filter = watch();
     let tasks = projects.allTasks;
@@ -443,7 +442,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                   <SearchBox
                     value={props.field.value}
                     placeholder="Search"
-                    onChange={(e) => onSetFilter("name", e.target.value)}
+                    onChange={(e) => setValue("name", e.target.value)}
                     size={"custom"}
                   />
                 )}
@@ -564,7 +563,7 @@ export const TasksListView: React.FC<Props> = (props) => {
         state={state}
         setState={setState}
         setAllSelected={setAllSelected}
-        onSetFilter={onSetFilter}
+        onSetFilter={setValue}
         control={control}
         clearFilters={clearFilters}
       />

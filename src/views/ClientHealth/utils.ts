@@ -68,7 +68,6 @@ export const updateState = (
   if (State.filter.startDate && State.filter.endDate) {
     let start = new Date(State.filter.startDate).getTime();
     let end = new Date(State.filter.endDate).getTime() + 86400000;
-    // Filtering the journies
     State.journies = State.journies.filter((i) => {
       if (
         i.movements &&
@@ -80,7 +79,7 @@ export const updateState = (
           (i.journeyFinishedAtDate &&
             new Date(i.journeyFinishedAtDate).getTime() >= start &&
             new Date(i.journeyFinishedAtDate).getTime() <= end) ||
-          !i.journeyFinishedAtDate)
+          (!i.journeyFinishedAtDate && new Date(i.startedAt).getTime() <= end))
       )
         return i;
     });

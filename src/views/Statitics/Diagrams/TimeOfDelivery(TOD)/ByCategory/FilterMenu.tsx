@@ -76,11 +76,7 @@ const FiltersBar = ({
               options={[]}
               onSelect={(value: Range) => {
                 onSetFilter(
-                  "startDate",
-                  value?.startDate?.toLocaleDateString() ?? null
-                );
-                onSetFilter(
-                  "endDate",
+                  value?.startDate?.toLocaleDateString() ?? null,
                   value?.endDate?.toLocaleDateString() ?? null
                 );
               }}

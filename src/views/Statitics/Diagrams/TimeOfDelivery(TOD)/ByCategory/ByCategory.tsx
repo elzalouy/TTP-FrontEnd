@@ -158,35 +158,28 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     setState({ ...state, options: Options, data });
   }, [journies, tasks, state.comparisonBy, clients, managers, teams]);
 
+  useEffect(() => {
+    let State = { ...state };
+    if (State.filter.start && State.filter.end) {
+      let start = new Date(State.filter.start).getTime();
+      let end = new Date(State.filter.end).getTime() + 86400000;
+      let journies = allJournies.filter(
+        (i) =>
+          i.startedAt &&
+          new Date(i.startedAt).getTime() >= start &&
+          new Date(i.startedAt).getTime() <= end
+      );
+      setJournies(journies);
+    }
+  }, [state.filter.start, state.filter.end]);
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
 
   // Filter by the Shared date.
-  const onSetFilter = (type: string, value: string) => {
-    let State = { ...state };
-    let journies = [...allJournies];
-    console.log({ value: new Date(value), type });
-    if (type === "startDate") {
-      State.filter.start = value;
-      journies = journies.filter(
-        (i) =>
-          i.startedAt &&
-          value &&
-          new Date(i.startedAt).getTime() >= new Date(value).getTime()
-      );
-    }
-    if (type === "endDate") {
-      State.filter.end = value;
-      journies = journies.filter(
-        (i) =>
-          i.startedAt &&
-          value &&
-          new Date(i.startedAt).getTime() <= new Date(value).getTime()
-      );
-    }
-    setJournies(journies);
-    setState(State);
+  const onSetFilter = (start: string, end: string) => {
+    setState({ ...state, filter: { start: start, end: end } });
   };
 
   const onSelect = (value: DialogOption) => {
