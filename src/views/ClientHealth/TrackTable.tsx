@@ -40,13 +40,12 @@ import {
 import OrganizationRow from "./Organization";
 import {
   onDownloadTasksFile,
-  setTableRows,
+  updateState,
   setTableOrganizationRow,
 } from "./utils";
 import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
-import { useLocation } from "react-router";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -149,8 +148,7 @@ const TrackClientHealthTable = () => {
       State.tasksJournies = State.allTasksJournies = journies;
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
-      State = setTableRows(State, clients, subCategories);
-      State = setTableOrganizationRow(State);
+      State = updateState(State, clients, subCategories);
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients]);
@@ -207,8 +205,7 @@ const TrackClientHealthTable = () => {
     if (type === "endDate") State.filter.endDate = value;
     if (type === "categories") State.filter.categories = value;
     if (type === "subCategories") State.filter.subCategories = value;
-    State = setTableRows(State, clients, subCategories);
-    State = setTableOrganizationRow(State);
+    State = updateState(State, clients, subCategories);
     setState(State);
   };
 

@@ -1,7 +1,6 @@
 import {
   convertToCSV,
   getCancelationType,
-  getDurationFromTo,
   getTaskJournies,
   getTaskLeadTime,
   getTotalDifferenceFromTo,
@@ -50,7 +49,7 @@ export const setTableOrganizationRow = (State: stateType) => {
   return State;
 };
 
-export const setTableRows = (
+export const updateState = (
   State: stateType,
   clients: Client[],
   subCategories: SubCategory[]
@@ -61,17 +60,21 @@ export const setTableRows = (
   State.projects = State.allProjects;
   // Filtering using the start and end date
   if (State.filter.startDate && State.filter.endDate) {
+    let start = new Date(State.filter.startDate).getTime();
+    let end = new Date(State.filter.endDate).getTime() + 86400000;
     // Filtering the journies
+    console.log({
+      start: new Date(start),
+      end: new Date(end),
+    });
     State.journies = State.journies.filter((i) => {
       if (
         i.movements &&
         i.movements[0].movedAt &&
         State.filter.startDate &&
         State.filter.endDate &&
-        new Date(i.startedAt).getTime() >=
-          new Date(State.filter.startDate).getTime() - 86400000 &&
-        new Date(i.startedAt).getTime() <=
-          new Date(State.filter.endDate).getTime() + 86400000
+        new Date(i.startedAt).getTime() >= start &&
+        new Date(i.startedAt).getTime() <= end
       )
         return i;
     });
@@ -108,6 +111,11 @@ export const setTableRows = (
   State.projects = State.allProjects.filter((i) => projectsIds.includes(i._id));
   State.tasks = State.tasks.filter((i) => ids.includes(i._id));
   State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
+  State = onSetCells(State, clients);
+  State = setTableOrganizationRow(State);
+  return State;
+};
+const onSetCells = (State: stateType, clients: Client[]) => {
   State.cells = _.orderBy(
     clients.map((client) => {
       let notFilteredClientTasks = _.orderBy(
@@ -121,9 +129,7 @@ export const setTableRows = (
       let clientJournies = State.journies.filter(
         (i) => i.clientId === client._id
       );
-      // Average Lead time (Avg TOD)
       let averageLeadTime = _.sum(clientJournies.map((i) => i.leadTime));
-      // all journies that Has a deadline
       let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
@@ -165,9 +171,9 @@ export const setTableRows = (
   ).filter((i) => i._ofProjects > 0 || i._OfTasks > 0);
   State.order = Order.desc;
   State.loading = false;
+
   return State;
 };
-
 export const getCsvData = (tasks: ITaskInfo[]) => {
   let tasksJourniesDetails = _.flattenDeep(
     tasks.map((task) => {
