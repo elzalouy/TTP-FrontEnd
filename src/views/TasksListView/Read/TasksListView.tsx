@@ -123,9 +123,6 @@ export const TasksListView: React.FC<Props> = (props) => {
     projectManagersOptions: PmsOptions,
     openFilter: false,
   });
-  // React.useEffect(() => {
-  //   onSetFilter();
-  // }, [watch()]);
 
   const onSetTasksJourniesData = () => {
     let selectsData = [...selects];
@@ -285,15 +282,30 @@ export const TasksListView: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     let id = props.match.params?.projectId;
-    setValue("projectId", id ?? "");
-    setState({
-      ...state,
-      tasks: id
-        ? projects.allTasks.filter((item) => item.projectId === id) ?? []
-        : projects.allTasks ?? [],
-    });
+    if (id) setValue("projectId", id ?? "");
     if (user?.role === "PM") setValue("projectManager", user._id);
   }, [props.match.params, projects]);
+
+  // React.useEffect(() => {
+  //   let project = projects.projects.find((p) => p._id === watch().projectId);
+  //   setValue("projectManager", project?.projectManager ?? "");
+  // }, [watch().projectId]);
+
+  React.useEffect(() => {
+    onSetFilter();
+  }, [
+    watch().boardId,
+    watch().category,
+    watch().clientId,
+    watch().createdAt,
+    watch().start,
+    watch().end,
+    watch().name,
+    watch().projectId,
+    watch().projectManager,
+    watch().status,
+    projects.allTasks,
+  ]);
 
   const onSetFilter = () => {
     let State = { ...state };
@@ -324,8 +336,6 @@ export const TasksListView: React.FC<Props> = (props) => {
       tasks = projects.allTasks.filter(
         (item) => item.projectId === filter?.projectId
       );
-      let project = projects.projects.find((p) => p._id === filter?.projectId);
-      setValue("projectManager", project?.projectManager ?? "");
     }
     if (filter.status !== "")
       tasks = tasks.filter((item) => item.status === filter.status);
@@ -365,6 +375,7 @@ export const TasksListView: React.FC<Props> = (props) => {
       });
     }
     State.tasks = tasks;
+    console.log({ tasks });
     setState(State);
   };
 
@@ -372,11 +383,6 @@ export const TasksListView: React.FC<Props> = (props) => {
     reset();
     setState({ ...state, tasks: projects.allTasks });
   };
-
-  // const onDeleteTasks = () => {
-  //   dispatch(deleteTasks({ data: { ids: selects } }));
-  //   setShow("none");
-  // };
 
   const onDownloadTasksFile = () => {
     let tasksJourniesDetails = onSetTasksJourniesData();

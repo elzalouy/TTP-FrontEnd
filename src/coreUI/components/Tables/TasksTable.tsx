@@ -73,7 +73,6 @@ const TasksTable: React.FC<ITasksTableProps> = ({
   const history = useHistory();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));
-  const [select, setSelected] = React.useState(false);
   const categories = useAppSelector(selectAllCategories);
   const [state, setState] = React.useState<{
     page: number;
@@ -423,7 +422,7 @@ const TasksTable: React.FC<ITasksTableProps> = ({
               sx={{
                 ".MuiTablePagination-toolbar": { height: "40px !important" },
               }}
-              rowsPerPageOptions={[5, 8, 10, 25, { label: "All", value: -1 }]}
+              rowsPerPageOptions={[5, 8, 10, 25]}
               count={tasks.length}
               rowsPerPage={state.rowsPerPage}
               SelectProps={{
