@@ -43,7 +43,7 @@ export interface ITaskInfo extends Task {
   clientId?: string;
   clientName?: string;
   projectManager?: string;
-  projectMangerName?: string;
+  projectManagerName?: string;
   categoryName?: string;
   subCategoryName?: string;
 }

@@ -129,7 +129,7 @@ const TrackClientHealthTable = () => {
             projectManager: p?.projectManager,
             projectManagerName: managers.find(
               (pm) => pm._id === p?.projectManager
-            ),
+            )?.name,
             categoryName: categories.find((c) => c._id === i.categoryId)
               ?.category,
             projectName: p?.name,
@@ -243,7 +243,9 @@ const TrackClientHealthTable = () => {
             <form ref={formRef}>
               <IconButton
                 type="button"
-                onClick={() => onDownloadTasksFile(state.tasks, formRef)}
+                onClick={() =>
+                  onDownloadTasksFile(state.tasksJournies, formRef)
+                }
                 sx={{
                   bgcolor: "#fafafb",
                   borderRadius: 3,

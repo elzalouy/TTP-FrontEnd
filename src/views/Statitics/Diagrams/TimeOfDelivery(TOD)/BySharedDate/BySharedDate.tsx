@@ -99,7 +99,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         categoryName: category?.category,
         subCategoryName: subCategory,
         clientName: client,
-        projectMangerName: manager,
+        projectManagerName: manager,
       };
       return newTask;
     });

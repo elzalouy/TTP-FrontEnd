@@ -1,5 +1,6 @@
 import {
   convertToCSV,
+  daysAndHours,
   getCancelationType,
   getTaskJournies,
   getTaskLeadTime,
@@ -12,7 +13,12 @@ import { getMeetingDeadline } from "../Statitics/utils";
 import _ from "lodash";
 import { Client } from "src/models/Clients";
 import { SubCategory } from "src/models/Categories";
-import { ITaskInfo, TaskJourniesDetails } from "src/types/views/Statistics";
+import {
+  ITaskInfo,
+  Journey,
+  Journies,
+  TaskJourniesDetails,
+} from "src/types/views/Statistics";
 import { format } from "date-fns";
 
 export const setTableOrganizationRow = (State: stateType) => {
@@ -55,7 +61,7 @@ export const updateState = (
   subCategories: SubCategory[]
 ) => {
   State.tasks = State.allTasks;
-  State.journies = State.allJournies;
+  State.journies = State.allJournies.filter((i) => i.projectManager);
   State.tasksJournies = State.allTasksJournies;
   State.projects = State.allProjects;
   // Filtering using the start and end date
@@ -69,17 +75,18 @@ export const updateState = (
     });
     State.journies = State.journies.filter((i) => {
       if (
-        i.movements &&
-        i.movements[0].movedAt &&
-        State.filter.startDate &&
-        State.filter.endDate &&
-        new Date(i.startedAt).getTime() >= start &&
-        new Date(i.startedAt).getTime() <= end
+        (i.movements &&
+          i.movements[0].movedAt &&
+          State.filter.startDate &&
+          State.filter.endDate &&
+          i.journeyFinishedAtDate &&
+          new Date(i.journeyFinishedAtDate).getTime() >= start &&
+          new Date(i.journeyFinishedAtDate).getTime() <= end) ||
+        !i.journeyFinishedAtDate
       )
         return i;
     });
   }
-
   if (State.filter.categories.length > 0) {
     let catsIds = State.filter.categories.map((i) => i.id);
     State.journies = State.journies.filter(
@@ -174,13 +181,20 @@ const onSetCells = (State: stateType, clients: Client[]) => {
 
   return State;
 };
-export const getCsvData = (tasks: ITaskInfo[]) => {
+export const getCsvData = (
+  tasksJournies: {
+    id: string;
+    name: string;
+    journies: Journies;
+  }[]
+) => {
   let tasksJourniesDetails = _.flattenDeep(
-    tasks.map((task) => {
+    tasksJournies.map((task) => {
       if (task) {
-        let journies = getTaskJournies(task).journies;
+        let journies = task.journies;
         let taskJourniesDetails = journies.map((journey, index) => {
-          let leadTime = getTaskLeadTime(journey.movements);
+          let leadTime = journey.leadTime;
+          let { hours, days } = daysAndHours(leadTime ?? 0);
           let schedulingTime = getTotalDifferenceFromTo(
             "Tasks Board",
             "In Progress",
@@ -241,24 +255,25 @@ export const getCsvData = (tasks: ITaskInfo[]) => {
           );
 
           let journeyDetails: TaskJourniesDetails = {
-            id: task._id,
+            id: journey.taskId,
             name: task.name,
             journeyIndex: index + 1,
-            projectName: task?.projectName ?? "",
-            clientName: task?.clientName ?? "",
-            categoryName: task?.categoryName ?? "",
-            subCategoryName: task?.subCategoryName ?? "",
-            status: task.status ?? "",
-            projectManager: task?.projectMangerName ?? "",
-            startDate: task.start
-              ? format(new Date(task.start), "dd MMMM yyyy HH:MM")
+            projectName: journey?.projectName ?? "",
+            clientName: journey?.clientName ?? "",
+            categoryName: journey?.categoryName ?? "",
+            subCategoryName: journey?.subCategoryName ?? "",
+            status:
+              journey.movements[journey.movements.length - 1].status ?? "",
+            projectManager: journey?.projectManagerName ?? "",
+            startDate: journey.startedAt // journey start date
+              ? format(new Date(journey.startedAt), "dd MMMM yyyy HH:MM")
               : "",
             dueDate: journey.journeyDeadline
               ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:MM")
               : "",
             deliveryStatus: missedDelivery ? "Missed" : "On Time",
             movementsCount: journey.movements.length,
-            journeyLeadTime: `${leadTime.difference.days}D / ${leadTime.difference.hours}H / ${leadTime.difference.mins}M`,
+            journeyLeadTime: `${days}D / ${hours}H`,
             journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
             journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,
             journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
@@ -296,10 +311,14 @@ export const getCsvData = (tasks: ITaskInfo[]) => {
 };
 
 export const onDownloadTasksFile = (
-  tasks: ITaskInfo[],
+  tasksJournies: {
+    id: string;
+    name: string;
+    journies: Journies;
+  }[],
   formRef: React.RefObject<HTMLFormElement>
 ) => {
-  let tasksJourniesDetails = getCsvData(tasks);
+  let tasksJourniesDetails = getCsvData(tasksJournies);
   if (
     tasksJourniesDetails &&
     tasksJourniesDetails.length > 0 &&
