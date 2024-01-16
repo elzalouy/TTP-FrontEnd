@@ -30,8 +30,6 @@ import {
   onGetDatasetsByAll,
   onGetDatasetsByTeams,
 } from "./utils";
-import { getCsvFile } from "../../../utils";
-import { TaskMovement } from "src/types/models/Projects";
 import { selectAllCategories } from "src/models/Categories";
 
 /**
@@ -48,6 +46,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
+  const allCategories = useAppSelector(selectAllCategories);
   // Component State : Managers, teams, clients are the selected ones for the filteration
   const [managers, setManagers] = useState<Manager[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -79,10 +78,26 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   useEffect(() => {
     let newTasks: ITaskInfo[] = tasks.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let manager = managers.find(
+        (i) => i._id === project?.projectManager
+      )?._id;
+      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let category = allCategories.find((i) => i._id === item.categoryId);
+      let team = options.boards
+        .find((i) => i._id === item.boardId)
+        ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
+        projectManagerName: manager,
+        clientName: client,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: category?.subCategoriesId.find(
+          (i) => i._id === item.subCategoryId
+        )?.subCategory,
+        teamName: team?.name,
       };
       return newTask;
     });

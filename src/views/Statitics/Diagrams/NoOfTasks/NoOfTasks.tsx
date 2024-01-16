@@ -226,12 +226,13 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         ((j.journies[0].projectManager &&
           filter.managers.includes(j.journies[0].projectManager)) ||
           !j.journies[0].projectManager) &&
-        j.journies[0].categoryId &&
-        filter.categories.includes(j.journies[0].categoryId) &&
-        j.journies[0].clientId &&
-        filter.clients.includes(j.journies[0].clientId)
+        ((j.journies[0].categoryId &&
+          filter.categories.includes(j.journies[0].categoryId)) ||
+          !j.journies[0].categoryId) &&
+        ((j.journies[0].clientId &&
+          filter.clients.includes(j.journies[0].clientId)) ||
+          !j.journies[0].clientId)
     );
-
     journiesData = journiesData.filter(
       (j) =>
         (j.journies[0].subCategoryId &&

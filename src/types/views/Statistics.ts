@@ -20,6 +20,7 @@ export type Journey = {
   movements: TaskMovement[];
   leadTime?: number;
   teamId?: string;
+  teamName?: string;
   sharedAtMonth?: string;
   sharedAt?: Date;
   reviewAt?: string;
@@ -46,6 +47,7 @@ export interface ITaskInfo extends Task {
   projectManagerName?: string;
   categoryName?: string;
   subCategoryName?: string;
+  teamName?: string;
 }
 
 export type TaskJourniesDetails = {

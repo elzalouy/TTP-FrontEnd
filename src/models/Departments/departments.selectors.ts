@@ -2,7 +2,12 @@ import _ from "lodash";
 import { RootState } from "../store";
 
 export const selectAllDepartments = (state: RootState) =>
-  state?.departments?.departments;
+  state?.departments?.departments.map((i) => {
+    return {
+      ...i,
+      teams: i.teams.filter((i) => i.isDeleted === false),
+    };
+  });
 export const selectAllTeams = (state: RootState) =>
   _.flattenDeep(
     state.departments.departments

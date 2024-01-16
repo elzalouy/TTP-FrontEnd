@@ -11,8 +11,6 @@ export const Departments = (props: any) => {
   let departments = useAppSelector(selectAllDepartments);
   const role = useAppSelector(selectRole);
   const theme = useTheme();
-  const SM = useMediaQuery(theme.breakpoints.down("sm"));
-  const MD = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Box className="departments-page">
