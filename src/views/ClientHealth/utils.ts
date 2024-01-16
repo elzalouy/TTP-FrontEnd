@@ -73,20 +73,26 @@ export const updateState = (
       start: new Date(start),
       end: new Date(end),
     });
+    console.log({
+      journies: State.journies.filter((i) => i.clientName?.includes("MOC")),
+    });
     State.journies = State.journies.filter((i) => {
       if (
-        (i.movements &&
-          i.movements[0].movedAt &&
-          State.filter.startDate &&
-          State.filter.endDate &&
-          i.journeyFinishedAtDate &&
+        i.movements &&
+        i.movements[0].movedAt &&
+        State.filter.startDate &&
+        State.filter.endDate &&
+        ((i.journeyFinishedAtDate &&
           new Date(i.journeyFinishedAtDate).getTime() >= start &&
           new Date(i.journeyFinishedAtDate).getTime() <= end) ||
-        !i.journeyFinishedAtDate
+          !i.journeyFinishedAtDate)
       )
         return i;
     });
   }
+  console.log({
+    journies: State.journies.filter((i) => i.clientName?.includes("MOC")),
+  });
   if (State.filter.categories.length > 0) {
     let catsIds = State.filter.categories.map((i) => i.id);
     State.journies = State.journies.filter(

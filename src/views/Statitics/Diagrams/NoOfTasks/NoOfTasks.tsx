@@ -220,10 +220,12 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     );
     let journiesData = allJournies.filter(
       (j) =>
-        j.journies[0].teamId &&
-        filter.teams.includes(j.journies[0].teamId) &&
-        j.journies[0].projectManager &&
-        filter.managers.includes(j.journies[0].projectManager) &&
+        ((j.journies[0].teamId &&
+          filter.teams.includes(j.journies[0].teamId)) ||
+          !j.journies[0].teamId) &&
+        ((j.journies[0].projectManager &&
+          filter.managers.includes(j.journies[0].projectManager)) ||
+          !j.journies[0].projectManager) &&
         j.journies[0].categoryId &&
         filter.categories.includes(j.journies[0].categoryId) &&
         j.journies[0].clientId &&

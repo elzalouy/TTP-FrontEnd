@@ -323,6 +323,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       movements: [],
       sharedAtMonth: "",
       journeyFinishedAt: null,
+      journeyFinishedAtDate: null,
       revision: journies.length > 1,
       unique: false,
       sharedAt: undefined,
@@ -331,6 +332,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       journeyDeadline: null,
       journeyDeadlines: [],
       cardCreatedAt: task.cardCreatedAt ?? task.createdAt ?? null,
+      leadTime: undefined,
     };
   };
 
@@ -370,11 +372,26 @@ export const getTaskJournies = (task: ITaskInfo) => {
       journey.journeyDeadlines?.push(item.journeyDeadline);
 
     // if the journey closed, save the depended values and push the recored journey to the array of journies and start new one.
-    if (
-      (endOfJourney.includes(item.status) &&
-        movements[index + 1] &&
-        movements[index + 1].status === "Tasks Board") ||
-      index === movements.length - 1
+    if (movements.length - 1 === index) {
+      journey.movements.push(item);
+      if (endOfJourney.includes(item.status)) {
+        journey.journeyFinishedAtDate = new Date(item.movedAt);
+        journey.journeyFinishedAt =
+          journey.journeyFinishedAtDate.toLocaleString("en-us", {
+            month: "long",
+          });
+        journey.leadTime = getDurationFromTo(
+          "Tasks Board",
+          "Shared",
+          journey.movements
+        )?.totalHours;
+      }
+      journies.push(journey);
+      journey = getJourney();
+    } else if (
+      endOfJourney.includes(item.status) &&
+      movements[index + 1] &&
+      movements[index + 1].status === "Tasks Board"
     ) {
       journey.movements.push(item);
       journey.journeyFinishedAtDate = new Date(item.movedAt);
