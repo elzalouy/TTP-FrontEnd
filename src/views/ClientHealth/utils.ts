@@ -250,7 +250,6 @@ export const getCsvData = (
             "Tasks Board",
             journey.movements
           );
-          console.log({ journey });
 
           let journeyDetails: TaskJourniesDetails = {
             taskId: journey.taskId,
