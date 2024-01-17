@@ -6,7 +6,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Line } from "react-chartjs-2";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
-import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
 import {
   Category,
   SubCategory,
@@ -26,11 +31,6 @@ import {
   convertToCSV,
   getTaskJournies,
 } from "src/helpers/generalUtils";
-
-interface ITaskInfo extends Task {
-  clientId?: string;
-  projectManager?: string;
-}
 
 type MeetDeadlineProps = {
   options: {
@@ -78,10 +78,24 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let team = item.teamId
+        ? teams.find((i) => i._id === item.teamId)?.name
+        : undefined;
+      let client = clients.find((i) => i._id === project?.clientId);
+      let category = categories.find((i) => i._id === item.categoryId);
+      let manager = managers.find((m) => m._id === project?.projectManager);
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
+        teamName: team,
+        clientName: client?.clientName,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: category?.subCategoriesId.find(
+          (i) => i._id === item.subCategoryId
+        )?.subCategory,
+        projectManagerName: manager?.name,
       };
       return newTask;
     });

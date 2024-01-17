@@ -67,6 +67,7 @@ const TrackClientHealthTable = () => {
    * 1. Change the state (allTasks, allTasksJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
    * 2. Step 4 in first DOM changing.
    */
+
   const [state, setState] = React.useState<stateType>({
     popup: false,
     loading: true,
@@ -149,6 +150,7 @@ const TrackClientHealthTable = () => {
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = updateState(State, clients, subCategories);
+      State.order = state.order;
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients]);

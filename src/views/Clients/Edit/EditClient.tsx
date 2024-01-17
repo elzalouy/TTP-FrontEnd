@@ -49,12 +49,27 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
   const [ImageView, setImageView] = useState<string | null>(null);
 
   useEffect(() => {
-    let State = { ...state };
     if (editClient.image.name && editClient.image.size) {
       let image = setImageView(URL.createObjectURL(editClient.image));
-      setState({ ...state, clientData: { ...editClient, image: image } });
+      setState({
+        ...state,
+        clientData: {
+          ...editClient,
+          image: image,
+          _id: editClient._id,
+          clientName: editClient.clientName,
+        },
+      });
     } else {
-      setState({ ...state, clientData: editClient });
+      setState({
+        ...state,
+        clientData: {
+          clientName: editClient.clientName,
+          image: editClient.image,
+          _id: editClient._id,
+          createdAt: editClient.createdAt,
+        },
+      });
     }
   }, [dispatch, editClient]);
 
@@ -62,14 +77,14 @@ const EditClient: React.FC<Props> = ({ show, setShow }) => {
     try {
       e.preventDefault();
       setState({ ...state, loading: true });
-      let names = allClients.map((i) => i.clientName);
+      let names = allClients
+        .filter((i) => i._id !== state.clientData._id)
+        .map((i) => i.clientName);
       let validationResult = EditCleintSchema(names).validate(state.clientData);
       if (validationResult.error) {
-        console.log({ error: validationResult.error });
         setState({ ...state, loading: false });
         ToastError(validationResult.error.message);
       } else {
-        console.log({ client: state.clientData });
         dispatch(updateClient(state.clientData));
         setState({
           ...state,
