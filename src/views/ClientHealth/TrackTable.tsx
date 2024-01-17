@@ -38,11 +38,7 @@ import {
   stateType,
 } from "src/types/views/ClientHealth";
 import OrganizationRow from "./Organization";
-import {
-  onDownloadTasksFile,
-  updateState,
-  setTableOrganizationRow,
-} from "./utils";
+import { onDownloadTasksFile, updateState } from "./utils";
 import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
@@ -135,7 +131,7 @@ const TrackClientHealthTable = () => {
           )?.clientName;
           let category = categories.find((i) => i._id === item.categoryId);
           let team = departments
-            .find((i) => i._id === item.boardId)
+            .find((i) => i.boardId === item.boardId)
             ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
           let task: ITaskInfo = {
             ...item,
