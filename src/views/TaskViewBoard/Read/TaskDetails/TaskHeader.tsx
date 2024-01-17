@@ -110,6 +110,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
       projectManager: projectManager?._id,
     };
 
+    let tasksJournies = getTaskJournies(taskInfo);
     let journies = getTaskJournies(taskInfo).journies;
     let taskJourniesDetails = journies.map((journey, index) => {
       let leadTime = getTaskLeadTime(journey.movements);
@@ -173,13 +174,15 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
       );
 
       let journeyDetails: TaskJourniesDetails = {
-        id: taskInfo._id,
+        taskId: taskInfo._id,
         name: taskInfo.name,
         journeyIndex: index + 1,
         projectName: project?.name ?? "",
         clientName: client?.clientName ?? "",
         categoryName: category?.category ?? "",
         subCategoryName: subCategory?.subCategory ?? "",
+        teamName: taskInfo.teamName ?? "",
+        taskJourniesCount: tasksJournies.journies.length.toString(),
         status: taskInfo.status ?? "",
         projectManager: projectManager?.name ?? "",
         startDate: taskInfo.start

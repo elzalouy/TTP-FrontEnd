@@ -159,7 +159,8 @@ export const TasksListView: React.FC<Props> = (props) => {
               projectManager: projectManager?._id,
             };
 
-            let journies = getTaskJournies(taskInfo).journies;
+            let tasksJournies = getTaskJournies(taskInfo);
+            let journies = tasksJournies.journies;
             let taskJourniesDetails = journies.map((journey, index) => {
               let leadTime = getTaskLeadTime(journey.movements);
               let schedulingTime = getTotalDifferenceFromTo(
@@ -222,11 +223,13 @@ export const TasksListView: React.FC<Props> = (props) => {
               );
 
               let journeyDetails: TaskJourniesDetails = {
-                id: taskInfo._id,
+                taskId: taskInfo._id,
                 name: taskInfo.name,
                 journeyIndex: index + 1,
                 projectName: project?.name ?? "",
                 clientName: client?.clientName ?? "",
+                teamName: taskInfo.teamName ?? "",
+                taskJourniesCount: tasksJournies.journies.length.toString(),
                 categoryName: category?.category ?? "",
                 subCategoryName: subCategory?.subCategory ?? "",
                 status: taskInfo.status ?? "",
