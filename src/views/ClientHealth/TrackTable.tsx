@@ -151,6 +151,7 @@ const TrackClientHealthTable = () => {
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = updateState(State, clients, subCategories);
       State.order = state.order;
+      State.orderBy = state.orderBy;
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients]);
@@ -188,12 +189,14 @@ const TrackClientHealthTable = () => {
       | "_OfRevision",
     type: string
   ) => {
+    // if orderby change ,the sorting should be asc at the first time
     const order =
       state.orderBy !== orderBy
         ? "asc"
         : state.order === Order.asc
         ? "desc"
         : "asc";
+
     let State = { ...state };
     State.orderBy = orderBy;
     State.order = Order[order];
