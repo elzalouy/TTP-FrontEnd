@@ -320,6 +320,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       taskId: task._id,
       index: journies.length,
       teamId: task.teamId,
+      teamName: task.teamName,
       movements: [],
       sharedAtMonth: "",
       journeyFinishedAt: null,

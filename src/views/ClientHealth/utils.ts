@@ -252,16 +252,19 @@ export const getCsvData = (
           );
 
           let journeyDetails: TaskJourniesDetails = {
-            id: journey.taskId,
+            taskId: journey.taskId,
             name: task.name,
-            journeyIndex: index + 1,
             projectName: journey?.projectName ?? "",
             clientName: journey?.clientName ?? "",
-            categoryName: journey?.categoryName ?? "",
-            subCategoryName: journey?.subCategoryName ?? "",
+            teamName: journey.teamName ?? "",
+            projectManager: journey?.projectManagerName ?? "",
+            taskJourniesCount: task.journies.length.toString(),
+            journeyIndex: index + 1,
+            movementsCount: journey.movements.length,
             status:
               journey.movements[journey.movements.length - 1].status ?? "",
-            projectManager: journey?.projectManagerName ?? "",
+            categoryName: journey?.categoryName ?? "",
+            subCategoryName: journey?.subCategoryName ?? "",
             startDate: journey.startedAt // journey start date
               ? format(new Date(journey.startedAt), "dd MMMM yyyy HH:MM")
               : "",
@@ -269,7 +272,6 @@ export const getCsvData = (
               ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:MM")
               : "",
             deliveryStatus: missedDelivery ? "Missed" : "On Time",
-            movementsCount: journey.movements.length,
             journeyLeadTime: `${days}D / ${hours}H`,
             journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
             journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,

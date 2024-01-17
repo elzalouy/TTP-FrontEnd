@@ -51,14 +51,16 @@ export interface ITaskInfo extends Task {
 }
 
 export type TaskJourniesDetails = {
-  id: string;
+  taskId: string;
   name: string;
   journeyIndex: number;
   projectName: string;
   clientName: string;
+  taskJourniesCount: string;
   categoryName: string;
   subCategoryName: string;
   status: string;
+  teamName: string;
   projectManager: string;
   startDate: string;
   dueDate: string;

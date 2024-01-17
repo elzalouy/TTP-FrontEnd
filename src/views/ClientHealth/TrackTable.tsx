@@ -46,6 +46,7 @@ import {
 import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
+import { selectAllDepartments } from "src/models/Departments";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -56,6 +57,7 @@ const TrackClientHealthTable = () => {
   const managers = useAppSelector(selectPMs);
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const role = useAppSelector(selectRole);
+  const departments = useAppSelector(selectAllDepartments);
 
   /**
    * First DOM changing (in case of loading allTasks, projects, clients, managers)
@@ -121,23 +123,34 @@ const TrackClientHealthTable = () => {
         }
       });
       let tasksInfo: ITaskInfo[] = _.orderBy(
-        tasks.map((i) => {
-          let p = projects.find((p) => p._id === i.projectId);
-          return {
-            ...i,
-            clientId: p?.clientId,
-            clientName: clients.find((i) => i._id === p?.clientId)?.clientName,
-            projectManager: p?.projectManager,
-            projectManagerName: managers.find(
-              (pm) => pm._id === p?.projectManager
-            )?.name,
-            categoryName: categories.find((c) => c._id === i.categoryId)
-              ?.category,
-            projectName: p?.name,
-            subCategoryName: subCategories.find(
-              (s) => s._id === i.subCategoryId
+        tasks.map((item) => {
+          let project = projects.find(
+            (project) => project._id === item.projectId
+          );
+          let manager = managers.find(
+            (i) => i._id === project?.projectManager
+          )?._id;
+          let client = clients.find(
+            (i) => i._id === project?.clientId
+          )?.clientName;
+          let category = categories.find((i) => i._id === item.categoryId);
+          let team = departments
+            .find((i) => i._id === item.boardId)
+            ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
+          let task: ITaskInfo = {
+            ...item,
+            clientId: project?.clientId,
+            projectManager: project?.projectManager,
+            projectManagerName: manager,
+            clientName: client,
+            projectName: project?.name,
+            categoryName: category?.category,
+            subCategoryName: category?.subCategoriesId.find(
+              (i) => i._id === item.subCategoryId
             )?.subCategory,
+            teamName: team?.name,
           };
+          return task;
         }),
         "cardCreatedAt",
         "asc"
