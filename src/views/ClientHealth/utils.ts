@@ -256,7 +256,7 @@ export const getCsvData = (
             name: task.name,
             projectName: journey?.projectName ?? "",
             clientName: journey?.clientName ?? "",
-            teamName: journey.teamName ?? "",
+            teamName: `(${journey.teamName})` ?? "",
             projectManager: journey?.projectManagerName ?? "",
             taskJourniesCount: task.journies.length.toString(),
             journeyIndex: index + 1,
