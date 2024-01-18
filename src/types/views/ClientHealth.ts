@@ -67,8 +67,6 @@ export type stateType = {
   loading: boolean;
   page: number;
   rowsPerPage: number;
-  order: Order;
-  orderBy: string;
   clients: Client[];
   allProjects: Project[];
   projects: Project[];

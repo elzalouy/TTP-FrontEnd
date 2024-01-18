@@ -58,7 +58,8 @@ export const setTableOrganizationRow = (State: stateType) => {
 export const updateState = (
   State: stateType,
   clients: Client[],
-  subCategories: SubCategory[]
+  subCategories: SubCategory[],
+  orderBy: string
 ) => {
   State.tasks = State.allTasks;
   State.journies = State.allJournies.filter((i) => i.projectManager);
@@ -115,11 +116,11 @@ export const updateState = (
   State.projects = State.allProjects.filter((i) => projectsIds.includes(i._id));
   State.tasks = State.tasks.filter((i) => ids.includes(i._id));
   State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
-  State = onSetCells(State, clients);
+  State = onSetCells(State, clients, orderBy);
   State = setTableOrganizationRow(State);
   return State;
 };
-const onSetCells = (State: stateType, clients: Client[]) => {
+const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
   State.cells = _.orderBy(
     clients.map((client) => {
       let notFilteredClientTasks = _.orderBy(
@@ -170,10 +171,9 @@ const onSetCells = (State: stateType, clients: Client[]) => {
         journies: clientJournies.length,
       };
     }),
-    State.orderBy,
+    orderBy,
     "desc"
   ).filter((i) => i._ofProjects > 0 || i._OfTasks > 0);
-  State.order = Order.desc;
   State.loading = false;
 
   return State;

@@ -54,6 +54,8 @@ const TrackClientHealthTable = () => {
   const { date, boards } = useAppSelector(selectStatisticsFilterDefaults);
   const role = useAppSelector(selectRole);
   const departments = useAppSelector(selectAllDepartments);
+  const [order, setOrder] = React.useState(Order.asc);
+  const [orderBy, setOrderBy] = React.useState("lastBrief");
 
   /**
    * First DOM changing (in case of loading allTasks, projects, clients, managers)
@@ -71,8 +73,6 @@ const TrackClientHealthTable = () => {
     loading: true,
     page: 0,
     rowsPerPage: 8,
-    order: Order.asc,
-    orderBy: "lastBrief",
     allProjects: [],
     allTasks: [],
     projects: [],
@@ -158,12 +158,20 @@ const TrackClientHealthTable = () => {
       State.tasksJournies = State.allTasksJournies = journies;
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
-      State = updateState(State, clients, subCategories);
-      State.order = state.order;
-      State.orderBy = state.orderBy;
+      State = updateState(State, clients, subCategories, orderBy);
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients]);
+
+  React.useEffect(() => {
+    let State = { ...state };
+    State.cells = _.orderBy(
+      State.cells,
+      (i: any) => i[orderBy],
+      order === Order.asc ? "asc" : "desc"
+    );
+    setState(State);
+  }, [order, orderBy]);
 
   const emptyRows =
     state.page > 0
@@ -187,7 +195,7 @@ const TrackClientHealthTable = () => {
   };
 
   const createSortHandler = (
-    orderBy:
+    value:
       | "clientName"
       | "lastBrief"
       | "_ofProjects"
@@ -199,18 +207,10 @@ const TrackClientHealthTable = () => {
     type: string
   ) => {
     // if orderby change ,the sorting should be asc at the first time
-    const order =
-      state.orderBy !== orderBy
-        ? "asc"
-        : state.order === Order.asc
-        ? "desc"
-        : "asc";
-
-    let State = { ...state };
-    State.orderBy = orderBy;
-    State.order = Order[order];
-    State.cells = _.orderBy(State.cells, (i) => i[orderBy], order);
-    setState(State);
+    const orderValue =
+      orderBy !== value ? "asc" : order === Order.asc ? "desc" : "asc";
+    setOrder(Order[orderValue]);
+    setOrderBy(value);
   };
 
   const onSetFilter = (type: string, value: any) => {
@@ -219,7 +219,7 @@ const TrackClientHealthTable = () => {
     if (type === "endDate") State.filter.endDate = value;
     if (type === "categories") State.filter.categories = value;
     if (type === "subCategories") State.filter.subCategories = value;
-    State = updateState(State, clients, subCategories);
+    State = updateState(State, clients, subCategories, orderBy);
     setState(State);
   };
 
@@ -285,16 +285,14 @@ const TrackClientHealthTable = () => {
                   size="small"
                   key={headCell.id}
                   style={{
-                    color:
-                      state.orderBy === headCell.id ? "#ffc500" : "#334D6E",
-                    fontWeight:
-                      state.orderBy === headCell.id ? "bold" : "normal",
+                    color: orderBy === headCell.id ? "#ffc500" : "#334D6E",
+                    fontWeight: orderBy === headCell.id ? "bold" : "normal",
                     visibility: "visible",
                     height: "40px",
                   }}
                   sortDirection={
-                    state.orderBy === headCell.id
-                      ? state.order === Order.asc
+                    orderBy === headCell.id
+                      ? order === Order.asc
                         ? "asc"
                         : "desc"
                       : undefined
@@ -308,20 +306,17 @@ const TrackClientHealthTable = () => {
                       paddingLeft: "5px",
                       color: "#334D6E",
                       ":hover": {
-                        color:
-                          headCell.id === state.orderBy ? "black" : "#334D6E",
+                        color: headCell.id === orderBy ? "black" : "#334D6E",
                       },
                     }}
                     hideSortIcon={false}
                     IconComponent={() =>
-                      state.orderBy === headCell.id ? (
-                        state.order === Order.asc ? (
+                      orderBy === headCell.id ? (
+                        order === Order.asc ? (
                           <ArrowDownward
                             sx={{
                               color:
-                                state.orderBy === headCell.id
-                                  ? "black"
-                                  : "#334D6E",
+                                orderBy === headCell.id ? "black" : "#334D6E",
                               fontSize: "14px",
                             }}
                           ></ArrowDownward>
@@ -329,9 +324,7 @@ const TrackClientHealthTable = () => {
                           <ArrowUpward
                             sx={{
                               color:
-                                state.orderBy === headCell.id
-                                  ? "black"
-                                  : "#334D6E",
+                                orderBy === headCell.id ? "black" : "#334D6E",
                               fontSize: "14px",
                             }}
                           ></ArrowUpward>
@@ -345,10 +338,10 @@ const TrackClientHealthTable = () => {
                         ></ArrowDownward>
                       )
                     }
-                    active={state.orderBy === headCell.id}
+                    active={orderBy === headCell.id}
                     direction={
-                      state.orderBy === headCell.id
-                        ? state.order === Order.asc
+                      orderBy === headCell.id
+                        ? order === Order.asc
                           ? "asc"
                           : "desc"
                         : "asc"
