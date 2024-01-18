@@ -73,7 +73,6 @@ const Select = (props: IFilterProps) => {
       case "dialog":
         State.open = true;
         setState(State);
-
         break;
       default:
         State.open = "none";

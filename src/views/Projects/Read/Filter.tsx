@@ -12,17 +12,12 @@ import { useAppSelector } from "src/models/hooks";
 interface ProjectsFilterProps {
   control: any;
   onSetFilter: () => void;
-  onChange: (
-    e: any,
-    name: "name" | "clientId" | "projectManager" | "projectStatus" | "deadline"
-  ) => void;
   setValue: any;
 }
 
 const ProjectsFilter: FC<ProjectsFilterProps> = ({
   control,
   onSetFilter,
-  onChange,
   setValue,
 }) => {
   const pmOptions = useAppSelector(selectPMOptions);
@@ -181,7 +176,10 @@ const ProjectsFilter: FC<ProjectsFilterProps> = ({
                   selected={props.field.value}
                   label="Status: "
                   options={filterOptions[1]}
-                  onSelect={(e: any) => onChange(e, "projectStatus")}
+                  onSelect={(e: any) => {
+                    setValue("projectStatus", e.target.id);
+                    onSetFilter();
+                  }}
                   optionsType="list"
                   textTruncate={5}
                 />

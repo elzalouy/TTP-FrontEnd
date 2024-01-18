@@ -75,27 +75,13 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     details: string;
   }>({ edit: "none", delete: "none", details: "none" });
 
-  //
   useEffect(() => {
     if (
       projects.projects.length > 0 &&
       projects.loading === false &&
       projects.allTasks
     ) {
-      setState({
-        ...state,
-        projects: projects.projects,
-        filteredProjects: projects.projects,
-        notStarted: projects.projects.filter(
-          (i) => i.projectStatus === "Not Started"
-        ),
-        inProgressProjects: projects.projects.filter(
-          (i) => i.projectStatus === "In Progress"
-        ),
-        doneProjects: projects.projects.filter((i) =>
-          DoneStatusList.includes(i.projectStatus)
-        ),
-      });
+      onSetFilter();
     }
   }, [projects.loading, projects.projects, projects.allTasks]);
 
@@ -137,15 +123,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
     });
   };
 
-  const onChange = (
-    e: any,
-    name: "name" | "clientId" | "projectManager" | "projectStatus" | "deadline"
-  ) => {
-    e.preventDefault();
-    setValue(name, e.target.id);
-    onSetFilter();
-  };
-
   const onEditProject = (value: string, project?: Project) =>
     openForm({
       delete: "none",
@@ -182,7 +159,6 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
         <ProjectsFilter
           control={control}
           onSetFilter={onSetFilter}
-          onChange={onChange}
           setValue={setValue}
         />
         <Box
