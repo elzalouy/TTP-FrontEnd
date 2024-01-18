@@ -22,33 +22,30 @@ import {
 import { format } from "date-fns";
 
 export const setTableOrganizationRow = (State: stateType) => {
-  let tasksJournies = State.tasksJournies;
   // flattening the journies in one array, for getting journeyLeadTime, _OfActive, hasDeadline,and journies length values.
-  let flattened = _.flattenDeep(tasksJournies.map((i) => i.journies));
-  State.organization._OfActive = flattened.filter(
+  let journies = State.journies;
+  State.organization._OfActive = journies.filter(
     (i) =>
       !["Shared", "Done", "Cancled"].includes(
         i.movements[i.movements.length - 1].status
       )
   ).length;
-  let revisedTasks = tasksJournies.filter((i) => i.journies.length > 1);
-  let journiesLeadTime = flattened.map((j) => {
+  let revisedTasks = journies.filter((i) => i.revision === true);
+  let journiesLeadTime = journies.map((j) => {
     return j.leadTime;
   });
   let sortedByCreatedAtTasks = _.orderBy(State.tasks, "cardCreatedAt", "asc");
 
-  State.organization._OfRevision =
-    _.flattenDeep(revisedTasks.map((i) => i.journies)).length -
-    revisedTasks.length;
+  State.organization._OfRevision = revisedTasks.length;
   State.organization._OfTasks = State.tasks.length;
   State.organization._ofProjects = State.projects.length;
   State.organization.averageTOD = _.sum(journiesLeadTime);
   State.organization.lastBrief = new Date(
     sortedByCreatedAtTasks[sortedByCreatedAtTasks.length - 1]?.cardCreatedAt
   ).getTime();
-  let hasDeadline = flattened.filter((i) => i.journeyDeadline !== null);
+  let hasDeadline = journies.filter((i) => i.journeyDeadline !== null);
   let meetDeadline = getMeetingDeadline(hasDeadline).notPassedDeadline.length;
-  State.organization.journies = flattened.length;
+  State.organization.journies = journies.length;
   State.organization.meetDeadline = Math.floor(
     (meetDeadline / hasDeadline.length) * 100
   );
@@ -121,6 +118,7 @@ export const updateState = (
   State.loading = false;
   return State;
 };
+
 const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
   State.cells = _.orderBy(
     clients.map((client) => {
@@ -179,146 +177,125 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
 
   return State;
 };
-export const getCsvData = (
-  tasksJournies: {
-    id: string;
-    name: string;
-    journies: Journies;
-  }[]
-) => {
-  let tasksJourniesDetails = _.flattenDeep(
-    tasksJournies.map((task) => {
-      if (task) {
-        let journies = task.journies;
-        let taskJourniesDetails = journies.map((journey, index) => {
-          let leadTime = journey.leadTime;
-          let { hours, days } = daysAndHours(leadTime ?? 0);
-          let schedulingTime = getTotalDifferenceFromTo(
-            "Tasks Board",
-            "In Progress",
-            journey.movements
-          );
-          let processingTime = getTotalDifferenceFromTo(
-            "In Progress",
-            "Shared",
-            journey.movements
-          );
-          let unClear = totalUnClearTime(journey.movements);
-          let turnAround = getTotalDifferenceFromTo(
-            "Not Clear",
-            "In Progress",
-            journey.movements
-          );
-          let fulfillment = getTotalDifferenceFromTo(
-            "In Progress",
-            "Review",
-            journey.movements
-          );
-          let delivery = getTotalDifferenceFromTo(
-            "Review",
-            "Shared",
-            journey.movements
-          );
-          let closing = getTotalDifferenceFromTo(
-            "Shared",
-            "Done",
-            journey.movements
-          );
-          let clearBack = getTotalDifferenceFromTo(
-            "Not Clear",
-            "Tasks Board",
-            journey.movements
-          );
-          let cancelMoves = getCancelationType(journey.movements);
-          let missedDelivery = isMissedDelivery(journey.movements);
-          let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
-            "Review",
-            "Tasks Board",
-            journey.movements
-          );
-          let commentsTime = getTotalDifferenceFromTo(
-            "Shared",
-            "Tasks Board",
-            journey.movements
-          );
-          let revisitingTime = getTotalDifferenceFromTo(
-            "Done",
-            "Tasks Board",
-            journey.movements
-          );
-          let revivedTime = getTotalDifferenceFromTo(
-            "Cancled",
-            "Tasks Board",
-            journey.movements
-          );
+export const getCsvData = (journies: Journies) => {
+  let taskJourniesDetails = journies.map((journey, index) => {
+    let leadTime = journey.leadTime;
+    let { hours, days } = daysAndHours(leadTime ?? 0);
+    let schedulingTime = getTotalDifferenceFromTo(
+      "Tasks Board",
+      "In Progress",
+      journey.movements
+    );
+    let processingTime = getTotalDifferenceFromTo(
+      "In Progress",
+      "Shared",
+      journey.movements
+    );
+    let unClear = totalUnClearTime(journey.movements);
+    let turnAround = getTotalDifferenceFromTo(
+      "Not Clear",
+      "In Progress",
+      journey.movements
+    );
+    let fulfillment = getTotalDifferenceFromTo(
+      "In Progress",
+      "Review",
+      journey.movements
+    );
+    let delivery = getTotalDifferenceFromTo(
+      "Review",
+      "Shared",
+      journey.movements
+    );
+    let closing = getTotalDifferenceFromTo("Shared", "Done", journey.movements);
+    let clearBack = getTotalDifferenceFromTo(
+      "Not Clear",
+      "Tasks Board",
+      journey.movements
+    );
+    let cancelMoves = getCancelationType(journey.movements);
+    let missedDelivery = isMissedDelivery(journey.movements);
+    let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
+      "Review",
+      "Tasks Board",
+      journey.movements
+    );
+    let commentsTime = getTotalDifferenceFromTo(
+      "Shared",
+      "Tasks Board",
+      journey.movements
+    );
+    let revisitingTime = getTotalDifferenceFromTo(
+      "Done",
+      "Tasks Board",
+      journey.movements
+    );
+    let revivedTime = getTotalDifferenceFromTo(
+      "Cancled",
+      "Tasks Board",
+      journey.movements
+    );
 
-          let journeyDetails: TaskJourniesDetails = {
-            taskId: journey.taskId,
-            name: task.name,
-            projectName: journey?.projectName ?? "",
-            clientName: journey?.clientName ?? "",
-            teamName: `(${journey.teamName})` ?? "",
-            projectManager: journey?.projectManagerName ?? "",
-            taskJourniesCount: task.journies.length.toString(),
-            journeyIndex: index + 1,
-            movementsCount: journey.movements.length,
-            status:
-              journey.movements[journey.movements.length - 1].status ?? "",
-            categoryName: journey?.categoryName ?? "",
-            subCategoryName: journey?.subCategoryName ?? "",
-            startDate: journey.startedAt // journey start date
-              ? format(new Date(journey.startedAt), "dd MMMM yyyy HH:MM")
-              : "",
-            dueDate: journey.journeyDeadline
-              ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:MM")
-              : "",
-            deliveryStatus: missedDelivery ? "Missed" : "On Time",
-            journeyLeadTime: `${days}D / ${hours}H`,
-            journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
-            journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,
-            journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
-            journeyUnClearCounts: unClear.times,
-            journeyTurnAroundTime: `${turnAround.dif.difference.days}D / ${turnAround.dif.difference.hours}H /  ${turnAround.dif.difference.mins}M`,
-            journeyFullfilmentTime: `${fulfillment.dif.difference.days}D / ${fulfillment.dif.difference.hours} / ${fulfillment.dif.difference.mins}M`,
-            journeyDeliveryTime: `${delivery.dif.difference.days}D / ${delivery.dif.difference.hours}H / ${delivery.dif.difference.mins}M`,
-            journeyClosingTime: `${closing.dif.difference.days}D / ${closing.dif.difference.hours}H /  ${closing.dif.difference.mins}M`,
-            journeyCanceled: cancelMoves.includes("Canceled"),
-            journeyDisturbed: cancelMoves.includes("Disturbed"),
-            journeyFlagged: cancelMoves.includes("Flagged"),
-            journeyLateScheduling:
-              schedulingTime.dif.difference.days > 0 ? true : false,
-            missedDelivery: missedDelivery,
-            journeyVerified: unClear.times === 0 && turnAround.times === 0,
-            journeyUnHealthy: unClear.times > 0 && turnAround.times > 0,
-            journeyClearBackTime: `${clearBack.dif.difference.days}D / ${clearBack.dif.difference.hours}H  / ${clearBack.dif.difference.mins}M`,
-            wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.dif.difference.days}D  / ${wrongOrMissingFulfillment.dif.difference.hours}H / ${wrongOrMissingFulfillment.dif.difference.mins}M`,
-            commentsOrChangesTime: `${commentsTime.dif.difference.days}D / ${commentsTime.dif.difference.hours}H  / ${commentsTime.dif.difference.mins}M`,
-            revisitingTime: `${revisitingTime.dif.difference.days}D / ${revisitingTime.dif.difference.hours}H  / ${revisitingTime.dif.difference.mins}M`,
-            revivedTime: `${revivedTime.dif.difference.days}D / ${revivedTime.dif.difference.hours}H / ${revivedTime.dif.difference.mins}M`,
-            wrongOrMissingFulfillmentTimes:
-              wrongOrMissingFulfillment.times.toString(),
-            commentsOrChangesTimes: commentsTime.times.toString(),
-            revisitingTimes: revisitingTime.times.toString(),
-            revivedTimes: revivedTime.times.toString(),
-          };
-          return journeyDetails;
-        });
-        return taskJourniesDetails;
-      } else return [];
-    })
-  );
-  return tasksJourniesDetails;
+    let journeyDetails: TaskJourniesDetails = {
+      taskId: journey.taskId,
+      name: journey.name ?? "",
+      projectName: journey?.projectName ?? "",
+      clientName: journey?.clientName ?? "",
+      teamName: `(${journey.teamName})` ?? "",
+      projectManager: journey?.projectManagerName ?? "",
+      taskJourniesCount: journies
+        .filter((i) => i.taskId === journey.taskId)
+        .length.toString(),
+      journeyIndex: index + 1,
+      movementsCount: journey.movements.length,
+      status: journey.movements[journey.movements.length - 1].status ?? "",
+      categoryName: journey?.categoryName ?? "",
+      subCategoryName: journey?.subCategoryName ?? "",
+      startDate: journey.startedAt // journey start date
+        ? format(new Date(journey.startedAt), "dd MMMM yyyy HH:MM")
+        : "",
+      dueDate: journey.journeyDeadline
+        ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:MM")
+        : "",
+      deliveryStatus: missedDelivery ? "Missed" : "On Time",
+      journeyLeadTime: `${days}D / ${hours}H`,
+      journeyProcessingTime: `${processingTime.dif.difference.days}D / ${processingTime.dif.difference.hours}H / ${processingTime.dif.difference.mins}M`,
+      journeySchedulingTime: `${schedulingTime.dif.difference.days}D / ${schedulingTime.dif.difference.hours}H / ${schedulingTime.dif.difference.mins}M`,
+      journeyUnClearTime: `${unClear.difference.days}D / ${unClear.difference.hours}H / ${unClear.difference.hours}H / ${unClear.difference.mins}`,
+      journeyUnClearCounts: unClear.times,
+      journeyTurnAroundTime: `${turnAround.dif.difference.days}D / ${turnAround.dif.difference.hours}H /  ${turnAround.dif.difference.mins}M`,
+      journeyFullfilmentTime: `${fulfillment.dif.difference.days}D / ${fulfillment.dif.difference.hours} / ${fulfillment.dif.difference.mins}M`,
+      journeyDeliveryTime: `${delivery.dif.difference.days}D / ${delivery.dif.difference.hours}H / ${delivery.dif.difference.mins}M`,
+      journeyClosingTime: `${closing.dif.difference.days}D / ${closing.dif.difference.hours}H /  ${closing.dif.difference.mins}M`,
+      journeyCanceled: cancelMoves.includes("Canceled"),
+      journeyDisturbed: cancelMoves.includes("Disturbed"),
+      journeyFlagged: cancelMoves.includes("Flagged"),
+      journeyLateScheduling:
+        schedulingTime.dif.difference.days > 0 ? true : false,
+      missedDelivery: missedDelivery,
+      journeyVerified: unClear.times === 0 && turnAround.times === 0,
+      journeyUnHealthy: unClear.times > 0 && turnAround.times > 0,
+      journeyClearBackTime: `${clearBack.dif.difference.days}D / ${clearBack.dif.difference.hours}H  / ${clearBack.dif.difference.mins}M`,
+      wrongOrMissingFulfillmentTime: `${wrongOrMissingFulfillment.dif.difference.days}D  / ${wrongOrMissingFulfillment.dif.difference.hours}H / ${wrongOrMissingFulfillment.dif.difference.mins}M`,
+      commentsOrChangesTime: `${commentsTime.dif.difference.days}D / ${commentsTime.dif.difference.hours}H  / ${commentsTime.dif.difference.mins}M`,
+      revisitingTime: `${revisitingTime.dif.difference.days}D / ${revisitingTime.dif.difference.hours}H  / ${revisitingTime.dif.difference.mins}M`,
+      revivedTime: `${revivedTime.dif.difference.days}D / ${revivedTime.dif.difference.hours}H / ${revivedTime.dif.difference.mins}M`,
+      wrongOrMissingFulfillmentTimes:
+        wrongOrMissingFulfillment.times.toString(),
+      commentsOrChangesTimes: commentsTime.times.toString(),
+      revisitingTimes: revisitingTime.times.toString(),
+      revivedTimes: revivedTime.times.toString(),
+    };
+    return journeyDetails;
+  });
+  return taskJourniesDetails;
 };
 
 export const onDownloadTasksFile = (
-  tasksJournies: {
-    id: string;
-    name: string;
-    journies: Journies;
-  }[],
+  journies: Journies,
   formRef: React.RefObject<HTMLFormElement>
 ) => {
-  let tasksJourniesDetails = getCsvData(tasksJournies);
+  let tasksJourniesDetails = getCsvData(journies);
   if (
     tasksJourniesDetails &&
     tasksJourniesDetails.length > 0 &&

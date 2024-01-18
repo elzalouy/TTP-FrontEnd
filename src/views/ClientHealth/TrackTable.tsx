@@ -43,7 +43,6 @@ import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
 import { selectAllDepartments } from "src/models/Departments";
-import { useLocation } from "react-router";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -104,6 +103,7 @@ const TrackClientHealthTable = () => {
   React.useEffect(() => {
     setMounted(true);
   }, []);
+
   React.useEffect(() => {
     if (allTasks.length > 0 && projects.length > 0) {
       let State = { ...state };
@@ -166,7 +166,11 @@ const TrackClientHealthTable = () => {
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients, mounted]);
-
+  console.log({
+    taskJournies: state.tasksJournies.filter((i) =>
+      i.journies[0].clientName?.includes("1/2 Million")
+    ),
+  });
   React.useEffect(() => {
     let State = { ...state };
     State.cells = _.orderBy(
@@ -263,9 +267,7 @@ const TrackClientHealthTable = () => {
             <form ref={formRef}>
               <IconButton
                 type="button"
-                onClick={() =>
-                  onDownloadTasksFile(state.tasksJournies, formRef)
-                }
+                onClick={() => onDownloadTasksFile(state.journies, formRef)}
                 sx={{
                   bgcolor: "#fafafb",
                   borderRadius: 3,
