@@ -118,6 +118,7 @@ export const updateState = (
   State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
   State = onSetCells(State, clients, orderBy);
   State = setTableOrganizationRow(State);
+  State.loading = false;
   return State;
 };
 const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {

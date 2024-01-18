@@ -43,6 +43,7 @@ import { selectPMs } from "src/models/Managers";
 import { selectRole } from "src/models/Auth";
 import { ITaskInfo } from "src/types/views/Statistics";
 import { selectAllDepartments } from "src/models/Departments";
+import { useLocation } from "react-router";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -56,7 +57,7 @@ const TrackClientHealthTable = () => {
   const departments = useAppSelector(selectAllDepartments);
   const [order, setOrder] = React.useState(Order.asc);
   const [orderBy, setOrderBy] = React.useState("lastBrief");
-
+  const [mounted, setMounted] = React.useState(false);
   /**
    * First DOM changing (in case of loading allTasks, projects, clients, managers)
    * 1. Getting all clients data
@@ -100,7 +101,9 @@ const TrackClientHealthTable = () => {
       subCategories: [],
     },
   });
-
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
   React.useEffect(() => {
     if (allTasks.length > 0 && projects.length > 0) {
       let State = { ...state };
@@ -159,9 +162,10 @@ const TrackClientHealthTable = () => {
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = updateState(State, clients, subCategories, orderBy);
+      State.loading = !mounted;
       setState(State);
     }
-  }, [allTasks, projects, date, boards, clients]);
+  }, [allTasks, projects, date, boards, clients, mounted]);
 
   React.useEffect(() => {
     let State = { ...state };
@@ -170,6 +174,7 @@ const TrackClientHealthTable = () => {
       (i: any) => i[orderBy],
       order === Order.asc ? "asc" : "desc"
     );
+    State.loading = false;
     setState(State);
   }, [order, orderBy]);
 
@@ -219,6 +224,7 @@ const TrackClientHealthTable = () => {
     if (type === "endDate") State.filter.endDate = value;
     if (type === "categories") State.filter.categories = value;
     if (type === "subCategories") State.filter.subCategories = value;
+    State.loading = true;
     State = updateState(State, clients, subCategories, orderBy);
     setState(State);
   };
