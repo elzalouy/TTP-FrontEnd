@@ -60,7 +60,6 @@ export const updateState = (
 ) => {
   State.tasks = State.allTasks;
   State.journies = State.allJournies.filter((i) => i.projectManager);
-  State.tasksJournies = State.allTasksJournies;
   State.projects = State.allProjects;
   // Filtering using the start and end date
   if (State.filter.startDate && State.filter.endDate) {
@@ -112,7 +111,6 @@ export const updateState = (
   let projectsIds = _.uniq(State.journies.map((i) => i.projectId));
   State.projects = State.allProjects.filter((i) => projectsIds.includes(i._id));
   State.tasks = State.tasks.filter((i) => ids.includes(i._id));
-  State.tasksJournies = State.tasksJournies.filter((i) => ids.includes(i.id));
   State = onSetCells(State, clients, orderBy);
   State = setTableOrganizationRow(State);
   State.loading = false;

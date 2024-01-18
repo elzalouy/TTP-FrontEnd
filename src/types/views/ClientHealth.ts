@@ -72,8 +72,6 @@ export type stateType = {
   projects: Project[];
   allTasks: ITaskInfo[];
   tasks: ITaskInfo[];
-  allTasksJournies: { id: string; name: string; journies: Journies }[];
-  tasksJournies: { id: string; name: string; journies: Journies }[];
   allJournies: Journies;
   journies: Journies;
   cells: {

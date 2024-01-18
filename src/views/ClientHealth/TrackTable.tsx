@@ -77,8 +77,6 @@ const TrackClientHealthTable = () => {
     allTasks: [],
     projects: [],
     tasks: [],
-    allTasksJournies: [],
-    tasksJournies: [],
     allJournies: [],
     journies: [],
     clients: [],
@@ -158,7 +156,6 @@ const TrackClientHealthTable = () => {
       // setting the tasks info.
       State.projects = State.allProjects = [...projects];
       State.tasks = State.allTasks = tasksInfo;
-      State.tasksJournies = State.allTasksJournies = journies;
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = updateState(State, clients, subCategories, orderBy);
@@ -166,11 +163,7 @@ const TrackClientHealthTable = () => {
       setState(State);
     }
   }, [allTasks, projects, date, boards, clients, mounted]);
-  console.log({
-    taskJournies: state.tasksJournies.filter((i) =>
-      i.journies[0].clientName?.includes("1/2 Million")
-    ),
-  });
+
   React.useEffect(() => {
     let State = { ...state };
     State.cells = _.orderBy(
