@@ -7,7 +7,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { selectAllClients } from "src/models/Clients";
 import { selectManagers } from "src/models/Managers";
@@ -32,7 +32,7 @@ type State = {
 };
 
 const ProjectDetails: FC<ProjectDetailsProps> = (props) => {
-  const { allTasks } = useAppSelector(selectAllProjects);
+  const { allTasks } = useAppSelector(selectProjectsState);
   const clients = useAppSelector(selectAllClients);
   const PMs = useAppSelector(selectManagers);
   const [value, setValue] = React.useState("1");

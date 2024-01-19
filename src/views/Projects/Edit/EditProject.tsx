@@ -15,7 +15,7 @@ import { useAppSelector } from "../../../models/hooks";
 import { selectPMOptions } from "../../../models/Managers";
 import {
   editProject as editProjectAction,
-  selectAllProjects,
+  selectProjectsState,
 } from "../../../models/Projects";
 import "../../popups-style.css";
 import DoneProjectConfirm from "./DoneProjectPopup";
@@ -59,7 +59,7 @@ const EditProject: React.FC<Props> = ({ show, setShow, project }) => {
   const dispatch = useDispatch();
   const clients = useAppSelector(selectClientDialogData);
   const managers = useAppSelector(selectPMOptions);
-  const projects = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectProjectsState);
 
   const { control, register, watch, setValue, reset } = useForm<FormState>();
 

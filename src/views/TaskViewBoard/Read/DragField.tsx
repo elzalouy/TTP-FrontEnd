@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { selectAllDepartments } from "../../../models/Departments";
 import { useAppSelector } from "../../../models/hooks";
 import TaskCard from "./Card/TaskCard";
-import { moveTask, selectAllProjects } from "../../../models/Projects";
+import { moveTask, selectProjectsState } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import { Task } from "../../../types/models/Projects";
 import { RouteComponentProps } from "react-router";
@@ -41,7 +41,7 @@ type moveObject = {
 };
 const DragField = (props: DragFieldProps) => {
   const dispatch = useDispatch();
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const { allTasks, projects } = useAppSelector(selectProjectsState);
   const departments = useAppSelector(selectAllDepartments);
   const projectId = props.props.match.params.id;
   const project = projects.find((item) => item._id === projectId);

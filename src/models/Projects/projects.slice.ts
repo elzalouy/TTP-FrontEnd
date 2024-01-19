@@ -20,7 +20,7 @@ import {
 import projectsState from "./projects.state";
 import _ from "lodash";
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { Project, ProjectsInterface } from "../../types/models/Projects";
+import { Project, ProjectsInterface, Task } from "../../types/models/Projects";
 
 const projectsSlice: Slice<ProjectsInterface> = createSlice({
   name: "projects",
@@ -371,12 +371,20 @@ const projectsSlice: Slice<ProjectsInterface> = createSlice({
       state.loading = true;
       state.allTasks = [];
     });
-    builder.addCase(getAllTasks.fulfilled, (state, action) => {
-      state.loading = false;
-      state.allTasks = action.payload;
-      state.filteredTasks = action.payload;
-      state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
-    });
+    builder.addCase(
+      getAllTasks.fulfilled,
+      (state, action: PayloadAction<Task[]>) => {
+        state.loading = false;
+        state.allTasks = action.payload.filter((i) => i.archivedCard === false);
+        state.filteredTasks = action.payload.filter(
+          (i) => i.archivedCard === false
+        );
+        state.archivedTasks = action.payload.filter(
+          (i) => i.archivedCard === true
+        );
+        state.setTasksStatisticsHook = !state.setTasksStatisticsHook;
+      }
+    );
     builder.addCase(filterTasks.rejected, (state) => {
       state.loading = false;
     });

@@ -21,7 +21,7 @@ import {
 } from "src/helpers/generalUtils";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects, selectProjectOptions } from "src/models/Projects";
+import { selectProjectsState, selectProjectOptions } from "src/models/Projects";
 import { Client, selectAllClients } from "src/models/Clients";
 import { Manager, selectManagers, selectPMOptions } from "src/models/Managers";
 import {
@@ -42,7 +42,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
   const [journeyDeadline, setJourneyDeadline] = useState<string | undefined>(
     undefined
   );
-  const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const projects: ProjectsInterface = useAppSelector(selectProjectsState);
   const clients = useAppSelector(selectAllClients);
   const managers = useAppSelector(selectManagers);
   const categories = useAppSelector(selectAllCategories);

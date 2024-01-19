@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Category, SubCategory } from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
@@ -45,7 +45,7 @@ type NoOfRevisionProps = {
  */
 const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

@@ -2,27 +2,19 @@ import {
   convertToCSV,
   daysAndHours,
   getCancelationType,
-  getTaskJournies,
-  getTaskLeadTime,
   getTotalDifferenceFromTo,
   isMissedDelivery,
   totalUnClearTime,
 } from "src/helpers/generalUtils";
-import { Order, stateType } from "src/types/views/ClientHealth";
+import { stateType } from "src/types/views/ClientHealth";
 import { getMeetingDeadline } from "../Statitics/utils";
 import _ from "lodash";
 import { Client } from "src/models/Clients";
 import { SubCategory } from "src/models/Categories";
-import {
-  ITaskInfo,
-  Journey,
-  Journies,
-  TaskJourniesDetails,
-} from "src/types/views/Statistics";
+import { Journies, TaskJourniesDetails } from "src/types/views/Statistics";
 import { format } from "date-fns";
 
 export const setTableOrganizationRow = (State: stateType) => {
-  // flattening the journies in one array, for getting journeyLeadTime, _OfActive, hasDeadline,and journies length values.
   let journies = State.journies;
   State.organization._OfActive = journies.filter(
     (i) =>
@@ -30,13 +22,14 @@ export const setTableOrganizationRow = (State: stateType) => {
         i.movements[i.movements.length - 1].status
       )
   ).length;
-  let revisedTasks = journies.filter((i) => i.revision === true);
+  let revisionJournies = journies.filter(
+    (i) => i.revision === true && i.index > 0
+  );
   let journiesLeadTime = journies.map((j) => {
     return j.leadTime;
   });
   let sortedByCreatedAtTasks = _.orderBy(State.tasks, "cardCreatedAt", "asc");
-
-  State.organization._OfRevision = revisedTasks.length;
+  State.organization._OfRevision = revisionJournies.length;
   State.organization._OfTasks = State.tasks.length;
   State.organization._ofProjects = State.projects.length;
   State.organization.averageTOD = _.sum(journiesLeadTime);
@@ -59,6 +52,7 @@ export const updateState = (
   orderBy: string
 ) => {
   State.tasks = State.allTasks;
+
   State.journies = State.allJournies.filter((i) => i.projectManager);
   State.projects = State.allProjects;
   // Filtering using the start and end date
@@ -131,7 +125,8 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
       let clientJournies = State.journies.filter(
         (i) => i.clientId === client._id
       );
-      let averageLeadTime = _.sum(clientJournies.map((i) => i.leadTime));
+      let averageLeadTime =
+        _.sum(clientJournies.map((i) => i.leadTime)) / clientJournies.length;
       let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
@@ -175,6 +170,7 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
 
   return State;
 };
+
 export const getCsvData = (journies: Journies) => {
   let taskJourniesDetails = journies.map((journey, index) => {
     let leadTime = journey.leadTime;
@@ -305,7 +301,7 @@ export const onDownloadTasksFile = (
     const link = document.createElement("a");
     link.href = url;
     link.style.display = "none";
-    link.download = "Tasks Master Report";
+    link.download = "Client Health Report";
     document.body.appendChild(link);
     link.click();
     window.URL.revokeObjectURL(url);

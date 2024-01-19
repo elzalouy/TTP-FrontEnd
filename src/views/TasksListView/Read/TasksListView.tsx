@@ -10,7 +10,7 @@ import Loading from "../../../coreUI/components/Loading/Loading";
 import TasksTable from "../../../coreUI/components/Tables/TasksTable";
 import { useAppSelector } from "../../../models/hooks";
 import {
-  selectAllProjects,
+  selectProjectsState,
   selectProjectOptions,
 } from "../../../models/Projects";
 import {
@@ -104,7 +104,7 @@ export const TasksListView: React.FC<Props> = (props) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const role = useAppSelector(selectRole);
   const user = useAppSelector(selectUser);
-  const projects: ProjectsInterface = useAppSelector(selectAllProjects);
+  const projects: ProjectsInterface = useAppSelector(selectProjectsState);
   const clients = useAppSelector(selectAllClients);
   const managers = useAppSelector(selectManagers);
   const categories = useAppSelector(selectAllCategories);
@@ -123,7 +123,6 @@ export const TasksListView: React.FC<Props> = (props) => {
     projectManagersOptions: PmsOptions,
     openFilter: false,
   });
-
   const onSetTasksJourniesData = () => {
     let selectsData = [...selects];
     if (selectsData.length <= 0)
@@ -323,7 +322,6 @@ export const TasksListView: React.FC<Props> = (props) => {
         projectsIds.includes(item.projectId)
       );
     }
-
     if (filter.projectManager !== "") {
       projectsIds = projects.projects
         .filter((item) => item.projectManager === filter.projectManager)
@@ -378,7 +376,6 @@ export const TasksListView: React.FC<Props> = (props) => {
       });
     }
     State.tasks = tasks;
-    console.log({ tasks });
     setState(State);
   };
 

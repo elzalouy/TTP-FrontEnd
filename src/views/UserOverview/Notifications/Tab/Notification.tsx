@@ -5,7 +5,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Status from "src/coreUI/components/Typos/Status";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task } from "src/types/models/Projects";
 
 type NotificationProps = {
@@ -30,7 +30,7 @@ const LinkContainer = (props: React.PropsWithChildren<LinkProps>) => {
   );
 };
 const Notification = ({ item, index, arrayLength }: NotificationProps) => {
-  const projects = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectProjectsState);
   return (
     <>
       <LinkContainer id={item.projectId}>

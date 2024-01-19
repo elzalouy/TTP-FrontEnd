@@ -2,7 +2,7 @@ import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
 import { useAppSelector } from "src/models/hooks";
 import { Client, selectClientOptions } from "src/models/Clients";
-import { selectAllProjects, selectProjectOptions } from "src/models/Projects";
+import { selectProjectsState, selectProjectOptions } from "src/models/Projects";
 import { ProjectsInterface, Task } from "src/types/models/Projects";
 import { Options } from "src/types/views/Projects";
 import { Controller, useForm } from "react-hook-form";

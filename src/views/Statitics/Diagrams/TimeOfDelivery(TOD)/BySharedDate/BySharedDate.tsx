@@ -20,7 +20,7 @@ import {
   setOptions,
 } from "./utils";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task } from "src/types/models/Projects";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import React, { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const [mounted, setMounted] = useState(false);
   const formRef = React.useRef<HTMLFormElement>(null);
   const allCategories = useAppSelector(selectAllCategories);
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

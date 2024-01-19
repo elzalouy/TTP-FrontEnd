@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Category, selectAllCategories } from "src/models/Categories";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { selectAllDepartments } from "src/models/Departments";
 import UpdateIcon from "@mui/icons-material/Update";
 import {

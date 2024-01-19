@@ -98,6 +98,7 @@ export interface ProjectsInterface {
     project: Project | undefined | null;
   };
   allTasks: Task[];
+  archivedTasks?: Task[];
   filteredTasks: Task[];
   deleteProject: string | undefined;
   deleteProjectTasks: string[] | undefined;
@@ -128,4 +129,13 @@ export const DoneStatusList = [
   "delivered before deadline",
   "delivered after deadline",
   "Done",
+];
+export const TaskStatus = [
+  "Tasks Board",
+  "In Progress",
+  "Not Clear",
+  "Review",
+  "Shared",
+  "Done",
+  "Cancled",
 ];

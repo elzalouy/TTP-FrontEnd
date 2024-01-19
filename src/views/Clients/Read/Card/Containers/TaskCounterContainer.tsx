@@ -4,7 +4,7 @@ import "../../clients.css";
 import { ITaskCounterContainer } from "src/types/views/Client";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 
 const TaskCounterContainer: FC<ITaskCounterContainer> = ({
   id,
@@ -12,7 +12,7 @@ const TaskCounterContainer: FC<ITaskCounterContainer> = ({
   inProgress,
   done,
 }) => {
-  const projectsState = useAppSelector(selectAllProjects);
+  const projectsState = useAppSelector(selectProjectsState);
   return (
     <ScrollContainer
       className="scroll-container counter-container-tasks"

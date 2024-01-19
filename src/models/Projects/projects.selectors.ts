@@ -89,15 +89,10 @@ export const selectLateProjects = (state: RootState) =>
 export const selectSelectedDepartment = (state: RootState) =>
   state?.projects?.newProject?.selectedDepartment;
 
-export const selectAllProjects = (state: RootState) => {
-  let tasks = [...state.projects.allTasks].filter(
-    (i) => i.archivedCard === false
-  );
-  let data = { ...state.projects };
-  data.allTasks = tasks;
-  data.loading = false;
-  return data;
-};
+export const selectAllProjects = (state: RootState) => state.projects.projects;
+export const selectAllTasks = (state: RootState) =>
+  state.projects.allTasks.filter((i) => i.archivedCard === false);
+export const selectProjectsState = (state: RootState) => state.projects;
 
 export const selectEditTask = (state: RootState) =>
   state.projects.allTasks.find(

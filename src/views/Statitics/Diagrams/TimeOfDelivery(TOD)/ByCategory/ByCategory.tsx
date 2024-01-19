@@ -14,7 +14,7 @@ import { Bar } from "react-chartjs-2";
 import { ITeam } from "src/types/models/Departments";
 import { DialogOption } from "src/types/components/SelectDialog";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { selectTeamsOptions } from "src/models/Departments";
 import { Manager, selectPMOptions } from "src/models/Managers";
 import React, { useEffect, useState } from "react";
@@ -42,7 +42,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
 
   // Global state used in Filteration
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);

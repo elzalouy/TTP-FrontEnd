@@ -4,7 +4,7 @@ import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "../../../models/hooks";
 import {
   deleteTask,
-  selectAllProjects,
+  selectProjectsState,
   selectedDeleteTaskId,
 } from "../../../models/Projects";
 import { openDeleteTaskPopup } from "../../../models/Ui";
@@ -17,7 +17,7 @@ interface DeleteTaskProps {
 
 const DeleteTask: React.FC<DeleteTaskProps> = ({ show, setShow }) => {
   const id = useAppSelector(selectedDeleteTaskId);
-  const projectsState = useAppSelector(selectAllProjects);
+  const projectsState = useAppSelector(selectProjectsState);
 
   const disptach = useDispatch();
   const onDeleteTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

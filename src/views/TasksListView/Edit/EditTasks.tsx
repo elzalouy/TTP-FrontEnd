@@ -12,7 +12,7 @@ import { useAppSelector } from "src/models/hooks";
 import {
   editTasksProjectId,
   selectActiveProjects,
-  selectAllProjects,
+  selectProjectsState,
 } from "src/models/Projects";
 import { Task } from "src/types/models/Projects";
 
@@ -25,7 +25,7 @@ type props = {
 
 const EditTasks = ({ show, setShow, selects, setAllSelected }: props) => {
   const dispatch = useDispatch();
-  const { allTasks, loading } = useAppSelector(selectAllProjects);
+  const { allTasks, loading } = useAppSelector(selectProjectsState);
   const projects = useAppSelector(selectActiveProjects);
   const [editTasks, setEditTasks] = React.useState<Task[]>();
   const [projectId, setProjectId] = React.useState<string | undefined>();

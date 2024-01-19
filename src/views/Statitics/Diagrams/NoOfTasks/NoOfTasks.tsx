@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import {
   Category,
   SubCategory,
@@ -48,7 +48,7 @@ interface NoOfTasksProps {
  */
 const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const allCategories = useAppSelector(selectAllCategories);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);

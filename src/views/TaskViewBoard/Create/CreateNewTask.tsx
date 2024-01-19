@@ -16,7 +16,7 @@ import { selectUi } from "../../../models/Ui/UI.selectors";
 import { valdiateCreateTask } from "../../../services/validations/task.schema";
 import {
   createTaskFromBoard,
-  selectAllProjects,
+  selectProjectsState,
 } from "../../../models/Projects";
 import {
   CRUDTaskState,
@@ -48,7 +48,7 @@ const CreateNewTask = ({ show, setShow, edit, props }: Props) => {
   const dispatch = useDispatch();
   const departments = useAppSelector(selectAllDepartments);
   const categories = useAppSelector(selectAllCategories);
-  const projects = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectProjectsState);
   const { createTaskPopup } = useAppSelector(selectUi);
   const clientsOptions = useAppSelector(selectClientOptions);
   const projectId =

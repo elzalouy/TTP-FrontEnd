@@ -24,7 +24,7 @@ import { useAppSelector } from "src/models/hooks";
 import { selectAllCategories } from "src/models/Categories";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { Task } from "src/types/models/Projects";
-import { ProjectsActions, selectAllProjects } from "src/models/Projects";
+import { ProjectsActions } from "src/models/Projects";
 import { toggleViewTaskPopup } from "src/models/Ui";
 import { useDispatch } from "react-redux";
 

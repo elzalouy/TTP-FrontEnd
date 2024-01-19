@@ -4,7 +4,7 @@ import SmallPopUp from "../../../coreUI/components/Popovers/Popup/SmallPopup";
 import { useAppSelector } from "../../../models/hooks";
 import {
   deleteProject,
-  selectAllProjects,
+  selectProjectsState,
   selectDeleteProjectId,
 } from "../../../models/Projects";
 import { useDispatch } from "react-redux";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const DeleteProject: React.FC<Props> = ({ show, setShow, id }) => {
-  const projectsState = useAppSelector(selectAllProjects);
+  const projectsState = useAppSelector(selectProjectsState);
   const dispatch = useDispatch();
 
   const onDeleteProject = async () => {

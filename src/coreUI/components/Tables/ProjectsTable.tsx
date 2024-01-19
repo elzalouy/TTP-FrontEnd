@@ -20,10 +20,10 @@ import { IProjectsTableProps } from "src/types/components/Table";
 import "src/App/App.css";
 import { selectManagers } from "src/models/Managers";
 import { useHistory } from "react-router";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 
 const ProjectsTable: React.FC<IProjectsTableProps> = (props) => {
-  const { allTasks } = useAppSelector(selectAllProjects);
+  const { allTasks } = useAppSelector(selectProjectsState);
   const history = useHistory();
   const classes = projectsTableStyle(props.status)();
   const theme = useTheme();

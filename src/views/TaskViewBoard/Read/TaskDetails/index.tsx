@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { useAppSelector } from "src/models/hooks";
 import TaskHeader from "./TaskHeader";
 import TaskTimeLine from "./TaskTimeLine";
@@ -19,7 +19,7 @@ interface TaskDetailsProps {
 }
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
-  const { openTaskDetails: task } = useAppSelector(selectAllProjects);
+  const { openTaskDetails: task } = useAppSelector(selectProjectsState);
 
   const [state, setState] = useState<{
     journies: { id: string; name: string; journies: Journies };

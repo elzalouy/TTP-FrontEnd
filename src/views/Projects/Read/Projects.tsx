@@ -12,7 +12,7 @@ import TableBox from "../../../coreUI/components/Containers/Table/TableContainer
 import ProjectsTable from "../../../coreUI/components/Tables/ProjectsTable";
 import { useAppSelector } from "../../../models/hooks";
 import { selectManagers } from "../../../models/Managers";
-import { selectAllProjects } from "../../../models/Projects";
+import { selectProjectsState } from "../../../models/Projects";
 import CreateNewProject from "./NotStartedProjects";
 import EditProject from "../Edit/EditProject";
 import DeleteProject from "../Delete/DeleteProject";
@@ -53,7 +53,7 @@ export const Projects: React.FC<IProjectsPage> = (props) => {
   const showDone = () => setState({ ...state, doneShow: !state.doneShow });
 
   // (Global State) / projects, PMs, user
-  const projects = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectProjectsState);
   const PMs = useAppSelector(selectManagers);
   const user = useAppSelector(selectUser);
 

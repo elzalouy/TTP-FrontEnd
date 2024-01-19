@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Grid, Typography } from "@mui/material";
 import { useAppSelector } from "../../../models/hooks";
-import { selectAllProjects } from "../../../models/Projects";
+import { selectProjectsState } from "../../../models/Projects";
 import TasksTable from "./OverviewTasksTable";
 import { Task } from "../../../types/models/Projects";
 interface UserTasksProps {
@@ -14,7 +14,7 @@ interface UserTasksProps {
 }
 
 const UserTasks: React.FC<UserTasksProps> = (props) => {
-  const projects = useAppSelector(selectAllProjects);
+  const projects = useAppSelector(selectProjectsState);
   return (
     <>
       <Grid

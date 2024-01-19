@@ -20,7 +20,7 @@ import {
   Journies,
   StateType,
 } from "src/types/views/Statistics";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import {
   Months,
@@ -56,7 +56,7 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     comparisonBy: "PMs",
   });
 
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);

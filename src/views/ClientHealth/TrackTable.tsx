@@ -19,7 +19,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { useAppSelector } from "src/models/hooks";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { selectAllClients } from "src/models/Clients";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import TablePaginationActions from "src/coreUI/components/Tables/TablePaginationActions";
 import { getTaskJournies } from "src/helpers/generalUtils";
 import IMAGES from "src/assets/img/Images";
@@ -46,7 +46,7 @@ import { selectAllDepartments } from "src/models/Departments";
 
 const TrackClientHealthTable = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
-  const { allTasks, projects } = useAppSelector(selectAllProjects);
+  const { allTasks, projects } = useAppSelector(selectProjectsState);
   const subCategories = useAppSelector(selectSubCategories);
   const categories = useAppSelector(selectAllCategories);
   const clients = useAppSelector(selectAllClients);
@@ -57,6 +57,7 @@ const TrackClientHealthTable = () => {
   const [order, setOrder] = React.useState(Order.asc);
   const [orderBy, setOrderBy] = React.useState("lastBrief");
   const [mounted, setMounted] = React.useState(false);
+
   /**
    * First DOM changing (in case of loading allTasks, projects, clients, managers)
    * 1. Getting all clients data
@@ -98,6 +99,7 @@ const TrackClientHealthTable = () => {
       subCategories: [],
     },
   });
+
   React.useEffect(() => {
     setMounted(true);
   }, []);

@@ -19,7 +19,7 @@ import {
 } from "src/models/Categories";
 import { getCsvFile } from "../../utils";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { getMeetingDeadline } from "../../utils";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
@@ -49,7 +49,7 @@ type MeetDeadlineProps = {
  */
 const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const allCategories = useAppSelector(selectAllCategories);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);

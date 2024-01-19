@@ -12,7 +12,7 @@ import {
   getAllProjects,
   getAllTasks,
   ProjectsActions,
-  selectAllProjects,
+  selectProjectsState,
   selectTasks,
 } from "../../models/Projects";
 import { selectUi } from "../../models/Ui/UI.selectors";
@@ -38,7 +38,7 @@ const AppHooks: React.FC<Props> = (props) => {
     setTasksStatisticsHook,
     setProjectsStatisticsHook,
     loading,
-  } = useAppSelector(selectAllProjects);
+  } = useAppSelector(selectProjectsState);
   const { boards, date } = useAppSelector(selectStatisticsFilterDefaults);
   const tasks = useAppSelector(selectTasks);
   const [updateTaskData, setUpdateTaskData] = React.useState<any>(null);

@@ -6,7 +6,7 @@ import { useAppSelector } from "../../../models/hooks";
 import { Box } from "@mui/system";
 import { RouteComponentProps } from "react-router-dom";
 import { Grid, Stack, Typography } from "@mui/material";
-import { selectAllProjects } from "../../../models/Projects";
+import { selectProjectsState } from "../../../models/Projects";
 import "./taskViewBoard.css";
 import Button from "src/coreUI/components/Buttons/Button";
 import { Project } from "src/types/models/Projects";
@@ -14,7 +14,7 @@ import { Project } from "src/types/models/Projects";
 type TasksViewBoardProps = RouteComponentProps<{ id: string }>;
 
 export const TasksBoardView = (props: TasksViewBoardProps) => {
-  const ProjectsStore = useAppSelector(selectAllProjects);
+  const ProjectsStore = useAppSelector(selectProjectsState);
   const projectId = props.match.params.id;
   const [state, setState] = useState<{ project: Project }>();
 

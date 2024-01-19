@@ -31,14 +31,14 @@ import {
 } from "../../../models/Ui";
 import moment from "moment";
 import { useAppSelector } from "../../../models/hooks";
-import { selectAllProjects } from "../../../models/Projects";
+import { selectProjectsState } from "../../../models/Projects";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { ToastSuccess, ToastWarning } from "src/coreUI/components/Typos/Alert";
 import { selectUser } from "src/models/Auth";
 
 const ManagersList = () => {
   const managersData = useAppSelector(selectManagers);
-  const project = useAppSelector(selectAllProjects);
+  const project = useAppSelector(selectProjectsState);
   const dispatch = useDispatch();
   const theme = useTheme();
   const MD = useMediaQuery(theme.breakpoints.down("md"));

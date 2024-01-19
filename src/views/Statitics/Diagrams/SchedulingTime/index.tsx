@@ -19,7 +19,7 @@ import {
   Journies,
   StateType,
 } from "src/types/views/Statistics";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task, TaskMovement } from "src/types/models/Projects";
 import { Download as DownloadIcon } from "@mui/icons-material";
 
@@ -55,7 +55,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     options: null,
     comparisonBy: "Departments",
   });
-  const { projects } = useAppSelector(selectAllProjects);
+  const { projects } = useAppSelector(selectProjectsState);
   const [departments, setDepartments] = useState<IDepartmentState[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);

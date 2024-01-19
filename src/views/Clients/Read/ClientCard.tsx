@@ -5,13 +5,13 @@ import ProjectCounterContainer from "../Read/Card/Containers/ProjectCounterConta
 import Header from "./Card/Header";
 import { IClientCard } from "src/types/views/Client";
 import { useAppSelector } from "src/models/hooks";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { DoneStatusList } from "src/types/models/Projects";
 
 const ClientCard: React.FC<IClientCard> = ({ client }) => {
   const { _id, image } = client;
   const [preview, setPreview] = useState("");
-  const projectState = useAppSelector(selectAllProjects);
+  const projectState = useAppSelector(selectProjectsState);
   const projectsIds = projectState.projects
     .filter((item) => item.clientId === _id)
     .map((item) => item._id);

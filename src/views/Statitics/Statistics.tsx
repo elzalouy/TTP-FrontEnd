@@ -14,7 +14,7 @@ import {
   updateDepartmentsPriority,
 } from "src/models/Departments";
 import { Client, selectAllClients } from "src/models/Clients";
-import { selectAllProjects } from "src/models/Projects";
+import { selectProjectsState } from "src/models/Projects";
 import { Task } from "src/types/models/Projects";
 import { Manager, selectManagers } from "src/models/Managers";
 import { Category, selectAllCategories } from "src/models/Categories";
@@ -36,7 +36,7 @@ const Statistics = (props: any) => {
   const allManagers = useAppSelector(selectManagers);
   const allClients = useAppSelector(selectAllClients);
   const allCategories = useAppSelector(selectAllCategories);
-  const { allTasks } = useAppSelector(selectAllProjects);
+  const { allTasks } = useAppSelector(selectProjectsState);
   const { date } = useAppSelector(selectStatisticsFilterDefaults);
   // Component State
   const [state, setState] = useState<{
