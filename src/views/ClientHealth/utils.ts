@@ -130,11 +130,17 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
       let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
-
+      let { passedDeadline, notPassedDeadline } =
+        getMeetingDeadline(estimatedJournies);
+      if (client.clientName.includes("1/2 Million"))
+        console.log({
+          clientName: client.clientName,
+          clientJournies:clientJournies,
+          passedDeadline,
+          notPassedDeadline,
+        });
       let meetingDeadline = Math.floor(
-        (getMeetingDeadline(estimatedJournies).notPassedDeadline.length /
-          estimatedJournies.length) *
-          100
+        (notPassedDeadline.length / estimatedJournies.length) * 100
       );
 
       let revisionJournies = clientJournies.filter((j) => j.revision === true);

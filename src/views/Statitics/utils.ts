@@ -58,29 +58,39 @@ export const getJourneySchedulingTime = (journey: Journey) => {
 
 export const getMeetingDeadline = (journies: Journey[]) => {
   let passedDeadline = journies.filter((i) => {
-    let lastMovement = i.movements[i.movements.length - 1];
-    let movedAt = new Date(lastMovement.movedAt);
-    let journeyDeadline = lastMovement.journeyDeadline
-      ? new Date(lastMovement.journeyDeadline)
-      : movedAt;
-    if (!lastMovement.journeyDeadline) return i;
-    let difference = getDifBetweenDates(movedAt, journeyDeadline);
-    if (difference.isLate && difference.totalHours > 24) return i;
+    let finishedAt = i.journeyFinishedAtDate;
+    if (finishedAt) {
+      let journeyDeadline = i.journeyDeadline
+        ? new Date(i.journeyDeadline)
+        : null;
+      if (journeyDeadline) {
+        let difference = getDifBetweenDates(
+          new Date(finishedAt),
+          new Date(journeyDeadline)
+        );
+        if (difference.isLate === true && difference.totalHours > 24) return i;
+      } else return null;
+    } else return null;
   });
-
+  passedDeadline = passedDeadline.filter((i) => i !== null);
   let notPassedDeadline = journies.filter((i) => {
-    let lastMovement = i.movements[i.movements.length - 1];
-    let movedAt = new Date(lastMovement.movedAt);
-    let journeyDeadline = lastMovement.journeyDeadline;
-    if (journeyDeadline) {
-      let difference = getDifBetweenDates(movedAt, new Date(journeyDeadline));
-      if (
-        difference.isLate === false ||
-        (difference.isLate && difference.totalHours <= 24)
-      )
-        return i;
-    }
+    let finishedAt = i.journeyFinishedAtDate;
+    if (finishedAt) {
+      let journeyDeadline = i.journeyDeadline;
+      if (journeyDeadline) {
+        let difference = getDifBetweenDates(
+          new Date(finishedAt),
+          new Date(journeyDeadline)
+        );
+        if (
+          difference.isLate === false ||
+          (difference.isLate && difference.totalHours <= 24)
+        )
+          return i;
+      } else return null;
+    } else return null;
   });
+  passedDeadline = passedDeadline.filter((i) => i !== null);
   return { passedDeadline, notPassedDeadline };
 };
 
