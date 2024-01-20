@@ -325,7 +325,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
       sharedAtMonth: "",
       journeyFinishedAt: null,
       journeyFinishedAtDate: null,
-      revision: journies.length > 1,
+      revision: false,
       unique: false,
       sharedAt: undefined,
       startedAt: "",
@@ -381,11 +381,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           journey.journeyFinishedAtDate.toLocaleString("en-us", {
             month: "long",
           });
-        journey.leadTime = getDurationFromTo(
-          "Tasks Board",
-          "Shared",
-          journey.movements
-        )?.totalHours;
+        journey.leadTime = getTaskLeadTime(journey.movements).totalHours;
       }
       journies.push(journey);
       journey = getJourney();
@@ -402,11 +398,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
           month: "long",
         }
       );
-      journey.leadTime = getDurationFromTo(
-        "Tasks Board",
-        "Shared",
-        journey.movements
-      )?.totalHours;
+      journey.leadTime = getTaskLeadTime(journey.movements).totalHours;
       journies.push(journey);
       journey = getJourney();
     } else {
@@ -424,7 +416,7 @@ export const getTaskJournies = (task: ITaskInfo) => {
     return {
       ...i,
       unique: index === 0 ? true : false,
-      revision: index === 0 ? false : true,
+      revision: index > 0 ? true : false,
     };
   });
   return { id: task._id, name: task.name, journies };
@@ -541,26 +533,28 @@ export const isMissedDelivery = (movements: TaskMovement[]) => {
 };
 
 export const getTaskLeadTime = (movements: TaskMovement[]) => {
-  let sharedMovemens = movements.filter((item) => item.status === "Shared");
-  if (sharedMovemens.length > 0) {
-    let end = sharedMovemens[sharedMovemens.length - 1]?.movedAt ?? null;
+  let end = _.findLast(movements, (item) => item.status === "Shared");
+  if (end) {
     let start = movements.length > 0 ? movements[0]?.movedAt : null;
     if (end && start) {
-      return getDifBetweenDates(new Date(start), new Date(end));
+      return getDifBetweenDates(new Date(start), new Date(end.movedAt));
     } else return initialDifferenceBetweenDates();
   } else return initialDifferenceBetweenDates();
 };
 
 export const taskSchedulingTime = (movements: TaskMovement[]) => {
-  let inProgressMove = movements?.find((item) => item.status === "In Progress");
-  let taskBoardMoveDate =
-    movements.length > 0 && movements[0].status === "Tasks Board"
-      ? movements[0].movedAt
-      : null;
-  if (inProgressMove && taskBoardMoveDate) {
+  let inProgressMoveIndex = _.findIndex(
+    movements,
+    (item) => item.status === "In Progress"
+  );
+  let tasksBoardMoveIndex = _.findIndex(
+    movements,
+    (item) => item.status === "Tasks Board"
+  );
+  if (tasksBoardMoveIndex < inProgressMoveIndex) {
     return getDifBetweenDates(
-      new Date(taskBoardMoveDate),
-      new Date(inProgressMove.movedAt)
+      new Date(movements[tasksBoardMoveIndex].movedAt),
+      new Date(movements[inProgressMoveIndex].movedAt)
     );
   } else return initialDifferenceBetweenDates();
 };

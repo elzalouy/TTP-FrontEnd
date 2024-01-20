@@ -57,20 +57,8 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-  const [allJournies, setAllJournies] = useState<
-    {
-      id: string;
-      name: string;
-      journies: Journies;
-    }[]
-  >([]);
-  const [journies, setJournies] = useState<
-    {
-      id: string;
-      name: string;
-      journies: Journies;
-    }[]
-  >([]);
+  const [allJournies, setAllJournies] = useState<Journies>([]);
+  const [journies, setJournies] = useState<Journies>([]);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -118,7 +106,9 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   }, [projects, options.tasks]);
 
   useEffect(() => {
-    let journiesData = tasks.map((item) => getTaskJournies(item));
+    let journiesData = _.flattenDeep(
+      tasks.map((item) => getTaskJournies(item).journies)
+    );
     setJournies(journiesData);
     setAllJournies(journiesData);
   }, [tasks]);
@@ -242,81 +232,35 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     );
     let journiesData = allJournies.filter(
       (j) =>
-        j.journies[0].teamId &&
-        filter.teams.includes(j.journies[0].teamId) &&
-        j.journies[0].projectManager &&
-        filter.managers.includes(j.journies[0].projectManager) &&
-        j.journies[0].categoryId &&
-        filter.categories.includes(j.journies[0].categoryId) &&
-        j.journies[0].clientId &&
-        filter.clients.includes(j.journies[0].clientId)
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
     journiesData = journiesData.filter(
       (j) =>
-        (j.journies[0].subCategoryId &&
-          filter.subCategories.includes(j.journies[0].subCategoryId)) ||
-        j.journies[0].subCategoryId === null ||
-        !subsIds.includes(j.journies[0].subCategoryId)
+        (j.subCategoryId && filter.subCategories.includes(j.subCategoryId)) ||
+        j.subCategoryId === null ||
+        !subsIds.includes(j.subCategoryId)
     );
     setJournies(journiesData);
   };
 
   const onGetDatasetsByAll = () => {
     const months = Months;
-    let totalJournies = _.flattenDeep(
-      [...journies].map((item) => item.journies)
-    );
-    totalJournies = totalJournies.map((journey) => {
-      return {
-        ...journey,
-        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
-          "en-us",
-          {
-            month: "long",
-          }
-        ),
-      };
-    });
-    let revised = _.flattenDeep(
-      journies.map((item) => {
-        let journies = item.journies.slice(1, item.journies.length);
-        return journies;
-      })
-    );
-    revised = revised.map((journey) => {
-      return {
-        ...journey,
-        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
-          "en-us",
-          {
-            month: "long",
-          }
-        ),
-      };
-    });
+    let journiesData = [...journies];
+    let revised = [...journies].filter((i) => i.revision === true);
+    revised = journies.filter((i) => i.revision === true);
 
-    let unique = _.flattenDeep(
-      journies.map((item) => {
-        let journies = item.journies.slice(0, 1);
-        return journies;
-      })
-    );
-    unique = unique.map((journey) => {
-      return {
-        ...journey,
-        startedAtMonth: new Date(journey.movements[0].movedAt).toLocaleString(
-          "en-us",
-          {
-            month: "long",
-          }
-        ),
-      };
-    });
-
+    let unique = journiesData.filter((i) => i.unique === true);
     const types = [
       {
         type: "total",
-        journies: totalJournies,
+        journies: journiesData,
       },
       {
         type: "revised",

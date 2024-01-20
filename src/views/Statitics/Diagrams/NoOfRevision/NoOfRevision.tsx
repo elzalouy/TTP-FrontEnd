@@ -53,20 +53,8 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
-  const [allJournies, setAllJournies] = useState<
-    {
-      id: string;
-      name: string;
-      journies: Journies;
-    }[]
-  >([]);
-  const [journies, setJournies] = useState<
-    {
-      id: string;
-      name: string;
-      journies: Journies;
-    }[]
-  >([]);
+  const [allJournies, setAllJournies] = useState<Journies>([]);
+  const [journies, setJournies] = useState<Journies>([]);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -96,7 +84,9 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   }, [options.tasks, projects]);
 
   useEffect(() => {
-    let journiesData = tasks.map((item) => getTaskJournies(item));
+    let journiesData = _.flattenDeep(
+      tasks.map((item) => getTaskJournies(item).journies)
+    );
     setJournies(journiesData);
     setAllJournies(journiesData);
   }, [tasks]);
@@ -163,7 +153,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
           callbacks: {
             label: function (context: any) {
               const value: number = context.dataset.data[context.dataIndex];
-              return `${context.dataset.label}= ${value}% Revision Journeys`;
+              return `${context.dataset.label}= ${value} % Revision Journeys`;
             },
           },
         },
@@ -233,20 +223,19 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
 
     let journiesData = allJournies.filter(
       (j) =>
-        j.journies[0].teamId &&
-        filter.teams.includes(j.journies[0].teamId) &&
-        j.journies[0].projectManager &&
-        filter.managers.includes(j.journies[0].projectManager) &&
-        j.journies[0].categoryId &&
-        filter.categories.includes(j.journies[0].categoryId) &&
-        j.journies[0].clientId &&
-        filter.clients.includes(j.journies[0].clientId)
+        j.teamId &&
+        filter.teams.includes(j.teamId) &&
+        j.projectManager &&
+        filter.managers.includes(j.projectManager) &&
+        j.categoryId &&
+        filter.categories.includes(j.categoryId) &&
+        j.clientId &&
+        filter.clients.includes(j.clientId)
     );
     journiesData = journiesData.filter(
       (j) =>
-        (j.journies[0].subCategoryId &&
-          filter.subCategories.includes(j.journies[0].subCategoryId)) ||
-        j.journies[0].subCategoryId === null
+        (j.subCategoryId && filter.subCategories.includes(j.subCategoryId)) ||
+        j.subCategoryId === null
     );
     setJournies(journiesData);
   };
@@ -259,20 +248,10 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     const result = managers.map((manager, index) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
-      let tasksJournies = journies.filter(
-        (i) =>
-          i?.journies[0]?.projectManager &&
-          i?.journies[0]?.projectManager === manager._id
+      let journiesData = journies.filter(
+        (i) => i.projectManager === manager._id
       );
-      let journiesData = _.flattenDeep(
-        tasksJournies.map((item) => item.journies)
-      );
-      let revised = _.flattenDeep(
-        tasksJournies.map((item) => {
-          let journies = item.journies.slice(1, item.journies.length);
-          return journies;
-        })
-      );
+      let revised = journiesData.filter((i) => i.revision === true);
       let revisionOfManagerByMonth = {
         ..._.groupBy(revised, "startedAtMonth"),
       };
@@ -280,6 +259,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       let journiesOfManagerByMonth = {
         ..._.groupBy(journiesData, "startedAtMonth"),
       };
+
       let datasetData = months.map((item) => {
         let journies = journiesOfManagerByMonth[item.id];
         let revision = revisionOfManagerByMonth[item.id];
@@ -292,12 +272,13 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
           revision: revision ?? [],
         };
       });
+
       return {
         label: manager.name,
         data: datasetData.map((i) => {
           return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
-        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
+        journies: journiesData,
         datasetData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
@@ -317,20 +298,10 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
       let color = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]},0.2)`;
       let borderColor = `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`;
 
-      let tasksJournies = journies.filter(
-        (i) => i.journies[0]?.teamId && i.journies[0]?.teamId === team._id
+      let journiesData = journies.filter(
+        (i) => i.teamId && i.teamId === team._id
       );
-
-      let journiesData = _.flattenDeep(
-        tasksJournies.map((item) => item.journies)
-      );
-
-      let revised = _.flattenDeep(
-        tasksJournies.map((item) => {
-          let journies = item.journies.slice(1, item.journies.length);
-          return journies;
-        })
-      );
+      let revised = journiesData.filter((i) => i.revision === true);
 
       let revisionOfManagerByMonth = {
         ..._.groupBy(revised, "startedAtMonth"),
@@ -358,7 +329,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         data: datasetData.map((i) => {
           return Math.floor((i.revision.length / i.journies.length) * 100);
         }),
-        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
+        journies: journiesData,
         backgroundColor: datasetData.map((items) => items.color),
         borderColor: datasetData.map((items) => items.borderColor),
         borderWidth: 3,
@@ -375,16 +346,8 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   };
 
   const onGetDatasetsByAll = () => {
-    const tasksJournies = [...journies];
-    const journiesData = _.flattenDeep(
-      tasksJournies.map((item) => item.journies)
-    );
-    const revised = _.flattenDeep(
-      tasksJournies.map((item) => {
-        let revisedJournies = item.journies.slice(1, item.journies.length);
-        return revisedJournies;
-      })
-    );
+    const journiesData = journies;
+    const revised = journiesData.filter((i) => i.revision === true);
     const journiesByMonth = {
       ..._.groupBy(journiesData, "startedAtMonth"),
     };
@@ -421,7 +384,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         hoverBorderWidth: 4,
         skipNull: true,
         datasetData,
-        journies: _.flattenDeep(tasksJournies.map((i) => i.journies)),
+        journies: journiesData,
       },
     ];
     return OrganizationResult;
