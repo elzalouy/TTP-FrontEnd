@@ -130,15 +130,8 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
       let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
-      let { passedDeadline, notPassedDeadline } =
-        getMeetingDeadline(estimatedJournies);
-      if (client.clientName.includes("1/2 Million"))
-        console.log({
-          clientName: client.clientName,
-          clientJournies:clientJournies,
-          passedDeadline,
-          notPassedDeadline,
-        });
+
+      let { notPassedDeadline } = getMeetingDeadline(estimatedJournies);
       let meetingDeadline = Math.floor(
         (notPassedDeadline.length / estimatedJournies.length) * 100
       );
@@ -213,8 +206,9 @@ export const getCsvData = (journies: Journies) => {
       "Tasks Board",
       journey.movements
     );
+    // TODO
     let cancelMoves = getCancelationType(journey.movements);
-    let missedDelivery = isMissedDelivery(journey.movements);
+    let missedDelivery = isMissedDelivery(journey);
     let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
       "Review",
       "Tasks Board",

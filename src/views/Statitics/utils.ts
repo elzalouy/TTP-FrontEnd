@@ -56,6 +56,7 @@ export const getJourneySchedulingTime = (journey: Journey) => {
   } else return 0;
 };
 
+// Only finished journies
 export const getMeetingDeadline = (journies: Journey[]) => {
   let passedDeadline = journies.filter((i) => {
     let finishedAt = i.journeyFinishedAtDate;
@@ -73,21 +74,20 @@ export const getMeetingDeadline = (journies: Journey[]) => {
     } else return null;
   });
   passedDeadline = passedDeadline.filter((i) => i !== null);
+
   let notPassedDeadline = journies.filter((i) => {
     let finishedAt = i.journeyFinishedAtDate;
-    if (finishedAt) {
-      let journeyDeadline = i.journeyDeadline;
-      if (journeyDeadline) {
-        let difference = getDifBetweenDates(
-          new Date(finishedAt),
-          new Date(journeyDeadline)
-        );
-        if (
-          difference.isLate === false ||
-          (difference.isLate && difference.totalHours <= 24)
-        )
-          return i;
-      } else return null;
+    let journeyDeadline = i.journeyDeadline;
+    if (finishedAt && journeyDeadline) {
+      let difference = getDifBetweenDates(
+        new Date(finishedAt),
+        new Date(journeyDeadline)
+      );
+      if (
+        difference.isLate === false ||
+        (difference.isLate && difference.totalHours <= 24)
+      )
+        return i;
     } else return null;
   });
   passedDeadline = passedDeadline.filter((i) => i !== null);

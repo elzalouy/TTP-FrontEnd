@@ -151,7 +151,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ task, setShow, movements }) => {
         journey.movements
       );
       let cancelMoves = getCancelationType(journey.movements);
-      let missedDelivery = isMissedDelivery(journey.movements);
+      let missedDelivery = isMissedDelivery(journey);
       let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
         "Review",
         "Tasks Board",

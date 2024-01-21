@@ -4,6 +4,11 @@ import { Category } from "src/models/Categories";
 import { Task, TaskMovement } from "../models/Projects";
 import { IDepartmentState, ITeam } from "../models/Departments";
 
+export enum meetingDeadline {
+  "On Time",
+  "Passed",
+  "Not Passed",
+}
 export type Journey = {
   name?: string;
   projectId?: string;
@@ -37,6 +42,7 @@ export type Journey = {
   cardCreatedAt: Date | string;
   journeyDeadlines: (Date | string)[];
   clientName?: string;
+  meetingDeadline?: meetingDeadline;
 };
 export type Journies = Journey[];
 export interface ITaskInfo extends Task {

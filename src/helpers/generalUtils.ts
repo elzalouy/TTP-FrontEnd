@@ -6,7 +6,12 @@ import {
   Task,
   TaskMovement,
 } from "../types/models/Projects";
-import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
+import {
+  ITaskInfo,
+  Journey,
+  Journies,
+  meetingDeadline,
+} from "src/types/views/Statistics";
 
 interface options {
   id?: string;
@@ -65,7 +70,7 @@ export const getDifBetweenDates = (start: Date, end: Date) => {
     totalHours,
   };
 };
-
+export const getDiff = (start: Date, end: Date) => {};
 export const calculateStatusBasedOnDeadline = (data: any) => {
   if (![typeof data, data].includes("undefined" || "null")) {
     let formattedDeadline = format(new Date(data), "dd-mm-yyyy");
@@ -413,6 +418,18 @@ export const getTaskJournies = (task: ITaskInfo) => {
   });
 
   journies = journies.map((i, index) => {
+    let difference;
+    if (i.journeyDeadline) {
+      difference = i.journeyFinishedAt
+        ? getDifBetweenDates(
+            new Date(i.journeyFinishedAt),
+            new Date(i.journeyDeadline)
+          )
+        : getDifBetweenDates(
+            new Date(new Date(i.movements[i.movements.length - 1].movedAt)),
+            new Date(i.journeyDeadline)
+          );
+    } else difference = null;
     return {
       ...i,
       unique: index === 0 ? true : false,
@@ -513,23 +530,16 @@ export const getDurationFromTo = (
   }
 };
 
-export const isMissedDelivery = (movements: TaskMovement[]) => {
-  if (movements && movements.length > 0) {
-    let deadlineMoves = movements.filter((i) => i.journeyDeadline);
-    let journeyDeadline =
-      deadlineMoves?.length > 0 &&
-      deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-        ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-        : undefined;
-    let lastMovementAt = new Date(movements[movements.length - 1]?.movedAt);
-    if (journeyDeadline && lastMovementAt) {
-      let dif = getDifBetweenDates(
-        new Date(lastMovementAt),
-        new Date(new Date(journeyDeadline))
-      );
-      return dif.isLate && dif.totalHours > 24;
-    } else return false;
-  } else return false;
+export const isMissedDelivery = (journey: Journey) => {
+  if (journey.journeyDeadline && journey.journeyFinishedAtDate) {
+    let dif = getDifBetweenDates(
+      new Date(journey.journeyFinishedAtDate),
+      new Date(journey.journeyDeadline)
+    );
+    return dif.isLate === false || (dif.isLate && dif.totalHours <= 24)
+      ? false
+      : true;
+  } else return true;
 };
 
 export const getTaskLeadTime = (movements: TaskMovement[]) => {

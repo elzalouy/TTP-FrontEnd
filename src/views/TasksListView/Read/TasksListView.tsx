@@ -199,7 +199,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 journey.movements
               );
               let cancelMoves = getCancelationType(journey.movements);
-              let missedDelivery = isMissedDelivery(journey.movements);
+              let missedDelivery = isMissedDelivery(journey);
               let wrongOrMissingFulfillment = getTotalDifferenceFromTo(
                 "Review",
                 "Tasks Board",

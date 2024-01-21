@@ -399,11 +399,9 @@ const TrackClientHealthTable = () => {
                     }
                   );
                   let totalDays =
-                    averageTOD > 0 ? Math.floor(averageTOD / journies / 24) : 0;
+                    averageTOD > 0 ? Math.floor(averageTOD / 24) : 0;
                   let totalHours =
-                    averageTOD > 0
-                      ? Math.floor((averageTOD / journies) % 24)
-                      : 0;
+                    averageTOD > 0 ? Math.floor(averageTOD % 24) : 0;
 
                   return (
                     <ClientTableRow
