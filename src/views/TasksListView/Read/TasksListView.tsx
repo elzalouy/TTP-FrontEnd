@@ -242,6 +242,9 @@ export const TasksListView: React.FC<Props> = (props) => {
                       "dd MMMM yyyy HH:MM"
                     )
                   : "",
+                journeyFinishedAt: journey.journeyFinishedAtDate
+                  ? format(journey.journeyFinishedAtDate, "dd MMMM yyyy HH:MM")
+                  : "",
                 deliveryStatus: missedDelivery ? "Missed" : "On Time",
                 movementsCount: journey.movements.length,
                 journeyLeadTime: `${leadTime.difference.days}D / ${leadTime.difference.hours}H / ${leadTime.difference.mins}M`,

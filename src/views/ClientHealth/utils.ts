@@ -240,7 +240,7 @@ export const getCsvData = (journies: Journies) => {
       taskJourniesCount: journies
         .filter((i) => i.taskId === journey.taskId)
         .length.toString(),
-      journeyIndex: index + 1,
+      journeyIndex: journey.index + 1,
       movementsCount: journey.movements.length,
       status: journey.movements[journey.movements.length - 1].status ?? "",
       categoryName: journey?.categoryName ?? "",
@@ -250,6 +250,9 @@ export const getCsvData = (journies: Journies) => {
         : "",
       dueDate: journey.journeyDeadline
         ? format(new Date(journey.journeyDeadline), "dd MMMM yyyy HH:MM")
+        : "",
+      journeyFinishedAt: journey.journeyFinishedAtDate
+        ? format(journey.journeyFinishedAtDate, "dd MMMM yyyy HH:MM")
         : "",
       deliveryStatus: missedDelivery ? "Missed" : "On Time",
       journeyLeadTime: `${days}D / ${hours}H`,

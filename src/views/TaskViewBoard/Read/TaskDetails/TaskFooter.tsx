@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { TaskMovement } from "src/types/models/Projects";
+import { getTotalDifferenceFromTo } from "src/helpers/generalUtils";
 
 interface TaskFooterProps {
   journies: number;
@@ -26,40 +27,30 @@ const TaskFooter: FC<TaskFooterProps> = ({
 
   useEffect(() => {
     setPage(1);
-    let fulfillmentTimes = movements.filter((i, index) => {
-      if (
-        i.status === "Review" &&
-        movements[index + 1] &&
-        movements[index + 1].status === "Tasks Board"
-      )
-        return i;
-    });
-    let commentsTimes = movements.filter((i, index) => {
-      if (
-        i.status === "Shared" &&
-        movements[index + 1] &&
-        movements[index + 1].status === "Tasks Board"
-      )
-        return i;
-    });
-    let revisitingTimes = movements.filter(
-      (i, index) =>
-        i.status === "Done" &&
-        movements[index + 1] &&
-        movements[index + 1].status === "Tasks Board"
-    );
-    let revivedTimes = movements.filter((i, index) => {
-      if (
-        i.status === "Cancled" &&
-        movements[index + 1] &&
-        movements[index + 1].status === "Tasks Board"
-      )
-        return i;
-    });
-    setFulfillment(fulfillmentTimes.length);
-    setRevisiting(revisitingTimes.length);
-    setComments(commentsTimes.length);
-    setRevived(revivedTimes.length);
+    let fulfillmentTimes = getTotalDifferenceFromTo(
+      "Review",
+      "Tasks Board",
+      movements
+    ).times;
+    let commentsTimes = getTotalDifferenceFromTo(
+      "Shared",
+      "Tasks Board",
+      movements
+    ).times;
+    let revisitingTimes = getTotalDifferenceFromTo(
+      "Done",
+      "Tasks Board",
+      movements
+    ).times;
+    let revivedTimes = getTotalDifferenceFromTo(
+      "Cancled",
+      "Tasks Board",
+      movements
+    ).times;
+    setFulfillment(fulfillmentTimes);
+    setRevisiting(revisitingTimes);
+    setComments(commentsTimes);
+    setRevived(revivedTimes);
   }, [movements]);
 
   return (
@@ -90,7 +81,6 @@ const TaskFooter: FC<TaskFooterProps> = ({
         >
           Comments & changes times :{" "}
           <Typography color="black" fontSize={"10px"}>
-            {" "}
             {comments}
           </Typography>
         </Typography>
@@ -104,9 +94,8 @@ const TaskFooter: FC<TaskFooterProps> = ({
           alignItems={"baseline"}
           fontWeight={"600"}
         >
-          Revisiting times :{" "}
+          Revisiting times :
           <Typography color="black" fontSize={"10px"}>
-            {" "}
             {revisiting}
           </Typography>
         </Typography>
@@ -122,7 +111,6 @@ const TaskFooter: FC<TaskFooterProps> = ({
         >
           Revived times :{" "}
           <Typography color="black" fontSize={"10px"}>
-            {" "}
             {revived}
           </Typography>
         </Typography>

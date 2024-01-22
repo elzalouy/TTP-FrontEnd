@@ -15,12 +15,12 @@ import {
   getTotalDifferenceFromTo,
 } from "src/helpers/generalUtils";
 import CircleIcon from "@mui/icons-material/Circle";
+import { ITaskInfo, Journey } from "src/types/views/Statistics";
 
 type TaskStatusTimlineProps = {
-  movements: TaskMovement[];
-  journeyIndex: number;
+  journey?: Journey;
+  taskInfo?: ITaskInfo;
   journiesLength: number;
-  allMovementsOfTask: TaskMovement[];
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
@@ -71,54 +71,66 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
   React.useEffect(() => {
     setFrom("");
     setTo("");
-  }, [props.movements, props.journeyIndex]);
+  }, [props.journey]);
 
   React.useEffect(() => {
-    setMovements(props?.movements);
-    let result = getCancelationType(props.movements);
-    setCancelType(result);
-  }, [props.movements]);
+    if (props.journey) {
+      setMovements(props.journey.movements);
+      let result = getCancelationType(props.journey.movements);
+      setCancelType(result);
+    }
+  }, [props.journey]);
 
   React.useEffect(() => {
-    let firstMoveIndex = props.allMovementsOfTask.findIndex(
-      (i, index) => props.movements[0] && i._id === props.movements[0]._id
-    );
-    let prevMove =
-      firstMoveIndex > 0 ? props.allMovementsOfTask[firstMoveIndex - 1] : null;
-    let movementsData = [...props.movements].map((i, index) => {
-      return { ...i, index };
-    });
-    if (from !== "" && to === "")
-      movementsData = movementsData.filter(
-        (i) =>
-          (i.index > 0 && props.movements[i.index - 1].status === from) ||
-          (i.index === 0 && prevMove?.status === from)
-      );
-    else if (from === "" && to !== "")
-      movementsData = movementsData.filter((i) => i.status === to);
-    else if (from !== "" && to !== "")
-      movementsData = movementsData.filter(
-        (i) =>
-          (i.status === to &&
-            i.index > 0 &&
-            props.movements[i.index - 1].status === from) ||
-          (i.index === 0 && prevMove?.status === from && i.status === to)
-      );
-    setMovements(movementsData);
+    if (props.journey) {
+      let firstMoveIndex =
+        props.taskInfo?.movements.findIndex(
+          (i, index) =>
+            props.journey?.movements[0] &&
+            i._id === props.journey.movements[0]._id
+        ) ?? 0;
+      let prevMove =
+        firstMoveIndex > 0
+          ? props.taskInfo?.movements[firstMoveIndex - 1]
+          : null;
+      let movementsData = [...props.journey.movements].map((i, index) => {
+        return { ...i, index };
+      });
+      if (from !== "" && to === "")
+        movementsData = movementsData.filter(
+          (i) =>
+            (i.index > 0 &&
+              props?.journey?.movements[i.index - 1].status === from) ||
+            (i.index === 0 && prevMove?.status === from)
+        );
+      else if (from === "" && to !== "")
+        movementsData = movementsData.filter((i) => i.status === to);
+      else if (from !== "" && to !== "")
+        movementsData = movementsData.filter(
+          (i) =>
+            (i.status === to &&
+              i.index > 0 &&
+              props.journey?.movements[i.index - 1].status === from) ||
+            (i.index === 0 && prevMove?.status === from && i.status === to)
+        );
+      setMovements(movementsData);
+    }
   }, [from, to]);
 
   const isNasty = () => {
     const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
-    let moves = props.allMovementsOfTask;
-    let Moves = moves.map((i, index) => {
-      return { ...i, index: index };
-    });
-    moves = Moves.filter(
-      (item) =>
-        status.includes(item?.status) &&
-        props.movements[item.index + 1]?.status === "Tasks Board"
-    );
-    return moves.length;
+    let moves = props.taskInfo?.movements;
+    if (moves) {
+      let Moves = moves.map((i, index) => {
+        return { ...i, index: index };
+      });
+      moves = Moves.filter(
+        (item) =>
+          status.includes(item?.status) &&
+          props?.journey?.movements[item.index + 1]?.status === "Tasks Board"
+      );
+      return moves.length;
+    } else return 0;
   };
 
   return (
@@ -129,8 +141,9 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Task Journey
           </Typography>
         </Box>
-        {props?.movements?.filter((item) => item?.status === "Not Clear")
-          ?.length === 0 ? (
+        {props?.journey?.movements?.filter(
+          (item) => item?.status === "Not Clear"
+        )?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -263,16 +276,18 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           >
             {movements &&
               movements?.map((item, index) => {
-                let nextMoveIndex =
-                  props.allMovementsOfTask?.findIndex(
-                    (nm) => nm._id === item._id
-                  ) + 1;
-                let prevMoveIndex =
-                  props.allMovementsOfTask?.findIndex(
-                    (pm) => pm._id === item._id
-                  ) - 1;
-                let nextMove = props.allMovementsOfTask[nextMoveIndex];
-                let prevMove = props.allMovementsOfTask[prevMoveIndex];
+                let nextMoveIndex = props.taskInfo?.movements
+                  ? props?.taskInfo?.movements?.findIndex(
+                      (nm) => nm._id === item._id
+                    ) + 1
+                  : -1;
+                let prevMoveIndex = props.taskInfo?.movements
+                  ? props?.taskInfo?.movements?.findIndex(
+                      (pm) => pm._id === item._id
+                    ) - 1
+                  : -1;
+                let nextMove = props?.taskInfo?.movements[nextMoveIndex];
+                let prevMove = props?.taskInfo?.movements[prevMoveIndex];
                 let due = undefined;
                 due = prevMove
                   ? getDifBetweenDates(
@@ -286,9 +301,11 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                     <TimelineSeparator sx={{ height: "auto" }}>
                       <TimelineDot sx={dotStyle}>
                         <Typography sx={timeLineDotNumStyle}>
-                          {props.allMovementsOfTask?.findIndex(
-                            (move) => item._id === move._id
-                          ) + 1}
+                          {props.taskInfo?.movements
+                            ? props.taskInfo?.movements?.findIndex(
+                                (move) => item._id === move._id
+                              ) + 1
+                            : 0}
                         </Typography>
                       </TimelineDot>
                       <TimelineConnector
@@ -378,7 +395,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                               {due?.difference?.hours ?? 0} Hours{", "}
                               {due?.difference?.mins ?? 0} mins{" "}
                               {nextMove &&
-                                props.journeyIndex === props.journiesLength &&
+                                props.journey?.index === props.journiesLength &&
                                 "(Till Now)"}
                             </Typography>
                           </Box>
@@ -505,19 +522,23 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           <Typography fontSize={"12px"} fontWeight={"700"} color="black">
             Fullfillment : &nbsp;
           </Typography>
-          {JourneyDuration("In Progress", "Review", props.movements)}
+          {JourneyDuration(
+            "In Progress",
+            "Review",
+            props.journey?.movements ?? []
+          )}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Delivery : &nbsp;
           </Typography>
-          {JourneyDuration("Review", "Shared", props.movements)}
+          {JourneyDuration("Review", "Shared", props?.journey?.movements ?? [])}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Closing : &nbsp;
           </Typography>
-          {JourneyDuration("Shared", "Done", props.movements)}
+          {JourneyDuration("Shared", "Done", props?.journey?.movements ?? [])}
         </Box>
       </Grid>
     </div>

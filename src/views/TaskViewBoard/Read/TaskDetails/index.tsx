@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import PopUp from "src/coreUI/components/Popovers/Popup/PopUp";
-import { selectProjectsState } from "src/models/Projects";
+import { selectAllProjects, selectProjectsState } from "src/models/Projects";
 import { useAppSelector } from "src/models/hooks";
 import TaskHeader from "./TaskHeader";
 import TaskTimeLine from "./TaskTimeLine";
@@ -11,43 +11,77 @@ import { selectSideMenuToggle } from "src/models/Ui";
 import { getTaskJournies } from "src/helpers/generalUtils";
 import { TaskMovement } from "src/types/models/Projects";
 import _ from "lodash";
-import { Journies } from "src/types/views/Statistics";
+import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
+import { selectAllCategories } from "src/models/Categories";
+import { selectPMs } from "src/models/Managers";
+import { selectAllDepartments } from "src/models/Departments";
 
 interface TaskDetailsProps {
   show: string;
   setShow: any;
 }
+type stateType = {
+  taskInfo?: ITaskInfo;
+  taskJournies?: { id: string; name: string; journies: Journies };
+  journies?: Journies;
+  selectedJourney?: Journey;
+  selectedIndex?: number;
+};
+const initialState: stateType = {
+  taskInfo: undefined,
+  journies: undefined,
+  selectedIndex: undefined,
+  taskJournies: undefined,
+  selectedJourney: undefined,
+};
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
+  const projects = useAppSelector(selectAllProjects);
+  const categories = useAppSelector(selectAllCategories);
+  const managers = useAppSelector(selectPMs);
+  const departments = useAppSelector(selectAllDepartments);
   const { openTaskDetails: task } = useAppSelector(selectProjectsState);
+  const [state, setState] = useState<stateType>(initialState);
 
-  const [state, setState] = useState<{
-    journies: { id: string; name: string; journies: Journies };
-    journiesMovements: TaskMovement[][];
-    selected?: TaskMovement[];
-    selectedIndex?: number;
-  }>({
-    journies: { id: "", name: "", journies: [] },
-    journiesMovements: [],
-  });
-  // build a use effect to calculate the journies once the component is rendered once.
+  const onClose = (value: string) => {
+    setState(initialState);
+    setShow(value);
+  };
 
   React.useEffect(() => {
     let State = { ...state };
-    let journies = getTaskJournies(task);
-    let journiesMovements = journies.journies.map((item) => item.movements);
-    State.journies = journies;
-    State.journiesMovements = journiesMovements;
-    State.selected = State.journiesMovements[0];
+    let client = projects.find((i) => i._id === task.projectId)?.name;
+    let category = categories.find((c) => c._id === task.categoryId);
+    let subCategory = category?.subCategoriesId.find(
+      (s) => s._id === task.subCategoryId
+    );
+    let project = projects.find((p) => p._id === task.projectId);
+    let manager = managers.find((m) => m._id === project?.projectManager);
+    let department = departments.find((d) => d.boardId === task.boardId);
+    let team = department?.teams.find((t) => t._id === task.teamId);
+    let taskInfo: ITaskInfo = {
+      ...task,
+      teamName: team?.name,
+      clientName: client,
+      projectName: project?.name,
+      categoryName: category?.category,
+      subCategoryName: subCategory?.subCategory,
+      projectManagerName: manager?.name,
+    };
+    let taskJournies = getTaskJournies(taskInfo);
+    State.taskInfo = taskInfo;
+    State.taskJournies = taskJournies;
+    State.journies = taskJournies.journies;
+    State.selectedJourney = taskJournies.journies[0];
     State.selectedIndex = 0;
     setState(State);
-  }, [task]);
+  }, [task, show]);
 
-  const onSelectJourney = (value: number) => {
+  const onSelectJourney = (index: number) => {
     setState({
       ...state,
-      selected: state.journiesMovements[value - 1],
-      selectedIndex: value - 1,
+      selectedJourney: state.journies ? state.journies[index] : undefined,
+      selectedIndex: index,
     });
   };
 
@@ -82,7 +116,11 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
         overflow={"hidden"}
         position={"relative"}
       >
-        <TaskHeader setShow={setShow} task={task} movements={state.selected} />
+        <TaskHeader
+          setShow={onClose}
+          taskInfo={state.taskInfo}
+          Journey={state.selectedJourney}
+        />
         <Grid
           xs={12}
           sm={12}
@@ -97,9 +135,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
         >
           <TaskBasics
             journeyIndex={state.selectedIndex ?? 0}
-            journiesLength={state.journiesMovements.length}
-            task={task}
-            movements={state.selected ?? []}
+            journiesLength={state?.journies?.length ?? 0}
+            task={state.taskInfo}
+            journey={state.selectedJourney}
           />
         </Grid>
         <Grid
@@ -119,10 +157,9 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           }}
         >
           <TaskTimeLine
-            journeyIndex={state.selectedIndex ?? 0}
-            journiesLength={state.journiesMovements.length}
-            movements={state.selected ?? []}
-            allMovementsOfTask={task.movements}
+            journey={state.selectedJourney}
+            taskInfo={state.taskInfo}
+            journiesLength={state.journies?.length ?? 0}
           />
         </Grid>
         <Grid
@@ -141,7 +178,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           item
         >
           <TaskFooter
-            journies={state.journiesMovements.length}
+            journies={state.journies?.length ?? 0}
             onSelectJourney={onSelectJourney}
             movements={task.movements}
           />

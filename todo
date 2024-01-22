@@ -1,3 +1,4 @@
-TODO Check if there is a task array and projects array for inside the client health page main component
-TODO Build utils.ts for the client health page
-TODO Build the function of preparing the csv files.
+TODO Clear the State of the Task Details popup after closing (Done)
+TODO Check the tasks deadlines with journies. (Done)
+TODO Replace all Task Details formulas to the new formulas and Refactor it.(Done)
+TODO Explain the Client health report. (not started)

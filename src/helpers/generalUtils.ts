@@ -418,18 +418,8 @@ export const getTaskJournies = (task: ITaskInfo) => {
   });
 
   journies = journies.map((i, index) => {
-    let difference;
-    if (i.journeyDeadline) {
-      difference = i.journeyFinishedAt
-        ? getDifBetweenDates(
-            new Date(i.journeyFinishedAt),
-            new Date(i.journeyDeadline)
-          )
-        : getDifBetweenDates(
-            new Date(new Date(i.movements[i.movements.length - 1].movedAt)),
-            new Date(i.journeyDeadline)
-          );
-    } else difference = null;
+    if (!i.journeyDeadline && journies.length - 1 === index && task.deadline)
+      i.journeyDeadline = task.deadline;
     return {
       ...i,
       unique: index === 0 ? true : false,
@@ -472,13 +462,14 @@ export const getCancelationType = (movements: TaskMovement[]) => {
  * @param movements all movements of task or journey
  * @returns Difference in days,months,years,hours, and mins.
  */
+
 export const getTotalDifferenceFromTo = (
   from: string,
   to: string,
   movements: TaskMovement[]
 ) => {
   let totalDif = initialDifferenceBetweenDates();
-  let dif = [initialDifferenceBetweenDates()];
+  let dif: any[] = [initialDifferenceBetweenDates()];
   dif = movements.map((move, index) => {
     if (
       move.status === from &&
@@ -490,13 +481,14 @@ export const getTotalDifferenceFromTo = (
         new Date(movements[index + 1].movedAt)
       );
       return difference;
-    } else return initialDifferenceBetweenDates();
+    } else return null;
   });
-  totalDif.difference.days += _.sum(dif.map((i) => i.difference.days));
-  totalDif.difference.hours += _.sum(dif.map((i) => i.difference.hours));
-  totalDif.difference.mins += _.sum(dif.map((i) => i.difference.mins));
-  totalDif.totalHours += _.sum(dif.map((i) => i.totalHours));
-  totalDif.totalMins += _.sum(dif.map((i) => i.totalMins));
+  dif = dif.filter((i: any) => i !== null);
+  totalDif.difference.days += _.sum(dif.map((i: any) => i.difference.days));
+  totalDif.difference.hours += _.sum(dif.map((i: any) => i.difference.hours));
+  totalDif.difference.mins += _.sum(dif.map((i: any) => i.difference.mins));
+  totalDif.totalHours += _.sum(dif.map((i: any) => i.totalHours));
+  totalDif.totalMins += _.sum(dif.map((i: any) => i.totalMins));
   return { times: dif.length, dif: totalDif };
 };
 

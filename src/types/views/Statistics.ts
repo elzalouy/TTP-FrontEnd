@@ -70,6 +70,7 @@ export type TaskJourniesDetails = {
   projectManager: string;
   startDate: string;
   dueDate: string;
+  journeyFinishedAt: string;
   movementsCount: number;
   journeyLeadTime: string;
   journeyProcessingTime: string;
