@@ -118,7 +118,7 @@ const TaskBasics: FC<TaskBasicsProps> = ({
               borderRadius: 2,
               p: 0.8,
               width: "auto",
-              height: 33,
+              height: "auto",
               display: "inline-flex",
               flexDirection: "row",
             }}
