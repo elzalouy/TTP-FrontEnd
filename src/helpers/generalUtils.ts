@@ -326,18 +326,18 @@ export const getTaskJournies = (task: ITaskInfo) => {
       index: journies.length,
       teamId: task.teamId,
       teamName: task.teamName,
-      movements: [],
+      boardId: task.boardId,
+      cardCreatedAt: task.cardCreatedAt ?? task.createdAt ?? null,
+      movements: [], // open any task
+      sharedAt: undefined, //
       sharedAtMonth: "",
       journeyFinishedAt: null,
       journeyFinishedAtDate: null,
       revision: false,
       unique: false,
-      sharedAt: undefined,
       startedAt: "",
-      boardId: task.boardId,
       journeyDeadline: null,
       journeyDeadlines: [],
-      cardCreatedAt: task.cardCreatedAt ?? task.createdAt ?? null,
       leadTime: undefined,
     };
   };

@@ -128,7 +128,7 @@ const TrackClientHealthTable = () => {
           );
           let manager = managers.find(
             (i) => i._id === project?.projectManager
-          )?._id;
+          )?.name;
           let client = clients.find(
             (i) => i._id === project?.clientId
           )?.clientName;
