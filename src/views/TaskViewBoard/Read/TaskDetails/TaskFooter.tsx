@@ -18,7 +18,7 @@ const TaskFooter: FC<TaskFooterProps> = ({
   const [page, setPage] = React.useState(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    onSelectJourney(value);
+    onSelectJourney(value - 1);
   };
   const [fulfillment, setFulfillment] = useState(0);
   const [revisiting, setRevisiting] = useState(0);

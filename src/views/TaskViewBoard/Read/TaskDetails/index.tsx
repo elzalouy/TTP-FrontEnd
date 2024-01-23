@@ -20,6 +20,7 @@ interface TaskDetailsProps {
   show: string;
   setShow: any;
 }
+
 type stateType = {
   taskInfo?: ITaskInfo;
   taskJournies?: { id: string; name: string; journies: Journies };
@@ -159,7 +160,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, setShow }) => {
           <TaskTimeLine
             journey={state.selectedJourney}
             taskInfo={state.taskInfo}
-            journiesLength={state.journies?.length ?? 0}
+            journies={state.taskJournies}
           />
         </Grid>
         <Grid

@@ -13,14 +13,15 @@ import {
   getCancelationType,
   getDifBetweenDates,
   getTotalDifferenceFromTo,
+  isMissedDelivery,
 } from "src/helpers/generalUtils";
 import CircleIcon from "@mui/icons-material/Circle";
-import { ITaskInfo, Journey } from "src/types/views/Statistics";
+import { ITaskInfo, Journey, Journies } from "src/types/views/Statistics";
 
 type TaskStatusTimlineProps = {
   journey?: Journey;
   taskInfo?: ITaskInfo;
-  journiesLength: number;
+  journies?: { id: string; name: string; journies: Journies };
 };
 type cancelTypes = "Canceled" | "Disturbed" | "Flagged" | "";
 
@@ -38,88 +39,32 @@ const JourneyDuration = (
   );
 };
 
-const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
-  props: TaskStatusTimlineProps
-) => {
-  const [movements, setMovements] = React.useState<TaskMovement[]>();
+const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = ({
+  taskInfo,
+  journey,
+  journies,
+}) => {
+  // const [movements, setMovements] = React.useState<TaskMovement[]>();
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
-
   const [cancelType, setCancelType] = React.useState<string[]>([]);
-  const [isMissedDelivery, setIsMissedDelivery] = React.useState(false);
+  const [missedDelivery, setMissedDelivery] = React.useState(false);
 
   React.useEffect(() => {
-    if (movements && movements.length > 0) {
-      let deadlineMoves = movements.filter((i) => i.journeyDeadline);
-      let journeyDeadline =
-        deadlineMoves?.length > 0 &&
-        deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-          ? deadlineMoves[deadlineMoves.length - 1].journeyDeadline
-          : undefined;
-      let lastMovementAt = new Date(movements[movements.length - 1]?.movedAt);
-
-      if (journeyDeadline && lastMovementAt) {
-        let dif = getDifBetweenDates(
-          new Date(lastMovementAt),
-          new Date(new Date(journeyDeadline))
-        );
-        setIsMissedDelivery(dif.isLate);
-      } else setIsMissedDelivery(false);
+    if (journey) {
+      setMissedDelivery(isMissedDelivery(journey));
+      setCancelType(getCancelationType(journey.movements));
     }
-  }, [movements]);
+  }, [journey]);
 
   React.useEffect(() => {
     setFrom("");
     setTo("");
-  }, [props.journey]);
-
-  React.useEffect(() => {
-    if (props.journey) {
-      setMovements(props.journey.movements);
-      let result = getCancelationType(props.journey.movements);
-      setCancelType(result);
-    }
-  }, [props.journey]);
-
-  React.useEffect(() => {
-    if (props.journey) {
-      let firstMoveIndex =
-        props.taskInfo?.movements.findIndex(
-          (i, index) =>
-            props.journey?.movements[0] &&
-            i._id === props.journey.movements[0]._id
-        ) ?? 0;
-      let prevMove =
-        firstMoveIndex > 0
-          ? props.taskInfo?.movements[firstMoveIndex - 1]
-          : null;
-      let movementsData = [...props.journey.movements].map((i, index) => {
-        return { ...i, index };
-      });
-      if (from !== "" && to === "")
-        movementsData = movementsData.filter(
-          (i) =>
-            (i.index > 0 &&
-              props?.journey?.movements[i.index - 1].status === from) ||
-            (i.index === 0 && prevMove?.status === from)
-        );
-      else if (from === "" && to !== "")
-        movementsData = movementsData.filter((i) => i.status === to);
-      else if (from !== "" && to !== "")
-        movementsData = movementsData.filter(
-          (i) =>
-            (i.status === to &&
-              i.index > 0 &&
-              props.journey?.movements[i.index - 1].status === from) ||
-            (i.index === 0 && prevMove?.status === from && i.status === to)
-        );
-      setMovements(movementsData);
-    }
-  }, [from, to]);
+  }, [journey]);
 
   const isNasty = () => {
     const status = ["Not Clear", "Review", "Shared", "Done", "Cancled"];
-    let moves = props.taskInfo?.movements;
+    let moves = taskInfo?.movements;
     if (moves) {
       let Moves = moves.map((i, index) => {
         return { ...i, index: index };
@@ -127,7 +72,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
       moves = Moves.filter(
         (item) =>
           status.includes(item?.status) &&
-          props?.journey?.movements[item.index + 1]?.status === "Tasks Board"
+          journey?.movements[item.index + 1]?.status === "Tasks Board"
       );
       return moves.length;
     } else return 0;
@@ -141,9 +86,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             Task Journey
           </Typography>
         </Box>
-        {props?.journey?.movements?.filter(
-          (item) => item?.status === "Not Clear"
-        )?.length === 0 ? (
+        {journey?.movements?.filter((item) => item?.status === "Not Clear")
+          ?.length === 0 ? (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -206,7 +150,7 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
             </Typography>
           </Box>
         )}
-        {isMissedDelivery && (
+        {missedDelivery && (
           <Box sx={{ float: "left", m: 0.5 }}>
             <Typography
               sx={{
@@ -274,20 +218,21 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               },
             }}
           >
-            {movements &&
-              movements?.map((item, index) => {
-                let nextMoveIndex = props.taskInfo?.movements
-                  ? props?.taskInfo?.movements?.findIndex(
+            {journey &&
+              taskInfo &&
+              journey.movements?.map((item, index) => {
+                let nextMoveIndex = taskInfo?.movements
+                  ? taskInfo?.movements?.findIndex(
                       (nm) => nm._id === item._id
                     ) + 1
                   : -1;
-                let prevMoveIndex = props.taskInfo?.movements
-                  ? props?.taskInfo?.movements?.findIndex(
+                let prevMoveIndex = taskInfo?.movements
+                  ? taskInfo?.movements?.findIndex(
                       (pm) => pm._id === item._id
                     ) - 1
                   : -1;
-                let nextMove = props?.taskInfo?.movements[nextMoveIndex];
-                let prevMove = props?.taskInfo?.movements[prevMoveIndex];
+                let nextMove = taskInfo?.movements[nextMoveIndex];
+                let prevMove = taskInfo?.movements[prevMoveIndex];
                 let due = undefined;
                 due = prevMove
                   ? getDifBetweenDates(
@@ -301,8 +246,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                     <TimelineSeparator sx={{ height: "auto" }}>
                       <TimelineDot sx={dotStyle}>
                         <Typography sx={timeLineDotNumStyle}>
-                          {props.taskInfo?.movements
-                            ? props.taskInfo?.movements?.findIndex(
+                          {taskInfo?.movements
+                            ? taskInfo?.movements?.findIndex(
                                 (move) => item._id === move._id
                               ) + 1
                             : 0}
@@ -395,7 +340,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
                               {due?.difference?.hours ?? 0} Hours{", "}
                               {due?.difference?.mins ?? 0} mins{" "}
                               {nextMove &&
-                                props.journey?.index === props.journiesLength &&
+                                journies &&
+                                journey?.index === journies?.journies?.length &&
                                 "(Till Now)"}
                             </Typography>
                           </Box>
@@ -457,8 +403,8 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
               "Done",
               "Cancled",
             ].map((item) => {
-              let count = movements && item === to ? movements?.length : 0;
-
+              let count =
+                journey && item === to ? journey.movements?.length : 0;
               return (
                 <ListItem
                   key={item}
@@ -522,23 +468,19 @@ const TaskStatusTimline: React.FC<TaskStatusTimlineProps> = (
           <Typography fontSize={"12px"} fontWeight={"700"} color="black">
             Fullfillment : &nbsp;
           </Typography>
-          {JourneyDuration(
-            "In Progress",
-            "Review",
-            props.journey?.movements ?? []
-          )}
+          {JourneyDuration("In Progress", "Review", journey?.movements ?? [])}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Delivery : &nbsp;
           </Typography>
-          {JourneyDuration("Review", "Shared", props?.journey?.movements ?? [])}
+          {JourneyDuration("Review", "Shared", journey?.movements ?? [])}
         </Box>
         <Box textAlign={"center"} display={"inline-flex"} pl={1}>
           <Typography fontSize={"12px"} fontWeight={"700"} color={"black"}>
             Closing : &nbsp;
           </Typography>
-          {JourneyDuration("Shared", "Done", props?.journey?.movements ?? [])}
+          {JourneyDuration("Shared", "Done", journey?.movements ?? [])}
         </Box>
       </Grid>
     </div>
