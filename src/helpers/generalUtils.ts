@@ -408,24 +408,28 @@ export const getTaskJournies = (task: ITaskInfo) => {
       journey = getJourney();
     } else {
       journey.movements.push(item);
-      journey.startedAt = journey.movements[0].movedAt;
-      journey.startedAtMonth = new Date(
-        journey.movements[0].movedAt
-      ).toLocaleString("en-us", {
-        month: "long",
-      });
     }
   });
 
   journies = journies.map((i, index) => {
     if (!i.journeyDeadline && journies.length - 1 === index && task.deadline)
       i.journeyDeadline = task.deadline;
+    if (i.movements) {
+      i.startedAt = i.movements[0].movedAt;
+      i.startedAtMonth = new Date(i?.movements[0]?.movedAt).toLocaleString(
+        "en-us",
+        {
+          month: "long",
+        }
+      );
+    }
     return {
       ...i,
       unique: index === 0 ? true : false,
       revision: index > 0 ? true : false,
     };
   });
+  // console.log({ journies });
   return { id: task._id, name: task.name, journies };
 };
 
