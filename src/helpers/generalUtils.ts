@@ -351,12 +351,11 @@ export const getTaskJournies = (task: ITaskInfo) => {
   let isScheduled = movements.find((i) => i.status === "In Progress")?.movedAt;
   if (isScheduled) journey.scheduledAt = new Date(isScheduled);
   // loop over all movements and record all journies of task.
+
   movements.forEach((item, index) => {
-    // if there is a journeyDeadline for the move record it and if not keep the old one.
     journey.journeyDeadline = item.journeyDeadline
       ? new Date(item.journeyDeadline)
       : journey.journeyDeadline;
-    // if the status is Shared , set the time of sharing for the newest one.
     let isShared = item.status === "Shared";
     if (isShared) {
       journey.sharedAt = item.movedAt;
@@ -365,7 +364,6 @@ export const getTaskJournies = (task: ITaskInfo) => {
       });
     }
 
-    // if the status is Review , set the time of Reviewing for the newest one.
     let isReview = item.status === "Review";
     if (isReview) {
       journey.reviewAt = item.movedAt.toString();
@@ -373,11 +371,9 @@ export const getTaskJournies = (task: ITaskInfo) => {
         month: "long",
       });
     }
-    // if there is a journey deadline push it to the array of deadlines.
     if (item.journeyDeadline)
       journey.journeyDeadlines?.push(item.journeyDeadline);
 
-    // if the journey closed, save the depended values and push the recored journey to the array of journies and start new one.
     if (movements.length - 1 === index) {
       journey.movements.push(item);
       if (endOfJourney.includes(item.status)) {
@@ -429,7 +425,6 @@ export const getTaskJournies = (task: ITaskInfo) => {
       revision: index > 0 ? true : false,
     };
   });
-  // console.log({ journies });
   return { id: task._id, name: task.name, journies };
 };
 

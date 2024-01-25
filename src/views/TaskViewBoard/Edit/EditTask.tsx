@@ -354,16 +354,14 @@ const EditTask: React.FC<EditTaskProps> = (props) => {
                     }}
                     selected={watch().subCategoryId}
                     options={
-                      categories &&
-                      categories
-                        ?.find((item) => item._id === task?.categoryId)
-                        ?.subCategoriesId?.map((item) => {
-                          return {
-                            id: item._id ? item._id : "",
-                            value: item._id ? item._id : "",
-                            text: item.subCategory,
-                          };
-                        })
+                      state.selectedCategory &&
+                      state.selectedCategory.subCategoriesId?.map((item) => {
+                        return {
+                          id: item._id ? item._id : "",
+                          value: item._id ? item._id : "",
+                          text: item.subCategory,
+                        };
+                      })
                     }
                   />
                 </div>
