@@ -11,9 +11,15 @@ import { getMeetingDeadline } from "../Statitics/utils";
 import _ from "lodash";
 import { Client } from "src/models/Clients";
 import { SubCategory } from "src/models/Categories";
-import { Journies, TaskJourniesDetails } from "src/types/views/Statistics";
+import {
+  ITaskInfo,
+  Journey,
+  Journies,
+  TaskJourniesDetails,
+} from "src/types/views/Statistics";
 import { format } from "date-fns";
 import { Project } from "src/types/models/Projects";
+import categories from "src/services/endpoints/categories";
 
 export const setTableOrganizationRow = (State: stateType) => {
   let journies = State.journies;
@@ -103,9 +109,11 @@ export const updateState = (
     );
 
   let ids = _.uniq(State.journies.map((i) => i.taskId));
+  let clientsIds = _.uniq(State.journies.map((i) => i.clientId));
   let projectsIds = _.uniq(State.journies.map((i) => i.projectId));
   State.projects = State.allProjects.filter((i) => projectsIds.includes(i._id));
   State.tasks = State.tasks.filter((i) => ids.includes(i._id));
+  State.clients = clients.filter((i) => clientsIds.includes(i._id));
   State = onSetCells(State, clients, orderBy);
   State = setTableOrganizationRow(State);
   State.loading = false;
@@ -128,10 +136,10 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
       );
       let averageLeadTime =
         _.sum(clientJournies.map((i) => i.leadTime)) / clientJournies.length;
+
       let estimatedJournies = clientJournies.filter(
         (i) => i.journeyDeadline !== null
       );
-
       let { notPassedDeadline } = getMeetingDeadline(estimatedJournies);
       let meetingDeadline = Math.floor(
         (notPassedDeadline.length / estimatedJournies.length) * 100
@@ -352,20 +360,103 @@ export const getJourniesData = (journies: Journies) => {
   });
   return taskJourniesDetails;
 };
+export const getClientsData = (
+  journies: Journey[],
+  clients: Client[],
+  projects: Project[],
+  tasks: ITaskInfo[]
+) => {
+  const data = _.flattenDeep(
+    clients.map((client) => {
+      const clientJournies = _.sortBy(
+        journies.filter((i) => i.clientId === client._id),
+        "startedAt"
+      );
+      const clientTasks = tasks.filter((i) => i.clientId === client._id);
+      let cleintCategories = _.uniqBy(
+        clientJournies.map((i) => {
+          return { categoryId: i.categoryId, categoryName: i.categoryName };
+        }),
+        "categoryId"
+      );
+      const clientProjects = projects.filter((i) => i.clientId === client._id);
+      const averageLeadTime = daysAndHours(
+        _.sum(clientJournies.map((j) => j.leadTime)) / clientJournies.length
+      );
+      let _OfActive = clientJournies.filter(
+        (i) =>
+          !["Done", "Cancled", "Shared"].includes(
+            i.movements[i.movements.length - 1].status
+          )
+      ).length;
+      let estimatedJournies = clientJournies.filter(
+        (i) => i.journeyDeadline !== null
+      );
+      let { notPassedDeadline } = getMeetingDeadline(estimatedJournies);
+      let meetingDeadline = Math.floor(
+        (notPassedDeadline.length / estimatedJournies.length) * 100
+      );
+
+      const clientData = {
+        clientName: `${client.clientName}`,
+        lastBrief: clientTasks[clientTasks.length - 1]?.cardCreatedAt
+          ? format(
+              new Date(clientTasks[clientTasks.length - 1]?.cardCreatedAt),
+              "dd MMMM yyyy HH:MM"
+            )
+          : "",
+        numberOfProjects: clientProjects.length.toString() ?? "",
+        numberOfTasks: clientTasks.length.toString() ?? "",
+        numberOfJournies: clientJournies.length.toString() ?? "",
+        numberOfRevision:
+          clientJournies.filter((i) => i.revision === true).length.toString() ??
+          "",
+        averageTOD: `${averageLeadTime.days ?? 0} D / ${
+          averageLeadTime.hours ?? 0
+        } H`,
+        numberOfActive: _OfActive ?? 0,
+        meetDeadline: `${meetingDeadline} %`,
+      };
+      return cleintCategories.map((category) => {
+        return {
+          ...clientData,
+          categoryName: `"${category.categoryName}"`,
+          totalNumberOfJourniesPerCategory:
+            clientJournies
+              .filter((i) => i.categoryId === category.categoryId)
+              .length.toString() ?? "",
+          numberOfRevisionPerCategory:
+            clientJournies
+              .filter(
+                (j) =>
+                  j.categoryId === category.categoryId && j.revision === true
+              )
+              .length.toString() ?? "",
+          numberOfUniquePerCategory:
+            clientJournies
+              .filter(
+                (j) => j.categoryId === category.categoryId && j.unique === true
+              )
+              .length.toString() ?? "",
+        };
+      });
+    })
+  );
+  return data;
+};
 
 export const onDownloadTasksFile = (
   journies: Journies,
   projects: Project[],
+  clients: Client[],
+  tasks: ITaskInfo[],
   formRef: React.RefObject<HTMLFormElement>
 ) => {
-  let tasksJourniesDetails = getJourniesData(journies);
-  let clientProjectsData = getProjectsData(journies, projects);
-  if (
-    tasksJourniesDetails &&
-    tasksJourniesDetails.length > 0 &&
-    formRef.current
-  ) {
-    let data = convertToCSV([...tasksJourniesDetails]);
+  let perJourniesData = getJourniesData(journies);
+  let perProjectsData = getProjectsData(journies, projects);
+  let perClientsData = getClientsData(journies, clients, projects, tasks);
+  if (perJourniesData && perJourniesData.length > 0 && formRef.current) {
+    let data = convertToCSV([...perJourniesData]);
     let dataBlob = new Blob([data], { type: "text/csv" });
     const url = window.URL.createObjectURL(dataBlob);
     const link = document.createElement("a");
@@ -376,14 +467,26 @@ export const onDownloadTasksFile = (
     link.click();
     window.URL.revokeObjectURL(url);
   }
-  if (clientProjectsData && clientProjectsData.length > 0 && formRef.current) {
-    let data = convertToCSV([...clientProjectsData]);
+  if (perProjectsData && perProjectsData.length > 0 && formRef.current) {
+    let data = convertToCSV([...perProjectsData]);
     let dataBlob = new Blob([data], { type: "text/csv" });
     const url = window.URL.createObjectURL(dataBlob);
     const link = document.createElement("a");
     link.href = url;
     link.style.display = "none";
     link.download = "Client Health Report (Per Projects)";
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+  if (perClientsData && perClientsData.length > 0 && formRef.current) {
+    let data = convertToCSV([...perClientsData]);
+    let dataBlob = new Blob([data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.style.display = "none";
+    link.download = "Client Health Report (Per Clients)";
     document.body.appendChild(link);
     link.click();
     window.URL.revokeObjectURL(url);

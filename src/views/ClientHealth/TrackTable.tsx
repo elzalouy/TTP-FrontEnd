@@ -159,6 +159,7 @@ const TrackClientHealthTable = () => {
       State.projects = State.allProjects = [...projects];
       State.tasks = State.allTasks = tasksInfo;
       State.allJournies = _.flattenDeep(journies.map((i) => i.journies));
+      State.clients = [...clients];
       State.journies = _.flattenDeep(journies.map((i) => i.journies));
       State = updateState(State, clients, subCategories, orderBy);
       State.loading = !mounted;
@@ -263,7 +264,13 @@ const TrackClientHealthTable = () => {
               <IconButton
                 type="button"
                 onClick={() =>
-                  onDownloadTasksFile(state.journies, state.projects, formRef)
+                  onDownloadTasksFile(
+                    state.journies,
+                    state.projects,
+                    state.clients,
+                    state.tasks,
+                    formRef
+                  )
                 }
                 sx={{
                   bgcolor: "#fafafb",
