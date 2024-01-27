@@ -59,13 +59,13 @@ const TrackClientHealthTable = () => {
   const [mounted, setMounted] = React.useState(false);
 
   /**
-   * First DOM changing (in case of loading allTasks, projects, clients, managers)
+   * First DOM cycle changing (in case of loading allTasks, projects, clients, or managers)
    * 1. Getting all clients data
    * 2. Getting all Tasks data
    * 3. Building the journies based on movements
    * 4. Calculating the other columns (revision, tod, no_of_active, meeting_deadline)
    * Second DOM changing (in case of filteration by any filter input,)
-   * 1. Change the state (allTasks, allTasksJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
+   * 1. Change the state cycle (allTasks, allTasksJournies, allProjects will not be changed) but (tasks, journies, and projects will be changed)
    * 2. Step 4 in first DOM changing.
    */
 
@@ -262,7 +262,9 @@ const TrackClientHealthTable = () => {
             <form ref={formRef}>
               <IconButton
                 type="button"
-                onClick={() => onDownloadTasksFile(state.journies, formRef)}
+                onClick={() =>
+                  onDownloadTasksFile(state.journies, state.projects, formRef)
+                }
                 sx={{
                   bgcolor: "#fafafb",
                   borderRadius: 3,

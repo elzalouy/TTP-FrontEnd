@@ -13,6 +13,7 @@ import { Client } from "src/models/Clients";
 import { SubCategory } from "src/models/Categories";
 import { Journies, TaskJourniesDetails } from "src/types/views/Statistics";
 import { format } from "date-fns";
+import { Project } from "src/types/models/Projects";
 
 export const setTableOrganizationRow = (State: stateType) => {
   let journies = State.journies;
@@ -169,8 +170,62 @@ const onSetCells = (State: stateType, clients: Client[], orderBy: string) => {
 
   return State;
 };
+/**
+ * Getting the projects data that should be inserted to the report.
+ *
+ * 1. the client health page filter and the global filter of the statistics will filter journeys and projects
+ * 2. Filtering the projects will be based on the result of the filtration of the journies, so if we have 100 journeys then
+ * The projects that these journies will be the only ones that should be inserted into the report.
+ * @param journies Project Journies
+ * @param projects all Projects needs to be existed in the report
+ * @returns Array of data of the report
+ */
+export const getProjectsData = (journies: Journies, projects: Project[]) => {
+  const data = _.flattenDeep(
+    projects.map((i) => {
+      let projectJournies = journies.filter((j) => j.projectId === i._id);
+      let categories = _.uniqBy(
+        projectJournies.map((i) => {
+          return { categoryId: i.categoryId, categoryName: i.categoryName };
+        }),
+        "categoryId"
+      ).filter((i) => i.categoryId);
+      console.log({ categories });
+      let tasks = _.uniqBy(projectJournies, "taskId");
+      const projectData = {
+        projectName: `"${i.name}"`,
+        clientName: `"${projectJournies[0]?.clientName}"` ?? "",
+        startingDate: i.startDate
+          ? format(new Date(i.startDate), "dd MMMM yyyy HH:MM")
+          : "",
+        endingDate: i.projectDeadline
+          ? format(new Date(i.projectDeadline), "dd MMMM yyyy HH:MM")
+          : "",
+        status: i.projectStatus ?? "",
+        ownerCs: i.projectManagerName ?? "",
+      };
+      return categories.map((category) => {
+        return {
+          ...projectData,
+          categoryName: category.categoryName ?? "",
+          totalNumberOfTasks: tasks.length.toString() ?? "",
+          totalNumberOfJournies: projectJournies.length.toString() ?? "",
+          unique:
+            projectJournies
+              .filter((i) => i.unique === true)
+              .length.toString() ?? "",
+          revised:
+            projectJournies
+              .filter((i) => i.revision === true)
+              .length.toString() ?? "",
+        };
+      });
+    })
+  );
+  return data;
+};
 
-export const getCsvData = (journies: Journies) => {
+export const getJourniesData = (journies: Journies) => {
   let taskJourniesDetails = journies.map((journey, index) => {
     let leadTime = journey.leadTime;
     let { hours, days } = daysAndHours(leadTime ?? 0);
@@ -290,9 +345,11 @@ export const getCsvData = (journies: Journies) => {
 
 export const onDownloadTasksFile = (
   journies: Journies,
+  projects: Project[],
   formRef: React.RefObject<HTMLFormElement>
 ) => {
-  let tasksJourniesDetails = getCsvData(journies);
+  let tasksJourniesDetails = getJourniesData(journies);
+  let clientProjectsData = getProjectsData(journies, projects);
   if (
     tasksJourniesDetails &&
     tasksJourniesDetails.length > 0 &&
@@ -304,7 +361,19 @@ export const onDownloadTasksFile = (
     const link = document.createElement("a");
     link.href = url;
     link.style.display = "none";
-    link.download = "Client Health Report";
+    link.download = "Client Health Report (Per Journies)";
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+  if (clientProjectsData && clientProjectsData.length > 0 && formRef.current) {
+    let data = convertToCSV([...clientProjectsData]);
+    let dataBlob = new Blob([data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.style.display = "none";
+    link.download = "Client Health Report (Per Projects)";
     document.body.appendChild(link);
     link.click();
     window.URL.revokeObjectURL(url);
