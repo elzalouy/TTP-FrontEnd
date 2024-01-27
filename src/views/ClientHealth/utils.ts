@@ -189,9 +189,8 @@ export const getProjectsData = (journies: Journies, projects: Project[]) => {
           return { categoryId: i.categoryId, categoryName: i.categoryName };
         }),
         "categoryId"
-      ).filter((i) => i.categoryId);
-      console.log({ categories });
-      let tasks = _.uniqBy(projectJournies, "taskId");
+      );
+      let projectTasks = _.uniqBy(projectJournies, "taskId");
       const projectData = {
         projectName: `"${i.name}"`,
         clientName: `"${projectJournies[0]?.clientName}"` ?? "",
@@ -205,18 +204,29 @@ export const getProjectsData = (journies: Journies, projects: Project[]) => {
         ownerCs: i.projectManagerName ?? "",
       };
       return categories.map((category) => {
+        let categoryTasks = projectTasks.filter(
+          (i) => i.categoryId === category.categoryId
+        );
+        let categoryJournies = projectJournies.filter(
+          (i) => i.categoryId === category.categoryId
+        );
         return {
           ...projectData,
           categoryName: category.categoryName ?? "",
-          totalNumberOfTasks: tasks.length.toString() ?? "",
-          totalNumberOfJournies: projectJournies.length.toString() ?? "",
+          totalNumberOfTasks: categoryTasks.length.toString() ?? "",
+          totalNumberOfJournies: categoryJournies?.length?.toString() ?? "",
           unique:
             projectJournies
-              .filter((i) => i.unique === true)
+              .filter(
+                (i) => i.unique === true && i.categoryId === category.categoryId
+              )
               .length.toString() ?? "",
           revised:
             projectJournies
-              .filter((i) => i.revision === true)
+              .filter(
+                (i) =>
+                  i.revision === true && i.categoryId === category.categoryId
+              )
               .length.toString() ?? "",
         };
       });
