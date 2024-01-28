@@ -200,6 +200,7 @@ export const getProjectsData = (journies: Journies, projects: Project[]) => {
       );
       let projectTasks = _.uniqBy(projectJournies, "taskId");
       const projectData = {
+        projectId: i._id,
         projectName: `"${i.name}"`,
         clientName: `"${projectJournies[0]?.clientName}"` ?? "",
         startingDate: i.startDate
@@ -306,6 +307,7 @@ export const getJourniesData = (journies: Journies) => {
     let journeyDetails: TaskJourniesDetails = {
       taskId: journey.taskId,
       name: journey.name ?? "",
+      projectId: journey.projectId ?? "",
       projectName: journey?.projectName ?? "",
       clientName: journey?.clientName ?? "",
       teamName: `(${journey.teamName})` ?? "",

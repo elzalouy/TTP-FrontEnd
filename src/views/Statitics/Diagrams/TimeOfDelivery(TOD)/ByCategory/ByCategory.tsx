@@ -20,7 +20,7 @@ import { Manager, selectPMOptions } from "src/models/Managers";
 import React, { useEffect, useState } from "react";
 import { Client, selectClientOptions } from "src/models/Clients";
 import { Grid, IconButton, Typography } from "@mui/material";
-import { convertToCSV, getTaskJournies } from "src/helpers/generalUtils";
+import { getTaskJournies } from "src/helpers/generalUtils";
 import { Download as DownloadIcon } from "@mui/icons-material";
 import {
   chartOptions,
@@ -254,7 +254,9 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           <form ref={formRef}>
             <IconButton
               type="button"
-              onClick={() => onDownload(state.data, formRef)}
+              onClick={() =>
+                onDownload(state.data, formRef, state.comparisonBy)
+              }
               sx={{
                 bgcolor: "white",
                 borderRadius: 3,

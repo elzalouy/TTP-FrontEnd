@@ -273,9 +273,10 @@ export const chartOptions = (data: DatasetType) => {
 };
 export const onDownload = (
   data: DatasetType,
-  formRef: React.RefObject<HTMLFormElement>
+  formRef: React.RefObject<HTMLFormElement>,
+  comparisonName?: string
 ) => {
-  let { bars, comparisons } = getCsvFile(data, "decimal");
+  let { bars, comparisons } = getCsvFile(data, "decimal", comparisonName);
   if (comparisons.length > 0 && formRef.current) {
     let csvData = convertToCSV(comparisons);
     let dataBlob = new Blob([csvData], { type: "text/csv" });

@@ -87,12 +87,14 @@ const FilterBar = ({
     categoryId: string;
     teamId: string;
     subCategoryId: string;
+    year: number;
   }>({
     defaultValues: {
       clientId: "",
       projectManager: "",
       categoryId: "",
       teamId: "",
+      year: new Date(Date.now()).getFullYear(),
     },
   });
 
@@ -426,6 +428,64 @@ const FilterBar = ({
               render={(props) => (
                 <MulitSelectDialogComponent
                   name="clientId"
+                  allOption
+                  selected={options.clients.map((item) => {
+                    return { id: item._id ?? "", label: item.clientName ?? "" };
+                  })}
+                  options={clientsOptions.map((item) => {
+                    return { id: item?.id ?? "", label: item.text };
+                  })}
+                  onSelectAll={(select: boolean) =>
+                    onSelectAll(select, "Clients")
+                  }
+                  label="Clients : "
+                  onSelect={(value: DialogOption) => {
+                    let values = {
+                      categories: options.categories.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+                      clients:
+                        value.id === "all"
+                          ? allOptions.clients.map((i) => i._id)
+                          : [
+                              ...options.clients.map((item) => item._id),
+                              value.id,
+                            ],
+                    };
+                    onSetFilterResult(values);
+                  }}
+                  onDiselect={(item: DialogOption) => {
+                    let values = {
+                      categories: options.categories.map((item) => item._id),
+                      teams: options.teams.map((item) => item._id ?? ""),
+                      managers: options.managers.map((item) => item._id),
+                      clients: options.clients.map((item) => item._id),
+                      subCategories: options.subCategories.map(
+                        (item) => item._id
+                      ),
+                    };
+                    values.clients =
+                      item.id === "all"
+                        ? []
+                        : values.clients.filter((i) => i !== item.id);
+                    onSetFilterResult(values);
+                  }}
+                />
+              )}
+            />
+          </Box>
+        </Grid>
+        <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+          <Box className="tasks-option">
+            <Controller
+              name="year"
+              control={control}
+              render={(props) => (
+                <MulitSelectDialogComponent
+                  name="year"
                   allOption
                   selected={options.clients.map((item) => {
                     return { id: item._id ?? "", label: item.clientName ?? "" };

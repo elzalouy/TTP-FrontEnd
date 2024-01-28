@@ -61,6 +61,7 @@ export type TaskJourniesDetails = {
   name: string;
   journeyIndex: number;
   projectName: string;
+  projectId: string;
   clientName: string;
   taskJourniesCount: string;
   categoryName: string;

@@ -142,6 +142,7 @@ const TaskHeader: FC<TaskHeaderProps> = ({ taskInfo, setShow, Journey }) => {
           taskId: taskInfo._id,
           name: taskInfo.name,
           journeyIndex: index + 1,
+          projectId: taskInfo.projectId ?? "",
           projectName: taskInfo?.projectManagerName ?? "",
           clientName: taskInfo.clientName ?? "",
           categoryName: taskInfo.categoryName ?? "",

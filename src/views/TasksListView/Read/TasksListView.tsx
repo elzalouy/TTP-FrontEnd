@@ -225,6 +225,7 @@ export const TasksListView: React.FC<Props> = (props) => {
                 taskId: taskInfo._id,
                 name: taskInfo.name,
                 journeyIndex: index + 1,
+                projectId: project?._id ?? "",
                 projectName: project?.name ?? "",
                 clientName: client?.clientName ?? "",
                 teamName: taskInfo.teamName ?? "",
