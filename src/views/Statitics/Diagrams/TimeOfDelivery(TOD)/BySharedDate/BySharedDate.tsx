@@ -64,7 +64,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
-
+  const [year, setYear] = useState<number>(new Date(Date.now()).getFullYear());
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -197,6 +197,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
     categories: string[];
     teams: string[];
     subCategories: string[];
+    year: number;
   }) => {
     setTeams(
       options.teams.filter((i) => i._id && filter.teams.includes(i._id))
@@ -317,7 +318,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
             categories.map((item) => item.subCategoriesId)
           ),
         }}
-        options={{ clients, managers, categories, teams, subCategories }}
+        options={{ clients, managers, categories, teams, subCategories, year }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

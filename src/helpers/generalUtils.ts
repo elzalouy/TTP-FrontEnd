@@ -705,10 +705,13 @@ export const Months = [
   "November",
   "December",
 ];
-export const getYearsOptions = () => {
-  let years = [0, 1, 2, 4].map((i) => {
-    // return [new Date(Date.now()).e];
-  });
+export const getYearsRange = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let i = currentYear - 2; i <= currentYear + 2; i++) {
+    years.push(i);
+  }
+  return years;
 };
 export const randomColors = [
   [255, 198, 0],
