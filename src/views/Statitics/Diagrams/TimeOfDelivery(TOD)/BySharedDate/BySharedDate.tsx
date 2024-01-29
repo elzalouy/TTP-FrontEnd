@@ -64,7 +64,6 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
-  const [year, setYear] = useState<number>(new Date(Date.now()).getFullYear());
   const [state, setState] = useState<StateType>({
     data: {
       labels: [],
@@ -171,8 +170,19 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         i.subCategoryId === null ||
         (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
     );
+    journiesData = journiesData.filter(
+      (i) => i.sharedAt && new Date(i.sharedAt).getFullYear() === state.year
+    );
     setJournies(journiesData);
-  }, [teams, clients, managers, categories, subCategories, mounted]);
+  }, [
+    teams,
+    clients,
+    managers,
+    categories,
+    subCategories,
+    state.year,
+    mounted,
+  ]);
 
   useEffect(() => {
     let months = Months;
@@ -217,6 +227,7 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
+    setState({ ...state, year: filter.year });
   };
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -318,7 +329,14 @@ const BySharedMonth = ({ options }: BySharedMonthProps) => {
             categories.map((item) => item.subCategoriesId)
           ),
         }}
-        options={{ clients, managers, categories, teams, subCategories, year }}
+        options={{
+          clients,
+          managers,
+          categories,
+          teams,
+          subCategories,
+          year: state.year,
+        }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

@@ -109,7 +109,7 @@ export interface StateType {
   data: DatasetType;
   options: any;
   comparisonBy: string;
-  year?: number;
+  year: number;
   quarter?: number;
 }
 export type TodByCategoryProps = {

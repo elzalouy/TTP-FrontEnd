@@ -705,6 +705,7 @@ export const Months = [
   "November",
   "December",
 ];
+
 export const getYearsRange = () => {
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -713,6 +714,7 @@ export const getYearsRange = () => {
   }
   return years;
 };
+
 export const randomColors = [
   [255, 198, 0],
   [112, 11, 111],

@@ -19,6 +19,7 @@ import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectD
 import { ITeam } from "src/types/models/Departments";
 import _ from "lodash";
 import { getYearsRange } from "src/helpers/generalUtils";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
 
 interface FilterBarProps {
   filter: boolean;
@@ -475,26 +476,23 @@ const FilterBar = ({
               name="year"
               control={control}
               render={(props) => (
-                <MulitSelectDialogComponent
+                <Select
+                  elementType="filter"
+                  optionsType="dialog"
                   name="year"
-                  allOption={false}
-                  onSelectAll={() => {}}
-                  selected={getYearsRange().map((item) => {
-                    return {
-                      id: item.toString() ?? "",
-                      label: item.toString() ?? "",
-                    };
-                  })}
+                  selected={options.year.toString()}
                   options={getYearsRange().map((item) => {
                     return {
                       id: item.toString() ?? "",
-                      label: item.toString(),
+                      value: item.toString() ?? "",
+                      text: item.toString() ?? "",
                     };
                   })}
                   label="By Year : "
-                  onSelect={(value: DialogOption) => {
+                  onSelect={(e: any) => {
+                    setValue("year", parseInt(e.id));
                     let values = {
-                      year: parseInt(value.id),
+                      year: parseInt(e.id),
                       categories: options.categories.map((item) => item._id),
                       teams: options.teams.map((item) => item._id ?? ""),
                       managers: options.managers.map((item) => item._id),
@@ -502,19 +500,6 @@ const FilterBar = ({
                         (item) => item._id
                       ),
                       clients: options.clients.map((item) => item._id),
-                    };
-                    onSetFilterResult(values);
-                  }}
-                  onDiselect={(item: DialogOption) => {
-                    let values = {
-                      year: parseInt(item.id),
-                      categories: options.categories.map((item) => item._id),
-                      teams: options.teams.map((item) => item._id ?? ""),
-                      managers: options.managers.map((item) => item._id),
-                      clients: options.clients.map((item) => item._id),
-                      subCategories: options.subCategories.map(
-                        (item) => item._id
-                      ),
                     };
                     onSetFilterResult(values);
                   }}

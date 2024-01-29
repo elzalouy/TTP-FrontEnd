@@ -155,6 +155,8 @@ const Select = (props: IFilterProps) => {
               <>
                 {state.selected && state.selected !== ""
                   ? state.selected.toString()
+                  : props.selected
+                  ? props.selected
                   : "All"}
               </>
             ) : (

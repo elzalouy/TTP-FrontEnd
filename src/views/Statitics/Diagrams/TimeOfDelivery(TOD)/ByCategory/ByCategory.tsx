@@ -72,6 +72,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     },
     options: null,
     comparisonBy: "Teams",
+    year: new Date(Date.now()).getFullYear(),
   });
 
   // Getting every needed information of each task like Project manager, client, etc.

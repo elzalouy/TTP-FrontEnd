@@ -53,6 +53,8 @@ const ReviewTime: FC<ReviewTimeProps> = ({ options }) => {
     },
     filter: { start: "", end: "" },
     options: null,
+    year: new Date(Date.now()).getFullYear(),
+
     comparisonBy: "PMs",
   });
 

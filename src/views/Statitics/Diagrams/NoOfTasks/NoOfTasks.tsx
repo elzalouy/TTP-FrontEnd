@@ -69,7 +69,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     filterPopup: false,
     options: null,
     comparisonBy: "Teams",
-    // year: new Date(Date.now()).getFullYear(),
+    year: new Date(Date.now()).getFullYear(),
     quarter: 1,
   });
 

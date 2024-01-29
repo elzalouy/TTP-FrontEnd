@@ -54,6 +54,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     filter: { start: "", end: "" },
     options: null,
     comparisonBy: "Departments",
+    year: new Date(Date.now()).getFullYear(),
   });
   const { projects } = useAppSelector(selectProjectsState);
   const [departments, setDepartments] = useState<IDepartmentState[]>([]);
