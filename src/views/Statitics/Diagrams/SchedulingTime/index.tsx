@@ -281,6 +281,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     departments: string[];
     managers: string[];
     subCategories: string[];
+    year: number;
   }) => {
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
@@ -307,6 +308,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     ).filter((sub) => filter.subCategories.includes(sub._id));
 
     setSubCategories(selectedSubs);
+    setState({ ...state, year: filter.year });
   };
 
   const onGetDataSetsByDepartments = () => {

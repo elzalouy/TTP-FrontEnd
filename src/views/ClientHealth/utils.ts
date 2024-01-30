@@ -306,12 +306,12 @@ export const getJourniesData = (journies: Journies) => {
 
     let journeyDetails: TaskJourniesDetails = {
       taskId: journey.taskId,
-      name: journey.name ?? "",
+      name: `"${journey.name}"` ?? "",
       projectId: journey.projectId ?? "",
-      projectName: journey?.projectName ?? "",
-      clientName: journey?.clientName ?? "",
-      teamName: `(${journey.teamName})` ?? "",
-      projectManager: journey?.projectManagerName ?? "",
+      projectName: `"${journey?.projectName}"` ?? "",
+      clientName: `"${journey?.clientName}"` ?? "",
+      teamName: `"${journey.teamName}"` ?? "",
+      projectManager: `"${journey?.projectManagerName}"` ?? "",
       taskJourniesCount: journies
         .filter((i) => i.taskId === journey.taskId)
         .length.toString(),
