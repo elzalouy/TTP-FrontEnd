@@ -3,7 +3,12 @@ import { Grid, IconButton, Typography } from "@mui/material";
 import "../../style.css";
 import { useAppSelector } from "src/models/hooks";
 import { selectProjectsState } from "src/models/Projects";
-import { Category, SubCategory } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  getAllCategories,
+  selectAllCategories,
+} from "src/models/Categories";
 import { Line } from "react-chartjs-2";
 import { IDepartmentState, ITeam } from "src/types/models/Departments";
 import { Download as DownloadIcon } from "@mui/icons-material";
@@ -16,17 +21,17 @@ import {
 } from "src/helpers/generalUtils";
 import { Task } from "src/types/models/Projects";
 import { Client } from "src/models/Clients";
-import { DatasetType, Journies, StateType } from "src/types/views/Statistics";
+import {
+  DatasetType,
+  ITaskInfo,
+  Journies,
+  StateType,
+} from "src/types/views/Statistics";
 import { Manager } from "src/models/Managers";
 import IMAGES from "src/assets/img/Images";
 import FilterBar from "./FilterMenu";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getCsvFile } from "../../utils";
-
-interface ITaskInfo extends Task {
-  clientId?: string;
-  projectManager?: string;
-}
 
 type NoOfRevisionProps = {
   options: {
@@ -46,6 +51,7 @@ type NoOfRevisionProps = {
 const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const { projects } = useAppSelector(selectProjectsState);
+  const allCategories = useAppSelector(selectAllCategories);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -55,6 +61,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
   const [tasks, setTasks] = useState<ITaskInfo[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
+  const [mounted, setMounted] = useState(false);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -73,10 +80,24 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let team = item.teamId
+        ? teams.find((i) => i._id === item.teamId)?.name
+        : undefined;
+      let client = clients.find((i) => i._id === project?.clientId);
+      let category = categories.find((i) => i._id === item.categoryId);
+      let manager = managers.find((m) => m._id === project?.projectManager);
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
+        teamName: team,
+        clientName: client?.clientName,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: category?.subCategoriesId.find(
+          (i) => i._id === item.subCategoryId
+        )?.subCategory,
+        projectManagerName: manager?.name,
       };
       return newTask;
     });
@@ -89,6 +110,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     );
     setJournies(journiesData);
     setAllJournies(journiesData);
+    setMounted(!mounted);
   }, [tasks]);
 
   useEffect(() => {
@@ -195,12 +217,59 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
     setState({ ...state, options, data });
   }, [teams, clients, managers, journies]);
 
+  useEffect(() => {
+    let teamsIds = teams.map((i) => i._id);
+    let managersIds = managers.map((i) => i._id);
+    let categoriesIds = categories.map((i) => i._id);
+    let subCategoriesIds = subCategories.map((i) => i._id);
+    let clientsIds = clients.map((i) => i._id);
+
+    let journiesData = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        teamsIds.includes(j.teamId) &&
+        j.projectManager &&
+        managersIds.includes(j.projectManager) &&
+        j.categoryId &&
+        categoriesIds.includes(j.categoryId) &&
+        j.clientId &&
+        clientsIds.includes(j.clientId)
+    );
+    let allSubs = _.flattenDeep(
+      allCategories.map((i) => i.subCategoriesId.map((s) => s._id))
+    );
+    journiesData = journiesData.filter(
+      (i) =>
+        i.journeyFinishedAtDate &&
+        new Date(i.journeyFinishedAtDate).getFullYear() === state.year
+    );
+    journiesData = journiesData.filter(
+      (j) =>
+        (j.subCategoryId && subCategoriesIds.includes(j.subCategoryId)) ||
+        j.subCategoryId === null ||
+        !allSubs.includes(j.subCategoryId)
+    );
+    journiesData = journiesData.filter(
+      (i) => i.startedAt && new Date(i.startedAt).getFullYear() === state.year
+    );
+    setJournies(journiesData);
+  }, [
+    state.year,
+    clients,
+    categories,
+    managers,
+    teams,
+    subCategories,
+    mounted,
+  ]);
+
   const onSetFilterResult = (filter: {
     clients: string[];
     managers: string[];
     categories: string[];
     subCategories: string[];
     teams: string[];
+    year: number;
   }) => {
     setTeams(
       options.teams.filter((i) => i._id && filter.teams.includes(i._id))
@@ -220,24 +289,7 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
-
-    let journiesData = allJournies.filter(
-      (j) =>
-        j.teamId &&
-        filter.teams.includes(j.teamId) &&
-        j.projectManager &&
-        filter.managers.includes(j.projectManager) &&
-        j.categoryId &&
-        filter.categories.includes(j.categoryId) &&
-        j.clientId &&
-        filter.clients.includes(j.clientId)
-    );
-    journiesData = journiesData.filter(
-      (j) =>
-        (j.subCategoryId && filter.subCategories.includes(j.subCategoryId)) ||
-        j.subCategoryId === null
-    );
-    setJournies(journiesData);
+    setState({ ...state, year: filter.year });
   };
 
   const onGetDataSetsByPM = () => {
@@ -504,7 +556,14 @@ const NoOfRevision = ({ options }: NoOfRevisionProps) => {
             categories.map((item) => item.subCategoriesId)
           ),
         }}
-        options={{ clients, managers, categories, teams, subCategories }}
+        options={{
+          clients,
+          managers,
+          categories,
+          teams,
+          subCategories,
+          year: state.year,
+        }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

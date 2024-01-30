@@ -1,8 +1,11 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
+import { watch } from "fs";
 import _ from "lodash";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
+import Select from "src/coreUI/components/Inputs/SelectFields/Select";
+import { getYearsRange } from "src/helpers/generalUtils";
 import { Category, SubCategory } from "src/models/Categories";
 import { Client } from "src/models/Clients";
 import { Manager } from "src/models/Managers";
@@ -18,6 +21,7 @@ interface FilterBarProps {
     categories: string[];
     teams: string[];
     subCategories: string[];
+    year: number;
   }) => void;
   options: {
     clients: Client[];
@@ -25,6 +29,7 @@ interface FilterBarProps {
     categories: Category[];
     teams: ITeam[];
     subCategories: SubCategory[];
+    year: number;
   };
   allOptions: {
     clients: Client[];
@@ -42,7 +47,24 @@ const FilterBar: FC<FilterBarProps> = ({
   options,
   allOptions,
 }) => {
-  const { control } = useForm();
+  const { control, watch, setValue } = useForm<{
+    clientId: string;
+    projectManager: string;
+    categoryId: string;
+    teamId: string;
+    subCategoryId: string;
+    year: number;
+  }>({
+    defaultValues: {
+      clientId: "",
+      projectManager: "",
+      categoryId: "",
+      subCategoryId: "",
+      teamId: "",
+      year: new Date(Date.now()).getFullYear(),
+    },
+  });
+
   const onSelectAll = (select: boolean, filter: string) => {
     onSetFilterResult({
       clients:
@@ -79,6 +101,7 @@ const FilterBar: FC<FilterBarProps> = ({
               )
             : []
           : _.flattenDeep(options.subCategories.map((i) => i._id)),
+      year: watch().year,
     });
   };
 
@@ -129,6 +152,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     label="Teams: "
                     onSelect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
@@ -148,6 +172,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     }}
                     onDiselect={(item: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
@@ -188,6 +213,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     label="Categories : "
                     onSelect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
@@ -220,6 +246,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     }}
                     onDiselect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
@@ -270,6 +297,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     label="Sub Categories : "
                     onSelect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
@@ -288,6 +316,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     }}
                     onDiselect={(item: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
@@ -331,6 +360,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     label="Clients : "
                     onSelect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         managers: options.managers.map((item) => item._id),
@@ -349,6 +379,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     }}
                     onDiselect={(item: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         categories: options.categories.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         clients: options.clients.map((item) => item._id),
@@ -389,6 +420,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     label="Project Managers: "
                     onSelect={(value: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         teams: options.teams.map((item) => item._id ?? ""),
                         categories: options.categories.map((item) => item._id),
@@ -408,6 +440,7 @@ const FilterBar: FC<FilterBarProps> = ({
                     }}
                     onDiselect={(item: DialogOption) => {
                       let values = {
+                        year: watch().year,
                         clients: options.clients.map((item) => item._id),
                         managers: options.managers.map((item) => item._id),
                         categories: options.categories.map((item) => item._id),
@@ -420,6 +453,44 @@ const FilterBar: FC<FilterBarProps> = ({
                         item.id === "all"
                           ? []
                           : [...values.managers].filter((i) => i !== item.id);
+                      onSetFilterResult(values);
+                    }}
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid paddingX={0.5} item xs={6} sm={12} marginY={1}>
+            <Box className="tasks-option">
+              <Controller
+                name="year"
+                control={control}
+                render={(props) => (
+                  <Select
+                    elementType="filter"
+                    optionsType="dialog"
+                    name="year"
+                    selected={options.year.toString()}
+                    options={getYearsRange().map((item) => {
+                      return {
+                        id: item.toString() ?? "",
+                        value: item.toString() ?? "",
+                        text: item.toString() ?? "",
+                      };
+                    })}
+                    label="By Year : "
+                    onSelect={(e: any) => {
+                      setValue("year", parseInt(e.id));
+                      let values = {
+                        year: parseInt(e.id),
+                        categories: options.categories.map((item) => item._id),
+                        teams: options.teams.map((item) => item._id ?? ""),
+                        managers: options.managers.map((item) => item._id),
+                        subCategories: options.subCategories.map(
+                          (item) => item._id
+                        ),
+                        clients: options.clients.map((item) => item._id),
+                      };
                       onSetFilterResult(values);
                     }}
                   />

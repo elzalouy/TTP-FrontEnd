@@ -59,6 +59,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [journies, setJournies] = useState<Journies>([]);
+  const [mounted, setMounted] = useState(false);
 
   const [state, setState] = useState<StateType>({
     data: {
@@ -111,6 +112,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     );
     setJournies(journiesData);
     setAllJournies(journiesData);
+    setMounted(!mounted);
   }, [tasks]);
 
   useEffect(() => {
@@ -199,12 +201,59 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
     setState({ ...state, options, data });
   }, [journies, state.comparisonBy]);
 
+  useEffect(() => {
+    let teamsIds = teams.map((i) => i._id);
+    let managersIds = managers.map((i) => i._id);
+    let categoriesIds = categories.map((i) => i._id);
+    let subCategoriesIds = subCategories.map((i) => i._id);
+    let clientsIds = clients.map((i) => i._id);
+
+    let journiesData = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        teamsIds.includes(j.teamId) &&
+        j.projectManager &&
+        managersIds.includes(j.projectManager) &&
+        j.categoryId &&
+        categoriesIds.includes(j.categoryId) &&
+        j.clientId &&
+        clientsIds.includes(j.clientId)
+    );
+    let allSubs = _.flattenDeep(
+      allCategories.map((i) => i.subCategoriesId.map((s) => s._id))
+    );
+    journiesData = journiesData.filter(
+      (i) =>
+        i.journeyFinishedAtDate &&
+        new Date(i.journeyFinishedAtDate).getFullYear() === state.year
+    );
+    journiesData = journiesData.filter(
+      (j) =>
+        (j.subCategoryId && subCategoriesIds.includes(j.subCategoryId)) ||
+        j.subCategoryId === null ||
+        !allSubs.includes(j.subCategoryId)
+    );
+    journiesData = journiesData.filter(
+      (i) => i.startedAt && new Date(i.startedAt).getFullYear() === state.year
+    );
+    setJournies(journiesData);
+  }, [
+    state.year,
+    clients,
+    categories,
+    managers,
+    teams,
+    subCategories,
+    mounted,
+  ]);
+
   const onSetFilterResult = (filter: {
     clients: string[];
     managers: string[];
     subCategories: string[];
     teams: string[];
     categories: string[];
+    year: number;
   }) => {
     setTeams(
       options.teams.filter(
@@ -226,28 +275,7 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
         filter.subCategories.includes(sub._id)
       )
     );
-
-    let subsIds = _.flattenDeep(
-      categories.map((i) => i.subCategoriesId.map((s) => s._id))
-    );
-    let journiesData = allJournies.filter(
-      (j) =>
-        j.teamId &&
-        filter.teams.includes(j.teamId) &&
-        j.projectManager &&
-        filter.managers.includes(j.projectManager) &&
-        j.categoryId &&
-        filter.categories.includes(j.categoryId) &&
-        j.clientId &&
-        filter.clients.includes(j.clientId)
-    );
-    journiesData = journiesData.filter(
-      (j) =>
-        (j.subCategoryId && filter.subCategories.includes(j.subCategoryId)) ||
-        j.subCategoryId === null ||
-        !subsIds.includes(j.subCategoryId)
-    );
-    setJournies(journiesData);
+    setState({ ...state, year: filter.year });
   };
 
   const onGetDatasetsByAll = () => {
@@ -387,7 +415,14 @@ const NoOfTasks = ({ options }: NoOfTasksProps) => {
             categories.map((item) => item.subCategoriesId)
           ),
         }}
-        options={{ clients, managers, categories, teams, subCategories }}
+        options={{
+          clients,
+          managers,
+          categories,
+          teams,
+          subCategories,
+          year: state.year,
+        }}
         filter={filterPopup}
         onCloseFilter={() => openFilterPopup(false)}
         onSetFilterResult={onSetFilterResult}

@@ -105,24 +105,11 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
   }, [options.tasks, projects]);
 
   useEffect(() => {
-    let journiesData = tasks.map((item) => getTaskJournies(item).journies);
-    let flattenedJournies = _.flatten(journiesData);
-    flattenedJournies = flattenedJournies.map((item) => {
-      let shared =
-        item.movements &&
-        _.findLast(
-          item.movements,
-          (move: TaskMovement) => move.status === "Shared"
-        )?.movedAt;
-      return {
-        ...item,
-        sharedAtMonth: shared
-          ? new Date(shared).toLocaleString("en-us", { month: "long" })
-          : undefined,
-      };
-    });
-    setJournies(flattenedJournies);
-    setAllJournies(flattenedJournies);
+    let journiesData = _.flattenDeep(
+      tasks.map((item) => getTaskJournies(item).journies)
+    );
+    setJournies(journiesData);
+    setAllJournies(journiesData);
     setMounted(!mounted);
   }, [tasks]);
 
@@ -271,7 +258,9 @@ const MeetDeadline = ({ options }: MeetDeadlineProps) => {
         !allSubs.includes(i.subCategoryId)
     );
     journiesData = journiesData.filter(
-      (i) => i.sharedAt && new Date(i.sharedAt).getFullYear() === state.year
+      (i) =>
+        i.journeyFinishedAtDate &&
+        new Date(i.journeyFinishedAtDate).getFullYear() === state.year
     );
     setJournies(journiesData);
   }, [

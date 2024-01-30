@@ -66,6 +66,8 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
   const [journies, setJournies] = useState<Journies>([]);
   const [allJournies, setAllJournies] = useState<Journies>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const allCategories = useAppSelector(selectAllCategories);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setTeams(options.teams);
@@ -101,55 +103,42 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
 
   useEffect(() => {
     let tasksData = [...options.tasks];
-    let boardIds = departments.map((i) => i.boardId);
-    let teamsIds = teams.map((i) => i._id);
-    let managersIds = managers.map((i) => i._id);
-    let clientIds = clients.map((i) => i._id);
-    let categoriesIds = categories.map((i) => i._id);
-    let newTasks: ITaskInfo[] = tasksData
-      .map((item) => {
-        let project = projects.find(
-          (project) => project._id === item.projectId
-        );
-        let newTask: ITaskInfo = {
-          ...item,
-          clientId: project?.clientId,
-          projectManager: project?.projectManager,
-        };
-        return newTask;
-      })
-      .filter(
-        (task) =>
-          task.clientId &&
-          clientIds.includes(task.clientId) &&
-          task.projectManager &&
-          managersIds.includes(task.projectManager) &&
-          task.teamId &&
-          teamsIds.includes(task.teamId) &&
-          task.boardId &&
-          boardIds.includes(task.boardId) &&
-          task.categoryId &&
-          categoriesIds.includes(task.categoryId)
-      );
+    let newTasks: ITaskInfo[] = tasksData.map((item) => {
+      let project = projects.find((project) => project._id === item.projectId);
+      let manager = managers.find(
+        (i) => i._id === project?.projectManager
+      )?._id;
+      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let category = allCategories.find((i) => i._id === item.categoryId);
+      let team = options.boards
+        .find((i) => i._id === item.boardId)
+        ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
+
+      let newTask: ITaskInfo = {
+        ...item,
+        clientId: project?.clientId,
+        projectManager: project?.projectManager,
+        projectManagerName: manager,
+        clientName: client,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: category?.subCategoriesId.find(
+          (i) => i._id === item.subCategoryId
+        )?.subCategory,
+        teamName: team?.name,
+      };
+      return newTask;
+    });
     setTasks([...newTasks]);
-  }, [projects, options.tasks, departments, teams, managers, clients]);
+  }, [projects, options.tasks]);
 
   useEffect(() => {
-    let journiesData = tasks.map((item) => getTaskJournies(item).journies);
-    let flattenedJournies = _.flatten(journiesData);
-    flattenedJournies = flattenedJournies.map((item) => {
-      let start = item.movements
-        ? item.movements[0]?.movedAt
-        : item.cardCreatedAt;
-      return {
-        ...item,
-        startedAtMonth: start
-          ? new Date(start).toLocaleString("en-us", { month: "long" })
-          : undefined,
-      };
-    });
-    setAllJournies(flattenedJournies);
-    setJournies(flattenedJournies);
+    let journiesData = _.flattenDeep(
+      tasks.map((item) => getTaskJournies(item).journies)
+    );
+    setJournies(journiesData);
+    setAllJournies(journiesData);
+    setMounted(!mounted);
   }, [tasks]);
 
   useEffect(() => {
@@ -233,6 +222,54 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     setState({ ...state, options, data });
   }, [journies]);
 
+  useEffect(() => {
+    let teamsIds = teams.map((i) => i._id);
+    let managersIds = managers.map((i) => i._id);
+    let categoriesIds = categories.map((i) => i._id);
+    let subCategoriesIds = subCategories.map((i) => i._id);
+    let clientsIds = clients.map((i) => i._id);
+
+    let journiesData = allJournies.filter(
+      (j) =>
+        j.teamId &&
+        teamsIds.includes(j.teamId) &&
+        j.projectManager &&
+        managersIds.includes(j.projectManager) &&
+        j.categoryId &&
+        categoriesIds.includes(j.categoryId) &&
+        j.clientId &&
+        clientsIds.includes(j.clientId)
+    );
+
+    let allSubs = _.flattenDeep(
+      allCategories.map((i) => i.subCategoriesId.map((s) => s._id))
+    );
+
+    journiesData = journiesData.filter(
+      (i) =>
+        i.journeyFinishedAtDate &&
+        new Date(i.journeyFinishedAtDate).getFullYear() === state.year
+    );
+    journiesData = journiesData.filter(
+      (j) =>
+        (j.subCategoryId && subCategoriesIds.includes(j.subCategoryId)) ||
+        j.subCategoryId === null ||
+        !allSubs.includes(j.subCategoryId)
+    );
+    journiesData = journiesData.filter(
+      (i) => i.startedAt && new Date(i.startedAt).getFullYear() === state.year
+    );
+    setJournies(journiesData);
+  }, [
+    teams,
+    categories,
+    clients,
+    managers,
+    state.year,
+    subCategories,
+    mounted,
+  ]);
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });
   };
@@ -245,7 +282,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     managers: string[];
     subCategories: string[];
   }) => {
-    console.log({ cats: filter.categories, subs: filter.subCategories });
     setClients(
       options.clients.filter((i) => i._id && filter.clients.includes(i._id))
     );
@@ -271,23 +307,6 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     ).filter((sub) => filter.subCategories.includes(sub._id));
 
     setSubCategories(selectedSubs);
-    let journiesData: Journies = allJournies.filter(
-      (j) =>
-        j.teamId &&
-        filter.teams.includes(j.teamId) &&
-        j.projectManager &&
-        filter.managers.includes(j.projectManager) &&
-        j.categoryId &&
-        filter.categories.includes(j.categoryId) &&
-        j.clientId &&
-        filter.clients.includes(j.clientId)
-    );
-    journiesData = journiesData.filter(
-      (i) =>
-        filter.subCategories.includes(i.subCategoryId) ||
-        i.subCategoryId === null
-    );
-    setJournies(journiesData);
   };
 
   const onGetDataSetsByDepartments = () => {
@@ -377,6 +396,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
       journies: journies,
     };
   };
+
   const onDownload = () => {
     let data = [...state.data.datasets];
     let { bars, comparisons } = getCsvFile({
@@ -508,6 +528,7 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
           managers,
           departments,
           subCategories,
+          year: state.year,
         }}
         filter={state.filterPopup}
         onCloseFilter={() => setState({ ...state, filterPopup: false })}

@@ -1,12 +1,9 @@
 import { Box, Drawer, Grid, Typography } from "@mui/material";
-import { Range, RangeKeyDict } from "react-date-range";
+import { Range } from "react-date-range";
 import { useForm } from "react-hook-form";
 import { MulitSelectDialogComponent } from "src/coreUI/components/Inputs/SelectDialog/MuliSelectFilterDialog";
 import ControlledSelect from "src/coreUI/compositions/Select/ControlledSelect";
-import { Client } from "src/models/Clients";
-import { Manager } from "src/models/Managers";
 import { DialogOption } from "src/types/components/SelectDialog";
-import { ITeam } from "src/types/models/Departments";
 
 type filterBarProps = {
   filterPopup: boolean;
