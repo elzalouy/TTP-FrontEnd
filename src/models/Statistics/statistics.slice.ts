@@ -89,11 +89,14 @@ const StatisticsSlice: Slice<StatisticsInterface> = createSlice({
         state.OM.review = setTasksToArrays(review);
         state.OM.shared = setTasksToArrays(shared);
         state.OM.tasksCloseToDeadline = tasks.filter((item) => {
-          let isClose = isCloseToDeadline(
-            item.deadline,
-            item.cardCreatedAt.toString(),
-            0.75
-          );
+          let isClose =
+            item.deadline && item.cardCreatedAt
+              ? isCloseToDeadline(
+                  item?.deadline,
+                  item.cardCreatedAt.toString(),
+                  0.75
+                )
+              : false;
 
           if (
             item.deadline &&

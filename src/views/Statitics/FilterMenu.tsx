@@ -136,17 +136,17 @@ const FilterMenu = ({
           </Box>
           <Box className="tasks-option">
             <Select
+              elementType="filter"
+              optionsType="date"
               onSelect={(value: any) => {
                 onSetFilterResult({
                   boards,
                   date: value,
                 });
               }}
-              optionsType="date"
-              selected={date}
+              selected={date.toLocaleDateString()}
               options={[]}
               name="statistics-filterByDate"
-              elementType="filter"
               label="Started at:"
             />
           </Box>

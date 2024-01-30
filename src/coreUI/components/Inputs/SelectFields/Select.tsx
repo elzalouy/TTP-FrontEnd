@@ -16,35 +16,35 @@ const Select = (props: IFilterProps) => {
   useSelect(selectRef, optionsRef);
 
   const [state, setState] = React.useState({
-    open: props.optionsType === "list" ? "none" : false,
+    open: props?.optionsType === "list" ? "none" : false,
     selected: "",
   });
 
   React.useEffect(() => {
     let State = { ...state };
-    switch (props.optionsType) {
+    switch (props?.optionsType) {
       case "list":
         State.selected = props?.options
-          ? props?.options?.find((item: any) => item?.id === props.selected)
+          ? props?.options?.find((item: any) => item?.id === props?.selected)
               ?.text
           : "";
         break;
       case "date-picker":
         State.selected =
-          props.selected !== "" && props.selected !== undefined
-            ? props.selected
+          props?.selected !== "" && props?.selected !== undefined
+            ? props?.selected
             : "";
         break;
       case "date":
         State.selected =
-          props.selected !== "" && props.selected !== undefined
-            ? props.selected
+          props?.selected !== "" && props?.selected !== undefined
+            ? props?.selected
             : "";
         break;
 
       case "dialog":
         State.selected = props?.options
-          ? props?.options?.find((item: any) => item?.id === props.selected)
+          ? props?.options?.find((item: any) => item?.id === props?.selected)
               ?.text
           : "";
         break;
@@ -52,11 +52,11 @@ const Select = (props: IFilterProps) => {
         break;
     }
     setState(State);
-  }, [props.selected]);
+  }, [props?.selected]);
 
   const onOpen = () => {
     let State = { ...state };
-    switch (props.optionsType) {
+    switch (props?.optionsType) {
       case "list":
         State.open = "flex";
         setState(State);
@@ -64,10 +64,10 @@ const Select = (props: IFilterProps) => {
       case "date-picker":
         State.open = true;
         setState(State);
-
         break;
       case "date":
         State.open = true;
+        State.selected = props.selected.toString();
         setState(State);
         break;
       case "dialog":
@@ -82,14 +82,14 @@ const Select = (props: IFilterProps) => {
 
   const onClose = (value: any) => {
     let State = { ...state };
-    switch (props.optionsType) {
+    switch (props?.optionsType) {
       case "date-picker":
         State = {
-          selected: props.selected,
+          selected: props?.selected,
           open: false,
         };
         setState({ ...State });
-        props.onSelect(value);
+        props?.onSelect(value);
         break;
       case "date":
         State = {
@@ -97,7 +97,7 @@ const Select = (props: IFilterProps) => {
           open: false,
         };
         setState({ ...State });
-        props.onSelect(value);
+        props?.onSelect(value);
         break;
       case "dialog":
         State = {
@@ -105,7 +105,7 @@ const Select = (props: IFilterProps) => {
           open: false,
         };
         setState({ ...State });
-        props.onSelect(value);
+        props?.onSelect(value);
         break;
       case "list":
         State.open = "none";
@@ -116,53 +116,49 @@ const Select = (props: IFilterProps) => {
 
   const onSelect = (e: any) => {
     let State = { ...state };
-    State.selected = props.options
-      ? props.options.find((item: any) => item?.id === e.target.id)?.text
+    State.selected = props?.options
+      ? props?.options.find((item: any) => item?.id === e.target.id)?.text
       : "";
     setState(State);
-    props.onSelect(e);
+    props?.onSelect(e);
   };
 
+  console.log({ selected: state.selected, props: props?.selected });
   return (
     <>
       <fieldset
         ref={selectRef}
-        id={`${props.elementType}-${props.name}`}
-        data-error={props.error ? props.error : ""}
+        id={`${props?.elementType}-${props?.name}`}
+        data-error={props?.error ? props?.error : ""}
       >
         <label
           onClick={
             state.open === "none" || state.open === false ? onOpen : onClose
           }
-          id={props.label}
+          id={props?.label}
           className="labelValue unselectable"
-          data-test-id={props.dataTestId}
+          data-test-id={props?.dataTestId}
         >
-          {props.elementType === "filter" && (
-            <p className="label">{props.label}</p>
+          {props?.elementType === "filter" && (
+            <p className="label">{props?.label ?? ""}</p>
           )}
           <p
             className={"value"}
             style={{
               color:
-                props.elementType === "select" &&
-                ["", null, undefined].includes(props.selected)
+                props?.elementType &&
+                props?.elementType === "select" &&
+                ["", null, undefined].includes(props?.selected)
                   ? "#B4B6C4"
                   : "#303030",
             }}
           >
-            {props.elementType === "filter" ? (
-              <>
-                {state.selected && state.selected !== ""
-                  ? state.selected.toString()
-                  : props.selected
-                  ? props.selected
-                  : "All"}
-              </>
+            {props?.elementType && props?.elementType === "filter" ? (
+              <>{state?.selected ?? props?.selected ?? "All"}</>
             ) : (
               <>
-                {["", null, undefined].includes(props.selected)
-                  ? props.label
+                {["", null, undefined].includes(props?.selected)
+                  ? props?.label
                   : state.selected}
               </>
             )}
@@ -176,7 +172,7 @@ const Select = (props: IFilterProps) => {
           className="leftIcon"
           alt=""
         />
-        {props.optionsType === "dialog" && (
+        {props?.optionsType === "dialog" && (
           <>
             <SimpleDialog
               open={
@@ -185,16 +181,16 @@ const Select = (props: IFilterProps) => {
               onClose={onClose}
               selectedValue={{
                 id: props?.options?.find(
-                  (item: any) => item?.id === props.selected
+                  (item: any) => item?.id === props?.selected
                 )?.id,
                 label: props?.options?.find(
-                  (item: any) => item?.id === props.selected
+                  (item: any) => item?.id === props?.selected
                 )?.text,
                 image: props?.options?.find(
-                  (item: any) => item?.id === props.selected
+                  (item: any) => item?.id === props?.selected
                 )?.image,
               }}
-              options={props.options
+              options={props?.options
                 ?.map((option: any) => {
                   return {
                     label: option.text,
@@ -202,29 +198,29 @@ const Select = (props: IFilterProps) => {
                     image: option?.image,
                   };
                 })
-                .filter((item: any) => item?.id !== props.selected)}
+                .filter((item: any) => item?.id !== props?.selected)}
             />
           </>
         )}
-        {props.optionsType === "list" && (
+        {props?.optionsType === "list" && (
           <ListOptions
-            removeAllOption={props.removeAllOption}
+            removeAllOption={props?.removeAllOption}
             setShow={state.open === "none" ? onOpen : onClose}
             selectRef={selectRef}
             display={typeof state.open === "string" ? state.open : "none"}
             onSelect={onSelect}
-            elementType={props.elementType}
-            options={props.options?.filter(
+            elementType={props?.elementType}
+            options={props?.options?.filter(
               (item: any) => item?.id !== props?.selected
             )}
-            dataTestId={props.dataTestId}
+            dataTestId={props?.dataTestId}
           />
         )}
-        {props.optionsType === "date" && (
+        {props?.optionsType === "date" && (
           <MobileDatePicker
             ref={optionsRef}
             onClose={() => setState({ ...state, open: false })}
-            value={props.selected}
+            value={props?.selected}
             onChange={(value) => onClose(new Date(value))}
             renderInput={() => {
               return <></>;
@@ -234,10 +230,10 @@ const Select = (props: IFilterProps) => {
             open={typeof state.open === "boolean" ? state.open : false}
           />
         )}
-        {props.optionsType === "date-picker" && (
+        {props?.optionsType === "date-picker" && (
           <DateRange
             onClose={onClose}
-            value={props.selected}
+            value={props?.selected.toString()}
             open={typeof state.open === "boolean" ? state.open : false}
           />
         )}
