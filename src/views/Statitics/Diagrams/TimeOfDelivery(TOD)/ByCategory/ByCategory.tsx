@@ -30,7 +30,11 @@ import {
   onGetDatasetsByAll,
   onGetDatasetsByTeams,
 } from "./utils";
-import { selectAllCategories } from "src/models/Categories";
+import {
+  Category,
+  SubCategory,
+  selectAllCategories,
+} from "src/models/Categories";
 
 /**
  * Time of delivery diagram by the Category
@@ -40,13 +44,16 @@ import { selectAllCategories } from "src/models/Categories";
 
 const TodByCategory = ({ options }: TodByCategoryProps) => {
   const formRef = React.useRef<HTMLFormElement>(null);
-
+  const [mounted, setMounted] = useState(false);
   // Global state used in Filteration
+  const allCategories = useAppSelector(selectAllCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+
   const { projects } = useAppSelector(selectProjectsState);
   const teamsOptions = useAppSelector(selectTeamsOptions);
   const pmsOptions = useAppSelector(selectPMOptions);
   const clientsOptions = useAppSelector(selectClientOptions);
-  const allCategories = useAppSelector(selectAllCategories);
   // Component State : Managers, teams, clients are the selected ones for the filteration
   const [managers, setManagers] = useState<Manager[]>([]);
   const [teams, setTeams] = useState<ITeam[]>([]);
@@ -75,54 +82,13 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     year: new Date(Date.now()).getFullYear(),
   });
 
-  // Getting every needed information of each task like Project manager, client, etc.
   useEffect(() => {
-    let newTasks: ITaskInfo[] = tasks.map((item) => {
-      let project = projects.find((project) => project._id === item.projectId);
-      let manager = managers.find(
-        (i) => i._id === project?.projectManager
-      )?._id;
-      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
-      let category = allCategories.find((i) => i._id === item.categoryId);
-      let team = options.boards
-        .find((i) => i._id === item.boardId)
-        ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
-      let newTask: ITaskInfo = {
-        ...item,
-        clientId: project?.clientId,
-        projectManager: project?.projectManager,
-        projectManagerName: manager,
-        clientName: client,
-        projectName: project?.name,
-        categoryName: category?.category,
-        subCategoryName: category?.subCategoriesId.find(
-          (i) => i._id === item.subCategoryId
-        )?.subCategory,
-        teamName: team?.name,
-      };
-      return newTask;
-    });
-    let journiesData = newTasks.map((item) => getTaskJournies(item).journies);
-    let flattenedJournies = _.flatten(journiesData);
-    setJournies(flattenedJournies);
-    setAllJournies(flattenedJournies);
-  }, [tasks, teams, managers, projects]);
-
-  // Once the tasks and boards options from the component props are ready update their state.
-  useEffect(() => {
-    setTasks(options.tasks);
-  }, [options.tasks, options.boards]);
-
-  // Once the Managers from the component props are ready, update the state.
-  useEffect(() => {
-    setManagers(
-      state.comparisonBy === "PMs"
-        ? options.managers.slice(0, 4)
-        : options.managers
+    setCategories(options.categories);
+    setSubCategories(
+      _.flattenDeep(options.categories.map((item) => item.subCategoriesId))
     );
-  }, [options.managers, state.comparisonBy]);
+  }, [options.categories, state.comparisonBy]);
 
-  // Any change
   useEffect(() => {
     setClients(
       state.comparisonBy === "Clients"
@@ -131,51 +97,140 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     );
   }, [options.clients, state.comparisonBy]);
 
-  // Once the Teams data from the component props is ready, update the state.
+  useEffect(() => {
+    setManagers(
+      state.comparisonBy === "PMs"
+        ? options.managers.slice(0, 4)
+        : options.managers
+    );
+  }, [options.managers, state.comparisonBy]);
+
   useEffect(() => {
     setTeams(
       state.comparisonBy === "Teams" ? options.teams.slice(0, 4) : options.teams
     );
   }, [options.teams, state.comparisonBy]);
 
+  useEffect(() => {
+    let journiesData = _.flattenDeep(
+      tasks.map((item) => getTaskJournies(item).journies)
+    );
+    setJournies(journiesData);
+    setAllJournies(journiesData);
+    setMounted(!mounted);
+  }, [tasks]);
+
+  useEffect(() => {
+    let tasksData = [...options.tasks];
+    let newTasks: ITaskInfo[] = tasksData.map((item) => {
+      let project = projects.find((project) => project._id === item.projectId);
+      let category = allCategories.find((i) => i._id === item.categoryId);
+      let subCategory = item.subCategoryId
+        ? category?.subCategoriesId.find((s) => s._id === item.subCategoryId)
+            ?.subCategory
+        : "";
+      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let manager = managers.find(
+        (i) => i._id === project?.projectManager
+      )?.name;
+      let newTask: ITaskInfo = {
+        ...item,
+        clientId: project?.clientId,
+        projectManager: project?.projectManager,
+        projectName: project?.name,
+        categoryName: category?.category,
+        subCategoryName: subCategory,
+        clientName: client,
+        projectManagerName: manager,
+      };
+      return newTask;
+    });
+    setTasks([...newTasks]);
+  }, [projects, options.tasks]);
+
   // Prepare the datasets and render the diagram with the new values.
   useEffect(() => {
-    let Categories = options.categories.map((item) => {
-      return { id: item._id, name: item.category };
-    });
-
-    const data: DatasetType = {
-      labels: Categories.map((item) => item.name),
-      datasets:
-        state.comparisonBy === "Clients"
-          ? onGetDataSetsByClient(options.categories, clients, journies)
-          : state.comparisonBy === "PMs"
-          ? onGetDataSetsByPM(options.categories, managers, journies)
-          : state.comparisonBy === "Teams"
-          ? onGetDatasetsByTeams(options.categories, teams, journies)
-          : [onGetDatasetsByAll(options.categories, journies)],
-    };
-    let Options = chartOptions(data);
-    setState({ ...state, options: Options, data });
-  }, [journies, tasks, state.comparisonBy, clients, managers, teams]);
+    if (journies && journies.length > 0) {
+      let Categories = options.categories.map((item) => {
+        return { id: item._id, name: item.category };
+      });
+      const data: DatasetType = {
+        labels: Categories.map((item) => item.name),
+        datasets:
+          state.comparisonBy === "Clients"
+            ? onGetDataSetsByClient(options.categories, clients, journies)
+            : state.comparisonBy === "PMs"
+            ? onGetDataSetsByPM(options.categories, managers, journies)
+            : state.comparisonBy === "Teams"
+            ? onGetDatasetsByTeams(options.categories, teams, journies)
+            : [onGetDatasetsByAll(options.categories, journies)],
+      };
+      let Options = chartOptions(data);
+      setState({ ...state, options: Options, data });
+    }
+  }, [journies, state.comparisonBy]);
 
   useEffect(() => {
-    let State = { ...state };
-    if (State.filter.start && State.filter.end) {
-      let start = new Date(State.filter.start).getTime();
-      let end = new Date(State.filter.end).getTime() + 86400000;
-      let journiesData = allJournies.filter(
-        (i) =>
-          i.startedAt &&
-          i.journeyFinishedAtDate &&
-          new Date(i.startedAt).getTime() >= start &&
-          new Date(i.startedAt).getTime() <= end &&
-          new Date(i.journeyFinishedAtDate).getTime() <= end &&
-          new Date(i.journeyFinishedAtDate).getTime() >= start
+    let journiesData = [...allJournies];
+    if (allJournies && journies && journies.length > 0) {
+      let teamsIds = teams.map((i) => i._id);
+      let managersIds = managers.map((i) => i._id);
+      let categoriesIds = categories.map((i) => i._id);
+      let subCategoriesIds = subCategories.map((i) => i._id);
+      let clientsIds = clients.map((i) => i._id);
+      journiesData = [...allJournies].filter(
+        (j) =>
+          j.teamId &&
+          teamsIds.includes(j.teamId) &&
+          j.projectManager &&
+          managersIds.includes(j.projectManager) &&
+          j.categoryId &&
+          categoriesIds.includes(j.categoryId) &&
+          j.clientId &&
+          clientsIds.includes(j.clientId)
       );
-      setJournies(journiesData);
+      let allSubs = _.flattenDeep(
+        allCategories.map((i) => i.subCategoriesId.map((i) => i._id))
+      );
+
+      journiesData = journiesData.filter(
+        (i) =>
+          subCategoriesIds.includes(i.subCategoryId) ||
+          i.subCategoryId === null ||
+          (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
+      );
+
+      journiesData = journiesData.filter(
+        (i) => i.sharedAt && new Date(i.sharedAt).getFullYear() === state.year
+      );
+
+      let State = { ...state };
+      if (State.filter.start && State.filter.end) {
+        let start = new Date(State.filter.start).getTime();
+        let end = new Date(State.filter.end).getTime() + 86400000;
+        journiesData = journiesData.filter(
+          (i) =>
+            i.startedAt &&
+            i.journeyFinishedAtDate &&
+            new Date(i.startedAt).getTime() >= start &&
+            new Date(i.startedAt).getTime() <= end &&
+            new Date(i.journeyFinishedAtDate).getTime() <= end &&
+            new Date(i.journeyFinishedAtDate).getTime() >= start
+        );
+      }
     }
-  }, [state.filter.start, state.filter.end]);
+    setJournies(journiesData);
+    console.log({ clients, journies, categories, managers, teams });
+  }, [
+    state.filter.start,
+    state.filter.end,
+    teams,
+    clients,
+    managers,
+    categories,
+    subCategories,
+    mounted,
+  ]);
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, comparisonBy: e.target.value });

@@ -53,10 +53,10 @@ type BySharedMonthProps = {
 const BySharedMonth = ({ options }: BySharedMonthProps) => {
   const [mounted, setMounted] = useState(false);
   const formRef = React.useRef<HTMLFormElement>(null);
-  const allCategories = useAppSelector(selectAllCategories);
   const { projects } = useAppSelector(selectProjectsState);
   const [filterPopup, openFilterPopup] = useState(false);
   const [teams, setTeams] = useState<ITeam[]>([]);
+  const allCategories = useAppSelector(selectAllCategories);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
