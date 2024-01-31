@@ -164,13 +164,16 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     if (State.filter.start && State.filter.end) {
       let start = new Date(State.filter.start).getTime();
       let end = new Date(State.filter.end).getTime() + 86400000;
-      let journies = allJournies.filter(
+      let journiesData = allJournies.filter(
         (i) =>
           i.startedAt &&
+          i.journeyFinishedAtDate &&
           new Date(i.startedAt).getTime() >= start &&
-          new Date(i.startedAt).getTime() <= end
+          new Date(i.startedAt).getTime() <= end &&
+          new Date(i.journeyFinishedAtDate).getTime() <= end &&
+          new Date(i.journeyFinishedAtDate).getTime() >= start
       );
-      setJournies(journies);
+      setJournies(journiesData);
     }
   }, [state.filter.start, state.filter.end]);
 

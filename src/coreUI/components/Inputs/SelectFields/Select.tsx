@@ -123,7 +123,6 @@ const Select = (props: IFilterProps) => {
     props?.onSelect(e);
   };
 
-  console.log({ selected: state.selected, props: props?.selected });
   return (
     <>
       <fieldset

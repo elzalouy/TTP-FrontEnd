@@ -127,7 +127,6 @@ const FiltersBar = ({
       );
       setValue("categories", catOptions);
       onSetFilter("categories", catOptions);
-      console.log({ catOptions });
       if (catOptions.length === 0) setValue("selectedAllCategories", false);
     }
   };

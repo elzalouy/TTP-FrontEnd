@@ -450,7 +450,6 @@ export const editTasksProjectId = createAsyncThunk<any, any, any>(
   async (args, { rejectWithValue, dispatch }) => {
     try {
       let ids: string[] = args.ids;
-      console.log({ ids });
       let projectId: string = args.projectId;
       let response: ApiResponse<any> = await api.editTasksProjectId({
         ids,
