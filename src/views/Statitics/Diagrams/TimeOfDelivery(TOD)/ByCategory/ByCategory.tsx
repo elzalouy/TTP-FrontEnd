@@ -129,7 +129,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
         ? category?.subCategoriesId.find((s) => s._id === item.subCategoryId)
             ?.subCategory
         : "";
-      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
+      let client = clientsOptions.find((i) => i.id === project?.clientId)?.text;
       let manager = managers.find(
         (i) => i._id === project?.projectManager
       )?.name;
