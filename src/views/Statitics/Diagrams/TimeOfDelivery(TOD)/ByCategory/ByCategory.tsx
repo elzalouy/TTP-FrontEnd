@@ -130,7 +130,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             ?.subCategory
         : "";
       let client = clientsOptions.find((i) => i.id === project?.clientId)?.text;
-      let manager = managers.find(
+      let manager = options.managers.find(
         (i) => i._id === project?.projectManager
       )?.name;
       let newTask: ITaskInfo = {
