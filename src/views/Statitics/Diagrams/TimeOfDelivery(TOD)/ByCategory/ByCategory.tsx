@@ -124,12 +124,14 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
-      let category = allCategories.find((i) => i._id === item.categoryId);
+      let category = options.categories.find((i) => i._id === item.categoryId);
       let subCategory = item.subCategoryId
         ? category?.subCategoriesId.find((s) => s._id === item.subCategoryId)
             ?.subCategory
         : "";
-      let client = clientsOptions.find((i) => i.id === project?.clientId)?.text;
+      let client = options.clients.find(
+        (i) => i._id === project?.clientId
+      )?.clientName;
       let manager = options.managers.find(
         (i) => i._id === project?.projectManager
       )?.name;
