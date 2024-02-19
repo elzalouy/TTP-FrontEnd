@@ -105,27 +105,26 @@ const SchedulingTime: FC<SchedulingTimeProps> = ({ options }) => {
     let tasksData = [...options.tasks];
     let newTasks: ITaskInfo[] = tasksData.map((item) => {
       let project = projects.find((project) => project._id === item.projectId);
+      let category = options.categories.find((i) => i._id === item.categoryId);
+      let subCategory = item.subCategoryId
+        ? category?.subCategoriesId.find((s) => s._id === item.subCategoryId)
+            ?.subCategory
+        : "";
+      let client = options.clients.find(
+        (i) => i._id === project?.clientId
+      )?.clientName;
       let manager = managers.find(
         (i) => i._id === project?.projectManager
-      )?._id;
-      let client = clients.find((i) => i._id === project?.clientId)?.clientName;
-      let category = allCategories.find((i) => i._id === item.categoryId);
-      let team = options.boards
-        .find((i) => i._id === item.boardId)
-        ?.teams.find((i) => i._id === item.teamId && i.isDeleted === false);
-
+      )?.name;
       let newTask: ITaskInfo = {
         ...item,
         clientId: project?.clientId,
         projectManager: project?.projectManager,
-        projectManagerName: manager,
-        clientName: client,
         projectName: project?.name,
         categoryName: category?.category,
-        subCategoryName: category?.subCategoriesId.find(
-          (i) => i._id === item.subCategoryId
-        )?.subCategory,
-        teamName: team?.name,
+        subCategoryName: subCategory,
+        clientName: client,
+        projectManagerName: manager,
       };
       return newTask;
     });
