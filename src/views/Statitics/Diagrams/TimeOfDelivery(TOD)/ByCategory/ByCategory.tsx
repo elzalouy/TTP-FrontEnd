@@ -202,10 +202,11 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
           (i.subCategoryId.length > 0 && !allSubs.includes(i.subCategoryId))
       );
 
-      journiesData = journiesData.filter(
-        (i) => i.sharedAt && new Date(i.sharedAt).getFullYear() === state.year
-      );
+      // journiesData = journiesData.filter(
+      //   (i) => i.sharedAt && new Date(i.sharedAt).getFullYear() === state.year
+      // );
 
+      console.log({ journiesData });
       let State = { ...state };
       if (State.filter.start && State.filter.end) {
         let start = new Date(State.filter.start).getTime();
@@ -220,6 +221,7 @@ const TodByCategory = ({ options }: TodByCategoryProps) => {
             new Date(i.journeyFinishedAtDate).getTime() >= start
         );
       }
+      console.log({ journiesData });
     }
     setJournies(journiesData);
     console.log({ clients, journies, categories, managers, teams });

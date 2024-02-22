@@ -137,17 +137,17 @@ export const getCsvFile = (
             journeyDays = journeyDays ?? 0;
             journeyHours = journeyHours ?? 0;
             return {
-              barName: data.labels[index],
-              comparison: `${item.label} (${comparisonName})`,
-              taskName: journey.name,
+              barName: `"${data.labels[index]}"`,
+              comparison: `"${item.label} (${comparisonName})"`,
+              taskName: `"${journey.name}"`,
               taskId: journey.taskId,
               journeyIndex: journey.index + 1,
               projectId: journey.projectId,
-              projectName: journey.projectName,
-              managerName: journey.projectManagerName ?? "",
-              clientName: journey.clientName ?? "",
-              categoryName: journey.categoryName ?? "",
-              subCategoryName: journey.subCategoryName ?? "",
+              projectName: `"${journey.projectName}"`,
+              managerName: `"${journey.projectManagerName}"` ?? "",
+              clientName: `"${journey.clientName}"` ?? "",
+              categoryName: `"${journey.categoryName}"` ?? "",
+              subCategoryName: `"${journey.subCategoryName}"` ?? "",
               journeyMovementsCount: journey.movements.length,
               journeyStartedAt: journey.startedAt
                 ? format(new Date(journey.startedAt), "dd MMMM yyyy hh:mm")

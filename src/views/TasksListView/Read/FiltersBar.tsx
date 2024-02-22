@@ -234,17 +234,16 @@ const FiltersBar = ({
         </Grid>
         <Grid paddingX={0.5} item sm={12} marginY={1}>
           <Box className="tasks-option">
-            <ControlledSelect
+            <Select
+              elementType="filter"
               optionsType="date"
+              onSelect={(value: any) => {
+                onSetFilter("createdAt", new Date(value).toDateString());
+              }}
               selected={watch().createdAt}
               options={[]}
-              control={control}
               name="statistics-filterByDate"
-              elementType="filter"
-              label="Start Date :"
-              onSelect={(value: any) =>
-                onSetFilter("createdAt", new Date(value).toDateString())
-              }
+              label="Start Date:"
             />
           </Box>
         </Grid>

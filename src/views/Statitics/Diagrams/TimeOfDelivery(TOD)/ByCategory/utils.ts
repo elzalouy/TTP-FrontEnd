@@ -13,6 +13,7 @@ const getColors = (index: number) => {
     border: `rgb(${randomColors[index][0]},${randomColors[index][1]},${randomColors[index][2]})`,
   };
 };
+
 export const onGetDataSetsByClient = (
   categories: Category[],
   clients: Client[],
@@ -194,6 +195,7 @@ export const onGetDatasetsByAll = (
     skipNull: true,
   };
 };
+
 export const chartOptions = (data: DatasetType) => {
   let maxArray = data.datasets.map((item) => _.max(item.data));
   let max = _.max(maxArray);
